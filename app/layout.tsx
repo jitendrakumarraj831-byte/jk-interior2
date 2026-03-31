@@ -16,12 +16,12 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  // Title mein main services aur location dono hain
+  // 1. Optimized Title & Description for Local SEO
   title: 'JK Interior – PVC Wall Paneling & False Ceiling | Forbesganj, Bihar',
   description:
     'JK Interior provides expert PVC wall paneling, Gypsum false ceiling, WPC louvers, and fluted panels in Forbesganj, Narpatganj, Jogbani, and Araria. Best interior designer in Bihar. Call +91 8651070831.',
   
-  // Service + Location Based Keywords (SEO ke liye sabse zaroori)
+  // 2. Local & Service Keywords (Jo log search karte hain)
   keywords: [
     'PVC wall paneling Forbesganj',
     'False ceiling contractor Narpatganj',
@@ -34,22 +34,25 @@ export const metadata: Metadata = {
     'Interior contractor in Araria district'
   ].join(', '),
 
-  // Canonical URL: Google ko sahi address batane ke liye
+  // 3. Canonical URL (Duplicate issue se bachne ke liye)
   alternates: {
     canonical: 'https://jkinterior.online',
   },
 
-  // Robots: Search engine indexing allow karne ke liye
+  // 4. Robots (Google Indexing ke liye)
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
 
-  // OpenGraph: WhatsApp/Facebook share ke liye
+  // 5. OpenGraph (Social Media sharing ke liye)
   openGraph: {
     title: 'JK Interior – Modern Interior & Ceiling Work Experts',
     description:
@@ -58,7 +61,7 @@ export const metadata: Metadata = {
     siteName: 'JK Interior',
     images: [
       {
-        url: '/og-image.jpg', // Yaad rahe GitHub par file name 'og-image.jpg' hi ho
+        url: '/og-image.jpg', // GitHub 'public' folder mein ye name honi chahiye
         width: 1200,
         height: 630,
         alt: 'JK Interior Services - PVC Paneling and Ceiling',
@@ -67,10 +70,10 @@ export const metadata: Metadata = {
     type: 'website',
   },
 
-  // Icons: Browser tab ke liye
+  // 6. Icons (Aapka "Gol Chakkar" wala logo fix karne ke liye)
   icons: {
-    icon: '/placeholder-logo.png',
-    apple: '/apple-icon.png',
+    icon: '/favicon.png', // Jo aapne abhi upload kiya hai
+    apple: '/favicon.png',
   },
 }
 
