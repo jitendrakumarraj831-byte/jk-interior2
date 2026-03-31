@@ -16,18 +16,30 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'JK Interior – Modern Interior & Ceiling Work | Forbesganj, Bihar',
+  // Title mein main services aur location dono hain
+  title: 'JK Interior – PVC Wall Paneling & False Ceiling | Forbesganj, Bihar',
   description:
-    'JK Interior provides modern interior design, false ceiling, PVC ceiling, WPC louvers, fluted panels, TV unit design and more in Forbesganj, Narpatganj, Jogbani, Bihar. Call +91 8651070831.',
-  keywords:
-    'interior design, false ceiling, PVC ceiling, gypsum ceiling, WPC louvers, fluted panels, TV unit, Forbesganj, Bihar, JK Interior',
+    'JK Interior provides expert PVC wall paneling, Gypsum false ceiling, WPC louvers, and fluted panels in Forbesganj, Narpatganj, Jogbani, and Araria. Best interior designer in Bihar. Call +91 8651070831.',
   
-  // --- Naya Add Kiya Gaya: Canonical URL ---
+  // Service + Location Based Keywords (SEO ke liye sabse zaroori)
+  keywords: [
+    'PVC wall paneling Forbesganj',
+    'False ceiling contractor Narpatganj',
+    'WPC louvers price Bihar',
+    'Gypsum ceiling design Araria',
+    'Best interior designer in Forbesganj',
+    'JK Interior Forbesganj',
+    'PVC ceiling installation Jogbani',
+    'Modern TV unit design Bihar',
+    'Interior contractor in Araria district'
+  ].join(', '),
+
+  // Canonical URL: Google ko sahi address batane ke liye
   alternates: {
     canonical: 'https://jkinterior.online',
   },
 
-  // --- Naya Add Kiya Gaya: Robots Configuration ---
+  // Robots: Search engine indexing allow karne ke liye
   robots: {
     index: true,
     follow: true,
@@ -37,28 +49,28 @@ export const metadata: Metadata = {
     },
   },
 
+  // OpenGraph: WhatsApp/Facebook share ke liye
   openGraph: {
-    title: 'JK Interior – Modern Interior & Ceiling Work',
+    title: 'JK Interior – Modern Interior & Ceiling Work Experts',
     description:
-      'Premium interior design and ceiling solutions in Forbesganj, Bihar.',
+      'Premium interior design, WPC louvers, and PVC wall paneling solutions in Forbesganj, Narpatganj and across Bihar.',
     url: 'https://jkinterior.online',
     siteName: 'JK Interior',
-    // --- Naya Add Kiya Gaya: OG Image ---
     images: [
       {
-        url: '/og-image.jpg', 
+        url: '/og-image.jpg', // Yaad rahe GitHub par file name 'og-image.jpg' hi ho
         width: 1200,
         height: 630,
-        alt: 'JK Interior Design Services',
+        alt: 'JK Interior Services - PVC Paneling and Ceiling',
       },
     ],
     type: 'website',
   },
 
-  // --- Naya Add Kiya Gaya: Favicon Icons ---
+  // Icons: Browser tab ke liye
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/placeholder-logo.png',
+    apple: '/apple-icon.png',
   },
 }
 
