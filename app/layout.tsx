@@ -54,22 +54,21 @@ export const metadata: Metadata = {
 
   // 5. OpenGraph (Social Media sharing ke liye)
   openGraph: {
-    title: 'JK Interior – Modern Interior & Ceiling Work Experts',
-    description:
-      'Premium interior design, WPC louvers, and PVC wall paneling solutions in Forbesganj, Narpatganj and across Bihar.',
-    url: 'https://jkinterior.online',
-    siteName: 'JK Interior',
-    images: [
-      {
-        url: '/og-image.jpg', // GitHub 'public' folder mein ye name honi chahiye
-        width: 1200,
-        height: 630,
-        alt: 'JK Interior Services - PVC Paneling and Ceiling',
-      },
-    ],
-    type: 'website',
-  },
-
+  title: 'JK Interior – Modern Interior & Ceiling Work Experts',
+  description:
+    'Premium interior design, WPC louvers, and PVC wall paneling solutions in Forbesganj, Narpatganj and across Bihar.',
+  url: 'https://jkinterior.online/',
+  siteName: 'JK Interior',
+  images: [
+    {
+      url: 'https://jkinterior.online/og-image.jpg', // ✅ FULL URL जरूरी
+      width: 1200,
+      height: 630,
+      alt: 'JK Interior Services - PVC Paneling and Ceiling',
+    },
+  ],
+  type: 'website',
+},
   // 6. Icons (Aapka "Gol Chakkar" wala logo fix karne ke liye)
   icons: {
     icon: '/favicon.png', // Jo aapne abhi upload kiya hai
