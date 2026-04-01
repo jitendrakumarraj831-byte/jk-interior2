@@ -16,22 +16,39 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  // 1. Optimized Title & Description for Local SEO
+  // ✅ VERY IMPORTANT (OG image fix ke liye)
+  metadataBase: new URL('https://jkinterior.online'),
+
+  // 🎯 Title & Description (SEO optimized)
   title: 'JK Interior – PVC Wall Paneling & False Ceiling | Forbesganj, Bihar',
   description:
-    'JK Interior provides expert PVC wall paneling, Gypsum false ceiling, WPC louvers, and fluted panels in Forbesganj, Narpatganj, Jogbani, and Araria. Best interior designer in Bihar. Call +91 8651070831.',
-  
-  // 2. Local & Service Keywords (Jo log search karte hain)
+    'JK Interior offers expert PVC wall paneling, false ceiling, WPC louvers, and fluted panel installation in Forbesganj, Narpatganj, Jogbani, and Araria Bihar. Affordable price, modern designs & professional service. Call +91 8651070831.',
+
+  // 🔥 Powerful Local + Ranking Keywords
   keywords: [
     'PVC wall paneling Forbesganj',
-    'False ceiling contractor Narpatganj',
-    'WPC louvers price Bihar',
-    'Gypsum ceiling design Araria',
+    'False ceiling contractor Forbesganj',
+    'Interior designer Forbesganj Bihar',
     'Best interior designer in Forbesganj',
+    'PVC ceiling work Narpatganj',
+    'False ceiling work Jogbani',
+    'Interior contractor Araria Bihar',
+    'PVC wall panel price in Forbesganj Bihar',
+    'False ceiling design for hall in Bihar',
+    'Gypsum ceiling contractor near me Bihar',
+    'WPC louvers installation in Forbesganj',
+    'Fluted panel design for TV wall Bihar',
+    'Modern TV unit design in Araria',
+    'Bedroom false ceiling design Bihar',
+    'cheap PVC panel installation near me',
+    'best false ceiling price in Bihar',
+    'low cost interior design in Forbesganj',
+    'interior work contact number Forbesganj',
     'JK Interior Forbesganj',
-    'PVC ceiling installation Jogbani',
-    'Modern TV unit design Bihar',
-    'Interior contractor in Araria district'
+    'JK Interior Bihar',
+    'PVC paneling Narpatganj Bihar',
+    'Interior designer Jogbani Bihar',
+    'False ceiling Araria district'
   ].join(', '),
 
   // 3. Canonical URL (Duplicate issue se bachne ke liye)
