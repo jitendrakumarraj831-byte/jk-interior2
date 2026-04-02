@@ -87,9 +87,9 @@ export default function Navbar() {
             className="text-foreground lg:hidden"
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+</button>
+</div>
 
         {/* Mobile menu */}
         {mobileOpen && (
