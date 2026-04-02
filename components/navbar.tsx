@@ -52,13 +52,13 @@ export default function Navbar() {
     {/* Logo */}
     <Link href="/" className="flex items-center">
       <Image
-        src="/logo.png"
-        alt="JK Interior Logo"
-        width={140}
-        height={50}
-        className="object-contain h-10 w-auto md:h-12"
-        priority
-      />
+  src="/logo.png"
+  alt="JK Interior Logo"
+  width={180}
+  height={60}
+  className="object-contain h-12 w-auto md:h-14"
+  priority
+/>
     </Link>
 
     {/* Desktop links */}
