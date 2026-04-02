@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Phone, Mail, MapPin } from "lucide-react"
 
 export default function Footer() {
@@ -7,16 +8,19 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <div className="mb-4 flex items-center gap-2">
-              <div className="gold-gradient flex h-10 w-10 items-center justify-center rounded-lg shadow-md">
-                <span className="text-lg font-bold text-primary-foreground font-sans">JK</span>
-              </div>
-              <div>
-                <h4 className="text-lg font-bold text-foreground font-sans">JK Interior</h4>
-                <p className="text-[10px] uppercase tracking-widest text-primary font-mono">
-                  Modern Interior & Ceiling
-                </p>
-              </div>
+            <div className="mb-3">
+  <Image
+    src="/logo.png"
+    alt="JK Interior Logo"
+    width={140}
+    height={50}
+    className="object-contain h-10 w-auto"
+  />
+</div>
+
+<p className="text-[10px] uppercase tracking-widest text-primary font-mono">
+  Modern Interior & Ceiling
+</p>
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground font-mono">
               Premium interior design and ceiling solutions in Bihar.
