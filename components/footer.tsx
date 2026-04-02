@@ -3,34 +3,34 @@ import { Phone, Mail, MapPin } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-surface-alt py-12">
+     <footer className="border-t border-border bg-surface-alt py-12">
       <div className="mx-auto max-w-7xl px-4">
         <div className="grid gap-8 md:grid-cols-3">
+
           {/* Brand */}
           <div>
-     <div>
-  <div className="mb-3">
-    <Image
-      src="/logo.png"
-      alt="JK Interior Logo"
-      width={140}
-      height={50}
-      className="object-contain h-10 w-auto"
-    />
-  </div>
+            <div className="mb-4">
+              <Image
+                src="/logo.png"
+                alt="JK Interior Logo"
+                width={140}
+                height={50}
+                className="object-contain h-12 w-auto"
+              />
+            </div>
 
-  <p className="text-[10px] uppercase tracking-widest text-primary font-mono">
-    Modern Interior & Ceiling
-  </p>
+            <p className="text-[10px] uppercase tracking-widest text-primary font-mono">
+              Modern Interior & Ceiling
+            </p>
 
-  <p className="text-sm leading-relaxed text-muted-foreground font-mono">
-    Premium interior design and ceiling solutions in Bihar.
-  </p>
+            <p className="text-sm leading-relaxed text-muted-foreground font-mono">
+              Premium interior design and ceiling solutions in Bihar.
+            </p>
 
-  <p className="mt-1 text-xs leading-relaxed text-muted-foreground font-mono">
-    बिहार में प्रीमियम इंटीरियर डिजाइन और सीलिंग समाधान।
-  </p>
-</div>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground font-mono">
+              बिहार में प्रीमियम इंटीरियर डिजाइन और सीलिंग समाधान।
+            </p>
+          </div>
 
           {/* Quick Links */}
           <div>
