@@ -40,54 +40,77 @@ export default function Hero() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
+        {/* ✅ Strong Overlay */}
+        <div className="absolute inset-0 bg-black/70" />
       </div>
 
       {/* Content */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-4 py-32 text-center">
+        
+        {/* Tag */}
         <div className="reveal mb-6 opacity-0" style={{ animationDelay: "0.1s" }}>
-          <span className="inline-block rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono">
+          <span className="inline-block rounded-full border border-yellow-400/40 bg-yellow-400/10 px-4 py-1.5 text-xs uppercase tracking-widest text-yellow-400 font-mono">
             Premium Interior Solutions
           </span>
         </div>
 
-        <h2 className="reveal mb-6 max-w-4xl text-4xl font-bold leading-tight text-foreground opacity-0 md:text-6xl lg:text-7xl font-sans" style={{ animationDelay: "0.3s" }}>
-          {'JK Interior – '}
-          <span className="gold-text">{'Modern Interior'}</span>
-          {' & Ceiling Work'}
-        </h2>
+        {/* ✅ H1 (SEO FIX) */}
+        <h1 className="reveal mb-6 max-w-4xl text-4xl font-bold leading-tight text-white opacity-0 md:text-6xl lg:text-7xl font-sans" style={{ animationDelay: "0.3s" }}>
+          Premium False Ceiling Designer in Forbesganj
+        </h1>
 
-        <p className="reveal mb-4 max-w-2xl text-base leading-relaxed text-foreground/80 opacity-0 md:text-lg font-mono" style={{ animationDelay: "0.5s" }}>
-          We provide modern interior design and ceiling solutions that make your
-          home and office beautiful, stylish and functional.
+        {/* Subheading */}
+        <p className="reveal mb-4 max-w-2xl text-base leading-relaxed text-gray-200 opacity-0 md:text-lg font-mono" style={{ animationDelay: "0.5s" }}>
+          Modern | LED | PVC | Gypsum Ceiling Work
         </p>
 
-        <p className="reveal mb-8 max-w-2xl text-sm leading-relaxed text-muted-foreground opacity-0 md:text-base font-mono" style={{ animationDelay: "0.6s" }}>
-          हम आधुनिक इंटीरियर डिजाइन और सीलिंग वर्क की सेवाएं प्रदान करते हैं
-          जिससे आपका घर या ऑफिस सुंदर, स्टाइलिश और आकर्षक बनता है।
+        {/* Trust */}
+        <p className="reveal mb-3 text-yellow-400 font-semibold opacity-0" style={{ animationDelay: "0.6s" }}>
+          ⭐ 100+ Projects Completed | 5+ Years Experience
         </p>
 
+        {/* Hindi */}
+        <p className="reveal mb-8 max-w-2xl text-sm leading-relaxed text-gray-300 opacity-0 md:text-base font-mono">
+          हम आधुनिक इंटीरियर डिजाइन और सीलिंग वर्क की सेवाएं प्रदान करते हैं जिससे आपका घर या ऑफिस सुंदर, स्टाइलिश और आकर्षक बनता है।
+        </p>
+
+        {/* Buttons */}
         <div className="reveal flex flex-col items-center gap-4 opacity-0 sm:flex-row" style={{ animationDelay: "0.8s" }}>
+          
+          {/* Call */}
           <a
             href="tel:+918651070831"
-            className="gold-gradient flex items-center gap-2 rounded-lg px-8 py-4 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:shadow-xl hover:opacity-90 font-mono"
+            className="bg-yellow-500 text-black flex items-center gap-2 rounded-lg px-8 py-4 text-sm font-semibold shadow-lg hover:scale-105 transition"
           >
             <Phone className="h-4 w-4" />
-            Call Now / अभी कॉल करें
+            Call Now
           </a>
+
+          {/* WhatsApp 🔥 */}
+          <a
+            href="https://wa.me/918651070831?text=Hi%20JK%20Interior,%20mujhe%20false%20ceiling%20design%20ke%20liye%20info%20chahiye"
+            target="_blank"
+            className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 rounded-lg px-8 py-4 text-sm font-semibold shadow-lg hover:scale-105 transition"
+          >
+            💬 WhatsApp
+          </a>
+
+          {/* Contact */}
           <a
             href="#contact"
-            className="flex items-center gap-2 rounded-lg border-2 border-primary/50 bg-card/80 px-8 py-4 text-sm font-semibold text-primary shadow-md transition-all hover:bg-primary/10 font-mono"
+            className="flex items-center gap-2 rounded-lg border-2 border-white/40 px-8 py-4 text-sm font-semibold text-white hover:bg-white/10 transition"
           >
-            Contact Us / संपर्क करें
+            Contact Us
           </a>
+
         </div>
 
         {/* Scroll indicator */}
-        <a href="#services" className="absolute bottom-10 flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-primary">
+        <a href="#services" className="absolute bottom-10 flex flex-col items-center gap-2 text-gray-300 hover:text-white transition">
           <span className="text-xs uppercase tracking-widest font-mono">Explore</span>
           <ArrowDown className="h-4 w-4 animate-bounce" />
         </a>
+
       </div>
     </section>
   )
