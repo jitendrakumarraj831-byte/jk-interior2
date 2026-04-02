@@ -46,51 +46,44 @@ export default function Navbar() {
 
       {/* Main nav */}
       <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-  <Link href="/" className="flex items-center">
-    <Image
-      src="/logo.png"
-      alt="JK Interior Logo"
-      width={140}
-      height={50}
-      className="object-contain h-10 w-auto md:h-12"
-      priority
-    />
-  </Link>
-</div>
+  
+  <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+    
+    {/* Logo */}
+    <Link href="/" className="flex items-center">
+      <Image
+        src="/logo.png"
+        alt="JK Interior Logo"
+        width={140}
+        height={50}
+        className="object-contain h-10 w-auto md:h-12"
+        priority
+      />
+    </Link>
 
-          {/* Desktop links */}
-          <div className="hidden items-center gap-8 lg:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground font-mono"
-              >
-                <span>{link.label}</span>
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all group-hover:w-full" />
-              </a>
-            ))}
-            <a
-              href="https://wa.me/918651070831"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="gold-gradient rounded-lg px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:shadow-lg hover:opacity-90 font-mono"
-            >
-              WhatsApp
-            </a>
-          </div>
+    {/* Desktop links */}
+    <div className="hidden items-center gap-8 lg:flex">
+      {navLinks.map((link) => (
+        <a key={link.href} href={link.href}>
+          {link.label}
+        </a>
+      ))}
+    </div>
 
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="text-foreground lg:hidden"
-            aria-label="Toggle menu"
-          >
-          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-</button>
-</div>
+    {/* Mobile toggle */}
+    <button
+      onClick={() => setMobileOpen(!mobileOpen)}
+      className="text-foreground lg:hidden"
+      aria-label="Toggle menu"
+    >
+      {mobileOpen ? (
+        <X className="h-6 w-6" />
+      ) : (
+        <Menu className="h-6 w-6" />
+      )}
+    </button>
 
+  </div>  {/* ✅ अब यहाँ बंद होगा */}
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="border-t border-border bg-background px-4 pb-6 pt-4 lg:hidden animate-fade-in">
