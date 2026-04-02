@@ -56,7 +56,7 @@ export default function Navbar() {
   alt="JK Interior Logo"
   width={180}
   height={60}
-  className="object-contain h-12 w-auto md:h-14"
+  className="object-contain h-14 w-auto md:h-16"
   priority
 />
     </Link>
