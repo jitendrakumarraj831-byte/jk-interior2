@@ -46,17 +46,18 @@ export default function Navbar() {
 
       {/* Main nav */}
       <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
-<Link href="/" className="flex items-center">
-  <Image
-    src="/logo.png"
-    alt="JK Interior Logo"
-    width={180}
-    height={70}
-    className="object-contain"
-    priority
-  />
-</Link>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+  <Link href="/" className="flex items-center">
+    <Image
+      src="/logo.png"
+      alt="JK Interior Logo"
+      width={140}
+      height={50}
+      className="object-contain h-10 w-auto md:h-12"
+      priority
+    />
+  </Link>
+</div>
 
           {/* Desktop links */}
           <div className="hidden items-center gap-8 lg:flex">
