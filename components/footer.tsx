@@ -8,19 +8,20 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <div className="mb-3">
+     <div className="mb-4">
   <Image
     src="/logo.png"
     alt="JK Interior Logo"
     width={140}
     height={50}
-    className="object-contain h-10 w-auto"
+    className="object-contain h-12 w-auto"
   />
 </div>
 
 <p className="text-[10px] uppercase tracking-widest text-primary font-mono">
   Modern Interior & Ceiling
-</p>
+</p>       
+
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground font-mono">
               Premium interior design and ceiling solutions in Bihar.
