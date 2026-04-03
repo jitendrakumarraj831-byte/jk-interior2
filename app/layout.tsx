@@ -106,10 +106,34 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-mono antialiased">
-        {children}
-        <Analytics />
-      </body>
-    </html>
+  <body className="font-mono antialiased">
+
+    {/* SEO Schema (Google ke liye) */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "JK Interior",
+          url: "https://jkinterior.online",
+          telephone: "+918651070831",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Forbesganj",
+            addressRegion: "Bihar",
+            addressCountry: "IN"
+          },
+          description:
+            "JK Interior provides gypsum ceiling, POP design, PVC wall paneling and interior services in Forbesganj, Bihar."
+        })
+      }}
+    />
+
+    {children}
+
+    <Analytics />
+  </body>
+</html>
   )
 }
