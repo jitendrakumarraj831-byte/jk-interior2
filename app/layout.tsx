@@ -117,7 +117,7 @@ export default function RootLayout({
           "@type": "LocalBusiness",
           name: "JK Interior",
           url: "https://jkinterior.online",
-          telephone: "+918651070831",
+          telephone: "+918541849118",
           address: {
             "@type": "PostalAddress",
             addressLocality: "Forbesganj",
