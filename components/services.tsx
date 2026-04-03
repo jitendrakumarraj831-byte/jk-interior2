@@ -1,6 +1,8 @@
 "use client"
+
 import { useEffect, useRef } from "react"
 import Image from "next/image"
+
 const services = [
   {
     title: "Gypsum False Ceiling",
@@ -66,8 +68,10 @@ const services = [
     image: "/images/partition-wall.jpg",
   },
 ]
+
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null)
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -79,63 +83,72 @@ export default function Services() {
       },
       { threshold: 0.1 }
     )
+
     const elements = sectionRef.current?.querySelectorAll(".reveal")
-    elements?.forEach((el) => observer.observe(el))
+    elements?.forEach((el) => observer.observe(el)
+
     return () => observer.disconnect()
   }, [])
+
   return (
     <section ref={sectionRef} id="services" className="bg-background py-24">
       <div className="mx-auto max-w-7xl px-4">
+
         {/* Section header */}
         <div className="reveal mb-16 text-center opacity-0">
-  <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono">
-    Our Services / हमारी सेवाएं
-  </span>
+          <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono">
+            Our Services / हमारी सेवाएं
+          </span>
 
-  <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
-    Best Interior & False Ceiling Services
-  </h3>
+          <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
+            Best Interior & False Ceiling Services
+          </h3>
 
-  <p className="mx-auto max-w-2xl text-muted-foreground font-mono text-sm md:text-base">
-    JK Interior is a leading interior designer in Forbesganj Bihar offering complete interior and false ceiling solutions including gypsum false ceiling design, PVC ceiling installation, grid ceiling for offices, WPC louvers, fluted wall panels, TV unit design, UV marble sheets, artificial grass decoration and PVC & gypsum partition walls.
-  </p>
-</div>
+          <p className="mx-auto max-w-2xl text-muted-foreground font-mono text-sm md:text-base">
+            JK Interior is a leading interior designer in Forbesganj Bihar offering complete interior and false ceiling solutions including gypsum false ceiling design, PVC ceiling installation, grid ceiling for offices, WPC louvers, fluted wall panels, TV unit design, UV marble sheets, artificial grass decoration and PVC & gypsum partition walls.
+          </p>
+        </div>
 
-{/* Services grid */}
-<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-  {services.map((service, index) => (
-    <div
-      key={service.title}
-      className="reveal group cursor-pointer overflow-hidden rounded-xl border border-border bg-card opacity-0 shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
-      style={{ animationDelay: `${index * 0.1}s` }}
-    >
-      <div className="relative h-52 overflow-hidden">
-        <Image
-          src={service.image}
-          alt={service.title}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+        {/* Services grid */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((service, index) => (
+            <div
+              key={service.title}
+              className="reveal group cursor-pointer overflow-hidden rounded-xl border border-border bg-card opacity-0 shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="relative h-52 overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+              </div>
+
+              <div className="p-6">
+                <h4 className="mb-1 text-xl font-bold text-foreground font-sans">
+                  {service.title}
+                </h4>
+
+                <p className="mb-3 text-xs font-semibold text-primary font-mono">
+                  {service.titleHi}
+                </p>
+
+                <p className="mb-2 text-sm leading-relaxed text-foreground/80 font-mono">
+                  {service.desc}
+                </p>
+
+                <p className="text-xs leading-relaxed text-muted-foreground font-mono">
+                  {service.descHi}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
-
-      <div className="p-6">
-        <h4 className="mb-1 text-xl font-bold text-foreground font-sans">
-          {service.title}
-        </h4>
-
-        <p className="mb-3 text-xs font-semibold text-primary font-mono">
-          {service.titleHi}
-        </p>
-
-        <p className="mb-2 text-sm leading-relaxed text-foreground/80 font-mono">
-          {service.desc}
-        </p>
-
-        <p className="text-xs leading-relaxed text-muted-foreground font-mono">
-          {service.descHi}
-        </p>
-      </div>
-    </div>
-  ))}
-</div>
+    </section>
+  )
+}
