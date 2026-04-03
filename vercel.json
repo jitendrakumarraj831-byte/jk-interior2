@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "https://www.jkinterior.online/:path*",
+      "destination": "https://jkinterior.online/:path*",
+      "permanent": true
+    }
+  ]
+}
