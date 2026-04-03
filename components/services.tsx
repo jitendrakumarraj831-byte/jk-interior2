@@ -101,9 +101,9 @@ export default function Services() {
           <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
             What We <span className="gold-text">Offer</span>
           </h3>
-          <p className="mx-auto max-w-xl text-muted-foreground font-mono">
-            Premium interior solutions for homes and offices
-          </p>
+          <p className="mx-auto max-w-2xl text-muted-foreground font-mono text-sm md:text-base">
+  JK Interior is a leading interior designer in Forbesganj Bihar offering complete interior and false ceiling solutions including gypsum false ceiling design, PVC ceiling installation, grid ceiling for offices, WPC louvers, fluted wall panels, TV unit design, UV marble sheets, artificial grass decoration and PVC & gypsum partition walls. We provide modern, stylish and durable interior work for homes and commercial spaces in Forbesganj, Araria, Narpatganj, Jogbani, Raniganj, Kursakanta, Chhatapur and Tribeniganj with premium quality finishing and affordable pricing.
+</p>
         </div>
 
         {/* Services grid */}
