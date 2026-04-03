@@ -85,7 +85,7 @@ export default function Services() {
     )
 
     const elements = sectionRef.current?.querySelectorAll(".reveal")
-    elements?.forEach((el) => observer.observe(el)
+    elements?.forEach((el) => observer.observe(el))
 
     return () => observer.disconnect()
   }, [])
