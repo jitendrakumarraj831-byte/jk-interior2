@@ -17,7 +17,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   // ✅ VERY IMPORTANT (OG image fix ke liye)
-  metadataBase: new URL('https://jkinterior.online'),
+  metadataBase: new URL('https://www.jkinterior.online'),
 
   // 🎯 Title & Description (SEO optimized)
   title: 'JK Interior – PVC Wall Paneling & False Ceiling | Forbesganj, Bihar',
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 
   // 3. Canonical URL (Duplicate issue se bachne ke liye)
   alternates: {
-    canonical: 'https://jkinterior.online',
+    canonical: 'https://www.jkinterior.online',
   },
 
   // 4. Robots (Google Indexing ke liye)
@@ -74,11 +74,11 @@ export const metadata: Metadata = {
   title: 'JK Interior – Modern Interior & Ceiling Work Experts',
   description:
     'Premium interior design, WPC louvers, and PVC wall paneling solutions in Forbesganj, Narpatganj and across Bihar.',
-  url: 'https://jkinterior.online/',
+  url: 'https://www.jkinterior.online/',
   siteName: 'JK Interior',
   images: [
     {
-      url: 'https://jkinterior.online/og-image.jpg', // ✅ FULL URL जरूरी
+      url: 'https://www.jkinterior.online/og-image.jpg', // ✅ FULL URL जरूरी
       width: 1200,
       height: 630,
       alt: 'JK Interior Services - PVC Paneling and Ceiling',
@@ -116,7 +116,7 @@ export default function RootLayout({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: "JK Interior",
-          url: "https://jkinterior.online",
+          url: "https://www.jkinterior.online",
           telephone: "+918541849118",
           address: {
             "@type": "PostalAddress",
