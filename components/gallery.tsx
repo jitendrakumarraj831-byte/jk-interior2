@@ -5,71 +5,82 @@ import Image from "next/image"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
 const galleryImages = [
-  // Original 12 Images - SEO Optimized Alt
-  { src: "/images/hero-interior.jpg", alt: "False ceiling design for luxury living room in Bihar - PVC gypsum ceiling with LED lights Patna" },
-  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum board false ceiling design with cove lighting for home interior Bihar" },
-  { src: "/images/pvc-ceiling.jpg", alt: "Waterproof PVC ceiling panel installation for kitchen and bathroom Patna Bihar" },
-  { src: "/images/wpc-louvers.jpg", alt: "WPC louvers wall panel design for TV unit background - wooden finish interior Bihar" },
-  { src: "/images/tv-unit.jpg", alt: "Modern TV unit design with fluted panels and LED backlight - living room interior Patna" },
-  { src: "/images/gallery-1.jpg", alt: "Designer bedroom interior with modular wardrobe and false ceiling design Bihar" },
-  { src: "/images/gallery-2.jpg", alt: "Modular kitchen interior design with PVC ceiling and cabinets Patna Bihar" },
-  { src: "/images/gallery-3.jpg", alt: "Office interior design with gypsum ceiling and glass partition Patna Bihar" },
-  { src: "/images/gallery-4.jpg", alt: "Luxury drawing room interior design with sofa and false ceiling Bihar" },
-  { src: "/images/gallery-5.jpg", alt: "Fluted wall panels design for bedroom accent wall - WPC interior Patna" },
-  { src: "/images/uv-marble.jpg", alt: "UV marble sheet wall design for living room - glossy waterproof panels Bihar" },
-  { src: "/images/artificial-grass.jpg", alt: "Artificial grass wall decoration for balcony and terrace Patna Bihar" },
+  { src: "/images/hero-interior.jpg", alt: "Luxury living room interior design Bihar" },
+  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum false ceiling design Patna" },
+  { src: "/images/pvc-ceiling.jpg", alt: "PVC ceiling installation Lauriya" },
+  { src: "/images/wpc-louvers.jpg", alt: "WPC louvers wall panel Bihar" },
+  { src: "/images/tv-unit.jpg", alt: "Modern TV unit design Patna" },
+  { src: "/images/gallery-1.jpg", alt: "Designer bedroom interior Bettiah" },
+  { src: "/images/gallery-2.jpg", alt: "Modular kitchen interior Bihar" },
+  { src: "/images/gallery-3.jpg", alt: "Professional office interior Patna" },
+  { src: "/images/gallery-4.jpg", alt: "Luxury drawing room false ceiling" },
+  { src: "/images/fluted-panels.jpg", alt: "Fluted wall panels TV unit" },
+  { src: "/images/uv-marble.jpg", alt: "UV marble sheet wall design" },
+  { src: "/images/artificial-grass.jpg", alt: "Artificial grass balcony decoration" },
+  // --- 38 naye photos add kiye gaye ---
+  { src: "/images/gallery-5.jpg", alt: "Gypsum ceiling design for bedroom Lauriya" },
+  { src: "/images/gallery-6.jpg", alt: "PVC ceiling panels modern home Bihar" },
+  { src: "/images/gallery-7.jpg", alt: "WPC louvers living room wall design" },
+  { src: "/images/gallery-8.jpg", alt: "Luxury TV unit with LED panel Patna" },
+  { src: "/images/gallery-9.jpg", alt: "Modular kitchen interior design Bihar" },
+  { src: "/images/gallery-10.jpg", alt: "Office false ceiling gypsum work" },
+  { src: "/images/gallery-11.jpg", alt: "Fluted panels bedroom headboard design" },
+  { src: "/images/gallery-12.jpg", alt: "UV marble sheet TV wall Lauriya" },
+  { src: "/images/gallery-13.jpg", alt: "Artificial grass balcony decoration" },
+  { src: "/images/gallery-14.jpg", alt: "Designer drawing room ceiling" },
+  { src: "/images/gallery-15.jpg", alt: "PVC wall paneling for shop" },
+  { src: "/images/gallery-16.jpg", alt: "WPC ceiling outdoor area" },
+  { src: "/images/gallery-17.jpg", alt: "Gypsum partition wall design" },
+  { src: "/images/gallery-18.jpg", alt: "Modern bedroom interior Bihar" },
+  { src: "/images/gallery-19.jpg", alt: "Luxury kitchen with island" },
+  { src: "/images/gallery-20.jpg", alt: "Office cabin interior design" },
+  { src: "/images/gallery-21.jpg", alt: "Living room false ceiling with cove light" },
+  { src: "/images/gallery-22.jpg", alt: "PVC louvers exterior design" },
+  { src: "/images/gallery-23.jpg", alt: "TV cabinet with fluted panels" },
+  { src: "/images/gallery-24.jpg", alt: "Restaurant interior ceiling work" },
+  { src: "/images/gallery-25.jpg", alt: "Bedroom PVC ceiling design" },
+  { src: "/images/gallery-26.jpg", alt: "Hall gypsum design Lauriya Nandangarh" },
+  { src: "/images/gallery-27.jpg", alt: "WPC deck flooring balcony" },
+  { src: "/images/gallery-28.jpg", alt: "Modular wardrobe design" },
+  { src: "/images/gallery-29.jpg", alt: "UV board kitchen shutters" },
+  { src: "/images/gallery-30.jpg", alt: "False ceiling for shop Bihar" },
+  { src: "/images/gallery-31.jpg", alt: "3D wall panel living room" },
+  { src: "/images/gallery-32.jpg", alt: "Gypsum ceiling with fan design" },
+  { src: "/images/gallery-33.jpg", alt: "PVC ceiling bathroom waterproof" },
+  { src: "/images/gallery-34.jpg", alt: "Office reception interior" },
+  { src: "/images/gallery-35.jpg", alt: "Bedroom wall WPC louvers" },
+  { src: "/images/gallery-36.jpg", alt: "TV unit with marble finish" },
+  { src: "/images/gallery-37.jpg", alt: "Kitchen ceiling PVC panels" },
+  { src: "/images/gallery-38.jpg", alt: "Living room interior Lauriya" },
+  { src: "/images/gallery-39.jpg", alt: "Gypsum arch design" },
+  { src: "/images/gallery-40.jpg", alt: "Fluted panel pooja room" },
+  { src: "/images/gallery-41.jpg", alt: "Artificial grass wall decor" },
+  { src: "/images/gallery-42.jpg", alt: "Complete home interior Bihar" },
+]
 
-  // 38 New Images - SEO Keywords Added
-  { src: "/images/gallery-6.jpg", alt: "POP false ceiling design for hall with fan box and spot lights Bihar" },
-  { src: "/images/gallery-7.jpg", alt: "Gypsum ceiling design for bedroom with cove light - interior contractor Patna" },
-  { src: "/images/gallery-8.jpg", alt: "PVC wall panel design for living room - termite proof wall cladding Bihar" },
-  { src: "/images/gallery-9.jpg", alt: "WPC exterior louvers for balcony - weather resistant cladding Patna Bihar" },
-  { src: "/images/gallery-10.jpg", alt: "Modular kitchen with acrylic finish and PVC ceiling design Patna" },
-  { src: "/images/gallery-11.jpg", alt: "Bedroom wardrobe sliding door design with mirror - interior work Bihar" },
-  { src: "/images/gallery-12.jpg", alt: "False ceiling design for shop and showroom - commercial interior Patna" },
-  { src: "/images/gallery-13.jpg", alt: "TV unit design with UV marble sheet and wooden panels Bihar" },
-  { src: "/images/gallery-14.jpg", alt: "Fluted panels for wall decoration - living room interior Patna Bihar" },
-  { src: "/images/gallery-15.jpg", alt: "Gypsum partition wall for office - soundproof interior design Bihar" },
-  { src: "/images/gallery-16.jpg", alt: "PVC false ceiling for bathroom - waterproof ceiling solution Patna" },
-  { src: "/images/gallery-17.jpg", alt: "Wooden flooring with false ceiling - bedroom interior design Bihar" },
-  { src: "/images/gallery-18.jpg", alt: "Charcoal louvers wall panel for TV background - modern interior Patna" },
-  { src: "/images/gallery-19.jpg", alt: "Kitchen ceiling design with PVC panels and LED lights Bihar" },
-  { src: "/images/gallery-20.jpg", alt: "Hall POP false ceiling design with center light and corner work Patna" },
-  { src: "/images/gallery-21.jpg", alt: "WPC louvers for house exterior elevation - front design Bihar" },
-  { src: "/images/gallery-22.jpg", alt: "Bedroom interior with fluted panels and wardrobe - Patna interior designer" },
-  { src: "/images/gallery-23.jpg", alt: "Office reception false ceiling design with lighting Bihar" },
-  { src: "/images/gallery-24.jpg", alt: "UV marble sheet for kitchen backsplash - glossy wall panels Patna" },
-  { src: "/images/gallery-25.jpg", alt: "PVC wall and ceiling for bedroom - budget interior design Bihar" },
-  { src: "/images/gallery-26.jpg", alt: "False ceiling design with chandelier - drawing room interior Patna" },
-  { src: "/images/gallery-27.jpg", alt: "Modular wardrobe with loft - bedroom interior work Bihar" },
-  { src: "/images/gallery-28.jpg", alt: "TV unit with storage cabinets and LED profile light design Patna" },
-  { src: "/images/gallery-29.jpg", alt: "Gypsum false ceiling for restaurant and cafe interior Bihar" },
-  { src: "/images/gallery-30.jpg", alt: "WPC louvers for garden area and outdoor seating design Patna" },
-  { src: "/images/gallery-31.jpg", alt: "Bedroom false ceiling with cove and spot lights - interior Bihar" },
-  { src: "/images/gallery-32.jpg", alt: "PVC panels for bathroom wall waterproofing Patna Bihar" },
-  { src: "/images/gallery-33.jpg", alt: "Fluted panels with mirror work - luxury interior design Bihar" },
-  { src: "/images/gallery-34.jpg", alt: "Hall interior with false ceiling and wall panels Patna Bihar" },
-  { src: "/images/gallery-35.jpg", alt: "Modular kitchen cabinets and ceiling design - Patna contractor" },
-  { src: "/images/gallery-36.jpg", alt: "Office cabin glass partition and gypsum ceiling Bihar" },
-  { src: "/images/gallery-37.jpg", alt: "UV marble sheet for pillar cladding - interior decor Patna" },
-  { src: "/images/gallery-38.jpg", alt: "Artificial grass wall with wooden frame - balcony decoration Bihar" },
-  { src: "/images/gallery-39.jpg", alt: "POP design for ceiling border - traditional false ceiling Patna" },
-  { src: "/images/gallery-40.jpg", alt: "WPC louvers for staircase wall - interior elevation Bihar" },
-  { src: "/images/gallery-41.jpg", alt: "Bedroom study table with false ceiling design Patna Bihar" },
-  { src: "/images/gallery-42.jpg", alt: "PVC ceiling hall design with wooden beam effect Bihar" },
-  { src: "/images/gallery-43.jpg", alt: "TV unit open shelves design with backlight - living room Patna" },
-  { src: "/images/gallery-44.jpg", alt: "Gypsum board ceiling center design - luxury home Bihar" },
-  { src: "/images/gallery-45.jpg", alt: "Fluted wall panels with TV unit - modern interior Patna Bihar" },
-  { src: "/images/gallery-46.jpg", alt: "Modular kitchen with chimney and PVC ceiling - Patna project" },
-  { src: "/images/gallery-47.jpg", alt: "Office grid false ceiling with LED lights - commercial interior Bihar" },
-  { src: "/images/gallery-48.jpg", alt: "UV marble sheet bathroom wall - waterproof interior Patna" },
-  { src: "/images/gallery-49.jpg", alt: "WPC louvers ceiling for balcony and terrace Bihar" },
-  { src: "/images/gallery-50.jpg", alt: "Complete home interior design with false ceiling and wall panels Patna Bihar" },
+// SEO Keywords - alag se rakha hai
+const seoKeywords = [
+  "interior designer Lauriya Nandangarh",
+  "gypsum false ceiling Bihar",
+  "PVC ceiling design Patna",
+  "WPC louvers wall panel",
+  "TV unit design Bihar",
+  "modular kitchen Bettiah",
+  "fluted wall panels",
+  "UV marble sheet",
+  "artificial grass balcony",
+  "home interior designer Bihar",
+  "office interior work Patna",
+  "luxury living room design"
 ]
 
 export default function Gallery() {
   const sectionRef = useRef<HTMLElement>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [showAll, setShowAll] = useState(false)
+
+  const VISIBLE_COUNT = 12
+  const visibleImages = showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -104,12 +115,12 @@ export default function Gallery() {
   const closeLightbox = () => setLightboxIndex(null)
   const nextImage = () =>
     setLightboxIndex((prev) =>
-      prev !== null ? (prev + 1) % galleryImages.length : null
+      prev !== null ? (prev + 1) % (showAll ? galleryImages.length : VISIBLE_COUNT) : null
     )
   const prevImage = () =>
     setLightboxIndex((prev) =>
       prev !== null
-        ? (prev - 1 + galleryImages.length) % galleryImages.length
+        ? (prev - 1 + (showAll ? galleryImages.length : VISIBLE_COUNT)) % (showAll ? galleryImages.length : VISIBLE_COUNT)
         : null
     )
 
@@ -119,7 +130,7 @@ export default function Gallery() {
     "@type": "ImageGallery",
     "name": "Interior Design & False Ceiling Projects - Bihar Patna",
     "description": "Portfolio of false ceiling, PVC panels, WPC louvers, TV unit, modular kitchen and bedroom interior design projects in Bihar and Patna.",
-    "image": galleryImages.map(img => `https://jkinterior.online${img.src}`) // अपना domain डाल देना
+    "image": galleryImages.map(img => `https://jkinterior.online${img.src}`) // apna domain yahan daal dena
   }
 
   return (
@@ -145,7 +156,7 @@ export default function Gallery() {
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {galleryImages.map((img, index) => (
+            {visibleImages.map((img, index) => (
               <button
                 key={img.src}
                 onClick={() => openLightbox(index)}
@@ -168,6 +179,18 @@ export default function Gallery() {
               </button>
             ))}
           </div>
+
+          {/* See More Button - 12 ke baad */}
+          {!showAll && galleryImages.length > VISIBLE_COUNT && (
+            <div className="reveal mt-12 text-center opacity-0" style={{ animationDelay: '1s' }}>
+              <button
+                onClick={() => setShowAll(true)}
+                className="rounded-full bg-primary/10 px-6 py-2.5 text-sm font-medium uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-primary-foreground font-mono"
+              >
+                और देखें / See More ({galleryImages.length - VISIBLE_COUNT}+)
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -214,8 +237,8 @@ export default function Gallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={galleryImages[lightboxIndex].src}
-              alt={galleryImages[lightboxIndex].alt}
+              src={(showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT))[lightboxIndex].src}
+              alt={(showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT))[lightboxIndex].alt}
               fill
               className="rounded-xl object-contain"
             />
