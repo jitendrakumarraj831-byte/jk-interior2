@@ -1,8 +1,19 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Sparkles, IndianRupee, Shield, Users, MapPin } from "lucide-react"
+// Saare required icons yahan import kiye gaye hain
+import { 
+  Briefcase, 
+  Gem, 
+  ShieldCheck, 
+  Clock, 
+  Tag, 
+  PenTool, 
+  Headset, 
+  BadgeCheck 
+} from "lucide-react"
 
+// Data array component ke bahar (Performance Optimization)
 const reasons = [
   {
     icon: Briefcase,
@@ -82,24 +93,31 @@ export default function WhyUs() {
       id="why-choose-us"
       className="relative overflow-hidden bg-surface-alt py-24"
     >
-      {/* Schema for SEO - Google isse location aur service turant pehchan lega */}
+      {/* Schema for SEO - Google local search optimization */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            "serviceType": "Interior Design and False Ceiling",
+            "serviceType": "Interior Design, False Ceiling, PVC Panel, Modular Kitchen",
             "provider": {
               "@type": "LocalBusiness",
               "name": "JK Interior",
+              "image": "/logo.png", // Agar logo hai toh path check karein
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Forbesganj",
-                "addressRegion": "Araria, Bihar"
+                "addressRegion": "Araria, Bihar",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "26.3001", // Forbesganj approx
+                "longitude": "87.2533"
               }
             },
-            "areaServed": "Araria District"
+            "areaServed": ["Forbesganj", "Araria", "Purnia", "Bihar"]
           }),
         }}
       />
@@ -107,31 +125,31 @@ export default function WhyUs() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="reveal mb-16 text-center opacity-0 transition-all duration-700">
           <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono font-bold">
-            Best Interior & False Ceiling Service in Forbesganj
+            Best Interior & False Ceiling Service in Forbesganj & Araria
           </span>
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
             Why Choose <span className="gold-text">JK Interior</span>?
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground font-mono">
-             Bihar ke **Forbesganj aur Araria** mein sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.
+          <p className="mx-auto max-w-2xl text-muted-foreground font-medium">
+             Bihar ke **Forbesganj aur Araria** mein sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein. Hum dete hain quality aur mazbooti ka wada.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {reasons.map((reason, index) => (
             <article
               key={reason.en}
-              className="reveal group flex flex-col items-center rounded-xl border border-border bg-card p-8 text-center opacity-0 shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
-              style={{ transitionDelay: `${index * 150}ms` }}
+              className="reveal group flex flex-col items-center rounded-xl border border-border bg-card p-6 text-center opacity-0 shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
                 <reason.icon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="mb-2 text-sm font-extrabold text-foreground font-sans">
+              <h3 className="mb-2 text-base font-bold text-foreground font-sans">
                 {reason.en}
               </h3>
-              <p className="mb-2 text-xs font-bold text-primary">{reason.hi}</p>
-              <p className="text-[10px] uppercase tracking-tighter text-muted-foreground">
+              <p className="mb-3 text-sm font-semibold text-primary">{reason.hi}</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 {reason.desc}
               </p>
             </article>
@@ -141,4 +159,3 @@ export default function WhyUs() {
     </section>
   )
 }
-
