@@ -52,7 +52,7 @@ export default function Hero() {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
 
-  // JSON-LD Schema for Local SEO
+  // JSON-LD Schema
   const businessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -84,7 +84,7 @@ export default function Hero() {
         ref={sectionRef}
         id="home"
         aria-label="JK Interior Hero Section - False Ceiling Services"
-        className="relative min-h-[85vh] bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden"
+        className="relative min-h- bg-[#FDFBF7] overflow-hidden"
       >
         <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-32">
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -92,27 +92,27 @@ export default function Hero() {
             {/* Left Content */}
             <header className="reveal opacity-0" style={{ animationDelay: "0.1s" }}>
               {/* Tag */}
-              <span className="mb-6 inline-block rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-800">
+              <span className="mb-6 inline-block rounded-full bg-[#F5EEDD] px-4 py-2 text-sm font-medium text-[#B8956A]">
                 {slides[currentSlide].tag}
               </span>
 
               {/* H1 - SEO Main Keyword */}
-              <h1 className="mb-4 text-4xl font-bold leading-tight text-gray-900 md:text-5xl lg:text-6xl font-serif">
+              <h1 className="mb-4 text-4xl font-bold leading-tight text-[#2C1810] md:text-5xl lg:text-6xl font-serif">
                 {slides[currentSlide].title}
               </h1>
 
               {/* H2 - Secondary Keyword */}
-              <h2 className="mb-4 text-xl font-semibold text-emerald-700">
+              <h2 className="mb-4 text-xl font-semibold text-[#B8956A]">
                 {slides[currentSlide].subtitle}
               </h2>
 
-              {/* Description with keywords */}
-              <p className="mb-8 max-w-xl text-base leading-relaxed text-gray-600 md:text-lg">
+              {/* Description */}
+              <p className="mb-8 max-w-xl text-base leading-relaxed text-[#5C4B3B] md:text-lg">
                 {slides[currentSlide].desc}
               </p>
 
               {/* Trust Badge */}
-              <p className="mb-6 text-sm font-semibold text-emerald-700">
+              <p className="mb-6 text-sm font-semibold text-[#B8956A]">
                 ⭐ 100+ Projects Completed | 5+ Years Experience | Forbesganj & Araria
               </p>
 
@@ -121,7 +121,7 @@ export default function Hero() {
                 <Link
                   href="#portfolio"
                   aria-label="View False Ceiling Work Portfolio"
-                  className="rounded-md bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-emerald-800 hover:shadow-lg"
+                  className="rounded-md bg-[#2C1810] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1F1108] hover:shadow-lg"
                 >
                   View Ceiling Work
                 </Link>
@@ -129,7 +129,7 @@ export default function Hero() {
                 <a
                   href="tel:+918651070831"
                   aria-label="Call JK Interior for False Ceiling in Forbesganj"
-                  className="flex items-center gap-2 rounded-md border-2 border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-800 transition hover:border-emerald-700 hover:text-emerald-700"
+                  className="flex items-center gap-2 rounded-md border-2 border-[#D4C4A8] bg-white px-6 py-3 text-sm font-semibold text-[#2C1810] transition hover:border-[#B8956A] hover:text-[#B8956A]"
                 >
                   <Phone className="h-4 w-4" />
                   Call Now
@@ -147,19 +147,19 @@ export default function Hero() {
               </div>
             </header>
 
-            {/* Right side - Hidden on mobile */}
+            {/* Right side */}
             <div className="hidden lg:block"></div>
           </div>
 
           {/* Carousel Controls */}
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <button onClick={prevSlide} aria-label="Previous slide" className="rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition hover:bg-white">
-              <ChevronLeft className="h-5 w-5 text-gray-700" />
+            <button onClick={prevSlide} aria-label="Previous slide" className="rounded-full bg-white/90 p-2 shadow-md backdrop-blur-sm transition hover:bg-white">
+              <ChevronLeft className="h-5 w-5 text-[#2C1810]" />
             </button>
           </div>
           <div className="absolute right-4 top-1/2 -translate-y-1/2">
-            <button onClick={nextSlide} aria-label="Next slide" className="rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition hover:bg-white">
-              <ChevronRight className="h-5 w-5 text-gray-700" />
+            <button onClick={nextSlide} aria-label="Next slide" className="rounded-full bg-white/90 p-2 shadow-md backdrop-blur-sm transition hover:bg-white">
+              <ChevronRight className="h-5 w-5 text-[#2C1810]" />
             </button>
           </div>
 
@@ -171,7 +171,7 @@ export default function Hero() {
                 onClick={() => setCurrentSlide(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all ${
-                  currentSlide === idx ? "w-8 bg-emerald-700" : "w-2 bg-gray-300"
+                  currentSlide === idx ? "w-8 bg-[#2C1810]" : "w-2 bg-[#D4C4A8]"
                 }`}
               />
             ))}
@@ -180,4 +180,4 @@ export default function Hero() {
       </section>
     </>
   )
-        }
+}
