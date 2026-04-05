@@ -1,103 +1,128 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Phone, Cpu, Zap, Box, ArrowDown } from "lucide-react"
+import { Phone, ArrowRight, Sparkles } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("translate-y-0", "opacity-100")
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    const elements = sectionRef.current?.querySelectorAll(".reveal")
+    elements?.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0c] font-sans"
+      id="home"
+      className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
     >
-      {/* 1. Animated Grid Background (Jarvis Style) */}
-      <div className="absolute inset-0 z-0 opacity-20" 
-           style={{ backgroundImage: `linear-gradient(#1e40af 1px, transparent 1px), linear-gradient(90deg, #1e40af 1px, transparent 1px)`, backgroundSize: '40px 40px' }}>
-      </div>
-      
-      {/* 2. Cyber-Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full z-0"></div>
-
-      {/* 3. Hero Image with Glass Effect */}
+      {/* Background with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-interior.jpg"
-          alt="JK Interior Cyberpunk Design"
+          alt="Luxury Interior Design Bihar"
           fill
-          className="object-cover opacity-40 mix-blend-luminosity"
+          className="object-cover scale-105 animate-slow-zoom"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-transparent to-[#0a0a0c]"></div>
+        {/* Gradient Overlays for Readability */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
       </div>
 
-      <div className="container relative z-20 mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-        
-        {/* Left Content */}
-        <div className="space-y-8 text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-cyan-500/50 bg-cyan-500/10 text-cyan-400 text-xs font-mono uppercase tracking-[0.2em] animate-pulse">
-            <Cpu className="h-4 w-4" /> System Online: JK Interior v2.0
+      {/* Animated Decorative Blobs */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-orange-500/10 rounded-full blur-[100px]" />
+
+      <div className="container relative z-10 mx-auto px-6 lg:px-12">
+        <div className="max-w-4xl">
+          
+          {/* Badge */}
+          <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-100 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-md">
+              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+              <span className="text-xs md:text-sm font-medium tracking-wider uppercase text-primary-foreground/90">
+                Premium Interior Solutions in Bihar
+              </span>
+            </div>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white">
-            NEXT-GEN <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-              INTERIORS
+          {/* Main Title */}
+          <h1 className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-300">
+            <span className="block text-4xl md:text-6xl lg:text-8xl font-bold text-white leading-[1.1]">
+              Elevate Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-400 to-primary bg-300% animate-gradient">Lifestyle</span>
+            </span>
+            <span className="block mt-2 text-2xl md:text-4xl lg:text-5xl font-light text-gray-300 italic font-serif">
+              With JK Interior & False Ceiling
             </span>
           </h1>
 
-          <p className="max-w-lg text-gray-400 font-mono text-sm md:text-base leading-relaxed mx-auto lg:mx-0">
-            // LOCATION: Forbesganj, Bihar <br />
-            // SPECIALIZATION: Gypsum, PVC & WPC Technology <br />
-            हम आपके घर को सिर्फ सजाते नहीं, उसे एक मॉडर्न डिजिटल लुक देते हैं। सस्ते दाम में बेहतरीन फिनिशिंग।
-          </p>
+          {/* Dual Language Description */}
+          <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-500 mt-8 grid md:grid-cols-2 gap-6 border-l-2 border-primary/50 pl-6">
+            <p className="text-gray-300 text-lg leading-relaxed font-light">
+              Transforming spaces into masterpieces with bespoke PVC, Gypsum, and modern interior craftmanship.
+            </p>
+            <p className="text-gray-400 text-base leading-relaxed hindi-font">
+              हम आपके घर और ऑफिस को देते हैं एक लग्जरी लुक। बेहतरीन फॉल्स सीलिंग और मॉडर्न डिजाइन अब आपके शहर Forbesganj और Araria में।
+            </p>
+          </div>
 
-          <div className="flex flex-wrap justify-center lg:justify-start gap-5">
-            {/* Main Cyber Button */}
-            <Button asChild size="lg" className="relative h-14 px-8 bg-cyan-500 hover:bg-cyan-400 text-black font-bold uppercase tracking-widest clip-path-polygon">
+          {/* CTA Buttons */}
+          <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-700 mt-10 flex flex-wrap gap-5">
+            <Button 
+              asChild 
+              size="lg" 
+              className="group relative bg-primary hover:bg-primary/90 text-white px-8 h-14 rounded-full overflow-hidden transition-all duration-300 hover:scale-105"
+            >
               <a href="tel:+918651070831" className="flex items-center gap-3">
-                <Phone className="h-5 w-5" />
-                Initiate Call
+                <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                <span className="font-semibold tracking-wide">Book Consultation</span>
               </a>
             </Button>
 
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 font-mono uppercase">
-              <Link href="#services">View Database</Link>
+            <Button 
+              asChild 
+              variant="outline" 
+              size="lg" 
+              className="group border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white px-8 h-14 rounded-full transition-all duration-300"
+            >
+              <a href="#contact" className="flex items-center gap-2">
+                View Gallery
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
             </Button>
-          </div>
-        </div>
-
-        {/* Right Feature Cards (Floating Jarvis UI) */}
-        <div className="hidden lg:grid grid-cols-2 gap-4 relative">
-          <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg hover:border-cyan-500/50 transition-all group">
-            <Zap className="text-cyan-400 mb-3 group-hover:scale-125 transition-transform" />
-            <h3 className="text-white font-bold mb-1">Fast Install</h3>
-            <p className="text-gray-500 text-xs">Quick execution by experts.</p>
-          </div>
-          <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg mt-8 hover:border-blue-500/50 transition-all group">
-            <Box className="text-blue-400 mb-3 group-hover:scale-125 transition-transform" />
-            <h3 className="text-white font-bold mb-1">Premium Build</h3>
-            <p className="text-gray-500 text-xs">High-grade WPC & PVC.</p>
-          </div>
-          {/* Glass Card for Trust */}
-          <div className="col-span-2 p-4 bg-gradient-to-r from-cyan-500/20 to-transparent border border-cyan-500/30 rounded-lg flex items-center justify-between">
-             <div className="font-mono">
-                <p className="text-[10px] text-cyan-400 uppercase">Current Experience</p>
-                <p className="text-2xl font-bold text-white">05+ YEARS</p>
-             </div>
-             <div className="h-10 w-10 bg-cyan-500/20 rounded-full flex items-center justify-center animate-ping">
-                <div className="h-3 w-3 bg-cyan-500 rounded-full"></div>
-             </div>
           </div>
         </div>
       </div>
 
-      {/* Footer Scroll Pointer */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-        <div className="w-[1px] h-20 bg-gradient-to-b from-cyan-500 to-transparent animate-bounce"></div>
+      {/* Bottom Floating Stats or Info */}
+      <div className="absolute bottom-10 right-10 hidden lg:block reveal opacity-0 transition-all duration-1000 delay-1000">
+        <div className="flex flex-col items-end border-r-4 border-primary pr-4">
+          <span className="text-3xl font-bold text-white">100+</span>
+          <span className="text-sm text-gray-400 uppercase tracking-[0.2em]">Projects Done</span>
+        </div>
+      </div>
+
+      {/* Elegant Scroll Down */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
       </div>
     </section>
   )
