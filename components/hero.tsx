@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Phone, ArrowRight, Sparkles } from "lucide-react"
+import { Phone, ArrowRight, Home, ChevronDown } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export default function Hero() {
@@ -29,71 +30,63 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a]"
+      className="relative min-h-[90vh] w-full flex items-center justify-center overflow-hidden bg-neutral-950"
     >
-      {/* Background with Overlay */}
+      {/* Background Image with Smooth Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-interior.jpg"
-          alt="Luxury Interior Design Bihar"
+          alt="Modern Interior Design Bihar"
           fill
-          className="object-cover scale-105 animate-slow-zoom"
+          className="object-cover opacity-60"
           priority
         />
-        {/* Gradient Overlays for Readability */}
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+        {/* विजुअल क्लैरिटी के लिए ग्रेडिएंट */}
+        <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
       </div>
 
-      {/* Animated Decorative Blobs */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-orange-500/10 rounded-full blur-[100px]" />
-
-      <div className="container relative z-10 mx-auto px-6 lg:px-12">
-        <div className="max-w-4xl">
+      <div className="container relative z-10 mx-auto px-4 lg:px-8">
+        <div className="max-w-4xl space-y-8">
           
-          {/* Badge */}
-          <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-100 mb-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-md">
-              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-              <span className="text-xs md:text-sm font-medium tracking-wider uppercase text-primary-foreground/90">
-                Premium Interior Solutions in Bihar
+          {/* Tagline / Location Badge */}
+          <div className="reveal translate-y-10 opacity-0 transition-all duration-700 ease-out delay-100">
+            <div className="inline-flex items-center gap-2 border border-amber-500/30 bg-amber-500/10 px-4 py-2 rounded-sm">
+              <Home className="w-4 h-4 text-amber-500" />
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">
+                Forbesganj • Araria • Bihar
               </span>
             </div>
           </div>
 
-          {/* Main Title */}
-          <h1 className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-300">
-            <span className="block text-4xl md:text-6xl lg:text-8xl font-bold text-white leading-[1.1]">
-              Elevate Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-400 to-primary bg-300% animate-gradient">Lifestyle</span>
-            </span>
-            <span className="block mt-2 text-2xl md:text-4xl lg:text-5xl font-light text-gray-300 italic font-serif">
-              With JK Interior & False Ceiling
-            </span>
-          </h1>
+          {/* Main Heading */}
+          <div className="reveal translate-y-10 opacity-0 transition-all duration-700 ease-out delay-200">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+              Luxury <span className="text-amber-500">Interior</span> & <br />
+              False Ceiling Experts
+            </h1>
+          </div>
 
-          {/* Dual Language Description */}
-          <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-500 mt-8 grid md:grid-cols-2 gap-6 border-l-2 border-primary/50 pl-6">
-            <p className="text-gray-300 text-lg leading-relaxed font-light">
-              Transforming spaces into masterpieces with bespoke PVC, Gypsum, and modern interior craftmanship.
+          {/* Subtext - Mixed English & Hindi */}
+          <div className="reveal translate-y-10 opacity-0 transition-all duration-700 ease-out delay-300 space-y-4">
+            <p className="max-w-2xl text-lg md:text-xl text-neutral-300 font-light leading-relaxed">
+              Transforming your dream space into reality with premium PVC, Gypsum, and Modular designs. 
             </p>
-            <p className="text-gray-400 text-base leading-relaxed hindi-font">
-              हम आपके घर और ऑफिस को देते हैं एक लग्जरी लुक। बेहतरीन फॉल्स सीलिंग और मॉडर्न डिजाइन अब आपके शहर Forbesganj और Araria में।
+            <p className="max-w-2xl text-base md:text-lg text-amber-100/80 italic border-l-2 border-amber-500 pl-4">
+              बेहतरीन इंटीरियर और फॉल्स सीलिंग का काम—अब आपके अपने शहर में।
             </p>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 delay-700 mt-10 flex flex-wrap gap-5">
+          {/* Action Buttons */}
+          <div className="reveal translate-y-10 opacity-0 transition-all duration-700 ease-out delay-500 flex flex-wrap gap-4 pt-4">
             <Button 
               asChild 
               size="lg" 
-              className="group relative bg-primary hover:bg-primary/90 text-white px-8 h-14 rounded-full overflow-hidden transition-all duration-300 hover:scale-105"
+              className="bg-amber-600 hover:bg-amber-700 text-white rounded-none px-8 py-7 text-md uppercase tracking-wider transition-all"
             >
               <a href="tel:+918651070831" className="flex items-center gap-3">
-                <Phone className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                <span className="font-semibold tracking-wide">Book Consultation</span>
+                <Phone className="w-5 h-5" />
+                Call Now / कॉल करें
               </a>
             </Button>
 
@@ -101,28 +94,26 @@ export default function Hero() {
               asChild 
               variant="outline" 
               size="lg" 
-              className="group border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white px-8 h-14 rounded-full transition-all duration-300"
+              className="border-white/20 bg-transparent text-white hover:bg-white hover:text-black rounded-none px-8 py-7 text-md uppercase tracking-wider transition-all"
             >
-              <a href="#contact" className="flex items-center gap-2">
-                View Gallery
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+              <Link href="#contact">
+                Contact Us / संपर्क करें
+              </Link>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Bottom Floating Stats or Info */}
-      <div className="absolute bottom-10 right-10 hidden lg:block reveal opacity-0 transition-all duration-1000 delay-1000">
-        <div className="flex flex-col items-end border-r-4 border-primary pr-4">
-          <span className="text-3xl font-bold text-white">100+</span>
-          <span className="text-sm text-gray-400 uppercase tracking-[0.2em]">Projects Done</span>
+      {/* Decorative Line & Scroll Indicator */}
+      <div className="absolute bottom-0 right-0 p-8 hidden lg:block">
+        <div className="flex items-center gap-4 rotate-90 origin-right translate-y-[-100px]">
+          <span className="text-neutral-500 uppercase tracking-widest text-xs">Scroll to Explore</span>
+          <div className="w-20 h-[1px] bg-amber-500" />
         </div>
       </div>
 
-      {/* Elegant Scroll Down */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 animate-bounce">
+        <ChevronDown className="w-6 h-6" />
       </div>
     </section>
   )
