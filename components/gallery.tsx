@@ -73,32 +73,32 @@ const seoKeywords = [
   "office interior work Patna",
   "luxury living room design"
 ]
-
 export default function Gallery() {
   const sectionRef = useRef<HTMLElement>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [showAll, setShowAll] = useState(false)
 
   const VISIBLE_COUNT = 12
+  // 'visibleImages' ही हमारा मुख्य डेटा सोर्स है, इसे ही हर जगह इस्तेमाल करेंगे
   const visibleImages = showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT)
 
   useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("animate-fade-up")
-        }
-      })
-    },
-    { threshold: 0.1 }
-  )
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-up")
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
 
-  const elements = sectionRef.current?.querySelectorAll(".reveal")
-  elements?.forEach((el) => observer.observe(el))
+    const elements = sectionRef.current?.querySelectorAll(".reveal")
+    elements?.forEach((el) => observer.observe(el))
 
-  return () => observer.disconnect()
-}, [showAll]) // <- ye line important hai
+    return () => observer.disconnect()
+  }, [showAll])
 
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -111,16 +111,19 @@ export default function Gallery() {
     }
   }, [lightboxIndex])
 
+  // --- UPDATED LOGIC: अब यह 'visibleImages' की लेंथ के हिसाब से चलेगा ---
   const openLightbox = (index: number) => setLightboxIndex(index)
   const closeLightbox = () => setLightboxIndex(null)
+  
   const nextImage = () =>
     setLightboxIndex((prev) =>
-      prev !== null ? (prev + 1) % (showAll ? galleryImages.length : VISIBLE_COUNT) : null
+      prev !== null ? (prev + 1) % visibleImages.length : null
     )
+    
   const prevImage = () =>
     setLightboxIndex((prev) =>
       prev !== null
-        ? (prev - 1 + (showAll ? galleryImages.length : VISIBLE_COUNT)) % (showAll ? galleryImages.length : VISIBLE_COUNT)
+        ? (prev - 1 + visibleImages.length) % visibleImages.length
         : null
     )
 
