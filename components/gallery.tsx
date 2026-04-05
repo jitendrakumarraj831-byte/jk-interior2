@@ -1,97 +1,103 @@
 "use client"
-
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
-// 50 images - replace with your actual paths
+// Yahan 50 photos ka array hai — apne file names ke hisaab se update kar lena
 const galleryImages = [
-  { src: "/images/gallery/gypsum-1.jpg", alt: "Gypsum false ceiling design living room Forbesganj", category: "Gypsum Ceiling" },
-  { src: "/images/gallery/pvc-1.jpg", alt: "PVC ceiling panel bedroom Forbesganj Bihar", category: "PVC Ceiling" },
-  { src: "/images/gallery/grid-1.jpg", alt: "Grid ceiling office commercial space Forbesganj", category: "Grid Ceiling" },
-  { src: "/images/gallery/wpc-1.jpg", alt: "WPC louvers wall panel wooden finish", category: "WPC Louvers" },
-  { src: "/images/gallery/fluted-1.jpg", alt: "Fluted wall panel modern interior design", category: "Fluted Panel" },
-  { src: "/images/gallery/tvunit-1.jpg", alt: "Modern TV unit design living room Forbesganj", category: "TV Unit" },
-  { src: "/images/gallery/uvmarble-1.jpg", alt: "UV marble sheet wall cladding luxury finish", category: "UV Marble" },
-  { src: "/images/gallery/grass-1.jpg", alt: "Artificial grass wall balcony decoration", category: "Artificial Grass" },
-  { src: "/images/gallery/partition-1.jpg", alt: "Gypsum partition wall office Forbesganj", category: "Partition Wall" },
-  { src: "/images/gallery/gypsum-2.jpg", alt: "POP false ceiling design bedroom Forbesganj Bihar", category: "Gypsum Ceiling" },
-  { src: "/images/gallery/pvc-2.jpg", alt: "PVC ceiling waterproof kitchen design", category: "PVC Ceiling" },
-  { src: "/images/gallery/grid-2.jpg", alt: "T grid ceiling commercial project Forbesganj", category: "Grid Ceiling" },
-  // ... add up to 50 images
-  // Example placeholders:
-  ...Array.from({ length: 38 }, (_, i) => ({
-    src: `/images/gallery/project-${i + 13}.jpg`,
-    alt: `JK Interior project Forbesganj Bihar false ceiling work ${i + 13}`,
-    category: "Interior Design"
-  }))
+  { src: "/images/artificial-grass.jpg", alt: "Artificial Grass Work", category: "Artificial Grass" },
+  { src: "/images/fluted-panels.jpg", alt: "Fluted Panels Design", category: "Fluted Panels" },
+  { src: "/images/gallery-1.jpg", alt: "Interior Work Gallery 1", category: "Interior" },
+  { src: "/images/gallery-2.jpg", alt: "Interior Work Gallery 2", category: "Interior" },
+  { src: "/images/gallery-3.jpg", alt: "Interior Work Gallery 3", category: "Interior" },
+  { src: "/images/gallery-4.jpg", alt: "Interior Work Gallery 4", category: "Interior" },
+  { src: "/images/grid-ceiling.jpg", alt: "Grid Ceiling Design", category: "Grid Ceiling" },
+  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum Ceiling Work", category: "Gypsum Ceiling" },
+  { src: "/images/hero-interior.jpg", alt: "Hero Interior Design", category: "Interior" },
+  { src: "/images/partition-wall.jpg", alt: "Partition Wall Design", category: "Partition Wall" },
+  { src: "/images/pvc-ceiling.jpg", alt: "PVC Ceiling Work", category: "PVC Ceiling" },
+  { src: "/images/tv-unit.jpg", alt: "TV Unit Design", category: "TV Unit" },
+  { src: "/images/uv-marble.jpg", alt: "UV Marble Sheet", category: "UV Marble" },
+  { src: "/images/wpc-louvers.jpg", alt: "WPC Louvers Panel", category: "WPC Louvers" },
+  
+  // --- Baaki 36 photos (jab upload karo to naam change kar dena) ---
+  { src: "/images/gallery-5.jpg", alt: "Interior Work Gallery 5", category: "Interior" },
+  { src: "/images/gallery-6.jpg", alt: "Interior Work Gallery 6", category: "Interior" },
+  { src: "/images/gallery-7.jpg", alt: "Interior Work Gallery 7", category: "Interior" },
+  { src: "/images/gallery-8.jpg", alt: "Interior Work Gallery 8", category: "Interior" },
+  { src: "/images/gallery-9.jpg", alt: "Interior Work Gallery 9", category: "Interior" },
+  { src: "/images/gallery-10.jpg", alt: "Interior Work Gallery 10", category: "Interior" },
+  { src: "/images/gallery-11.jpg", alt: "Interior Work Gallery 11", category: "Interior" },
+  { src: "/images/gallery-12.jpg", alt: "Interior Work Gallery 12", category: "Interior" },
+  { src: "/images/gallery-13.jpg", alt: "Interior Work Gallery 13", category: "Interior" },
+  { src: "/images/gallery-14.jpg", alt: "Interior Work Gallery 14", category: "Interior" },
+  { src: "/images/gallery-15.jpg", alt: "Interior Work Gallery 15", category: "Interior" },
+  { src: "/images/gallery-16.jpg", alt: "Interior Work Gallery 16", category: "Interior" },
+  { src: "/images/gallery-17.jpg", alt: "Interior Work Gallery 17", category: "Interior" },
+  { src: "/images/gallery-18.jpg", alt: "Interior Work Gallery 18", category: "Interior" },
+  { src: "/images/gallery-19.jpg", alt: "Interior Work Gallery 19", category: "Interior" },
+  { src: "/images/gallery-20.jpg", alt: "Interior Work Gallery 20", category: "Interior" },
+  { src: "/images/gallery-21.jpg", alt: "Interior Work Gallery 21", category: "Interior" },
+  { src: "/images/gallery-22.jpg", alt: "Interior Work Gallery 22", category: "Interior" },
+  { src: "/images/gallery-23.jpg", alt: "Interior Work Gallery 23", category: "Interior" },
+  { src: "/images/gallery-24.jpg", alt: "Interior Work Gallery 24", category: "Interior" },
+  { src: "/images/gallery-25.jpg", alt: "Interior Work Gallery 25", category: "Interior" },
+  { src: "/images/gallery-26.jpg", alt: "Interior Work Gallery 26", category: "Interior" },
+  { src: "/images/gallery-27.jpg", alt: "Interior Work Gallery 27", category: "Interior" },
+  { src: "/images/gallery-28.jpg", alt: "Interior Work Gallery 28", category: "Interior" },
+  { src: "/images/gallery-29.jpg", alt: "Interior Work Gallery 29", category: "Interior" },
+  { src: "/images/gallery-30.jpg", alt: "Interior Work Gallery 30", category: "Interior" },
+  { src: "/images/gallery-31.jpg", alt: "Interior Work Gallery 31", category: "Interior" },
+  { src: "/images/gallery-32.jpg", alt: "Interior Work Gallery 32", category: "Interior" },
+  { src: "/images/gallery-33.jpg", alt: "Interior Work Gallery 33", category: "Interior" },
+  { src: "/images/gallery-34.jpg", alt: "Interior Work Gallery 34", category: "Interior" },
+  { src: "/images/gallery-35.jpg", alt: "Interior Work Gallery 35", category: "Interior" },
+  { src: "/images/gallery-36.jpg", alt: "Interior Work Gallery 36", category: "Interior" },
+  { src: "/images/gallery-37.jpg", alt: "Interior Work Gallery 37", category: "Interior" },
+  { src: "/images/gallery-38.jpg", alt: "Interior Work Gallery 38", category: "Interior" },
+  { src: "/images/gallery-39.jpg", alt: "Interior Work Gallery 39", category: "Interior" },
+  { src: "/images/gallery-40.jpg", alt: "Interior Work Gallery 40", category: "Interior" },
+  { src: "/images/gallery-41.jpg", alt: "Interior Work Gallery 41", category: "Interior" },
+  { src: "/images/gallery-42.jpg", alt: "Interior Work Gallery 42", category: "Interior" },
+  { src: "/images/gallery-43.jpg", alt: "Interior Work Gallery 43", category: "Interior" },
+  { src: "/images/gallery-44.jpg", alt: "Interior Work Gallery 44", category: "Interior" },
+  { src: "/images/gallery-45.jpg", alt: "Interior Work Gallery 45", category: "Interior" },
+  { src: "/images/gallery-46.jpg", alt: "Interior Work Gallery 46", category: "Interior" },
+  { src: "/images/gallery-47.jpg", alt: "Interior Work Gallery 47", category: "Interior" },
+  { src: "/images/gallery-48.jpg", alt: "Interior Work Gallery 48", category: "Interior" },
+  { src: "/images/gallery-49.jpg", alt: "Interior Work Gallery 49", category: "Interior" },
+  { src: "/images/gallery-50.jpg", alt: "Interior Work Gallery 50", category: "Interior" },
 ]
 
-const INITIAL_VISIBLE = 12
+const INITIAL_VISIBLE = 8
 
-export default function Gallery() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+export default function GallerySection() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-up")
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    const elements = sectionRef.current?.querySelectorAll(".reveal")
-    elements?.forEach((el) => observer.observe(el))
-
-    return () => observer.disconnect()
-  }, [])
-
-  const openLightbox = (index: number) => setLightboxIndex(index)
+  const openLightbox = (index) => setLightboxIndex(index)
   const closeLightbox = () => setLightboxIndex(null)
-  const nextImage = () => setLightboxIndex((prev) => (prev !== null ? (prev + 1) % galleryImages.length : 0))
-  const prevImage = () => setLightboxIndex((prev) => (prev !== null ? (prev - 1 + galleryImages.length) % galleryImages.length : 0))
-
   const showMore = () => setVisibleCount(galleryImages.length)
 
-  // SEO Schema
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "ImageGallery",
-    "name": "JK Interior Project Gallery - False Ceiling & Interior Work Forbesganj Bihar",
-    "description": "50+ completed projects of gypsum false ceiling, PVC ceiling, grid ceiling, WPC louvers, fluted panels, TV unit design, UV marble sheet in Forbesganj Bihar",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "JK Interior",
-      "areaServed": "Forbesganj, Bihar"
-    }
+  const prevImage = () => {
+    setLightboxIndex((prev) =>
+      prev === 0 ? galleryImages.length - 1 : prev - 1
+    )
+  }
+
+  const nextImage = () => {
+    setLightboxIndex((prev) =>
+      prev === galleryImages.length - 1 ? 0 : prev + 1
+    )
   }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-      />
-
-      <section ref={sectionRef} id="gallery" className="bg-background py-24" aria-labelledby="gallery-heading">
-        <div className="mx-auto max-w-7xl px-4">
-          <header className="reveal mb-16 text-center opacity-0">
-            <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono">
-              Our Work / हमारा काम
-            </span>
-            <h2 id="gallery-heading" className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
-              Project <span className="gold-text">Gallery</span> - Forbesganj Bihar
-            </h2>
-            <p className="mx-auto max-w-xl text-muted-foreground font-mono">
-              Browse 50+ latest interior design and false ceiling projects by JK Interior — gypsum ceiling, PVC ceiling, WPC louvers, TV units, UV marble sheet and more in Forbesganj Bihar.
-            </p>
-          </header>
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="mb-12 text-center text-3xl font-bold text-foreground font-mono">
+            Our Work Gallery
+          </h2>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {galleryImages.slice(0, visibleCount).map((img, index) => (
@@ -191,4 +197,4 @@ export default function Gallery() {
       )}
     </>
   )
-}
+              }
