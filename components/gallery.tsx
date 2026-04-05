@@ -1,131 +1,163 @@
 "use client"
-import { useState } from "react"
+
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
 const galleryImages = [
-  { src: "/images/artificial-grass.jpg", alt: "Artificial Grass Installation in Forbesganj - JK Interior", category: "Artificial Grass" },
-  { src: "/images/fluted-panels.jpg", alt: "Fluted Wall Panels Design Araria Bihar - JK Interior", category: "Fluted Panels" },
-  { src: "/images/gallery-1.jpg", alt: "Modern Interior Design Work Forbesganj - JK Interior", category: "Interior" },
-  { src: "/images/gallery-2.jpg", alt: "Living Room Interior Forbesganj Bihar - JK Interior", category: "Interior" },
-  { src: "/images/gallery-3.jpg", alt: "Home Interior Decoration Araria - JK Interior", category: "Interior" },
-  { src: "/images/gallery-4.jpg", alt: "Bedroom Interior Design Forbesganj - JK Interior", category: "Interior" },
-  { src: "/images/grid-ceiling.jpg", alt: "Grid False Ceiling Installation Forbesganj - JK Interior", category: "Grid Ceiling" },
-  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum False Ceiling Design Araria Bihar - JK Interior", category: "Gypsum Ceiling" },
-  { src: "/images/hero-interior.jpg", alt: "Luxury Interior Design Forbesganj - JK Interior Araria", category: "Interior" },
-  { src: "/images/partition-wall.jpg", alt: "PVC Partition Wall Design Forbesganj - JK Interior", category: "Partition Wall" },
-  { src: "/images/pvc-ceiling.jpg", alt: "PVC False Ceiling Work Araria Bihar - JK Interior", category: "PVC Ceiling" },
-  { src: "/images/tv-unit.jpg", alt: "Modern TV Unit Design Forbesganj - JK Interior", category: "TV Unit" },
-  { src: "/images/uv-marble.jpg", alt: "UV Marble Sheet Wall Panel Forbesganj - JK Interior", category: "UV Marble" },
-  { src: "/images/wpc-louvers.jpg", alt: "WPC Louvers Panel Design Araria - JK Interior", category: "WPC Louvers" },
-  { src: "/images/gallery-5.jpg", alt: "PVC Wall Panel Design Forbesganj - JK Interior Araria", category: "PVC Panel" },
-  { src: "/images/gallery-6.jpg", alt: "False Ceiling Work Forbesganj Bihar - JK Interior", category: "False Ceiling" },
-  { src: "/images/gallery-7.jpg", alt: "Interior Design Service Araria Bihar - JK Interior", category: "Interior" },
-  { src: "/images/gallery-8.jpg", alt: "Home Decoration Forbesganj - JK Interior", category: "Interior" },
-  { src: "/images/gallery-9.jpg", alt: "WPC Panel Work Araria - JK Interior", category: "WPC Panel" },
-  { src: "/images/gallery-10.jpg", alt: "UV Marble Design Forbesganj - JK Interior", category: "UV Marble" },
-  { src: "/images/gallery-11.jpg", alt: "Fluted Panel Wall Forbesganj - JK Interior", category: "Fluted Panels" },
-  { src: "/images/gallery-12.jpg", alt: "Gypsum Ceiling Forbesganj - JK Interior", category: "Gypsum Ceiling" },
-  { src: "/images/gallery-13.jpg", alt: "TV Unit Interior Araria - JK Interior", category: "TV Unit" },
-  { src: "/images/gallery-14.jpg", alt: "Partition Wall Design Araria - JK Interior", category: "Partition Wall" },
-  { src: "/images/gallery-15.jpg", alt: "Grid Ceiling Work Forbesganj - JK Interior", category: "Grid Ceiling" },
-  { src: "/images/gallery-16.jpg", alt: "Artificial Grass Decoration Araria - JK Interior", category: "Artificial Grass" },
-  { src: "/images/gallery-17.jpg", alt: "Interior Work Forbesganj Bihar - JK Interior", category: "Interior" },
-  { src: "/images/gallery-18.jpg", alt: "PVC Ceiling Design Araria - JK Interior", category: "PVC Ceiling" },
-  { src: "/images/gallery-19.jpg", alt: "Modern Interior Forbesganj - JK Interior", category: "Interior" },
-  { src: "/images/gallery-20.jpg", alt: "Wall Panel Design Araria Bihar - JK Interior", category: "Wall Panel" },
-  { src: "/images/gallery-21.jpg", alt: "False Ceiling Contractor Forbesganj - JK Interior", category: "False Ceiling" },
-  { src: "/images/gallery-22.jpg", alt: "Interior Designer Araria - JK Interior", category: "Interior" },
-  { src: "/images/gallery-23.jpg", alt: "Home Interior Forbesganj - JK Interior", category: "Interior" },
-  { src: "/images/gallery-24.jpg", alt: "WPC Louvers Forbesganj - JK Interior", category: "WPC Louvers" },
-  { src: "/images/gallery-25.jpg", alt: "UV Marble Sheet Araria - JK Interior", category: "UV Marble" },
-  { src: "/images/gallery-26.jpg", alt: "TV Unit Design Araria Bihar - JK Interior", category: "TV Unit" },
-  { src: "/images/gallery-27.jpg", alt: "Fluted Wall Design Forbesganj - JK Interior", category: "Fluted Panels" },
-  { src: "/images/gallery-28.jpg", alt: "Gypsum Work Forbesganj - JK Interior", category: "Gypsum Ceiling" },
-  { src: "/images/gallery-29.jpg", alt: "PVC Panel Forbesganj Bihar - JK Interior", category: "PVC Panel" },
-  { src: "/images/gallery-30.jpg", alt: "Interior Decoration Araria - JK Interior", category: "Interior" },
-  { src: "/images/gallery-31.jpg", alt: "Partition Design Forbesganj - JK Interior", category: "Partition Wall" },
-  { src: "/images/gallery-32.jpg", alt: "Grid False Ceiling Araria - JK Interior", category: "Grid Ceiling" },
-  { src: "/images/gallery-33.jpg", alt: "Artificial Grass Work Forbesganj - JK Interior", category: "Artificial Grass" },
-  { src: "/images/gallery-34.jpg", alt: "Modern Home Interior Araria - JK Interior", category: "Interior" },
-  { src: "/images/gallery-35.jpg", alt: "PVC Ceiling Forbesganj - JK Interior", category: "PVC Ceiling" },
-  { src: "/images/gallery-36.jpg", alt: "Wall Panel Work Araria - JK Interior", category: "Wall Panel" },
-  { src: "/images/gallery-37.jpg", alt: "Interior Design Forbesganj Bihar - JK Interior", category: "Interior" },
-  { src: "/images/gallery-38.jpg", alt: "WPC Panel Design Forbesganj - JK Interior", category: "WPC Panel" },
-  { src: "/images/gallery-39.jpg", alt: "UV Marble Work Araria - JK Interior", category: "UV Marble" },
-  { src: "/images/gallery-40.jpg", alt: "TV Unit Work Forbesganj - JK Interior", category: "TV Unit" },
-  { src: "/images/gallery-41.jpg", alt: "Fluted Panel Araria Bihar - JK Interior", category: "Fluted Panels" },
-  { src: "/images/gallery-42.jpg", alt: "Gypsum Ceiling Araria - JK Interior", category: "Gypsum Ceiling" },
-  { src: "/images/gallery-43.jpg", alt: "PVC Panel Araria - JK Interior", category: "PVC Panel" },
-  { src: "/images/gallery-44.jpg", alt: "Interior Service Forbesganj - JK Interior", category: "Interior" },
-  { src: "/images/gallery-45.jpg", alt: "Partition Wall Forbesganj - JK Interior", category: "Partition Wall" },
-  { src: "/images/gallery-46.jpg", alt: "Grid Ceiling Araria Bihar - JK Interior", category: "Grid Ceiling" },
-  { src: "/images/gallery-47.jpg", alt: "Artificial Grass Forbesganj Bihar - JK Interior", category: "Artificial Grass" },
-  { src: "/images/gallery-48.jpg", alt: "Home Interior Araria - JK Interior", category: "Interior" },
-  { src: "/images/gallery-49.jpg", alt: "False Ceiling Design Forbesganj - JK Interior", category: "False Ceiling" },
-  { src: "/images/gallery-50.jpg", alt: "Interior Work Araria Bihar - JK Interior", category: "Interior" },
+  // Original 12 Images - SEO Optimized Alt
+  { src: "/images/hero-interior.jpg", alt: "False ceiling design for luxury living room in Bihar - PVC gypsum ceiling with LED lights Patna" },
+  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum board false ceiling design with cove lighting for home interior Bihar" },
+  { src: "/images/pvc-ceiling.jpg", alt: "Waterproof PVC ceiling panel installation for kitchen and bathroom Patna Bihar" },
+  { src: "/images/wpc-louvers.jpg", alt: "WPC louvers wall panel design for TV unit background - wooden finish interior Bihar" },
+  { src: "/images/tv-unit.jpg", alt: "Modern TV unit design with fluted panels and LED backlight - living room interior Patna" },
+  { src: "/images/gallery-1.jpg", alt: "Designer bedroom interior with modular wardrobe and false ceiling design Bihar" },
+  { src: "/images/gallery-2.jpg", alt: "Modular kitchen interior design with PVC ceiling and cabinets Patna Bihar" },
+  { src: "/images/gallery-3.jpg", alt: "Office interior design with gypsum ceiling and glass partition Patna Bihar" },
+  { src: "/images/gallery-4.jpg", alt: "Luxury drawing room interior design with sofa and false ceiling Bihar" },
+  { src: "/images/gallery-5.jpg", alt: "Fluted wall panels design for bedroom accent wall - WPC interior Patna" },
+  { src: "/images/uv-marble.jpg", alt: "UV marble sheet wall design for living room - glossy waterproof panels Bihar" },
+  { src: "/images/artificial-grass.jpg", alt: "Artificial grass wall decoration for balcony and terrace Patna Bihar" },
+
+  // 38 New Images - SEO Keywords Added
+  { src: "/images/gallery-6.jpg", alt: "POP false ceiling design for hall with fan box and spot lights Bihar" },
+  { src: "/images/gallery-7.jpg", alt: "Gypsum ceiling design for bedroom with cove light - interior contractor Patna" },
+  { src: "/images/gallery-8.jpg", alt: "PVC wall panel design for living room - termite proof wall cladding Bihar" },
+  { src: "/images/gallery-9.jpg", alt: "WPC exterior louvers for balcony - weather resistant cladding Patna Bihar" },
+  { src: "/images/gallery-10.jpg", alt: "Modular kitchen with acrylic finish and PVC ceiling design Patna" },
+  { src: "/images/gallery-11.jpg", alt: "Bedroom wardrobe sliding door design with mirror - interior work Bihar" },
+  { src: "/images/gallery-12.jpg", alt: "False ceiling design for shop and showroom - commercial interior Patna" },
+  { src: "/images/gallery-13.jpg", alt: "TV unit design with UV marble sheet and wooden panels Bihar" },
+  { src: "/images/gallery-14.jpg", alt: "Fluted panels for wall decoration - living room interior Patna Bihar" },
+  { src: "/images/gallery-15.jpg", alt: "Gypsum partition wall for office - soundproof interior design Bihar" },
+  { src: "/images/gallery-16.jpg", alt: "PVC false ceiling for bathroom - waterproof ceiling solution Patna" },
+  { src: "/images/gallery-17.jpg", alt: "Wooden flooring with false ceiling - bedroom interior design Bihar" },
+  { src: "/images/gallery-18.jpg", alt: "Charcoal louvers wall panel for TV background - modern interior Patna" },
+  { src: "/images/gallery-19.jpg", alt: "Kitchen ceiling design with PVC panels and LED lights Bihar" },
+  { src: "/images/gallery-20.jpg", alt: "Hall POP false ceiling design with center light and corner work Patna" },
+  { src: "/images/gallery-21.jpg", alt: "WPC louvers for house exterior elevation - front design Bihar" },
+  { src: "/images/gallery-22.jpg", alt: "Bedroom interior with fluted panels and wardrobe - Patna interior designer" },
+  { src: "/images/gallery-23.jpg", alt: "Office reception false ceiling design with lighting Bihar" },
+  { src: "/images/gallery-24.jpg", alt: "UV marble sheet for kitchen backsplash - glossy wall panels Patna" },
+  { src: "/images/gallery-25.jpg", alt: "PVC wall and ceiling for bedroom - budget interior design Bihar" },
+  { src: "/images/gallery-26.jpg", alt: "False ceiling design with chandelier - drawing room interior Patna" },
+  { src: "/images/gallery-27.jpg", alt: "Modular wardrobe with loft - bedroom interior work Bihar" },
+  { src: "/images/gallery-28.jpg", alt: "TV unit with storage cabinets and LED profile light design Patna" },
+  { src: "/images/gallery-29.jpg", alt: "Gypsum false ceiling for restaurant and cafe interior Bihar" },
+  { src: "/images/gallery-30.jpg", alt: "WPC louvers for garden area and outdoor seating design Patna" },
+  { src: "/images/gallery-31.jpg", alt: "Bedroom false ceiling with cove and spot lights - interior Bihar" },
+  { src: "/images/gallery-32.jpg", alt: "PVC panels for bathroom wall waterproofing Patna Bihar" },
+  { src: "/images/gallery-33.jpg", alt: "Fluted panels with mirror work - luxury interior design Bihar" },
+  { src: "/images/gallery-34.jpg", alt: "Hall interior with false ceiling and wall panels Patna Bihar" },
+  { src: "/images/gallery-35.jpg", alt: "Modular kitchen cabinets and ceiling design - Patna contractor" },
+  { src: "/images/gallery-36.jpg", alt: "Office cabin glass partition and gypsum ceiling Bihar" },
+  { src: "/images/gallery-37.jpg", alt: "UV marble sheet for pillar cladding - interior decor Patna" },
+  { src: "/images/gallery-38.jpg", alt: "Artificial grass wall with wooden frame - balcony decoration Bihar" },
+  { src: "/images/gallery-39.jpg", alt: "POP design for ceiling border - traditional false ceiling Patna" },
+  { src: "/images/gallery-40.jpg", alt: "WPC louvers for staircase wall - interior elevation Bihar" },
+  { src: "/images/gallery-41.jpg", alt: "Bedroom study table with false ceiling design Patna Bihar" },
+  { src: "/images/gallery-42.jpg", alt: "PVC ceiling hall design with wooden beam effect Bihar" },
+  { src: "/images/gallery-43.jpg", alt: "TV unit open shelves design with backlight - living room Patna" },
+  { src: "/images/gallery-44.jpg", alt: "Gypsum board ceiling center design - luxury home Bihar" },
+  { src: "/images/gallery-45.jpg", alt: "Fluted wall panels with TV unit - modern interior Patna Bihar" },
+  { src: "/images/gallery-46.jpg", alt: "Modular kitchen with chimney and PVC ceiling - Patna project" },
+  { src: "/images/gallery-47.jpg", alt: "Office grid false ceiling with LED lights - commercial interior Bihar" },
+  { src: "/images/gallery-48.jpg", alt: "UV marble sheet bathroom wall - waterproof interior Patna" },
+  { src: "/images/gallery-49.jpg", alt: "WPC louvers ceiling for balcony and terrace Bihar" },
+  { src: "/images/gallery-50.jpg", alt: "Complete home interior design with false ceiling and wall panels Patna Bihar" },
 ]
 
-const INITIAL_VISIBLE = 8
+export default function Gallery() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
-export default function GallerySection() {
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE)
-  const [lightboxIndex, setLightboxIndex] = useState(null)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-up")
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
 
-  const openLightbox = (index) => setLightboxIndex(index)
+    const elements = sectionRef.current?.querySelectorAll(".reveal")
+    elements?.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [lightboxIndex])
+
+  const openLightbox = (index: number) => setLightboxIndex(index)
   const closeLightbox = () => setLightboxIndex(null)
-  const showMore = () => setVisibleCount(galleryImages.length)
-
-  const prevImage = () => {
+  const nextImage = () =>
     setLightboxIndex((prev) =>
-      prev === 0 ? galleryImages.length - 1 : prev - 1
+      prev !== null ? (prev + 1) % galleryImages.length : null
     )
-  }
-
-  const nextImage = () => {
+  const prevImage = () =>
     setLightboxIndex((prev) =>
-      prev === galleryImages.length - 1 ? 0 : prev + 1
+      prev !== null
+        ? (prev - 1 + galleryImages.length) % galleryImages.length
+        : null
     )
-  }
 
+  // JSON-LD Schema for SEO (Google Image Search)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ImageGallery",
-    "name": "JK Interior Work Gallery - Forbesganj Araria Bihar",
-    "description": "JK Interior Forbesganj - PVC Ceiling, Gypsum False Ceiling, TV Unit, Fluted Panels, WPC Louvers, UV Marble Sheet installation photos in Araria Bihar.",
-    "image": galleryImages.slice(0, 10).map(img => `https://jkinteriorforbesganj.com${img.src}`)
+    "name": "Interior Design & False Ceiling Projects - Bihar Patna",
+    "description": "Portfolio of false ceiling, PVC panels, WPC louvers, TV unit, modular kitchen and bedroom interior design projects in Bihar and Patna.",
+    "image": galleryImages.map(img => `https://jkinterior.online${img.src}`) // अपना domain डाल देना
   }
 
   return (
     <>
+      {/* SEO Schema - invisible but important for Google */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center text-3xl font-bold text-foreground font-mono">
-            Our Work Gallery - JK Interior Forbesganj
-          </h2>
+      <section ref={sectionRef} id="gallery" className="bg-background py-24">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="reveal mb-16 text-center opacity-0">
+            <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono">
+              Our Work / हमारा काम
+            </span>
+            <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
+              Project <span className="gold-text">Gallery</span>
+            </h3>
+            <p className="mx-auto max-w-xl text-muted-foreground font-mono">
+              Browse our latest interior design and ceiling projects
+            </p>
+          </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {galleryImages.slice(0, visibleCount).map((img, index) => (
+            {galleryImages.map((img, index) => (
               <button
                 key={img.src}
                 onClick={() => openLightbox(index)}
                 className="reveal group relative aspect-square overflow-hidden rounded-xl border border-border opacity-0 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
-                style={{ animationDelay: `${(index % INITIAL_VISIBLE) * 0.08}s` }}
+                style={{ animationDelay: `${index * 0.08}s` }}
                 aria-label={`View ${img.alt}`}
               >
                 <Image
                   src={img.src}
                   alt={img.alt}
-                  title={`${img.alt} | JK Interior Forbesganj`}
                   fill
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading={index < 8 ? "eager" : "lazy"}
                 />
                 <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/20" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -136,21 +168,10 @@ export default function GallerySection() {
               </button>
             ))}
           </div>
-
-          {visibleCount < galleryImages.length && (
-            <div className="mt-12 text-center">
-              <button
-                onClick={showMore}
-                className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/30 font-mono"
-                aria-label="Show more gallery images"
-              >
-                See More ({galleryImages.length - visibleCount} more photos)
-              </button>
-            </div>
-          )}
         </div>
       </section>
 
+      {/* Lightbox */}
       {lightboxIndex !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 backdrop-blur-sm"
@@ -189,17 +210,14 @@ export default function GallerySection() {
             <ChevronRight className="h-6 w-6" />
           </button>
           <div
-            className="relative h-[80vh] w-[90vw] max-w-5xl"
+            className="relative h-[80vh] w-[90vw] max-w-4xl"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
               src={galleryImages[lightboxIndex].src}
               alt={galleryImages[lightboxIndex].alt}
-              title={`${galleryImages[lightboxIndex].alt} | JK Interior`}
               fill
-              sizes="90vw"
               className="rounded-xl object-contain"
-              priority
             />
           </div>
         </div>
