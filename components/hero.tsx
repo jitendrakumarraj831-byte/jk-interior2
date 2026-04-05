@@ -55,7 +55,7 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 backdrop-blur-md">
               <MapPin className="w-3 h-3 text-amber-400" />
               <span className="text-[10px] md:text-xs font-semibold uppercase tracking-widest text-amber-200">
-                Top Rated Contractor in Forbesganj, Araria & Bihar
+                 Forbesganj,Dumariya,Araria, Bihar
               </span>
             </div>
           </div>
