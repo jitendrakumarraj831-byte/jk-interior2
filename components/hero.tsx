@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Phone, Home, ChevronDown } from "lucide-react"
+import { Phone, ArrowDown, MessageCircle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -18,7 +18,7 @@ export default function Hero() {
           }
         })
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     )
 
     const elements = sectionRef.current?.querySelectorAll(".reveal")
@@ -30,90 +30,98 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[90vh] md:min-h-screen w-full flex items-center overflow-hidden bg-[#050505]"
+      id="home"
+      className="relative min-h-[650px] lg:min-h-[750px] overflow-hidden"
     >
-      {/* Background with Precise Overlay for Contrast */}
-      <div className="absolute inset-0 z-0">
+      {/* Background */}
+      <div className="absolute inset-0">
         <Image
-          src="/images/hero-interior.jpg" 
-          alt="JK Interior Design Forbesganj Bihar"
+          src="/images/hero-interior.jpg"
+          alt="Luxury modern interior and false ceiling design in Bihar"
           fill
-          className="object-cover opacity-40 md:opacity-60"
           priority
+          className="object-cover scale-105"
         />
-        {/* विजुअल क्लैरिटी के लिए डबल ग्रेडिएंट */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/70 to-transparent md:from-[#050505]/90" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
       </div>
 
-      {/* Main Content Container - Fixed Spacing for Mobile */}
-      <div className="container relative z-10 mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="max-w-4xl space-y-6 md:space-y-10 text-left">
-          
-          {/* Badge - Professional Look */}
-          <div className="reveal translate-y-10 opacity-0 transition-all duration-1000 ease-out delay-100">
-            <div className="inline-flex items-center gap-2 border border-amber-600/40 bg-amber-950/20 px-3 py-1.5 rounded-sm backdrop-blur-sm">
-              <Home className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-amber-100">
-                Forbesganj • Araria • Bihar
-              </span>
-            </div>
+      {/* Glow Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 h-72 w-72 bg-primary/10 blur-3xl rounded-full" />
+        <div className="absolute bottom-20 right-10 h-96 w-96 bg-accent/10 blur-3xl rounded-full" />
+      </div>
+
+      {/* Content */}
+      <div className="container relative mx-auto flex min-h-[650px] lg:min-h-[750px] items-center px-4 py-24">
+        <div className="max-w-3xl space-y-6">
+
+          {/* Tag */}
+          <div className="reveal translate-y-10 opacity-0 transition-all duration-700">
+            <span className="inline-block bg-primary/10 backdrop-blur-md border border-primary/20 text-primary px-4 py-1.5 rounded-full text-sm font-medium">
+              Interior Work in Forbesganj • Araria • Bihar
+            </span>
           </div>
 
-          {/* Heading - Responsive Font Sizes */}
-          <div className="reveal translate-y-10 opacity-0 transition-all duration-1000 ease-out delay-200">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-[1.1] tracking-tight drop-shadow-lg">
-              Luxury <span className="text-amber-500">Interior</span> & <br className="hidden md:block" />
-              False Ceiling Experts
-            </h1>
-          </div>
+          {/* Heading */}
+          <h1 className="reveal text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white translate-y-10 opacity-0 transition-all duration-700 delay-100">
+            Transform Your Space with{" "}
+            <span className="text-yellow-400">Modern Interior</span> &{" "}
+            False Ceiling
+          </h1>
 
-          {/* Dual Language Support - Better Line Spacing */}
-          <div className="reveal translate-y-10 opacity-0 transition-all duration-1000 ease-out delay-300 space-y-5">
-            <p className="text-base sm:text-lg md:text-xl text-neutral-300 font-light leading-relaxed max-w-2xl">
-              Transforming your dream space into reality with premium PVC, Gypsum, and Modular designs.
-            </p>
-            <div className="max-w-xl border-l-4 border-amber-600 pl-5 py-1">
-              <p className="text-sm md:text-lg text-amber-100/80 font-medium tracking-wide">
-                बेहतरीन इंटीरियर और फॉल्स सीलिंग का काम—अब आपके शहर में।
-              </p>
-            </div>
-          </div>
+          {/* Subheading */}
+          <p className="reveal text-lg md:text-xl text-gray-300 translate-y-10 opacity-0 transition-all duration-700 delay-200">
+            Premium gypsum ceiling, PVC ceiling & complete home interior solutions.
+          </p>
 
-          {/* CTA Buttons - Stacking on small screens, Side-by-side on larger */}
-          <div className="reveal translate-y-10 opacity-0 transition-all duration-1000 ease-out delay-500 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
-            <Button 
-              asChild 
-              size="lg" 
-              className="bg-amber-600 hover:bg-amber-700 text-white rounded-none px-10 py-7 h-auto text-sm md:text-base font-bold uppercase tracking-widest shadow-[0_10px_20px_-10px_rgba(217,119,6,0.5)] transition-all active:scale-95"
-            >
-              <a href="tel:+918651070831" className="flex items-center justify-center gap-3">
-                <Phone className="w-5 h-5 animate-pulse" />
-                Call Now / अभी कॉल करें
+          {/* Hindi Line */}
+          <p className="reveal text-sm md:text-base text-gray-400 translate-y-10 opacity-0 transition-all duration-700 delay-300">
+            हम आपके घर और ऑफिस को मॉडर्न, स्टाइलिश और लग्ज़री लुक देते हैं — Bihar में trusted interior service।
+          </p>
+
+          {/* CTA */}
+          <div className="reveal flex flex-wrap gap-4 pt-4 translate-y-10 opacity-0 transition-all duration-700 delay-500">
+
+            {/* Call */}
+            <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black shadow-xl">
+              <a href="tel:+918651070831" className="flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                Call Now
               </a>
             </Button>
 
-            <Button 
-              asChild 
-              variant="outline" 
-              size="lg" 
-              className="border-white/30 bg-transparent text-white hover:bg-white hover:text-black rounded-none px-10 py-7 h-auto text-sm md:text-base font-bold uppercase tracking-widest transition-all active:scale-95"
-            >
-              <Link href="#contact" className="flex items-center justify-center">
-                Get a Quote / संपर्क करें
+            {/* WhatsApp */}
+            <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+              <a
+                href="https://wa.me/918651070831"
+                target="_blank"
+                className="flex items-center gap-2"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp
+              </a>
+            </Button>
+
+            {/* Contact */}
+            <Button asChild variant="ghost" size="lg" className="text-white hover:text-yellow-400">
+              <Link href="#contact">
+                Contact Us
               </Link>
             </Button>
+
           </div>
         </div>
       </div>
 
-      {/* Modern Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30">
-        <div className="flex flex-col items-center gap-3">
-          <span className="text-[10px] uppercase tracking-[0.3em] font-medium hidden md:block">Scroll</span>
-          <ChevronDown className="w-5 h-5 animate-bounce" />
-        </div>
-      </div>
+      {/* Scroll */}
+      <a
+        href="#services"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-400 hover:text-white"
+      >
+        <span className="text-xs tracking-widest">SCROLL</span>
+        <ArrowDown className="animate-bounce mt-1" />
+      </a>
     </section>
   )
 }
