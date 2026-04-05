@@ -180,7 +180,7 @@ export default function Gallery() {
             ))}
           </div>
 
-          {/* See More Button - 12 ke baad */}
+                    {/* See More Button - 12 ke baad */}
           {!showAll && galleryImages.length > VISIBLE_COUNT && (
             <div className="reveal mt-12 text-center opacity-0" style={{ animationDelay: '1s' }}>
               <button
@@ -236,10 +236,12 @@ export default function Gallery() {
             className="relative h-[80vh] w-[90vw] max-w-4xl"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* --- सुधार यहाँ किया गया है --- */}
             <Image
-              src={(showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT))[lightboxIndex].src}
-              alt={(showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT))[lightboxIndex].alt}
+              src={visibleImages[lightboxIndex].src}
+              alt={visibleImages[lightboxIndex].alt}
               fill
+              priority
               className="rounded-xl object-contain"
             />
           </div>
