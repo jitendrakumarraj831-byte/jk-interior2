@@ -83,22 +83,22 @@ export default function Gallery() {
   const visibleImages = showAll ? galleryImages : galleryImages.slice(0, VISIBLE_COUNT)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-up")
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-fade-up")
+        }
+      })
+    },
+    { threshold: 0.1 }
+  )
 
-    const elements = sectionRef.current?.querySelectorAll(".reveal")
-    elements?.forEach((el) => observer.observe(el))
+  const elements = sectionRef.current?.querySelectorAll(".reveal")
+  elements?.forEach((el) => observer.observe(el))
 
-    return () => observer.disconnect()
-  }, [])
+  return () => observer.disconnect()
+}, [showAll]) // <- ye line important hai
 
   useEffect(() => {
     if (lightboxIndex !== null) {
