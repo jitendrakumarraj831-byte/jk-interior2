@@ -5,36 +5,54 @@ import { Sparkles, IndianRupee, Shield, Users, MapPin } from "lucide-react"
 
 const reasons = [
   {
-    icon: Sparkles,
-    en: "Luxury False Ceiling Designs",
-    hi: "शानदार फॉल्स सीलिंग डिजाइन",
-    desc: "Premium PVC, Gypsum, and POP designs for homes in Forbesganj."
+    icon: Briefcase,
+    en: "5+ Years of Experience",
+    hi: "5+ वर्षों का अनुभव",
+    desc: "इंटीरियर डिजाइनिंग और फॉल्स सीलिंग में हमारी टीम का मजबूत अनुभव और भरोसा।"
   },
   {
-    icon: IndianRupee,
-    en: "Affordable Pricing in Bihar",
-    hi: "सबसे कम और सही दाम",
-    desc: "Quality interior services at budget-friendly rates across Araria."
+    icon: Gem,
+    en: "Premium Material",
+    hi: "प्रीमियम मटेरियल",
+    desc: "हम केवल उच्च गुणवत्ता वाले Gypsum, PVC और WPC मटेरियल का उपयोग करते हैं।"
   },
   {
-    icon: Shield,
-    en: "Durable Wall Paneling",
-    hi: "मजबूत और टिकाऊ काम",
-    desc: "Waterproof PVC panels and long-lasting WPC fluted louvers."
+    icon: ShieldCheck,
+    en: "Expert Finishing",
+    hi: "बेहतरीन फिनिशिंग",
+    desc: "हर काम में बारीकियों पर ध्यान, ताकि मजबूती और खूबसूरती दोनों मिले।"
   },
   {
-    icon: Users,
-    en: "Experienced Local Team",
-    hi: "अनुभवी स्थानीय कारीगर",
-    desc: "5+ years of expertise in interior & modular kitchen projects."
+    icon: Clock,
+    en: "On-Time Delivery",
+    hi: "समय पर काम",
+    desc: "हम तय समय सीमा के अंदर काम पूरा करने के लिए प्रतिबद्ध हैं।"
   },
   {
-    icon: MapPin,
-    en: "Available Across Araria District",
-    hi: "पूरे अररिया जिले में उपलब्ध",
-    desc: "Fast service in Forbesganj, Jogbani, and Narpatganj."
+    icon: Tag,
+    en: "Affordable Pricing",
+    hi: "किफायती दाम",
+    desc: "बेहतर क्वालिटी के साथ उचित और प्रतिस्पर्धी कीमत।"
   },
-]
+  {
+    icon: PenTool,
+    en: "Customized Designs",
+    hi: "आपकी पसंद के डिज़ाइन",
+    desc: "आपके बजट और स्पेस के अनुसार खास डिज़ाइन तैयार किए जाते हैं।"
+  },
+  {
+    icon: Headset,
+    en: "Free Consultation & Site Visit",
+    hi: "फ्री कंसल्टेशन और साइट विज़िट",
+    desc: "काम शुरू करने से पहले पूरी सलाह और साइट विज़िट बिल्कुल फ्री।"
+  },
+  {
+    icon: BadgeCheck,
+    en: "Warranty & After Support",
+    hi: "वारंटी और बाद में सपोर्ट",
+    desc: "काम के बाद भी 1 साल तक सर्विस और सपोर्ट उपलब्ध।"
+  },
+];
 
 export default function WhyUs() {
   const sectionRef = useRef<HTMLElement>(null)
