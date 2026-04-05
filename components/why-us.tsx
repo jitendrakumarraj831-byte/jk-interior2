@@ -1,33 +1,38 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Sparkles, IndianRupee, Shield, Users, MapPin } from "lucide-react"
+import { Sparkles, IndianRupee, Shield, Users, MapPin, CheckCircle2 } from "lucide-react"
 
 const reasons = [
   {
     icon: Sparkles,
-    en: "Modern and Attractive Designs",
-    hi: "आधुनिक और आकर्षक डिजाइन",
+    en: "Modern Designs",
+    hi: "आधुनिक डिजाइन",
+    desc: "Latest trends in PVC and Gypsum false ceilings."
   },
   {
     icon: IndianRupee,
-    en: "Budget Friendly Rates",
+    en: "Budget Friendly",
     hi: "किफायती कीमत",
+    desc: "Premium quality interior work at local market rates."
   },
   {
     icon: Shield,
-    en: "Strong and Durable Work",
-    hi: "मजबूत और टिकाऊ काम",
+    en: "Durable Work",
+    hi: "मजबूत और टिकाऊ",
+    desc: "100% termite-proof and moisture-resistant materials."
   },
   {
     icon: Users,
-    en: "Skilled and Experienced Team",
+    en: "Expert Team",
     hi: "अनुभवी कारीगर",
+    desc: "Skilled professionals with 5+ years of experience."
   },
   {
     icon: MapPin,
-    en: "Service in Rural and Urban Areas",
-    hi: "गांव और शहर दोनों में सेवा",
+    en: "Local Service",
+    hi: "स्थानीय सेवा",
+    desc: "Quick service in Forbesganj, Araria, and Jogbani."
   },
 ]
 
@@ -55,42 +60,58 @@ export default function WhyUs() {
   return (
     <section
       ref={sectionRef}
-      id="why-us"
-      className="relative overflow-hidden bg-surface-alt py-24"
+      id="why-choose-jk-interior"
+      aria-label="Why Choose JK Interior for False Ceiling in Forbesganj"
+      className="relative overflow-hidden bg-[#050505] py-24 border-t border-white/5"
     >
-      {/* Decorative elements */}
-      <div className="absolute left-0 top-0 h-px w-full animate-shimmer opacity-20" />
-      <div className="absolute bottom-0 left-0 h-px w-full animate-shimmer opacity-20" />
-
       <div className="mx-auto max-w-7xl px-4">
+        {/* Header Section */}
         <div className="reveal mb-16 text-center opacity-0">
-          <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs uppercase tracking-widest text-primary font-mono">
-            Why Choose Us / हमें क्यों चुनें
-          </span>
-          <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
-            Why <span className="gold-text">JK Interior</span>?
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-4 py-1.5 text-[10px] uppercase tracking-widest text-amber-500 font-bold border border-amber-500/20">
+            <CheckCircle2 className="w-3 h-3" />
+            Reliable Interior Partner / विश्वसनीय पार्टनर
+          </div>
+          <h3 className="mb-6 text-3xl font-bold text-white md:text-5xl font-sans">
+            Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500">JK Interior</span>?
           </h3>
-          <p className="mx-auto max-w-xl text-muted-foreground font-mono">
-            Trusted by hundreds of families and businesses across Bihar
+          <p className="mx-auto max-w-2xl text-gray-400 font-medium leading-relaxed">
+            हम Forbesganj और Araria में पिछले **5 सालों से** बेहतरीन False Ceiling और Interior डिज़ाइन की सेवाएं दे रहे हैं। हमारा लक्ष्य है—मजबूत काम और आपकी पूरी संतुष्टि।
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+        {/* Grid Section */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {reasons.map((reason, index) => (
             <div
               key={reason.en}
-              className="reveal group flex flex-col items-center rounded-xl border border-border bg-card p-8 text-center opacity-0 shadow-sm transition-all duration-500 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10"
+              className="reveal group relative flex flex-col items-center rounded-2xl border border-white/5 bg-[#111] p-8 text-center opacity-0 shadow-2xl transition-all duration-500 hover:border-amber-500/40 hover:-translate-y-2"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
-                <reason.icon className="h-6 w-6 text-primary" />
+              {/* Background Glow */}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-b from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500 transition-all group-hover:bg-amber-500 group-hover:text-black">
+                <reason.icon className="h-8 w-8" />
               </div>
-              <h4 className="mb-2 text-sm font-bold text-foreground font-sans">
+              
+              <h4 className="mb-2 text-base font-bold text-white font-sans">
                 {reason.en}
               </h4>
-              <p className="text-xs text-muted-foreground font-mono">{reason.hi}</p>
+              <p className="mb-3 text-[11px] font-bold text-amber-500/80 uppercase tracking-tighter italic">
+                {reason.hi}
+              </p>
+              <p className="text-xs leading-relaxed text-gray-500 font-medium">
+                {reason.desc}
+              </p>
             </div>
           ))}
+        </div>
+
+        {/* Local SEO Footer Line */}
+        <div className="reveal mt-16 text-center opacity-0 pt-8 border-t border-white/5">
+          <p className="text-gray-500 text-xs italic">
+            Serving all major locations: Forbesganj, Araria, Jogbani, Narpatganj, and Raniganj.
+          </p>
         </div>
       </div>
     </section>
