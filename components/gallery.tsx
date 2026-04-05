@@ -3,7 +3,6 @@ import { useState } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
-// SEO Keywords: JK Interior, Forbesganj, Araria, False Ceiling, PVC Panel, TV Unit, Interior Design Bihar
 const galleryImages = [
   { src: "/images/artificial-grass.jpg", alt: "Artificial Grass Installation in Forbesganj - JK Interior", category: "Artificial Grass" },
   { src: "/images/fluted-panels.jpg", alt: "Fluted Wall Panels Design Araria Bihar - JK Interior", category: "Fluted Panels" },
@@ -19,8 +18,6 @@ const galleryImages = [
   { src: "/images/tv-unit.jpg", alt: "Modern TV Unit Design Forbesganj - JK Interior", category: "TV Unit" },
   { src: "/images/uv-marble.jpg", alt: "UV Marble Sheet Wall Panel Forbesganj - JK Interior", category: "UV Marble" },
   { src: "/images/wpc-louvers.jpg", alt: "WPC Louvers Panel Design Araria - JK Interior", category: "WPC Louvers" },
-
-  // --- Baaki 36 photos (upload ke baad naam & alt update kar dena) ---
   { src: "/images/gallery-5.jpg", alt: "PVC Wall Panel Design Forbesganj - JK Interior Araria", category: "PVC Panel" },
   { src: "/images/gallery-6.jpg", alt: "False Ceiling Work Forbesganj Bihar - JK Interior", category: "False Ceiling" },
   { src: "/images/gallery-7.jpg", alt: "Interior Design Service Araria Bihar - JK Interior", category: "Interior" },
@@ -91,18 +88,16 @@ export default function GallerySection() {
     )
   }
 
-  // SEO: JSON-LD for ImageGallery
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ImageGallery",
     "name": "JK Interior Work Gallery - Forbesganj Araria Bihar",
     "description": "JK Interior Forbesganj - PVC Ceiling, Gypsum False Ceiling, TV Unit, Fluted Panels, WPC Louvers, UV Marble Sheet installation photos in Araria Bihar.",
-    "image": galleryImages.slice(0, 10).map(img => `https://jkinteriorforbesganj.com${img.src}`) // apna domain daal dena
+    "image": galleryImages.slice(0, 10).map(img => `https://jkinteriorforbesganj.com${img.src}`)
   }
 
   return (
     <>
-      {/* SEO Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -156,7 +151,6 @@ export default function GallerySection() {
         </div>
       </section>
 
-      {/* Lightbox */}
       {lightboxIndex !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 backdrop-blur-sm"
@@ -195,7 +189,7 @@ export default function GallerySection() {
             <ChevronRight className="h-6 w-6" />
           </button>
           <div
-            className="relative h-[80vh] w-[90vw] max-w-4xl"
+            className="relative h-[80vh] w-[90vw] max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
