@@ -1,19 +1,43 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { Phone, ArrowDown } from "lucide-react"
-import Image from "next/image"
+import { useEffect, useRef, useState } from "react"
+import { Phone, ChevronLeft, ChevronRight } from "lucide-react"
+import Link from "next/link"
+import Head from "next/head"
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const slides = [
+    {
+      tag: "Interior Work in Forbesganj & Araria",
+      title: "False Ceiling Experts in Forbesganj",
+      subtitle: "Stylish aur Mazboot Ceiling Solutions",
+      desc: "Gypsum, PVC, and Grid Ceiling installations with precision. Transform any space with elegant ceiling designs in Forbesganj & Araria.",
+      keywords: "False Ceiling Forbesganj, Gypsum Ceiling Araria",
+    },
+    {
+      tag: "Premium Interior Solutions",
+      title: "Modern LED Ceiling Design",
+      subtitle: "Lighting jo banaye ghar khaas",
+      desc: "Custom LED profile lights, cove lighting aur designer panels — Forbesganj me best LED ceiling work.",
+      keywords: "LED Ceiling Forbesganj, Modern Ceiling Design",
+    },
+    {
+      tag: "PVC & Waterproof Work",
+      title: "PVC Ceiling Contractor Forbesganj",
+      subtitle: "Water-Resistant & Durable",
+      desc: "Kitchen, bathroom aur balcony ke liye best PVC panels — low maintenance, long life. Service in Araria & Forbesganj.",
+      keywords: "PVC Ceiling Forbesganj, Waterproof Ceiling Araria",
+    },
+  ]
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-up")
-          }
+          if (entry.isIntersecting) entry.target.classList.add("animate-fade-up")
         })
       },
       { threshold: 0.1 }
@@ -25,93 +49,135 @@ export default function Hero() {
     return () => observer.disconnect()
   }, [])
 
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+
+  // JSON-LD Schema for Local SEO
+  const businessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "JK Interior",
+    "image": "https://jkinterior.com/og-image.jpg",
+    "telephone": "+91-8651070831",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Forbesganj",
+      "addressRegion": "Bihar",
+      "addressCountry": "IN"
+    },
+    "areaServed": ["Forbesganj", "Araria", "Purnia"],
+    "description": "Premium False Ceiling Designer in Forbesganj & Araria. Gypsum, PVC, LED, Grid Ceiling work with 100+ projects.",
+    "url": "https://jkinterior.com",
+    "priceRange": "₹₹"
+  }
+
   return (
-    <section
-      ref={sectionRef}
-      id="home"
-      className="relative min-h-screen overflow-hidden"
-    >
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/hero-interior.jpg"
-          alt="Modern luxury interior design by JK Interior"
-          fill
-          className="object-cover"
-          priority
-        />
-        {/* ✅ Strong Overlay */}
-        <div className="absolute inset-0 bg-black/70" />
-      </div>
+    <>
+      <Head>
+        <title>False Ceiling in Forbesganj | JK Interior - Gypsum, PVC, LED Ceiling</title>
+        <meta name="description" content="JK Interior - Forbesganj & Araria me best False Ceiling, Gypsum, PVC, LED Ceiling work. 100+ projects, 5+ years experience. Call +91-8651070831" />
+        <meta name="keywords" content="False Ceiling Forbesganj, Gypsum Ceiling Araria, PVC Ceiling Forbesganj, LED Ceiling Design, Interior Designer Araria" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(businessSchema) }} />
+      </Head>
 
-      {/* Content */}
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-4 py-32 text-center">
-        
-        {/* Tag */}
-        <div className="reveal mb-6 opacity-0" style={{ animationDelay: "0.1s" }}>
-          <span className="inline-block rounded-full border border-yellow-400/40 bg-yellow-400/10 px-4 py-1.5 text-xs uppercase tracking-widest text-yellow-400 font-mono">
-            Premium Interior Solutions
-          </span>
+      <section
+        ref={sectionRef}
+        id="home"
+        aria-label="JK Interior Hero Section - False Ceiling Services"
+        className="relative min-h-[85vh] bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden"
+      >
+        <div className="relative mx-auto max-w-7xl px-4 py-20 md:py-32">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            
+            {/* Left Content */}
+            <header className="reveal opacity-0" style={{ animationDelay: "0.1s" }}>
+              {/* Tag */}
+              <span className="mb-6 inline-block rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-800">
+                {slides[currentSlide].tag}
+              </span>
+
+              {/* H1 - SEO Main Keyword */}
+              <h1 className="mb-4 text-4xl font-bold leading-tight text-gray-900 md:text-5xl lg:text-6xl font-serif">
+                {slides[currentSlide].title}
+              </h1>
+
+              {/* H2 - Secondary Keyword */}
+              <h2 className="mb-4 text-xl font-semibold text-emerald-700">
+                {slides[currentSlide].subtitle}
+              </h2>
+
+              {/* Description with keywords */}
+              <p className="mb-8 max-w-xl text-base leading-relaxed text-gray-600 md:text-lg">
+                {slides[currentSlide].desc}
+              </p>
+
+              {/* Trust Badge */}
+              <p className="mb-6 text-sm font-semibold text-emerald-700">
+                ⭐ 100+ Projects Completed | 5+ Years Experience | Forbesganj & Araria
+              </p>
+
+              {/* Buttons */}
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  href="#portfolio"
+                  aria-label="View False Ceiling Work Portfolio"
+                  className="rounded-md bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-emerald-800 hover:shadow-lg"
+                >
+                  View Ceiling Work
+                </Link>
+
+                <a
+                  href="tel:+918651070831"
+                  aria-label="Call JK Interior for False Ceiling in Forbesganj"
+                  className="flex items-center gap-2 rounded-md border-2 border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-800 transition hover:border-emerald-700 hover:text-emerald-700"
+                >
+                  <Phone className="h-4 w-4" />
+                  Call Now
+                </a>
+
+                <a
+                  href="https://wa.me/918651070831?text=Hi%20JK%20Interior,%20mujhe%20false%20ceiling%20design%20ke%20liye%20quote%20chahiye"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp JK Interior for Ceiling Quote"
+                  className="flex items-center gap-2 rounded-md bg-green-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-600"
+                >
+                  💬 WhatsApp
+                </a>
+              </div>
+            </header>
+
+            {/* Right side - Hidden on mobile */}
+            <div className="hidden lg:block"></div>
+          </div>
+
+          {/* Carousel Controls */}
+          <div className="absolute left-4 top-1/2 -translate-y-1/2">
+            <button onClick={prevSlide} aria-label="Previous slide" className="rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition hover:bg-white">
+              <ChevronLeft className="h-5 w-5 text-gray-700" />
+            </button>
+          </div>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            <button onClick={nextSlide} aria-label="Next slide" className="rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition hover:bg-white">
+              <ChevronRight className="h-5 w-5 text-gray-700" />
+            </button>
+          </div>
+
+          {/* Dots */}
+          <div className="mt-12 flex justify-center gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  currentSlide === idx ? "w-8 bg-emerald-700" : "w-2 bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
         </div>
-
-        {/* ✅ H1 (SEO FIX) */}
-        <h1 className="reveal mb-6 max-w-4xl text-4xl font-bold leading-tight text-white opacity-0 md:text-6xl lg:text-7xl font-sans" style={{ animationDelay: "0.3s" }}>
-          Premium False Ceiling Designer in Forbesganj
-        </h1>
-
-        {/* Subheading */}
-        <p className="reveal mb-4 max-w-2xl text-base leading-relaxed text-gray-200 opacity-0 md:text-lg font-mono" style={{ animationDelay: "0.5s" }}>
-          Modern | LED | PVC | Gypsum Ceiling Work
-        </p>
-
-        {/* Trust */}
-        <p className="reveal mb-3 text-yellow-400 font-semibold opacity-0" style={{ animationDelay: "0.6s" }}>
-          ⭐ 100+ Projects Completed | 5+ Years Experience
-        </p>
-
-        {/* Hindi */}
-        <p className="reveal mb-8 max-w-2xl text-sm leading-relaxed text-gray-300 opacity-0 md:text-base font-mono">
-          हम आधुनिक इंटीरियर डिजाइन और सीलिंग वर्क की सेवाएं प्रदान करते हैं जिससे आपका घर या ऑफिस सुंदर, स्टाइलिश और आकर्षक बनता है।
-        </p>
-
-        {/* Buttons */}
-        <div className="reveal flex flex-col items-center gap-4 opacity-0 sm:flex-row" style={{ animationDelay: "0.8s" }}>
-          
-          {/* Call */}
-          <a
-            href="tel:+918651070831"
-            className="bg-yellow-500 text-black flex items-center gap-2 rounded-lg px-8 py-4 text-sm font-semibold shadow-lg hover:scale-105 transition"
-          >
-            <Phone className="h-4 w-4" />
-            Call Now
-          </a>
-
-          {/* WhatsApp 🔥 */}
-          <a
-            href="https://wa.me/918651070831?text=Hi%20JK%20Interior,%20mujhe%20false%20ceiling%20design%20ke%20liye%20info%20chahiye"
-            target="_blank"
-            className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 rounded-lg px-8 py-4 text-sm font-semibold shadow-lg hover:scale-105 transition"
-          >
-            💬 WhatsApp
-          </a>
-
-          {/* Contact */}
-          <a
-            href="#contact"
-            className="flex items-center gap-2 rounded-lg border-2 border-white/40 px-8 py-4 text-sm font-semibold text-white hover:bg-white/10 transition"
-          >
-            Contact Us
-          </a>
-
-        </div>
-
-        {/* Scroll indicator */}
-        <a href="#services" className="absolute bottom-10 flex flex-col items-center gap-2 text-gray-300 hover:text-white transition">
-          <span className="text-xs uppercase tracking-widest font-mono">Explore</span>
-          <ArrowDown className="h-4 w-4 animate-bounce" />
-        </a>
-
-      </div>
-    </section>
+      </section>
+    </>
   )
-}
+        }
