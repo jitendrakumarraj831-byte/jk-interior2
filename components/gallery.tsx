@@ -249,12 +249,15 @@ export default function Gallery() {
           >
             {/* --- सुधार यहाँ किया गया है --- */}
             <Image
-              src={visibleImages[lightboxIndex].src}
-              alt={visibleImages[lightboxIndex].alt}
-              fill
-              priority
-              className="rounded-xl object-contain"
-            />
+  src={visibleImages[lightboxIndex].src}
+  alt={visibleImages[lightboxIndex].alt}
+  fill
+  priority
+  quality={85} // Lightbox mein quality thodi zyada
+  sizes="(max-width: 1200px) 100vw, 1200px"
+  className="rounded-xl object-contain"
+/>
+            
           </div>
         </div>
       )}
