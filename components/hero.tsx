@@ -71,7 +71,7 @@ export default function Hero() {
 
           <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-300 space-y-5 max-w-xl">
             <p className="text-lg md:text-xl text-amber-100 font-medium border-l-4 border-amber-500 pl-4">
-              Specialist in PVC Paneling, Gypsum Ceiling, WPC Panels & UV Marble Sheets.
+              Specialist in, PVC, Gypsum ,False Ceiling, WPC, Fluted,Wall Panels, & UV Marble Sheets.
             </p>
             
             {/* Hindi Keywords for Local Search */}
