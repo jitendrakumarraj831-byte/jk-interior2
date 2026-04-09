@@ -136,9 +136,9 @@ export default function Gallery() {
     "image": galleryImages.map(img => `https://jkinterior.online${img.src}`) // apna domain yahan daal dena
   }
 
-  return (
+    return (
     <>
-      {/* SEO Schema - invisible but important for Google */}
+      {/* SEO Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -160,40 +160,32 @@ export default function Gallery() {
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {visibleImages.map((img, index) => (
-  <button
-    key={img.src}
-    onClick={() => openLightbox(index)}
-    className="reveal group relative aspect-square overflow-hidden rounded-xl border border-border opacity-0 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
-    style={{ animationDelay: `${index * 0.08}s` }}
-    aria-label={`View ${img.alt}`}
-  >
-    <Image
-      src={img.src}
-      alt={img.alt}
-      fill
-      // यह लाइन स्क्रीन साइज के हिसाब से इमेज लोड करेगी
-      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-      // कोडिंग से 6MB की फाइल को छोटा करने के लिए
-      quality={60} 
-      // पहली 4 फोटो तुरंत लोड होंगी, बाकी स्क्रॉल करने पर
-      priority={index < 4}
-      loading={index < 4 ? "eager" : "lazy"}
-      decoding="async"
-      className="object-cover transition-transform duration-700 group-hover:scale-110"
-    />
-    
-    <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/20" />
-    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-      <span className="rounded-full bg-card/90 px-4 py-2 text-xs font-semibold text-primary shadow-md font-mono">
-        View
-      </span>
-    </div>
-  </button>
-))}
-            
+              <button
+                key={img.src}
+                onClick={() => openLightbox(index)}
+                className="reveal group relative aspect-square overflow-hidden rounded-xl border border-border opacity-0 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
+                style={{ animationDelay: `${index * 0.08}s` }}
+                aria-label={`View ${img.alt}`}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  quality={60} 
+                  priority={index < 4}
+                  loading={index < 4 ? "eager" : "lazy"}
+                  decoding="async"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/20" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="rounded-full bg-card/90 px-4 py-2 text-xs font-semibold text-primary shadow-md font-mono">View</span>
+                </div>
+              </button>
+            ))}
           </div>
 
-                    {/* See More Button - 12 ke baad */}
           {!showAll && galleryImages.length > VISIBLE_COUNT && (
             <div className="reveal mt-12 text-center opacity-0" style={{ animationDelay: '1s' }}>
               <button
@@ -207,7 +199,7 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Lightbox */}
+      {/* Lightbox - यहाँ सुधार किया गया है */}
       {lightboxIndex !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 backdrop-blur-sm"
@@ -215,53 +207,30 @@ export default function Gallery() {
           role="dialog"
           aria-label="Image lightbox"
         >
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              closeLightbox()
-            }}
-            className="absolute right-4 top-4 z-10 rounded-full bg-card p-2 text-foreground shadow-lg transition-colors hover:bg-surface-alt"
-            aria-label="Close lightbox"
-          >
+          <button onClick={(e) => { e.stopPropagation(); closeLightbox(); }} className="absolute right-4 top-4 z-10 rounded-full bg-card p-2 text-foreground shadow-lg transition-colors hover:bg-surface-alt" aria-label="Close lightbox">
             <X className="h-6 w-6" />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              prevImage()
-            }}
-            className="absolute left-4 z-10 rounded-full bg-card p-2 text-foreground shadow-lg transition-colors hover:bg-surface-alt"
-            aria-label="Previous image"
-          >
+          <button onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 z-10 rounded-full bg-card p-2 text-foreground shadow-lg transition-colors hover:bg-surface-alt" aria-label="Previous image">
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              nextImage()
-            }}
-            className="absolute right-4 z-10 rounded-full bg-card p-2 text-foreground shadow-lg transition-colors hover:bg-surface-alt"
-            aria-label="Next image"
-          >
+          <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 z-10 rounded-full bg-card p-2 text-foreground shadow-lg transition-colors hover:bg-surface-alt" aria-label="Next image">
             <ChevronRight className="h-6 w-6" />
           </button>
-          <div
-  className="relative h-[80vh] w-[90vw] max-w-4xl"
-  onClick={(e) => e.stopPropagation()}
->
-  <Image
-    src={visibleImages[lightboxIndex].src}
-    alt={visibleImages[lightboxIndex].alt}
-    fill
-    priority
-    quality={80} // यहाँ क्वालिटी थोड़ी बढ़ा दी है ताकि बड़ी फोटो साफ़ दिखे
-    sizes="(max-width: 1200px) 100vw, 1200px"
-    decoding="async"
-    className="rounded-xl object-contain"
-  />
-</div>
           
-      )}
+          <div className="relative h-[80vh] w-[90vw] max-w-4xl" onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={visibleImages[lightboxIndex].src}
+              alt={visibleImages[lightboxIndex].alt}
+              fill
+              priority
+              quality={80}
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              decoding="async"
+              className="rounded-xl object-contain"
+            />
+          </div>
+        </div> 
+      )} 
     </>
   )
 }
