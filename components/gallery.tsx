@@ -246,22 +246,21 @@ export default function Gallery() {
             <ChevronRight className="h-6 w-6" />
           </button>
           <div
-            className="relative h-[80vh] w-[90vw] max-w-4xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* --- सुधार यहाँ किया गया है --- */}
-            <Image
-  src={visibleImages[lightboxIndex].src}
-  alt={visibleImages[lightboxIndex].alt}
-  fill
-  priority
-  quality={85} // Lightbox mein quality thodi zyada
-  sizes="(max-width: 1200px) 100vw, 1200px"
-  className="rounded-xl object-contain"
-/>
-            
-          </div>
-        </div>
+  className="relative h-[80vh] w-[90vw] max-w-4xl"
+  onClick={(e) => e.stopPropagation()}
+>
+  <Image
+    src={visibleImages[lightboxIndex].src}
+    alt={visibleImages[lightboxIndex].alt}
+    fill
+    priority
+    quality={80} // यहाँ क्वालिटी थोड़ी बढ़ा दी है ताकि बड़ी फोटो साफ़ दिखे
+    sizes="(max-width: 1200px) 100vw, 1200px"
+    decoding="async"
+    className="rounded-xl object-contain"
+  />
+</div>
+          
       )}
     </>
   )
