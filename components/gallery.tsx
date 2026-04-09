@@ -160,35 +160,37 @@ export default function Gallery() {
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {visibleImages.map((img, index) => (
-              <button
-                key={img.src}
-                onClick={() => openLightbox(index)}
-                className="reveal group relative aspect-square overflow-hidden rounded-xl border border-border opacity-0 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
-                style={{ animationDelay: `${index * 0.08}s` }}
-                aria-label={`View ${img.alt}`}
-              >
-                <Image
-  src={img.src}
-  alt={img.alt}
-  fill
-  // Ye line aapka 9MB ka data bachaegi
-  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-  // Quality thodi kam karke speed badhayein
-  quality={75}
-  className="object-cover transition-transform duration-700 group-hover:scale-110"
-  // Blur effect jab tak load ho
-  placeholder="blur"
-  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/P9fPQAJXwP8asIsyQAAAABJRU5ErkJggg=="
-/>
-                
-                <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/20" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="rounded-full bg-card/90 px-4 py-2 text-xs font-semibold text-primary shadow-md font-mono">
-                    View
-                  </span>
-                </div>
-              </button>
-            ))}
+  <button
+    key={img.src}
+    onClick={() => openLightbox(index)}
+    className="reveal group relative aspect-square overflow-hidden rounded-xl border border-border opacity-0 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/10"
+    style={{ animationDelay: `${index * 0.08}s` }}
+    aria-label={`View ${img.alt}`}
+  >
+    <Image
+      src={img.src}
+      alt={img.alt}
+      fill
+      // यह लाइन स्क्रीन साइज के हिसाब से इमेज लोड करेगी
+      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+      // कोडिंग से 6MB की फाइल को छोटा करने के लिए
+      quality={60} 
+      // पहली 4 फोटो तुरंत लोड होंगी, बाकी स्क्रॉल करने पर
+      priority={index < 4}
+      loading={index < 4 ? "eager" : "lazy"}
+      decoding="async"
+      className="object-cover transition-transform duration-700 group-hover:scale-110"
+    />
+    
+    <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/20" />
+    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <span className="rounded-full bg-card/90 px-4 py-2 text-xs font-semibold text-primary shadow-md font-mono">
+        View
+      </span>
+    </div>
+  </button>
+))}
+            
           </div>
 
                     {/* See More Button - 12 ke baad */}
