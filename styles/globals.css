@@ -155,6 +155,35 @@
 
 @layer base {
   * {
+  @layer utilities {
+  /* एनीमेशन वाला बैकग्राउंड क्लास */
+  .animate-mesh {
+    background-image: 
+      radial-gradient(at 0% 0%, oklch(0.70 0.12 70 / 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, oklch(0.70 0.12 70 / 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, oklch(0.70 0.12 70 / 0.08) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, oklch(0.70 0.12 70 / 0.05) 0px, transparent 50%);
+    background-size: 200% 200%;
+    animation: mesh-move 15s ease infinite;
+  }
+
+  @keyframes mesh-move {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+
+  /* धीरे-धीरे चमकने वाला इफेक्ट */
+  .animate-soft-glow {
+    animation: soft-pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes soft-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+  }
+  }
+    
     @apply border-border outline-ring/50;
   }
   body {
