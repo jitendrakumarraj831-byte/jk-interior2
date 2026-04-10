@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Phone, ArrowRight, Star, MapPin } from "lucide-react"
+import { Phone, ArrowRight, Star, MapPin, CheckCircle2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -32,117 +32,127 @@ export default function Hero() {
       ref={sectionRef}
       id="home"
       aria-label="JK Interior - Best False Ceiling and Interior Designer in Forbesganj, Araria, Bihar"
-      className="relative min-h-[90vh] w-full flex items-center justify-center overflow-hidden bg-[#0a0a0a]"
+      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#050505]"
     >
-      {/* Background with SEO Optimized Alt Text */}
+      {/* Background with Slow Zoom Animation */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-interior.jpg" 
           alt="Modern PVC False Ceiling and Gypsum Design by JK Interior Forbesganj Araria Bihar"
           fill
-          className="object-cover opacity-40 scale-105 animate-slow-zoom"
+          className="object-cover opacity-30 scale-105 animate-slow-zoom"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+        {/* Premium Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/85 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(184,134,11,0.15),transparent_50%)]" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center py-20">
+      <div className="container relative z-10 mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center py-24">
         
-        {/* Left Side: SEO Heavy Content */}
-        <div className="space-y-8">
-          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 backdrop-blur-md">
-              <MapPin className="w-3 h-3 text-amber-400" />
-              <span className="text-[10px] md:text-xs font-semibold uppercase tracking-widest text-amber-200">
-                 Forbesganj,Dumariya,Araria, Bihar
+        {/* Left Content Area */}
+        <div className="space-y-10">
+          <div className="reveal-effect opacity-0 -translate-x-10 transition-all duration-700">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/10 backdrop-blur-xl">
+              <MapPin className="w-4 h-4 text-gold" />
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gold-light">
+                 Forbesganj • Araria • Jogbani
               </span>
             </div>
           </div>
 
-          {/* Main H1 for SEO Ranking */}
-          <h1 className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-200 text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1]">
-            JK Interior – <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500">
-              Modern False Ceiling
-            </span> <br />
-            <span className="text-3xl md:text-5xl font-light text-gray-300">& Interior Solutions</span>
-          </h1>
-
-          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-300 space-y-5 max-w-xl">
-            <p className="text-lg md:text-xl text-amber-100 font-medium border-l-4 border-amber-500 pl-4">
-              Specialist in, PVC, Gypsum ,False Ceiling, WPC, Fluted,Wall Panels, & UV Marble Sheets.
-            </p>
+          <div className="space-y-6">
+            <h1 className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-200 text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[1.05] tracking-tight">
+              JK Interior <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-amber-200 to-gold-hover">
+                Luxury Spaces
+              </span>
+            </h1>
             
-            {/* Hindi Keywords for Local Search */}
-            <p className="text-gray-400 text-base md:text-lg leading-relaxed">
-              अगर आप **Forbesganj, Araria या Jogbani** में सबसे बेहतरीन **False Ceiling contractor** ढूंढ रहे हैं, तो **JK Interior** आपकी पहली पसंद है। हम देते हैं मज़बूत और प्रीमियम इंटीरियर वर्क।
-            </p>
+            <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-300 space-y-4 max-w-xl">
+              <p className="text-lg md:text-2xl text-amber-100/90 font-medium border-l-4 border-gold pl-5 italic">
+                Specialist in PVC, Gypsum, WPC Fluted & UV Marble Sheets.
+              </p>
+              <p className="text-gray-400 text-base md:text-lg leading-relaxed">
+                अगर आप बिहार में सबसे बेहतरीन **False Ceiling contractor** ढूंढ रहे हैं, तो **JK Interior** प्रीमियम और मज़बूत काम की गारंटी देता है।
+              </p>
+            </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-500 flex flex-wrap gap-4 pt-4">
-            <Button asChild size="lg" className="h-14 px-8 bg-gradient-to-r from-amber-500 to-amber-700 hover:opacity-90 text-white border-none shadow-xl transition-transform hover:scale-105">
-              <a href="tel:+918651070831" className="flex items-center gap-3 text-lg font-bold">
-                <Phone className="h-5 w-5" />
-                Get Free Quote / रेट जानें
+          {/* Feature Tags */}
+          <div className="reveal-effect opacity-0 translate-y-5 transition-all duration-700 delay-400 flex flex-wrap gap-x-6 gap-y-3">
+             {['Premium Quality', 'Best Rates', 'Fast Delivery'].map((item) => (
+               <div key={item} className="flex items-center gap-2 text-gray-300 text-sm font-medium">
+                 <CheckCircle2 className="w-4 h-4 text-gold" />
+                 {item}
+               </div>
+             ))}
+          </div>
+
+          {/* Interactive Buttons */}
+          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-500 flex flex-wrap gap-5 pt-4">
+            <Button asChild size="lg" className="h-16 px-10 bg-gold hover:bg-gold-hover text-black font-black text-lg rounded-full shadow-[0_15px_40px_-10px_rgba(184,134,11,0.4)] transition-all hover:-translate-y-1 group relative overflow-hidden">
+              <a href="tel:+918651070831" className="flex items-center gap-3">
+                <Phone className="h-5 w-5 fill-black" />
+                Get Free Quote
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </a>
             </Button>
             
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white">
-              <Link href="#services" className="flex items-center gap-2 text-lg">
-                Our Services <ArrowRight className="h-5 w-5" />
+            <Button asChild variant="outline" size="lg" className="h-16 px-10 border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white rounded-full group">
+              <Link href="#services" className="flex items-center gap-2 text-lg font-semibold">
+                View Services <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
         </div>
 
-        {/* Right Side: Visual Proof */}
-        <div className="reveal-effect opacity-0 scale-90 transition-all duration-1000 delay-700 hidden lg:block relative">
-          <div className="relative z-10 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+        {/* Right Content Area (Image Frame) */}
+        <div className="reveal-effect opacity-0 scale-95 transition-all duration-1000 delay-700 hidden lg:block relative group">
+          <div className="relative z-10 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl transition-all duration-700 group-hover:rotate-0 rotate-2">
             <Image 
               src="/images/hero-interior.jpg" 
-              width={600} 
-              height={700} 
+              width={650} 
+              height={800} 
               alt="Luxury Gypsum Ceiling Work by JK Interior Bihar"
-              className="object-cover"
+              className="object-cover aspect-[4/5] scale-110 group-hover:scale-100 transition-transform duration-1000"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
           </div>
           
-          {/* Experience Badge */}
-          <div className="absolute -bottom-6 -left-6 z-20 bg-[#1a1a1a] border border-amber-500/50 p-5 rounded-xl shadow-2xl flex items-center gap-4 animate-bounce-slow">
-             <div className="bg-amber-500/20 p-2 rounded-full border border-amber-500/50">
-                <Star className="text-amber-500 fill-amber-500 w-6 h-6" />
-             </div>
-             <div>
-                <p className="text-white font-bold text-lg leading-none">5+ Years</p>
-                <p className="text-amber-200/70 text-xs mt-1">Professional Experience</p>
+          {/* Floating Badge */}
+          <div className="absolute -bottom-10 -left-10 z-20 bg-[#111]/80 backdrop-blur-2xl border border-gold/30 p-7 rounded-3xl shadow-2xl animate-bounce-slow">
+             <div className="flex items-center gap-5">
+               <div className="bg-gold p-4 rounded-2xl shadow-lg shadow-gold/20">
+                  <Star className="text-black fill-black w-7 h-7" />
+               </div>
+               <div>
+                  <p className="text-white font-black text-3xl leading-none">5+ Years</p>
+                  <p className="text-gold-light/70 text-[10px] font-bold uppercase tracking-widest mt-2">Expert Craftsmanship</p>
+               </div>
              </div>
           </div>
+          
+          {/* Decorative Glow */}
+          <div className="absolute -top-10 -right-10 w-64 h-64 bg-gold/10 blur-[100px] rounded-full" />
         </div>
-      </div>
-
-      {/* Hidden SEO Text for Search Engines */}
-      <div className="sr-only">
-        Best interior designer in Forbesganj, Araria, Bihar. JK Interior provides PVC wall panels, 
-        Gypsum false ceiling, grid ceiling, and home renovation services in Narpatganj and Jogbani.
       </div>
 
       <style jsx>{`
         .reveal-visible {
           opacity: 1 !important;
-          transform: translateY(0) scale(1) !important;
+          transform: translate(0) scale(1) !important;
         }
         @keyframes slow-zoom {
           0%, 100% { transform: scale(1.05); }
-          50% { transform: scale(1.12); }
+          50% { transform: scale(1.15); }
         }
         .animate-slow-zoom {
-          animation: slow-zoom 20s infinite ease-in-out;
+          animation: slow-zoom 25s infinite ease-in-out;
         }
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
+          50% { transform: translateY(-12px); }
         }
         .animate-bounce-slow {
           animation: bounce-slow 4s infinite ease-in-out;
@@ -150,5 +160,4 @@ export default function Hero() {
       `}</style>
     </section>
   )
-      }
-              
+}
