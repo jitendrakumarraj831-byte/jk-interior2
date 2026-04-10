@@ -187,15 +187,25 @@ export default function Gallery() {
           </div>
 
           {!showAll && galleryImages.length > VISIBLE_COUNT && (
-            <div className="reveal mt-12 text-center opacity-0" style={{ animationDelay: '1s' }}>
-              <button
-                onClick={() => setShowAll(true)}
-                className="rounded-full bg-primary/10 px-6 py-2.5 text-sm font-medium uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-primary-foreground font-mono"
-              >
-                और देखें / See More ({galleryImages.length - VISIBLE_COUNT}+)
-              </button>
-            </div>
-          )}
+  <div className="flex justify-center mt-12 reveal">
+    <button
+      onClick={() => setShowAll(true)}
+      className="group relative flex items-center gap-3 px-10 py-4 bg-[#B8860B] text-white font-bold rounded-full shadow-xl shadow-amber-900/20 hover:bg-[#966d09] transition-all duration-300 active:scale-95 overflow-hidden"
+    >
+      {/* बटन टेक्स्ट */}
+      <span className="relative z-10">
+        और देखें / See More ({galleryImages.length - VISIBLE_COUNT}+)
+      </span>
+      
+      {/* आइकॉन (ChevronRight) */}
+      <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+      
+      {/* शाइनिंग इफेक्ट */}
+      <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+    </button>
+  </div>
+)}
+          
         </div>
       </section>
 
