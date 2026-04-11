@@ -198,12 +198,14 @@ export default function Services() {
         </article>
       ))}
     </div>
-  </div>
+      </div>
 
-  <style jsx>{`
-    .reveal-visible {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
-    }
-  `}</style>
-</section>
+      <style jsx>{`
+        .reveal-visible {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+        }
+      `}</style>
+    </section>
+  )
+}
