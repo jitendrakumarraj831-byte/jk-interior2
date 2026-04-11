@@ -10,7 +10,7 @@ import Gallery from "@/components/gallery"
  * (WhyUsJsonLdScript + GalleryJsonLdScript). Anchor ids #why-us and #gallery preserved.
  */
 export default function ExperienceSection() {
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLSectionElement | null>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],

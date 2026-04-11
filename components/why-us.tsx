@@ -13,7 +13,7 @@ import {
 import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
-export const whyUsReasons = [
+const whyUsReasons = [
   {
     icon: Briefcase,
     en: "5+ Years of Experience",
@@ -130,7 +130,7 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
 
         {layout === "experience" ? (
           <motion.div
-            className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin [-webkit-overflow-scrolling:touch]"
+            className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-luxury [-webkit-overflow-scrolling:touch]"
             variants={staggerContainer}
           >
             {whyUsReasons.map((reason) => (

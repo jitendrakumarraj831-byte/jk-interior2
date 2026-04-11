@@ -227,7 +227,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
           >
             {header}
             <motion.div
-              className="flex gap-4 overflow-x-auto pb-4 px-4 snap-x snap-mandatory [-webkit-overflow-scrolling:touch]"
+              className="flex gap-4 overflow-x-auto pb-4 px-4 snap-x snap-mandatory scrollbar-luxury [-webkit-overflow-scrolling:touch]"
               variants={staggerContainer}
             >
               {visibleImages.map((img, index) => (

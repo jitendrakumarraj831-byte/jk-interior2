@@ -1,7 +1,4 @@
-"use client"
-
-import { motion, type Variants } from "framer-motion"
-import type { ReactNode } from "react"
+import type { Variants } from "framer-motion"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -47,44 +44,4 @@ export const staggerContainer: Variants = {
   visible: {
     transition: { staggerChildren: 0.09, delayChildren: 0.06 },
   },
-}
-
-export function MotionView({
-  children,
-  className,
-  direction = "up",
-  delay = 0,
-}: {
-  children: ReactNode
-  className?: string
-  direction?: "up" | "left" | "right" | "fade"
-  delay?: number
-}) {
-  const initial =
-    direction === "left"
-      ? { opacity: 0, x: -28 }
-      : direction === "right"
-        ? { opacity: 0, x: 28 }
-        : direction === "fade"
-          ? { opacity: 0 }
-          : { opacity: 0, y: 36 }
-
-  const animate =
-    direction === "left" || direction === "right"
-      ? { opacity: 1, x: 0 }
-      : direction === "fade"
-        ? { opacity: 1 }
-        : { opacity: 1, y: 0 }
-
-  return (
-    <motion.div
-      className={className}
-      initial={initial}
-      whileInView={animate}
-      viewport={{ once: true, amount: 0.12, margin: "0px 0px -80px 0px" }}
-      transition={{ duration: 0.65, ease: easeLux, delay }}
-    >
-      {children}
-    </motion.div>
-  )
 }
