@@ -107,7 +107,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-  <body className="font-mono antialiased min-h-screen bg-background text-foreground">
+  <body className="font-mono min-h-screen bg-background text-foreground antialiased selection:bg-gold/25 selection:text-foreground">
     <AnimatedAura />
     <div className="relative z-10 min-h-screen">
 
