@@ -54,8 +54,8 @@ export default function Hero() {
       id="home"
       className="relative min-h-[100dvh] w-full overflow-hidden bg-[#0A0A0B] pt-24 sm:pt-28"
     >
-      <div className="absolute inset-0 z-0 animate-mesh opacity-60" />
-      <div className="floating-blob absolute top-[15%] right-[-10%] w-[min(90vw,520px)] h-[min(90vw,520px)] bg-gold/12 rounded-full blur-[120px] z-0" />
+      <div className="absolute inset-0 z-0 animate-mesh opacity-40 md:opacity-55" />
+      <div className="floating-blob absolute top-[15%] right-[-10%] z-0 hidden h-[min(90vw,520px)] w-[min(90vw,520px)] rounded-full bg-gold/10 blur-[72px] md:block md:bg-gold/12 md:blur-[100px]" />
 
       <div className="relative z-10 grid min-h-[calc(100dvh-5.5rem)] grid-cols-1 lg:grid-cols-2">
         {/* Left: vertical typographic stack + stagger */}
@@ -159,7 +159,7 @@ export default function Hero() {
                 initial={{ opacity: 0, scale: 1.04 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.55, ease: easeLux }}
+                transition={{ duration: 0.35, ease: easeLux }}
                 className="absolute inset-0"
               >
                 <Image
@@ -168,6 +168,7 @@ export default function Hero() {
                   fill
                   className="object-cover"
                   priority={index === 0}
+                  quality={index === 0 ? 82 : 72}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/90 via-[#0A0A0B]/20 to-transparent" />

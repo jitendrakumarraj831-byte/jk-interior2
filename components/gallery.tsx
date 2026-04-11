@@ -244,9 +244,9 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                     alt={img.alt}
                     fill
                     sizes="340px"
-                    quality={60}
-                    priority={index < 3}
-                    loading={index < 3 ? "eager" : "lazy"}
+                    quality={index < 3 ? 62 : 52}
+                    priority={index < 2}
+                    loading={index < 2 ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/80 to-transparent opacity-80" />
@@ -291,9 +291,9 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                     alt={img.alt}
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    quality={60}
-                    priority={index < 4}
-                    loading={index < 4 ? "eager" : "lazy"}
+                    quality={index < 4 ? 58 : 50}
+                    priority={index < 2}
+                    loading={index < 2 ? "eager" : "lazy"}
                     decoding="async"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />

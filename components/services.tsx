@@ -135,6 +135,7 @@ export default function Services() {
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
                     sizes="(max-width:768px) 100vw, 50vw"
                     loading="lazy"
+                    quality={index === 0 ? 78 : 68}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/40 to-transparent" />
                   <div className="absolute left-4 top-4 rounded-xl border border-gold/25 glass-panel p-2.5 text-gold">
