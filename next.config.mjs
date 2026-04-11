@@ -3,6 +3,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   images: {
     // unoptimized: true, <--- इस लाइन को हटा दें या false करें
     unoptimized: false, 
