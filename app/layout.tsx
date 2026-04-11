@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import AnimatedAura from '@/components/animated-aura'
 import './globals.css'
 
 const playfair = Playfair_Display({
@@ -94,7 +95,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#faf7f2',
+  themeColor: '#0A0A0B',
   width: 'device-width',
   initialScale: 1,
 }
@@ -106,7 +107,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-  <body className="font-mono antialiased">
+  <body className="font-mono antialiased min-h-screen bg-background text-foreground">
+    <AnimatedAura />
+    <div className="relative z-10 min-h-screen">
 
     {/* SEO Schema (Google ke liye) */}
     <script
@@ -133,6 +136,7 @@ export default function RootLayout({
     {children}
 
     <Analytics />
+    </div>
   </body>
 </html>
   )
