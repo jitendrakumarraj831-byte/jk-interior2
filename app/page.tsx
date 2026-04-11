@@ -1,10 +1,26 @@
+import dynamic from "next/dynamic"
 import Navbar from "@/components/navbar"
 import Hero from "@/components/hero"
-import Services from "@/components/services"
-import ExperienceSection from "@/components/experience-section"
-import ServiceAreas from "@/components/service-areas"
-import Contact from "@/components/contact"
-import Footer from "@/components/footer"
+
+const Services = dynamic(() => import("@/components/services"), {
+  loading: () => <div className="min-h-[28rem] bg-[#0A0A0B]" aria-hidden />,
+})
+
+const ExperienceSection = dynamic(() => import("@/components/experience-section"), {
+  loading: () => <div className="min-h-[24rem] bg-[#0A0A0B]" aria-hidden />,
+})
+
+const ServiceAreas = dynamic(() => import("@/components/service-areas"), {
+  loading: () => <div className="min-h-[20rem] bg-surface-alt" aria-hidden />,
+})
+
+const Contact = dynamic(() => import("@/components/contact"), {
+  loading: () => <div className="min-h-[24rem] bg-[#0A0A0B]" aria-hidden />,
+})
+
+const Footer = dynamic(() => import("@/components/footer"), {
+  loading: () => <div className="h-32 bg-surface-alt" aria-hidden />,
+})
 
 // ✅ SEO Metadata (sirf add hua hai, niche code same hai)
 export const metadata = {

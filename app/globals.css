@@ -166,6 +166,56 @@
   }
 }
 
+@keyframes aura-drift-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(48px, 36px) scale(1.06);
+  }
+}
+
+@keyframes aura-drift-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1.02);
+  }
+  50% {
+    transform: translate(-40px, -28px) scale(1.08);
+  }
+}
+
+@keyframes aura-pulse-soft {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aura-orb-1,
+  .aura-orb-2,
+  .aura-orb-3,
+  .floating-blob,
+  .animate-mesh,
+  .animate-soft-glow {
+    animation: none !important;
+  }
+
+  .aura-orb-1,
+  .aura-orb-2,
+  .aura-orb-3 {
+    transform: none !important;
+    opacity: 0.35 !important;
+  }
+}
+
 @layer utilities {
   .animate-fade-up {
     animation: fade-up 0.8s ease-out forwards;
@@ -366,6 +416,19 @@
 
   .floating-blob {
     animation: float 14s ease-in-out infinite;
+  }
+
+  .aura-orb-1 {
+    animation: aura-drift-1 22s ease-in-out infinite;
+  }
+
+  .aura-orb-2 {
+    animation: aura-drift-2 26s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  .aura-orb-3 {
+    animation: aura-pulse-soft 14s ease-in-out infinite;
   }
 
   .scrollbar-luxury {
