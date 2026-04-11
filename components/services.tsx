@@ -1,8 +1,10 @@
 "use client"
 
-import { useEffect, useRef } from "react"
 import { Check, Info, Layout, Layers, Box, Maximize, MapPin, Sparkles } from "lucide-react"
 import Image from "next/image"
+import { motion } from "framer-motion"
+import { BentoGrid } from "@/components/Layout/BentoGrid"
+import { fadeSlideUp, staggerContainer } from "@/components/motion-reveal"
 
 const services = [
   {
@@ -70,142 +72,110 @@ const services = [
     image: "/images/tv-unit.jpg",
     alt: "Modern TV unit design Forbesganj",
     icon: <Layout className="w-5 h-5" />,
-  }
+  },
+]
+
+const bentoSpans = [
+  "md:col-span-8 md:row-span-2 min-h-[280px] md:min-h-[420px]",
+  "md:col-span-4 min-h-[200px]",
+  "md:col-span-4 min-h-[200px]",
+  "md:col-span-4 min-h-[240px]",
+  "md:col-span-4 min-h-[240px]",
+  "md:col-span-4 min-h-[240px]",
 ]
 
 export default function Services() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("reveal-visible")
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    const elements = sectionRef.current?.querySelectorAll(".reveal-card")
-    elements?.forEach((el) => observer.observe(el))
-
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <section
-  ref={sectionRef}
-  id="services"
-  className="bg-background py-32 overflow-hidden relative"
->
-  {/* subtle glow */}
-  <div className="absolute -top-32 -left-32 h-96 w-96 bg-gold/10 blur-3xl rounded-full animate-soft-glow" />
-  <div className="absolute bottom-0 right-0 h-96 w-96 bg-gold/10 blur-3xl rounded-full animate-soft-glow" />
+      id="services"
+      className="relative overflow-hidden bg-[#0A0A0B] py-28 scroll-mt-28"
+    >
+      <div className="absolute -top-40 -left-40 h-[28rem] w-[28rem] rounded-full bg-gold/10 blur-3xl" />
+      <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-gold/10 blur-3xl" />
 
-  <div className="mx-auto max-w-7xl px-6">
-    
-    {/* Header */}
-    <header className="mb-20 text-center space-y-4">
-      <div className="flex justify-center">
-        <span className="px-4 py-1.5 rounded-full border border-gold/30 bg-gold/10 text-gold text-[10px] uppercase tracking-widest font-bold">
-          Our Expertise / हमारी विशेषज्ञता
-        </span>
-      </div>
-
-      <h2 className="text-4xl md:text-6xl font-black text-foreground">
-        Premium <span className="text-gold">Interior</span> Services
-      </h2>
-
-      <p className="mx-auto max-w-2xl text-muted-foreground text-sm md:text-lg">
-        JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
-      </p>
-    </header>
-
-    {/* Grid */}
-    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {services.map((service, index) => (
-        <article
-          key={service.title}
-          className="reveal-card group relative bg-card/70 backdrop-blur-xl border border-border/50 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-gold/40 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold/10 opacity-0 translate-y-10"
-          style={{ transitionDelay: `${index * 100}ms` }}
-        >
-          {/* Image */}
-          <div className="relative h-64 overflow-hidden">
-            <Image
-              src={service.image}
-              alt={service.alt}
-              fill
-              className="object-cover transition-transform duration-1000 group-hover:scale-110"
-              loading="lazy"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-
-            {/* Icon */}
-            <div className="absolute top-6 left-6 p-3 bg-background/60 backdrop-blur-xl border border-border rounded-2xl text-gold shadow-lg">
-              {service.icon}
-            </div>
+      <motion.div
+        className="relative z-10 mx-auto max-w-7xl px-6"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.06 }}
+        variants={staggerContainer}
+      >
+        <motion.header className="mb-16 space-y-4 text-center" variants={fadeSlideUp}>
+          <div className="flex justify-center">
+            <span className="rounded-full border border-gold/30 glass-panel px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">
+              Our Expertise / हमारी विशेषज्ञता
+            </span>
           </div>
+          <h2 className="text-4xl font-black text-foreground md:text-6xl">
+            Premium <span className="gold-text">Interior</span> Services
+          </h2>
+          <p className="mx-auto max-w-2xl text-sm text-muted-foreground md:text-lg">
+            JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत
+            सोल्यूशन्स प्रदान करता है।
+          </p>
+        </motion.header>
 
-          {/* Content */}
-          <div className="p-8 space-y-6">
-            <div>
-              <h3 className="text-2xl font-bold text-foreground mb-1 group-hover:text-gold transition-colors">
-                {service.title}
-              </h3>
-
-              <p className="text-gold-light/70 text-xs font-bold uppercase tracking-widest italic">
-                {service.titleHi}
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              
-              <div className="flex gap-3">
-                <div className="mt-1">
-                  <MapPin className="w-3.5 h-3.5 text-gold" />
+        <BentoGrid
+          items={services.map((service, index) => ({
+            id: service.title,
+            className: bentoSpans[index],
+            children: (
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-gold/20 glass-panel shadow-lg transition-all duration-500 hover:border-gold/45 hover:shadow-[0_0_40px_-10px_rgba(201,162,74,0.35)]">
+                <div
+                  className={
+                    index === 0
+                      ? "relative min-h-[200px] flex-1 md:min-h-0"
+                      : "relative h-44 shrink-0 md:h-40"
+                  }
+                >
+                  <Image
+                    src={service.image}
+                    alt={service.alt}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                    sizes="(max-width:768px) 100vw, 50vw"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/40 to-transparent" />
+                  <div className="absolute left-4 top-4 rounded-xl border border-gold/25 glass-panel p-2.5 text-gold">
+                    {service.icon}
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-                  <span className="text-foreground">उपयोग:</span> {service.useCase}
-                </p>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="mt-1">
-                  <Info className="w-3.5 h-3.5 text-gold" />
+                <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground transition-colors group-hover:text-gold md:text-xl">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs font-bold uppercase italic tracking-wider text-gold-light/80">
+                      {service.titleHi}
+                    </p>
+                  </div>
+                  <div className="space-y-2.5 text-sm">
+                    <p className="flex gap-2 text-muted-foreground">
+                      <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                      <span>
+                        <span className="text-foreground">उपयोग:</span> {service.useCase}
+                      </span>
+                    </p>
+                    <p className="flex gap-2 text-muted-foreground">
+                      <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                      <span>
+                        <span className="text-foreground">खासियत:</span> {service.specialty}
+                      </span>
+                    </p>
+                    <p className="flex gap-2 text-muted-foreground">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                      <span>
+                        <span className="text-foreground">फायदा:</span> {service.benefit}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-                  <span className="text-foreground">खासियत:</span> {service.specialty}
-                </p>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="mt-1">
-                  <Check className="w-3.5 h-3.5 text-gold" />
-                </div>
-                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
-                  <span className="text-foreground">फायदा:</span> {service.benefit}
-                </p>
-              </div>
-
-            </div>
-
-            {/* Glow */}
-            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-        </article>
-      ))}
-    </div>
-      </div>
-
-      <style jsx>{`
-        .reveal-visible {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
-      `}</style>
+              </article>
+            ),
+          }))}
+        />
+      </motion.div>
     </section>
   )
 }

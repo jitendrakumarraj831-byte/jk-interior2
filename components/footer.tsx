@@ -1,14 +1,26 @@
+"use client"
+
 import Image from "next/image"
 import { Phone, Mail, MapPin } from "lucide-react"
+import { motion } from "framer-motion"
+import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
 export default function Footer() {
   return (
-     <footer className="border-t border-border bg-surface-alt py-12">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="grid gap-8 md:grid-cols-3">
-
-          {/* Brand */}
-          <div>
+    <footer className="border-t border-gold/15 bg-surface-alt py-12 relative overflow-hidden">
+      <div className="absolute bottom-0 right-0 w-96 h-48 bg-gold/5 blur-3xl rounded-full pointer-events-none" />
+      <motion.div
+        className="mx-auto max-w-7xl px-4 relative z-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerContainer}
+      >
+        <motion.div
+          className="grid gap-8 md:grid-cols-3"
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeSlideUpItem}>
             <div className="mb-4">
               <Image
                 src="/logo.png"
@@ -19,7 +31,7 @@ export default function Footer() {
               />
             </div>
 
-            <p className="text-[10px] uppercase tracking-widest text-primary font-mono">
+            <p className="text-[10px] uppercase tracking-widest text-gold font-mono">
               Modern Interior & Ceiling
             </p>
 
@@ -30,11 +42,10 @@ export default function Footer() {
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground font-mono">
               बिहार में प्रीमियम इंटीरियर डिजाइन और सीलिंग समाधान।
             </p>
-          </div>
+          </motion.div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-primary font-mono">
+          <motion.div variants={fadeSlideUpItem}>
+            <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-gold font-mono">
               Quick Links
             </h4>
             <nav className="flex flex-col gap-2">
@@ -49,59 +60,60 @@ export default function Footer() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-primary font-mono"
+                  className="text-sm text-muted-foreground transition-colors hover:text-gold font-mono"
                 >
                   {link.label}
                 </a>
               ))}
             </nav>
-          </div>
+          </motion.div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-primary font-mono">
+          <motion.div variants={fadeSlideUpItem}>
+            <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-gold font-mono">
               Contact
             </h4>
             <div className="flex flex-col gap-3">
               <a
                 href="tel:+918651070831"
-                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary font-mono"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold font-mono"
               >
-                <Phone className="h-3.5 w-3.5 text-primary" />
+                <Phone className="h-3.5 w-3.5 text-gold" />
                 +91 8651070831
               </a>
               <a
                 href="tel:+918541849118"
-                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary font-mono"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold font-mono"
               >
-                <Phone className="h-3.5 w-3.5 text-primary" />
+                <Phone className="h-3.5 w-3.5 text-gold" />
                 +91 8541849118
               </a>
               <a
                 href="mailto:jkinteriorofficial@gmail.com"
-                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary font-mono"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-gold font-mono"
               >
-                <Mail className="h-3.5 w-3.5 text-primary" />
+                <Mail className="h-3.5 w-3.5 text-gold" />
                 jkinteriorofficial@gmail.com
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground font-mono">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
                 <span>Forbesganj Dumariya, Bihar</span>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
+        <motion.div
+          variants={fadeSlideUp}
+          className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gold/15 pt-8 md:flex-row"
+        >
           <p className="text-xs text-muted-foreground font-mono">
             {`© ${new Date().getFullYear()} JK Interior. All rights reserved.`}
           </p>
           <p className="text-xs text-muted-foreground font-mono">
             Designed with care for your dream interiors.
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </footer>
   )
 }

@@ -3,6 +3,8 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Phone, Mail, Menu, X, MapPin } from "lucide-react"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 const navLinks = [
   { href: "#home", label: "Home", labelHi: "होम" },
@@ -17,123 +19,150 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  // स्क्रॉल करने पर नेवबार का स्टाइल बदलने के लिए
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener("scroll", handleScroll)
+    const handleScroll = () => setScrolled(window.scrollY > 24)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
-    <>
-      {/* 1. प्रीमियम टॉप बार */}
-      <div className="bg-background/80 backdrop-blur-md border-b border-gold/10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-6 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest">
-          <div className="flex items-center gap-6">
-            <a href="tel:+918651070831" className="flex items-center gap-2 text-gold transition-all hover:scale-105">
-              <Phone className="h-3 w-3 fill-gold" />
-              <span>+91 8651070831</span>
-            </a>
-            <a href="mailto:jkinteriorofficial@gmail.com" className="hidden items-center gap-2 text-muted-foreground transition-colors hover:text-gold sm:flex">
-              <Mail className="h-3 w-3" />
-              <span>jkinteriorofficial@gmail.com</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground/80">
-            <MapPin className="h-3 w-3 text-gold" />
-            <span>Bihar • Forbesganj</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. मेन नेविगेशन (Glassmorphism Style) */}
-      <nav 
-        className={`sticky top-0 z-50 transition-all duration-500 ${
-          scrolled 
-          ? "bg-background/80 backdrop-blur-xl border-b border-gold/20 py-2 shadow-2xl shadow-gold/5" 
-          : "bg-transparent py-4"
-        }`}
+    <header
+      className={cn(
+        "fixed left-0 right-0 z-50 flex justify-center px-3 sm:px-4 pointer-events-none",
+        scrolled ? "top-2 sm:top-3" : "top-4 sm:top-6",
+      )}
+    >
+      <motion.nav
+        layout
+        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+        className={cn(
+          "pointer-events-auto w-full max-w-5xl rounded-full border border-gold/25 glass-panel shadow-[0_8px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl px-2 py-2 sm:px-4 sm:py-2.5",
+          scrolled && "border-gold/35 shadow-[0_12px_48px_rgba(201,162,74,0.12)]",
+        )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
-          
-          {/* Logo with Glow */}
-          <Link href="/" className="relative group">
-            <div className="absolute -inset-2 bg-gold/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="flex items-center justify-between gap-2">
+          <Link href="/" className="relative group shrink-0 pl-1">
+            <div className="absolute -inset-1 rounded-full bg-gold/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
             <Image
               src="/logo.png"
               alt="JK Interior Logo"
-              width={180}
-              height={60}
-              className="relative object-contain h-12 w-auto md:h-14 transition-transform group-hover:scale-105"
+              width={160}
+              height={52}
+              className="relative h-9 w-auto sm:h-10 object-contain"
               priority
             />
           </Link>
 
-          {/* Desktop Links - Modern Spacing & Hover */}
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
             {navLinks.map((link) => (
-              <a 
-                key={link.href} 
+              <a
+                key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-gold transition-all relative group"
+                className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-gold transition-colors rounded-full hover:bg-white/[0.04]"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all group-hover:w-full" />
               </a>
             ))}
           </div>
 
-          {/* WhatsApp Action Button */}
-          <div className="hidden lg:block">
+          <div className="hidden md:flex items-center gap-2 shrink-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <a
+              href="tel:+918651070831"
+              className="flex items-center gap-1.5 rounded-full border border-gold/20 bg-white/[0.03] px-2.5 py-1.5 text-gold hover:border-gold/40 transition-colors"
+            >
+              <Phone className="h-3 w-3 fill-gold shrink-0" />
+              <span className="hidden xl:inline">+91 8651070831</span>
+            </a>
+            <a
+              href="mailto:jkinteriorofficial@gmail.com"
+              className="hidden xl:flex items-center gap-1 rounded-full px-2 py-1.5 hover:text-gold transition-colors"
+              title="jkinteriorofficial@gmail.com"
+            >
+              <Mail className="h-3 w-3 shrink-0" />
+            </a>
+            <span className="hidden 2xl:flex items-center gap-1 text-gold/70">
+              <MapPin className="h-3 w-3" />
+              Bihar • Forbesganj
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
             <a
               href="https://wa.me/918651070831"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gold text-background px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-tighter hover:bg-gold-hover hover:scale-105 transition-all shadow-lg shadow-gold/20"
+              className="hidden sm:inline-flex gold-gradient text-primary-foreground text-[10px] sm:text-xs font-black uppercase tracking-tight px-4 py-2 rounded-full btn-luxury-glow luxury-animated-shine"
             >
-              WhatsApp Us
+              WhatsApp
             </a>
+            <button
+              type="button"
+              onClick={() => setMobileOpen((o) => !o)}
+              className="lg:hidden p-2 rounded-full border border-gold/25 text-gold glass-panel"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
-
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 rounded-xl bg-gold/10 border border-gold/20 text-gold lg:hidden"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
         </div>
 
-        {/* Mobile Menu - Modern Animated Slide */}
-        {mobileOpen && (
-          <div className="absolute top-full left-0 w-full border-t border-gold/10 bg-background/95 backdrop-blur-2xl px-6 pb-10 pt-6 lg:hidden animate-in fade-in slide-in-from-top-5 duration-300">
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden overflow-hidden border-t border-gold/15 mt-2 pt-3"
+            >
+              <div className="flex flex-col gap-4 pb-2 max-h-[70vh] overflow-y-auto">
+                <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase">
+                  <a
+                    href="tel:+918651070831"
+                    className="inline-flex items-center gap-2 text-gold"
+                  >
+                    <Phone className="h-3 w-3 fill-gold" />
+                    +91 8651070831
+                  </a>
+                  <a
+                    href="mailto:jkinteriorofficial@gmail.com"
+                    className="inline-flex items-center gap-2 text-muted-foreground"
+                  >
+                    <Mail className="h-3 w-3" />
+                    jkinteriorofficial@gmail.com
+                  </a>
+                  <span className="flex items-center gap-1 text-muted-foreground w-full sm:w-auto">
+                    <MapPin className="h-3 w-3 text-gold" />
+                    Bihar • Forbesganj
+                  </span>
+                </div>
+                {navLinks.map((link, i) => (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.04 * i }}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex flex-col border-b border-gold/10 pb-3"
+                  >
+                    <span className="text-lg font-black text-foreground">{link.label}</span>
+                    <span className="text-xs text-gold/60">{link.labelHi}</span>
+                  </motion.a>
+                ))}
                 <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex flex-col group"
+                  href="https://wa.me/918651070831"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="gold-gradient text-center rounded-2xl py-3.5 text-base font-black text-primary-foreground btn-luxury-glow luxury-animated-shine"
                 >
-                  <span className="text-xl font-black text-foreground group-hover:text-gold transition-colors">{link.label}</span>
-                  <span className="text-xs text-gold/60 font-medium">{link.labelHi}</span>
+                  Let&apos;s Chat on WhatsApp
                 </a>
-              ))}
-              <a
-                href="https://wa.me/918651070831"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gold mt-4 rounded-2xl px-5 py-4 text-center text-lg font-black text-background shadow-xl shadow-gold/20"
-              >
-                Let's Chat on WhatsApp
-              </a>
-            </div>
-          </div>
-        )}
-      </nav>
-    </>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </header>
   )
 }

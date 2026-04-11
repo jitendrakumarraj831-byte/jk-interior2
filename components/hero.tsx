@@ -1,149 +1,215 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { Phone, ArrowRight, Star, MapPin } from "lucide-react"
+import { useEffect, useState, useCallback } from "react"
+import { Phone, ArrowRight, ChevronLeft, ChevronRight, MapPin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
+const easeLux = [0.22, 1, 0.36, 1] as const
+
+const heroSlides = [
+  { src: "/images/hero-interior.jpg", alt: "Modern PVC False Ceiling Design" },
+  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum false ceiling design in Forbesganj Bihar" },
+  { src: "/images/pvc-ceiling.jpg", alt: "PVC ceiling panel installation Forbesganj" },
+  { src: "/images/wpc-louvers.jpg", alt: "WPC louvers wall panel design Forbesganj" },
+  { src: "/images/tv-unit.jpg", alt: "Modern TV unit design Forbesganj" },
+]
+
+const letterContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.15 },
+  },
+}
+
+const letterItem = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: easeLux },
+  },
+}
+
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const [index, setIndex] = useState(0)
+
+  const next = useCallback(() => {
+    setIndex((i) => (i + 1) % heroSlides.length)
+  }, [])
+
+  const prev = useCallback(() => {
+    setIndex((i) => (i - 1 + heroSlides.length) % heroSlides.length)
+  }, [])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("reveal-visible")
-          }
-        });
-      },
-      { threshold: 0.1 }
-    )
-    const elements = sectionRef.current?.querySelectorAll(".reveal-effect")
-    elements?.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+    const t = setInterval(next, 5200)
+    return () => clearInterval(t)
+  }, [next])
 
   return (
     <section
-      ref={sectionRef}
       id="home"
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background"
+      className="relative min-h-[100dvh] w-full overflow-hidden bg-[#0A0A0B] pt-24 sm:pt-28"
     >
-      {/* --- नया डिजाइन एलीमेंट्स --- */}
-      
-      {/* 1. मेश एनीमेशन लेयर (आपकी CSS से) */}
       <div className="absolute inset-0 z-0 animate-mesh opacity-60" />
+      <div className="floating-blob absolute top-[15%] right-[-10%] w-[min(90vw,520px)] h-[min(90vw,520px)] bg-gold/12 rounded-full blur-[120px] z-0" />
 
-      {/* 2. फ्लोटिंग ब्लॉब्स (प्रीमियम लुक के लिए) */}
-      <div className="floating-blob absolute top-[10%] left-[-5%] w-72 h-72 bg-gold/10 rounded-full blur-[100px] z-0" />
-      <div className="floating-blob absolute bottom-[10%] right-[-5%] w-96 h-96 bg-gold/5 rounded-full blur-[120px] z-0" />
-
-      {/* 3. इमेज बैकग्राउंड को थोड़ा डार्क और ब्लर किया गया है ताकि मेश दिखे */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-interior.jpg"
-          alt="Modern PVC False Ceiling Design"
-          fill
-          className="object-cover opacity-20 scale-105 animate-slow-zoom grayscale-[50%]"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
-      </div>
-
-      <div className="container relative z-10 mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center py-24">
-
-        {/* --- लेफ्ट साइड --- */}
-        <div className="space-y-10">
-          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700">
-            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-gold/30 bg-gold/5 backdrop-blur-xl animate-soft-glow">
-              <MapPin className="w-4 h-4 text-gold" />
-              <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-gold">
-                 Forbesganj • Araria • Bihar
-              </span>
-            </div>
-          </div>
-
-          <h1 className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-200 text-6xl md:text-8xl lg:text-9xl font-black text-foreground leading-[0.9] tracking-tighter">
-            JK <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-gold-light to-gold-hover drop-shadow-sm">
-              INTERIOR
+      <div className="relative z-10 grid min-h-[calc(100dvh-5.5rem)] grid-cols-1 lg:grid-cols-2">
+        {/* Left: vertical typographic stack + stagger */}
+        <div className="flex flex-col justify-center px-6 py-12 lg:pl-12 lg:pr-8 xl:pl-20">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: easeLux }}
+            className="mb-8 inline-flex w-fit items-center gap-2 rounded-full glass-panel border-gold/25 px-4 py-2"
+          >
+            <MapPin className="h-3.5 w-3.5 text-gold shrink-0" />
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-gold">
+              Forbesganj • Araria • Bihar
             </span>
-          </h1>
+          </motion.div>
 
-          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-300 space-y-6 max-w-xl">
-            <p className="text-xl md:text-2xl text-foreground font-light tracking-wide italic">
-              "छत आपकी, <span className="text-gold font-bold">पहचान हमारी</span>"
-            </p>
+          <div className="flex flex-row items-start gap-4 md:gap-8">
+            <motion.div
+              className="flex flex-col"
+              variants={letterContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              {["J", "K"].map((ch) => (
+                <motion.span
+                  key={ch}
+                  variants={letterItem}
+                  className="font-black leading-[0.85] text-foreground text-[clamp(3.5rem,12vw,7rem)] tracking-tighter"
+                >
+                  {ch}
+                </motion.span>
+              ))}
+            </motion.div>
 
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed border-l-2 border-gold/30 pl-6">
-               हम सिर्फ छत नहीं, <span className="text-foreground font-medium">प्रीमियम लाइफस्टाइल</span> बनाते हैं। PVC पैनलिंग और Gypsum डिजाइन में बिहार का नंबर 1 भरोसा।
-            </p>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.35, duration: 0.65, ease: easeLux }}
+              className="flex min-h-[min(60vh,420px)] items-center"
+            >
+              <h1
+                className="gold-text font-black tracking-[0.2em] text-[clamp(2rem,5vw,3.25rem)] [writing-mode:vertical-rl] rotate-180"
+                style={{ textOrientation: "mixed" }}
+              >
+                INTERIOR
+              </h1>
+            </motion.div>
           </div>
 
-          {/* एक्शन बटन्स - अब और भी प्रीमियम */}
-          <div className="reveal-effect opacity-0 translate-y-10 transition-all duration-700 delay-500 flex flex-wrap gap-5 pt-4">
-            <Button asChild size="lg" className="h-16 px-10 bg-gold hover:bg-gold-hover text-background font-black text-lg rounded-2xl shadow-[0_20px_50px_rgba(212,175,55,0.3)] transition-all hover:scale-105 group relative overflow-hidden border-none">
-              <a href="tel:+918651070831" className="flex items-center gap-3">
-                <Phone className="h-6 w-6 fill-background" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6, ease: easeLux }}
+            className="mt-10 max-w-lg space-y-5"
+          >
+            <p className="text-lg md:text-xl text-foreground font-light tracking-wide italic">
+              &quot;छत आपकी, <span className="text-gold font-bold">पहचान हमारी</span>&quot;
+            </p>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed border-l-2 border-gold/35 pl-5">
+              हम सिर्फ छत नहीं,{" "}
+              <span className="text-foreground font-medium">प्रीमियम लाइफस्टाइल</span>{" "}
+              बनाते हैं। PVC पैनलिंग और Gypsum डिजाइन में बिहार का नंबर 1 भरोसा।
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65, duration: 0.55, ease: easeLux }}
+            className="mt-10 flex flex-wrap gap-4"
+          >
+            <Button
+              asChild
+              size="lg"
+              className="h-14 px-8 font-black text-base rounded-full border-none luxury-animated-shine"
+            >
+              <a href="tel:+918651070831" className="flex items-center gap-2">
+                <Phone className="h-5 w-5 fill-primary-foreground" />
                 प्रीमियम कोटेशन
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </a>
             </Button>
-
-            <Button asChild variant="outline" size="lg" className="h-16 px-10 border-gold/20 bg-gold/5 backdrop-blur-md hover:bg-gold/10 hover:border-gold/50 text-gold rounded-2xl transition-all">
-              <Link href="#services" className="flex items-center gap-2 text-lg font-bold">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-14 px-8 rounded-full font-bold luxury-animated-shine luxury-animated-shine--subtle"
+            >
+              <Link href="#services" className="flex items-center gap-2 text-base">
                 डिज़ाइन देखें <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
 
-        {/* --- राइट साइड (विजुअल प्रूफ) --- */}
-        <div className="reveal-effect opacity-0 scale-95 transition-all duration-1000 delay-700 relative group">
-          {/* ग्लो इफेक्ट पीछे */}
-          <div className="absolute -inset-4 bg-gold/20 rounded-[40px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          
-          <div className="relative z-10 rounded-[30px] overflow-hidden border border-gold/20 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]">
-            <Image
-              src="/images/hero-interior.jpg"
-              width={600}
-              height={750}
-              alt="Premium Interior Work"
-              className="object-cover w-full h-auto"
-              priority
-            />
-            {/* इमेज के ऊपर हल्का डार्क ग्रेडिएंट */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60" />
-          </div>
+        {/* Right: interactive slider */}
+        <div className="relative flex min-h-[320px] lg:min-h-0 items-stretch p-4 sm:p-6 lg:p-10 lg:pl-4">
+          <div className="relative w-full overflow-hidden rounded-[2rem] border border-gold/20 glass-panel shadow-2xl shadow-black/50">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={heroSlides[index].src}
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.55, ease: easeLux }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={heroSlides[index].src}
+                  alt={heroSlides[index].alt}
+                  fill
+                  className="object-cover"
+                  priority={index === 0}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/90 via-[#0A0A0B]/20 to-transparent" />
+              </motion.div>
+            </AnimatePresence>
 
-          {/* एक्सपीरियंस बैज - मॉडर्न स्टाइल */}
-          <div className="absolute -bottom-6 -left-6 z-20 bg-background/80 backdrop-blur-2xl border border-gold/30 p-5 rounded-[24px] shadow-2xl flex items-center gap-4 animate-soft-glow">
-             <div className="bg-gold p-3 rounded-2xl shadow-lg shadow-gold/30">
-                <Star className="text-background fill-background w-6 h-6" />
-             </div>
-             <div>
-                <p className="text-foreground font-black text-2xl leading-none">5+ Years</p>
-                <p className="text-gold text-[10px] font-bold uppercase mt-1 tracking-[0.2em]">Experience</p>
-             </div>
+            <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between gap-3 p-5 sm:p-6">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={prev}
+                  className="rounded-full border border-gold/30 bg-black/40 p-2.5 text-gold backdrop-blur-md hover:bg-black/60 transition-colors"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={next}
+                  className="rounded-full border border-gold/30 bg-black/40 p-2.5 text-gold backdrop-blur-md hover:bg-black/60 transition-colors"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="flex gap-1.5">
+                {heroSlides.map((_, i) => (
+                  <button
+                    key={heroSlides[i].src}
+                    type="button"
+                    onClick={() => setIndex(i)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      i === index ? "w-8 bg-gold" : "w-2 bg-white/25 hover:bg-white/40"
+                    }`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-       .reveal-visible {
-          opacity: 1!important;
-          transform: translateY(0) scale(1)!important;
-        }
-        @keyframes slow-zoom {
-          0%, 100% { transform: scale(1.05); }
-          50% { transform: scale(1.15); }
-        }
-       .animate-slow-zoom {
-          animation: slow-zoom 20s infinite ease-in-out;
-        }
-      `}</style>
     </section>
   )
 }
