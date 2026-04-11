@@ -95,100 +95,115 @@ export default function Services() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="services" className="bg-[#0a0a0a] py-32 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6">
-        
-        {/* Header Section */}
-        <header className="mb-20 text-center space-y-4">
-          <div className="flex justify-center">
-            <span className="px-4 py-1.5 rounded-full border border-gold/30 bg-gold/5 text-gold text-[10px] uppercase tracking-widest font-bold">
-              Our Expertise / हमारी विशेषज्ञता
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-6xl font-black text-white">
-            Premium <span className="text-gold">Interior</span> Services
-          </h2>
-          <p className="mx-auto max-w-2xl text-gray-400 text-sm md:text-lg">
-            JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
-          </p>
-        </header>
+    <section
+  ref={sectionRef}
+  id="services"
+  className="bg-background py-32 overflow-hidden relative"
+>
+  {/* subtle glow */}
+  <div className="absolute -top-32 -left-32 h-96 w-96 bg-gold/10 blur-3xl rounded-full animate-soft-glow" />
+  <div className="absolute bottom-0 right-0 h-96 w-96 bg-gold/10 blur-3xl rounded-full animate-soft-glow" />
 
-        {/* Services Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <article
-              key={service.title}
-              className="reveal-card group relative bg-[#111] border border-white/5 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-gold/30 hover:-translate-y-2 opacity-0 translate-y-10 transition-all duration-700"
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              {/* Image Section */}
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src={service.image}
-                  alt={service.alt}
-                  fill
-                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
-                
-                {/* Floating Icon */}
-                <div className="absolute top-6 left-6 p-3 bg-black/50 backdrop-blur-xl border border-white/10 rounded-2xl text-gold shadow-2xl">
-                  {service.icon}
-                </div>
-              </div>
-
-              {/* Content Section */}
-              <div className="p-8 space-y-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-gold transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-gold-light/60 text-xs font-bold uppercase tracking-widest italic">
-                    {service.titleHi}
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {/* Point 1: Location/Use */}
-                  <div className="flex gap-3">
-                    <div className="mt-1"><MapPin className="w-3.5 h-3.5 text-gold" /></div>
-                    <p className="text-sm text-gray-400 font-medium leading-relaxed">
-                      <span className="text-gray-200">उपयोग:</span> {service.useCase}
-                    </p>
-                  </div>
-
-                  {/* Point 2: Specialty */}
-                  <div className="flex gap-3">
-                    <div className="mt-1"><Info className="w-3.5 h-3.5 text-gold" /></div>
-                    <p className="text-sm text-gray-400 font-medium leading-relaxed">
-                      <span className="text-gray-200">खासियत:</span> {service.specialty}
-                    </p>
-                  </div>
-
-                  {/* Point 3: Benefit */}
-                  <div className="flex gap-3">
-                    <div className="mt-1"><Check className="w-3.5 h-3.5 text-gold" /></div>
-                    <p className="text-sm text-gray-400 font-medium leading-relaxed">
-                      <span className="text-gray-200">फायदा:</span> {service.benefit}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Decorative Shine Effect */}
-                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gold/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-            </article>
-          ))}
-        </div>
+  <div className="mx-auto max-w-7xl px-6">
+    
+    {/* Header */}
+    <header className="mb-20 text-center space-y-4">
+      <div className="flex justify-center">
+        <span className="px-4 py-1.5 rounded-full border border-gold/30 bg-gold/10 text-gold text-[10px] uppercase tracking-widest font-bold">
+          Our Expertise / हमारी विशेषज्ञता
+        </span>
       </div>
 
-      <style jsx>{`
-        .reveal-visible {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
-      `}</style>
-    </section>
-  )
-}
+      <h2 className="text-4xl md:text-6xl font-black text-foreground">
+        Premium <span className="text-gold">Interior</span> Services
+      </h2>
+
+      <p className="mx-auto max-w-2xl text-muted-foreground text-sm md:text-lg">
+        JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
+      </p>
+    </header>
+
+    {/* Grid */}
+    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {services.map((service, index) => (
+        <article
+          key={service.title}
+          className="reveal-card group relative bg-card/70 backdrop-blur-xl border border-border/50 rounded-[2rem] overflow-hidden transition-all duration-500 hover:border-gold/40 hover:-translate-y-2 hover:shadow-2xl hover:shadow-gold/10 opacity-0 translate-y-10"
+          style={{ transitionDelay: `${index * 100}ms` }}
+        >
+          {/* Image */}
+          <div className="relative h-64 overflow-hidden">
+            <Image
+              src={service.image}
+              alt={service.alt}
+              fill
+              className="object-cover transition-transform duration-1000 group-hover:scale-110"
+              loading="lazy"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+
+            {/* Icon */}
+            <div className="absolute top-6 left-6 p-3 bg-background/60 backdrop-blur-xl border border-border rounded-2xl text-gold shadow-lg">
+              {service.icon}
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-8 space-y-6">
+            <div>
+              <h3 className="text-2xl font-bold text-foreground mb-1 group-hover:text-gold transition-colors">
+                {service.title}
+              </h3>
+
+              <p className="text-gold-light/70 text-xs font-bold uppercase tracking-widest italic">
+                {service.titleHi}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              
+              <div className="flex gap-3">
+                <div className="mt-1">
+                  <MapPin className="w-3.5 h-3.5 text-gold" />
+                </div>
+                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+                  <span className="text-foreground">उपयोग:</span> {service.useCase}
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="mt-1">
+                  <Info className="w-3.5 h-3.5 text-gold" />
+                </div>
+                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+                  <span className="text-foreground">खासियत:</span> {service.specialty}
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="mt-1">
+                  <Check className="w-3.5 h-3.5 text-gold" />
+                </div>
+                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+                  <span className="text-foreground">फायदा:</span> {service.benefit}
+                </p>
+              </div>
+
+            </div>
+
+            {/* Glow */}
+            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <style jsx>{`
+    .reveal-visible {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  `}</style>
+</section>
