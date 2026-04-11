@@ -97,36 +97,36 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* 3. Right Side: Floating Visual Proof */}
-        <div className="reveal-effect opacity-0 scale-90 transition-all duration-1000 delay-700 hidden lg:block relative">
-          <div className="relative z-10 rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black">
-            <Image 
-              src="/images/hero-interior.jpg" 
-              width={600} 
-              height={750} 
-              alt="Luxury Gypsum Ceiling Work by JK Interior Bihar"
-              className="object-cover"
-            />
-          </div>
-          
-          {/* Experience Badge */}
-          <div className="absolute -bottom-8 -left-8 z-20 bg-[#151515] border border-amber-500/40 p-6 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce-slow">
-             <div className="bg-amber-500/20 p-3 rounded-xl">
-                <Star className="text-amber-500 fill-amber-500 w-7 h-7" />
-             </div>
-             <div>
-                <p className="text-white font-black text-2xl leading-none">5+ Years</p>
-                <p className="text-amber-200/60 text-xs font-bold uppercase mt-1 tracking-wider">Experience</p>
-             </div>
-          </div>
-        </div>
-      </div>
+      {/* 3. Right Side: Floating Visual Proof */}
+<div className="reveal-effect opacity-0 scale-90 transition-all duration-1000 delay-700 relative">
+  <div className="relative z-10 rounded-3xl overflow-hidden border border-border shadow-2xl shadow-black/20">
+    <Image
+      src="/images/hero-interior.jpg"
+      width={600}
+      height={750}
+      alt="Luxury Gypsum Ceiling Work by JK Interior Bihar"
+      className="object-cover w-full h-auto"
+      priority
+    />
+  </div>
 
-      {/* 4. SEO Hidden Keywords */}
-      <div className="sr-only">
-        Best interior designer in Forbesganj, Araria, Bihar. JK Interior provides PVC wall panels, 
-        Gypsum false ceiling, and home renovation services in Narpatganj and Jogbani.
-      </div>
+  {/* Experience Badge - अब मोबाइल पर भी दिखेगा */}
+  <div className="absolute -bottom-4 -left-4 lg:-bottom-8 lg:-left-8 z-20 bg-card/80 backdrop-blur-xl border border-gold/40 p-4 lg:p-6 rounded-2xl shadow-gold/10 flex items-center gap-3 lg:gap-4 animate-soft-glow">
+     <div className="bg-gold/20 p-2 lg:p-3 rounded-xl">
+        <Star className="text-gold fill-gold w-5 h-5 lg:w-7 lg:h-7" />
+     </div>
+     <div>
+        <p className="text-foreground font-black text-xl lg:text-2xl leading-none">5+ Years</p>
+        <p className="text-gold/70 text-[10px] lg:text-xs font-bold uppercase mt-1 tracking-wider">Experience</p>
+     </div>
+  </div>
+</div>
+
+{/* 4. SEO Hidden Keywords */}
+<div className="sr-only">
+  Best interior designer in Forbesganj, Araria, Bihar. JK Interior provides PVC wall panels,
+  Gypsum false ceiling, and home renovation services in Narpatganj and Jogbani.
+</div>  
 
       {/* 5. Custom Styles (Missing Logic Recovered) */}
       <style jsx>{`
