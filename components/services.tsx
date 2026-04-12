@@ -145,19 +145,20 @@ export default function Services() {
           <div
             className={
               index === 0
-                ? "relative min-h-[200px] flex-1 md:min-h-0"
-                : "relative h-52 shrink-0 md:h-48"
+                ? "relative flex-1"
+                : "relative shrink-0"
             }
           >
             <Image
-  src={service.image}
-  alt={service.alt}
-  fill
-  className={`object-cover ${index === 4 ? "object-center" : "object-top"}`}
-  sizes="(max-width:768px) 100vw, 50vw"
-  loading="lazy"
-  quality={index === 0 ? 78 : 68}
-/>
+              src={service.image}
+              alt={service.alt}
+              width={600}
+              height={400}
+              className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width:768px) 100vw, 50vw"
+              loading="lazy"
+              quality={index === 0 ? 78 : 68}
+            />
 
             <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/95 via-[#f0f7ff]/45 to-transparent" />
 
