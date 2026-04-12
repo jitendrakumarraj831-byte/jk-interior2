@@ -64,6 +64,7 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden pt-20 sm:pt-28 bg-[#f8faff]">
+      {/* Background Gradients */}
       <div className="absolute inset-0 z-0 opacity-40" style={{backgroundImage:'radial-gradient(at 0% 0%,rgba(37,99,235,0.1) 0px,transparent 50%),radial-gradient(at 100% 0%,rgba(29,78,216,0.08) 0px,transparent 50%)'}} />
 
       <div className="relative z-10 grid min-h-[calc(100dvh-5.5rem)] grid-cols-1 lg:grid-cols-2">
@@ -109,11 +110,19 @@ export default function Hero() {
             transition={{ delay: 0.6 }}
             className="mt-8 space-y-4 max-w-lg"
           >
+            {/* विकल्प 1 के अनुसार अपडेटेड हेडिंग */}
+            <h3 className="text-2xl md:text-3xl text-blue-950 font-bold leading-tight">
+              बिहार का सबसे भरोसेमंद <br className="hidden md:block" /> इंटीरियर ब्रांड।
+            </h3>
+            
             <p className="text-xl md:text-2xl text-gray-800 font-medium italic">
               &quot;छत आपकी, <span className="text-blue-600 underline decoration-blue-200">पहचान हमारी</span>&quot;
             </p>
-            <p className="text-gray-600 border-l-4 border-blue-500 pl-4 py-1">
-              Bihar ka No.1 trusted brand for PVC, Gypsum and Modern Interiors.
+
+            {/* विकल्प 1 के अनुसार अपडेटेड डिस्क्रिप्शन */}
+            <p className="text-gray-600 border-l-4 border-blue-500 pl-4 py-1 leading-relaxed">
+              हम आपके घर को मॉडर्न बनाने के लिए PVC फॉल्स सीलिंग, जिप्सम डिजाइन और वॉल पैनलिंग की बेहतरीन सर्विस देते हैं। 
+              <span className="block mt-1 font-semibold text-blue-900">10+ सालों का अनुभव और 500+ खुश ग्राहक।</span>
             </p>
           </motion.div>
 
@@ -123,7 +132,6 @@ export default function Hero() {
             transition={{ delay: 0.8 }}
             className="mt-10 flex flex-wrap gap-4"
           >
-            {/* Added luxury-animated-shine class back */}
             <Button asChild size="lg" className="h-14 px-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-200 transition-all active:scale-95 luxury-animated-shine overflow-hidden relative">
               <a href="tel:+918651070831" className="flex items-center gap-2">
                 <Phone className="h-5 w-5" /> प्रीमियम कोटेशन
