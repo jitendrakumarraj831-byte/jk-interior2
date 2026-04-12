@@ -125,7 +125,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0b0f1a]/92 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]/92 backdrop-blur-md"
           onClick={closeLightbox}
           role="dialog"
           aria-label="Image lightbox"
@@ -136,7 +136,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
               e.stopPropagation()
               closeLightbox()
             }}
-            className="absolute right-4 top-4 z-10 rounded-full glass-panel border-gold/25 p-2 text-foreground shadow-lg transition-colors hover:border-gold/40"
+            className="absolute right-4 top-4 z-10 rounded-full bg-white/15 border border-white/30 p-2 text-white shadow-lg transition-colors hover:bg-white/25 backdrop-blur-md"
             aria-label="Close lightbox"
           >
             <X className="h-6 w-6" />
@@ -147,7 +147,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
               e.stopPropagation()
               prevImage()
             }}
-            className="absolute left-4 z-10 rounded-full glass-panel border-gold/25 p-2 text-foreground shadow-lg transition-colors hover:border-gold/40"
+            className="absolute left-4 z-10 rounded-full bg-white/15 border border-white/30 p-2 text-white shadow-lg transition-colors hover:bg-white/25 backdrop-blur-md"
             aria-label="Previous image"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -158,7 +158,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
               e.stopPropagation()
               nextImage()
             }}
-            className="absolute right-4 z-10 rounded-full glass-panel border-gold/25 p-2 text-foreground shadow-lg transition-colors hover:border-gold/40"
+            className="absolute right-4 z-10 rounded-full bg-white/15 border border-white/30 p-2 text-white shadow-lg transition-colors hover:bg-white/25 backdrop-blur-md"
             aria-label="Next image"
           >
             <ChevronRight className="h-6 w-6" />
@@ -249,7 +249,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                     loading={index < 2 ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a]/80 to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/70 to-transparent opacity-80" />
                 </motion.button>
               ))}
             </motion.div>

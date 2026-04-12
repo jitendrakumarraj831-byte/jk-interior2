@@ -161,7 +161,7 @@ export default function Contact() {
 
           <motion.div
             variants={fadeSlideUp}
-            className="rounded-2xl glass-card border-gold/25 p-8 shadow-2xl shadow-black/30"
+            className="rounded-2xl glass-card border-gold/25 p-8 shadow-2xl shadow-blue-200/50"
           >
             <h4 className="text-2xl font-bold text-foreground mb-6 font-sans">
               Send Us a Message

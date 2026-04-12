@@ -152,7 +152,7 @@ export default function Hero() {
 
         {/* Right: interactive slider */}
         <div className="relative flex min-h-[320px] lg:min-h-0 items-stretch p-4 sm:p-6 lg:p-10 lg:pl-4">
-          <div className="relative w-full overflow-hidden rounded-[2rem] border border-gold/20 glass-panel shadow-2xl shadow-black/50">
+          <div className="relative w-full overflow-hidden rounded-[2rem] border border-gold/20 glass-panel shadow-2xl shadow-blue-200/60">
             <AnimatePresence mode="wait">
               <motion.div
                 key={heroSlides[index].src}
@@ -171,7 +171,7 @@ export default function Hero() {
                   quality={index === 0 ? 82 : 72}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a]/90 via-[#0b0f1a]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/75 via-[#f0f7ff]/10 to-transparent" />
               </motion.div>
             </AnimatePresence>
 
@@ -180,7 +180,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={prev}
-                  className="rounded-full border border-gold/30 bg-black/40 p-2.5 text-gold backdrop-blur-md hover:bg-black/60 transition-colors"
+                  className="rounded-full border border-gold/30 bg-white/70 p-2.5 text-gold backdrop-blur-md hover:bg-white/90 transition-colors"
                   aria-label="Previous slide"
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -188,7 +188,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={next}
-                  className="rounded-full border border-gold/30 bg-black/40 p-2.5 text-gold backdrop-blur-md hover:bg-black/60 transition-colors"
+                  className="rounded-full border border-gold/30 bg-white/70 p-2.5 text-gold backdrop-blur-md hover:bg-white/90 transition-colors"
                   aria-label="Next slide"
                 >
                   <ChevronRight className="h-5 w-5" />

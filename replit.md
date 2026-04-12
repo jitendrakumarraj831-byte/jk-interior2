@@ -15,24 +15,25 @@ A Next.js 15 website for JK Interior, a PVC wall paneling and false ceiling cont
 ## Design System
 
 ### Background
-Global body background: `radial-gradient(circle at top, #1a2238, #0b0f1a)` with `background-attachment: fixed` — applied in `app/globals.css` @layer base. Do NOT add `bg-background` utility class to `<body>` in layout.tsx as it overrides the gradient.
+Global body background: `radial-gradient(circle at top, #dbeafe, #f0f7ff)` — light blue (Tailwind blue-100 to near-white) with `background-attachment: fixed` — applied in `app/globals.css` @layer base. Do NOT add `bg-background` utility class to `<body>` in layout.tsx as it overrides the gradient.
 
-### Glassmorphism
-- `glass-panel`: `rgba(255,255,255,0.05)` bg, `blur(12px)`, `rgba(255,255,255,0.08)` border
-- `glass-card`: `rgba(255,255,255,0.04)` bg, `blur(10px)`, `rgba(255,255,255,0.06)` border, `border-radius: 1.25rem`
-- `glass-input`: form inputs with gold border accent
+### Glassmorphism (Light Theme)
+- `glass-panel`: `rgba(255,255,255,0.72)` bg, `blur(12px)`, `rgba(37,99,235,0.12)` border, subtle blue shadow
+- `glass-card`: `rgba(255,255,255,0.65)` bg, `blur(10px)`, `rgba(37,99,235,0.10)` border, `border-radius: 1.25rem`
+- `glass-input`: `rgba(255,255,255,0.85)` bg, blue border accent
 
-### Gold Palette
-- `--gold`: `#c9a24a`
-- `--gold-light`: `#e6c980`
-- `--gold-dark`: `#8b7340`
-- `.gold-gradient`: gradient for CTA buttons
-- `.gold-text`: gradient text clip
-- `.btn-luxury-glow`: gold box-shadow glow effect
+### Blue Palette (replaces Gold)
+- `--gold` (primary blue): `#2563eb`
+- `--gold-light`: `#60a5fa`
+- `--gold-dark`: `#1d4ed8`
+- `--gold-hover`: `#3b82f6`
+- `.gold-gradient`: deep-to-bright blue gradient for CTA buttons
+- `.gold-text`: blue gradient text clip
+- `.btn-luxury-glow`: blue box-shadow glow effect
 - `.luxury-animated-shine`: animated shine sweep on buttons
 
 ### Image Overlays
-Use `from-[#0b0f1a]` (not `from-[#0A0A0B]`) to match the page dark base color.
+Use `from-[#f0f7ff]` to match the page light blue base color. Lightbox stays dark (`#0f172a`).
 
 ## Project Structure
 

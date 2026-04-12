@@ -8,8 +8,8 @@ import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/mot
 export default function Footer() {
   return (
     <footer className="border-t border-gold/15 py-12 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(8,11,20,0.6)] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-48 bg-gold/5 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(219,234,254,0.35)] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-48 bg-blue-200/25 blur-3xl rounded-full pointer-events-none" />
       <motion.div
         className="mx-auto max-w-7xl px-4 relative z-10"
         initial="hidden"

@@ -4,41 +4,41 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0b0f1a;
-  --foreground: #f4f0e8;
-  --card: rgba(20, 26, 46, 0.55);
-  --card-foreground: #f4f0e8;
-  --popover: rgba(14, 18, 34, 0.95);
-  --popover-foreground: #f4f0e8;
-  --primary: #c9a24a;
-  --primary-foreground: #0a0a0c;
-  --secondary: rgba(255, 255, 255, 0.06);
-  --secondary-foreground: #f4f0e8;
-  --muted: rgba(255, 255, 255, 0.06);
-  --muted-foreground: #a89f8e;
-  --accent: rgba(201, 162, 74, 0.15);
-  --accent-foreground: #e8d5a3;
+  --background: #f0f7ff;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-foreground: #0f172a;
+  --popover: rgba(240, 247, 255, 0.98);
+  --popover-foreground: #0f172a;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(37, 99, 235, 0.08);
+  --secondary-foreground: #0f172a;
+  --muted: rgba(37, 99, 235, 0.06);
+  --muted-foreground: #475569;
+  --accent: rgba(37, 99, 235, 0.12);
+  --accent-foreground: #1d4ed8;
   --destructive: #b91c1c;
   --destructive-foreground: #ffffff;
-  --border: rgba(201, 162, 74, 0.22);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: #c9a24a;
-  --chart-1: #c9a24a;
-  --chart-2: #8b7340;
-  --chart-3: #e6c980;
-  --chart-4: #f4f0e8;
-  --chart-5: #7a6e5e;
+  --border: rgba(37, 99, 235, 0.18);
+  --input: rgba(255, 255, 255, 0.85);
+  --ring: #2563eb;
+  --chart-1: #2563eb;
+  --chart-2: #1d4ed8;
+  --chart-3: #60a5fa;
+  --chart-4: #0f172a;
+  --chart-5: #475569;
   --radius: 0.75rem;
-  --gold: #c9a24a;
-  --gold-light: #e6c980;
-  --gold-dark: #8b7340;
-  --gold-hover: #d4af52;
-  --gold-glow: rgba(201, 162, 74, 0.45);
-  --surface-alt: rgba(13, 18, 36, 0.9);
-  --surface-white: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.05);
-  --page-dark: #0b0f1a;
+  --gold: #2563eb;
+  --gold-light: #60a5fa;
+  --gold-dark: #1d4ed8;
+  --gold-hover: #3b82f6;
+  --gold-glow: rgba(37, 99, 235, 0.45);
+  --surface-alt: rgba(239, 246, 255, 0.9);
+  --surface-white: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(37, 99, 235, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+  --page-dark: #f0f7ff;
 }
 
 @theme inline {
@@ -88,7 +88,7 @@
     scroll-behavior: smooth;
   }
   body {
-    background: radial-gradient(circle at top, #1a2238, #0b0f1a);
+    background: radial-gradient(circle at top, #dbeafe, #f0f7ff);
     background-attachment: fixed;
     min-height: 100vh;
     color: var(--foreground);
@@ -245,20 +245,20 @@
   .gold-gradient {
     background: linear-gradient(
       135deg,
-      #6b5428 0%,
-      var(--gold) 38%,
-      var(--gold-light) 52%,
-      #a07c32 100%
+      #1e3a8a 0%,
+      #2563eb 38%,
+      #3b82f6 52%,
+      #1d4ed8 100%
     );
   }
 
   .gold-text {
     background: linear-gradient(
       135deg,
-      var(--gold-dark) 0%,
-      var(--gold) 45%,
-      var(--gold-light) 70%,
-      var(--gold) 100%
+      #1d4ed8 0%,
+      #2563eb 45%,
+      #60a5fa 70%,
+      #2563eb 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -268,45 +268,45 @@
   .liquid-gold-border {
     background: linear-gradient(
       135deg,
-      rgba(201, 162, 74, 0.5),
-      rgba(230, 201, 128, 0.25),
-      rgba(139, 115, 64, 0.4)
+      rgba(37, 99, 235, 0.5),
+      rgba(96, 165, 250, 0.25),
+      rgba(29, 78, 216, 0.4)
     );
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.72);
     backdrop-filter: blur(12px) saturate(150%);
     -webkit-backdrop-filter: blur(12px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.12);
     box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      0 4px 24px rgba(37, 99, 235, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(10px) saturate(140%);
     -webkit-backdrop-filter: blur(10px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(37, 99, 235, 0.10);
     box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      0 4px 24px rgba(37, 99, 235, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85);
     border-radius: 1.25rem;
   }
 
   .glass-input {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(201, 162, 74, 0.2);
+    border: 1px solid rgba(37, 99, 235, 0.20);
   }
 
   .btn-luxury-glow {
     position: relative;
     box-shadow:
-      0 0 0 1px rgba(201, 162, 74, 0.35),
-      0 4px 24px rgba(201, 162, 74, 0.25),
+      0 0 0 1px rgba(37, 99, 235, 0.35),
+      0 4px 24px rgba(37, 99, 235, 0.25),
       0 0 40px -8px var(--gold-glow);
     transition:
       box-shadow 0.35s ease,
@@ -315,8 +315,8 @@
 
   .btn-luxury-glow:hover {
     box-shadow:
-      0 0 0 1px rgba(230, 201, 128, 0.5),
-      0 8px 32px rgba(201, 162, 74, 0.35),
+      0 0 0 1px rgba(96, 165, 250, 0.5),
+      0 8px 32px rgba(37, 99, 235, 0.35),
       0 0 56px -4px var(--gold-glow);
   }
 
@@ -386,22 +386,22 @@
     background-image:
       radial-gradient(
         at 0% 0%,
-        rgba(201, 162, 74, 0.12) 0px,
+        rgba(37, 99, 235, 0.08) 0px,
         transparent 50%
       ),
       radial-gradient(
         at 100% 0%,
-        rgba(139, 115, 64, 0.08) 0px,
+        rgba(29, 78, 216, 0.06) 0px,
         transparent 50%
       ),
       radial-gradient(
         at 100% 100%,
-        rgba(201, 162, 74, 0.1) 0px,
+        rgba(37, 99, 235, 0.07) 0px,
         transparent 50%
       ),
       radial-gradient(
         at 0% 100%,
-        rgba(90, 72, 36, 0.08) 0px,
+        rgba(96, 165, 250, 0.06) 0px,
         transparent 50%
       );
     background-size: 200% 200%;
@@ -431,7 +431,7 @@
 
   .scrollbar-luxury {
     scrollbar-width: thin;
-    scrollbar-color: rgba(201, 162, 74, 0.35) transparent;
+    scrollbar-color: rgba(37, 99, 235, 0.35) transparent;
   }
 
   .scrollbar-luxury::-webkit-scrollbar {
@@ -440,7 +440,7 @@
   }
 
   .scrollbar-luxury::-webkit-scrollbar-thumb {
-    background-color: rgba(201, 162, 74, 0.35);
+    background-color: rgba(37, 99, 235, 0.35);
     border-radius: 9999px;
   }
 

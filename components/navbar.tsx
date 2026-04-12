@@ -36,8 +36,8 @@ export default function Navbar() {
         layout
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
         className={cn(
-          "pointer-events-auto w-full max-w-5xl rounded-full border border-gold/25 glass-panel shadow-[0_8px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl px-2 py-2 sm:px-4 sm:py-2.5",
-          scrolled && "border-gold/35 shadow-[0_12px_48px_rgba(201,162,74,0.12)]",
+          "pointer-events-auto w-full max-w-5xl rounded-full border border-gold/25 glass-panel shadow-[0_8px_40px_rgba(37,99,235,0.12)] backdrop-blur-xl px-2 py-2 sm:px-4 sm:py-2.5",
+          scrolled && "border-gold/35 shadow-[0_12px_48px_rgba(37,99,235,0.18)]",
         )}
       >
         <div className="flex items-center justify-between gap-2">
@@ -58,7 +58,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-gold transition-colors rounded-full hover:bg-white/[0.04]"
+                className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-gold transition-colors rounded-full hover:bg-blue-50"
               >
                 {link.label}
               </a>

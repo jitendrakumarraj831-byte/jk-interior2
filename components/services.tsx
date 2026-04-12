@@ -120,7 +120,7 @@ export default function Services() {
             id: service.title,
             className: bentoSpans[index],
             children: (
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-gold/20 glass-panel shadow-lg transition-all duration-500 hover:border-gold/45 hover:shadow-[0_0_40px_-10px_rgba(201,162,74,0.35)]">
+              <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-gold/20 glass-panel shadow-lg transition-all duration-500 hover:border-gold/45 hover:shadow-[0_0_40px_-10px_rgba(37,99,235,0.25)]">
                 <div
                   className={
                     index === 0
@@ -137,7 +137,7 @@ export default function Services() {
                     loading="lazy"
                     quality={index === 0 ? 78 : 68}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a] via-[#0b0f1a]/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/95 via-[#f0f7ff]/45 to-transparent" />
                   <div className="absolute left-4 top-4 rounded-xl border border-gold/25 glass-panel p-2.5 text-gold">
                     {service.icon}
                   </div>

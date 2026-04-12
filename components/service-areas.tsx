@@ -38,7 +38,7 @@ export default function ServiceAreas() {
       className="relative overflow-hidden border-y border-gold/10 py-28 scroll-mt-28"
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.08]">
-        <div className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(201,162,74,0.25),transparent_55%)] blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(37,99,235,0.12),transparent_55%)] blur-3xl" />
       </div>
 
       <script
@@ -92,7 +92,7 @@ export default function ServiceAreas() {
         >
           <div className="absolute inset-8 rounded-[40%] border border-gold/15 md:inset-10" />
           <div className="absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-[45%] border border-dashed border-gold/20" />
-          <div className="absolute left-1/2 top-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/25 bg-gold/[0.04] blur-[1px] shadow-[0_0_60px_-12px_rgba(201,162,74,0.35)]" />
+          <div className="absolute left-1/2 top-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/25 bg-gold/[0.04] blur-[1px] shadow-[0_0_60px_-12px_rgba(37,99,235,0.35)]" />
 
           {areas.map((area, index) => {
             const pos = hubPositions[index] ?? { top: "50%", left: "50%" }
@@ -107,7 +107,7 @@ export default function ServiceAreas() {
                   rotate: pos.rotate ?? 0,
                 }}
               >
-                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 glass-panel px-4 py-2.5 shadow-[0_0_24px_-6px_rgba(201,162,74,0.45)] backdrop-blur-xl transition-transform duration-300 hover:scale-105 hover:border-gold/50">
+                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 glass-panel px-4 py-2.5 shadow-[0_0_24px_-6px_rgba(37,99,235,0.25)] backdrop-blur-xl transition-transform duration-300 hover:scale-105 hover:border-gold/50">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold/20 text-gold ring-1 ring-gold/35">
                     <MapPin className="h-3.5 w-3.5" />
                   </span>
