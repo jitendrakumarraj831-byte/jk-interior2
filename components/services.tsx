@@ -150,14 +150,14 @@ export default function Services() {
             }
           >
             <Image
-              src={service.image}
-              alt={service.alt}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width:768px) 100vw, 50vw"
-              loading="lazy"
-              quality={index === 0 ? 78 : 68}
-            />
+  src={service.image}
+  alt={service.alt}
+  fill
+  className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+  sizes="(max-width:768px) 100vw, 50vw"
+  loading="lazy"
+  quality={index === 0 ? 78 : 68}
+/>
 
             <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/95 via-[#f0f7ff]/45 to-transparent" />
 
