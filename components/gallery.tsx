@@ -284,14 +284,13 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
       type="button"
       variants={fadeSlideUpItem}
       onClick={() => openLightbox(index)}
-      className="relative w-full overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
-      aria-label={`View ${img.alt}`}
+      className="break-inside-avoid mb-4 relative w-full overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
     >
       <Image
   src={img.src}
   alt={img.alt}
   width={500}
-  height={0}
+  height={700}
   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
   quality={index < 4 ? 65 : 55}
   priority={index < 2}
