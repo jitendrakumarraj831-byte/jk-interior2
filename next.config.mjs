@@ -3,6 +3,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev', '*.repl.co'],
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
