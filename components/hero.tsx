@@ -142,30 +142,36 @@ export default function Hero() {
         {/* Right Side: Slider Fix */}
         <div className="relative z-20 flex min-h-[420px] lg:min-h-0 items-stretch p-4 sm:p-6 lg:p-10 lg:pl-4">
           <div className="relative w-full overflow-hidden rounded-[2rem] border border-gold/20 glass-panel shadow-2xl">
-            <AnimatePresence mode="popLayout" custom={index}>
+            <AnimatePresence mode="popLayout">
   <motion.div
     key={heroSlides[index].src}
-    // 'x: 100' ka matlab right se aana, 'x: -100' ka matlab left se jana
-    initial={{ opacity: 0, x: 100 }} 
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -100 }}
+    // Ye animation image ko halka sa scale aur blur ke saath layega
+    initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+    exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
     transition={{ 
-      duration: 0.6, 
-      ease: [0.32, 0.72, 0, 1] // Smooth sliding curve
+      duration: 0.8, 
+      ease: [0.16, 1, 0.3, 1] // Custom "Out-Quart" easing
     }}
-    className="absolute inset-0"
+    className="absolute inset-0 overflow-hidden"
   >
     <Image
       src={heroSlides[index].src}
       alt={heroSlides[index].alt}
       fill
-      className="object-cover"
+      className="object-cover transform scale-105" // Base scale for parallax feel
       priority
       sizes="(max-width: 1024px) 100vw, 50vw"
     />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+    
+    {/* Dark Gradient Overlay - Jo text ko readable banaye aur look ko rich kare */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+    
+    {/* Animated Decorative Border (Optional Luxury Touch) */}
+    <div className="absolute inset-4 border border-white/10 rounded-[1.5rem] pointer-events-none" />
   </motion.div>
 </AnimatePresence>
+            
             
 
             {/* Controls */}
