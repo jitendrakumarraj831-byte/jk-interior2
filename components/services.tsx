@@ -146,7 +146,7 @@ export default function Services() {
             className={
               index === 0
                 ? "relative min-h-[200px] flex-1 md:min-h-0"
-                : "relative h-44 shrink-0 md:h-40"
+                : "relative h-52 shrink-0 md:h-48"
             }
           >
             <Image
