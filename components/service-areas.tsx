@@ -107,7 +107,7 @@ export default function ServiceAreas() {
                   rotate: pos.rotate ?? 0,
                 }}
               >
-                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 glass-panel px-4 py-2.5 shadow-[0_0_24px_-6px_rgba(37,99,235,0.25)] backdrop-blur-xl transition-transform duration-300 hover:scale-105 hover:border-gold/50">
+                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 glass-panel px-4 py-2.5 shadow-[0_0_24px_-6px_rgba(37,99,235,0.25)] transition-transform duration-200 hover:scale-105 hover:border-gold/50">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold/20 text-gold ring-1 ring-gold/35">
                     <MapPin className="h-3.5 w-3.5" />
                   </span>

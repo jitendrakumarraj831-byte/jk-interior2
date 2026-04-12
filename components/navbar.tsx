@@ -32,11 +32,9 @@ export default function Navbar() {
         scrolled ? "top-2 sm:top-3" : "top-4 sm:top-6",
       )}
     >
-      <motion.nav
-        layout
-        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+      <nav
         className={cn(
-          "pointer-events-auto w-full max-w-5xl rounded-full border border-gold/25 glass-panel shadow-[0_8px_40px_rgba(37,99,235,0.12)] backdrop-blur-xl px-2 py-2 sm:px-4 sm:py-2.5",
+          "pointer-events-auto w-full max-w-5xl rounded-full border border-gold/25 glass-panel shadow-[0_8px_40px_rgba(37,99,235,0.12)] px-2 py-2 sm:px-4 sm:py-2.5 transition-shadow duration-300",
           scrolled && "border-gold/35 shadow-[0_12px_48px_rgba(37,99,235,0.18)]",
         )}
       >
@@ -162,7 +160,7 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.nav>
+      </nav>
     </header>
   )
 }

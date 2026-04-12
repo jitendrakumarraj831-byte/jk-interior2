@@ -247,7 +247,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                     quality={index < 3 ? 62 : 52}
                     priority={index < 2}
                     loading={index < 2 ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 will-change-transform"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/70 to-transparent opacity-80" />
                 </motion.button>
@@ -295,7 +295,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                     priority={index < 2}
                     loading={index < 2 ? "eager" : "lazy"}
                     decoding="async"
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 will-change-transform"
                   />
                   <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/25" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">

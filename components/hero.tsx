@@ -20,16 +20,16 @@ const heroSlides = [
 const letterContainer = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
   },
 }
 
 const letterItem = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: easeLux },
+    transition: { duration: 0.35, ease: easeLux },
   },
 }
 
@@ -61,9 +61,9 @@ export default function Hero() {
         {/* Left: vertical typographic stack + stagger */}
         <div className="flex flex-col justify-center px-6 py-12 lg:pl-12 lg:pr-8 xl:pl-20">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: easeLux }}
+            transition={{ duration: 0.3, ease: easeLux }}
             className="mb-8 inline-flex w-fit items-center gap-2 rounded-full glass-panel border-gold/25 px-4 py-2"
           >
             <MapPin className="h-3.5 w-3.5 text-gold shrink-0" />
@@ -91,9 +91,9 @@ export default function Hero() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -14 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.35, duration: 0.65, ease: easeLux }}
+              transition={{ delay: 0.2, duration: 0.4, ease: easeLux }}
               className="flex min-h-[min(60vh,420px)] items-center"
             >
               <h1
@@ -106,9 +106,9 @@ export default function Hero() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6, ease: easeLux }}
+            transition={{ delay: 0.3, duration: 0.35, ease: easeLux }}
             className="mt-10 max-w-lg space-y-5"
           >
             <p className="text-lg md:text-xl text-foreground font-light tracking-wide italic">
@@ -122,9 +122,9 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.55, ease: easeLux }}
+            transition={{ delay: 0.4, duration: 0.3, ease: easeLux }}
             className="mt-10 flex flex-wrap gap-4"
           >
             <Button
@@ -156,11 +156,11 @@ export default function Hero() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={heroSlides[index].src}
-                initial={{ opacity: 0, scale: 1.04 }}
+                initial={{ opacity: 0, scale: 1.03 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.35, ease: easeLux }}
-                className="absolute inset-0"
+                transition={{ duration: 0.3, ease: easeLux }}
+                className="absolute inset-0 will-change-transform"
               >
                 <Image
                   src={heroSlides[index].src}
@@ -180,7 +180,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={prev}
-                  className="rounded-full border border-gold/30 bg-white/70 p-2.5 text-gold backdrop-blur-md hover:bg-white/90 transition-colors"
+                  className="rounded-full border border-gold/30 bg-white/70 p-2.5 text-gold backdrop-blur-sm hover:bg-white/90 transition-colors"
                   aria-label="Previous slide"
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -188,7 +188,7 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={next}
-                  className="rounded-full border border-gold/30 bg-white/70 p-2.5 text-gold backdrop-blur-md hover:bg-white/90 transition-colors"
+                  className="rounded-full border border-gold/30 bg-white/70 p-2.5 text-gold backdrop-blur-sm hover:bg-white/90 transition-colors"
                   aria-label="Next slide"
                 >
                   <ChevronRight className="h-5 w-5" />
