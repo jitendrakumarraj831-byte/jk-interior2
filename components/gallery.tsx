@@ -85,7 +85,9 @@ const breakpointColumnsObj = {
   1024: 3,
   768: 2,
 }
-
+type GalleryProps = {
+  layout?: "default" | "experience"
+}
 
 export default function Gallery({ layout = "default" }: GalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
