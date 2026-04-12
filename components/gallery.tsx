@@ -1,5 +1,5 @@
 "use client"
-
+import Masonry from "react-masonry-css"
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
@@ -80,10 +80,12 @@ export function GalleryJsonLdScript() {
 }
 
 const VISIBLE_COUNT = 12
-
-type GalleryProps = {
-  layout?: "default" | "experience"
+const breakpointColumnsObj = {
+  default: 4,
+  1024: 3,
+  768: 2,
 }
+
 
 export default function Gallery({ layout = "default" }: GalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -266,55 +268,42 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
       <GalleryJsonLdScript />
       <section id="gallery" className="py-24 relative scroll-mt-28">
         <div className="mx-auto max-w-7xl px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.12 }}
-            variants={staggerContainer}
-          >
+        
             {header}
-            <motion.div
-              className="columns-2 gap-4 md:columns-3 lg:columns-4 space-y-4"
-              variants={staggerContainer}
-            >
-              {visibleImages.map((img, index) => (
-                <motion.button
-  key={img.src}
-  type="button"
-  variants={fadeSlideUpItem}
-  onClick={() => openLightbox(index)}
-  // यहाँ 'block' और 'break-inside-avoid' जोड़ा गया है
-  className="relative mb-4 block w-full break-inside-avoid overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
-  aria-label={`View ${img.alt}`}
+          
+            <Masonry
+  breakpointCols={breakpointColumnsObj}
+  className="flex gap-4"
+  columnClassName="space-y-4"
 >
-  <Image
-    src={img.src}
-    alt={img.alt}
-    width={500}
-    height={700}
-    // 'h-auto' सुनिश्चित करता है कि इमेज अपनी असली शेप में रहे
-    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-    quality={index < 4 ? 65 : 55}
-    priority={index < 2}
-  />
-  
-  {/* बाकी का Overlay कोड वैसा ही रहेगा */}
-  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/10" />
-  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-    <span className="rounded-full glass-panel border-gold/30 px-4 py-2 text-xs font-semibold text-gold shadow-md font-mono">
-      View
-    </span>
-  </div>
-</motion.button>
-              
-              ))}
-            </motion.div>
+  {visibleImages.map((img, index) => (
+    <motion.button
+      key={img.src}
+      type="button"
+      variants={fadeSlideUpItem}
+      onClick={() => openLightbox(index)}
+      className="relative w-full overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
+      aria-label={`View ${img.alt}`}
+    >
+      <Image
+        src={img.src}
+        alt={img.alt}
+        width={500}
+        height={Math.floor(300 + (index % 5) * 120)}
+        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+        quality={index < 4 ? 65 : 55}
+        priority={index < 2}
+        loading={index < 2 ? "eager" : "lazy"}
+        className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
+      />
+    </motion.button>
+  ))}
+</Masonry>
             {seeMore}
-          </motion.div>
+          
         </div>
       </section>
-      {lightbox}
+      
     </>
   )
 }
