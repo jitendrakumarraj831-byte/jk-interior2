@@ -18,7 +18,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="bg-background py-24 relative overflow-hidden">
+    <section id="contact" className="py-24 relative overflow-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -76,7 +76,7 @@ export default function Contact() {
             >
               <motion.div
                 variants={fadeSlideUpItem}
-                className="rounded-xl glass-card border-gold/20 p-5 hover:border-gold/35 transition-colors"
+                className="rounded-xl glass-card border-gold/20 p-5 hover:border-gold/40 hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-gold/15 border border-gold/25 text-gold">
                   <Phone className="h-5 w-5" />
@@ -94,7 +94,7 @@ export default function Contact() {
 
               <motion.div
                 variants={fadeSlideUpItem}
-                className="rounded-xl glass-card border-gold/20 p-5 hover:border-gold/35 transition-colors"
+                className="rounded-xl glass-card border-gold/20 p-5 hover:border-gold/40 hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-gold/15 border border-gold/25 text-gold">
                   <Mail className="h-5 w-5" />
@@ -111,7 +111,7 @@ export default function Contact() {
 
             <motion.div
               variants={fadeSlideUpItem}
-              className="rounded-xl glass-card border-gold/20 p-6"
+              className="rounded-xl glass-card border-gold/20 p-6 hover:border-gold/35 transition-colors"
             >
               <div className="flex gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold/15 border border-gold/25 text-gold">

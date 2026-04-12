@@ -125,7 +125,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0A0A0B]/90 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0b0f1a]/92 backdrop-blur-md"
           onClick={closeLightbox}
           role="dialog"
           aria-label="Image lightbox"
@@ -249,7 +249,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                     loading={index < 2 ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/80 to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a]/80 to-transparent opacity-80" />
                 </motion.button>
               ))}
             </motion.div>
@@ -264,7 +264,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
   return (
     <>
       <GalleryJsonLdScript />
-      <section id="gallery" className="bg-background py-24 relative scroll-mt-28">
+      <section id="gallery" className="py-24 relative scroll-mt-28">
         <div className="mx-auto max-w-7xl px-4">
           <motion.div
             initial="hidden"

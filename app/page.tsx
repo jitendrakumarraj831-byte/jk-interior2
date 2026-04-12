@@ -3,23 +3,23 @@ import Navbar from "@/components/navbar"
 import Hero from "@/components/hero"
 
 const Services = dynamic(() => import("@/components/services"), {
-  loading: () => <div className="min-h-[28rem] bg-[#0A0A0B]" aria-hidden />,
+  loading: () => <div className="min-h-[28rem]" aria-hidden />,
 })
 
 const ExperienceSection = dynamic(() => import("@/components/experience-section"), {
-  loading: () => <div className="min-h-[24rem] bg-[#0A0A0B]" aria-hidden />,
+  loading: () => <div className="min-h-[24rem]" aria-hidden />,
 })
 
 const ServiceAreas = dynamic(() => import("@/components/service-areas"), {
-  loading: () => <div className="min-h-[20rem] bg-surface-alt" aria-hidden />,
+  loading: () => <div className="min-h-[20rem]" aria-hidden />,
 })
 
 const Contact = dynamic(() => import("@/components/contact"), {
-  loading: () => <div className="min-h-[24rem] bg-[#0A0A0B]" aria-hidden />,
+  loading: () => <div className="min-h-[24rem]" aria-hidden />,
 })
 
 const Footer = dynamic(() => import("@/components/footer"), {
-  loading: () => <div className="h-32 bg-surface-alt" aria-hidden />,
+  loading: () => <div className="h-32" aria-hidden />,
 })
 
 // ✅ SEO Metadata (sirf add hua hai, niche code same hai)
@@ -33,7 +33,7 @@ keywords:
 
 export default function Home() {
 return (
-<main className="min-h-screen bg-[#0A0A0B]">
+<main className="min-h-screen">
 <Navbar />
 <Hero />
 <Services />

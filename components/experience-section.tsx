@@ -6,7 +6,7 @@ import WhyUs from "@/components/why-us"
 import Gallery from "@/components/gallery"
 
 /**
- * Single “portfolio experience” band: both JSON-LD blocks render via WhyUs + Gallery
+ * Single "portfolio experience" band: both JSON-LD blocks render via WhyUs + Gallery
  * (WhyUsJsonLdScript + GalleryJsonLdScript). Anchor ids #why-us and #gallery preserved.
  */
 export default function ExperienceSection() {
@@ -23,7 +23,7 @@ export default function ExperienceSection() {
     <section
       ref={ref}
       id="experience"
-      className="relative overflow-hidden border-y border-gold/10 bg-[#0A0A0B] scroll-mt-24"
+      className="relative overflow-hidden border-y border-gold/10 scroll-mt-24"
     >
       <motion.div
         style={{ opacity }}

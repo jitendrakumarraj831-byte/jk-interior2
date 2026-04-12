@@ -67,7 +67,7 @@ const services = [
     titleHi: "TV यूनिट डिजाइन",
     useCase: "लिविंग रूम और मास्टर बेडरूम को सजाने के लिए।",
     specialty: "कस्टमाइज्ड स्टोरेज और हिडन वायरिंग मैनेजमेंट।",
-    benefit: "आपका टीवी एरिया व्यवस्थित, साफ़ और सुंदर दिखता है।",
+    benefit: "आपका टीवी एरिया व्यवस्थित, साफ़ और सुंदर दिखता है।",
     desc: "We design and install modern TV units.",
     image: "/images/tv-unit.jpg",
     alt: "Modern TV unit design Forbesganj",
@@ -88,7 +88,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-[#0A0A0B] py-28 scroll-mt-28"
+      className="relative overflow-hidden py-28 scroll-mt-28"
     >
       <div className="absolute -top-40 -left-40 h-[28rem] w-[28rem] rounded-full bg-gold/10 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-gold/10 blur-3xl" />
@@ -110,7 +110,7 @@ export default function Services() {
             Premium <span className="gold-text">Interior</span> Services
           </h2>
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground md:text-lg">
-            JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत
+            JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत
             सोल्यूशन्स प्रदान करता है।
           </p>
         </motion.header>
@@ -137,7 +137,7 @@ export default function Services() {
                     loading="lazy"
                     quality={index === 0 ? 78 : 68}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a] via-[#0b0f1a]/40 to-transparent" />
                   <div className="absolute left-4 top-4 rounded-xl border border-gold/25 glass-panel p-2.5 text-gold">
                     {service.icon}
                   </div>

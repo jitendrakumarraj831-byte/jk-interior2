@@ -52,7 +52,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[100dvh] w-full overflow-hidden bg-[#0A0A0B] pt-24 sm:pt-28"
+      className="relative min-h-[100dvh] w-full overflow-hidden pt-24 sm:pt-28"
     >
       <div className="absolute inset-0 z-0 animate-mesh opacity-40 md:opacity-55" />
       <div className="floating-blob absolute top-[15%] right-[-10%] z-0 hidden h-[min(90vw,520px)] w-[min(90vw,520px)] rounded-full bg-gold/10 blur-[72px] md:block md:bg-gold/12 md:blur-[100px]" />
@@ -144,7 +144,7 @@ export default function Hero() {
               className="h-14 px-8 rounded-full font-bold luxury-animated-shine luxury-animated-shine--subtle"
             >
               <Link href="#services" className="flex items-center gap-2 text-base">
-                डिज़ाइन देखें <ArrowRight className="h-5 w-5" />
+                डिज़ाइन देखें <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
           </motion.div>
@@ -171,7 +171,7 @@ export default function Hero() {
                   quality={index === 0 ? 82 : 72}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/90 via-[#0A0A0B]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f1a]/90 via-[#0b0f1a]/20 to-transparent" />
               </motion.div>
             </AnimatePresence>
 

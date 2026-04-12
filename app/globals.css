@@ -4,11 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0a0a0b;
+  --background: #0b0f1a;
   --foreground: #f4f0e8;
-  --card: rgba(18, 18, 24, 0.45);
+  --card: rgba(20, 26, 46, 0.55);
   --card-foreground: #f4f0e8;
-  --popover: rgba(16, 16, 22, 0.92);
+  --popover: rgba(14, 18, 34, 0.95);
   --popover-foreground: #f4f0e8;
   --primary: #c9a24a;
   --primary-foreground: #0a0a0c;
@@ -34,10 +34,11 @@
   --gold-dark: #8b7340;
   --gold-hover: #d4af52;
   --gold-glow: rgba(201, 162, 74, 0.45);
-  --surface-alt: rgba(12, 12, 18, 0.85);
+  --surface-alt: rgba(13, 18, 36, 0.9);
   --surface-white: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-highlight: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --page-dark: #0b0f1a;
 }
 
 @theme inline {
@@ -83,11 +84,16 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
   html {
     scroll-behavior: smooth;
+  }
+  body {
+    background: radial-gradient(circle at top, #1a2238, #0b0f1a);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -269,32 +275,24 @@
   }
 
   .glass-panel {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    );
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 var(--glass-highlight);
+      0 4px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .glass-card {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.07) 0%,
-      rgba(255, 255, 255, 0.02) 100%
-    );
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow:
-      0 4px 24px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 var(--glass-highlight);
-    border-radius: 1.5rem;
+      0 4px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    border-radius: 1.25rem;
   }
 
   .glass-input {
@@ -456,7 +454,6 @@
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* shadcn / UI kit tokens (Tailwind v3 parity; safe if theme already defines them) */
   .shadow-xs {
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }

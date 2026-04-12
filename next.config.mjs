@@ -10,7 +10,7 @@ const nextConfig = {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200],
-    qualities: [52, 62, 68, 78, 82, 100],
+    qualities: [50, 52, 58, 62, 68, 72, 78, 80, 82, 100],
   },
 }
 

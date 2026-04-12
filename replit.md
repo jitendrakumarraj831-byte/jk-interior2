@@ -5,19 +5,62 @@ A Next.js 15 website for JK Interior, a PVC wall paneling and false ceiling cont
 ## Architecture
 
 - **Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS v4 with shadcn/ui components
+- **Styling**: Tailwind CSS v4 with custom luxury utility classes
+- **Components**: shadcn/ui base components + fully custom premium UI components
 - **Fonts**: Playfair Display + Inter (Google Fonts via next/font)
+- **Animations**: Framer Motion (scroll-triggered, staggered, parallax)
 - **Analytics**: @vercel/analytics
 - **Node runtime**: Node.js 20
+
+## Design System
+
+### Background
+Global body background: `radial-gradient(circle at top, #1a2238, #0b0f1a)` with `background-attachment: fixed` — applied in `app/globals.css` @layer base. Do NOT add `bg-background` utility class to `<body>` in layout.tsx as it overrides the gradient.
+
+### Glassmorphism
+- `glass-panel`: `rgba(255,255,255,0.05)` bg, `blur(12px)`, `rgba(255,255,255,0.08)` border
+- `glass-card`: `rgba(255,255,255,0.04)` bg, `blur(10px)`, `rgba(255,255,255,0.06)` border, `border-radius: 1.25rem`
+- `glass-input`: form inputs with gold border accent
+
+### Gold Palette
+- `--gold`: `#c9a24a`
+- `--gold-light`: `#e6c980`
+- `--gold-dark`: `#8b7340`
+- `.gold-gradient`: gradient for CTA buttons
+- `.gold-text`: gradient text clip
+- `.btn-luxury-glow`: gold box-shadow glow effect
+- `.luxury-animated-shine`: animated shine sweep on buttons
+
+### Image Overlays
+Use `from-[#0b0f1a]` (not `from-[#0A0A0B]`) to match the page dark base color.
 
 ## Project Structure
 
 - `app/` — Next.js App Router pages (home, about, gallery, services, contact)
-- `components/` — Shared UI components (shadcn/ui + custom)
+  - `app/layout.tsx` — Global layout, SEO metadata, fonts. Do NOT touch SEO fields.
+  - `app/globals.css` — All CSS variables, glass utilities, animations
+  - `app/page.tsx` — Home page with dynamic imports for code splitting
+- `components/` — Shared UI components
+  - `components/navbar.tsx` — Floating pill navbar with glassmorphism
+  - `components/hero.tsx` — Full-height hero with auto-sliding image carousel
+  - `components/services.tsx` — Bento grid services layout
+  - `components/experience-section.tsx` — Parallax wrapper for WhyUs + Gallery
+  - `components/why-us.tsx` — Reasons grid/horizontal scroll (with JSON-LD)
+  - `components/gallery.tsx` — Masonry grid + lightbox (with JSON-LD)
+  - `components/service-areas.tsx` — Hub map layout with JSON-LD
+  - `components/contact.tsx` — Contact form + map iframe + info cards
+  - `components/footer.tsx` — Footer with links and contact info
+  - `components/animated-aura.tsx` — Fixed background aura orbs (CSS-only, no JS)
+  - `components/motion-reveal.tsx` — Reusable Framer Motion variants
+  - `components/Layout/BentoGrid.tsx` — Bento grid layout component
+- `components/ui/` — shadcn/ui base components
 - `hooks/` — Custom React hooks
-- `lib/` — Utility functions
-- `public/` — Static assets (images, favicon)
-- `styles/` — Global CSS (handled in app/globals.css)
+- `lib/utils.ts` — Utility functions (cn)
+- `public/images/` — All project images (JPEG)
+
+## Image Quality Config
+All `next/image` quality values must be declared in `next.config.mjs` `images.qualities`:
+`[50, 52, 58, 62, 68, 72, 78, 80, 82, 100]`
 
 ## Running
 
@@ -32,3 +75,12 @@ npm run start  # Production server on port 5000
 - Runs on port 5000 (required for Replit preview pane)
 - Binds to 0.0.0.0 for external access through Replit proxy
 - Workflow: "Start application" runs `npm run dev`
+- Node.js 20 required for @tailwindcss/oxide native bindings
+
+## Critical Rules
+
+- **Never modify SEO metadata** — titles, descriptions, schema JSON-LD, alt text, keywords
+- **Never change text content or headings**
+- **Never remove or alter route structure** (app/ directories)
+- Body tag must NOT have `bg-background` class (it overrides the gradient)
+- All hardcoded `#0A0A0B` color references should use `#0b0f1a` instead

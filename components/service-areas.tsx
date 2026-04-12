@@ -17,7 +17,7 @@ const areas = [
   "Supaul",
 ]
 
-/** Geometric offsets for “region hub” layout (percent of container) */
+/** Geometric offsets for "region hub" layout (percent of container) */
 const hubPositions: { top: string; left: string; rotate?: number }[] = [
   { top: "6%", left: "48%", rotate: -6 },
   { top: "18%", left: "12%", rotate: 4 },
@@ -35,7 +35,7 @@ export default function ServiceAreas() {
   return (
     <section
       id="areas"
-      className="relative overflow-hidden border-y border-gold/10 bg-surface-alt py-28 scroll-mt-28"
+      className="relative overflow-hidden border-y border-gold/10 py-28 scroll-mt-28"
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.08]">
         <div className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(201,162,74,0.25),transparent_55%)] blur-3xl" />
@@ -107,7 +107,7 @@ export default function ServiceAreas() {
                   rotate: pos.rotate ?? 0,
                 }}
               >
-                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 glass-panel px-4 py-2.5 shadow-[0_0_24px_-6px_rgba(201,162,74,0.45)] backdrop-blur-xl transition-transform duration-300 hover:scale-105">
+                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 glass-panel px-4 py-2.5 shadow-[0_0_24px_-6px_rgba(201,162,74,0.45)] backdrop-blur-xl transition-transform duration-300 hover:scale-105 hover:border-gold/50">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold/20 text-gold ring-1 ring-gold/35">
                     <MapPin className="h-3.5 w-3.5" />
                   </span>

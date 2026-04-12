@@ -99,7 +99,7 @@ export function WhyUsJsonLdScript() {
 }
 
 type WhyUsProps = {
-  /** Merged home “portfolio” band: horizontal strip + shared parallax section */
+  /** Merged home "portfolio" band: horizontal strip + shared parallax section */
   layout?: "default" | "experience"
 }
 
@@ -137,9 +137,9 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
               <motion.article
                 key={reason.en}
                 variants={fadeSlideUpItem}
-                className="group min-w-[260px] sm:min-w-[280px] snap-start flex flex-col glass-card border-gold/20 p-5 text-left shrink-0"
+                className="group min-w-[260px] sm:min-w-[280px] snap-start flex flex-col glass-card border-gold/20 p-5 text-left shrink-0 hover:border-gold/40 transition-all duration-300"
               >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-gold/30 bg-gold/10">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-gold/30 bg-gold/10 group-hover:bg-gold/20 transition-colors">
                   <reason.icon className="h-5 w-5 text-gold" />
                 </div>
                 <h3 className="mb-1 text-sm font-bold text-foreground font-sans">
@@ -161,7 +161,7 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
               <motion.article
                 key={reason.en}
                 variants={fadeSlideUpItem}
-                className="group flex flex-col items-center glass-card border-gold/15 p-6 text-center transition-all duration-500 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/15"
+                className="group flex flex-col items-center glass-card border-gold/15 p-6 text-center transition-all duration-500 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/15 hover:-translate-y-1"
               >
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-gold/10 transition-colors group-hover:bg-gold/20">
                   <reason.icon className="h-6 w-6 text-gold" />
@@ -195,7 +195,7 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
   return (
     <section
       id="why-us"
-      className="relative overflow-hidden bg-surface-alt py-24 border-y border-gold/10 scroll-mt-28"
+      className="relative overflow-hidden py-24 border-y border-gold/10 scroll-mt-28"
     >
       <div className="absolute inset-0 pointer-events-none opacity-[0.07]">
         <div className="absolute top-10 left-10 w-72 h-72 bg-gold rounded-full blur-3xl" />
