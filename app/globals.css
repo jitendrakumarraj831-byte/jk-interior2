@@ -88,12 +88,12 @@
     scroll-behavior: smooth;
   }
   body {
-    background: radial-gradient(circle at top, #dbeafe, #f0f7ff);
-    background-attachment: fixed;
+    background: #f0f7ff;
     min-height: 100vh;
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
   }
 }
 
@@ -275,9 +275,9 @@
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(12px) saturate(150%);
-    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(37, 99, 235, 0.12);
     box-shadow:
       0 4px 24px rgba(37, 99, 235, 0.08),
@@ -285,9 +285,9 @@
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(10px) saturate(140%);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(37, 99, 235, 0.10);
     box-shadow:
       0 4px 24px rgba(37, 99, 235, 0.06),
@@ -297,8 +297,8 @@
 
   .glass-input {
     background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(37, 99, 235, 0.20);
   }
 
