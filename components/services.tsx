@@ -115,6 +115,7 @@ const bentoSpans = [
   "md:col-span-4 min-h-[240px]",
   "md:col-span-4 min-h-[240px]",
   "md:col-span-4 min-h-[240px]",
+  "md:col-span-8 min-h-[260px]", // 👈 Artificial Grass (FULL WIDTH HERO STYLE 🔥)
 ]
 
 export default function Services() {
