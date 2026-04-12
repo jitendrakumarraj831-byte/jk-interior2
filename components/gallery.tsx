@@ -274,7 +274,7 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
           >
             {header}
             <motion.div
-              className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
+              className="columns-2 gap-4 md:columns-3 lg:columns-4 space-y-4"
               variants={staggerContainer}
             >
               {visibleImages.map((img, index) => (
@@ -283,21 +283,21 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                   type="button"
                   variants={fadeSlideUpItem}
                   onClick={() => openLightbox(index)}
-                  className="group relative aspect-square overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
+                  className="relative mb-4 inline-block w-full overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
                   aria-label={`View ${img.alt}`}
                 >
                   <Image
                     src={img.src}
                     alt={img.alt}
-                    fill
+                    width={500}
+                    height={700}
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    quality={index < 4 ? 58 : 50}
+                    quality={index < 4 ? 65 : 55}
                     priority={index < 2}
                     loading={index < 2 ? "eager" : "lazy"}
-                    decoding="async"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105 will-change-transform"
+                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/25" />
+                  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/10" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <span className="rounded-full glass-panel border-gold/30 px-4 py-2 text-xs font-semibold text-gold shadow-md font-mono">
                       View
