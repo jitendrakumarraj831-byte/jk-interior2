@@ -279,31 +279,35 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
             >
               {visibleImages.map((img, index) => (
                 <motion.button
-                  key={img.src}
-                  type="button"
-                  variants={fadeSlideUpItem}
-                  onClick={() => openLightbox(index)}
-                  className="relative mb-4 inline-block w-full overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
-                  aria-label={`View ${img.alt}`}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={500}
-                    height={700}
-                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    quality={index < 4 ? 65 : 55}
-                    priority={index < 2}
-                    loading={index < 2 ? "eager" : "lazy"}
-                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/10" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="rounded-full glass-panel border-gold/30 px-4 py-2 text-xs font-semibold text-gold shadow-md font-mono">
-                      View
-                    </span>
-                  </div>
-                </motion.button>
+  key={img.src}
+  type="button"
+  variants={fadeSlideUpItem}
+  onClick={() => openLightbox(index)}
+  // यहाँ 'block' और 'break-inside-avoid' जोड़ा गया है
+  className="relative mb-4 block w-full break-inside-avoid overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
+  aria-label={`View ${img.alt}`}
+>
+  <Image
+    src={img.src}
+    alt={img.alt}
+    width={500}
+    height={700}
+    // 'h-auto' सुनिश्चित करता है कि इमेज अपनी असली शेप में रहे
+    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+    quality={index < 4 ? 65 : 55}
+    priority={index < 2}
+  />
+  
+  {/* बाकी का Overlay कोड वैसा ही रहेगा */}
+  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/10" />
+  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+    <span className="rounded-full glass-panel border-gold/30 px-4 py-2 text-xs font-semibold text-gold shadow-md font-mono">
+      View
+    </span>
+  </div>
+</motion.button>
+              
               ))}
             </motion.div>
             {seeMore}
