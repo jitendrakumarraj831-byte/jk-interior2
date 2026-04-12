@@ -219,7 +219,12 @@ export default function Services() {
           </div>
 
         </article>
-      ),
-    }
-  })}
-/>
+),
+      };
+    })}
+  />
+
+      </motion.div>
+    </section>
+  )
+}
