@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, Info, Layout, Layers, Box, Maximize, MapPin, Sparkles } from "lucide-react"
+import { Check, Info, Layout, Layers, Box, Maximize, MapPin, Sparkles, Leaf } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { BentoGrid } from "@/components/Layout/BentoGrid"
