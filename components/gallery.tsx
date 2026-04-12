@@ -288,16 +288,16 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
       aria-label={`View ${img.alt}`}
     >
       <Image
-        src={img.src}
-        alt={img.alt}
-        width={500}
-        height={Math.floor(300 + (index % 5) * 120)}
-        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-        quality={index < 4 ? 65 : 55}
-        priority={index < 2}
-        loading={index < 2 ? "eager" : "lazy"}
-        className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
-      />
+  src={img.src}
+  alt={img.alt}
+  width={500}
+  height={0}
+  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+  quality={index < 4 ? 65 : 55}
+  priority={index < 2}
+  loading={index < 2 ? "eager" : "lazy"}
+  className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
+/>
     </motion.button>
   ))}
 </Masonry>
