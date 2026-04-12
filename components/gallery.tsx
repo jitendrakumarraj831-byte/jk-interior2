@@ -189,122 +189,139 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
   )
 
   const header = (
-    <motion.div className="mb-10 text-center px-4" variants={fadeSlideUp}>
-      <span className="mb-4 inline-block rounded-full glass-panel border-gold/25 px-4 py-1.5 text-xs uppercase tracking-widest text-gold font-mono">
-        Our Work / हमारा काम
-      </span>
-      <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
-        Project <span className="gold-text">Gallery</span>
-      </h3>
-      <p className="mx-auto max-w-xl text-muted-foreground font-mono">
-        Browse our latest interior design and ceiling projects
-      </p>
+  <motion.div className="mb-10 text-center px-4" variants={fadeSlideUp}>
+    <span className="mb-4 inline-block rounded-full glass-panel border-gold/25 px-4 py-1.5 text-xs uppercase tracking-widest text-gold font-mono">
+      Our Work / हमारा काम
+    </span>
+    <h3 className="mb-4 text-3xl font-bold text-foreground md:text-5xl font-sans text-balance">
+      Project <span className="gold-text">Gallery</span>
+    </h3>
+    <p className="mx-auto max-w-xl text-muted-foreground font-mono">
+      Browse our latest interior design and ceiling projects
+    </p>
+  </motion.div>
+)
+
+const seeMore =
+  !showAll && galleryImages.length > VISIBLE_COUNT ? (
+    <motion.div className="flex justify-center mt-10 px-4" variants={fadeSlideUp}>
+      <button
+        type="button"
+        onClick={() => setShowAll(true)}
+        className="group relative flex items-center gap-3 px-10 py-4 gold-gradient text-primary-foreground font-bold rounded-full btn-luxury-glow luxury-animated-shine transition-all duration-300 active:scale-95 overflow-hidden"
+      >
+        <span className="relative z-10">
+          और देखें / See More ({galleryImages.length - VISIBLE_COUNT}+)
+        </span>
+        <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+      </button>
     </motion.div>
-  )
+  ) : null
 
-  const seeMore =
-    !showAll && galleryImages.length > VISIBLE_COUNT ? (
-      <motion.div className="flex justify-center mt-10 px-4" variants={fadeSlideUp}>
-        <button
-          type="button"
-          onClick={() => setShowAll(true)}
-          className="group relative flex items-center gap-3 px-10 py-4 gold-gradient text-primary-foreground font-bold rounded-full btn-luxury-glow luxury-animated-shine transition-all duration-300 active:scale-95 overflow-hidden"
-        >
-          <span className="relative z-10">
-            और देखें / See More ({galleryImages.length - VISIBLE_COUNT}+)
-          </span>
-          <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-        </button>
-      </motion.div>
-    ) : null
-
-  if (layout === "experience") {
-    return (
-      <>
-        <GalleryJsonLdScript />
-        <div id="gallery" className="relative scroll-mt-28 pt-8 pb-16">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.08 }}
-            variants={staggerContainer}
-          >
-            {header}
-            <motion.div
-              className="flex gap-4 overflow-x-auto pb-4 px-4 snap-x snap-mandatory scrollbar-luxury [-webkit-overflow-scrolling:touch]"
-              variants={staggerContainer}
-            >
-              {visibleImages.map((img, index) => (
-                <motion.button
-                  key={img.src}
-                  type="button"
-                  variants={fadeSlideUpItem}
-                  onClick={() => openLightbox(index)}
-                  className="group relative h-[min(52vh,420px)] w-[min(78vw,340px)] shrink-0 snap-start overflow-hidden rounded-2xl border border-gold/20 glass-panel shadow-xl"
-                  aria-label={`View ${img.alt}`}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    sizes="340px"
-                    quality={index < 3 ? 62 : 52}
-                    priority={index < 2}
-                    loading={index < 2 ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-300 group-hover:scale-105 will-change-transform"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/70 to-transparent opacity-80" />
-                </motion.button>
-              ))}
-            </motion.div>
-            {seeMore}
-          </motion.div>
-        </div>
-        {lightbox}
-      </>
-    )
-  }
-
+if (layout === "experience") {
   return (
     <>
       <GalleryJsonLdScript />
-      <section id="gallery" className="py-24 relative scroll-mt-28">
-        <div className="mx-auto max-w-7xl px-4">
-        
-            {header}
-          
-            <Masonry
-  breakpointCols={breakpointColumnsObj}
-  className="flex gap-4"
-  columnClassName="space-y-4"
->
-  {visibleImages.map((img, index) => (
-    <motion.button
-      key={img.src}
-      type="button"
-      variants={fadeSlideUpItem}
-      onClick={() => openLightbox(index)}
-      className="break-inside-avoid mb-4 relative w-full overflow-hidden rounded-xl glass-panel border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10"
-    >
-      <Image
-  src={img.src}
-  alt={img.alt}
-  width={500}
-  height={700}
-  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-  quality={index < 4 ? 65 : 55}
-  priority={index < 2}
-  loading={index < 2 ? "eager" : "lazy"}
-  className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
-/>
-    </motion.button>
-  ))}
-</Masonry>
-            {seeMore}
-          
-        </div>
-      </section>
-      
+
+      <div id="gallery" className="relative scroll-mt-28 pt-8 pb-16">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.08 }}
+          variants={staggerContainer}
+        >
+          {header}
+
+          <motion.div
+            className="flex gap-4 overflow-x-auto pb-4 px-4 snap-x snap-mandatory scrollbar-luxury [-webkit-overflow-scrolling:touch]"
+            variants={staggerContainer}
+          >
+            {visibleImages.map((img, index) => (
+              <motion.button
+                key={img.src}
+                type="button"
+                variants={fadeSlideUpItem}
+                onClick={() => openLightbox(index)}
+                className="group relative h-[min(52vh,420px)] w-[min(78vw,340px)] shrink-0 snap-start overflow-hidden rounded-2xl border border-gold/20 glass-panel shadow-xl"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="340px"
+                  quality={index < 3 ? 65 : 55}
+                  priority={index < 2}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+              </motion.button>
+            ))}
+          </motion.div>
+
+          {seeMore}
+        </motion.div>
+      </div>
+
+      {lightbox}
     </>
   )
 }
+
+return (
+  <>
+    <GalleryJsonLdScript />
+
+    <section id="gallery" className="py-24 relative scroll-mt-28">
+      <div className="mx-auto max-w-7xl px-4">
+        {header}
+
+        {/* ✅ PINTEREST STYLE MASONRY */}
+        <Masonry
+          breakpointCols={{
+            default: 4,
+            1280: 3,
+            1024: 2,
+            640: 2,
+            480: 1,
+          }}
+          className="flex w-auto gap-5"
+          columnClassName="flex flex-col gap-5"
+        >
+          {visibleImages.map((img, index) => (
+            <motion.div
+              key={img.src}
+              variants={fadeSlideUpItem}
+              className="overflow-hidden rounded-2xl"
+            >
+              <button
+                type="button"
+                onClick={() => openLightbox(index)}
+                className="group relative w-full overflow-hidden rounded-2xl border border-gold/20 glass-panel shadow-md transition-all duration-300 hover:shadow-xl hover:shadow-gold/10"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={600}
+                  height={800}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  quality={index < 4 ? 70 : 55}
+                  priority={index < 2}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  placeholder="blur"
+                  blurDataURL="/placeholder.jpg"
+                  className="w-full h-auto object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+
+                {/* hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
+              </button>
+            </motion.div>
+          ))}
+        </Masonry>
+
+        {seeMore}
+      </div>
+    </section>
+  </>
+)
