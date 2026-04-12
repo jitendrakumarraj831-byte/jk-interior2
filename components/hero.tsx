@@ -142,33 +142,30 @@ export default function Hero() {
         {/* Right Side: Slider Fix */}
         <div className="relative z-20 flex min-h-[420px] lg:min-h-0 items-stretch p-4 sm:p-6 lg:p-10 lg:pl-4">
           <div className="relative w-full overflow-hidden rounded-[2rem] border border-gold/20 glass-panel shadow-2xl">
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="popLayout" initial={false}>
   <motion.div
-    key={heroSlides[index].src}
-    // Ye animation image ko halka sa scale aur blur ke saath layega
-    initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-    exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
+    key={index}
+    // 'x: 100%' matlab screen ke right se shuru hoga
+    initial={{ x: "100%", opacity: 0 }} 
+    animate={{ x: 0, opacity: 1 }}
+    // 'x: -100%' matlab screen ke left se nikal jayega
+    exit={{ x: "-100%", opacity: 0 }}
     transition={{ 
-      duration: 0.8, 
-      ease: [0.16, 1, 0.3, 1] // Custom "Out-Quart" easing
+      x: { type: "spring", stiffness: 300, damping: 30 },
+      opacity: { duration: 0.4 }
     }}
-    className="absolute inset-0 overflow-hidden"
+    className="absolute inset-0"
   >
     <Image
       src={heroSlides[index].src}
       alt={heroSlides[index].alt}
       fill
-      className="object-cover transform scale-105" // Base scale for parallax feel
+      className="object-cover"
       priority
       sizes="(max-width: 1024px) 100vw, 50vw"
     />
-    
-    {/* Dark Gradient Overlay - Jo text ko readable banaye aur look ko rich kare */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-    
-    {/* Animated Decorative Border (Optional Luxury Touch) */}
-    <div className="absolute inset-4 border border-white/10 rounded-[1.5rem] pointer-events-none" />
+    {/* Ek achha dark gradient taaki white background se contrast bane */}
+    <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
   </motion.div>
 </AnimatePresence>
             
