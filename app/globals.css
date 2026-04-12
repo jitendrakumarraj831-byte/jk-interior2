@@ -370,6 +370,7 @@
     );
     animation: btn-shine 2.8s ease-in-out infinite;
     pointer-events: none;
+    will-change: transform;
   }
 
   .luxury-animated-shine--subtle::after {

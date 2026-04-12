@@ -54,8 +54,7 @@ export default function Hero() {
       id="home"
       className="relative min-h-[100dvh] w-full overflow-hidden pt-24 sm:pt-28"
     >
-      <div className="absolute inset-0 z-0 animate-mesh opacity-40 md:opacity-55" />
-      <div className="floating-blob absolute top-[15%] right-[-10%] z-0 hidden h-[min(90vw,520px)] w-[min(90vw,520px)] rounded-full bg-gold/10 blur-[72px] md:block md:bg-gold/12 md:blur-[100px]" />
+      <div className="absolute inset-0 z-0 opacity-30" style={{backgroundImage:'radial-gradient(at 0% 0%,rgba(37,99,235,0.08) 0px,transparent 50%),radial-gradient(at 100% 0%,rgba(29,78,216,0.06) 0px,transparent 50%)'}} />
 
       <div className="relative z-10 grid min-h-[calc(100dvh-5.5rem)] grid-cols-1 lg:grid-cols-2">
         {/* Left: vertical typographic stack + stagger */}
