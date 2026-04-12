@@ -142,26 +142,31 @@ export default function Hero() {
         {/* Right Side: Slider Fix */}
         <div className="relative z-20 flex min-h-[420px] lg:min-h-0 items-stretch p-4 sm:p-6 lg:p-10 lg:pl-4">
           <div className="relative w-full overflow-hidden rounded-[2rem] border border-gold/20 glass-panel shadow-2xl">
-            <AnimatePresence mode="popLayout">
-              <motion.div
-                key={heroSlides[index].src}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, ease: easeLux }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={heroSlides[index].src}
-                  alt={heroSlides[index].alt}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              </motion.div>
-            </AnimatePresence>
+            <AnimatePresence mode="popLayout" custom={index}>
+  <motion.div
+    key={heroSlides[index].src}
+    // 'x: 100' ka matlab right se aana, 'x: -100' ka matlab left se jana
+    initial={{ opacity: 0, x: 100 }} 
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -100 }}
+    transition={{ 
+      duration: 0.6, 
+      ease: [0.32, 0.72, 0, 1] // Smooth sliding curve
+    }}
+    className="absolute inset-0"
+  >
+    <Image
+      src={heroSlides[index].src}
+      alt={heroSlides[index].alt}
+      fill
+      className="object-cover"
+      priority
+      sizes="(max-width: 1024px) 100vw, 50vw"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+  </motion.div>
+</AnimatePresence>
+            
 
             {/* Controls */}
             <div className="absolute bottom-0 left-0 right-0 z-30 flex items-end justify-between p-5 sm:p-6">
