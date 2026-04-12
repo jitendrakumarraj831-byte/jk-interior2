@@ -17,7 +17,23 @@ const heroSlides = [
   { src: "/images/tv-unit.jpg", alt: "Modern TV unit design" },
 ]
 
-// Sliding Variants logic
+// Text Animation Variants
+const letterContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+}
+
+const letterItem = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: easeLux },
+  },
+}
+
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? "100%" : "-100%",
@@ -48,52 +64,81 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden pt-20 sm:pt-28 bg-[#f8faff]">
-      {/* Background Gradients */}
       <div className="absolute inset-0 z-0 opacity-40" style={{backgroundImage:'radial-gradient(at 0% 0%,rgba(37,99,235,0.1) 0px,transparent 50%),radial-gradient(at 100% 0%,rgba(29,78,216,0.08) 0px,transparent 50%)'}} />
 
       <div className="relative z-10 grid min-h-[calc(100dvh-5.5rem)] grid-cols-1 lg:grid-cols-2">
         {/* Left Content */}
         <div className="flex flex-col justify-center px-6 py-8 lg:pl-12 lg:pr-8 xl:pl-20">
-          <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full bg-white/50 border border-blue-100 px-4 py-2 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full bg-white/50 border border-blue-100 px-4 py-2 backdrop-blur-sm"
+          >
             <MapPin className="h-3.5 w-3.5 text-blue-600" />
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-800">
               Forbesganj • Araria • Bihar
             </span>
-          </div>
+          </motion.div>
 
           <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-6">
-            <h1 className="font-black leading-none text-[clamp(4.5rem,15vw,8rem)] text-blue-950 tracking-tighter">
-              JK
-            </h1>
-            <h2 className="text-blue-600 font-black tracking-[0.15em] text-[clamp(2rem,8vw,3.5rem)] lg:[writing-mode:vertical-rl] lg:rotate-180 self-center">
+            <motion.div 
+              variants={letterContainer} 
+              initial="hidden" 
+              animate="visible" 
+              className="flex"
+            >
+              {["J", "K"].map((char) => (
+                <motion.span key={char} variants={letterItem} className="font-black leading-none text-[clamp(4.5rem,15vw,8rem)] text-blue-950 tracking-tighter">
+                  {char}
+                </motion.span>
+              ))}
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-blue-600 font-black tracking-[0.15em] text-[clamp(2rem,8vw,3.5rem)] lg:[writing-mode:vertical-rl] lg:rotate-180 self-center"
+            >
               INTERIOR
-            </h2>
+            </motion.h2>
           </div>
 
-          <div className="mt-8 space-y-4 max-w-lg">
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-8 space-y-4 max-w-lg"
+          >
             <p className="text-xl md:text-2xl text-gray-800 font-medium italic">
               &quot;छत आपकी, <span className="text-blue-600 underline decoration-blue-200">पहचान हमारी</span>&quot;
             </p>
             <p className="text-gray-600 border-l-4 border-blue-500 pl-4 py-1">
               Bihar ka No.1 trusted brand for PVC, Gypsum and Modern Interiors.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button asChild size="lg" className="h-14 px-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-200 transition-all active:scale-95">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="mt-10 flex flex-wrap gap-4"
+          >
+            {/* Added luxury-animated-shine class back */}
+            <Button asChild size="lg" className="h-14 px-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-200 transition-all active:scale-95 luxury-animated-shine overflow-hidden relative">
               <a href="tel:+918651070831" className="flex items-center gap-2">
                 <Phone className="h-5 w-5" /> प्रीमियम कोटेशन
               </a>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full border-blue-200 hover:bg-blue-50">
+            
+            <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full border-blue-200 hover:bg-blue-50 luxury-animated-shine luxury-animated-shine--subtle overflow-hidden relative">
               <Link href="#services" className="flex items-center gap-2">
                 डिज़ाइन देखें <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Right Slider */}
+        {/* Right Slider (Unchanged Layout) */}
         <div className="relative z-20 flex min-h-[450px] lg:min-h-0 p-4 sm:p-8">
           <div className="relative w-full h-full overflow-hidden rounded-[2.5rem] bg-white shadow-2xl border border-white">
             <AnimatePresence initial={false} custom={direction}>
@@ -122,7 +167,6 @@ export default function Hero() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Navigation Buttons */}
             <div className="absolute bottom-6 left-6 right-6 z-30 flex items-center justify-between">
               <div className="flex gap-3">
                 <button 
