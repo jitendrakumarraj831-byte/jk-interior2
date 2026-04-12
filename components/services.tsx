@@ -91,6 +91,20 @@ const services = [
     alt: "Modern TV unit design Forbesganj",
     icon: <Layout className="w-5 h-5" />,
   },
+  {
+  title: "Artificial Grass",
+  titleHi: "आर्टिफिशियल घास",
+  useCase: "बालकनी, टैरेस, गार्डन और आउटडोर एरिया के लिए।",
+  useCaseEn: "Ideal for balconies, terraces, gardens, and outdoor areas.",
+  specialty: "नेचुरल घास जैसा लुक, बिना मेंटेनेंस के।",
+  specialtyEn: "Natural grass-like look with zero maintenance.",
+  benefit: "पानी, कटिंग या कीटनाशक की जरूरत नहीं।",
+  benefitEn: "No watering, mowing, or pesticides required.",
+  desc: "Artificial grass gives a fresh green look without maintenance hassle.",
+  image: "/images/artificial-grass.jpg",
+  alt: "Artificial grass installation in Forbesganj Bihar",
+  icon: <Leaf className="w-5 h-5" />,
+  }
 ];
 
 
