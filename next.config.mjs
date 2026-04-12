@@ -7,12 +7,10 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react'],
   },
   images: {
-    // unoptimized: true, <--- इस लाइन को हटा दें या false करें
-    unoptimized: false, 
-    
-    // ये लाइनें जोड़ें ताकि Google आपकी फोटो को हल्का (Compress) कर सके
+    unoptimized: false,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200],
+    qualities: [52, 62, 68, 78, 82, 100],
   },
 }
 
