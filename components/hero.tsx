@@ -104,28 +104,29 @@ export default function Hero() {
             </motion.h2>
           </div>
 
-          <motion.div 
+                    <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
             className="mt-8 space-y-4 max-w-lg"
           >
-            {/* विकल्प 1 के अनुसार अपडेटेड हेडिंग */}
-            <h3 className="text-2xl md:text-3xl text-blue-950 font-bold leading-tight">
-              बिहार का सबसे भरोसेमंद <br className="hidden md:block" /> इंटीरियर ब्रांड।
+            {/* मुख्य हेडलाइन */}
+            <h3 className="text-2xl md:text-4xl text-blue-950 font-black leading-tight tracking-tight">
+              डिज़ाइन जो <span className="text-blue-600">दिल जीत ले</span>, <br /> 
+              फिनिशिंग जो <span className="text-blue-600">सालों चले</span>।
             </h3>
             
             <p className="text-xl md:text-2xl text-gray-800 font-medium italic">
               &quot;छत आपकी, <span className="text-blue-600 underline decoration-blue-200">पहचान हमारी</span>&quot;
             </p>
 
-            {/* विकल्प 1 के अनुसार अपडेटेड डिस्क्रिप्शन */}
+            {/* आपके बताए अनुसार अपडेटेड सर्विस लिस्ट */}
             <p className="text-gray-600 border-l-4 border-blue-500 pl-4 py-1 leading-relaxed">
-              हम आपके घर को मॉडर्न बनाने के लिए PVC फॉल्स सीलिंग, जिप्सम डिजाइन और वॉल पैनलिंग की बेहतरीन सर्विस देते हैं। 
-              <span className="block mt-1 font-semibold text-blue-900">10+ सालों का अनुभव और 500+ खुश ग्राहक।</span>
+              हम आपके <span className="text-blue-900 font-bold">घर, दुकान, ऑफिस और शोरूम</span> के लिए प्रीमियम PVC, जिप्सम, WPC पैनल, UV मार्बल शीट, आर्टिफिशियल ग्रास और ग्रिड सीलिंग की बेहतरीन सर्विस देते हैं। 
+              <span className="block mt-1 font-semibold text-blue-950">बिहार का No.1 भरोसेमंद इंटीरियर ब्रांड।</span>
             </p>
           </motion.div>
-
+          
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
