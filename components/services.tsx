@@ -134,87 +134,92 @@ export default function Services() {
           </p>
         </motion.header>
 
-        <BentoGrid
-  items={services.map((service, index) => ({
-    id: service.title,
-    className: bentoSpans[index],
-    children: (
-      <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-gold/20 glass-panel shadow-lg transition-all duration-500 hover:border-gold/45 hover:shadow-[0_0_40px_-10px_rgba(37,99,235,0.25)]">
-        <div
-          className={
-            index === 0
-              ? "relative min-h-[200px] flex-1 md:min-h-0"
-              : "relative h-44 shrink-0 md:h-40"
-          }
-        >
-          <Image
-            src={service.image}
-            alt={service.alt}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105 will-change-transform"
-            sizes="(max-width:768px) 100vw, 50vw"
-            loading="lazy"
-            quality={index === 0 ? 78 : 68}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/95 via-[#f0f7ff]/45 to-transparent" />
-          <div className="absolute left-4 top-4 rounded-xl border border-gold/25 glass-panel p-2.5 text-gold">
-            {service.icon}
-          </div>
-        </div>
+       <BentoGrid
+  items={services.map((service, index) => {
+    return {
+      id: service.title,
+      className: bentoSpans[index],
+      children: (
+        <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-gold/20 glass-panel shadow-lg transition-all duration-500 hover:border-gold/45 hover:shadow-[0_0_40px_-10px_rgba(37,99,235,0.25)]">
 
-        <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
-          <div>
-            <h3 className="text-lg font-bold text-foreground transition-colors group-hover:text-gold md:text-xl">
-              {service.title}
-            </h3>
-            <p className="text-xs font-bold uppercase italic tracking-wider text-gold-light/80">
-              {service.titleHi}
-            </p>
-          </div>
+          <div
+            className={
+              index === 0
+                ? "relative min-h-[200px] flex-1 md:min-h-0"
+                : "relative h-44 shrink-0 md:h-40"
+            }
+          >
+            <Image
+              src={service.image}
+              alt={service.alt}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width:768px) 100vw, 50vw"
+              loading="lazy"
+              quality={index === 0 ? 78 : 68}
+            />
 
-          <div className="space-y-3.5 text-sm">
-            {/* Use Case Section */}
-            <div className="flex gap-2 text-muted-foreground">
-              <MapPin className="mt-1 h-3.5 w-3.5 shrink-0 text-gold" />
-              <div className="flex flex-col">
-                <span className="text-foreground font-medium leading-tight">
-                  {service.useCaseEn}
-                </span>
-                <span className="text-[11px] italic opacity-70 leading-tight">
-                  उपयोग: {service.useCase}
-                </span>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#f0f7ff]/95 via-[#f0f7ff]/45 to-transparent" />
 
-            {/* Specialty Section */}
-            <div className="flex gap-2 text-muted-foreground">
-              <Info className="mt-1 h-3.5 w-3.5 shrink-0 text-gold" />
-              <div className="flex flex-col">
-                <span className="text-foreground font-medium leading-tight">
-                  {service.specialtyEn}
-                </span>
-                <span className="text-[11px] italic opacity-70 leading-tight">
-                  खासियत: {service.specialty}
-                </span>
-              </div>
-            </div>
-
-            {/* Benefit Section */}
-            <div className="flex gap-2 text-muted-foreground">
-              <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-gold" />
-              <div className="flex flex-col">
-                <span className="text-foreground font-medium leading-tight">
-                  {service.benefitEn}
-                </span>
-                <span className="text-[11px] italic opacity-70 leading-tight">
-                  फायदा: {service.benefit}
-                </span>
-              </div>
+            <div className="absolute left-4 top-4 rounded-xl border border-gold/25 glass-panel p-2.5 text-gold">
+              {service.icon}
             </div>
           </div>
-        </div>
-      </article>
-    ),
-  }))}
+
+          <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
+
+            <div>
+              <h3 className="text-lg font-bold text-foreground group-hover:text-gold md:text-xl">
+                {service.title}
+              </h3>
+              <p className="text-xs font-bold uppercase italic tracking-wider text-gold-light/80">
+                {service.titleHi}
+              </p>
+            </div>
+
+            <div className="space-y-3.5 text-sm">
+
+              <div className="flex gap-2 text-muted-foreground">
+                <MapPin className="mt-1 h-3.5 w-3.5 text-gold" />
+                <div>
+                  <span className="text-foreground font-medium">
+                    {service.useCaseEn}
+                  </span>
+                  <div className="text-[11px] italic opacity-70">
+                    उपयोग: {service.useCase}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2 text-muted-foreground">
+                <Info className="mt-1 h-3.5 w-3.5 text-gold" />
+                <div>
+                  <span className="text-foreground font-medium">
+                    {service.specialtyEn}
+                  </span>
+                  <div className="text-[11px] italic opacity-70">
+                    खासियत: {service.specialty}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2 text-muted-foreground">
+                <Check className="mt-1 h-3.5 w-3.5 text-gold" />
+                <div>
+                  <span className="text-foreground font-medium">
+                    {service.benefitEn}
+                  </span>
+                  <div className="text-[11px] italic opacity-70">
+                    फायदा: {service.benefit}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </article>
+      ),
+    }
+  })}
 />
-        
