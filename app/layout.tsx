@@ -120,13 +120,22 @@ export default function RootLayout({
           "@type": "LocalBusiness",
           name: "JK Interior",
           url: "https://www.jkinterior.online",
-          telephone: "+918541849118",
+          telephone: "+918651070831",
           address: {
             "@type": "PostalAddress",
             addressLocality: "Forbesganj",
             addressRegion: "Bihar",
             addressCountry: "IN"
           },
+          areaServed: "Forbesganj, Araria, Bihar, India",
+          serviceType: [
+            "Gypsum Ceiling",
+            "POP Design",
+            "PVC Wall Panels",
+            "WPC Louvers",
+            "Grid Ceiling",
+            "Interior Design"
+          ],
           description:
             "JK Interior provides gypsum ceiling, POP design, PVC wall paneling and interior services in Forbesganj, Bihar."
         })

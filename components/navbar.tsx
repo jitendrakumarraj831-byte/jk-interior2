@@ -7,12 +7,11 @@ import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "#home", label: "Home", labelHi: "होम" },
-  { href: "#services", label: "Services", labelHi: "सेवाएं" },
-  { href: "#why-us", label: "Why Us", labelHi: "क्यों चुनें" },
-  { href: "#gallery", label: "Gallery", labelHi: "गैलरी" },
-  { href: "#areas", label: "Areas", labelHi: "सेवा क्षेत्र" },
-  { href: "#contact", label: "Contact", labelHi: "संपर्क" },
+  { href: "/", label: "Home", labelHi: "होम" },
+  { href: "/services", label: "Services", labelHi: "सेवाएं" },
+  { href: "/about", label: "About", labelHi: "हमारे बारे में" },
+  { href: "/gallery", label: "Gallery", labelHi: "गैलरी" },
+  { href: "/contact", label: "Contact", labelHi: "संपर्क" },
 ]
 
 export default function Navbar() {
@@ -53,13 +52,13 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center min-w-0">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-gold transition-colors rounded-full hover:bg-blue-50"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -135,18 +134,22 @@ export default function Navbar() {
                   </span>
                 </div>
                 {navLinks.map((link, i) => (
-                  <motion.a
+                  <motion.div
                     key={link.href}
-                    href={link.href}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.04 * i }}
-                    onClick={() => setMobileOpen(false)}
                     className="flex flex-col border-b border-gold/10 pb-3"
                   >
-                    <span className="text-lg font-black text-foreground">{link.label}</span>
-                    <span className="text-xs text-gold/60">{link.labelHi}</span>
-                  </motion.a>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex flex-col"
+                    >
+                      <span className="text-lg font-black text-foreground">{link.label}</span>
+                      <span className="text-xs text-gold/60">{link.labelHi}</span>
+                    </Link>
+                  </motion.div>
                 ))}
                 <a
                   href="https://wa.me/918651070831"

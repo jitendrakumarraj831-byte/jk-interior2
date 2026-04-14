@@ -1,17 +1,42 @@
+import type { Metadata } from "next"
 import Navbar from "@/components/navbar"
 import Gallery from "@/components/gallery"
 import Footer from "@/components/footer"
 
-// 🔥 HIGH POWER SEO Metadata
-export const metadata = {
-  title:
-    "Interior Design Gallery in Forbesganj | PVC Panel, Gypsum, POP & False Ceiling Designs Bihar",
-
+export const metadata: Metadata = {
+  title: "Interior Design Gallery Forbesganj | PVC Panel, Gypsum & False Ceiling Photos – JK Interior",
   description:
-    "View JK Interior gallery of PVC wall paneling, gypsum ceiling, POP designs, grid ceiling, WPC louvers and modern home interior work in Forbesganj, Araria, Narpatganj, Jogbani, Raniganj, Kursakanta, Chhatapur and Tribeniganj Bihar.",
-
-  keywords:
-    "interior design gallery forbesganj, pvc wall panel design forbesganj, gypsum ceiling gallery araria, pop design images bihar, false ceiling gallery jogbani, grid ceiling photos raniganj, wpc louvers design forbesganj, fluted panel design araria, tv panel design bihar, bedroom ceiling design bihar, modern interior gallery narpatganj, home interior photos jogbani, ceiling design raniganj kursakanta, interior work images chhatapur tribeniganj, best interior gallery bihar, pvc panel work near me, false ceiling work near me bihar, interior design ideas forbesganj bihar, jk interior gallery forbesganj"
+    "View JK Interior's gallery of PVC wall paneling, gypsum ceiling, POP designs, grid ceiling, WPC louvers and modern home interior work in Forbesganj, Araria, Narpatganj, Jogbani and across Bihar.",
+  keywords: [
+    "interior design gallery forbesganj",
+    "pvc wall panel design forbesganj",
+    "gypsum ceiling gallery araria",
+    "pop design images bihar",
+    "false ceiling gallery jogbani",
+    "wpc louvers design forbesganj",
+    "fluted panel design araria",
+    "tv panel design bihar",
+    "bedroom ceiling design bihar",
+    "modern interior gallery narpatganj",
+    "jk interior gallery forbesganj",
+  ],
+  alternates: {
+    canonical: "https://www.jkinterior.online/gallery",
+  },
+  openGraph: {
+    title: "Interior Design Gallery Forbesganj | PVC, Gypsum & False Ceiling Photos – JK Interior",
+    description:
+      "Browse JK Interior's photo gallery of completed projects: gypsum ceiling, PVC panels, WPC louvers and home interior work across Bihar.",
+    url: "https://www.jkinterior.online/gallery",
+    siteName: "JK Interior",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Interior Design Gallery Forbesganj | JK Interior Bihar",
+    description:
+      "Browse JK Interior's photo gallery of completed projects: gypsum ceiling, PVC panels, WPC louvers and home interior work across Bihar.",
+  },
 }
 
 export default function Page() {
@@ -19,9 +44,8 @@ export default function Page() {
     <>
       <Navbar />
 
-      {/* 🔥 SEO H1 (hidden - design safe) */}
-      <h1 style={{ display: "none" }}>
-        Interior Design Gallery in Forbesganj Bihar – PVC Panel, Gypsum, POP & False Ceiling Designs
+      <h1 className="sr-only">
+        Interior Design Gallery in Forbesganj Bihar – PVC Panel, Gypsum, POP &amp; False Ceiling Designs
       </h1>
 
       <Gallery />

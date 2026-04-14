@@ -78,10 +78,19 @@ npm run start  # Production server on port 5000
 - Workflow: "Start application" runs `npm run dev`
 - Node.js 20 required for @tailwindcss/oxide native bindings
 
+## SEO Configuration
+
+- **Domain**: `https://www.jkinterior.online` (www only — canonical set on every page)
+- **Layout JSON-LD**: LocalBusiness schema in `app/layout.tsx` with serviceType and areaServed
+- **Per-page metadata**: Unique `title`, `description`, `keywords`, `alternates.canonical`, `openGraph`, `twitter` on every page
+- **Sitemap priorities**: `/` → 1.0, `/services` → 0.9, `/gallery` → 0.8, `/about` → 0.7, `/contact` → 0.7
+- **Robots**: `app/robots.ts` allows all, sitemap URL is `https://www.jkinterior.online/sitemap.xml`
+- **H1**: Each page has a visually-hidden `<h1 className="sr-only">` for SEO without affecting design
+
 ## Critical Rules
 
-- **Never modify SEO metadata** — titles, descriptions, schema JSON-LD, alt text, keywords
 - **Never change text content or headings**
 - **Never remove or alter route structure** (app/ directories)
 - Body tag must NOT have `bg-background` class (it overrides the gradient)
 - All hardcoded `#0A0A0B` color references should use `#0b0f1a` instead
+- When updating SEO: keep all canonical URLs as `https://www.jkinterior.online/[page]` (www, no trailing slash for sub-pages)
