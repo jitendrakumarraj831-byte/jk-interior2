@@ -22,15 +22,6 @@ type GalleryProps = {
   layout?: "default" | "experience"
 }
 
-// Varying aspect ratios for Pinterest masonry effect
-const aspectVariants = [
-  "aspect-[4/3]",
-  "aspect-[3/4]",
-  "aspect-[1/1]",
-  "aspect-[4/3]",
-  "aspect-[2/3]",
-  "aspect-[3/2]",
-]
 
 export default function Gallery({ layout = "default" }: GalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -231,21 +222,22 @@ export default function Gallery({ layout = "default" }: GalleryProps) {
                   type="button"
                   variants={fadeSlideUpItem}
                   onClick={() => openLightbox(index)}
-                  className={`group relative w-full block mb-4 break-inside-avoid overflow-hidden rounded-xl glass-panel border border-gold/15 shadow-lg transition-all duration-300 hover:border-gold/40 hover:shadow-xl hover:shadow-gold/10 ${aspectVariants[index % aspectVariants.length]}`}
+                  className="group relative w-full block mb-4 break-inside-avoid overflow-hidden rounded-xl glass-panel border border-gold/15 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-gold/40"
                   aria-label={`View ${img.alt}`}
                 >
                   <Image
                     src={img.src}
                     alt={img.alt}
-                    fill
+                    width={800}
+                    height={600}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     quality={index < 4 ? 58 : 50}
                     priority={index < 2}
                     loading={index < 2 ? "eager" : "lazy"}
                     decoding="async"
-                    className="w-full h-auto object-cover rounded-xl transition-all duration-500 group-hover:scale-[1.04] will-change-transform"
+                    className="w-full h-auto object-cover rounded-xl transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl will-change-transform"
                   />
-                  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/25 rounded-xl" />
+                  <div className="absolute inset-0 bg-foreground/0 transition-colors duration-300 group-hover:bg-foreground/20 rounded-xl" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <span className="rounded-full glass-panel border-gold/30 px-4 py-2 text-xs font-semibold text-gold shadow-md font-mono">
                       View
