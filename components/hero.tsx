@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
-import { Phone, ArrowRight, ChevronLeft, ChevronRight, MapPin } from "lucide-react"
+import { Phone, ArrowRight, ChevronLeft, ChevronRight, MapPin, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -17,37 +17,23 @@ const heroSlides = [
   { src: "/images/tv-unit.jpg", alt: "Modern TV unit design" },
 ]
 
-// Text Animation Variants
-const letterContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
-}
-
-const letterItem = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: easeLux },
-  },
-}
-
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? "100%" : "-100%",
     opacity: 0,
   }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
+  center: { x: 0, opacity: 1 },
   exit: (direction: number) => ({
     x: direction < 0 ? "100%" : "-100%",
     opacity: 0,
   }),
 }
+
+const stats = [
+  { value: "500+", label: "Projects Done" },
+  { value: "8+", label: "Years Experience" },
+  { value: "100%", label: "Client Satisfaction" },
+]
 
 export default function Hero() {
   const [[page, direction], setPage] = useState([0, 0])
@@ -63,93 +49,142 @@ export default function Hero() {
   }, [paginate])
 
   return (
-    <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden pt-20 sm:pt-28 bg-[#f8faff]">
-      {/* Background Gradients */}
-      <div className="absolute inset-0 z-0 opacity-40" style={{backgroundImage:'radial-gradient(at 0% 0%,rgba(37,99,235,0.1) 0px,transparent 50%),radial-gradient(at 100% 0%,rgba(29,78,216,0.08) 0px,transparent 50%)'}} />
+    <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden bg-[#f0f7ff]">
+      {/* Subtle background gradients */}
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{ backgroundImage: "radial-gradient(at 0% 0%,rgba(37,99,235,0.08) 0px,transparent 55%),radial-gradient(at 100% 100%,rgba(29,78,216,0.06) 0px,transparent 55%)" }}
+      />
 
-      <div className="relative z-10 grid min-h-[calc(100dvh-5.5rem)] grid-cols-1 lg:grid-cols-2">
-        {/* Left Content */}
-        <div className="flex flex-col justify-center px-6 py-8 lg:pl-12 lg:pr-8 xl:pl-20">
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
+      <div className="relative z-10 mx-auto grid min-h-[100dvh] max-w-7xl grid-cols-1 items-center gap-0 px-4 pt-20 sm:pt-24 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:pt-0">
+
+        {/* ── Left: Content ── */}
+        <div className="flex flex-col justify-center py-10 lg:py-20">
+
+          {/* Location badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full bg-white/50 border border-blue-100 px-4 py-2 backdrop-blur-sm"
+            transition={{ duration: 0.5, ease: easeLux }}
+            className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-blue-200 bg-white/70 px-4 py-1.5 backdrop-blur-sm"
           >
             <MapPin className="h-3.5 w-3.5 text-blue-600" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-800">
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700">
               Forbesganj • Araria • Bihar
             </span>
           </motion.div>
 
-          <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-6">
-            <motion.div 
-              variants={letterContainer} 
-              initial="hidden" 
-              animate="visible" 
-              className="flex"
-            >
-              {["J", "K"].map((char) => (
-                <motion.span key={char} variants={letterItem} className="font-black leading-none text-[clamp(4.5rem,15vw,8rem)] text-blue-950 tracking-tighter">
-                  {char}
-                </motion.span>
-              ))}
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-blue-600 font-black tracking-[0.15em] text-[clamp(2rem,8vw,3.5rem)] lg:[writing-mode:vertical-rl] lg:rotate-180 self-center"
-            >
-              INTERIOR
-            </motion.h2>
-          </div>
-
-                    <motion.div 
-            initial={{ opacity: 0, y: 15 }}
+          {/* Brand name */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mt-8 space-y-4 max-w-lg"
+            transition={{ delay: 0.1, duration: 0.55, ease: easeLux }}
           >
-            {/* मुख्य हेडलाइन */}
-            <h3 className="text-2xl md:text-4xl text-blue-950 font-black leading-tight tracking-tight">
-              डिज़ाइन जो <span className="text-blue-600">दिल जीत ले</span>, <br /> 
-              फिनिशिंग जो <span className="text-blue-600">सालों चले</span>।
-            </h3>
-            
-            <p className="text-xl md:text-2xl text-gray-800 font-medium italic">
-              &quot;छत आपकी, <span className="text-blue-600 underline decoration-blue-200">पहचान हमारी</span>&quot;
-            </p>
+            <h1 className="font-black leading-[0.9] tracking-tighter text-blue-950"
+              style={{ fontSize: "clamp(3.2rem,10vw,6.5rem)" }}
+            >
+              JK
+              <span className="ml-3 text-blue-600"
+                style={{ fontSize: "clamp(1.6rem,5vw,3rem)", letterSpacing: "0.12em" }}
+              >
+                INTERIOR
+              </span>
+            </h1>
+          </motion.div>
 
-            {/* आपके बताए अनुसार अपडेटेड सर्विस लिस्ट */}
-            <p className="text-gray-600 border-l-4 border-blue-500 pl-4 py-1 leading-relaxed">
-              हम आपके <span className="text-blue-900 font-bold">घर, दुकान, ऑफिस और शोरूम</span> के लिए प्रीमियम PVC, जिप्सम, WPC पैनल, UV मार्बल शीट, आर्टिफिशियल ग्रास और ग्रिड सीलिंग की बेहतरीन सर्विस देते हैं। 
-              <span className="block mt-1 font-semibold text-blue-950">बिहार का No.1 भरोसेमंद इंटीरियर ब्रांड।</span>
+          {/* Taglines */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.55, ease: easeLux }}
+            className="mt-5 max-w-lg space-y-3"
+          >
+            <h2 className="text-xl font-black leading-snug tracking-tight text-blue-950 md:text-3xl">
+              डिज़ाइन जो{" "}
+              <span className="text-blue-600">दिल जीत ले</span>,{" "}
+              <br className="hidden sm:block" />
+              फिनिशिंग जो{" "}
+              <span className="text-blue-600">सालों चले</span>।
+            </h2>
+            <p className="text-base font-medium italic text-gray-700 md:text-lg">
+              &quot;छत आपकी,{" "}
+              <span className="text-blue-600 underline decoration-blue-200 underline-offset-2">
+                पहचान हमारी
+              </span>
+              &quot;
+            </p>
+            <p className="border-l-4 border-blue-500 pl-4 text-sm leading-relaxed text-gray-600">
+              घर, दुकान, ऑफिस और शोरूम के लिए प्रीमियम{" "}
+              <span className="font-bold text-blue-900">
+                PVC, जिप्सम, WPC पैनल, UV मार्बल शीट
+              </span>{" "}
+              और ग्रिड सीलिंग।
+              <span className="mt-1 block font-semibold text-blue-950">
+                बिहार का No.1 भरोसेमंद इंटीरियर ब्रांड।
+              </span>
             </p>
           </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="mt-10 flex flex-wrap gap-4"
+            transition={{ delay: 0.4, duration: 0.5, ease: easeLux }}
+            className="mt-8 flex flex-wrap gap-3"
           >
-            <Button asChild size="lg" className="h-14 px-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl shadow-blue-200 transition-all active:scale-95 luxury-animated-shine overflow-hidden relative">
+            <Button
+              asChild
+              size="lg"
+              className="h-13 relative overflow-hidden rounded-full bg-blue-600 px-8 text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-95 luxury-animated-shine"
+            >
               <a href="tel:+918651070831" className="flex items-center gap-2">
-                <Phone className="h-5 w-5" /> प्रीमियम कोटेशन
+                <Phone className="h-4 w-4" />
+                प्रीमियम कोटेशन
               </a>
             </Button>
-            
-            <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full border-blue-200 hover:bg-blue-50 luxury-animated-shine luxury-animated-shine--subtle overflow-hidden relative">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-13 relative overflow-hidden rounded-full border-blue-200 px-8 hover:bg-blue-50 luxury-animated-shine luxury-animated-shine--subtle"
+            >
               <Link href="#services" className="flex items-center gap-2">
-                डिज़ाइन देखें <ArrowRight className="h-5 w-5" />
+                डिज़ाइन देखें <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
           </motion.div>
+
+          {/* Stats strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.5, ease: easeLux }}
+            className="mt-8 flex gap-6 border-t border-blue-100 pt-6"
+          >
+            {stats.map((s) => (
+              <div key={s.label}>
+                <div className="text-xl font-black text-blue-700 md:text-2xl">{s.value}</div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+            <div className="ml-auto flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              ))}
+            </div>
+          </motion.div>
         </div>
 
-        {/* Right Slider (Unchanged Layout) */}
-        <div className="relative z-20 flex min-h-[450px] lg:min-h-0 p-4 sm:p-8">
-          <div className="relative w-full h-full overflow-hidden rounded-[2.5rem] bg-white shadow-2xl border border-white">
+        {/* ── Right: Image Slider ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.7, ease: easeLux }}
+          className="relative w-full py-6 lg:py-12"
+        >
+          {/* Main card */}
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-blue-100 sm:aspect-[3/4] lg:aspect-[4/5]">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={page}
@@ -159,8 +194,8 @@ export default function Hero() {
                 animate="center"
                 exit="exit"
                 transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.3 }
+                  x: { type: "spring", stiffness: 280, damping: 28 },
+                  opacity: { duration: 0.25 },
                 }}
                 className="absolute inset-0"
               >
@@ -172,31 +207,54 @@ export default function Hero() {
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               </motion.div>
             </AnimatePresence>
 
-            <div className="absolute bottom-6 left-6 right-6 z-30 flex items-center justify-between">
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => paginate(-1)} 
-                  className="p-3 rounded-full bg-white/90 text-blue-600 shadow-lg hover:bg-white active:scale-90 transition-all"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button 
-                  onClick={() => paginate(1)} 
-                  className="p-3 rounded-full bg-white/90 text-blue-600 shadow-lg hover:bg-white active:scale-90 transition-all"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
+            {/* Slide label */}
+            <div className="absolute bottom-5 left-5 right-5 z-20 flex items-end justify-between">
+              <div className="rounded-xl bg-black/30 px-3 py-2 backdrop-blur-md">
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/80">
+                  {heroSlides[index].alt}
+                </p>
               </div>
-              <div className="text-white font-bold tracking-widest bg-black/20 backdrop-blur-md px-4 py-1 rounded-full">
-                0{index + 1} / 05
+              {/* Controls */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => paginate(-1)}
+                  className="rounded-full bg-white/90 p-2.5 text-blue-700 shadow-md transition-all hover:bg-white active:scale-90"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <span className="min-w-[3rem] rounded-full bg-black/25 px-3 py-1 text-center text-xs font-bold tracking-widest text-white backdrop-blur-sm">
+                  {String(index + 1).padStart(2, "0")}/05
+                </span>
+                <button
+                  onClick={() => paginate(1)}
+                  className="rounded-full bg-white/90 p-2.5 text-blue-700 shadow-md transition-all hover:bg-white active:scale-90"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* Dot indicators */}
+          <div className="mt-4 flex justify-center gap-2">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage([i, i > index ? 1 : -1])}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === index ? "w-6 bg-blue-600" : "w-1.5 bg-blue-200"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   )
