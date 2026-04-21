@@ -28,10 +28,10 @@ export const galleryImages = [
 
   // ── TV Unit ───────────────────────────────────────────────────────────────
   { src: "/images/tv-unit.jpg",         alt: "Modern TV unit design Patna",                   category: "TV Unit",       width: 1024, height: 1024 },
-  { src: "/images/gallery-8.jpg",       alt: "Luxury TV unit with LED panel Patna",           category: "TV Unit",       width: 1280, height: 960  },
-  { src: "/images/gallery-12.jpg",      alt: "UV marble sheet TV wall Lauriya",               category: "TV Unit",       width: 1084, height: 1202 },
-  { src: "/images/gallery-23.jpg",      alt: "TV cabinet with fluted panels",                 category: "TV Unit",       width: 1200, height: 1600 },
-  { src: "/images/gallery-36.jpg",      alt: "TV unit with marble finish",                    category: "TV Unit",       width: 960,  height: 1280 },
+  { src: "/images/tv-unit1.jpg",       alt: "Luxury TV unit with LED panel Patna",           category: "TV Unit",       width: 1280, height: 960  },
+  { src: "/images/tv-unit2.jpg",      alt: "UV marble sheet TV wall Lauriya",               category: "TV Unit",       width: 1084, height: 1202 },
+  { src: "/images/tv-unit3.jpg",      alt: "TV cabinet with fluted panels",                 category: "TV Unit",       width: 1200, height: 1600 },
+  { src: "/images/tv-unit4.jpg",      alt: "TV unit with marble finish",                    category: "TV Unit",       width: 960,  height: 1280 },
 
   // ── Modular Kitchen ───────────────────────────────────────────────────────
   { src: "/images/gallery-2.jpg",       alt: "Modular kitchen interior Bihar",                category: "Modular Kitchen", width: 1024, height: 1024 },
