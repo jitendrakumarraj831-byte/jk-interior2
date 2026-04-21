@@ -111,7 +111,7 @@ export default function Footer() {
             {`© ${new Date().getFullYear()} JK Interior. All rights reserved.`}
           </p>
           <p className="text-xs text-muted-foreground font-mono">
-            Designed with care for your dream interiors.
+            “Designed & Developed by Jitendra Kumar”
           </p>
         </motion.div>
       </motion.div>
