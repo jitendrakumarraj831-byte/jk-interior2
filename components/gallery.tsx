@@ -286,7 +286,7 @@ function SectionHeader({ title, count, index }: { title: string; count: number; 
 }
 
 // ─── Main Gallery ─────────────────────────────────────────────────────────────
-export default function Gallery() {
+export default function Gallery({ layout }: { layout?: string }) {
   const [mounted, setMounted] = useState(false)
   const [lightboxImages, setLightboxImages] = useState<GalleryImage[]>([])
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
