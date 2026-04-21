@@ -100,10 +100,19 @@ export default function Page() {
             Ready to Transform Your Space?
           </h2>
           <p className="text-muted-foreground">
-            Get a free quote for any of our services. We serve Forbesganj, Araria, Narpatganj, Jogbani and all across Bihar.
+            Get a free quote for any of our services. We serve{" "}
+            <Link href="/#areas" className="underline decoration-blue-300 underline-offset-2 hover:text-blue-700" title="JK Interior service areas in Araria district">
+              Forbesganj, Araria, Narpatganj, Jogbani
+            </Link>{" "}
+            and all across Bihar. You can also{" "}
+            <Link href="/gallery" className="underline decoration-blue-300 underline-offset-2 hover:text-blue-700" title="View our false ceiling and interior design gallery in Araria">
+              browse our recent false ceiling &amp; interior projects
+            </Link>
+            .
           </p>
           <Link
             href="/contact"
+            title="Contact JK Interior Forbesganj for a free interior design quote"
             className="inline-flex items-center gap-2 rounded-full gold-gradient text-primary-foreground font-bold px-8 py-4 btn-luxury-glow luxury-animated-shine text-sm uppercase tracking-wide transition-all active:scale-95"
           >
             Get Free Quote →

@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button"
 const easeLux = [0.22, 1, 0.36, 1] as const
 
 const heroSlides = [
-  { src: "/images/hero-interior.jpg", alt: "Modern PVC False Ceiling Design" },
-  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum false ceiling design" },
-  { src: "/images/pvc-ceiling.jpg", alt: "PVC ceiling panel installation" },
-  { src: "/images/wpc-louvers.jpg", alt: "WPC louvers wall panel" },
-  { src: "/images/tv-unit.jpg", alt: "Modern TV unit design" },
+  { src: "/images/hero-interior.jpg", alt: "Modern PVC false ceiling and interior design in Forbesganj, Araria Bihar" },
+  { src: "/images/gypsum-ceiling.jpg", alt: "Gypsum false ceiling design by JK Interior – Forbesganj, Araria" },
+  { src: "/images/pvc-ceiling.jpg", alt: "PVC ceiling panel installation in Araria, Jogbani Bihar" },
+  { src: "/images/wpc-louvers.jpg", alt: "WPC louvers wall panel design in Forbesganj Bihar" },
+  { src: "/images/tv-unit.jpg", alt: "Modern TV unit design with wall paneling in Araria Bihar" },
 ]
 
 const slideVariants = {

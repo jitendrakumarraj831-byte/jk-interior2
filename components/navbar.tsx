@@ -42,7 +42,7 @@ export default function Navbar() {
             <div className="absolute -inset-1 rounded-full bg-gold/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
             <Image
               src="/logo.png"
-              alt="JK Interior Logo"
+              alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
               width={160}
               height={52}
               className="relative h-9 w-auto sm:h-10 object-contain"

@@ -25,10 +25,11 @@ export default function Footer() {
             <div className="mb-4">
               <Image
                 src="/logo.png"
-                alt="JK Interior Logo"
+                alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
                 width={140}
                 height={50}
                 className="object-contain h-12 w-auto"
+                loading="lazy"
               />
             </div>
 
@@ -51,16 +52,17 @@ export default function Footer() {
             </h4>
             <nav className="flex flex-col gap-2">
               {[
-                { href: "#home", label: "Home" },
-                { href: "#services", label: "Services" },
-                { href: "#why-us", label: "Why Us" },
-                { href: "#gallery", label: "Gallery" },
-                { href: "#areas", label: "Service Areas" },
-                { href: "#contact", label: "Contact" },
+                { href: "/", label: "Home", title: "JK Interior Forbesganj home" },
+                { href: "/services", label: "Services", title: "False ceiling & interior services in Araria" },
+                { href: "/about", label: "Why Us", title: "Why choose JK Interior in Forbesganj, Bihar" },
+                { href: "/gallery", label: "Gallery", title: "Interior design & false ceiling gallery in Araria" },
+                { href: "/#areas", label: "Service Areas", title: "Forbesganj, Araria, Jogbani, Narpatganj service areas" },
+                { href: "/contact", label: "Contact", title: "Contact JK Interior Forbesganj for free quote" },
               ].map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
+                  title={link.title}
                   className="text-sm text-muted-foreground transition-colors hover:text-gold font-mono"
                 >
                   {link.label}
