@@ -39,13 +39,26 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online" },
+    { "@type": "ListItem", position: 2, name: "Gallery", item: "https://www.jkinterior.online/gallery" },
+  ],
+}
+
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navbar />
 
       <h1 className="sr-only">
-        Interior Design Gallery in Forbesganj Bihar – PVC Panel, Gypsum, POP &amp; False Ceiling Designs
+        False Ceiling, PVC Panel & Interior Design Gallery – JK Interior Forbesganj, Araria Bihar
       </h1>
 
       <Gallery />

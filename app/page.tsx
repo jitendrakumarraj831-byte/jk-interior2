@@ -59,9 +59,25 @@ export const metadata: Metadata = {
   },
 }
 
+const homeBreadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online" },
+  ],
+}
+
 export default function Home() {
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeBreadcrumbJsonLd) }}
+      />
+      {/* Visually-hidden, SEO-only H1 (does not change UI) */}
+      <h1 className="sr-only">
+        Best Interior Designer & False Ceiling Contractor in Forbesganj, Araria Bihar – PVC Ceiling, Gypsum Ceiling, WPC Louvers & TV Unit by JK Interior
+      </h1>
       <Navbar />
       <Hero />
       <Services />

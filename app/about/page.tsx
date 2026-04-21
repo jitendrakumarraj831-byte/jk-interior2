@@ -36,13 +36,26 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online" },
+    { "@type": "ListItem", position: 2, name: "About", item: "https://www.jkinterior.online/about" },
+  ],
+}
+
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navbar />
 
       <h1 className="sr-only">
-        Best Interior Designer in Forbesganj Bihar – JK Interior Services &amp; Expertise
+        Best Interior Designer & False Ceiling Contractor in Forbesganj, Araria Bihar – About JK Interior
       </h1>
 
       <WhyUs />

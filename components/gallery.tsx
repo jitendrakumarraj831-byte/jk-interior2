@@ -423,10 +423,10 @@ export default function Gallery({ layout }: { layout?: string }) {
               Har photo ek sapne ki kahani hai jo humne saath milkar poora kiya. Apna naya project shuru karne ke liye aaj hi contact karein — free consultation available hai.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="tel:+91XXXXXXXXXX" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-zinc-900 text-sm font-bold rounded-full transition-all shadow-lg shadow-amber-500/25 active:scale-95">
+              <a href="tel:+918651070831" aria-label="Call JK Interior Forbesganj Araria" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-zinc-900 text-sm font-bold rounded-full transition-all shadow-lg shadow-amber-500/25 active:scale-95">
                 <Phone size={16} /> Abhi Call Karein
               </a>
-              <a href="#contact" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border-2 border-white/15 hover:border-white/30 text-white text-sm font-semibold rounded-full transition-all active:scale-95">
+              <a href="/contact" aria-label="Get free quote for false ceiling and interior work in Araria" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border-2 border-white/15 hover:border-white/30 text-white text-sm font-semibold rounded-full transition-all active:scale-95">
                 Free Quote Lein
               </a>
             </div>

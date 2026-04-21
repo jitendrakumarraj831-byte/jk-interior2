@@ -41,13 +41,55 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.jkinterior.online/services" },
+  ],
+}
+
+const servicesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Interior & False Ceiling Services in Araria, Forbesganj Bihar",
+  itemListElement: [
+    "False Ceiling Contractor in Araria",
+    "PVC Ceiling in Araria",
+    "Gypsum Ceiling Services in Forbesganj",
+    "Best Interior Designer in Forbesganj",
+    "Wall Paneling Forbesganj",
+    "WPC Louvers Installation Bihar",
+    "TV Unit Design Araria",
+    "False Ceiling in Jogbani, Raniganj, Narpatganj",
+  ].map((name, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Service",
+      name,
+      provider: { "@type": "LocalBusiness", name: "JK Interior" },
+      areaServed: "Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Bihar",
+    },
+  })),
+}
+
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+      />
       <Navbar />
 
       <h1 className="sr-only">
-        Interior Design Services in Forbesganj Bihar – Gypsum, POP, PVC & WPC by JK Interior
+        False Ceiling Contractor & Interior Design Services in Forbesganj, Araria Bihar – Gypsum, PVC, WPC, TV Unit by JK Interior
       </h1>
 
       <Services />

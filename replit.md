@@ -81,11 +81,13 @@ npm run start  # Production server on port 5000
 ## SEO Configuration
 
 - **Domain**: `https://www.jkinterior.online` (www only — canonical set on every page)
-- **Layout JSON-LD**: LocalBusiness schema in `app/layout.tsx` with serviceType and areaServed
+- **Layout JSON-LD `@graph`**: Enriched LocalBusiness/HomeAndConstructionBusiness/GeneralContractor with geo coordinates (26.3001, 87.2533), postal code, both phone numbers, full areaServed City list (Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Kursakanta, Tribeniganj, Chhatapur, Supaul, Purnia), GeoCircle serviceArea, openingHoursSpecification, hasOfferCatalog, sameAs, priceRange. Plus `WebSite` + `FAQPage` schemas.
 - **Per-page metadata**: Unique `title`, `description`, `keywords`, `alternates.canonical`, `openGraph`, `twitter` on every page
-- **Sitemap priorities**: `/` → 1.0, `/services` → 0.9, `/gallery` → 0.8, `/about` → 0.7, `/contact` → 0.7
+- **Geo meta tags**: `geo.region`, `geo.position`, `ICBM`, `business:contact_data:*` set in `app/layout.tsx` `metadata.other`
+- **Per-page BreadcrumbList JSON-LD**: Home/About/Services/Gallery/Contact each emit a BreadcrumbList script. Services page also emits a Service `ItemList` with target keywords.
+- **Sitemap priorities**: `/` → 1.0, `/services` → 0.9, `/gallery` → 0.8, `/about` → 0.7, `/contact` → 0.7. Stable `lastModified` date (no per-build churn).
 - **Robots**: `app/robots.ts` allows all, sitemap URL is `https://www.jkinterior.online/sitemap.xml`
-- **H1**: Each page has a visually-hidden `<h1 className="sr-only">` for SEO without affecting design
+- **H1**: Every page has exactly one keyword-rich `<h1 className="sr-only">`. Hero uses a styled `<div role="heading" aria-level={2}>` for the brand wordmark to avoid duplicate H1 (no visual change).
 
 ## Critical Rules
 

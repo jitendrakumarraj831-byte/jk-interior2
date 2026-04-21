@@ -36,13 +36,26 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online" },
+    { "@type": "ListItem", position: 2, name: "Contact", item: "https://www.jkinterior.online/contact" },
+  ],
+}
+
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navbar />
 
       <h1 className="sr-only">
-        Contact JK Interior in Forbesganj Bihar for PVC Panel, Gypsum &amp; False Ceiling Work
+        Contact JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar
       </h1>
 
       <Contact />

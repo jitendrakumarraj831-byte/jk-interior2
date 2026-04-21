@@ -79,7 +79,10 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.55, ease: easeLux }}
           >
-            <h1 className="font-black leading-[0.9] tracking-tighter text-blue-950"
+            <div
+              role="heading"
+              aria-level={2}
+              className="font-black leading-[0.9] tracking-tighter text-blue-950"
               style={{ fontSize: "clamp(3.2rem,10vw,6.5rem)" }}
             >
               JK
@@ -88,7 +91,7 @@ export default function Hero() {
               >
                 INTERIOR
               </span>
-            </h1>
+            </div>
           </motion.div>
 
           {/* Taglines */}

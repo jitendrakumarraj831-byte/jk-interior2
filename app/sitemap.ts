@@ -1,36 +1,39 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date()
+  // Stable date – avoids unnecessary changes telling search engines to re-crawl
+  const lastModified = new Date('2026-04-21')
+  const base = 'https://www.jkinterior.online'
+
   return [
     {
-      url: 'https://www.jkinterior.online',
+      url: `${base}`,
       lastModified,
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
-      url: 'https://www.jkinterior.online/services',
+      url: `${base}/services`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: 'https://www.jkinterior.online/gallery',
+      url: `${base}/gallery`,
       lastModified,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: 'https://www.jkinterior.online/about',
+      url: `${base}/about`,
       lastModified,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: 'https://www.jkinterior.online/contact',
+      url: `${base}/contact`,
       lastModified,
-      changeFrequency: 'yearly',
+      changeFrequency: 'monthly',
       priority: 0.7,
     },
   ]
