@@ -148,14 +148,16 @@ export default function Contact() {
               className="rounded-xl overflow-hidden glass-panel border-gold/20 h-48"
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57395.73360410759!2d87.215505432488!3d26.302302345091763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef05610e25537d%3A0xc0236e788734d0b!2sForbesganj%2C%20Bihar!5e0!3m2!1sen!2sin!4v1712345678901!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                title="JK Interior Forbesganj Location"
-              />
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3585.556770542363!2d87.2514104!3d26.2873831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef030064d4b295%3A0x6b77134f59e9c9c3!2sJk%20interior!5e0!3m2!1sen!2sin!4v1713667200000!5m2!1sen!2sin"
+  width="100%"
+  height="100%"
+  style={{ border: 0 }}
+  allowFullScreen={true}
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+  title="JK Interior Forbesganj Location"
+/>
+              
             </motion.div>
           </motion.div>
 
