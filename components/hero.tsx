@@ -207,8 +207,11 @@ export default function Hero() {
                   alt={heroSlides[index].alt}
                   fill
                   className="object-cover"
-                  priority
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchPriority={index === 0 ? "high" : "auto"}
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={62}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               </motion.div>
