@@ -70,15 +70,6 @@ const homeBreadcrumbJsonLd = {
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* Preload LCP hero image early – it lives inside a client AnimatePresence
-          so Next.js can't auto-detect it for priority preloading. */}
-      <link
-        rel="preload"
-        as="image"
-        href="/images/hero-interior.jpg"
-        // @ts-expect-error – fetchpriority is valid HTML, not yet in React types
-        fetchpriority="high"
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeBreadcrumbJsonLd) }}
