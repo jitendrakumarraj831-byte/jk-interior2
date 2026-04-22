@@ -2,7 +2,7 @@
 
 import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf } from "lucide-react"
 import Image from "next/image"
-import { m } from "framer-motion"
+import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
 const services = [
@@ -106,7 +106,7 @@ export default function Services() {
       <div className="pointer-events-none absolute -left-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-blue-500/8 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-blue-400/8 blur-3xl" />
 
-      <m.div
+      <motion.div
         className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6"
         initial="hidden"
         whileInView="visible"
@@ -114,7 +114,7 @@ export default function Services() {
         variants={staggerContainer}
       >
         {/* Section header */}
-        <m.header className="mb-14 space-y-3 text-center" variants={fadeSlideUp}>
+        <motion.header className="mb-14 space-y-3 text-center" variants={fadeSlideUp}>
           <div className="flex justify-center">
             <span className="rounded-full border border-gold/30 glass-panel px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">
               Our Expertise / हमारी विशेषज्ञता
@@ -126,15 +126,15 @@ export default function Services() {
           <p className="mx-auto max-w-xl text-sm text-muted-foreground md:text-base">
             JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
           </p>
-        </m.header>
+        </motion.header>
 
         {/* Cards grid */}
-        <m.div
+        <motion.div
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
           variants={staggerContainer}
         >
           {services.map((service) => (
-            <m.article
+            <motion.article
               key={service.title}
               variants={fadeSlideUpItem}
               className="group flex flex-col overflow-hidden rounded-2xl border border-gold/20 glass-panel shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold/45 hover:shadow-xl hover:shadow-blue-100"
@@ -195,10 +195,10 @@ export default function Services() {
                   </div>
                 </div>
               </div>
-            </m.article>
+            </motion.article>
           ))}
-        </m.div>
-      </m.div>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

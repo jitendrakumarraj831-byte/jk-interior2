@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Phone, Mail, MapPin } from "lucide-react"
-import { m } from "framer-motion"
+import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
 export default function Footer() {
@@ -10,18 +10,18 @@ export default function Footer() {
     <footer className="border-t border-gold/15 py-12 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(219,234,254,0.35)] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-48 bg-blue-200/25 blur-3xl rounded-full pointer-events-none" />
-      <m.div
+      <motion.div
         className="mx-auto max-w-7xl px-4 relative z-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={staggerContainer}
       >
-        <m.div
+        <motion.div
           className="grid gap-8 md:grid-cols-3"
           variants={staggerContainer}
         >
-          <m.div variants={fadeSlideUpItem}>
+          <motion.div variants={fadeSlideUpItem}>
             <div className="mb-4">
               <Image
                 src="/logo.png"
@@ -44,9 +44,9 @@ export default function Footer() {
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground font-mono">
               बिहार में प्रीमियम इंटीरियर डिजाइन और सीलिंग समाधान।
             </p>
-          </m.div>
+          </motion.div>
 
-          <m.div variants={fadeSlideUpItem}>
+          <motion.div variants={fadeSlideUpItem}>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-gold font-mono">
               Quick Links
             </h4>
@@ -69,9 +69,9 @@ export default function Footer() {
                 </a>
               ))}
             </nav>
-          </m.div>
+          </motion.div>
 
-          <m.div variants={fadeSlideUpItem}>
+          <motion.div variants={fadeSlideUpItem}>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-gold font-mono">
               Contact
             </h4>
@@ -102,10 +102,10 @@ export default function Footer() {
                 <span>Forbesganj Dumariya, Bihar</span>
               </div>
             </div>
-          </m.div>
-        </m.div>
+          </motion.div>
+        </motion.div>
 
-        <m.div
+        <motion.div
           variants={fadeSlideUp}
           className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gold/15 pt-8 md:flex-row"
         >
@@ -115,8 +115,8 @@ export default function Footer() {
           <p className="text-xs text-muted-foreground font-mono">
             “Designed & Developed by Jitendra Kumar”
           </p>
-        </m.div>
-      </m.div>
+        </motion.div>
+      </motion.div>
     </footer>
   )
 }

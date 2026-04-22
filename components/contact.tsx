@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Phone, Mail, MapPin, MessageCircle, Send, Loader2 } from "lucide-react"
-import { m } from "framer-motion"
+import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
 export default function Contact() {
@@ -41,14 +41,14 @@ export default function Contact() {
         }}
       />
 
-      <m.div
+      <motion.div
         className="mx-auto max-w-7xl px-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.08 }}
         variants={staggerContainer}
       >
-        <m.div className="mb-16 text-center" variants={fadeSlideUp}>
+        <motion.div className="mb-16 text-center" variants={fadeSlideUp}>
           <span className="mb-4 inline-block rounded-full glass-panel border-gold/25 px-4 py-1.5 text-xs uppercase tracking-widest text-gold font-mono font-bold">
             Contact Us / संपर्क करें
           </span>
@@ -63,18 +63,18 @@ export default function Contact() {
               अपना स्पेस ट्रांसफॉर्म करने के लिए तैयार हैं? आज ही संपर्क करें।
             </span>
           </p>
-        </m.div>
+        </motion.div>
 
-        <m.div
+        <motion.div
           className="grid gap-12 lg:grid-cols-2 items-start"
           variants={staggerContainer}
         >
-          <m.div className="space-y-8" variants={staggerContainer}>
-            <m.div
+          <motion.div className="space-y-8" variants={staggerContainer}>
+            <motion.div
               className="grid gap-6 sm:grid-cols-2"
               variants={staggerContainer}
             >
-              <m.div
+              <motion.div
                 variants={fadeSlideUpItem}
                 className="rounded-xl glass-card border-gold/20 p-5 hover:border-gold/40 hover:-translate-y-0.5 transition-all duration-300"
               >
@@ -90,9 +90,9 @@ export default function Contact() {
                     +91 8541849118
                   </a>
                 </div>
-              </m.div>
+              </motion.div>
 
-              <m.div
+              <motion.div
                 variants={fadeSlideUpItem}
                 className="rounded-xl glass-card border-gold/20 p-5 hover:border-gold/40 hover:-translate-y-0.5 transition-all duration-300"
               >
@@ -106,10 +106,10 @@ export default function Contact() {
                 >
                   jkinteriorofficial@gmail.com
                 </a>
-              </m.div>
-            </m.div>
+              </motion.div>
+            </motion.div>
 
-            <m.div
+            <motion.div
               variants={fadeSlideUpItem}
               className="rounded-xl glass-card border-gold/20 p-6 hover:border-gold/35 transition-colors"
             >
@@ -129,9 +129,9 @@ export default function Contact() {
                   </p>
                 </div>
               </div>
-            </m.div>
+            </motion.div>
 
-            <m.div variants={fadeSlideUpItem}>
+            <motion.div variants={fadeSlideUpItem}>
               <a
                 href="https://wa.me/918651070831?text=Hello%20JK%20Interior%2C%20I%20am%20interested%20in%20your%20services."
                 target="_blank"
@@ -141,9 +141,9 @@ export default function Contact() {
                 <MessageCircle className="h-5 w-5" />
                 WhatsApp पर बात करें
               </a>
-            </m.div>
+            </motion.div>
 
-            <m.div
+            <motion.div
               variants={fadeSlideUpItem}
               className="rounded-xl overflow-hidden glass-panel border-gold/20 h-48"
             >
@@ -157,10 +157,10 @@ export default function Contact() {
   referrerPolicy="no-referrer-when-downgrade"
   title="JK Interior Forbesganj Location"
 />        
-            </m.div>
-          </m.div>
+            </motion.div>
+          </motion.div>
 
-          <m.div
+          <motion.div
             variants={fadeSlideUp}
             className="rounded-2xl glass-card border-gold/25 p-8 shadow-2xl shadow-blue-200/50"
           >
@@ -234,9 +234,9 @@ export default function Contact() {
                 </span>
               </button>
             </form>
-          </m.div>
-        </m.div>
-      </m.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

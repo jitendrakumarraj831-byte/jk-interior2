@@ -4,7 +4,7 @@ import {
   Briefcase, Gem, ShieldCheck, Clock,
   Tag, PenTool, Headset, BadgeCheck,
 } from "lucide-react"
-import { m } from "framer-motion"
+import { motion } from "framer-motion"
 
 const whyUsReasons = [
   {
@@ -151,7 +151,7 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
 
         {/* Center heading */}
-        <m.div
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
@@ -178,10 +178,10 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
             <div className="h-1.5 w-1.5 rounded-full bg-gold" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold/50" />
           </div>
-        </m.div>
+        </motion.div>
 
         {/* Cards Grid */}
-        <m.div
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.05 }}
@@ -191,7 +191,7 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
           {whyUsReasons.map((reason, i) => {
             const Icon = reason.icon
             return (
-              <m.article
+              <motion.article
                 key={reason.en}
                 variants={cardVariants}
                 className={`group relative rounded-2xl bg-gradient-to-br ${reason.color} border border-white/60 backdrop-blur-sm p-5 md:p-6 overflow-hidden hover:shadow-lg hover:shadow-blue-200/40 hover:-translate-y-1 transition-all duration-300`}
@@ -211,10 +211,10 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
                 <p className="text-[12px] leading-relaxed text-muted-foreground">{reason.desc}</p>
 
                 <div className={`absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-gradient-to-r ${reason.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </m.article>
+              </motion.article>
             )
           })}
-        </m.div>
+        </motion.div>
       </div>
     </section>
   )

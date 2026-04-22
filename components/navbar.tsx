@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Phone, Mail, Menu, X, MapPin } from "lucide-react"
 import Link from "next/link"
-import { m, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
@@ -105,7 +105,7 @@ export default function Navbar() {
 
         <AnimatePresence>
           {mobileOpen && (
-            <m.div
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
@@ -134,7 +134,7 @@ export default function Navbar() {
                   </span>
                 </div>
                 {navLinks.map((link, i) => (
-                  <m.div
+                  <motion.div
                     key={link.href}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -149,7 +149,7 @@ export default function Navbar() {
                       <span className="text-lg font-black text-foreground">{link.label}</span>
                       <span className="text-xs text-gold/60">{link.labelHi}</span>
                     </Link>
-                  </m.div>
+                  </motion.div>
                 ))}
                 <a
                   href="https://wa.me/918651070831"
@@ -160,7 +160,7 @@ export default function Navbar() {
                   Let&apos;s Chat on WhatsApp
                 </a>
               </div>
-            </m.div>
+            </motion.div>
           )}
         </AnimatePresence>
       </nav>

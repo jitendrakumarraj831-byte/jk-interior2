@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import AnimatedAura from '@/components/animated-aura'
-import MotionProvider from '@/components/motion-provider'
 import './globals.css'
 
 const playfair = Playfair_Display({
@@ -290,7 +289,7 @@ export default function RootLayout({
       }}
     />
 
-    <MotionProvider>{children}</MotionProvider>
+    {children}
 
     <Analytics />
     </div>
