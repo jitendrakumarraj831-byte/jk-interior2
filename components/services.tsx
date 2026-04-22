@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf } from "lucide-react"
+import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf, Phone, ArrowUpRight } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
@@ -9,6 +9,7 @@ const services = [
   {
     title: "Gypsum False Ceiling",
     titleHi: "जिप्सम फॉल्स सीलिंग",
+    tag: "Most Popular",
     useCase: "लिविंग रूम, बेडरूम और डाइनिंग हॉल के लिए बेस्ट।",
     useCaseEn: "Best for living rooms, bedrooms, and dining halls.",
     specialty: "स्मूथ फिनिश और क्रिएटिव लाइटिंग डिजाइन।",
@@ -22,6 +23,7 @@ const services = [
   {
     title: "PVC Ceiling",
     titleHi: "PVC सीलिंग",
+    tag: "Waterproof",
     useCase: "किचन, बाथरूम, बालकनी और नमी वाली जगहों के लिए।",
     useCaseEn: "Ideal for kitchens, bathrooms, balconies, and high-moisture areas.",
     specialty: "100% वाटरप्रूफ और दीमक-रहित (Termite Proof)।",
@@ -35,6 +37,7 @@ const services = [
   {
     title: "WPC Louvers",
     titleHi: "WPC लूवर्स",
+    tag: "Premium",
     useCase: "टीवी यूनिट, मेन गेट वॉल और एक्सटीरियर डिजाइन में।",
     useCaseEn: "Used for TV units, main gate walls, and exterior designs.",
     specialty: "असली लकड़ी जैसा प्रीमियम वुडेन लुक।",
@@ -48,6 +51,7 @@ const services = [
   {
     title: "UV Marble Sheet",
     titleHi: "UV मार्बल शीट",
+    tag: "Luxury Look",
     useCase: "बाथरूम, किचन बैक-स्प्लैश और हाईलाइट दीवारों पर।",
     useCaseEn: "Perfect for bathrooms, kitchen backsplashes, and highlight walls.",
     specialty: "असली इटालियन मार्बल जैसी हाई-ग्लॉस फिनिश।",
@@ -61,6 +65,7 @@ const services = [
   {
     title: "Fluted Panels",
     titleHi: "फ्लूटेड पैनल",
+    tag: "3D Texture",
     useCase: "बेडरूम बेड-बैक और ड्राइंग रूम की दीवारों के लिए।",
     useCaseEn: "Used for bedroom bed-backs and drawing room walls.",
     specialty: "दीवारों को आधुनिक 3D टेक्सचर और गहराई देता है।",
@@ -74,6 +79,7 @@ const services = [
   {
     title: "TV Unit Design",
     titleHi: "TV यूनिट डिजाइन",
+    tag: "Customized",
     useCase: "लिविंग रूम और मास्टर बेडरूम को सजाने के लिए।",
     useCaseEn: "Perfect for decorating living rooms and master bedrooms.",
     specialty: "कस्टमाइज्ड स्टोरेज और हिडन वायरिंग मैनेजमेंट।",
@@ -87,6 +93,7 @@ const services = [
   {
     title: "Artificial Grass",
     titleHi: "आर्टिफिशियल घास",
+    tag: "Zero Maintenance",
     useCase: "बालकनी, टैरेस, गार्डन और आउटडोर एरिया के लिए।",
     useCaseEn: "Ideal for balconies, terraces, gardens, and outdoor areas.",
     specialty: "नेचुरल घास जैसा लुक, बिना मेंटेनेंस के।",
@@ -128,41 +135,47 @@ export default function Services() {
           </p>
         </motion.header>
 
-        {/* Cards grid */}
+        {/* Magazine-style cards grid */}
         <motion.div
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
           variants={staggerContainer}
         >
           {services.map((service) => (
             <motion.article
               key={service.title}
               variants={fadeSlideUpItem}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-gold/20 glass-panel shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold/45 hover:shadow-xl hover:shadow-blue-100"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-gold/20 bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-gold/50 hover:shadow-2xl hover:shadow-blue-100"
             >
-              {/* Image */}
-              <div className="relative h-52 w-full overflow-hidden">
+              {/* Image - bigger, full-width hero of card */}
+              <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden">
                 <Image
                   src={service.image}
                   alt={service.alt}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                   quality={72}
                 />
-                {/* Light gradient at bottom for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                {/* Icon badge */}
-                <div className="absolute left-4 top-4 rounded-xl border border-white/30 bg-white/20 p-2.5 text-white backdrop-blur-md">
-                  {service.icon}
+                {/* Bottom gradient for floating icon contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/15" />
+
+                {/* Top-right tag badge */}
+                <div className="absolute right-4 top-4 rounded-full border border-white/40 bg-white/85 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-700 shadow-md backdrop-blur-md">
+                  {service.tag}
                 </div>
               </div>
 
+              {/* Floating service icon - overlaps image/content boundary */}
+              <div className="relative -mt-7 mb-2 ml-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-200 ring-4 ring-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                {service.icon}
+              </div>
+
               {/* Content */}
-              <div className="flex flex-1 flex-col gap-4 p-5">
+              <div className="flex flex-1 flex-col gap-4 px-6 pb-6 pt-1">
                 {/* Title */}
                 <div>
-                  <h3 className="text-lg font-bold text-foreground transition-colors group-hover:text-gold">
+                  <h3 className="text-xl font-bold text-foreground transition-colors group-hover:text-blue-700">
                     {service.title}
                   </h3>
                   <p className="text-xs font-semibold italic tracking-wide text-blue-500">
@@ -173,26 +186,40 @@ export default function Services() {
                 {/* Details */}
                 <div className="space-y-2.5 text-sm">
                   <div className="flex items-start gap-2">
-                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-500" />
                     <div>
                       <span className="font-medium text-foreground">{service.useCaseEn}</span>
                       <p className="text-[11px] italic text-muted-foreground">{service.useCase}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                    <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-500" />
                     <div>
                       <span className="font-medium text-foreground">{service.specialtyEn}</span>
                       <p className="text-[11px] italic text-muted-foreground">{service.specialty}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
-                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-500" />
                     <div>
                       <span className="font-medium text-foreground">{service.benefitEn}</span>
                       <p className="text-[11px] italic text-muted-foreground">{service.benefit}</p>
                     </div>
                   </div>
+                </div>
+
+                {/* Quote CTA */}
+                <div className="mt-2 flex items-center justify-between border-t border-blue-100 pt-4">
+                  <a
+                    href="tel:+918651070831"
+                    className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-bold text-blue-700 transition-all hover:bg-blue-600 hover:text-white hover:shadow-md hover:shadow-blue-200"
+                  >
+                    <Phone className="h-3.5 w-3.5" />
+                    Quote लें
+                  </a>
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-blue-200 text-blue-600 transition-all group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-45">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
                 </div>
               </div>
             </motion.article>
