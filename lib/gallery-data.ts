@@ -1,78 +1,73 @@
 export const galleryImages = [
-  // ── False Ceiling ─────────────────────────────────────────────────────────
-  { src: "/images/gypsum-ceiling.jpg",  alt: "Gypsum false ceiling design Patna",            category: "False Ceiling", width: 1080, height: 1144 },
-  { src: "/images/pvc-ceiling.jpg",     alt: "PVC ceiling installation Lauriya",              category: "False Ceiling", width: 1084, height: 1434 },
-  { src: "/images/gallery-4.jpg",       alt: "Luxury drawing room false ceiling",             category: "False Ceiling", width: 1024, height: 1024 },
-  { src: "/images/gallery-5.jpg",       alt: "Gypsum ceiling design for bedroom Lauriya",     category: "False Ceiling", width: 1084, height: 1245 },
-  { src: "/images/gallery-6.jpg",       alt: "PVC ceiling panels modern home Bihar",          category: "False Ceiling", width: 1200, height: 1600 },
-  { src: "/images/gallery-14.jpg",      alt: "Designer drawing room ceiling",                 category: "False Ceiling", width: 574,  height: 1280 },
-  { src: "/images/gallery-16.jpg",      alt: "WPC ceiling outdoor area",                      category: "False Ceiling", width: 980,  height: 1280 },
-  { src: "/images/gallery-21.jpg",      alt: "Living room false ceiling with cove light",     category: "False Ceiling", width: 1600, height: 1204 },
-  { src: "/images/gallery-25.jpg",      alt: "Bedroom PVC ceiling design",                    category: "False Ceiling", width: 720,  height: 720  },
-  { src: "/images/gallery-26.jpg",      alt: "Hall gypsum design Lauriya Nandangarh",         category: "False Ceiling", width: 1200, height: 1600 },
-  { src: "/images/gallery-32.jpg",      alt: "Gypsum ceiling with fan design",                category: "False Ceiling", width: 1080, height: 1080 },
-  { src: "/images/gallery-33.jpg",      alt: "PVC ceiling bathroom waterproof",               category: "False Ceiling", width: 468,  height: 1040 },
-  { src: "/images/gallery-37.jpg",      alt: "Kitchen ceiling PVC panels",                    category: "False Ceiling", width: 1600, height: 1204 },
-  { src: "/images/gallery-39.jpg",      alt: "Gypsum arch design",                            category: "False Ceiling", width: 1200, height: 1600 },
+  // ── Gypsum Ceiling (10 Images) ────────────────────────────────────────────
+  { src: "/images/gypsum.jpg",    alt: "Gypsum ceiling design", category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum1.jpg",   alt: "Modern gypsum work",    category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum2.jpg",   alt: "Gypsum hall design",    category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum3.jpg",   alt: "Luxury gypsum decor",   category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum4.jpg",   alt: "Gypsum bedroom finish", category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum5.jpg",   alt: "Gypsum cove lighting",  category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum6.jpg",   alt: "Gypsum office ceiling", category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum7.jpg",   alt: "Premium gypsum board",  category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum8.jpg",   alt: "Gypsum arch design",    category: "Gypsum", width: 1080, height: 1080 },
+  { src: "/images/gypsum9.jpg",   alt: "Gypsum designer work",  category: "Gypsum", width: 1080, height: 1080 },
 
-  // ── Wall Panels ───────────────────────────────────────────────────────────
-  { src: "/images/wpc-louvers.jpg",     alt: "WPC louvers wall panel Bihar",                  category: "Wall Panels",   width: 1228, height: 1600 },
-  { src: "/images/fluted-panels.jpg",   alt: "Fluted wall panels TV unit",                    category: "Wall Panels",   width: 1800, height: 1351 },
-  { src: "/images/uv-marble.jpg",       alt: "UV marble sheet wall design",                   category: "Wall Panels",   width: 1024, height: 1024 },
-  { src: "/images/gallery-7.jpg",       alt: "WPC louvers living room wall design",           category: "Wall Panels",   width: 1129, height: 1286 },
-  { src: "/images/gallery-15.jpg",      alt: "PVC wall paneling for shop",                    category: "Wall Panels",   width: 1084, height: 801  },
-  { src: "/images/gallery-17.jpg",      alt: "Gypsum partition wall design",                  category: "Wall Panels",   width: 1200, height: 1600 },
-  { src: "/images/gallery-22.jpg",      alt: "PVC louvers exterior design",                   category: "Wall Panels",   width: 1200, height: 1600 },
-  { src: "/images/gallery-31.jpg",      alt: "3D wall panel living room",                     category: "Wall Panels",   width: 1280, height: 960  },
-  { src: "/images/gallery-35.jpg",      alt: "Bedroom wall WPC louvers",                      category: "Wall Panels",   width: 1204, height: 1600 },
+  // ── PVC Ceiling (10 Images) ───────────────────────────────────────────────
+  { src: "/images/pvc.jpg",       alt: "PVC ceiling panel",     category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc1.jpg",      alt: "PVC bedroom design",    category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc2.jpg",      alt: "PVC kitchen ceiling",   category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc3.jpg",      alt: "Waterproof PVC work",   category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc4.jpg",      alt: "Modern PVC texture",    category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc5.jpg",      alt: "PVC panel fitting",     category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc6.jpg",      alt: "PVC shop ceiling",      category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc7.jpg",      alt: "Commercial PVC work",   category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc8.jpg",      alt: "PVC glossy finish",     category: "PVC", width: 1080, height: 1080 },
+  { src: "/images/pvc9.jpg",      alt: "PVC wooden texture",    category: "PVC", width: 1080, height: 1080 },
 
-  // ── TV Unit ───────────────────────────────────────────────────────────────
-  { src: "/images/tv-unit.jpg",         alt: "Modern TV unit design Patna",                   category: "TV Unit",       width: 1024, height: 1024 },
-  { src: "/images/tv-unit1.jpg",       alt: "Luxury TV unit with LED panel Patna",           category: "TV Unit",       width: 1280, height: 960  },
-  { src: "/images/tv-unit2.jpg",      alt: "UV marble sheet TV wall Lauriya",               category: "TV Unit",       width: 1084, height: 1202 },
-  { src: "/images/tv-unit3.jpg",      alt: "TV cabinet with fluted panels",                 category: "TV Unit",       width: 1200, height: 1600 },
-  { src: "/images/tv-unit4.jpg",      alt: "TV unit with marble finish",                    category: "TV Unit",       width: 960,  height: 1280 },
+  // ── Grid Ceiling (10 Images) ──────────────────────────────────────────────
+  { src: "/images/grid.jpg",      alt: "Office grid ceiling",   category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid1.jpg",     alt: "Commercial grid work",  category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid2.jpg",     alt: "Hospital grid panels",  category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid3.jpg",     alt: "Mineral fiber grid",    category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid4.jpg",     alt: "Acoustic grid ceiling", category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid5.jpg",     alt: "Grid ceiling 600x600",  category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid6.jpg",     alt: "Standard grid design",  category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid7.jpg",     alt: "Metal grid ceiling",    category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid8.jpg",     alt: "School grid ceiling",   category: "Grid", width: 1080, height: 1080 },
+  { src: "/images/grid9.jpg",     alt: "Modern grid installation", category: "Grid", width: 1080, height: 1080 },
 
-  // ── Modular Kitchen ───────────────────────────────────────────────────────
-  { src: "/images/gallery-2.jpg",       alt: "Modular kitchen interior Bihar",                category: "Modular Kitchen", width: 1024, height: 1024 },
-  { src: "/images/gallery-9.jpg",       alt: "Modular kitchen interior design Bihar",         category: "Modular Kitchen", width: 686,  height: 386  },
-  { src: "/images/gallery-19.jpg",      alt: "Luxury kitchen with island",                    category: "Modular Kitchen", width: 1200, height: 1600 },
-  { src: "/images/gallery-29.jpg",      alt: "UV board kitchen shutters",                     category: "Modular Kitchen", width: 1280, height: 960  },
+  // ── Wall Panels (WPC, Fluted, UV - 10 Images) ─────────────────────────────
+  { src: "/images/wpc.jpg",       alt: "WPC louvers wall",      category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc1.jpg",      alt: "Fluted wall panel",     category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc2.jpg",      alt: "UV marble sheet design", category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc3.jpg",      alt: "TV wall wood panel",    category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc4.jpg",      alt: "Bedroom fluted panel",  category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc5.jpg",      alt: "Luxury UV marble finish", category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc6.jpg",      alt: "Exterior WPC louvers",  category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc7.jpg",      alt: "Interior wall cladding", category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc8.jpg",      alt: "Charcoal wall panel",   category: "WallPanels", width: 1080, height: 1080 },
+  { src: "/images/wpc9.jpg",      alt: "Decorative wall sheet", category: "WallPanels", width: 1080, height: 1080 },
 
-  // ── Bedroom ───────────────────────────────────────────────────────────────
-  { src: "/images/gallery-1.jpg",       alt: "Designer bedroom interior Bettiah",             category: "Bedroom",       width: 1024, height: 1024 },
-  { src: "/images/gallery-11.jpg",      alt: "Fluted panels bedroom headboard design",        category: "Bedroom",       width: 1084, height: 1257 },
-  { src: "/images/gallery-18.jpg",      alt: "Modern bedroom interior Bihar",                 category: "Bedroom",       width: 1200, height: 1600 },
-  { src: "/images/gallery-28.jpg",      alt: "Modular wardrobe design",                       category: "Bedroom",       width: 1080, height: 1350 },
+  // ── TV Unit (5 Images) ────────────────────────────────────────────────────
+  { src: "/images/tv-unit.jpg",        alt: "Modern TV unit",        category: "TVUnit", width: 1080, height: 1080 },
+  { src: "/images/tv-unit1.jpg",       alt: "TV cabinet design",     category: "TVUnit", width: 1080, height: 1080 },
+  { src: "/images/tv-unit2.jpg",       alt: "LED panel TV unit",     category: "TVUnit", width: 1080, height: 1080 },
+  { src: "/images/tv-unit3.jpg",       alt: "Luxury hall TV unit",   category: "TVUnit", width: 1080, height: 1080 },
+  { src: "/images/tv-unit4.jpg",       alt: "Wooden TV unit finish", category: "TVUnit", width: 1080, height: 1080 },
 
-  // ── Living Room ───────────────────────────────────────────────────────────
-  { src: "/images/hero-interior.jpg",   alt: "Luxury living room interior design Bihar",      category: "Living Room",   width: 1376, height: 686  },
-  { src: "/images/gallery-38.jpg",      alt: "Living room interior Lauriya",                  category: "Living Room",   width: 736,  height: 552  },
-  { src: "/images/gallery-42.jpg",      alt: "Complete home interior Bihar",                  category: "Living Room",   width: 720,  height: 1280 },
-
-  // ── Office & Commercial ───────────────────────────────────────────────────
-  { src: "/images/gallery-3.jpg",       alt: "Professional office interior Patna",            category: "Office & Commercial", width: 1024, height: 1024 },
-  { src: "/images/gallery-10.jpg",      alt: "Office false ceiling gypsum work",              category: "Office & Commercial", width: 1355, height: 1800 },
-  { src: "/images/gallery-20.jpg",      alt: "Office cabin interior design",                  category: "Office & Commercial", width: 576,  height: 1280 },
-  { src: "/images/gallery-24.jpg",      alt: "Restaurant interior ceiling work",              category: "Office & Commercial", width: 1600, height: 1200 },
-  { src: "/images/gallery-30.jpg",      alt: "False ceiling for shop Bihar",                  category: "Office & Commercial", width: 1280, height: 960  },
-  { src: "/images/gallery-34.jpg",      alt: "Office reception interior",                     category: "Office & Commercial", width: 1200, height: 1600 },
-
-  // ── Special Decor ─────────────────────────────────────────────────────────
-  { src: "/images/artificial-grass.jpg", alt: "Artificial grass balcony decoration",          category: "Special Decor", width: 1024, height: 1024 },
-  { src: "/images/gallery-13.jpg",      alt: "Artificial grass balcony decoration",           category: "Special Decor", width: 1202, height: 1500 },
-  { src: "/images/gallery-27.jpg",      alt: "WPC deck flooring balcony",                     category: "Special Decor", width: 1280, height: 577  },
-  { src: "/images/gallery-40.jpg",      alt: "Fluted panel pooja room",                       category: "Special Decor", width: 736,  height: 952  },
-  { src: "/images/gallery-41.jpg",      alt: "Artificial grass wall decor",                   category: "Special Decor", width: 736,  height: 736  },
+  // ── Artificial Grass (5 Images) ───────────────────────────────────────────
+  { src: "/images/A.jpg",         alt: "Artificial grass balcony", category: "Grass", width: 1080, height: 1080 },
+  { src: "/images/A1.jpg",        alt: "Wall grass decor",         category: "Grass", width: 1080, height: 1080 },
+  { src: "/images/A2.jpg",        alt: "Green turf installation",  category: "Grass", width: 1080, height: 1080 },
+  { src: "/images/A3.jpg",        alt: "Terrace grass garden",     category: "Grass", width: 1080, height: 1080 },
+  { src: "/images/A4.jpg",        alt: "Premium artificial turf",  category: "Grass", width: 1080, height: 1080 },
 ]
 
 export function buildGalleryJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ImageGallery",
-    name: "Interior Design & False Ceiling Projects - Bihar Patna",
-    description:
-      "Portfolio of false ceiling, PVC panels, WPC louvers, TV unit, modular kitchen and bedroom interior design projects in Bihar and Patna.",
+    name: "JK Interior Gallery - Bihar",
+    description: "Professional Gypsum, PVC, Grid Ceiling and Wall Panel projects in Bihar.",
     image: galleryImages.map((img) => `https://www.jkinterior.online${img.src}`),
   }
 }
