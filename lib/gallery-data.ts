@@ -30,11 +30,6 @@ export const galleryImages = [
   { src: "/images/grid2.jpg",     alt: "Hospital grid panels",  category: "Grid Ceiling", width: 1080, height: 1080 },
   { src: "/images/grid3.jpg",     alt: "Mineral fiber grid",    category: "Grid Ceiling", width: 1080, height: 1080 },
   { src: "/images/grid4.jpg",     alt: "Acoustic grid ceiling", category: "Grid Ceiling", width: 1080, height: 1080 },
-  { src: "/images/grid5.jpg",     alt: "Grid ceiling 600x600",  category: "Grid Ceiling", width: 1080, height: 1080 },
-  { src: "/images/grid6.jpg",     alt: "Standard grid design",  category: "Grid Ceiling", width: 1080, height: 1080 },
-  { src: "/images/grid7.jpg",     alt: "Metal grid ceiling",    category: "Grid Ceiling", width: 1080, height: 1080 },
-  { src: "/images/grid8.jpg",     alt: "School grid ceiling",   category: "Grid Ceiling", width: 1080, height: 1080 },
-  { src: "/images/grid9.jpg",     alt: "Modern grid installation", category: "Grid Ceiling", width: 1080, height: 1080 },
 
   // ── Wall Panels (14 Images) ─────────────────────────────
   { src: "/images/wpc.jpg",       alt: "WPC louvers wall",      category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
