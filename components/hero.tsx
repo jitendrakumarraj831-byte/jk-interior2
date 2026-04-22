@@ -136,7 +136,7 @@ export default function Hero() {
             className="h-13 relative overflow-hidden rounded-full border-blue-200 px-8 hover:bg-blue-50 luxury-animated-shine luxury-animated-shine--subtle"
           >
             <Link href="#services" className="flex items-center gap-2">
-              डिज़ाइन देखें <ArrowRight className="h-4 w-4" />
+              हमारी सेवाएँ <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
         </motion.div>
