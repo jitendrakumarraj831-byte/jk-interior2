@@ -94,7 +94,6 @@ function Lightbox({
           className="absolute top-0 inset-x-0 px-5 py-4 flex items-center justify-between text-white/90 z-10 bg-gradient-to-b from-black/70 to-transparent"
           onClick={(e) => e.stopPropagation()}
         >
-          <p className="text-sm font-medium truncate max-w-[65%]">{image.alt}</p>
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-white/40">{activeIndex + 1} / {images.length}</span>
             <button ref={closeButtonRef} onClick={onClose} aria-label="Close" className="p-2 rounded-full hover:bg-white/10 transition-colors">
