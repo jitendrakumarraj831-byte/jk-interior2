@@ -211,7 +211,7 @@ export default function Hero() {
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchPriority={index === 0 ? "high" : "auto"}
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  quality={62}
+                  quality={50}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               </motion.div>
