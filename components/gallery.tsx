@@ -278,7 +278,7 @@ function SectionHeader({ title, count, index }: { title: string; count: number; 
       <div className={`w-1 h-10 rounded-full ${accent}`} />
       <div>
         <h3 className="text-xl md:text-2xl font-bold text-zinc-900 leading-tight">{title}</h3>
-        <p className="text-xs text-zinc-400 mt-0.5">{count} photos</p>
+        {/* Photo count wali line yahan se hata di gayi hai */}
       </div>
       <div className="flex-1 h-px bg-zinc-100 ml-2" />
     </motion.div>
