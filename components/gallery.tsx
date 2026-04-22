@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight, ZoomIn, ChevronUp, Sparkles, Phone } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { galleryImages } from "@/lib/gallery-data"
 
@@ -76,7 +76,7 @@ function Lightbox({
 
   return createPortal(
     <AnimatePresence>
-      <motion.div
+      <m.div
         key="lightbox"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -112,7 +112,7 @@ function Lightbox({
         </button>
 
         {/* Image */}
-        <motion.div
+        <m.div
           key={activeIndex}
           initial={{ opacity: 0, scale: 0.93 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -122,7 +122,7 @@ function Lightbox({
           onClick={(e) => e.stopPropagation()}
         >
           <Image src={image.src} alt={image.alt} fill className="object-contain" priority sizes="100vw" />
-        </motion.div>
+        </m.div>
 
         {/* Bottom */}
         <div
@@ -139,7 +139,7 @@ function Lightbox({
           </button>
           <p className="text-white/25 text-xs md:hidden select-none">← Swipe to navigate →</p>
         </div>
-      </motion.div>
+      </m.div>
     </AnimatePresence>,
     document.body
   )
@@ -164,7 +164,7 @@ function FeaturedSection({ images, sectionIndex, onOpen }: { images: GalleryImag
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
       {/* Featured — takes 2 cols on desktop */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -177,7 +177,7 @@ function FeaturedSection({ images, sectionIndex, onOpen }: { images: GalleryImag
           <span className="text-white font-semibold text-sm drop-shadow">{featured.alt}</span>
         </div>
         <div className="absolute top-3 left-3 bg-amber-500 text-zinc-900 text-[10px] font-bold px-2.5 py-1 rounded-full tracking-wider uppercase">Featured</div>
-      </motion.div>
+      </m.div>
 
       {/* Rest */}
       {rest.map((img, i) => (
@@ -192,7 +192,7 @@ function StripSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]
   return (
     <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none md:grid md:grid-cols-4 md:overflow-visible">
       {images.map((img, i) => (
-        <motion.div
+        <m.div
           key={img.src}
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -208,7 +208,7 @@ function StripSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]
               <ZoomIn size={16} className="text-white/80 shrink-0" />
             </div>
           </div>
-        </motion.div>
+        </m.div>
       ))}
     </div>
   )
@@ -223,7 +223,7 @@ function MasonrySection({ images, onOpen }: { images: GalleryImage[]; onOpen: (i
       {cols.map((col, ci) => (
         <div key={ci} className="flex flex-col gap-3 md:gap-4">
           {col.map((img, i) => (
-            <motion.div
+            <m.div
               key={img.src}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -236,7 +236,7 @@ function MasonrySection({ images, onOpen }: { images: GalleryImage[]; onOpen: (i
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                 <ZoomIn size={22} className="text-white drop-shadow" />
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       ))}
@@ -247,7 +247,7 @@ function MasonrySection({ images, onOpen }: { images: GalleryImage[]; onOpen: (i
 // ─── Shared thumbnail card ────────────────────────────────────────────────────
 function CardThumb({ img, index, sectionIndex, onOpen }: { img: GalleryImage; index: number; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -259,7 +259,7 @@ function CardThumb({ img, index, sectionIndex, onOpen }: { img: GalleryImage; in
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2">
         <span className="text-white text-[11px] font-medium truncate drop-shadow">{img.alt}</span>
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -268,7 +268,7 @@ function SectionHeader({ title, count, index }: { title: string; count: number; 
   const accents = ["bg-amber-500", "bg-blue-500", "bg-emerald-500", "bg-rose-500", "bg-violet-500"]
   const accent = accents[index % accents.length]
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
@@ -281,7 +281,7 @@ function SectionHeader({ title, count, index }: { title: string; count: number; 
         <p className="text-xs text-zinc-400 mt-0.5">{count} photos</p>
       </div>
       <div className="flex-1 h-px bg-zinc-100 ml-2" />
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -384,7 +384,7 @@ export default function Gallery({ layout }: { layout?: string }) {
           const isTinted = sectionIndex % 2 === 1
 
           return (
-            <motion.div
+            <m.div
               key={category}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -394,7 +394,7 @@ export default function Gallery({ layout }: { layout?: string }) {
             >
               <SectionHeader title={category} count={images.length} index={sectionIndex} />
               {renderSection(images, layout, sectionIndex)}
-            </motion.div>
+            </m.div>
           )
         })}
 

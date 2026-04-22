@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react"
 import { Phone, ArrowRight, ChevronLeft, ChevronRight, MapPin, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
@@ -61,7 +61,7 @@ export default function Hero() {
         <div className="flex flex-col justify-center py-10 lg:py-20">
 
           {/* Location badge */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: easeLux }}
@@ -71,10 +71,10 @@ export default function Hero() {
             <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700">
               Forbesganj • Araria • Bihar
             </span>
-          </motion.div>
+          </m.div>
 
           {/* Brand name */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.55, ease: easeLux }}
@@ -92,10 +92,10 @@ export default function Hero() {
                 INTERIOR
               </span>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Taglines */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.55, ease: easeLux }}
@@ -125,10 +125,10 @@ export default function Hero() {
                 बिहार का No.1 भरोसेमंद इंटीरियर ब्रांड।
               </span>
             </p>
-          </motion.div>
+          </m.div>
 
           {/* CTA Buttons */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5, ease: easeLux }}
@@ -154,10 +154,10 @@ export default function Hero() {
                 डिज़ाइन देखें <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-          </motion.div>
+          </m.div>
 
           {/* Stats strip */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.5, ease: easeLux }}
@@ -176,11 +176,11 @@ export default function Hero() {
                 <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
 
         {/* ── Right: Image Slider ── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.7, ease: easeLux }}
@@ -189,7 +189,7 @@ export default function Hero() {
           {/* Main card */}
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-blue-100 sm:aspect-[3/4] lg:aspect-[4/5]">
             <AnimatePresence initial={false} custom={direction}>
-              <motion.div
+              <m.div
                 key={page}
                 custom={direction}
                 variants={slideVariants}
@@ -214,7 +214,7 @@ export default function Hero() {
                   quality={50}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              </motion.div>
+              </m.div>
             </AnimatePresence>
 
             {/* Slide label */}
@@ -260,7 +260,7 @@ export default function Hero() {
               />
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   )

@@ -1,7 +1,7 @@
 "use client"
 
 import { MapPin, Navigation } from "lucide-react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
 const areas = [
@@ -59,14 +59,14 @@ export default function ServiceAreas() {
         }}
       />
 
-      <motion.div
+      <m.div
         className="relative z-10 mx-auto max-w-7xl px-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.12 }}
         variants={staggerContainer}
       >
-        <motion.div className="mb-14 text-center" variants={fadeSlideUp}>
+        <m.div className="mb-14 text-center" variants={fadeSlideUp}>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full glass-panel border-gold/25 px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-widest text-gold">
             <Navigation className="h-3 w-3" />
             Service Areas / सेवा क्षेत्र
@@ -84,9 +84,9 @@ export default function ServiceAreas() {
               बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा
             </span>
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={staggerContainer}
           className="relative mx-auto aspect-[4/3] max-h-[min(72vh,560px)] w-full max-w-3xl md:aspect-[16/10]"
         >
@@ -97,7 +97,7 @@ export default function ServiceAreas() {
           {areas.map((area, index) => {
             const pos = hubPositions[index] ?? { top: "50%", left: "50%" }
             return (
-              <motion.div
+              <m.div
                 key={area}
                 variants={fadeSlideUpItem}
                 className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
@@ -115,12 +115,12 @@ export default function ServiceAreas() {
                     {area}
                   </span>
                 </div>
-              </motion.div>
+              </m.div>
             )
           })}
-        </motion.div>
+        </m.div>
 
-        <motion.div className="mt-16 text-center" variants={fadeSlideUp}>
+        <m.div className="mt-16 text-center" variants={fadeSlideUp}>
           <div className="mx-auto inline-block max-w-2xl rounded-2xl border border-gold/20 glass-card p-6">
             <p className="text-base font-semibold text-foreground">
               {"Serving all surrounding locations in Araria, Supaul & Purnia districts"}
@@ -130,8 +130,8 @@ export default function ServiceAreas() {
               उपलब्ध हैं।
             </p>
           </div>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </section>
   )
 }
