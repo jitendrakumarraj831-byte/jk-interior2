@@ -1,54 +1,37 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck } from "lucide-react"
+import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck, TreePine } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
-// Smooth luxury easing
 const easeLux = [0.22, 1, 0.36, 1] as const
 
-// --- स्लाइड होने वाले मुख्य टेक्स्ट ---
-const words = ["PVC False Ceiling", "WPC Wall Paneling", "UV Marble Sheet", "Modular TV Unit", "Gypsum Ceiling"]
+// --- आपके स्क्रीनशॉट के हिसाब से अपडेटेड सर्विसेज ---
+const words = [
+  "Gypsum False Ceiling",
+  "PVC Ceiling Design",
+  "Grid Office Ceiling",
+  "WPC Wall Paneling",
+  "UV Marble Sheets",
+  "Modern TV Units",
+  "Artificial Grass"
+]
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
 }
 
 const itemVariants = {
   hidden: { opacity: 0, y: 25 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: easeLux },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeLux } },
 }
-
-const stats = [
-  { value: "100+", label: "Projects Done" },
-  { value: "5+", label: "Years Experience" },
-  { value: "100%", label: "Client Satisfaction" },
-]
-
-const highlights = [
-  { icon: Layers, text: "PVC & Gypsum False Ceiling" },
-  { icon: PanelTop, text: "WPC Louvers & Wall Paneling" },
-  { icon: Tv, text: "Modern TV Unit Design" },
-  { icon: Sparkles, text: "Complete Interior Solutions" },
-]
 
 export default function Hero() {
   const [index, setIndex] = useState(0)
 
-  // टेक्स्ट स्लाइडर का टाइमर
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % words.length)
@@ -57,80 +40,34 @@ export default function Hero() {
   }, [])
 
   return (
-    <section   
-      id="home"   
-      className="relative min-h-[100dvh] w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50/30"  
-    >
-      {/* Hero style glow background */}
+    <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50/30">
+      {/* Background Glows */}
       <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-amber-200/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-blue-100/30 blur-3xl" />
 
-      {/* Soft Grid Overlay */}  
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]"  
-        style={{  
-          backgroundImage: "linear-gradient(rgba(37,99,235,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.1) 1px, transparent 1px)",  
-          backgroundSize: "44px 44px",  
-          maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",  
-        }}  
-      />  
-
-      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-start justify-center px-4 pt-24 pb-12 sm:pt-28 lg:px-8">  
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-start justify-center px-4 pt-24 pb-12 sm:pt-28 lg:px-8">
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="w-full">
           
-        <motion.div  
-          variants={containerVariants}  
-          initial="hidden"  
-          animate="visible"  
-          className="w-full"  
-        >  
-          {/* 1. Top trust bar */}  
-          <motion.div variants={itemVariants} className="mb-6 flex flex-wrap items-center gap-2">  
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">  
-              <MapPin className="h-3.5 w-3.5 text-blue-600" />  
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700">  
-                Forbesganj • Araria • Bihar  
-              </span>  
-            </div>  
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50/80 px-3 py-1.5 backdrop-blur-sm">  
-              <div className="flex">  
-                {[...Array(5)].map((_, i) => (  
-                  <Star key={i} className="h-3 w-3 fill-amber-500 text-amber-500" />  
-                ))}  
-              </div>  
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800">5★ Rated</span>  
-            </div>  
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1.5 backdrop-blur-sm">  
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />  
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Trusted Brand</span>  
-            </div>  
-          </motion.div>  
+          {/* 1. Top trust bar */}
+          <motion.div variants={itemVariants} className="mb-6 flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
+              <MapPin className="h-3.5 w-3.5 text-blue-600" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700">Forbesganj • Bihar</span>
+            </div>
+          </motion.div>
 
-          {/* 2. Brand name */}  
-          <motion.div variants={itemVariants} className="relative">  
-            <div  
-              role="heading"  
-              aria-level={1}  
-              className="font-black leading-[0.9] tracking-tighter text-slate-900"  
-              style={{ fontSize: "clamp(3.2rem, 10vw, 6.5rem)" }}  
-            >  
-              JK  
-              <span className="ml-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"  
-                style={{ fontSize: "clamp(1.6rem, 5vw, 3rem)", letterSpacing: "0.12em" }}  
-              >  
-                INTERIOR  
-              </span>  
-            </div>  
-            <motion.div  
-              initial={{ scaleX: 0 }}  
-              animate={{ scaleX: 1 }}  
-              transition={{ delay: 0.8, duration: 1, ease: easeLux }}  
-              className="mt-2 h-1.5 w-24 origin-left rounded-full bg-gradient-to-r from-blue-600 to-amber-400"  
-            />  
-          </motion.div>  
+          {/* 2. Brand name */}
+          <motion.div variants={itemVariants} className="relative mb-8">
+            <div className="font-black leading-[0.9] tracking-tighter text-slate-900" style={{ fontSize: "clamp(3.2rem, 10vw, 6.5rem)" }}>
+              JK<span className="ml-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent" style={{ fontSize: "clamp(1.6rem, 5vw, 3rem)", letterSpacing: "0.12em" }}>INTERIOR</span>
+            </div>
+            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.8, duration: 1, ease: easeLux }} className="mt-2 h-1.5 w-24 origin-left rounded-full bg-gradient-to-r from-blue-600 to-amber-400" />
+          </motion.div>
 
-          {/* 3. Sliding Headline Section (यहां बदलाव हुआ है - स्लाइडिंग इफेक्ट के लिए) */}  
-          <motion.div variants={itemVariants} className="mt-8 min-h-[100px] sm:min-h-[130px]">  
-            <h2 className="text-3xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl">  
-              Specialist in <br />  
+          {/* 3. Sliding Headline Area */}
+          <motion.div variants={itemVariants} className="min-h-[100px] sm:min-h-[130px]">
+            <h2 className="text-3xl font-black leading-tight tracking-tight text-slate-900 md:text-5xl">
+              Specialist in <br />
               <div className="relative inline-block overflow-hidden pb-1">
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -139,66 +76,55 @@ export default function Hero() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -30, opacity: 0 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="block bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent"
+                    className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
                   >
                     {words[index]}
                   </motion.span>
                 </AnimatePresence>
               </div>
-            </h2>  
+            </h2>
           </motion.div>
 
-                       {/* 4. Stylish & Interactive Description */}
-          <motion.div variants={itemVariants} className="mt-8 max-w-2xl space-y-5">
-            <div className="inline-flex items-center gap-2 rounded-lg bg-amber-500/10 px-3 py-1 text-amber-700">
-               <Sparkles className="h-4 w-4" />
+          {/* 4. Stylish Transparent Glass Section (यहां से बदलाव हुआ है) */}
+          <motion.div 
+            variants={itemVariants} 
+            className="mt-6 w-full max-w-2xl overflow-hidden rounded-3xl border border-white/40 bg-white/30 p-6 backdrop-blur-xl shadow-2xl shadow-blue-900/5 sm:p-8"
+          >
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-3 py-1 text-amber-700">
+               <Sparkles className="h-4 w-4 animate-pulse" />
                <span className="text-[11px] font-black uppercase tracking-widest">Premium Aesthetics</span>
             </div>
             
-            <h3 className="text-3xl font-extrabold leading-[1.1] tracking-tight text-slate-900 md:text-5xl">
+            <h3 className="mb-4 text-2xl font-black leading-tight text-slate-900 md:text-4xl">
               साधारण दीवारों को दें <br />
-              <span className="relative inline-block">
-                <span className="relative z-10 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  एक शाही पहचान
-                </span>
-                <svg className="absolute -bottom-2 left-0 z-0 h-3 w-full fill-blue-100/60" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 q25 -5 50 0 t50 0" stroke="currentColor" strokeWidth="2" fill="none" /></svg>
+              <span className="bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
+                एक शाही पहचान
               </span>
             </h3>
 
-            <p className="max-w-lg text-base font-medium leading-relaxed text-slate-600 md:text-lg">
-              हम लेकर आए हैं फारबिसगंज में इंटीरियर का <span className="text-slate-900 font-bold">Next-Level Experience</span>। 
+            <p className="text-sm font-medium leading-relaxed text-slate-600 md:text-base">
+              हम लेकर आए हैं फारबिसगंज में इंटीरियर का <span className="font-bold text-slate-900">Next-Level Experience</span>। 
               डिज़ाइन ऐसा कि लोग देखते रह जाएँ, और मजबूती ऐसी कि सालों साल साथ निभाए।
             </p>
+
+            {/* Icons Inside Glass Card */}
+            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-white/20 pt-6">
+              {[
+                { icon: Layers, label: "Ceiling Expert" },
+                { icon: PanelTop, label: "Wall Luxury" },
+                { icon: Tv, label: "Smart Units" },
+                { icon: TreePine, label: "Soft Turf" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 group cursor-default">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600/10 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <item.icon className="h-4 w-4" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-700">{item.label}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
-          {/* 5. Service Highlights (Updated with Stylish Interaction) */}  
-          <motion.ul variants={itemVariants} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">  
-            {[
-              { icon: Layers, title: "Designer False Ceiling", desc: "PVC और जिप्सम की बेहतरीन फिनिशिंग" },
-              { icon: PanelTop, title: "High-End Wall Panels", desc: "WPC और UV मार्बल का लग्जरी टच" },
-              { icon: Tv, title: "Bespoke TV Units", desc: "आपके हॉल के लिए कस्टमाइज्ड डिज़ाइन" },
-              { icon: ShieldCheck, title: "Quality Assurance", desc: "बेहतरीन मटेरियल और पक्का भरोसा" }
-            ].map((item) => (  
-              <li  
-                key={item.title}  
-                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white/80 p-5 transition-all hover:border-blue-500 hover:bg-white hover:shadow-2xl hover:shadow-blue-100/50"  
-              >
-                {/* Hover Background Accent */}
-                <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-blue-50 transition-transform group-hover:scale-[3]" />
-                
-                <div className="relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-white transition-colors group-hover:bg-blue-600 shadow-lg">  
-                  <item.icon className="h-7 w-7" />  
-                </div>  
-                
-                <div className="relative z-10">
-                  <h4 className="font-black text-slate-900 text-sm md:text-base">{item.title}</h4>
-                  <p className="mt-0.5 text-xs font-semibold text-slate-500">{item.desc}</p>
-                </div>
-              </li>  
-            ))}  
-          </motion.ul>
-          
-          
           {/* 6. CTA Buttons */}  
           <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-4">  
             <Button
@@ -265,4 +191,3 @@ export default function Hero() {
       </div>  
     </section>
   )
-}
