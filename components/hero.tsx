@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
-// --- आपके स्क्रीनशॉट के हिसाब से अपडेटेड सर्विसेज ---
+// --- आपके द्वारा दी गई गैलरी लिस्ट के अनुसार अपडेटेड सर्विसेज ---
 const words = [
   "Gypsum False Ceiling",
   "PVC Ceiling Design",
@@ -17,6 +17,12 @@ const words = [
   "UV Marble Sheets",
   "Modern TV Units",
   "Artificial Grass"
+]
+
+const stats = [
+  { value: "100+", label: "Projects Done" },
+  { value: "5+", label: "Years Experience" },
+  { value: "100%", label: "Client Satisfaction" },
 ]
 
 const containerVariants = {
@@ -41,22 +47,26 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50/30">
-      {/* Background Glows */}
+      {/* Background Decor */}
       <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-amber-200/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-blue-100/30 blur-3xl" />
 
       <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-5xl flex-col items-start justify-center px-4 pt-24 pb-12 sm:pt-28 lg:px-8">
         <motion.div variants={containerVariants} initial="hidden" animate="visible" className="w-full">
           
-          {/* 1. Top trust bar */}
+          {/* 1. Trust Tags */}
           <motion.div variants={itemVariants} className="mb-6 flex flex-wrap items-center gap-2">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-4 py-1.5 backdrop-blur-sm shadow-sm">
               <MapPin className="h-3.5 w-3.5 text-blue-600" />
               <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700">Forbesganj • Bihar</span>
             </div>
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50/80 px-3 py-1.5 backdrop-blur-sm">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Trusted Brand</span>
+            </div>
           </motion.div>
 
-          {/* 2. Brand name */}
+          {/* 2. Brand Identity */}
           <motion.div variants={itemVariants} className="relative mb-8">
             <div className="font-black leading-[0.9] tracking-tighter text-slate-900" style={{ fontSize: "clamp(3.2rem, 10vw, 6.5rem)" }}>
               JK<span className="ml-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent" style={{ fontSize: "clamp(1.6rem, 5vw, 3rem)", letterSpacing: "0.12em" }}>INTERIOR</span>
@@ -85,7 +95,7 @@ export default function Hero() {
             </h2>
           </motion.div>
 
-          {/* 4. Stylish Transparent Glass Section (यहां से बदलाव हुआ है) */}
+          {/* 4. Glassmorphism Card Section */}
           <motion.div 
             variants={itemVariants} 
             className="mt-6 w-full max-w-2xl overflow-hidden rounded-3xl border border-white/40 bg-white/30 p-6 backdrop-blur-xl shadow-2xl shadow-blue-900/5 sm:p-8"
@@ -107,7 +117,7 @@ export default function Hero() {
               डिज़ाइन ऐसा कि लोग देखते रह जाएँ, और मजबूती ऐसी कि सालों साल साथ निभाए।
             </p>
 
-            {/* Icons Inside Glass Card */}
+            {/* Quick Service Highlights */}
             <div className="mt-8 grid grid-cols-2 gap-4 border-t border-white/20 pt-6">
               {[
                 { icon: Layers, label: "Ceiling Expert" },
@@ -125,40 +135,32 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* 6. CTA Buttons */}  
+          {/* 5. CTA Buttons Section */}  
           <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-4">  
             <Button
-  asChild
-  size="lg"
-  className="h-14 relative overflow-hidden rounded-full bg-blue-600 px-10 text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-700 active:scale-95"
->
-  <a href="tel:+918651070831" className="relative flex items-center gap-2 text-base font-bold">
-    
-    {/* ✨ शाइन इफेक्ट यहाँ शुरू होता है */}
-    <motion.span 
-      initial={{ left: "-100%" }}
-      animate={{ left: "100%" }}
-      transition={{ 
-        repeat: Infinity, 
-        duration: 1.5, 
-        ease: "linear", 
-        repeatDelay: 2 
-      }}
-      style={{
-        position: 'absolute',
-        top: 0,
-        height: '100%',
-        width: '50px',
-        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-        transform: 'skewX(-20deg)',
-      }}
-    />
-    {/* ✨ शाइन इफेक्ट यहाँ खत्म होता है */}
-
-    <Phone className="h-5 w-5" />
-    फ्री कोटेशन लें
-  </a>
-</Button>      
+              asChild
+              size="lg"
+              className="h-14 relative overflow-hidden rounded-full bg-blue-600 px-10 text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-700 active:scale-95"
+            >
+              <a href="tel:+918651070831" className="relative flex items-center gap-2 text-base font-bold">
+                {/* Shine Effect */}
+                <motion.span 
+                  initial={{ left: "-100%" }}
+                  animate={{ left: "100%" }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear", repeatDelay: 2 }}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    height: '100%',
+                    width: '50px',
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                    transform: 'skewX(-20deg)',
+                  }}
+                />
+                <Phone className="h-5 w-5" />
+                फ्री कोटेशन लें
+              </a>
+            </Button>      
             <Button  
               asChild  
               variant="outline"  
@@ -171,7 +173,7 @@ export default function Hero() {
             </Button>  
           </motion.div>  
 
-          {/* 7. Stats Section */}  
+          {/* 6. Professional Stats Area */}  
           <motion.div  
             variants={itemVariants}  
             className="mt-12 flex w-full max-w-2xl flex-wrap items-center gap-8 border-t border-slate-200 pt-8"  
