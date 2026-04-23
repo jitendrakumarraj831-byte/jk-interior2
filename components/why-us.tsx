@@ -81,7 +81,6 @@ const whyUsReasons = [
   },
 ]
 
-// Schema Logic (Kept Same)
 export const WHY_US_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -96,7 +95,22 @@ export const WHY_US_JSON_LD = {
       addressRegion: "Araria, Bihar",
       addressCountry: "IN",
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "26.3001",
+      longitude: "87.2533",
+    },
   },
+  areaServed: ["Forbesganj", "Araria", "Purnia", "Bihar"],
+}
+
+export function WhyUsJsonLdScript() {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(WHY_US_JSON_LD) }}
+    />
+  )
 }
 
 const containerVariants = {
@@ -105,62 +119,81 @@ const containerVariants = {
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 32, scale: 0.96 },
   visible: {
-    opacity: 1, y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
 }
 
-export default function WhyUs() {
+const headingVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+}
+
+type WhyUsProps = {
+  layout?: "default" | "experience"
+}
+
+export default function WhyUs({ layout = "default" }: WhyUsProps) {
   return (
-    <section id="why-us" className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden bg-white">
-      {/* 100% Screenshot Matching Background Elements */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Soft Mesh Gradient - Top Left Yellow/Orange Tint */}
-        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-[#FFF9E6] blur-[120px] opacity-70" />
-        {/* Blue/White Tint from Screenshot Right Side */}
-        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-[#E6F0FF] blur-[100px] opacity-60" />
-        {/* Subtle Dots Pattern Like Screenshot */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]" />
+    <section
+  id="why-us"
+  className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden
+  bg-gradient-to-br from-[#f8fafc] via-[#eef2ff] to-[#f1f5f9]"
+>
+  {/* ✅ ADD HERE (Glow effect) */}
+  <div className="pointer-events-none absolute inset-0">
+    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.15),transparent_60%)]" />
+    <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom,rgba(139,92,246,0.12),transparent_60%)]" />
+  </div>
+      {/* Decorative rings */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-blue-300/20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-blue-300/15" />
+        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-blue-400/10 blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-violet-400/10 blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        {/* Heading Section */}
+
+        {/* Center heading */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={headingVariants}
+          className="text-center mb-14"
         >
-          {/* Badge Like Screenshot */}
-          <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-[#FFF9E6] px-5 py-2 text-[12px] font-bold text-[#B37A00] mb-6 shadow-sm">
-             ✨ हमारी प्रीमियम डिज़ाइन कलेक्शन ✨
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold mb-5">
+            <span className="w-1 h-1 rounded-full bg-gold inline-block" />
+            Best Interior Service · Forbesganj · Araria
+            <span className="w-1 h-1 rounded-full bg-gold inline-block" />
           </span>
 
-          <h2 className="text-4xl md:text-6xl font-black text-[#1A1A1A] leading-tight tracking-tight">
-            Our <br className="md:hidden" /> 
-            <span className="text-[#E67E22]">Design Meets Perfection</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-foreground">
+            Why Choose <span className="gold-text">JK Interior</span>?
           </h2>
 
-          <p className="mt-4 text-[#D35400] font-bold text-lg">
-             हमारे शानदार डिज़ाइन में झलके बेहतरीन कारीगरी
+          <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-muted-foreground leading-relaxed">
+            Bihar ke <strong className="text-foreground font-semibold">Forbesganj aur Araria</strong> mein
+            sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.
           </p>
-          
-          <div className="mt-6 flex items-center justify-center gap-2">
-            <div className="h-[1px] w-20 bg-orange-200" />
-            <div className="h-2 w-2 rounded-full bg-orange-400" />
-            <div className="h-[1px] w-20 bg-orange-200" />
+
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold/50" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold/50" />
           </div>
         </motion.div>
 
-        {/* Cards Grid with White Glassmorphism */}
+        {/* Cards Grid */}
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          viewport={{ once: true, amount: 0.05 }}
+          variants={containerVariants}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"
         >
           {whyUsReasons.map((reason, i) => {
             const Icon = reason.icon
@@ -168,40 +201,27 @@ export default function WhyUs() {
               <motion.article
                 key={reason.en}
                 variants={cardVariants}
-                className="group relative rounded-3xl border border-white bg-white/40 backdrop-blur-md p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl hover:shadow-orange-100 transition-all duration-300"
+                className={`group relative rounded-2xl bg-gradient-to-br ${reason.color} border border-white/60 backdrop-blur-sm p-5 md:p-6 overflow-hidden hover:shadow-lg hover:shadow-blue-200/40 hover:-translate-y-1 transition-all duration-300`}
               >
-                {/* Subtle Numbering Background */}
-                <span className="absolute top-4 right-6 text-5xl font-black text-black/[0.03] select-none">
+                <div className="absolute inset-0 bg-white/70 rounded-2xl -z-10" />
+
+                <span className="absolute -bottom-3 -right-1 text-7xl font-black text-foreground/[0.04] leading-none select-none pointer-events-none">
                   {String(i + 1).padStart(2, "0")}
                 </span>
 
-                <div className={`mb-5 h-12 w-12 flex items-center justify-center rounded-2xl border ${reason.iconBg} ${reason.iconColor}`}>
-                  <Icon className="h-6 w-6" />
+                <div className={`mb-4 h-11 w-11 flex items-center justify-center rounded-xl border ${reason.iconBg} ${reason.iconColor} transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon className="h-5 w-5" />
                 </div>
 
-                <h3 className="text-base font-bold text-[#2D3436] mb-1">{reason.en}</h3>
-                <p className={`text-xs font-bold mb-3 ${reason.iconColor}`}>{reason.hi}</p>
-                <p className="text-sm leading-relaxed text-gray-500 font-medium">{reason.desc}</p>
+                <h3 className="text-sm font-bold text-foreground leading-snug mb-0.5">{reason.en}</h3>
+                <p className={`text-[11px] font-semibold mb-2.5 ${reason.iconColor}`}>{reason.hi}</p>
+                <p className="text-[12px] leading-relaxed text-muted-foreground">{reason.desc}</p>
+
+                <div className={`absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-gradient-to-r ${reason.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
               </motion.article>
             )
           })}
         </motion.div>
-
-        {/* Bottom Stat Bar (as seen in screenshot) */}
-        <div className="mt-20 grid grid-cols-3 gap-4 border-t border-gray-100 pt-10 text-center">
-            <div>
-                <h4 className="text-3xl font-black text-[#1A1A1A]">100+</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Projects Done</p>
-            </div>
-            <div>
-                <h4 className="text-3xl font-black text-[#1A1A1A]">5+</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Years Experience</p>
-            </div>
-            <div>
-                <h4 className="text-3xl font-black text-[#1A1A1A]">100%</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Client Satisfied</p>
-            </div>
-        </div>
       </div>
     </section>
   )
