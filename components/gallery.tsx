@@ -513,7 +513,7 @@ export default function Gallery({ layout }: { layout?: string }) {
 
     <div className="mt-12 pt-8 border-t border-slate-200/60">
       <p className="text-slate-500 text-[10px] md:text-xs tracking-[0.15em] font-bold uppercase">
-        Trusted by 500+ families across <span className="text-slate-800">Araria • Forbesganj • Jogbani • Purnea</span>
+        Trusted by 100+ families across <span className="text-slate-800">Araria • Forbesganj • Jogbani • Purnea</span>
       </p>
     </div>
   </div>
