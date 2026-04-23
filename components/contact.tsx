@@ -125,7 +125,7 @@ export default function Contact() {
                     Forbesganj Dumariya, Araria, Bihar - 854318
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    फोर्ब्सगंज दुमरिया, अररिया, बिहार
+                    फारबिसगंज डुमरिया, अररिया, बिहार
                   </p>
                 </div>
               </div>
