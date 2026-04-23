@@ -148,46 +148,56 @@ export default function Hero() {
             </h2>  
           </motion.div>
 
-                     {/* 4. Updated Sub-Headline (Hindi) - अब और भी दमदार */}
-          <motion.div variants={itemVariants} className="mt-6 max-w-2xl space-y-4">
-            <div className="flex items-center gap-2 text-emerald-600">
-               <ShieldCheck className="h-5 w-5" />
-               <span className="text-xs font-bold uppercase tracking-wider">Quality & Trust Guaranteed</span>
+                       {/* 4. Stylish & Interactive Description */}
+          <motion.div variants={itemVariants} className="mt-8 max-w-2xl space-y-5">
+            <div className="inline-flex items-center gap-2 rounded-lg bg-amber-500/10 px-3 py-1 text-amber-700">
+               <Sparkles className="h-4 w-4" />
+               <span className="text-[11px] font-black uppercase tracking-widest">Premium Aesthetics</span>
             </div>
             
-            <p className="text-lg font-medium text-slate-700 md:text-xl leading-snug">  
-              पुराने घर को दें एक <span className="text-blue-600 font-black italic underline decoration-amber-400 decoration-4 underline-offset-4">Luxury Look</span>। 
-              फारबिसगंज में सबसे बेहतरीन फिनिशिंग और मॉडर्न डिज़ाइन अब आपके बजट में।
-            </p> 
+            <h3 className="text-3xl font-extrabold leading-[1.1] tracking-tight text-slate-900 md:text-5xl">
+              साधारण दीवारों को दें <br />
+              <span className="relative inline-block">
+                <span className="relative z-10 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  एक शाही पहचान
+                </span>
+                <svg className="absolute -bottom-2 left-0 z-0 h-3 w-full fill-blue-100/60" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 q25 -5 50 0 t50 0" stroke="currentColor" strokeWidth="2" fill="none" /></svg>
+              </span>
+            </h3>
 
-            <p className="border-l-4 border-blue-500 bg-blue-50/50 py-2 pl-4 text-sm leading-relaxed text-slate-600 md:text-base rounded-r-lg">  
-              घर हो या शोरूम, हम देते हैं हर कोने को एक नई पहचान। <br />
-              <span className="font-bold text-slate-900">PVC, WPC, और UV मार्बल शीट</span> के विशेषज्ञ।
-            </p>  
-          </motion.div>  
+            <p className="max-w-lg text-base font-medium leading-relaxed text-slate-600 md:text-lg">
+              हम लेकर आए हैं फारबिसगंज में इंटीरियर का <span className="text-slate-900 font-bold">Next-Level Experience</span>। 
+              डिज़ाइन ऐसा कि लोग देखते रह जाएँ, और मजबूती ऐसी कि सालों साल साथ निभाए।
+            </p>
+          </motion.div>
 
-          {/* 5. Service Highlights (With Benefits) - सिर्फ नाम नहीं, फायदा भी */}  
-          <motion.ul variants={itemVariants} className="mt-8 grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">  
+          {/* 5. Service Highlights (Updated with Stylish Interaction) */}  
+          <motion.ul variants={itemVariants} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">  
             {[
-              { icon: Layers, title: "PVC & Gypsum Ceiling", desc: "सीलन से छुटकारा, सालों साल चमक" },
-              { icon: PanelTop, title: "WPC Wall Paneling", desc: "दीवारों को दें प्रीमियम वुडन लुक" },
-              { icon: Tv, title: "Modern TV Units", sub: "स्टाइलिश और स्पेस-सेविंग डिज़ाइन" },
-              { icon: Sparkles, title: "Full Renovation", sub: "नक्शे से फिनिशिंग तक पूरी जिम्मेदारी" }
+              { icon: Layers, title: "Designer False Ceiling", desc: "PVC और जिप्सम की बेहतरीन फिनिशिंग" },
+              { icon: PanelTop, title: "High-End Wall Panels", desc: "WPC और UV मार्बल का लग्जरी टच" },
+              { icon: Tv, title: "Bespoke TV Units", desc: "आपके हॉल के लिए कस्टमाइज्ड डिज़ाइन" },
+              { icon: ShieldCheck, title: "Quality Assurance", desc: "बेहतरीन मटेरियल और पक्का भरोसा" }
             ].map((item) => (  
               <li  
                 key={item.title}  
-                className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm backdrop-blur-md transition-all hover:border-blue-400 hover:shadow-lg hover:-translate-y-1"  
-              >  
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-blue-100 group-hover:scale-110 transition-transform">  
-                  <item.icon className="h-6 w-6" />  
+                className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-slate-200 bg-white/80 p-5 transition-all hover:border-blue-500 hover:bg-white hover:shadow-2xl hover:shadow-blue-100/50"  
+              >
+                {/* Hover Background Accent */}
+                <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-blue-50 transition-transform group-hover:scale-[3]" />
+                
+                <div className="relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-white transition-colors group-hover:bg-blue-600 shadow-lg">  
+                  <item.icon className="h-7 w-7" />  
                 </div>  
-                <div>
-                  <h3 className="font-bold text-slate-900 text-sm md:text-base leading-none mb-1">{item.title}</h3>
-                  <p className="text-[11px] md:text-xs text-slate-500 font-medium">{item.desc || item.sub}</p>
+                
+                <div className="relative z-10">
+                  <h4 className="font-black text-slate-900 text-sm md:text-base">{item.title}</h4>
+                  <p className="mt-0.5 text-xs font-semibold text-slate-500">{item.desc}</p>
                 </div>
               </li>  
             ))}  
-          </motion.ul>  
+          </motion.ul>
+          
           
           {/* 6. CTA Buttons */}  
           <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-4">  
