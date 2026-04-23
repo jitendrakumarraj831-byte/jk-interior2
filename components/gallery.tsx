@@ -7,6 +7,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { galleryImages } from "@/lib/gallery-data"
 
+// Slug helper — must match the one used in components/services.tsx
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+
 interface GalleryImage {
   src: string
   alt: string
@@ -311,6 +315,36 @@ export default function Gallery({ layout }: { layout?: string }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const topRef = useRef<HTMLDivElement>(null)
 
+  // Auto-scroll to category section when arriving via /gallery#cat-<slug>
+  // Retries because sections mount client-side and images take a moment to layout.
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    let cancelled = false
+    const scrollToHash = () => {
+      const hash = window.location.hash?.replace("#", "")
+      if (!hash) return
+      let attempts = 0
+      const maxAttempts = 20
+      const tryScroll = () => {
+        if (cancelled) return
+        const el = document.getElementById(hash)
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" })
+          return
+        }
+        attempts += 1
+        if (attempts < maxAttempts) setTimeout(tryScroll, 150)
+      }
+      tryScroll()
+    }
+    scrollToHash()
+    window.addEventListener("hashchange", scrollToHash)
+    return () => {
+      cancelled = true
+      window.removeEventListener("hashchange", scrollToHash)
+    }
+  }, [])
+
   useEffect(() => setMounted(true), [])
 
   const sections = groupByCategory(galleryImages as GalleryImage[])
@@ -405,11 +439,12 @@ export default function Gallery({ layout }: { layout?: string }) {
           return (
             <motion.div
               key={category}
+              id={`cat-${slugify(category)}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5 }}
-              className={`rounded-3xl px-4 py-8 md:px-8 md:py-10 ${isTinted ? "bg-zinc-50" : "bg-white"}`}
+              className={`scroll-mt-24 rounded-3xl px-4 py-8 md:px-8 md:py-10 ${isTinted ? "bg-zinc-50" : "bg-white"}`}
             >
               <SectionHeader title={category} count={images.length} index={sectionIndex} />
               {renderSection(images, layout, sectionIndex)}

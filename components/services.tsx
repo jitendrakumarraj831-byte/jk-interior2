@@ -2,8 +2,13 @@
 
 import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf, Phone, ArrowUpRight, MessageCircle, Headset, Truck, ShieldCheck } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
+
+// Slug helper — must match the one used in components/gallery.tsx
+const slug = (s: string) =>
+  s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
 
 const services = [
   {
@@ -19,6 +24,7 @@ const services = [
     image: "/images/gypsum-ceiling.jpg",
     alt: "Gypsum false ceiling design in Forbesganj Bihar",
     icon: <Layers className="w-5 h-5" />,
+    galleryCategory: "Gypsum False Ceiling",
   },
   {
     title: "PVC Ceiling",
@@ -33,6 +39,7 @@ const services = [
     image: "/images/pvc-ceiling.jpg",
     alt: "PVC ceiling panel installation Forbesganj",
     icon: <Box className="w-5 h-5" />,
+    galleryCategory: "PVC Ceiling",
   },
   {
     title: "WPC Louvers",
@@ -47,6 +54,7 @@ const services = [
     image: "/images/wpc-louvers.jpg",
     alt: "WPC louvers wall panel design Forbesganj",
     icon: <Layout className="w-5 h-5" />,
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
   },
   {
     title: "UV Marble Sheet",
@@ -61,6 +69,7 @@ const services = [
     image: "/images/uv-marble.jpg",
     alt: "UV marble sheet wall cladding Bihar",
     icon: <Sparkles className="w-5 h-5" />,
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
   },
   {
     title: "Fluted Panels",
@@ -75,6 +84,7 @@ const services = [
     image: "/images/fluted-panels.jpg",
     alt: "Fluted wall panels interior design",
     icon: <Maximize className="w-5 h-5" />,
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
   },
   {
     title: "TV Unit Design",
@@ -89,6 +99,7 @@ const services = [
     image: "/images/tv-unit.jpg",
     alt: "Modern TV unit design Forbesganj",
     icon: <Layout className="w-5 h-5" />,
+    galleryCategory: "TV Unit Design",
   },
   {
     title: "Artificial Grass",
@@ -103,6 +114,7 @@ const services = [
     image: "/images/artificial-grass.jpg",
     alt: "Artificial grass installation in Forbesganj Bihar",
     icon: <Leaf className="w-5 h-5" />,
+    galleryCategory: "Artificial Grass",
   },
 ]
 
@@ -262,9 +274,13 @@ export default function Services() {
                     <MessageCircle className="h-3.5 w-3.5" />
                     WhatsApp
                   </a>
-                  <span className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-blue-200 text-blue-600 transition-all group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-45">
+                  <Link
+                    href={`/gallery#cat-${slug(service.galleryCategory)}`}
+                    aria-label={`View ${service.title} gallery`}
+                    className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-blue-200 text-blue-600 transition-all hover:bg-blue-600 hover:text-white hover:rotate-45 group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-45"
+                  >
                     <ArrowUpRight className="h-4 w-4" />
-                  </span>
+                  </Link>
                 </div>
               </div>
             </motion.article>
