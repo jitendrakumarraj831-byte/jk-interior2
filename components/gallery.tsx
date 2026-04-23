@@ -477,35 +477,48 @@ export default function Gallery({ layout }: { layout?: string }) {
           </button>
         </div>
 
-        {/* ── Closing CTA ───────────────────────────────────────────────── */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 to-zinc-800 px-6 py-12 md:px-14 md:py-16 text-center">
-          <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-500/15 blur-3xl rounded-full" />
-          <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-amber-400/10 blur-3xl rounded-full" />
-          <div className="relative">
-            <p className="text-amber-400 text-xs font-bold tracking-[0.25em] uppercase mb-3">JK Interior — Bihar</p>
-            <h3 className="text-white text-2xl md:text-4xl font-extrabold mb-4 leading-snug">
-              Aapka Ghar,{" "}
-              <span className="text-amber-400">Hamaari Pehchaan</span>
-            </h3>
-            <p className="text-zinc-400 max-w-xl mx-auto text-sm md:text-base leading-relaxed mb-8">
-              Har photo ek sapne ki kahani hai jo humne saath milkar poora kiya. Apna naya project shuru karne ke liye aaj hi contact karein — free consultation available hai.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="tel:+918651070831" aria-label="Call JK Interior Forbesganj Araria" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-zinc-900 text-sm font-bold rounded-full transition-all shadow-lg shadow-amber-500/25 active:scale-95">
-                <Phone size={16} /> Abhi Call Karein
-              </a>
-              <a href="/contact" aria-label="Get free quote for false ceiling and interior work in Araria" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border-2 border-white/15 hover:border-white/30 text-white text-sm font-semibold rounded-full transition-all active:scale-95">
-                Free Quote Lein
-              </a>
-            </div>
-            <div className="mt-10 pt-8 border-t border-white/10">
-              <p className="text-zinc-600 text-xs tracking-widest uppercase">
-                Trusted by 500+ families across Araria · Forbesganj · Jogbani · Purnea
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* ── Closing CTA (Final Premium Light Version) ───────────────────────────────────────────────── */}
+<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50">
+  {/* सॉफ्ट बैकग्राउंड ग्लो */}
+  <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
+  <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
+  
+  <div className="relative">
+    <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4">
+      JK Interior — Forbesganj, Araria
+    </p>
+    
+    <h3 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
+      Aapka Ghar, <span className="text-amber-600">Hamaari Pehchaan</span>
+    </h3>
+    
+    {/* आपका चुना हुआ टेक्स्ट */}
+    <p className="text-slate-700 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-10 font-semibold">
+      Budget आपका, ज़िम्मेदारी हमारी! पाइए <span className="text-amber-600">Premium Interior</span> और <span className="text-amber-600">False Ceiling</span> का काम सबसे कम समय और सबसे किफायती रेट पर। क्वालिटी में कोई समझौता नहीं, बस बेमिसाल कारीगरी।
+    </p>
+    
+    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      {/* Call Button */}
+      <a href="tel:+918651070831" 
+         className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-full transition-all shadow-lg shadow-amber-500/30 active:scale-95">
+        <Phone size={18} /> अभी कॉल करें
+      </a>
+      
+      {/* Quote Button */}
+      <a href="/contact" 
+         className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-slate-200 hover:border-amber-400 text-slate-800 text-sm font-bold rounded-full transition-all shadow-sm active:scale-95">
+        Free Quote Lein
+      </a>
+    </div>
 
+    <div className="mt-12 pt-8 border-t border-slate-200/60">
+      <p className="text-slate-500 text-[10px] md:text-xs tracking-[0.15em] font-bold uppercase">
+        Trusted by 500+ families across <span className="text-slate-800">Araria • Forbesganj • Jogbani • Purnea</span>
+      </p>
+    </div>
+  </div>
+</div>
+        
       </div>
 
       {/* Lightbox */}
