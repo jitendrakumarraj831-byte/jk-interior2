@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react"
 import Image from "next/image"
-import { X, ChevronLeft, ChevronRight, ZoomIn, ChevronUp, Sparkles, Phone } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, ZoomIn, ChevronUp, Sparkles, Phone, MessageCircle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { galleryImages } from "@/lib/gallery-data"
@@ -133,9 +133,29 @@ function Lightbox({
               <span key={i} className={`rounded-full transition-all duration-300 h-1.5 ${i === activeIndex ? "bg-amber-400 w-4" : "bg-white/25 w-1.5"}`} />
             ))}
           </div>
-          <button onClick={onClose} className="flex items-center gap-2 px-6 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-sm font-semibold rounded-full transition-all active:scale-95">
-            <X size={15} /> Gallery Bandh Karein
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <a
+              href={`https://wa.me/918651070831?text=${encodeURIComponent(`Hello! Mujhe is design ke baare me jaankari chahiye: "${image.alt}". Quote bhej dijiye.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              aria-label="WhatsApp inquiry about this design"
+              className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-500 text-white text-sm font-bold rounded-full transition-all shadow-lg shadow-green-900/40 active:scale-95"
+            >
+              <MessageCircle size={15} /> इस Design पर WhatsApp करें
+            </a>
+            <a
+              href="tel:+918651070831"
+              onClick={(e) => e.stopPropagation()}
+              aria-label="Call about this design"
+              className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-zinc-900 text-sm font-bold rounded-full transition-all shadow-lg shadow-amber-900/40 active:scale-95"
+            >
+              <Phone size={15} /> Call करें
+            </a>
+            <button onClick={onClose} aria-label="Close gallery" className="flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-sm font-semibold rounded-full transition-all active:scale-95">
+              <X size={15} /> Bandh Karein
+            </button>
+          </div>
           <p className="text-white/25 text-xs md:hidden select-none">← Swipe to navigate →</p>
         </div>
       </motion.div>

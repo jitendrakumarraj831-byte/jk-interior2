@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf, Phone, ArrowUpRight } from "lucide-react"
+import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf, Phone, ArrowUpRight, MessageCircle, Headset, Truck, ShieldCheck } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
@@ -135,6 +135,40 @@ export default function Services() {
           </p>
         </motion.header>
 
+        {/* Trust strip - Free Consultation, Site Visit, On-Time Delivery */}
+        <motion.div
+          variants={fadeSlideUp}
+          className="mb-12 grid grid-cols-1 gap-3 sm:grid-cols-3"
+        >
+          <div className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-3 backdrop-blur-sm">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-sm">
+              <Headset className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-emerald-900">Free Consultation</p>
+              <p className="text-[11px] text-emerald-700">फ्री सलाह & डिज़ाइन प्लान</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 rounded-2xl border border-blue-200 bg-blue-50/70 px-4 py-3 backdrop-blur-sm">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-blue-500 text-white shadow-sm">
+              <Truck className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-blue-900">Free Site Visit</p>
+              <p className="text-[11px] text-blue-700">घर पर आकर मुफ़्त माप-जोख</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3 backdrop-blur-sm">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-amber-900">1 Year Warranty</p>
+              <p className="text-[11px] text-amber-700">पूरे काम पर 1 साल की वारंटी</p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Magazine-style cards grid */}
         <motion.div
           className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
@@ -208,16 +242,27 @@ export default function Services() {
                   </div>
                 </div>
 
-                {/* Quote CTA */}
-                <div className="mt-2 flex items-center justify-between border-t border-blue-100 pt-4">
+                {/* Dual CTA: Call + WhatsApp */}
+                <div className="mt-2 flex items-center gap-2 border-t border-blue-100 pt-4">
                   <a
                     href="tel:+918651070831"
-                    className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-bold text-blue-700 transition-all hover:bg-blue-600 hover:text-white hover:shadow-md hover:shadow-blue-200"
+                    aria-label={`Call now for ${service.title} quote`}
+                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-blue-600 px-3 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md hover:shadow-blue-200 active:scale-95"
                   >
                     <Phone className="h-3.5 w-3.5" />
-                    Quote लें
+                    Call Now
                   </a>
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-blue-200 text-blue-600 transition-all group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-45">
+                  <a
+                    href={`https://wa.me/918651070831?text=${encodeURIComponent(`Hello! Mujhe ${service.title} (${service.titleHi}) ke baare me jaankari chahiye. Quote bhej dijiye.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`WhatsApp inquiry for ${service.title}`}
+                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-green-600 px-3 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-green-700 hover:shadow-md hover:shadow-green-200 active:scale-95"
+                  >
+                    <MessageCircle className="h-3.5 w-3.5" />
+                    WhatsApp
+                  </a>
+                  <span className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-blue-200 text-blue-600 transition-all group-hover:bg-blue-600 group-hover:text-white group-hover:rotate-45">
                     <ArrowUpRight className="h-4 w-4" />
                   </span>
                 </div>
