@@ -186,16 +186,38 @@ export default function Hero() {
 
           {/* 6. CTA Buttons */}  
           <motion.div variants={itemVariants} className="mt-10 flex flex-wrap gap-4">  
-            <Button  
-              asChild  
-              size="lg"  
-              className="h-14 relative overflow-hidden rounded-full bg-blue-600 px-10 text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-700 hover:shadow-blue-200 active:scale-95"  
-            >  
-              <a href="tel:+918651070831" className="flex items-center gap-2 text-base font-bold">  
-                <Phone className="h-5 w-5" />  
-                फ्री कोटेशन लें  
-              </a>  
-            </Button>  
+            <Button
+  asChild
+  size="lg"
+  className="h-14 relative overflow-hidden rounded-full bg-blue-600 px-10 text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-700 active:scale-95"
+>
+  <a href="tel:+918651070831" className="relative flex items-center gap-2 text-base font-bold">
+    
+    {/* ✨ शाइन इफेक्ट यहाँ शुरू होता है */}
+    <motion.span 
+      initial={{ left: "-100%" }}
+      animate={{ left: "100%" }}
+      transition={{ 
+        repeat: Infinity, 
+        duration: 1.5, 
+        ease: "linear", 
+        repeatDelay: 2 
+      }}
+      style={{
+        position: 'absolute',
+        top: 0,
+        height: '100%',
+        width: '50px',
+        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+        transform: 'skewX(-20deg)',
+      }}
+    />
+    {/* ✨ शाइन इफेक्ट यहाँ खत्म होता है */}
+
+    <Phone className="h-5 w-5" />
+    फ्री कोटेशन लें
+  </a>
+</Button>      
             <Button  
               asChild  
               variant="outline"  
