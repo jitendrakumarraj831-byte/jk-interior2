@@ -120,13 +120,17 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="relative overflow-hidden py-24 scroll-mt-28">
-      {/* Subtle background glows */}
-      <div className="pointer-events-none absolute -left-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-blue-500/8 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 right-0 h-80 w-80 rounded-full bg-blue-400/8 blur-3xl" />
+    <section
+  id="services"
+  className="relative overflow-hidden py-24 scroll-mt-28
+  bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
+>
+  {/* ✅ Hero style glow (REPLACE OLD GLOW) */}
+  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
+  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
 
-      <motion.div
-        className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6"
+  <motion.div
+    className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.06 }}
