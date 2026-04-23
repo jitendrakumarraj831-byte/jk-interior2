@@ -1,6 +1,6 @@
 "use client"
 
-import { MapPin, Navigation } from "lucide-react"
+import { MapPin, Navigation, Phone } from "lucide-react"
 import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
@@ -37,13 +37,9 @@ export default function ServiceAreas() {
       id="areas"
       className="relative overflow-hidden border-y border-amber-100 bg-gradient-to-br from-slate-50 via-white to-amber-50/40 py-28 scroll-mt-28 shadow-xl shadow-slate-200/50"
     >
-      {/* Background Glow Effects (Glow Circles) */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Soft Blue Glow */}
-        <div className="absolute -left-[10%] -top-[10%] h-[500px] w-[500px] rounded-full bg-blue-100/30 blur-3xl" />
-        {/* Soft Amber Glow */}
-        <div className="absolute -right-[10%] -bottom-[10%] h-[500px] w-[500px] rounded-full bg-amber-100/40 blur-3xl" />
-      </div>
+      {/* सॉफ्ट बैकग्राउंड ग्लो (Matching your CTA) */}
+      <div className="pointer-events-none absolute top-0 left-1/4 w-72 h-72 bg-amber-200/20 blur-[100px] rounded-full" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 w-64 h-64 bg-blue-100/20 blur-[100px] rounded-full" />
 
       <script
         type="application/ld+json"
@@ -71,20 +67,19 @@ export default function ServiceAreas() {
         variants={staggerContainer}
       >
         <motion.div className="mb-14 text-center" variants={fadeSlideUp}>
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/25 bg-white/60 px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-widest text-gold shadow-sm backdrop-blur-md">
+          <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4 flex items-center justify-center gap-2">
             <Navigation className="h-3 w-3" />
             Service Areas / सेवा क्षेत्र
-          </div>
-          <h3 className="mb-4 text-balance font-sans text-3xl font-bold text-slate-900 md:text-5xl">
-            <span className="mb-2 block text-center text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-gold/70">
-              Where We Serve
-            </span>
-            Region <span className="text-gold">Hub</span>
+          </p>
+          
+          <h3 className="text-slate-900 text-3xl md:text-5xl font-black mb-6 leading-tight">
+            Hamari <span className="text-amber-600">Pahunch</span>
           </h3>
-          <p className="mx-auto max-w-xl font-medium text-slate-600">
+          
+          <p className="mx-auto max-w-xl font-semibold text-slate-700 leading-relaxed">
             Providing premium interior & false ceiling services across Bihar.
             <br />
-            <span className="text-gold/80 font-semibold">
+            <span className="text-amber-600/90">
               बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा
             </span>
           </p>
@@ -95,10 +90,12 @@ export default function ServiceAreas() {
           variants={staggerContainer}
           className="relative mx-auto aspect-[4/3] max-h-[min(72vh,560px)] w-full max-w-3xl md:aspect-[16/10]"
         >
-          {/* Decorative Rings */}
-          <div className="absolute inset-8 rounded-[40%] border border-gold/10 md:inset-10" />
-          <div className="absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-[45%] border border-dashed border-gold/20" />
-          <div className="absolute left-1/2 top-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/20 bg-white/40 shadow-[0_0_60px_-12px_rgba(251,191,36,0.2)] backdrop-blur-[2px]" />
+          {/* Decorative Elements */}
+          <div className="absolute inset-8 rounded-[40%] border border-amber-200/30 md:inset-10" />
+          <div className="absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-[45%] border border-dashed border-slate-200" />
+          
+          {/* Central Glow Circle */}
+          <div className="absolute left-1/2 top-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-amber-100 bg-white/40 shadow-[0_0_60px_-12px_rgba(245,158,11,0.2)] backdrop-blur-[2px]" />
 
           {areas.map((area, index) => {
             const pos = hubPositions[index] ?? { top: "50%", left: "50%" }
@@ -113,8 +110,8 @@ export default function ServiceAreas() {
                   rotate: pos.rotate ?? 0,
                 }}
               >
-                <div className="flex items-center gap-2 rounded-2xl border border-gold/30 bg-white/80 px-4 py-2.5 shadow-lg shadow-gold/5 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-gold hover:shadow-gold/20">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold/10 text-gold ring-1 ring-gold/30">
+                <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/90 px-4 py-2.5 shadow-lg shadow-slate-200/50 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-amber-400 hover:shadow-amber-200/50 group">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-50 text-amber-600 ring-1 ring-amber-100 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                     <MapPin className="h-3.5 w-3.5" />
                   </span>
                   <span className="text-xs font-bold tracking-tight text-slate-800 sm:text-sm">
@@ -126,16 +123,21 @@ export default function ServiceAreas() {
           })}
         </motion.div>
 
-        {/* Bottom Info Card */}
+        {/* Bottom Info Card - Matching CTA Style */}
         <motion.div className="mt-16 text-center" variants={fadeSlideUp}>
-          <div className="mx-auto inline-block max-w-2xl rounded-2xl border border-amber-100 bg-white/70 p-6 shadow-md backdrop-blur-md">
-            <p className="text-base font-semibold text-slate-900">
-              {"Serving all surrounding locations in Araria, Supaul & Purnia districts"}
+          <div className="mx-auto inline-block max-w-2xl rounded-2xl border border-amber-100 bg-white/80 p-8 shadow-xl shadow-slate-200/40 backdrop-blur-sm">
+            <p className="text-base md:text-lg font-bold text-slate-900">
+              Araria, Supaul और Purnia जिले के सभी प्रमुख क्षेत्रों में उपलब्ध
             </p>
-            <p className="mt-2 text-sm text-slate-600">
-              अररिया, सुपौल और पूर्णिया जिले के सभी प्रमुख क्षेत्रों में हमारी सेवाएं
-              उपलब्ध हैं।
+            <p className="mt-3 text-sm font-semibold text-slate-600">
+              हम आपके शहर में बेहतरीन <span className="text-amber-600">Interior Solutions</span> पहुँचाने के लिए प्रतिबद्ध हैं।
             </p>
+            
+            <div className="mt-6 flex justify-center">
+               <a href="tel:+918651070831" className="flex items-center gap-2 text-amber-600 font-black text-sm hover:underline">
+                 <Phone size={16} /> Check Availability in Your Area
+               </a>
+            </div>
           </div>
         </motion.div>
       </motion.div>
