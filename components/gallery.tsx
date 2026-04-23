@@ -417,7 +417,7 @@ export default function Gallery({ layout }: { layout?: string }) {
             JK Interior के साथ पाएँ premium, modern aur durable interior solutions — false ceiling se modular kitchen tak, Araria aur nearby areas me trusted experts, jo हर project को बनाते हैं stylish, functional aur long-lasting.
           </p>
           <div className="mt-10 grid grid-cols-3 gap-4 max-w-lg mx-auto">
-            {[{ n: "500+", l: "Projects Done" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfied" }].map((s) => (
+            {[{ n: "100+", l: "Projects Done" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfied" }].map((s) => (
               <div key={s.l} className="text-center">
                 <p className="text-2xl md:text-3xl font-extrabold text-amber-400">{s.n}</p>
                 <p className="text-zinc-500 text-xs mt-1">{s.l}</p>
