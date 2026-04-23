@@ -140,52 +140,49 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
     <section
   id="why-us"
   className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden
-  bg-gradient-to-br from-[#f8fafc] via-[#eef2ff] to-[#f1f5f9]"
+  bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
 >
-  {/* ✅ ADD HERE (Glow effect) */}
+  {/* ✅ Hero style glow (WORKING) */}
+  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
+  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
+
+  {/* Decorative rings */}
   <div className="pointer-events-none absolute inset-0">
-    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.15),transparent_60%)]" />
-    <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom,rgba(139,92,246,0.12),transparent_60%)]" />
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-slate-300/20" />
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-slate-300/10" />
   </div>
-      {/* Decorative rings */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-blue-300/20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-blue-300/15" />
-        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-blue-400/10 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-violet-400/10 blur-3xl" />
+
+  <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
+
+    {/* Center heading */}
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={headingVariants}
+      className="text-center mb-14"
+    >
+      <span className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-700 text-xs font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-5">
+        <span className="w-1 h-1 rounded-full bg-amber-500 inline-block" />
+        Best Interior Service · Forbesganj · Araria
+        <span className="w-1 h-1 rounded-full bg-amber-500 inline-block" />
+      </span>
+
+      <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
+        Why Choose <span className="text-amber-600">JK Interior</span>?
+      </h2>
+
+      <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-slate-600 leading-relaxed">
+        Bihar ke <strong className="text-slate-900 font-semibold">Forbesganj aur Araria</strong> mein
+        sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.
+      </p>
+
+      <div className="mt-8 flex items-center justify-center gap-3">
+        <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
+        <div className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+        <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
       </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-
-        {/* Center heading */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={headingVariants}
-          className="text-center mb-14"
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold mb-5">
-            <span className="w-1 h-1 rounded-full bg-gold inline-block" />
-            Best Interior Service · Forbesganj · Araria
-            <span className="w-1 h-1 rounded-full bg-gold inline-block" />
-          </span>
-
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-foreground">
-            Why Choose <span className="gold-text">JK Interior</span>?
-          </h2>
-
-          <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-muted-foreground leading-relaxed">
-            Bihar ke <strong className="text-foreground font-semibold">Forbesganj aur Araria</strong> mein
-            sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.
-          </p>
-
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold/50" />
-            <div className="h-1.5 w-1.5 rounded-full bg-gold" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold/50" />
-          </div>
-        </motion.div>
+    </motion.div>
 
         {/* Cards Grid */}
         <motion.div
