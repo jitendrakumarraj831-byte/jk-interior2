@@ -5,6 +5,7 @@ import { Phone, Mail, Menu, X, MapPin } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import JKChat from "./jk-chat"
 
 const navLinks = [
   { href: "/", label: "Home", labelHi: "होम" },
@@ -164,6 +165,7 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </nav>
+      <JKChat />
     </header>
   )
 }

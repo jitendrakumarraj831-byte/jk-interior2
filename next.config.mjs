@@ -6,7 +6,7 @@ const nextConfig = {
   allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev', '*.repl.co'],
   compress: true,
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    optimizePackageImports: [],
   },
   images: {
     unoptimized: false,
