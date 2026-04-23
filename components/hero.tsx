@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 const easeLux = [0.22, 1, 0.36, 1] as const
 
 const stats = [
-  { value: "500+", label: "Projects Done" },
-  { value: "8+", label: "Years Experience" },
+  { value: "100+", label: "Projects Done" },
+  { value: "5+", label: "Years Experience" },
   { value: "100%", label: "Client Satisfaction" },
 ]
 
@@ -128,7 +128,7 @@ export default function Hero() {
             </span>{" "}
             और ग्रिड सीलिंग।
             <span className="mt-1 block font-semibold text-blue-950">
-              बिहार का No.1 भरोसेमंद इंटीरियर ब्रांड।
+              "फारबिसगंज का भरोसेमंद पार्टनर" ।
             </span>
           </p>
         </motion.div>
