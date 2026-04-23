@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 // Smooth luxury easing
 const easeLux = [0.22, 1, 0.36, 1] as const
 
-// Animation Variants for Text Slider Effect
+// Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -42,17 +42,40 @@ const highlights = [
   { icon: Sparkles, text: "Complete Interior Solutions" },
 ]
 
+// --- New Component for Sliding Text ---
+const SlidingHeadline = () => {
+  const text = "डिज़ाइन जो दिल जीत ले, फिनिशिंग जो सालों चले। • "
+  return (
+    <div className="relative w-full overflow-hidden bg-white/40 py-2 backdrop-blur-sm border-y border-slate-100 mb-4">
+      <motion.div
+        className="flex whitespace-nowrap text-xl font-black text-slate-900 md:text-2xl"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{
+          ease: "linear",
+          duration: 15,
+          repeat: Infinity,
+        }}
+      >
+        {/* Repeating text for seamless loop */}
+        <span className="pr-4">{text}</span>
+        <span className="pr-4">{text}</span>
+        <span className="pr-4">{text}</span>
+        <span className="pr-4">{text}</span>
+      </motion.div>
+    </div>
+  )
+}
+
 export default function Hero() {
   return (
     <section 
       id="home" 
       className="relative min-h-[100dvh] w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
     >
-      {/* ✅ Hero style glow background */}
+      {/* Hero style glow background */}
       <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-amber-200/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-64 rounded-full bg-blue-100/30 blur-3xl" />
       
-      {/* Soft Grid Overlay */}
       <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]"
         style={{
           backgroundImage: "linear-gradient(rgba(37,99,235,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.1) 1px, transparent 1px)",
@@ -91,7 +114,7 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* 2. Brand name with Slider Animation */}
+          {/* 2. Brand name */}
           <motion.div variants={itemVariants} className="relative">
             <div
               role="heading"
@@ -114,23 +137,19 @@ export default function Hero() {
             />
           </motion.div>
 
-          {/* 3. Main Headline */}
-          <motion.div variants={itemVariants} className="mt-6 max-w-2xl space-y-4">
-            <h2 className="text-2xl font-black leading-tight tracking-tight text-slate-900 md:text-4xl">
-              डिज़ाइन जो{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">दिल जीत ले</span>,{" "}
-              <br className="hidden sm:block" />
-              फिनिशिंग जो{" "}
-              <span className="bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent">सालों चले</span>।
-            </h2>
-            <p className="text-lg font-medium italic text-slate-700 md:text-xl">
+          {/* 3. Main Headline & Slider Section */}
+          <motion.div variants={itemVariants} className="mt-8 max-w-2xl w-full">
+            {/* Added Sliding Animation Here */}
+            <SlidingHeadline />
+            
+            <p className="mt-4 text-lg font-medium italic text-slate-700 md:text-xl">
               &quot;छत आपकी,{" "}
               <span className="text-blue-600 underline decoration-amber-300 decoration-2 underline-offset-4">
                 पहचान हमारी
               </span>
               &quot;
             </p>
-            <p className="border-l-4 border-blue-500 pl-4 text-sm leading-relaxed text-slate-600 md:text-base">
+            <p className="mt-4 border-l-4 border-blue-500 pl-4 text-sm leading-relaxed text-slate-600 md:text-base">
               घर, दुकान, ऑफिस और शोरूम के लिए प्रीमियम{" "}
               <span className="font-bold text-slate-900">
                 PVC, जिप्सम, WPC पैनल, UV मार्बल शीट
@@ -142,7 +161,7 @@ export default function Hero() {
             </p>
           </motion.div>
 
-          {/* 4. Service Highlights Icons */}
+          {/* 4. Service Highlights */}
           <motion.ul variants={itemVariants} className="mt-8 grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
             {highlights.map(({ icon: Icon, text }) => (
               <li
