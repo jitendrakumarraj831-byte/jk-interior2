@@ -397,24 +397,24 @@ export default function Gallery({ layout }: { layout?: string }) {
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold tracking-[0.2em] uppercase px-4 py-2 rounded-full mb-6">
             <Sparkles size={13} />
-            हमारे बेहतरीन काम
+            हमारी प्रीमियम डिज़ाइन कलेक्शन
             <Sparkles size={13} />
           </div>
           <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
             Our{" "}
             <span className="relative inline-block">
-              <span className="text-amber-400">Masterpieces</span>
+              <span className="text-amber-400">Design Meets Perfection</span>
               <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full" />
             </span>
           </h2>
-          <p className="text-amber-300/70 text-sm font-medium tracking-wider mb-4">हमारी शिल्पकारी का जीवंत प्रमाण</p>
+          <p className="text-amber-300/70 text-sm font-medium tracking-wider mb-4">हमारे शानदार डिज़ाइन में झलके बेहतरीन कारीगरी</p>
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-px w-12 bg-gradient-to-r from-transparent to-amber-500/60" />
             <div className="w-2 h-2 rounded-full bg-amber-500" />
             <div className="h-px w-12 bg-gradient-to-l from-transparent to-amber-500/60" />
           </div>
           <p className="text-zinc-400 max-w-2xl mx-auto text-base leading-relaxed">
-            Bihar ke premium interior design projects — false ceiling se lekar modular kitchen tak, har project mein hamare craftsmen ka dil laga hai.
+            JK Interior के साथ पाएँ premium, modern aur durable interior solutions — false ceiling se modular kitchen tak, Araria aur nearby areas me trusted experts, jo हर project को बनाते हैं stylish, functional aur long-lasting.
           </p>
           <div className="mt-10 grid grid-cols-3 gap-4 max-w-lg mx-auto">
             {[{ n: "500+", l: "Projects Done" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfied" }].map((s) => (
