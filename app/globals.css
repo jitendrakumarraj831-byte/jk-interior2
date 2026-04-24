@@ -39,11 +39,14 @@
   --glass-border: rgba(37, 99, 235, 0.12);
   --glass-highlight: rgba(255, 255, 255, 0.85);
   --page-dark: #f0f7ff;
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+  --font-serif: var(--font-playfair), 'Georgia', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco;
 }
 
 @theme inline {
-  --font-sans: var(--font-playfair), 'Georgia', 'Times New Roman', serif;
-  --font-mono: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), 'Georgia', serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -84,6 +87,21 @@
   * {
     @apply border-border outline-ring/50;
   }
+@layer base {
+  /* ये आपकी हेडिंग्स (H1, H2, H3) को शाही लुक देगा */
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif) !important;
+    font-weight: 700;
+    @apply tracking-tight;
+  }
+
+  /* ये पूरी बॉडी के टेक्स्ट को एकदम क्लीन और मॉडर्न बनाएगा */
+  body, p, span, button, li, .font-sans {
+    font-family: var(--font-sans) !important;
+    @apply antialiased;
+  }
+}
+  
   html {
     scroll-behavior: smooth;
   }
