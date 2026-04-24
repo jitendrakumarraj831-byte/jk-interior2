@@ -389,57 +389,63 @@ export default function Gallery({ layout }: { layout?: string }) {
   return (
     <section id="gallery" className="bg-white">
 
-      {/* ── Hero Header (Light Theme Update) ──────────────────────────────────────────────────── */}
-<div ref={topRef} className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50/30 pt-20 pb-16 px-4">
-  {/* सॉफ्ट ग्लो इफेक्ट्स */}
-  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
-  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
+      {/* ── Hero Header (Screenshot Style Update) ──────────────────────────────────────────────────── */}
+<div ref={topRef} className="relative overflow-hidden bg-[#FFFDF9] pt-20 pb-16 px-4">
+  {/* Soft glow effects - orange theme */}
+  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-orange-400/10 blur-3xl" />
+  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-amber-400/10 blur-3xl" />
 
-  <div className="relative max-w-4xl mx-auto text-center">
-    {/* बैज - डार्क टेक्स्ट के साथ */}
-    <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-700 text-xs font-bold tracking-[0.2em] uppercase px-4 py-2 rounded-full mb-6 shadow-sm">
-      <Sparkles size={13} className="text-amber-500" />
-      हमारी प्रीमियम डिज़ाइन कलेक्शन
-      <Sparkles size={13} className="text-amber-500" />
-    </div>
-
-    {/* मुख्य हेडलाइन - डार्क ग्रे/ब्लैक टेक्स्ट */}
-    <h2 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-4 leading-tight">
-      Our{" "}
-      <span className="relative inline-block">
-        <span className="text-amber-600">Design Meets Perfection</span>
-        <span className="absolute -bottom-1 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 to-amber-200 rounded-full" />
-      </span>
-    </h2>
-
-    {/* सब-हेडिंग - बेहतर विजिबिलिटी के लिए थोड़ा गहरा रंग */}
-    <p className="text-amber-700/80 text-sm font-semibold tracking-wider mb-4">
-      हमारे शानदार डिज़ाइन में झलके बेहतरीन कारीगरी
-    </p>
-
-    <div className="flex items-center justify-center gap-3 mb-6">
-      <div className="h-px w-12 bg-gradient-to-r from-transparent to-amber-400" />
-      <div className="w-2 h-2 rounded-full bg-amber-500" />
-      <div className="h-px w-12 bg-gradient-to-l from-transparent to-amber-400" />
-    </div>
-
-    {/* मुख्य पैराग्राफ - Slate-600 पढ़ने में आसान होता है */}
-    <p className="text-slate-600 max-w-2xl mx-auto text-base leading-relaxed font-medium">
-      JK Interior के साथ पाएँ <span className="text-slate-900 font-bold">premium, modern aur durable</span> interior solutions — false ceiling se modular kitchen tak, Araria aur nearby areas me trusted experts, jo हर project को बनाते हैं stylish, functional aur long-lasting.
-    </p>
-
-    {/* स्टैट्स सेक्शन - लाइट कार्ड लुक */}
-    <div className="mt-10 grid grid-cols-3 gap-4 max-w-lg mx-auto">
-      {[{ n: "100+", l: "Projects Done" }, { n: "5+", l: "Years Experience" }, { n: "100%", l: "Client Satisfied" }].map((s) => (
-        <div key={s.l} className="text-center p-2">
-          <p className="text-2xl md:text-3xl font-black text-slate-900">{s.n}</p>
-          <p className="text-slate-500 text-xs font-bold mt-1 uppercase tracking-tighter">{s.l}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
+  <div className="relative max-w-4xl mx-auto">
+    {/* Main Card - Screenshot style */}
+    <div className="rounded-3xl bg-white border border-orange-100/80 p-8 md:p-12 shadow-sm text-center">
       
+      {/* Badge - Screenshot style */}
+      <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-1.5 text- font-bold uppercase tracking-[0.15em] text-orange-600 mb-6">
+        JK INTERIOR — FORBESGANJ, ARARIA
+      </span>
+
+      {/* Main Headline - Aapka Ghar, Hamaari Pehchaan style */}
+      <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-5 leading-tight">
+        Aapka Ghar, <span className="text-orange-600">Hamaari Pehchaan</span>
+      </h2>
+
+      {/* Sub-heading - Orange highlight mix */}
+      <p className="text-slate-600 max-w-2xl mx-auto text-base leading-relaxed font-medium mb-8">
+        Budget आपका, ज़िम्मेदारी हमारी! पाइए <span className="text-orange-600 font-semibold">Premium Interior</span> और <span className="text-orange-600 font-semibold">False Ceiling</span> का काम सबसे कम समय और 
+        सबसे किफायती रेट पर। क्वालिटी में कोई समझौता नहीं, बस बेमिसाल कारीगरी।
+      </p>
+
+      {/* CTA Buttons - Screenshot style */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+        <button className="inline-flex items-center gap-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-bold px-7 py-3.5 transition-all duration-300 shadow-lg shadow-orange-200/50 hover:shadow-xl hover:shadow-orange-200/60 hover:-translate-y-0.5">
+          <Phone size={18} />
+          अभी कॉल करें
+        </button>
+        <button className="inline-flex items-center gap-2 rounded-full border-2 border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold px-7 py-3.5 transition-all duration-300">
+          Free Quote Lein
+        </button>
+      </div>
+
+      {/* Divider */}
+      <div className="border-t border-slate-200 pt-8">
+        {/* Stats Section - Screenshot bottom style */}
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-6">
+          TRUSTED BY 100+ FAMILIES ACROSS ARARIA • FORBESGANJ • JOGBANI • PURNEA
+        </p>
+        
+        <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+          {[
+            { n: "100+", l: "Projects Done" },
+            { n: "5+", l: "Years Experience" },
+            { n: "100%", l: "Client Satisfied" }
+          ].map((s) => (
+            <div key={s.l} className="text-center">
+              <p className="text-2xl md:text-3xl font-black text-slate-900">{s.n}</p>
+              <p className="text-slate-500 text-xs font-bold mt-1 uppercase tracking-tight">{s.l}</p>
+            </div>
+          ))}
+        </div>
+      </div>   
 
       {/* ── Sections ──────────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-20 space-y-20">
