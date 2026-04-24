@@ -296,10 +296,9 @@ export default function Services() {
                 </div>
               </div>
             </motion.article>
-                ))}
+        ))}
+      </div>
     </div>
-  </div>
-</section>
-  )
+  </section>
+);
 }
-
