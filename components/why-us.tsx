@@ -145,83 +145,86 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
   {/* --- Why Choose JK Interior Section --- */}
 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-16 md:px-14 md:py-20 text-center shadow-xl shadow-slate-200/50">
   
-  {/* ✅ Hero style glow & Decorative Rings (Working from your reference) */}
-  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
-  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
+  {/* ✅ Hero style glow & Decorative Rings */}
+      <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
 
-  <div className="pointer-events-none absolute inset-0">
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-slate-300/20" />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-slate-300/10" />
-  </div>
-
-  <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-    
-    {/* Center heading with exact Premium Light styling */}
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={headingVariants}
-      className="text-center"
-    >
-      {/* Upper Badge Styling */}
-      <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4">
-        JK Interior — Best Interior Service
-      </p>
-
-      {/* Main Heading Styled as per "Aapka Ghar, Hamaari Pehchaan" */}
-      <h2 className="text-slate-900 text-3xl md:text-5xl font-black mb-6 leading-tight">
-        Why Choose <span className="text-amber-600">JK Interior?</span>
-      </h2>
-
-      {/* Subtext Styled as per CTA description */}
-      <p className="text-slate-700 max-w-2xl mx-auto text-base md:text-lg leading-relaxed font-semibold">
-        Bihar ke <span className="text-amber-600">Forbesganj aur Araria</span> mein sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein. <br className="hidden md:block" />
-        <span className="text-slate-500 font-medium text-sm mt-2 block">Budget aapka, zimmedari humaari!</span>
-      </p>
-
-      {/* Decorative Divider */}
-      <div className="mt-10 flex items-center justify-center gap-3">
-        <div className="h-px w-20 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-        <div className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
-        <div className="h-px w-20 bg-gradient-to-l from-transparent via-amber-400 to-transparent" />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-slate-300/20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-slate-300/10" />
       </div>
-    </motion.div>
 
-            {/* Cards Grid */}
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.05 }}
-      variants={containerVariants}
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16"
-    >
-      {WhyUsReasons.map((reason, i) => {
-        const Icon = reason.icon;
-        return (
-          <motion.article
-            key={reason.id}
-            variants={cardVariants}
-            className="group relative rounded-2xl bg-gradient-to-br from-white to-slate-50/50 p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all"
-          >
-            <div className="mb-4 h-11 w-11 flex items-center justify-center rounded-xl bg-amber-50 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-              <Icon className="h-5 w-5" />
-            </div>
-            
-            <h3 className="text-sm font-bold text-slate-900 mb-2">
-              {reason.title}
-            </h3>
-            <p className="text-[13px] leading-relaxed text-slate-600 font-medium">
-              {reason.description}
-            </p>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
+        
+        {/* Center heading with Premium Light styling */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={headingVariants}
+          className="text-center"
+        >
+          {/* Upper Badge */}
+          <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4">
+            JK Interior — Best Interior Service
+          </p>
 
-            <span className="absolute -bottom-2 -right-1 text-5xl font-black text-slate-100/50 group-hover:text-amber-100/40 transition-colors pointer-events-none">
-              {(i + 1).toString().padStart(2, "0")}
-            </span>
-          </motion.article>
-        );
-      })}
-    </motion.div>
-  </div>
-</section>
+          {/* Main Heading */}
+          <h2 className="text-slate-900 text-3xl md:text-5xl font-black mb-6 leading-tight">
+            Why Choose <span className="text-amber-600">JK Interior?</span>
+          </h2>
+
+          {/* Subtext */}
+          <p className="text-slate-700 max-w-2xl mx-auto text-base md:text-lg leading-relaxed font-semibold">
+            Bihar ke <span className="text-amber-600">Forbesganj aur Araria</span> mein sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein. <br className="hidden md:block" />
+            <span className="text-slate-500 font-medium text-sm mt-2 block">Budget aapka, zimmedari humaari!</span>
+          </p>
+
+          {/* Decorative Divider */}
+          <div className="mt-10 flex items-center justify-center gap-3">
+            <div className="h-px w-20 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <div className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+            <div className="h-px w-20 bg-gradient-to-l from-transparent via-amber-400 to-transparent" />
+          </div>
+        </motion.div>
+
+        {/* Cards Grid */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.05 }}
+          variants={containerVariants}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16"
+        >
+          {WhyUsReasons.map((reason, i) => {
+            const Icon = reason.icon;
+            return (
+              <motion.article
+                key={reason.id || i}
+                variants={cardVariants}
+                className="group relative rounded-2xl bg-gradient-to-br from-white to-slate-50/50 p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="mb-4 h-11 w-11 flex items-center justify-center rounded-xl bg-amber-50 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                  <Icon className="h-5 w-5" />
+                </div>
+                
+                <h3 className="text-sm font-bold text-slate-900 mb-2">
+                  {reason.title}
+                </h3>
+                <p className="text-[13px] leading-relaxed text-slate-600 font-medium">
+                  {reason.description}
+                </p>
+
+                {/* Background Number */}
+                <span className="absolute -bottom-2 -right-1 text-5xl font-black text-slate-100/50 group-hover:text-amber-100/40 transition-colors pointer-events-none">
+                  {(i + 1).toString().padStart(2, "0")}
+                </span>
+              </motion.article>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
+  );
+      }
       
