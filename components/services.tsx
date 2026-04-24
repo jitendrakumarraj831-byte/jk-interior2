@@ -120,11 +120,10 @@ const services = [
 
 export default function Services() {
   return (
-    <section
+   <section
   id="services"
-  className="relative overflow-hidden py-24 scroll-mt-28
-  bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
->
+  className="relative overflow-hidden py-24 scroll-mt-28 bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
+> 
   {/* ── Services Header + Trust Strip (CTA Same Style) ───────────────────────── */}
 <motion.div
   variants={fadeSlideUp}
