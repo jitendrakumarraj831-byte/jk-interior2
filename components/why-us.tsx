@@ -142,45 +142,49 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
   className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden
   bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
 >
-  {/* ✅ Hero style glow (WORKING) */}
+  {/* --- Why Choose JK Interior Section --- */}
+<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-16 md:px-14 md:py-20 text-center shadow-xl shadow-slate-200/50">
+  
+  {/* ✅ Hero style glow & Decorative Rings (Working from your reference) */}
   <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
   <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
 
-  {/* Decorative rings */}
   <div className="pointer-events-none absolute inset-0">
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-slate-300/20" />
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-slate-300/10" />
   </div>
 
   <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-
-    {/* Center heading */}
+    
+    {/* Center heading with exact Premium Light styling */}
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={headingVariants}
-      className="text-center mb-14"
+      className="text-center"
     >
-      <span className="inline-flex items-center gap-2 bg-amber-100 border border-amber-200 text-amber-700 text-xs font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-5">
-        <span className="w-1 h-1 rounded-full bg-amber-500 inline-block" />
-        Best Interior Service · Forbesganj · Araria
-        <span className="w-1 h-1 rounded-full bg-amber-500 inline-block" />
-      </span>
-
-      <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
-        Why Choose <span className="text-amber-600">JK Interior</span>?
-      </h2>
-
-      <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-slate-600 leading-relaxed">
-        Bihar ke <strong className="text-slate-900 font-semibold">Forbesganj aur Araria</strong> mein
-        sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.
+      {/* Upper Badge Styling */}
+      <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4">
+        JK Interior — Best Interior Service
       </p>
 
-      <div className="mt-8 flex items-center justify-center gap-3">
-        <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-400" />
-        <div className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-        <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-400" />
+      {/* Main Heading Styled as per "Aapka Ghar, Hamaari Pehchaan" */}
+      <h2 className="text-slate-900 text-3xl md:text-5xl font-black mb-6 leading-tight">
+        Why Choose <span className="text-amber-600">JK Interior?</span>
+      </h2>
+
+      {/* Subtext Styled as per CTA description */}
+      <p className="text-slate-700 max-w-2xl mx-auto text-base md:text-lg leading-relaxed font-semibold">
+        Bihar ke <span className="text-amber-600">Forbesganj aur Araria</span> mein sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein. <br className="hidden md:block" />
+        <span className="text-slate-500 font-medium text-sm mt-2 block">Budget aapka, zimmedari humaari!</span>
+      </p>
+
+      {/* Decorative Divider */}
+      <div className="mt-10 flex items-center justify-center gap-3">
+        <div className="h-px w-20 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+        <div className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+        <div className="h-px w-20 bg-gradient-to-l from-transparent via-amber-400 to-transparent" />
       </div>
     </motion.div>
 
