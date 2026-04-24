@@ -120,10 +120,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-  <body className="font-mono min-h-screen text-foreground selection:bg-gold/25 selection:text-foreground">
-    <AnimatedAura />
-    <div className="relative z-10 min-h-screen">
+      {/* बॉडी क्लास में ग्रेडिएंट और स्मूथ फॉन्ट जोड़ा गया है */}
+      <body className="font-inter min-h-screen text-slate-900 bg-[radial-gradient(circle_at_top_right,_#f0f7ff,_#ffffff,_#ffffff)] selection:bg-blue-100 selection:text-blue-900 antialiased">
+        
+        {/* बैकग्राउंड में हल्का नीला ग्लो (Blur Effect) जो पूरी वेबसाइट पर दिखेगा */}
+        <div className="fixed top-0 right-0 -z-10 h-[500px] w-[500px] bg-blue-100/40 blur-[120px] rounded-full" />
+        <div className="fixed bottom-0 left-0 -z-10 h-[400px] w-[400px] bg-indigo-50/30 blur-[100px] rounded-full" />
 
+        <AnimatedAura />
+        
+        <div className="relative z-10 min-h-screen">
+          
     {/* SEO Schema (Google ke liye) – Enriched LocalBusiness + WebSite + FAQ */}
     <script
       type="application/ld+json"
