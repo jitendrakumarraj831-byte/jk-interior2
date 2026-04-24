@@ -81,16 +81,32 @@ export default function Hero() {
           {/* LEFT CONTENT */}
           <div className="lg:col-span-7">
             {/* 1. Trust Tags */}  
-            <motion.div variants={itemVariants} className="mb-8 flex flex-wrap gap-3">  
-              <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-white/60 px-4 py-1.5 backdrop-blur-md shadow-sm">  
-                <MapPin className="h-3.5 w-3.5 text-blue-600" />  
-                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-700">Forbesganj • Araria</span>  
-              </div>  
-              <div className="flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/50 px-4 py-1.5 backdrop-blur-md">  
-                <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />  
-                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-900">Premium Quality</span>  
-              </div>  
-            </motion.div>  
+<motion.div variants={itemVariants} className="mb-8 flex flex-wrap justify-start gap-3">  
+  {/* Location Tag */}
+  <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-white/60 px-4 py-1.5 backdrop-blur-md shadow-sm">  
+    <MapPin className="h-3.5 w-3.5 text-blue-600" />  
+    <span className="text-[10px] font-bold uppercase tracking-widest text-blue-700">Forbesganj • Araria</span>  
+  </div>  
+
+  {/* ✨ New 5-Star Rated Tag */}
+  <div className="flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50/80 px-4 py-1.5 backdrop-blur-md shadow-sm shadow-amber-100/50">  
+    <div className="flex">  
+      {[...Array(5)].map((_, i) => (  
+        <Star key={i} className="h-3 w-3 fill-amber-500 text-amber-500" />  
+      ))}  
+    </div>  
+    <span className="text-[10px] font-black uppercase tracking-widest text-amber-900">
+      5-Star Rated
+    </span>  
+  </div>
+
+  {/* Premium Quality Tag */}
+  <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50/50 px-4 py-1.5 backdrop-blur-md">  
+    <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />  
+    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Premium Quality</span>  
+  </div>  
+</motion.div>
+            
 
             {/* 2. Main Title */}  
             <motion.div
