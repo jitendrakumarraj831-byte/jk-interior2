@@ -188,42 +188,40 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
       </div>
     </motion.div>
 
-        {/* Cards Grid */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          variants={containerVariants}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"
-        >
-          {whyUsReasons.map((reason, i) => {
-            const Icon = reason.icon
-            return (
-              <motion.article
-                key={reason.en}
-                variants={cardVariants}
-                className={`group relative rounded-2xl bg-gradient-to-br ${reason.color} border border-white/60 backdrop-blur-sm p-5 md:p-6 overflow-hidden hover:shadow-lg hover:shadow-blue-200/40 hover:-translate-y-1 transition-all duration-300`}
-              >
-                <div className="absolute inset-0 bg-white/70 rounded-2xl -z-10" />
+            {/* Cards Grid */}
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.05 }}
+      variants={containerVariants}
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16"
+    >
+      {WhyUsReasons.map((reason, i) => {
+        const Icon = reason.icon;
+        return (
+          <motion.article
+            key={reason.id}
+            variants={cardVariants}
+            className="group relative rounded-2xl bg-gradient-to-br from-white to-slate-50/50 p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all"
+          >
+            <div className="mb-4 h-11 w-11 flex items-center justify-center rounded-xl bg-amber-50 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+              <Icon className="h-5 w-5" />
+            </div>
+            
+            <h3 className="text-sm font-bold text-slate-900 mb-2">
+              {reason.title}
+            </h3>
+            <p className="text-[13px] leading-relaxed text-slate-600 font-medium">
+              {reason.description}
+            </p>
 
-                <span className="absolute -bottom-3 -right-1 text-7xl font-black text-foreground/[0.04] leading-none select-none pointer-events-none">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-
-                <div className={`mb-4 h-11 w-11 flex items-center justify-center rounded-xl border ${reason.iconBg} ${reason.iconColor} transition-transform duration-300 group-hover:scale-110`}>
-                  <Icon className="h-5 w-5" />
-                </div>
-
-                <h3 className="text-sm font-bold text-foreground leading-snug mb-0.5">{reason.en}</h3>
-                <p className={`text-[11px] font-semibold mb-2.5 ${reason.iconColor}`}>{reason.hi}</p>
-                <p className="text-[12px] leading-relaxed text-muted-foreground">{reason.desc}</p>
-
-                <div className={`absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-gradient-to-r ${reason.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </motion.article>
-            )
-          })}
-        </motion.div>
-      </div>
-    </section>
-  )
-}
+            <span className="absolute -bottom-2 -right-1 text-5xl font-black text-slate-100/50 group-hover:text-amber-100/40 transition-colors pointer-events-none">
+              {(i + 1).toString().padStart(2, "0")}
+            </span>
+          </motion.article>
+        );
+      })}
+    </motion.div>
+  </div>
+</section>
+      
