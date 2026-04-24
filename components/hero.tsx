@@ -1,21 +1,15 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck, Zap } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck, Gem } from "lucide-react"
 import Link from "next/link"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
-const words = ["PVC False Ceiling", "WPC Wall Paneling", "UV Marble Sheet", "Modular TV Unit", "Gypsum Ceiling"]
+const words = ["PVC False Ceiling", "WPC Wall Paneling", "UV Marble Sheet", "Modular TV Unit", "Luxury Interior"]
 
 export default function Hero() {
   const [index, setIndex] = useState(0)
-  const containerRef = useRef(null)
-  const { scrollY } = useScroll()
-  
-  // Parallax effect for background elements
-  const y1 = useTransform(scrollY, [0, 500], [0, 200])
-  const y2 = useTransform(scrollY, [0, 500], [0, -150])
 
   useEffect(() => {
     const timer = setInterval(() => setIndex((prev) => (prev + 1) % words.length), 3000)
@@ -23,151 +17,165 @@ export default function Hero() {
   }, [])
 
   return (
-    <section 
-      ref={containerRef}
-      className="relative min-h-[110dvh] w-full overflow-hidden bg-[#0a0a0a] text-white"
-    >
-      {/* --- ADVANCED BACKGROUND --- */}
+    <section className="relative min-h-[100dvh] w-full overflow-hidden bg-[#050505]">
+      
+      {/* --- PREMIUM DYNAMIC BACKGROUND --- */}
       <div className="absolute inset-0 z-0">
-        {/* Dynamic Spotlights */}
+        {/* Animated Mesh Gradients */}
         <motion.div 
-          style={{ y: y1 }}
-          className="absolute -top-[10%] -left-[10%] h-[600px] w-[600px] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.3, 0.5, 0.3] 
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[20%] -left-[10%] h-[800px] w-[800px] rounded-full bg-gradient-to-br from-blue-600/30 via-indigo-600/10 to-transparent blur-[120px]" 
         />
         <motion.div 
-          style={{ y: y2 }}
-          className="absolute top-[20%] -right-[5%] h-[500px] w-[500px] rounded-full bg-indigo-500/10 blur-[100px]" 
+          animate={{ 
+            scale: [1, 1.3, 1],
+            rotate: [0, -120, 0],
+            opacity: [0.2, 0.4, 0.2] 
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-[20%] -right-[10%] h-[700px] w-[700px] rounded-full bg-gradient-to-tl from-amber-500/20 via-orange-500/5 to-transparent blur-[100px]" 
         />
-        
-        {/* Animated Grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.15]" 
+
+        {/* Subtle Grid Pattern (Architectural Feel) */}
+        <div className="absolute inset-0 opacity-[0.08]" 
           style={{ 
-            backgroundImage: `linear-gradient(#ffffff 0.5px, transparent 0.5px), linear-gradient(90deg, #ffffff 0.5px, transparent 0.5px)`,
-            backgroundSize: '50px 50px',
-            maskImage: 'radial-gradient(circle at 50% 50%, black, transparent 80%)'
+            backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
           }} 
         />
+        
+        {/* Noise Overlay for Texture */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 pt-20 text-center">
+      {/* --- CONTENT --- */}
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-7xl flex-col items-center justify-center px-6 pt-20 text-center">
         
-        {/* 1. Floating Trust Badge */}
+        {/* 1. Location & Trust Ribbon */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mb-8 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl shadow-2xl"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10 flex flex-wrap items-center justify-center gap-3"
         >
-          <div className="flex h-2 w-2 animate-ping rounded-full bg-blue-500" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">Premium Interior Hub • Forbesganj</span>
+          <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2 backdrop-blur-xl">
+            <MapPin className="h-4 w-4 text-amber-500" />
+            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white/90">Forbesganj • Araria • Bihar</span>
+          </div>
+          <div className="hidden items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-5 py-2 backdrop-blur-xl sm:flex">
+            <ShieldCheck className="h-4 w-4 text-blue-400" />
+            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-blue-400">JK Interior Official</span>
+          </div>
         </motion.div>
 
-        {/* 2. Main Massive Heading */}
+        {/* 2. Main Brand Identity */}
         <div className="relative mb-6">
-          <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-6xl font-[900] leading-[0.85] tracking-tighter sm:text-8xl lg:text-[10rem]"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col items-center"
           >
-            JK <span className="text-blue-600">INTERIOR</span>
-          </motion.h1>
+            <h1 className="text-8xl font-[1000] leading-[0.8] tracking-tighter text-white sm:text-[10rem] lg:text-[13rem]">
+              JK
+            </h1>
+            <span className="mt-4 bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-500 bg-clip-text text-3xl font-black tracking-[0.4em] text-transparent sm:text-5xl lg:text-6xl uppercase">
+              Interior
+            </span>
+          </motion.div>
           
-          {/* Animated Accent Line */}
+          {/* Glowing underline */}
           <motion.div 
             initial={{ width: 0 }}
-            animate={{ width: '100%' }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="absolute -bottom-2 left-0 h-[4px] bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+            animate={{ width: '120px' }}
+            className="mx-auto mt-8 h-1.5 rounded-full bg-gradient-to-r from-amber-500 to-blue-500 shadow-[0_0_20px_rgba(245,158,11,0.5)]"
           />
         </div>
 
-        {/* 3. Dynamic Service Scroller */}
-        <div className="h-16 mb-8 flex items-center justify-center overflow-hidden sm:h-24">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={words[index]}
-              initial={{ opacity: 0, rotateX: -90, y: 50 }}
-              animate={{ opacity: 1, rotateX: 0, y: 0 }}
-              exit={{ opacity: 0, rotateX: 90, y: -50 }}
-              transition={{ duration: 0.6, ease: "anticipate" }}
-              className="text-3xl font-black italic text-slate-400 sm:text-5xl lg:text-6xl"
-            >
-              {words[index]}
-            </motion.div>
-          </AnimatePresence>
+        {/* 3. Text Slider Section */}
+        <div className="mt-8 min-h-[80px]">
+          <h2 className="text-2xl font-bold text-white/70 sm:text-4xl lg:text-5xl">
+            The King of {" "}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={words[index]}
+                initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+                className="inline-block text-white underline decoration-amber-500/50 decoration-4 underline-offset-8"
+              >
+                {words[index]}
+              </motion.span>
+            </AnimatePresence>
+          </h2>
         </div>
 
-        {/* 4. The "Hindi Impact" Text with Glass Card */}
-        <motion.div 
+        {/* 4. Impact Statement */}
+        <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="max-w-3xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+          transition={{ delay: 0.5 }}
+          className="mt-8 max-w-2xl text-base font-medium leading-relaxed text-white/60 sm:text-xl"
         >
-          <h3 className="mb-4 text-2xl font-extrabold sm:text-4xl">
-            साधारण दीवारों को दें <span className="text-blue-500 underline decoration-blue-500/30 underline-offset-8">एक शाही पहचान</span>
-          </h3>
-          <p className="text-lg font-medium text-slate-400">
-            हम लेकर आए हैं बिहार में इंटीरियर का <span className="text-white">Next-Generation Standard</span>। 
-            PVC से लेकर UV मार्बल तक, सब कुछ जो आपके घर को लग्जरी बनाए।
-          </p>
-        </motion.div>
+          साधारण दीवारों को दें <span className="text-white font-black italic">एक शाही पहचान</span>। 
+          हम लेकर आए हैं बिहार में <span className="text-amber-500">Luxury Interior</span> का नया दौर।
+        </motion.p>
 
-        {/* 5. Explosive Action Buttons */}
+        {/* 5. Magnetic CTA Buttons */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-          className="mt-12 flex flex-wrap justify-center gap-6"
+          transition={{ delay: 0.8 }}
+          className="mt-12 flex flex-wrap justify-center gap-5"
         >
           <Button 
             asChild
-            className="group relative h-16 overflow-hidden rounded-2xl bg-blue-600 px-12 text-lg font-black transition-all hover:scale-105 hover:bg-blue-500 hover:shadow-[0_0_40px_rgba(37,99,235,0.4)]"
+            className="group relative h-16 overflow-hidden rounded-full bg-white px-12 text-lg font-black text-black transition-all hover:scale-105 hover:bg-amber-400"
           >
             <a href="tel:+918651070831" className="flex items-center gap-3">
-              <Phone className="h-6 w-6 animate-bounce" />
+              <Phone className="h-5 w-5" />
               फ्री कोटेशन लें
-              <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
-                <div className="relative h-full w-10 bg-white/30" />
-              </div>
+              {/* Shine effect */}
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
             </a>
           </Button>
 
           <Button 
             asChild
             variant="outline"
-            className="h-16 rounded-2xl border-white/20 bg-white/5 px-12 text-lg font-bold backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/10"
+            className="h-16 rounded-full border-white/20 bg-white/5 px-12 text-lg font-bold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white"
           >
-            <Link href="#services" className="flex items-center gap-2 text-white">
-               प्रोजेक्ट्स देखें <ArrowRight className="h-6 w-6 group-hover:translate-x-2" />
+            <Link href="#services" className="flex items-center gap-2">
+               प्रोजेक्ट्स देखें <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>
         </motion.div>
 
-        {/* 6. Feature Cards (Horizontal Scroll on Mobile) */}
-        <div className="mt-20 grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
+        {/* 6. High-End Experience Badges */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mt-20 grid w-full max-w-5xl grid-cols-2 gap-4 lg:grid-cols-4"
+        >
           {[
-            { icon: Zap, label: "Fastest Delivery", color: "text-yellow-400" },
-            { icon: ShieldCheck, label: "Durability", color: "text-emerald-400" },
-            { icon: Star, label: "Modern Finish", color: "text-purple-400" },
-            { icon: Sparkles, label: "Best Pricing", color: "text-blue-400" }
+            { icon: Gem, label: "Premium Materials", color: "text-amber-400" },
+            { icon: Sparkles, label: "Modern Design", color: "text-blue-400" },
+            { icon: Tv, label: "Custom Units", color: "text-emerald-400" },
+            { icon: Star, label: "Top Rated", color: "text-orange-400" }
           ].map((item, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ y: -10 }}
-              className="flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm"
-            >
-              <item.icon className={`h-8 w-8 mb-3 ${item.color}`} />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-slate-300">{item.label}</span>
-            </motion.div>
+            <div key={i} className="group flex flex-col items-center rounded-3xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm transition-all hover:bg-white/10">
+              <item.icon className={`h-8 w-8 mb-3 ${item.color} transition-transform group-hover:scale-125`} />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white/50">{item.label}</span>
+            </div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
-
-      {/* Background Decorative Circles */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
     </section>
   )
-        }
+          }
+          
