@@ -148,74 +148,43 @@ return (
     <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-violet-400/10 blur-3xl" />  
   </div>  
 
-  <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">  
+   <div className="relative z-10 max-w-[450px] mx-auto px-4">
+  <div className="bg-white rounded-[40px] border border-gray-100 p-8 shadow-sm text-center">
+    
+    {/* Subtitle */}
+    <span className="text-[11px] tracking-[0.2em] font-bold text-orange-500 uppercase block mb-4">
+      Best Interior Service • Araria
+    </span>
 
-    {/* Center heading */}  
-    <motion.div  
-      initial="hidden"  
-      whileInView="visible"  
-      viewport={{ once: true, amount: 0.2 }}  
-      variants={headingVariants}  
-      className="text-center mb-14"  
-    >  
-      <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold mb-5">  
-        <span className="w-1 h-1 rounded-full bg-gold inline-block" />  
-        Best Interior Service · Forbesganj · Araria  
-        <span className="w-1 h-1 rounded-full bg-gold inline-block" />  
-      </span>  
+    {/* Heading */}
+    <h2 className="text-3xl font-black text-slate-900 leading-tight mb-4">
+      Why Choose <span className="text-blue-600">JK Interior?</span>
+    </h2>
 
-      <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-foreground">  
-        Why Choose <span className="gold-text">JK Interior</span>?  
-      </h2>  
+    {/* Content */}
+    <p className="text-gray-500 text-sm leading-relaxed mb-8">
+      Bihar ke Forbesganj aur Araria mein sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.
+    </p>
 
-      <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-muted-foreground leading-relaxed">  
-        Bihar ke <strong className="text-foreground font-semibold">Forbesganj aur Araria</strong> mein  
-        sabse behtareen PVC panels, Gypsum ceiling aur Modular design ke liye hum par bharosa karein.  
-      </p>  
+    {/* Buttons Section */}
+    <div className="space-y-3">
+      <button className="w-full py-4 bg-orange-500 text-white font-bold rounded-full shadow-lg shadow-orange-100">
+        अभी कॉल करें
+      </button>
+      <button className="w-full py-4 bg-white border border-gray-200 text-slate-800 font-bold rounded-full shadow-sm">
+        Free Quote Lein
+      </button>
+    </div>
 
-      <div className="mt-8 flex items-center justify-center gap-3">  
-        <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold/50" />  
-        <div className="h-1.5 w-1.5 rounded-full bg-gold" />  
-        <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold/50" />  
-      </div>  
-    </motion.div>  
-
-    {/* Cards Grid */}  
-    <motion.div  
-      initial="hidden"  
-      whileInView="visible"  
-      viewport={{ once: true, amount: 0.05 }}  
-      variants={containerVariants}  
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5"  
-    >  
-      {whyUsReasons.map((reason, i) => {  
-        const Icon = reason.icon  
-        return (  
-          <motion.article  
-            key={reason.en}  
-            variants={cardVariants}  
-            className={`group relative rounded-2xl bg-gradient-to-br ${reason.color} border border-white/60 backdrop-blur-sm p-5 md:p-6 overflow-hidden hover:shadow-lg hover:shadow-blue-200/40 hover:-translate-y-1 transition-all duration-300`}  
-          >  
-            <div className="absolute inset-0 bg-white/70 rounded-2xl -z-10" />  
-
-            <span className="absolute -bottom-3 -right-1 text-7xl font-black text-foreground/[0.04] leading-none select-none pointer-events-none">  
-              {String(i + 1).padStart(2, "0")}  
-            </span>  
-
-            <div className={`mb-4 h-11 w-11 flex items-center justify-center rounded-xl border ${reason.iconBg} ${reason.iconColor} transition-transform duration-300 group-hover:scale-110`}>  
-              <Icon className="h-5 w-5" />  
-            </div>  
-
-            <h3 className="text-sm font-bold text-foreground leading-snug mb-0.5">{reason.en}</h3>  
-            <p className={`text-[11px] font-semibold mb-2.5 ${reason.iconColor}`}>{reason.hi}</p>  
-            <p className="text-[12px] leading-relaxed text-muted-foreground">{reason.desc}</p>  
-
-            <div className={`absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-gradient-to-r ${reason.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />  
-          </motion.article>  
-        )  
-      })}  
-    </motion.div>  
-  </div>  
+    {/* Footer Link */}
+    <div className="mt-8 pt-6 border-t border-gray-50">
+       <p className="text-[10px] tracking-widest text-gray-400 font-bold uppercase">
+         Trusted by 100+ Families
+       </p>
+    </div>
+  </div>
+</div>
+  
 </section>
 
 )
