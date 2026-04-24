@@ -9,7 +9,15 @@ const areas = [
   "Kursakanta", "Purnia", "Chhatapur", "Tribeniganj", "Supaul",
 ]
 
-const hubPositions = [
+// 1. Pehle interface define karein (rotate ko optional '?' banayein)
+interface HubPosition {
+  top: string;
+  left: string;
+  rotate?: number; // '?' ka matlab hai ye optional hai
+}
+
+// 2. Array ko ye type assign karein
+const hubPositions: HubPosition[] = [
   { top: "10%", left: "50%", rotate: -2 },
   { top: "25%", left: "15%", rotate: 4 },
   { top: "25%", left: "85%", rotate: -3 },
