@@ -389,54 +389,40 @@ export default function Gallery({ layout }: { layout?: string }) {
   return (
     <section id="gallery" className="bg-white">
 
-     {/* ── Hero Section - Screenshot Colors Matched ──────────────────────────────────────────────────── */}
-<div className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50/30 pt-16 pb-16 px-4">
-  {/* सॉफ्ट ग्लो इफेक्ट्स */}
-  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
-  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
+      {/* ── Gallery Top Header (CTA Same Style) ───────────────────────────────── */}
+<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50 mb-14">
 
-  <div className="relative max-w-4xl mx-auto text-center">
-    
-    {/* बैज - Screenshot jaisa orange text */}
-    <div className="inline-flex items-center gap-2 text-orange-500 text-xs font-bold tracking-[0.2em] uppercase px-4 py-2 mb-6">
-      <Sparkles size={13} className="text-orange-500" />
-      JK INTERIOR — FORBESGANJ, ARARIA
-      <Sparkles size={13} className="text-orange-500" />
-    </div>
+  {/* Glow effects */}
+  <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
+  <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
 
-    {/* मुख्य हेडलाइन - Screenshot jaisa color */}
-    <h2 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
-      <span className="text-slate-900">Aapka Ghar, </span>
-      <span className="text-orange-500">Hamaari Pehchaan</span>
+  <div className="relative">
+
+    {/* Badge */}
+    <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4">
+      OUR WORK GALLERY
+    </p>
+
+    {/* Heading (same style) */}
+    <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
+      Hamare Kaam, <span className="text-amber-600">Aapka Vishwas</span>
     </h2>
 
-    {/* मुख्य पैराग्राफ - Screenshot jaisa color scheme */}
-    <p className="text-slate-700 max-w-2xl mx-auto text-base leading-relaxed font-medium mb-8">
-      Budget आपका, ज़िम्मेदारी हमारी! पाइए{" "}
-      <span className="text-orange-500 font-semibold">Premium Interior</span> और{" "}
-      <span className="text-orange-500 font-semibold">False Ceiling</span> का काम सबसे कम समय और 
-      सबसे किफायती रेट पर। क्वालिटी में कोई समझौता नहीं, बस बेमिसाल कारीगरी।
+    {/* Description */}
+    <p className="text-slate-700 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-6 font-semibold">
+      JK Interior के द्वारा किए गए premium interior, modular kitchen और false ceiling के कुछ शानदार projects देखें।
     </p>
 
-    {/* CTA Buttons */}
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-      <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-full shadow-lg shadow-orange-500/30 transition-all duration-300 hover:scale-105">
-        <Phone size={18} />
-        अभी कॉल करें
-      </button>
-      <button className="bg-white hover:bg-slate-50 text-slate-700 font-bold px-8 py-3 rounded-full border-2 border-slate-300 shadow-sm transition-all duration-300 hover:scale-105">
-        Free Quote Lein
-      </button>
-    </div>
+    {/* Small divider */}
+    <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full mb-6" />
 
-    <div className="w-full h-px bg-slate-200 mb-6" />
-
-    {/* Trust Line - Screenshot jaisa */}
-    <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">
-      TRUSTED BY 100+ FAMILIES ACROSS ARARIA • FORBESGANJ • JOGBANI • PURNEA
+    {/* Trust line */}
+    <p className="text-slate-500 text-[10px] md:text-xs tracking-[0.15em] font-bold uppercase">
+      REAL PROJECTS • REAL CLIENTS • REAL RESULTS
     </p>
+
   </div>
-</div>    
+</div>  
 
       {/* ── Sections ──────────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-20 space-y-20">
