@@ -124,76 +124,75 @@ export default function Services() {
   id="services"
   className="relative overflow-hidden py-24 scroll-mt-28 bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
 > 
-  {/* ── Services Header + Trust Strip (CTA Same Style) ───────────────────────── */}
-<motion.div
-  variants={fadeSlideUp}
-  className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50 mb-14"
->
+  {/* ── Services Header + Trust Strip ───────────────────────── */}
+<div className="container mx-auto px-4"> {/* यह कंटेनर डालना ज़रूरी है */}
+  <motion.div
+    variants={fadeSlideUp}
+    initial="hidden"        // यह मिसिंग था
+    whileInView="visible"   // यह मिसिंग था
+    viewport={{ once: true }}
+    className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50 mb-14"
+  >
+    {/* Glow effects */}
+    <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
+    <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
 
-  {/* Glow effects */}
-  <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
-  <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
+    <div className="relative">
+      {/* Badge */}
+      <div className="flex justify-center mb-4">
+        <span className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase">
+          OUR EXPERTISE / हमारी विशेषज्ञता
+        </span>
+      </div>
 
-  <div className="relative">
+      {/* Heading */}
+      <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
+        Premium <span className="text-amber-600">Interior</span> Services
+      </h2>
 
-    {/* Badge */}
-    <div className="flex justify-center mb-4">
-      <span className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase">
-        OUR EXPERTISE / हमारी विशेषज्ञता
-      </span>
+      {/* Description */}
+      <p className="text-slate-700 max-w-xl mx-auto text-base md:text-lg leading-relaxed font-semibold mb-10">
+        JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
+      </p>
+
+      {/* Trust Strip */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Item 1 */}
+        <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+            <Headset className="h-5 w-5" />
+          </div>
+          <div className="text-left">
+            <p className="text-sm font-bold text-slate-900">Free Consultation</p>
+            <p className="text-[11px] text-slate-600">फ्री सलाह & डिज़ाइन प्लान</p>
+          </div>
+        </div>
+
+        {/* Item 2 */}
+        <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+            <Truck className="h-5 w-5" />
+          </div>
+          <div className="text-left">
+            <p className="text-sm font-bold text-slate-900">Free Site Visit</p>
+            <p className="text-[11px] text-slate-600">घर पर आकर मुफ़्त माप-जोख</p>
+          </div>
+        </div>
+
+        {/* Item 3 */}
+        <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+            <ShieldCheck className="h-5 w-5" />
+          </div>
+          <div className="text-left">
+            <p className="text-sm font-bold text-slate-900">1 Year Warranty</p>
+            <p className="text-[11px] text-slate-600">पूरे काम पर 1 साल की वारंटी</p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    {/* Heading */}
-    <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
-      Premium <span className="text-amber-600">Interior</span> Services
-    </h2>
-
-    {/* Description */}
-    <p className="text-slate-700 max-w-xl mx-auto text-base md:text-lg leading-relaxed font-semibold mb-10">
-      JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
-    </p>
-
-    {/* Trust Strip (same style refined) */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-      {/* Item 1 */}
-      <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
-          <Headset className="h-5 w-5" />
-        </div>
-        <div className="text-left">
-          <p className="text-sm font-bold text-slate-900">Free Consultation</p>
-          <p className="text-[11px] text-slate-600">फ्री सलाह & डिज़ाइन प्लान</p>
-        </div>
-      </div>
-
-      {/* Item 2 */}
-      <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
-          <Truck className="h-5 w-5" />
-        </div>
-        <div className="text-left">
-          <p className="text-sm font-bold text-slate-900">Free Site Visit</p>
-          <p className="text-[11px] text-slate-600">घर पर आकर मुफ़्त माप-जोख</p>
-        </div>
-      </div>
-
-      {/* Item 3 */}
-      <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
-          <ShieldCheck className="h-5 w-5" />
-        </div>
-        <div className="text-left">
-          <p className="text-sm font-bold text-slate-900">1 Year Warranty</p>
-          <p className="text-[11px] text-slate-600">पूरे काम पर 1 साल की वारंटी</p>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</motion.div>
-
+  </motion.div>
+     
         {/* Magazine-style cards grid */}
         <motion.div
           className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
