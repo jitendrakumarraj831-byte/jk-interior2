@@ -188,16 +188,19 @@ export default function Services() {
             <p className="text-sm font-bold text-slate-900">1 Year Warranty</p>
             <p className="text-[11px] text-slate-600">पूरे काम पर 1 साल की वारंटी</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </motion.div>
-     
-        {/* Magazine-style cards grid */}
-        <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
-          variants={staggerContainer}
-        >
+                  </div> {/* Item 3 Ends */}
+        </div> {/* Trust Strip Grid Ends */}
+      </div> {/* Relative Container Ends */}
+    </motion.div>
+
+    {/* Magazine-style cards grid */}
+    <motion.div
+      className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >      
           {services.map((service) => (
             <motion.article
               key={service.title}
