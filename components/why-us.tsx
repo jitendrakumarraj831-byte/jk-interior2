@@ -12,146 +12,141 @@ const whyUsReasons = [
     en: "5+ Years of Experience",
     hi: "5+ वर्षों का अनुभव",
     desc: "इंटीरियर डिजाइनिंग और फॉल्स सीलिंग में हमारी टीम का मजबूत अनुभव और भरोसा।",
-    color: "from-blue-500/20 to-blue-600/5",
-    iconBg: "bg-blue-500/15 border-blue-400/30",
-    iconColor: "text-blue-600",
+    iconColor: "text-[#FF9500]", // Screenshot Orange
+    borderStyle: "border-orange-200",
   },
   {
     icon: Gem,
     en: "Premium Material",
     hi: "प्रीमियम मटेरियल",
     desc: "हम केवल उच्च गुणवत्ता वाले Gypsum, PVC और WPC मटेरियल का उपयोग करते हैं।",
-    color: "from-violet-500/20 to-violet-600/5",
-    iconBg: "bg-violet-500/15 border-violet-400/30",
-    iconColor: "text-violet-600",
+    iconColor: "text-[#0056b3]", // Logo Blue
+    borderStyle: "border-blue-200",
   },
   {
     icon: ShieldCheck,
     en: "Expert Finishing",
     hi: "बेहतरीन फिनिशिंग",
     desc: "हर काम में बारीकियों पर ध्यान, ताकि मजबूती और खूबसूरती दोनों मिले।",
-    color: "from-emerald-500/20 to-emerald-600/5",
-    iconBg: "bg-emerald-500/15 border-emerald-400/30",
-    iconColor: "text-emerald-600",
+    iconColor: "text-[#FF9500]",
+    borderStyle: "border-orange-200",
   },
   {
     icon: Clock,
     en: "On-Time Delivery",
     hi: "समय पर काम",
     desc: "हम तय समय सीमा के अंदर काम पूरा करने के लिए प्रतिबद्ध हैं।",
-    color: "from-orange-500/20 to-orange-600/5",
-    iconBg: "bg-orange-500/15 border-orange-400/30",
-    iconColor: "text-orange-600",
+    iconColor: "text-[#0056b3]",
+    borderStyle: "border-blue-200",
   },
   {
     icon: Tag,
     en: "Affordable Pricing",
     hi: "किफायती दाम",
     desc: "बेहतर क्वालिटी के साथ उचित और प्रतिस्पर्धी कीमत।",
-    color: "from-rose-500/20 to-rose-600/5",
-    iconBg: "bg-rose-500/15 border-rose-400/30",
-    iconColor: "text-rose-600",
+    iconColor: "text-[#FF9500]",
+    borderStyle: "border-orange-200",
   },
   {
     icon: PenTool,
     en: "Customized Designs",
     hi: "आपकी पसंद के डिज़ाइन",
     desc: "आपके बजट और स्पेस के अनुसार खास डिज़ाइन तैयार किए जाते हैं।",
-    color: "from-cyan-500/20 to-cyan-600/5",
-    iconBg: "bg-cyan-500/15 border-cyan-400/30",
-    iconColor: "text-cyan-600",
+    iconColor: "text-[#0056b3]",
+    borderStyle: "border-blue-200",
   },
   {
     icon: Headset,
-    en: "Free Consultation & Site Visit",
-    hi: "फ्री कंसल्टेशन और साइट विज़िट",
+    en: "Free Consultation",
+    hi: "फ्री कंसल्टेशन",
     desc: "काम शुरू करने से पहले पूरी सलाह और साइट विज़िट बिल्कुल फ्री।",
-    color: "from-amber-500/20 to-amber-600/5",
-    iconBg: "bg-amber-500/15 border-amber-400/30",
-    iconColor: "text-amber-600",
+    iconColor: "text-[#FF9500]",
+    borderStyle: "border-orange-200",
   },
   {
     icon: BadgeCheck,
-    en: "Warranty & After Support",
-    hi: "वारंटी और बाद में सपोर्ट",
+    en: "Warranty & Support",
+    hi: "वारंटी और सपोर्ट",
     desc: "काम के बाद भी 1 साल तक सर्विस और सपोर्ट उपलब्ध।",
-    color: "from-teal-500/20 to-teal-600/5",
-    iconBg: "bg-teal-500/15 border-teal-400/30",
-    iconColor: "text-teal-600",
+    iconColor: "text-[#0056b3]",
+    borderStyle: "border-blue-200",
   },
 ]
 
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, y: 0, 
+    transition: { duration: 0.5, ease: "easeOut" } 
+  },
+}
+
 export default function WhyUs() {
   return (
-    <section className="relative py-24 md:py-28 overflow-hidden">
+    <section id="why-us" className="relative py-20 bg-[#F8FAFC] overflow-hidden">
+      {/* Background soft glow - matching screenshot subtle look */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent -z-10" />
 
-      {/* Background glow */}
-      <div className="absolute -top-32 -right-32 w-80 h-80 bg-orange-400/10 blur-3xl rounded-full" />
-      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-blue-400/10 blur-3xl rounded-full" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4">
-
-        {/* 🔥 HERO STYLE HEADING */}
-        <div className="text-center mb-16">
-
-          <span className="inline-block px-5 py-2 rounded-full border border-orange-300/40 bg-orange-100/40 text-xs font-semibold tracking-wide text-orange-600 mb-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        
+        {/* Header styling inspired by screenshot */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <span className="text-[#FF9500] font-bold tracking-[0.15em] text-[12px] uppercase mb-4 block">
             JK INTERIOR — FORBESGANJ, ARARIA
           </span>
-
-          <h2 className="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900">
-            Aapka Ghar,{" "}
-            <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-              Hamaari Pehchaan
-            </span>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#1a1a1a] mb-6">
+            Humari <span className="text-[#FF9500]">Specialty</span>, Aapka Vishwas
           </h2>
-
-          <p className="mt-5 max-w-xl mx-auto text-sm md:text-base text-gray-600 leading-relaxed">
-            Budget aapka, zimmedari humari! Paaye{" "}
-            <span className="text-orange-600 font-semibold">Premium Interior</span> aur{" "}
-            <span className="text-orange-600 font-semibold">False Ceiling</span>{" "}
-            sabse kam samay aur best price mein.
+          <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base leading-relaxed">
+            Budget aapka, zimmedari humari! Paaiye <span className="text-[#0056b3] font-bold">Premium Interior</span> aur <span className="text-[#FF9500] font-bold">False Ceiling</span> ka kaam sabse kam samay mein.
           </p>
+        </motion.div>
 
-          <div className="mt-8 flex justify-center items-center gap-2">
-            <div className="w-12 h-[1px] bg-orange-300" />
-            <div className="w-2 h-2 rounded-full bg-orange-500" />
-            <div className="w-12 h-[1px] bg-orange-300" />
-          </div>
-        </div>
-
-        {/* ✅ CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
+        {/* Updated Grid Style */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {whyUsReasons.map((reason, i) => {
             const Icon = reason.icon
-
             return (
-              <div
+              <motion.article
                 key={i}
-                className="group relative rounded-2xl bg-white/80 backdrop-blur border border-gray-200 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                variants={cardVariants}
+                className={`relative group p-6 rounded-[24px] bg-white border ${reason.borderStyle} shadow-sm hover:shadow-xl hover:shadow-orange-100/50 transition-all duration-300`}
               >
-                {/* Number bg */}
-                <span className="absolute bottom-2 right-3 text-6xl font-black text-gray-100">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-
-                <div className={`mb-4 w-12 h-12 flex items-center justify-center rounded-xl border ${reason.iconBg}`}>
-                  <Icon className={`w-5 h-5 ${reason.iconColor}`} />
+                {/* Icon Container */}
+                <div className={`mb-5 h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 group-hover:scale-110 transition-transform duration-300`}>
+                  <Icon className={`h-6 w-6 ${reason.iconColor}`} />
                 </div>
 
-                <h3 className="text-sm font-bold text-gray-900">{reason.en}</h3>
-                <p className={`text-xs font-semibold mb-2 ${reason.iconColor}`}>
-                  {reason.hi}
-                </p>
-
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <h3 className="text-[15px] font-bold text-[#1a1a1a] mb-1">{reason.en}</h3>
+                <p className={`text-[12px] font-bold mb-3 ${reason.iconColor}`}>{reason.hi}</p>
+                <p className="text-[13px] text-gray-500 leading-relaxed group-hover:text-gray-700 transition-colors">
                   {reason.desc}
                 </p>
-              </div>
+
+                {/* Subtle bottom indicator */}
+                <div className="absolute bottom-4 right-6 opacity-10 font-black text-4xl select-none italic">
+                  0{i + 1}
+                </div>
+              </motion.article>
             )
           })}
-
-        </div>
+        </motion.div>
       </div>
     </section>
   )
