@@ -1,140 +1,210 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck, Gem, MousePointer2 } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
-const words = ["PVC False Ceiling", "WPC Wall Paneling", "UV Marble Sheet", "Modular TV Unit", "Luxury Interior"]
+// Smooth luxury easing
+const easeLux = [0.22, 1, 0.36, 1] as const
+
+const words = ["PVC False Ceiling", "WPC Wall Paneling", "UV Marble Sheet", "Modular TV Unit", "Gypsum Ceiling"]
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: easeLux },
+  },
+}
+
+const stats = [
+  { value: "100+", label: "Projects Done" },
+  { value: "5+", label: "Years Experience" },
+  { value: "100%", label: "Client Satisfaction" },
+]
 
 export default function Hero() {
   const [index, setIndex] = useState(0)
+  const containerRef = useRef(null)
+  
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 500], [0, 200])
+  const y2 = useTransform(scrollY, [0, 500], [0, -150])
 
   useEffect(() => {
-    const timer = setInterval(() => setIndex((prev) => (prev + 1) % words.length), 3000)
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length)
+    }, 3500)
     return () => clearInterval(timer)
   }, [])
 
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden bg-[#f8f9fb]">
-      
-      {/* --- ARCHITECTURAL BLUEPRINT BACKGROUND --- */}
+    <section   
+      ref={containerRef}
+      id="home"   
+      className="relative min-h-[100dvh] w-full overflow-hidden bg-[#fafafa]"  
+    >
+      {/* --- Aesthetic Background Elements --- */}
       <div className="absolute inset-0 z-0">
-        {/* Soft Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30" />
-
-        {/* The "Blueprint/Lines" Pattern - Exact as your screenshot */}
-        <div 
-          className="absolute inset-0 opacity-[0.07]" 
-          style={{ 
-            backgroundImage: `radial-gradient(#1e293b 0.5px, transparent 0.5px), 
-                              linear-gradient(to right, #1e293b 0.5px, transparent 0.5px), 
-                              linear-gradient(to bottom, #1e293b 0.5px, transparent 0.5px)`,
-            backgroundSize: '80px 80px, 40px 40px, 40px 40px',
-            maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 90%)'
-          }} 
-        />
-
-        {/* Large Decorative SVG Line (Architectural Drawing Feel) */}
-        <svg className="absolute top-0 right-0 h-full w-full opacity-[0.03] pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-           <path d="M0 20 L20 0 M80 100 L100 80 M0 80 L80 0" stroke="currentColor" strokeWidth="0.1" fill="none" />
-        </svg>
-
-        {/* Soft Glow Orbs */}
-        <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-blue-200/20 blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] h-[400px] w-[400px] rounded-full bg-amber-100/30 blur-[100px]" />
-      </div>
-
-      {/* --- HERO CONTENT --- */}
-      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col items-center justify-center px-6 pt-24 pb-12 text-center">
+        <motion.div style={{ y: y1 }} className="absolute -top-[10%] -left-[5%] h-[500px] w-[500px] rounded-full bg-blue-100/40 blur-[120px]" />
+        <motion.div style={{ y: y2 }} className="absolute top-[20%] -right-[5%] h-[400px] w-[400px] rounded-full bg-amber-100/40 blur-[100px]" />
         
-        {/* 1. Badge Area */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mb-8 flex flex-wrap justify-center gap-3"
-        >
-          <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-1.5 backdrop-blur-md shadow-sm">
-            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-600">Our Expertise / हमारी विशेषज्ञता</span>
-          </div>
-        </motion.div>
-
-        {/* 2. Main Title Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-4"
-        >
-          <h1 className="text-5xl font-black tracking-tight text-slate-900 sm:text-7xl lg:text-8xl">
-            Premium <span className="text-blue-600">Interior</span> Services
-          </h1>
-          <p className="mx-auto max-w-2xl text-base font-medium leading-relaxed text-slate-500 sm:text-lg">
-            JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सॉल्यूशन्स प्रदान करता है।
-          </p>
-        </motion.div>
-
-        {/* 3. Sliding Services */}
-        <div className="mt-8 h-12 overflow-hidden sm:h-16">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={words[index]}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              className="text-2xl font-black text-slate-800 sm:text-4xl"
-            >
-              {words[index]}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* 4. Action Cards (As per screenshot style) */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3"
-        >
-          {[
-            { title: "Free Consultation", desc: "फ्री सलाह & डिज़ाइन प्लान", icon: MousePointer2, color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
-            { title: "Free Site Visit", desc: "घर पर आकर मुफ़्त माप-जोख", icon: MapPin, color: "bg-blue-50 text-blue-600 border-blue-100" },
-            { title: "1 Year Warranty", desc: "पूरे काम पर 1 साल की वारंटी", icon: ShieldCheck, color: "bg-amber-50 text-amber-600 border-amber-100" }
-          ].map((card, i) => (
-            <div key={i} className={`flex items-center gap-4 rounded-2xl border p-5 transition-all hover:shadow-lg bg-white/90 backdrop-blur-sm ${card.color}`}>
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
-                <card.icon className="h-6 w-6" />
-              </div>
-              <div className="text-left">
-                <h4 className="font-bold text-slate-900">{card.title}</h4>
-                <p className="text-xs font-semibold opacity-80">{card.desc}</p>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* 5. CTA Buttons */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-12 flex flex-wrap justify-center gap-4"
-        >
-          <Button asChild size="lg" className="h-14 rounded-full bg-blue-600 px-8 font-bold hover:bg-blue-700 shadow-xl shadow-blue-200">
-            <a href="tel:+918651070831" className="flex items-center gap-2">
-              <Phone className="h-5 w-5" /> अभी कॉल करें
-            </a>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="h-14 rounded-full border-slate-200 bg-white px-8 font-bold hover:border-blue-400">
-            <Link href="#gallery" className="flex items-center gap-2">
-              प्रोजेक्ट देखें <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
-        </motion.div>
-
+        {/* Animated Grid */}
+        <div className="absolute inset-0 opacity-[0.15]"  
+          style={{  
+            backgroundImage: `radial-gradient(#2563eb 0.5px, transparent 0.5px)`,  
+            backgroundSize: "30px 30px",  
+            maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",  
+          }}  
+        />
       </div>
+
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-7xl flex-col items-start justify-center px-6 pt-24 pb-12 lg:px-12">  
+          
+        <motion.div  
+          variants={containerVariants}  
+          initial="hidden"  
+          animate="visible"  
+          className="grid w-full grid-cols-1 gap-12 lg:grid-cols-12"
+        >  
+          {/* LEFT CONTENT */}
+          <div className="lg:col-span-7">
+            {/* 1. Trust Tags */}  
+            <motion.div variants={itemVariants} className="mb-8 flex flex-wrap gap-3">  
+              <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-white/60 px-4 py-1.5 backdrop-blur-md shadow-sm">  
+                <MapPin className="h-3.5 w-3.5 text-blue-600" />  
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-700">Forbesganj • Araria</span>  
+              </div>  
+              <div className="flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50/50 px-4 py-1.5 backdrop-blur-md">  
+                <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />  
+                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-900">Premium Quality</span>  
+              </div>  
+            </motion.div>  
+
+            {/* 2. Main Title */}  
+            <motion.div variants={itemVariants} className="relative mb-6">  
+              <h1 className="font-black leading-[0.85] tracking-tighter text-slate-900" style={{ fontSize: "clamp(3.5rem, 12vw, 7rem)" }}>  
+                JK <span className="text-blue-600 italic">INTERIOR</span>  
+              </h1>
+              <motion.div 
+                initial={{ width: 0 }} animate={{ width: 120 }} transition={{ delay: 1, duration: 1 }}
+                className="mt-4 h-2 rounded-full bg-gradient-to-r from-blue-600 to-amber-400" 
+              />
+            </motion.div>  
+
+            {/* 3. Sliding Sub-headline */}  
+            <motion.div variants={itemVariants} className="mb-8 h-[60px] md:h-[80px]">  
+              <h2 className="text-2xl font-bold text-slate-500 md:text-4xl">  
+                Specialist in {" "}
+                <span className="relative inline-block overflow-hidden align-bottom">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={words[index]}
+                      initial={{ y: 40, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -40, opacity: 0 }}
+                      transition={{ duration: 0.6, ease: easeLux }}
+                      className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text font-black text-transparent"
+                    >
+                      {words[index]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </h2>  
+            </motion.div>
+
+            {/* 4. Hindi Marketing Text */}
+            <motion.div variants={itemVariants} className="mb-10 max-w-xl">
+              <h3 className="mb-4 text-3xl font-extrabold leading-tight text-slate-900 md:text-5xl">
+                साधारण दीवारों को दें <br/>
+                <span className="bg-slate-900 px-3 py-1 text-white skew-x-[-4deg] inline-block mt-2">
+                   एक शाही पहचान
+                </span>
+              </h3>
+              <p className="text-lg font-medium leading-relaxed text-slate-600">
+                हम लेकर आए हैं फारबिसगंज में इंटीरियर का <span className="font-bold text-blue-600 underline decoration-blue-200 underline-offset-4">Next-Level Experience</span>। 
+                मजबूती और खूबसूरती का बेजोड़ संगम।
+              </p>
+            </motion.div>
+
+            {/* 5. CTA Area */}
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-5">
+              <Button asChild size="lg" className="group relative h-16 overflow-hidden rounded-2xl bg-blue-600 px-10 text-lg font-bold transition-all hover:bg-blue-700 hover:shadow-[0_20px_40px_-15px_rgba(37,99,235,0.4)]">
+                <a href="tel:+918651070831" className="flex items-center gap-3">
+                   <Phone className="h-5 w-5 animate-pulse" />
+                   फ्री कोटेशन लें
+                   <motion.div 
+                     className="absolute inset-0 bg-white/20"
+                     initial={{ x: "-100%" }}
+                     animate={{ x: "200%" }}
+                     transition={{ repeat: Infinity, duration: 2, ease: "linear", repeatDelay: 1 }}
+                     style={{ skewX: -20, width: "30%" }}
+                   />
+                </a>
+              </Button>
+
+              <Button asChild variant="outline" size="lg" className="h-16 rounded-2xl border-2 border-slate-200 bg-white px-8 text-lg font-bold transition-all hover:border-blue-600 hover:text-blue-600">
+                <Link href="#services" className="flex items-center gap-2">
+                  सेवाएँ देखें <ArrowRight className="h-5 w-5 group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+
+          {/* RIGHT CONTENT - Feature Cards */}
+          <div className="lg:col-span-5 flex flex-col justify-center">
+            <motion.div variants={itemVariants} className="grid grid-cols-1 gap-4">
+              {[
+                { icon: Layers, title: "False Ceiling", color: "bg-blue-500", desc: "PVC & Gypsum Experts" },
+                { icon: PanelTop, title: "Wall Paneling", color: "bg-amber-500", desc: "WPC & UV Marble" },
+                { icon: Tv, title: "Modular Units", color: "bg-indigo-500", desc: "Luxury TV Units" },
+              ].map((item, idx) => (
+                <motion.div
+                  key={item.title}
+                  whileHover={{ x: 10, backgroundColor: "#fff" }}
+                  className="group flex items-center gap-5 rounded-3xl border border-slate-100 bg-white/50 p-6 backdrop-blur-md transition-shadow hover:shadow-xl hover:shadow-blue-500/5"
+                >
+                  <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${item.color} text-white shadow-lg`}>
+                    <item.icon className="h-7 w-7" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900">{item.title}</h4>
+                    <p className="font-medium text-slate-500">{item.desc}</p>
+                  </div>
+                  <CheckCircle2 className="ml-auto h-6 w-6 text-emerald-500 opacity-0 transition-opacity group-hover:opacity-100" />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Stats Summary */}
+            <motion.div 
+              variants={itemVariants}
+              className="mt-10 flex items-center justify-between rounded-3xl bg-slate-900 p-8 text-white shadow-2xl"
+            >
+              {stats.map((s, i) => (
+                <div key={i} className="text-center">
+                  <div className="text-2xl font-black text-blue-400 md:text-3xl">{s.value}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </motion.div>  
+      </div>  
+
+      {/* Bottom Blur Decor */}
+      <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
     </section>
   )
-             }
-          
+}
