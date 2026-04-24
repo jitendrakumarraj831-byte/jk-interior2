@@ -125,65 +125,75 @@ export default function Services() {
   className="relative overflow-hidden py-24 scroll-mt-28
   bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
 >
-  {/* ✅ Hero style glow (REPLACE OLD GLOW) */}
-  <div className="pointer-events-none absolute -top-20 -left-20 w-72 h-72 rounded-full bg-amber-200/20 blur-3xl" />
-  <div className="pointer-events-none absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-blue-100/30 blur-3xl" />
+  {/* ── Services Header + Trust Strip (CTA Same Style) ───────────────────────── */}
+<motion.div
+  variants={fadeSlideUp}
+  className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50 mb-14"
+>
 
-  <motion.div
-    className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.06 }}
-        variants={staggerContainer}
-      >
-        {/* Section header */}
-        <motion.header className="mb-14 space-y-3 text-center" variants={fadeSlideUp}>
-          <div className="flex justify-center">
-            <span className="rounded-full border border-gold/30 glass-panel px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">
-              Our Expertise / हमारी विशेषज्ञता
-            </span>
-          </div>
-          <h2 className="text-4xl font-black text-foreground md:text-5xl">
-            Premium <span className="gold-text">Interior</span> Services
-          </h2>
-          <p className="mx-auto max-w-xl text-sm text-muted-foreground md:text-base">
-            JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
-          </p>
-        </motion.header>
+  {/* Glow effects */}
+  <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
+  <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
 
-        {/* Trust strip - Free Consultation, Site Visit, On-Time Delivery */}
-        <motion.div
-          variants={fadeSlideUp}
-          className="mb-12 grid grid-cols-1 gap-3 sm:grid-cols-3"
-        >
-          <div className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-3 backdrop-blur-sm">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-sm">
-              <Headset className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-emerald-900">Free Consultation</p>
-              <p className="text-[11px] text-emerald-700">फ्री सलाह & डिज़ाइन प्लान</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 rounded-2xl border border-blue-200 bg-blue-50/70 px-4 py-3 backdrop-blur-sm">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-blue-500 text-white shadow-sm">
-              <Truck className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-blue-900">Free Site Visit</p>
-              <p className="text-[11px] text-blue-700">घर पर आकर मुफ़्त माप-जोख</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3 backdrop-blur-sm">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-amber-900">1 Year Warranty</p>
-              <p className="text-[11px] text-amber-700">पूरे काम पर 1 साल की वारंटी</p>
-            </div>
-          </div>
-        </motion.div>
+  <div className="relative">
+
+    {/* Badge */}
+    <div className="flex justify-center mb-4">
+      <span className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase">
+        OUR EXPERTISE / हमारी विशेषज्ञता
+      </span>
+    </div>
+
+    {/* Heading */}
+    <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
+      Premium <span className="text-amber-600">Interior</span> Services
+    </h2>
+
+    {/* Description */}
+    <p className="text-slate-700 max-w-xl mx-auto text-base md:text-lg leading-relaxed font-semibold mb-10">
+      JK Interior Forbesganj आपके सपनों के घर के लिए सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
+    </p>
+
+    {/* Trust Strip (same style refined) */}
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+      {/* Item 1 */}
+      <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+          <Headset className="h-5 w-5" />
+        </div>
+        <div className="text-left">
+          <p className="text-sm font-bold text-slate-900">Free Consultation</p>
+          <p className="text-[11px] text-slate-600">फ्री सलाह & डिज़ाइन प्लान</p>
+        </div>
+      </div>
+
+      {/* Item 2 */}
+      <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+          <Truck className="h-5 w-5" />
+        </div>
+        <div className="text-left">
+          <p className="text-sm font-bold text-slate-900">Free Site Visit</p>
+          <p className="text-[11px] text-slate-600">घर पर आकर मुफ़्त माप-जोख</p>
+        </div>
+      </div>
+
+      {/* Item 3 */}
+      <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-white px-4 py-3 shadow-sm hover:shadow-md transition">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+          <ShieldCheck className="h-5 w-5" />
+        </div>
+        <div className="text-left">
+          <p className="text-sm font-bold text-slate-900">1 Year Warranty</p>
+          <p className="text-[11px] text-slate-600">पूरे काम पर 1 साल की वारंटी</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</motion.div>
 
         {/* Magazine-style cards grid */}
         <motion.div
