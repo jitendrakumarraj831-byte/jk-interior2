@@ -405,7 +405,9 @@ export default function Gallery({ layout }: { layout?: string }) {
 
     {/* Heading (same style) */}
     <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
-      Hamare Kaam, <span className="text-amber-600">Aapka Vishwas</span>
+      Hamare Kaam, <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 bg-clip-text text-transparent">
+  Aapka Vishwas
+</span>
     </h2>
 
     {/* Description */}
