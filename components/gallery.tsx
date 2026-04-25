@@ -410,7 +410,7 @@ export default function Gallery({ layout }: { layout?: string }) {
 
     {/* Description */}
     <p className="text-slate-700 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-6 font-semibold">
-      JK Interior के द्वारा किए गए premium interior, modular kitchen और false ceiling के कुछ शानदार projects देखें।
+      JK Interior के द्वारा किए गए premium interior, और modular false ceiling के कुछ शानदार projects देखें।
     </p>
 
     {/* Small divider */}
