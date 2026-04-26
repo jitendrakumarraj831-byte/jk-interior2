@@ -121,7 +121,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       {/* बॉडी क्लास में ग्रेडिएंट और स्मूथ फॉन्ट जोड़ा गया है */}
-      <body className="font-inter min-h-screen text-slate-900 bg-[radial-gradient(circle_at_top_right,_#f0f7ff,_#ffffff,_#ffffff)] selection:bg-blue-100 selection:text-blue-900 antialiased">
+      <body className="font-inter min-h-screen text-slate-900 mesh-aurora selection:bg-fuchsia-100 selection:text-fuchsia-900 antialiased">
         
         {/* बैकग्राउंड में हल्का नीला ग्लो (Blur Effect) जो पूरी वेबसाइट पर दिखेगा */}
         <div className="fixed top-0 right-0 -z-10 h-[500px] w-[500px] bg-blue-100/40 blur-[120px] rounded-full" />

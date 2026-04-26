@@ -53,7 +53,7 @@ export default function Hero() {
     <section   
       ref={containerRef}
       id="home"   
-      className="relative min-h-[100dvh] w-full overflow-hidden bg-[#fafafa]"  
+      className="relative min-h-[100dvh] w-full overflow-hidden"  
     >
       {/* --- Aesthetic Background Elements --- */}
       <div className="absolute inset-0 z-0">
@@ -122,7 +122,7 @@ export default function Hero() {
               style={{ fontSize: "clamp(3.5rem, 12vw, 7.5rem)" }}  
             >  
               JK  
-              <span className="ml-3 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"  
+              <span className="ml-3 aurora-text"  
                 style={{ fontSize: "clamp(1.8rem, 6vw, 3.5rem)", letterSpacing: "0.12em" }}  
               >  
                 INTERIOR  
@@ -132,7 +132,7 @@ export default function Hero() {
               initial={{ scaleX: 0 }}  
               animate={{ scaleX: 1 }}  
               transition={{ delay: 0.6, duration: 1, ease: easeLux }}  
-              className="mx-auto mt-4 h-2 w-32 rounded-full bg-gradient-to-r from-blue-600 to-amber-400"  
+              className="mx-auto mt-4 h-2 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-violet-500 to-pink-500"  
             />  
           </motion.div>  
 
@@ -148,7 +148,7 @@ export default function Hero() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -40, opacity: 0 }}
                       transition={{ duration: 0.6, ease: easeLux }}
-                      className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text font-black text-transparent"
+                      className="block aurora-text font-black"
                     >
                       {words[index]}
                     </motion.span>
