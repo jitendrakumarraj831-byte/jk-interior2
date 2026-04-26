@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import AnimatedAura from '@/components/animated-aura'
 import './globals.css'
 
 const playfair = Playfair_Display({
@@ -121,14 +120,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       {/* बॉडी क्लास में ग्रेडिएंट और स्मूथ फॉन्ट जोड़ा गया है */}
-      <body className="font-inter min-h-screen text-slate-900 mesh-aurora selection:bg-fuchsia-100 selection:text-fuchsia-900 antialiased">
-        
-        {/* बैकग्राउंड में हल्का नीला ग्लो (Blur Effect) जो पूरी वेबसाइट पर दिखेगा */}
-        <div className="fixed top-0 right-0 -z-10 h-[500px] w-[500px] bg-blue-100/40 blur-[120px] rounded-full" />
-        <div className="fixed bottom-0 left-0 -z-10 h-[400px] w-[400px] bg-indigo-50/30 blur-[100px] rounded-full" />
+      <body className="font-inter min-h-screen text-white mesh-aurora selection:bg-fuchsia-300 selection:text-fuchsia-950 antialiased">
 
-        <AnimatedAura />
-        
         <div className="relative z-10 min-h-screen">
           
     {/* SEO Schema (Google ke liye) – Enriched LocalBusiness + WebSite + FAQ */}
