@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight, ZoomIn, ChevronUp, Sparkles, Phone, MessageCircle } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { createPortal } from "react-dom"
 import { galleryImages } from "@/lib/gallery-data"
 
@@ -77,13 +77,13 @@ function Lightbox({
   }
 
   const image = images[activeIndex]
+  if (!image) return null
 
   return createPortal(
     <motion.div
       key="lightbox"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       transition={{ duration: 0.22 }}
       className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
       role="dialog"
@@ -118,7 +118,6 @@ function Lightbox({
           key={activeIndex}
           initial={{ opacity: 0, scale: 0.93 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.93 }}
           transition={{ duration: 0.18 }}
           className="relative w-full max-w-5xl h-[78vh] mx-4"
           onClick={(e) => e.stopPropagation()}
@@ -494,18 +493,15 @@ export default function Gallery({ layout }: { layout?: string }) {
       </div>
 
       {/* Lightbox */}
-      <AnimatePresence>
-        {activeIndex !== null && lightboxImages.length > 0 && (
-          <Lightbox
-            key="gallery-lightbox"
-            images={lightboxImages}
-            activeIndex={activeIndex}
-            onClose={closeLightbox}
-            onNext={next}
-            onPrev={prev}
-          />
-        )}
-      </AnimatePresence>
+      {activeIndex !== null && lightboxImages.length > 0 && (
+        <Lightbox
+          images={lightboxImages}
+          activeIndex={activeIndex}
+          onClose={closeLightbox}
+          onNext={next}
+          onPrev={prev}
+        />
+      )}
     </section>
   )
 }
