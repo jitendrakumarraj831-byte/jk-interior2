@@ -132,12 +132,6 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
     <section id="why-us" className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden">
       <WhyUsJsonLdScript />
 
-      {/* Subtle background glow like screenshot */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-orange-400/10 blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-amber-400/10 blur-3xl" />
-      </div>
-
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         
         {/* Center heading - Screenshot style */}

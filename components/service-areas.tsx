@@ -33,10 +33,6 @@ export default function ServiceAreas() {
   return (
     <section id="areas" className="relative overflow-hidden py-20 md:py-28 scroll-mt-28">
       
-      {/* Background Decor */}
-      <div className="pointer-events-none absolute top-0 left-1/4 w-72 h-72 bg-amber-200/20 blur-[100px] rounded-full" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 w-64 h-64 bg-blue-100/20 blur-[100px] rounded-full" />
-
       {/* SEO Schema */}
       <script
         type="application/ld+json"

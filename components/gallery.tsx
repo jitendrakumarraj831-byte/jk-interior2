@@ -391,11 +391,6 @@ export default function Gallery({ layout }: { layout?: string }) {
 
       {/* ── Gallery Top Header (CTA Same Style) ───────────────────────────────── */}
 <div className="relative overflow-hidden rounded-3xl glass-card px-6 py-12 md:px-14 md:py-16 text-center mb-14">
-
-  {/* Glow effects */}
-  <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
-  <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
-
   <div className="relative">
 
     {/* Badge */}
@@ -462,10 +457,6 @@ export default function Gallery({ layout }: { layout?: string }) {
 
         {/* ── Closing CTA (Final Premium Light Version) ───────────────────────────────────────────────── */}
 <div className="relative overflow-hidden rounded-3xl glass-card px-6 py-12 md:px-14 md:py-16 text-center">
-  {/* सॉफ्ट बैकग्राउंड ग्लो */}
-  <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
-  <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
-  
   <div className="relative">
     <p className="text-amber-600 text-xs font-bold tracking-[0.25em] uppercase mb-4">
       JK Interior — Forbesganj, Araria
