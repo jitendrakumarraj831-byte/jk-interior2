@@ -79,20 +79,19 @@ function Lightbox({
   const image = images[activeIndex]
 
   return createPortal(
-    <AnimatePresence>
-      <motion.div
-        key="lightbox"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.22 }}
-        className="fixed inset-0 z-[9999] bg-black/96 flex items-center justify-center"
-        role="dialog"
-        aria-modal="true"
-        onClick={onClose}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
+    <motion.div
+      key="lightbox"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
+      className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
         {/* Top bar */}
         <div
           className="absolute top-0 inset-x-0 px-5 py-4 flex items-center justify-between text-white/90 z-10 bg-gradient-to-b from-black/70 to-transparent"
@@ -162,8 +161,7 @@ function Lightbox({
           </div>
           <p className="text-white/25 text-xs md:hidden select-none">← Swipe to navigate →</p>
         </div>
-      </motion.div>
-    </AnimatePresence>,
+    </motion.div>,
     document.body
   )
 }
@@ -496,15 +494,18 @@ export default function Gallery({ layout }: { layout?: string }) {
       </div>
 
       {/* Lightbox */}
-      {activeIndex !== null && lightboxImages.length > 0 && (
-        <Lightbox
-          images={lightboxImages}
-          activeIndex={activeIndex}
-          onClose={closeLightbox}
-          onNext={next}
-          onPrev={prev}
-        />
-      )}
+      <AnimatePresence>
+        {activeIndex !== null && lightboxImages.length > 0 && (
+          <Lightbox
+            key="gallery-lightbox"
+            images={lightboxImages}
+            activeIndex={activeIndex}
+            onClose={closeLightbox}
+            onNext={next}
+            onPrev={prev}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
