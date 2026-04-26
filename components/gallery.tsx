@@ -387,10 +387,10 @@ export default function Gallery({ layout }: { layout?: string }) {
   }
 
   return (
-    <section id="gallery" className="bg-white">
+    <section id="gallery">
 
       {/* ── Gallery Top Header (CTA Same Style) ───────────────────────────────── */}
-<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50 mb-14">
+<div className="relative overflow-hidden rounded-3xl glass-card px-6 py-12 md:px-14 md:py-16 text-center mb-14">
 
   {/* Glow effects */}
   <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
@@ -405,9 +405,7 @@ export default function Gallery({ layout }: { layout?: string }) {
 
     {/* Heading (same style) */}
     <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
-      Hamare Kaam, <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 bg-clip-text text-transparent">
-  Aapka Vishwas
-</span>
+      Hamare Kaam, <span className="aurora-text">Aapka Vishwas</span>
     </h2>
 
     {/* Description */}
@@ -463,7 +461,7 @@ export default function Gallery({ layout }: { layout?: string }) {
         </div>
 
         {/* ── Closing CTA (Final Premium Light Version) ───────────────────────────────────────────────── */}
-<div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50">
+<div className="relative overflow-hidden rounded-3xl glass-card px-6 py-12 md:px-14 md:py-16 text-center">
   {/* सॉफ्ट बैकग्राउंड ग्लो */}
   <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
   <div className="pointer-events-none absolute bottom-0 right-1/4 w-40 h-40 bg-blue-100/20 blur-3xl rounded-full" />
@@ -474,7 +472,7 @@ export default function Gallery({ layout }: { layout?: string }) {
     </p>
     
     <h3 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
-      Aapka Ghar, <span className="text-amber-600">Hamaari Pehchaan</span>
+      Aapka Ghar, <span className="aurora-text">Hamaari Pehchaan</span>
     </h3>
     
     {/* आपका चुना हुआ टेक्स्ट */}

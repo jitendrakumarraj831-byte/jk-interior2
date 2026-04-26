@@ -129,7 +129,7 @@ type WhyUsProps = {
 
 export default function WhyUs({ layout = "default" }: WhyUsProps) {
   return (
-    <section id="why-us" className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden bg-[#FFFDF9]">
+    <section id="why-us" className="relative py-20 md:py-28 scroll-mt-28 overflow-hidden">
       <WhyUsJsonLdScript />
 
       {/* Subtle background glow like screenshot */}
@@ -153,7 +153,7 @@ export default function WhyUs({ layout = "default" }: WhyUsProps) {
           </span>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900">
-            Aapka Ghar, <span className="text-orange-600">Hamaari Pehchaan</span>
+            Aapka Ghar, <span className="aurora-text">Hamaari Pehchaan</span>
           </h2>
 
           <p className="mt-5 max-w-2xl mx-auto text-sm md:text-base text-slate-600 leading-relaxed">

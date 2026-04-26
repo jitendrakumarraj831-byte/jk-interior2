@@ -31,7 +31,7 @@ const hubPositions: HubPosition[] = [
 
 export default function ServiceAreas() {
   return (
-    <section id="areas" className="relative overflow-hidden border-y border-amber-100 bg-gradient-to-br from-slate-50 via-white to-amber-50/40 py-20 md:py-28 scroll-mt-28">
+    <section id="areas" className="relative overflow-hidden py-20 md:py-28 scroll-mt-28">
       
       {/* Background Decor */}
       <div className="pointer-events-none absolute top-0 left-1/4 w-72 h-72 bg-amber-200/20 blur-[100px] rounded-full" />
@@ -67,7 +67,7 @@ export default function ServiceAreas() {
             <Navigation className="h-3 w-3" /> Service Areas / सेवा क्षेत्र
           </p>
           <h3 className="text-slate-900 text-3xl md:text-5xl font-black mb-6">
-            Hamari <span className="text-amber-600">Pahunch</span>
+            Hamari <span className="aurora-text">Pahunch</span>
           </h3>
           <p className="mx-auto max-w-xl font-semibold text-slate-700 leading-relaxed">
             बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा

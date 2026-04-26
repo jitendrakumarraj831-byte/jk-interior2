@@ -9,7 +9,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white border-t border-slate-100 pt-20 pb-10 relative overflow-hidden">
+    <footer className="border-t border-slate-200/60 pt-20 pb-10 relative overflow-hidden">
       {/* Background Accents */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-amber-200 to-transparent" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-50/40 blur-[100px] rounded-full pointer-events-none" />

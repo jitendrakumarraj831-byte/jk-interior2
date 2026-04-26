@@ -122,7 +122,7 @@ export default function Services() {
   return (
    <section
   id="services"
-  className="relative overflow-hidden py-24 scroll-mt-28 bg-gradient-to-br from-slate-50 via-white to-amber-50/30"
+  className="relative overflow-hidden py-24 scroll-mt-28"
 > 
   {/* ── Services Header + Trust Strip ───────────────────────── */}
 <div className="container mx-auto px-4"> {/* यह कंटेनर डालना ज़रूरी है */}
@@ -131,7 +131,7 @@ export default function Services() {
     initial="hidden"        // यह मिसिंग था
     whileInView="visible"   // यह मिसिंग था
     viewport={{ once: true }}
-    className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-50 via-white to-amber-50/40 border border-amber-100 px-6 py-12 md:px-14 md:py-16 text-center shadow-xl shadow-slate-200/50 mb-14"
+    className="relative overflow-hidden rounded-3xl glass-card px-6 py-12 md:px-14 md:py-16 text-center mb-14"
   >
     {/* Glow effects */}
     <div className="pointer-events-none absolute top-0 left-1/4 w-48 h-48 bg-amber-200/30 blur-3xl rounded-full" />
@@ -147,7 +147,7 @@ export default function Services() {
 
       {/* Heading */}
       <h2 className="text-slate-900 text-2xl md:text-4xl font-black mb-6 leading-tight">
-        Premium <span className="text-amber-600">Interior</span> Services
+        Premium <span className="aurora-text">Interior</span> Services
       </h2>
 
       {/* Description */}

@@ -18,7 +18,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-white">
+    <section id="contact" className="py-24 relative overflow-hidden">
       {/* Background Subtle Glows */}
       <div className="pointer-events-none absolute top-0 left-1/4 w-96 h-96 bg-amber-100/40 blur-[100px] rounded-full" />
       <div className="pointer-events-none absolute bottom-0 right-1/4 w-80 h-80 bg-blue-50/50 blur-[100px] rounded-full" />
@@ -57,7 +57,7 @@ export default function Contact() {
             Contact Us / संपर्क करें
           </span>
           <h3 className="mb-4 text-3xl font-black text-slate-900 md:text-5xl font-sans text-balance">
-            Get In <span className="text-amber-600">Touch</span>
+            Get In <span className="aurora-text">Touch</span>
           </h3>
           <p className="mx-auto max-w-xl text-slate-600 font-medium">
             Ready to transform your space? Contact us today for a free
