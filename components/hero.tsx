@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, Sparkles, ShieldCheck, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
 // Smooth luxury easing
@@ -36,11 +36,6 @@ const stats = [
 
 export default function Hero() {
   const [index, setIndex] = useState(0)
-  const containerRef = useRef(null)
-  
-  const { scrollY } = useScroll()
-  const y1 = useTransform(scrollY, [0, 500], [0, 200])
-  const y2 = useTransform(scrollY, [0, 500], [0, -150])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -51,24 +46,9 @@ export default function Hero() {
 
   return (
     <section   
-      ref={containerRef}
       id="home"   
       className="relative min-h-[100dvh] w-full overflow-hidden"  
     >
-      {/* --- Aesthetic Background Elements --- */}
-      <div className="absolute inset-0 z-0">
-        <motion.div style={{ y: y1 }} className="absolute -top-[10%] -left-[5%] h-[500px] w-[500px] rounded-full bg-blue-100/40 blur-[120px]" />
-        <motion.div style={{ y: y2 }} className="absolute top-[20%] -right-[5%] h-[400px] w-[400px] rounded-full bg-amber-100/40 blur-[100px]" />
-        
-        {/* Animated Grid */}
-        <div className="absolute inset-0 opacity-[0.15]"  
-          style={{  
-            backgroundImage: `radial-gradient(#2563eb 0.5px, transparent 0.5px)`,  
-            backgroundSize: "30px 30px",  
-            maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",  
-          }}  
-        />
-      </div>
 
       <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-7xl flex-col items-start justify-center px-6 pt-24 pb-12 lg:px-12">  
           
@@ -236,8 +216,6 @@ export default function Hero() {
         </motion.div>  
       </div>  
 
-      {/* Bottom Blur Decor */}
-      <div className="absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent" />
     </section>
   )
         }
