@@ -291,36 +291,36 @@
   }
 
   .glass-panel {
-    background: rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(15px) saturate(140%);
-    -webkit-backdrop-filter: blur(15px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.20);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid rgba(37, 99, 235, 0.12);
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(15px) saturate(140%);
-    -webkit-backdrop-filter: blur(15px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid rgba(37, 99, 235, 0.12);
     border-radius: 1.25rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.20);
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
   }
 
   .mesh-aurora {
-    background-color: #0f0a1f;
+    background-color: #f7faff;
     background-image:
-      radial-gradient(at 18% 22%, rgba(99, 56, 168, 0.65) 0px, transparent 55%),
-      radial-gradient(at 82% 18%, rgba(190, 80, 150, 0.55) 0px, transparent 55%),
-      radial-gradient(at 78% 82%, rgba(40, 130, 130, 0.55) 0px, transparent 55%),
-      radial-gradient(at 22% 88%, rgba(80, 60, 180, 0.55) 0px, transparent 55%);
+      radial-gradient(at 18% 18%, rgba(186, 230, 253, 0.65) 0px, transparent 55%),
+      radial-gradient(at 82% 22%, rgba(233, 213, 255, 0.55) 0px, transparent 55%),
+      radial-gradient(at 78% 82%, rgba(254, 226, 226, 0.40) 0px, transparent 55%),
+      radial-gradient(at 22% 85%, rgba(204, 251, 241, 0.50) 0px, transparent 55%);
     background-attachment: fixed;
     will-change: transform;
     transform: translateZ(0);
   }
 
   .aurora-text {
-    background: linear-gradient(135deg, #c4b5fd 0%, #fbcfe8 50%, #a7f3d0 100%);
+    background: linear-gradient(135deg, #0891b2 0%, #7c3aed 50%, #db2777 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -335,33 +335,12 @@
 
 @layer base {
   body {
-    color: #ffffff;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    color: #ffffff;
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    color: #0f172a;
   }
   h1.sr-only, h2.sr-only, h3.sr-only, h4.sr-only, h5.sr-only, h6.sr-only {
     color: inherit;
     text-shadow: none;
   }
-}
-
-@layer utilities {
-  /* Lift dark slate utilities onto the dark mesh for readability (typography only) */
-  .text-slate-900 { color: rgba(255, 255, 255, 0.96); }
-  .text-slate-800 { color: rgba(255, 255, 255, 0.92); }
-  .text-slate-700 { color: rgba(255, 255, 255, 0.85); }
-  .text-slate-600 { color: rgba(255, 255, 255, 0.78); }
-  .text-slate-500 { color: rgba(255, 255, 255, 0.68); }
-  .text-slate-400 { color: rgba(255, 255, 255, 0.60); }
-  .text-foreground { color: rgba(255, 255, 255, 0.96); }
-  .text-muted-foreground { color: rgba(255, 255, 255, 0.70); }
-  /* Lift common dark accent colors to lighter tints that read on the dark mesh */
-  .text-blue-700 { color: #93c5fd; }
-  .text-blue-600 { color: #93c5fd; }
-  .text-amber-900 { color: #fde68a; }
-  .text-emerald-600 { color: #6ee7b7; }
 }
 
   .glass-input {

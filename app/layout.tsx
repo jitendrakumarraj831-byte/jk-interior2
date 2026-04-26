@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import AnimatedAura from '@/components/animated-aura'
 import './globals.css'
 
 const playfair = Playfair_Display({
@@ -120,7 +121,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       {/* बॉडी क्लास में ग्रेडिएंट और स्मूथ फॉन्ट जोड़ा गया है */}
-      <body className="font-inter min-h-screen text-white mesh-aurora selection:bg-fuchsia-300 selection:text-fuchsia-950 antialiased">
+      <body className="font-inter min-h-screen text-slate-900 mesh-aurora selection:bg-blue-200 selection:text-blue-950 antialiased">
+
+        <AnimatedAura />
 
         <div className="relative z-10 min-h-screen">
           
