@@ -31,13 +31,24 @@ export const metadata: Metadata = {
       "Explore JK Interior's premium services: gypsum ceiling, POP design, PVC wall paneling, WPC louvers and grid ceiling in Forbesganj, Bihar.",
     url: "https://www.jkinterior.online/services",
     siteName: "JK Interior",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://www.jkinterior.online/og-image.png",
+        width: 1376,
+        height: 677,
+        alt: "JK Interior Services – Gypsum, POP, PVC & WPC in Forbesganj, Bihar",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Interior Design Services in Forbesganj | JK Interior Bihar",
     description:
       "Gypsum ceiling, POP design, PVC wall paneling, WPC louvers and grid ceiling services in Forbesganj, Araria, Bihar.",
+    images: ["https://www.jkinterior.online/og-image.png"],
   },
 }
 

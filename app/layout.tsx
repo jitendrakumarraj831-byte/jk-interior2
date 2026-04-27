@@ -72,25 +72,53 @@ export const metadata: Metadata = {
 
   // 5. OpenGraph (Social Media sharing ke liye)
   openGraph: {
-  title: 'JK Interior – Modern Interior & Ceiling Work Experts',
-  description:
-    'Premium interior design, WPC louvers, and PVC wall paneling solutions in Forbesganj, Narpatganj and across Bihar.',
-  url: 'https://www.jkinterior.online/',
-  siteName: 'JK Interior',
-  images: [
-    {
-      url: 'https://www.jkinterior.online/og-image.jpg', // ✅ FULL URL जरूरी
-      width: 1200,
-      height: 630,
-      alt: 'JK Interior Services - PVC Paneling and Ceiling',
-    },
-  ],
-  type: 'website',
-},
+    title: 'JK Interior – Modern Interior & Ceiling Work Experts',
+    description:
+      'Premium interior design, WPC louvers, and PVC wall paneling solutions in Forbesganj, Narpatganj and across Bihar.',
+    url: 'https://www.jkinterior.online',
+    siteName: 'JK Interior',
+    locale: 'en_IN',
+    images: [
+      {
+        url: 'https://www.jkinterior.online/og-image.png',
+        width: 1376,
+        height: 677,
+        alt: 'JK Interior – PVC Wall Paneling & False Ceiling in Forbesganj, Bihar',
+        type: 'image/png',
+      },
+    ],
+    type: 'website',
+  },
+
+  // 5b. Twitter Card (X / WhatsApp preview ke liye)
+  twitter: {
+    card: 'summary_large_image',
+    title: 'JK Interior – Modern Interior & Ceiling Work Experts',
+    description:
+      'Premium interior design, WPC louvers, and PVC wall paneling in Forbesganj, Narpatganj and across Bihar.',
+    images: ['https://www.jkinterior.online/og-image.png'],
+  },
+
   // 6. Icons (Aapka "Gol Chakkar" wala logo fix karne ke liye)
   icons: {
-    icon: '/favicon.png', // Jo aapne abhi upload kiya hai
+    icon: '/favicon.png',
     apple: '/favicon.png',
+    shortcut: '/favicon.png',
+  },
+
+  // 6b. PWA manifest (mobile SEO bonus)
+  manifest: '/manifest.webmanifest',
+
+  // 6c. Apple / Microsoft mobile app metadata
+  appleWebApp: {
+    capable: true,
+    title: 'JK Interior',
+    statusBarStyle: 'default',
+  },
+
+  // 6d. Verification tags – Google Search Console (HTML file already present at /googled6c219631efc2528.html)
+  verification: {
+    google: 'd6c219631efc2528',
   },
 
   // 7. Geo / Local SEO meta tags (helps "near me" and local map ranking)
@@ -104,6 +132,8 @@ export const metadata: Metadata = {
     'business:contact_data:country_name': 'India',
     'business:contact_data:postal_code': '854318',
     'business:contact_data:phone_number': '+91-8651070831',
+    // Phone numbers ko mobile pe auto-detect honay dena (call links work karein)
+    'format-detection': 'telephone=yes',
   },
 }
 
@@ -141,7 +171,7 @@ export default function RootLayout({
               alternateName: ["JK Interior Forbesganj", "JK Interior Araria"],
               url: "https://www.jkinterior.online",
               logo: "https://www.jkinterior.online/logo.png",
-              image: "https://www.jkinterior.online/og-image.jpg",
+              image: "https://www.jkinterior.online/og-image.png",
               telephone: ["+91-8651070831", "+91-8541849118"],
               email: "jkinteriorofficial@gmail.com",
               priceRange: "₹₹",
@@ -235,11 +265,6 @@ export default function RootLayout({
               name: "JK Interior",
               publisher: { "@id": "https://www.jkinterior.online/#business" },
               inLanguage: "en-IN",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: "https://www.jkinterior.online/?s={search_term_string}",
-                "query-input": "required name=search_term_string",
-              },
             },
             {
               "@type": "FAQPage",

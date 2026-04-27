@@ -29,13 +29,24 @@ export const metadata: Metadata = {
       "Browse JK Interior's photo gallery of completed projects: gypsum ceiling, PVC panels, WPC louvers and home interior work across Bihar.",
     url: "https://www.jkinterior.online/gallery",
     siteName: "JK Interior",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://www.jkinterior.online/og-image.png",
+        width: 1376,
+        height: 677,
+        alt: "JK Interior Project Gallery – PVC, Gypsum & False Ceiling Photos",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Interior Design Gallery Forbesganj | JK Interior Bihar",
     description:
       "Browse JK Interior's photo gallery of completed projects: gypsum ceiling, PVC panels, WPC louvers and home interior work across Bihar.",
+    images: ["https://www.jkinterior.online/og-image.png"],
   },
 }
 

@@ -49,13 +49,24 @@ export const metadata: Metadata = {
       "JK Interior provides gypsum ceiling, POP design, PVC wall paneling, WPC louvers and home decor services in Forbesganj, Araria, Bihar.",
     url: "https://www.jkinterior.online",
     siteName: "JK Interior",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://www.jkinterior.online/og-image.png",
+        width: 1376,
+        height: 677,
+        alt: "JK Interior – PVC Wall Paneling & False Ceiling in Forbesganj, Bihar",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Best Interior Designer in Forbesganj Bihar | JK Interior",
     description:
       "JK Interior provides gypsum ceiling, POP design, PVC wall paneling, WPC louvers and home decor services in Forbesganj, Araria, Bihar.",
+    images: ["https://www.jkinterior.online/og-image.png"],
   },
 }
 

@@ -26,13 +26,24 @@ export const metadata: Metadata = {
       "Learn why JK Interior is Bihar's most trusted interior design company in Forbesganj, Araria, and surrounding districts.",
     url: "https://www.jkinterior.online/about",
     siteName: "JK Interior",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://www.jkinterior.online/og-image.png",
+        width: 1376,
+        height: 677,
+        alt: "JK Interior – Trusted Interior Designer in Forbesganj, Bihar",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "About JK Interior Forbesganj | Trusted Interior Designer in Bihar",
     description:
       "Learn why JK Interior is Bihar's most trusted interior design company in Forbesganj, Araria, and surrounding districts.",
+    images: ["https://www.jkinterior.online/og-image.png"],
   },
 }
 

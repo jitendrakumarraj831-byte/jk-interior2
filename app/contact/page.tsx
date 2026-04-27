@@ -26,13 +26,24 @@ export const metadata: Metadata = {
       "Contact JK Interior for PVC wall paneling, gypsum ceiling, POP design and interior work across Forbesganj, Araria, Bihar. Free site visit & quote.",
     url: "https://www.jkinterior.online/contact",
     siteName: "JK Interior",
+    locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "https://www.jkinterior.online/og-image.png",
+        width: 1376,
+        height: 677,
+        alt: "Contact JK Interior – Forbesganj, Araria Bihar",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact JK Interior Forbesganj | Get Free Quote – Bihar",
     description:
       "Contact JK Interior for PVC wall paneling, gypsum ceiling and interior work in Forbesganj, Araria, Bihar. Free site visit & quote.",
+    images: ["https://www.jkinterior.online/og-image.png"],
   },
 }
 
