@@ -19,6 +19,17 @@ export default function Contact() {
     const service = String(data.get("service") || "").trim()
     const message = String(data.get("message") || "").trim()
 
+    // Fire-and-forget email backup so leads are never lost,
+    // even if the user closes the WhatsApp tab without sending.
+    fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, phone, service, message }),
+      keepalive: true,
+    }).catch(() => {
+      // Network failure is non-blocking; WhatsApp is the primary channel.
+    })
+
     const text =
       `Hello JK Interior!\n\n` +
       `Naam: ${name}\n` +

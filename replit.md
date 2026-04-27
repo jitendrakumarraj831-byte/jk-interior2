@@ -101,7 +101,15 @@ npm run start  # Production server on port 5000
 ## Audit Fixes (Apr 2026)
 
 - `components/jk-chat.tsx`: WhatsApp number fixed from placeholder `919999999999` → real `918651070831`.
-- `components/contact.tsx`: Form was a fake `setTimeout` → alert. Now `handleSubmit` builds a WhatsApp deep link (`wa.me/918651070831`) with the user's name, phone, service and message, opens it in a new tab and resets the form. Inputs now have `name`, `autoComplete` and proper validation (`pattern` on phone). Submit button label changed to "WhatsApp पर भेजें / Send via WhatsApp".
+- `components/contact.tsx`: Form was a fake `setTimeout` → alert. Now `handleSubmit` builds a WhatsApp deep link (`wa.me/918651070831`) with the user's name, phone, service and message, opens it in a new tab and resets the form. Inputs now have `name`, `autoComplete` and proper validation (`pattern` on phone). Submit button label changed to "WhatsApp पर भेजें / Send via WhatsApp". Also fires a fire-and-forget POST to `/api/contact` so every lead is also emailed as a backup.
 - `next.config.mjs`: Added `optimizePackageImports: ['lucide-react', 'framer-motion']` for tree-shaking, plus `poweredByHeader: false`, `productionBrowserSourceMaps: false`, `reactStrictMode: true`.
 - `app/globals.css` (earlier): Removed `transform: translateZ(0)` and `will-change: transform` from `.mesh-aurora` so it no longer creates a containing block that broke the gallery lightbox `position: fixed`.
 - `components/gallery.tsx` (earlier): WPC masonry rewritten to CSS multi-column (`columns-2 md:columns-3` + `break-inside-avoid`) instead of the broken 3-col-in-2-grid layout.
+
+## Contact Email Backup (Apr 2026)
+
+- **Goal**: Every contact-form submission must reach the owner even if the customer closes the WhatsApp tab.
+- `src/utils/replitmail.ts`: Replit Mail blueprint utility (do not modify — exact deterministic template). Sends to the verified Replit account email, no API key/SMTP setup needed.
+- `app/api/contact/route.ts`: `POST /api/contact` Next.js Route Handler (`runtime = "nodejs"`, `dynamic = "force-dynamic"`). Validates `{ name, phone, service, message }` with Zod (returns 400 + `issues` on failure), then calls `sendEmail` with a styled HTML body + plain-text fallback. Returns `{ ok: true }` on success or `{ ok: false, error }` with 502 on send failure. All values are HTML-escaped before injection.
+- `components/contact.tsx`: After WhatsApp deep link opens, also `fetch("/api/contact", { keepalive: true })` so the email goes out even if the page unloads. Failures are silently swallowed since WhatsApp remains the primary channel.
+- `package.json`: Added `zod` dependency for request validation.
