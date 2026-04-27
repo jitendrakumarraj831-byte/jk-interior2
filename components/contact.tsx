@@ -8,13 +8,33 @@ import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/mot
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => {
+
+    const form = e.currentTarget
+    const data = new FormData(form)
+    const name = String(data.get("name") || "").trim()
+    const phone = String(data.get("phone") || "").trim()
+    const service = String(data.get("service") || "").trim()
+    const message = String(data.get("message") || "").trim()
+
+    const text =
+      `Hello JK Interior!\n\n` +
+      `Naam: ${name}\n` +
+      `Phone: ${phone}\n` +
+      `Service: ${service}\n` +
+      `Message: ${message}\n\n` +
+      `Mujhe is service ke baare me jaankari aur free quote chahiye.`
+
+    const waUrl = `https://wa.me/918651070831?text=${encodeURIComponent(text)}`
+
+    try {
+      window.open(waUrl, "_blank", "noopener,noreferrer")
+      form.reset()
+    } finally {
       setIsSubmitting(false)
-      alert("Message sent successfully! / संदेश सफलतापूर्वक भेज दिया गया!")
-    }, 2000)
+    }
   }
 
   return (
@@ -176,6 +196,8 @@ export default function Contact() {
                   <input
                     required
                     type="text"
+                    name="name"
+                    autoComplete="name"
                     placeholder="Enter your name"
                     className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all outline-none"
                   />
@@ -187,6 +209,10 @@ export default function Contact() {
                   <input
                     required
                     type="tel"
+                    name="phone"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    pattern="[0-9+\-\s]{7,15}"
                     placeholder="Your contact number"
                     className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all outline-none"
                   />
@@ -197,7 +223,7 @@ export default function Contact() {
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
                   Select Service
                 </label>
-                <select className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3.5 text-sm text-slate-900 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all outline-none appearance-none">
+                <select name="service" defaultValue="False Ceiling (PVC/Gypsum)" className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3.5 text-sm text-slate-900 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all outline-none appearance-none">
                   <option>False Ceiling (PVC/Gypsum)</option>
                   <option>PVC Wall Paneling</option>
                   <option>WPC Fluted Panels</option>
@@ -213,6 +239,7 @@ export default function Contact() {
                 </label>
                 <textarea
                   required
+                  name="message"
                   rows={4}
                   placeholder="How can we help you?"
                   className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all outline-none resize-none"
@@ -227,9 +254,9 @@ export default function Contact() {
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <Send className="h-4 w-4" />
+                  <MessageCircle className="h-4 w-4" />
                 )}
-                Submit Request / अनुरोध भेजें
+                WhatsApp पर भेजें / Send via WhatsApp
               </button>
             </form>
           </motion.div>

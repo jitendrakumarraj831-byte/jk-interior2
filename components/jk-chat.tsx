@@ -12,7 +12,7 @@ type Lead = {
   phone: string
 }
 
-const WHATSAPP_NUMBER = "919999999999"
+const WHATSAPP_NUMBER = "918651070831"
 const SERVICE_AREAS = ["Forbesganj", "Araria", "Purnia", "Narpatganj", "Raniganj"]
 
 const WELCOME_MESSAGE: Message = {

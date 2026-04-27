@@ -96,3 +96,12 @@ npm run start  # Production server on port 5000
 - Body tag must NOT have `bg-background` class (it overrides the gradient)
 - All hardcoded `#0A0A0B` color references should use `#0b0f1a` instead
 - When updating SEO: keep all canonical URLs as `https://www.jkinterior.online/[page]` (www, no trailing slash for sub-pages)
+- **Real WhatsApp number is `918651070831`** (also `918541849118` as secondary). Never use placeholders like `919999999999`.
+
+## Audit Fixes (Apr 2026)
+
+- `components/jk-chat.tsx`: WhatsApp number fixed from placeholder `919999999999` → real `918651070831`.
+- `components/contact.tsx`: Form was a fake `setTimeout` → alert. Now `handleSubmit` builds a WhatsApp deep link (`wa.me/918651070831`) with the user's name, phone, service and message, opens it in a new tab and resets the form. Inputs now have `name`, `autoComplete` and proper validation (`pattern` on phone). Submit button label changed to "WhatsApp पर भेजें / Send via WhatsApp".
+- `next.config.mjs`: Added `optimizePackageImports: ['lucide-react', 'framer-motion']` for tree-shaking, plus `poweredByHeader: false`, `productionBrowserSourceMaps: false`, `reactStrictMode: true`.
+- `app/globals.css` (earlier): Removed `transform: translateZ(0)` and `will-change: transform` from `.mesh-aurora` so it no longer creates a containing block that broke the gallery lightbox `position: fixed`.
+- `components/gallery.tsx` (earlier): WPC masonry rewritten to CSS multi-column (`columns-2 md:columns-3` + `break-inside-avoid`) instead of the broken 3-col-in-2-grid layout.

@@ -5,8 +5,11 @@ const nextConfig = {
   },
   allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev', '*.repl.co'],
   compress: true,
+  poweredByHeader: false,
+  productionBrowserSourceMaps: false,
+  reactStrictMode: true,
   experimental: {
-    optimizePackageImports: [],
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   images: {
     unoptimized: false,
