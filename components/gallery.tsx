@@ -234,31 +234,25 @@ function StripSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]
   )
 }
 
-// Style 4 — Masonry-style 3 columns (CSS column trick)
+// Style 4 — True masonry using CSS multi-column (no empty cells on mobile)
 function MasonrySection({ images, onOpen }: { images: GalleryImage[]; onOpen: (img: GalleryImage) => void }) {
-  const cols: GalleryImage[][] = [[], [], []]
-  images.forEach((img, i) => cols[i % 3].push(img))
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 items-start">
-      {cols.map((col, ci) => (
-        <div key={ci} className="flex flex-col gap-3 md:gap-4">
-          {col.map((img, i) => (
-            <motion.div
-              key={img.src}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: Math.min(i * 0.07, 0.3) }}
-              onClick={() => onOpen(img)}
-              className={`group relative overflow-hidden rounded-xl cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500 ${(ci + i) % 3 === 0 ? "aspect-[3/4]" : (ci + i) % 3 === 1 ? "aspect-square" : "aspect-[4/3]"}`}
-            >
-              <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" sizes="(max-width: 768px) 50vw, 33vw" />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <ZoomIn size={22} className="text-white drop-shadow" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+    <div className="columns-2 md:columns-3 gap-3 md:gap-4 [column-fill:_balance]">
+      {images.map((img, i) => (
+        <motion.div
+          key={img.src}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.3) }}
+          onClick={() => onOpen(img)}
+          className={`group relative block w-full overflow-hidden rounded-xl cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-500 mb-3 md:mb-4 break-inside-avoid ${i % 3 === 0 ? "aspect-[3/4]" : i % 3 === 1 ? "aspect-square" : "aspect-[4/3]"}`}
+        >
+          <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" sizes="(max-width: 768px) 50vw, 33vw" />
+          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <ZoomIn size={22} className="text-white drop-shadow" />
+          </div>
+        </motion.div>
       ))}
     </div>
   )
