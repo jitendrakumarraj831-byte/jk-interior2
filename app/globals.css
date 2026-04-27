@@ -315,8 +315,6 @@
       radial-gradient(at 78% 82%, rgba(254, 226, 226, 0.40) 0px, transparent 55%),
       radial-gradient(at 22% 85%, rgba(204, 251, 241, 0.50) 0px, transparent 55%);
     background-attachment: fixed;
-    will-change: transform;
-    transform: translateZ(0);
   }
 
   .aurora-text {
