@@ -1,4 +1,4 @@
-"use client"
+            "use client"
 
 import { Check, Info, MapPin, Layers, Box, Layout, Sparkles, Maximize, Leaf, Phone, ArrowUpRight, MessageCircle, Headset, Truck, ShieldCheck } from "lucide-react"
 import Image from "next/image"
@@ -6,189 +6,84 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { fadeSlideUp, fadeSlideUpItem, staggerContainer } from "@/components/motion-reveal"
 
-// Slug helper — must match the one used in components/gallery.tsx
 const slug = (s: string) =>
   s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
 
 const services = [
-  {
-    title: "Gypsum False Ceiling",
-    titleHi: "जिप्सम फॉल्स सीलिंग",
-    tag: "Most Popular",
-    useCase: "लिविंग रूम, बेडरूम और डाइनिंग हॉल के लिए बेस्ट।",
-    useCaseEn: "Best for living rooms, bedrooms, and dining halls.",
-    specialty: "स्मूथ फिनिश और क्रिएटिव लाइटिंग डिजाइन।",
-    specialtyEn: "Smooth finish and creative lighting designs.",
-    benefit: "गर्मी से राहत (Heat Insulation) और लग्जरी लुक।",
-    benefitEn: "Heat insulation and a luxury premium look.",
-    image: "/images/gypsum-ceiling.jpg",
-    alt: "Gypsum false ceiling design in Forbesganj Bihar",
-    icon: <Layers className="w-5 h-5" />,
-    galleryCategory: "Gypsum False Ceiling",
-  },
-  {
-    title: "PVC Ceiling",
-    titleHi: "PVC सीलिंग",
-    tag: "Waterproof",
-    useCase: "किचन, बाथरूम, बालकनी और नमी वाली जगहों के लिए।",
-    useCaseEn: "Ideal for kitchens, bathrooms, balconies, and high-moisture areas.",
-    specialty: "100% वाटरप्रूफ और दीमक-रहित (Termite Proof)।",
-    specialtyEn: "100% waterproof and termite-proof.",
-    benefit: "कम मेंटेनेंस और पेंट करवाने की जरूरत नहीं।",
-    benefitEn: "Low maintenance and no painting required.",
-    image: "/images/pvc-ceiling.jpg",
-    alt: "PVC ceiling panel installation Forbesganj",
-    icon: <Box className="w-5 h-5" />,
-    galleryCategory: "PVC Ceiling",
-  },
-  {
-    title: "WPC Louvers",
-    titleHi: "WPC लूवर्स",
-    tag: "Premium",
-    useCase: "टीवी यूनिट, मेन गेट वॉल और एक्सटीरियर डिजाइन में।",
-    useCaseEn: "Used for TV units, main gate walls, and exterior designs.",
-    specialty: "असली लकड़ी जैसा प्रीमियम वुडेन लुक।",
-    specialtyEn: "Provides a premium natural wooden look.",
-    benefit: "धूप और पानी से खराब नहीं होता, सालों साल नया रहता है।",
-    benefitEn: "Weather-resistant, does not fade with sun or water.",
-    image: "/images/wpc-louvers.jpg",
-    alt: "WPC louvers wall panel design Forbesganj",
-    icon: <Layout className="w-5 h-5" />,
-    galleryCategory: "WPC fluted panels & uv marble Sheet",
-  },
-  {
-    title: "UV Marble Sheet",
-    titleHi: "UV मार्बल शीट",
-    tag: "Luxury Look",
-    useCase: "बाथरूम, किचन बैक-स्प्लैश और हाईलाइट दीवारों पर।",
-    useCaseEn: "Perfect for bathrooms, kitchen backsplashes, and highlight walls.",
-    specialty: "असली इटालियन मार्बल जैसी हाई-ग्लॉस फिनिश।",
-    specialtyEn: "High-gloss finish like real Italian marble.",
-    benefit: "मार्बल से बहुत सस्ता और इंस्टॉलेशन में बहुत आसान।",
-    benefitEn: "Much cheaper than real marble and very easy to install.",
-    image: "/images/uv-marble.jpg",
-    alt: "UV marble sheet wall cladding Bihar",
-    icon: <Sparkles className="w-5 h-5" />,
-    galleryCategory: "WPC fluted panels & uv marble Sheet",
-  },
-  {
-    title: "Fluted Panels",
-    titleHi: "फ्लूटेड पैनल",
-    tag: "3D Texture",
-    useCase: "बेडरूम बेड-बैक और ड्राइंग रूम की दीवारों के लिए।",
-    useCaseEn: "Used for bedroom bed-backs and drawing room walls.",
-    specialty: "दीवारों को आधुनिक 3D टेक्सचर और गहराई देता है।",
-    specialtyEn: "Adds a modern 3D texture and depth to walls.",
-    benefit: "साधारण दीवार को भी तुरंत लग्जरी लुक में बदल देता है।",
-    benefitEn: "Instantly transforms a plain wall into a luxury feature.",
-    image: "/images/fluted-panels.jpg",
-    alt: "Fluted wall panels interior design",
-    icon: <Maximize className="w-5 h-5" />,
-    galleryCategory: "WPC fluted panels & uv marble Sheet",
-  },
-  {
-    title: "TV Unit Design",
-    titleHi: "TV यूनिट डिजाइन",
-    tag: "Customized",
-    useCase: "लिविंग रूम और मास्टर बेडरूम को सजाने के लिए।",
-    useCaseEn: "Perfect for decorating living rooms and master bedrooms.",
-    specialty: "कस्टमाइज्ड स्टोरेज और हिडन वायरिंग मैनेजमेंट।",
-    specialtyEn: "Customized storage and hidden wiring management.",
-    benefit: "आपका टीवी एरिया व्यवस्थित, साफ़ और सुंदर दिखता है।",
-    benefitEn: "Keeps your TV area organized, clean, and beautiful.",
-    image: "/images/tv-unit.jpg",
-    alt: "Modern TV unit design Forbesganj",
-    icon: <Layout className="w-5 h-5" />,
-    galleryCategory: "TV Unit Design",
-  },
-  {
-    title: "Artificial Grass",
-    titleHi: "आर्टिफिशियल घास",
-    tag: "Zero Maintenance",
-    useCase: "बालकनी, टैरेस, गार्डन और आउटडोर एरिया के लिए।",
-    useCaseEn: "Ideal for balconies, terraces, gardens, and outdoor areas.",
-    specialty: "नेचुरल घास जैसा लुक, बिना मेंटेनेंस के।",
-    specialtyEn: "Natural grass-like look with zero maintenance.",
-    benefit: "पानी, कटिंग या कीटनाशक की जरूरत नहीं।",
-    benefitEn: "No watering, mowing, or pesticides required.",
-    image: "/images/artificial-grass.jpg",
-    alt: "Artificial grass installation in Forbesganj Bihar",
-    icon: <Leaf className="w-5 h-5" />,
-    galleryCategory: "Artificial Grass",
-  },
+  { title: "Gypsum False Ceiling", titleHi: "जिप्सम फॉल्स सीलिंग", tag: "Most Popular", useCase: "लिविंग रूम, बेडरूम के लिए।", useCaseEn: "Best for living rooms & bedrooms.", specialty: "स्मूथ फिनिश और लाइटिंग।", specialtyEn: "Smooth finish & lighting.", benefit: "गर्मी से राहत और लग्जरी लुक।", benefitEn: "Heat insulation & luxury look.", image: "/images/gypsum-ceiling.jpg", alt: "Gypsum ceiling", icon: <Layers className="w-5 h-5" />, galleryCategory: "Gypsum False Ceiling" },
+  { title: "PVC Ceiling", titleHi: "PVC सीलिंग", tag: "Waterproof", useCase: "किचन और बाथरूम के लिए।", useCaseEn: "Ideal for kitchens & bathrooms.", specialty: "100% वाटरप्रूफ पैनल।", specialtyEn: "100% waterproof panels.", benefit: "कम मेंटेनेंस, नो पेंट।", benefitEn: "Low maintenance, no paint.", image: "/images/pvc-ceiling.jpg", alt: "PVC ceiling", icon: <Box className="w-5 h-5" />, galleryCategory: "PVC Ceiling" },
+  { title: "WPC Louvers", titleHi: "WPC लूवर्स", tag: "Premium", useCase: "टीवी यूनिट और एक्सटीरियर।", useCaseEn: "For TV units & exterior.", specialty: "असली लकड़ी जैसा लुक।", specialtyEn: "Premium wooden look.", benefit: "धूप-पानी से सुरक्षित।", benefitEn: "Weather & water resistant.", image: "/images/wpc-louvers.jpg", alt: "WPC louvers", icon: <Layout className="w-5 h-5" />, galleryCategory: "WPC fluted panels & uv marble Sheet" },
+  { title: "UV Marble Sheet", titleHi: "UV मार्बल शीट", tag: "Luxury", useCase: "हाईलाइट दीवारों के लिए।", useCaseEn: "Perfect for highlight walls.", specialty: "हाई-ग्लॉस मार्बल फिनिश।", specialtyEn: "High-gloss marble finish.", benefit: "किफायती और टिकाऊ।", benefitEn: "Affordable & durable.", image: "/images/uv-marble.jpg", alt: "UV marble", icon: <Sparkles className="w-5 h-5" />, galleryCategory: "WPC fluted panels & uv marble Sheet" },
+  { title: "Fluted Panels", titleHi: "फ्लूटेड पैनल", tag: "3D Texture", useCase: "बेडरूम बेड-बैक के लिए।", useCaseEn: "Best for bedroom bed-backs.", specialty: "आधुनिक 3D टेक्सचर।", specialtyEn: "Modern 3D texture.", benefit: "प्रीमियम इंटीरियर लुक।", benefitEn: "Instant luxury look.", image: "/images/fluted-panels.jpg", alt: "Fluted panels", icon: <Maximize className="w-5 h-5" />, galleryCategory: "WPC fluted panels & uv marble Sheet" },
+  { title: "TV Unit Design", titleHi: "TV यूनिट डिजाइन", tag: "Custom", useCase: "लिविंग रूम डेकोर।", useCaseEn: "Perfect for living rooms.", specialty: "वायरिंग मैनेजमेंट।", specialtyEn: "Hidden wiring & storage.", benefit: "साफ़ और सुंदर सेटअप।", benefitEn: "Clean and beautiful setup.", image: "/images/tv-unit.jpg", alt: "TV unit", icon: <Layout className="w-5 h-5" />, galleryCategory: "TV Unit Design" },
 ]
 
 export default function Services() {
   return (
-    <section id="services" className="relative overflow-hidden py-24 scroll-mt-28">
-      {/* ── Services Header + Trust Strip ───────────────────────── */}
+    <section id="services" className="relative overflow-hidden py-20 bg-slate-50/50">
       <div className="container mx-auto px-4">
+        
+        {/* ── HEADER & TRUST STRIP ───────────────────────── */}
         <motion.div
           variants={fadeSlideUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl glass-card px-6 py-12 md:px-14 md:py-16 text-center mb-14 border border-white/20 shadow-2xl"
+          className="relative overflow-hidden rounded-[2.5rem] bg-white px-6 py-12 md:py-16 text-center mb-6 border border-slate-200 shadow-2xl"
         >
-          {/* Background Decorative Element (Optional) */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-50"></div>
+          <div className="relative z-10">
+            <span className="inline-block bg-amber-50 text-amber-600 px-5 py-1.5 rounded-full text-[10px] md:text-xs font-black tracking-widest uppercase mb-6 border border-amber-100">
+              OUR EXPERTISE / हमारी विशेषज्ञता
+            </span>
 
-          <div className="relative">
-            {/* Badge */}
-            <div className="flex justify-center mb-4">
-              <span className="bg-amber-100 text-amber-700 px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase border border-amber-200">
-                OUR EXPERTISE / हमारी विशेषज्ञता
-              </span>
-            </div>
-
-            {/* Heading */}
-            <h2 className="text-slate-900 text-3xl md:text-5xl font-black mb-6 leading-tight">
-              Crafting <span className="aurora-text">Premium</span> Interiors
+            <h2 className="text-slate-900 text-4xl md:text-6xl font-black mb-6 leading-tight">
+              Premium <span className="text-blue-600">Interior</span> Services
             </h2>
 
-            {/* Description */}
-            <p className="text-slate-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-12">
-              <span className="font-bold text-slate-900">JK Interior Forbesganj</span> आपके सपनों के घर के लिए 
-              सबसे बेहतरीन, आधुनिक और मज़बूत इंटीरियर सोल्यूशन्स प्रदान करता है।
+            <p className="text-slate-500 max-w-2xl mx-auto text-base md:text-lg font-medium mb-10">
+              <span className="text-slate-900 font-bold">JK Interior Forbesganj</span> आपके सपनों के घर के लिए 
+              सबसे बेहतरीन और मज़बूत सोल्यूशन्स प्रदान करता है।
             </p>
 
-            {/* Trust Strip - 3 Column Layout */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {/* Item 1: Consultation */}
-              <div className="group flex items-center gap-4 rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-lg shadow-amber-200 group-hover:scale-110 transition-transform">
-                  <Headset className="h-6 w-6" />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-slate-900 leading-tight">Free Consultation</p>
-                  <p className="text-[11px] text-slate-500 font-medium">फ्री सलाह और डिज़ाइन प्लान</p>
-                </div>
+            {/* Trust Strip */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-5xl mx-auto">
+              <div className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-4 transition-all hover:bg-white hover:shadow-lg">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-lg"><Headset className="h-6 w-6" /></div>
+                <div className="text-left"><p className="text-sm font-bold text-slate-900">Free Consultation</p><p className="text-[11px] text-slate-500 font-medium">फ्री सलाह और डिज़ाइन</p></div>
               </div>
-
-              {/* Item 2: Site Visit */}
-              <div className="group flex items-center gap-4 rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
-                  <Truck className="h-6 w-6" />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-slate-900 leading-tight">Free Site Visit</p>
-                  <p className="text-[11px] text-slate-500 font-medium">घर पर आकर मुफ़्त माप-जोख</p>
-                </div>
+              <div className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-4 transition-all hover:bg-white hover:shadow-lg">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg"><Truck className="h-6 w-6" /></div>
+                <div className="text-left"><p className="text-sm font-bold text-slate-900">Free Site Visit</p><p className="text-[11px] text-slate-500 font-medium">घर पर आकर मुफ़्त माप</p></div>
               </div>
-
-              {/* Item 3: Warranty */}
-              <div className="group flex items-center gap-4 rounded-2xl border border-slate-100 bg-white/80 p-4 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-200 group-hover:scale-110 transition-transform">
-                  <ShieldCheck className="h-6 w-6" />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-slate-900 leading-tight">1 Year Warranty</p>
-                  <p className="text-[11px] text-slate-500 font-medium">पूरे काम पर 1 साल की वारंटी</p>
-                </div>
+              <div className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-4 transition-all hover:bg-white hover:shadow-lg">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg"><ShieldCheck className="h-6 w-6" /></div>
+                <div className="text-left"><p className="text-sm font-bold text-slate-900">1 Year Warranty</p><p className="text-[11px] text-slate-500 font-medium">काम पर 1 साल की वारंटी</p></div>
               </div>
-            </div> {/* End Trust Strip */}
-          </div> 
+            </div>
+          </div>
         </motion.div>
+
+        {/* ── NEW: INFINITE SLIDER DESIGN (Cards से ठीक ऊपर) ───────────────────────── */}
+        <div className="relative mb-14 overflow-hidden py-4">
+          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10" />
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10" />
+          
+          <motion.div 
+            className="flex gap-4 whitespace-nowrap"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ ease: "linear", duration: 20, repeat: Infinity }}
+          >
+            {[...services, ...services].map((s, i) => (
+              <div key={i} className="flex items-center gap-3 bg-white border border-blue-100 px-6 py-3 rounded-2xl shadow-sm hover:border-blue-400 transition-colors">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">{s.icon}</span>
+                <span className="font-bold text-slate-800 tracking-tight">{s.title}</span>
+                <span className="text-blue-200">/</span>
+                <span className="text-slate-500 text-sm font-medium">{s.titleHi}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
     {/* Magazine-style cards grid */}
     <motion.div
       className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
