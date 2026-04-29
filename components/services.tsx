@@ -187,7 +187,7 @@ export default function Services() {
                 </div>
               </div>
             </div> {/* End Trust Strip */}
-          </div>
+          </div> 
         </motion.div>
     {/* Magazine-style cards grid */}
     <motion.div
