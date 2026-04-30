@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import AnimatedAura from '@/components/animated-aura'
 import './globals.css'
+import InstallButton from '@/components/InstallButton'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -143,14 +144,13 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({
+ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      {/* बॉडी क्लास में ग्रेडिएंट और स्मूथ फॉन्ट जोड़ा गया है */}
       <body className="font-inter min-h-screen text-slate-900 mesh-aurora selection:bg-blue-200 selection:text-blue-950 antialiased">
 
         <AnimatedAura />
