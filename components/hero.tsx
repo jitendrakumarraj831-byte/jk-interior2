@@ -455,30 +455,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Mobile Sticky CTA Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur-md lg:hidden">
-        <div className="flex gap-3">
-          <a
-            href="tel:+918651070831"
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-sm font-bold text-white shadow-md active:bg-blue-700"
-            aria-label="Call now"
-          >
-            <Phone className="h-4 w-4" />
-            Call Now
-          </a>
-          <a
-            href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-md active:bg-emerald-700"
-            aria-label="WhatsApp now"
-          >
-            <MessageCircle className="h-4 w-4" />
-            WhatsApp
-          </a>
-        </div>
-      </div>
-
       {/* Hidden SEO Rich Text */}
       <div className="sr-only" aria-hidden="true">
         <h1>JK Interior - Best Interior Designer in Forbesganj, Araria, Bihar</h1>
@@ -492,4 +468,13 @@ export default function Hero() {
           Forbesganj, Araria, and nearby areas in Bihar.
         </p>
         <p>
-   
+          Services: PVC False Ceiling in Forbesganj, Gypsum Ceiling in Araria,
+          WPC Wall Panel in Bihar, UV Marble Sheet Installation, Modular TV
+          Unit Design, Interior Designer in Forbesganj, Interior Designer in
+          Araria, Interior Designer in Bihar, False Ceiling Contractor, Wall
+          Paneling Expert.
+        </p>
+      </div>
+    </section>
+  );
+}
