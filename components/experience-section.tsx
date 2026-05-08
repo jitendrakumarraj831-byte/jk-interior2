@@ -18,3 +18,6 @@ export default function ExperienceSection() {
   <WhyUs />
   <Gallery />
 </div>
+</section>
+  )
+}
