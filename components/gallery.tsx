@@ -9,7 +9,6 @@ import {
   Phone,
   MessageCircle,
   MapPin,
-  Sparkles,
   Eye,
   BadgeCheck,
   Maximize2,
@@ -21,105 +20,98 @@ const easeLux = [0.22, 1, 0.36, 1] as const;
 type GalleryItem = {
   src: string;
   alt: string;
-  title: string;
-  titleHi: string;
   category: string;
-  location: string;
-  tag: string;
+  width: number;
+  height: number;
 };
 
-const categories = [
-  { id: "all", label: "All Projects", labelHi: "सभी" },
-  { id: "pvc-ceiling", label: "PVC Ceiling", labelHi: "PVC सीलिंग" },
-  { id: "gypsum-ceiling", label: "Gypsum Ceiling", labelHi: "जिप्सम सीलिंग" },
-  { id: "wpc-panel", label: "WPC Panel", labelHi: "WPC पैनल" },
-  { id: "tv-unit", label: "TV Unit", labelHi: "TV यूनिट" },
-  { id: "uv-marble", label: "UV Marble", labelHi: "UV मार्बल" },
+const galleryImages: GalleryItem[] = [
+  // ── Gypsum False Ceiling (11 Images) ──
+  { src: "/images/gypsum.jpg", alt: "Gypsum ceiling design", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum1.jpg", alt: "Modern gypsum work", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum2.jpg", alt: "Gypsum hall design", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum3.jpg", alt: "Luxury gypsum decor", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum4.jpg", alt: "Gypsum bedroom finish", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum5.jpg", alt: "Gypsum cove lighting", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum6.jpg", alt: "Gypsum office ceiling", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum7.jpg", alt: "Premium gypsum board", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum8.jpg", alt: "Gypsum arch design", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum9.jpg", alt: "Gypsum designer work", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  { src: "/images/gypsum10.jpg", alt: "Latest gypsum false ceiling finish", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
+  // ── PVC Ceiling (10 Images) ──
+  { src: "/images/pvc.jpg", alt: "PVC ceiling panel", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc1.jpg", alt: "PVC bedroom design", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc2.jpg", alt: "PVC kitchen ceiling", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc3.jpg", alt: "Waterproof PVC work", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc4.jpg", alt: "Modern PVC texture", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc5.jpg", alt: "PVC panel fitting", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc6.jpg", alt: "PVC shop ceiling", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc7.jpg", alt: "Commercial PVC work", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc8.jpg", alt: "PVC glossy finish", category: "PVC Ceiling", width: 1080, height: 1080 },
+  { src: "/images/pvc9.jpg", alt: "PVC wooden texture", category: "PVC Ceiling", width: 1080, height: 1080 },
+  // ── Grid Ceiling (4 Images) ──
+  { src: "/images/grid.jpg", alt: "Office grid ceiling", category: "Grid Ceiling", width: 1080, height: 1080 },
+  { src: "/images/grid1.jpg", alt: "Commercial grid work", category: "Grid Ceiling", width: 1080, height: 1080 },
+  { src: "/images/grid2.jpg", alt: "Hospital grid panels", category: "Grid Ceiling", width: 1080, height: 1080 },
+  { src: "/images/grid3.jpg", alt: "Mineral fiber grid", category: "Grid Ceiling", width: 1080, height: 1080 },
+  { src: "/images/grid4.jpg", alt: "Acoustic grid ceiling", category: "Grid Ceiling", width: 1080, height: 1080 },
+  // ── WPC fluted panels & UV marble Sheet (14 Images) ──
+  { src: "/images/wpc.jpg", alt: "WPC louvers wall", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc1.jpg", alt: "Fluted wall panel", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc2.jpg", alt: "UV marble sheet design", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc3.jpg", alt: "TV wall wood panel", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc4.jpg", alt: "Bedroom fluted panel", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc5.jpg", alt: "Luxury UV marble finish", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc6.jpg", alt: "Exterior WPC louvers", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc7.jpg", alt: "Interior wall cladding", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc8.jpg", alt: "Charcoal wall panel", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc9.jpg", alt: "Decorative wall sheet", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc10.jpg", alt: "Designer fluted panel finish", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc11.jpg", alt: "Premium wall texture work", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc12.jpg", alt: "Modern fluted interior decor", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/wpc13.jpg", alt: "Stylish WPC wall design", category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  // ── TV Unit Design (5 Images) ──
+  { src: "/images/tv-unit.jpg", alt: "Modern TV unit", category: "TV Unit Design", width: 1080, height: 1080 },
+  { src: "/images/tv-unit1.jpg", alt: "TV cabinet design", category: "TV Unit Design", width: 1080, height: 1080 },
+  { src: "/images/tv-unit2.jpg", alt: "LED panel TV unit", category: "TV Unit Design", width: 1080, height: 1080 },
+  { src: "/images/tv-unit3.jpg", alt: "Luxury hall TV unit", category: "TV Unit Design", width: 1080, height: 1080 },
+  { src: "/images/tv-unit4.jpg", alt: "Wooden TV unit finish", category: "TV Unit Design", width: 1080, height: 1080 },
+  // ── Artificial Grass (6 Images) ──
+  { src: "/images/A.jpg", alt: "Artificial grass balcony", category: "Artificial Grass", width: 1080, height: 1080 },
+  { src: "/images/A1.jpg", alt: "Wall grass decor", category: "Artificial Grass", width: 1080, height: 1080 },
+  { src: "/images/A2.jpg", alt: "Green turf installation", category: "Artificial Grass", width: 1080, height: 1080 },
+  { src: "/images/A3.jpg", alt: "Terrace grass garden", category: "Artificial Grass", width: 1080, height: 1080 },
+  { src: "/images/A4.jpg", alt: "Premium artificial turf", category: "Artificial Grass", width: 1080, height: 1080 },
+  { src: "/images/A5.jpg", alt: "Landscape artificial grass", category: "Artificial Grass", width: 1080, height: 1080 },
 ];
 
-const galleryItems: GalleryItem[] = [
-  {
-    src: "https://images.pexels.com/photos/6480707/pexels-photo-6480707.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "PVC false ceiling design in Forbesganj by JK Interior",
-    title: "Modern PVC Ceiling",
-    titleHi: "मॉडर्न PVC सीलिंग",
-    category: "pvc-ceiling",
-    location: "Forbesganj",
-    tag: "Completed",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969872/pexels-photo-6969872.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "Gypsum ceiling design with lighting in Araria",
-    title: "Elegant Gypsum Ceiling",
-    titleHi: "एलिगेंट जिप्सम सीलिंग",
-    category: "gypsum-ceiling",
-    location: "Araria",
-    tag: "Premium",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969460/pexels-photo-6969460.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "WPC wall paneling installation in Bihar",
-    title: "WPC Wall Panel",
-    titleHi: "WPC वॉल पैनल",
-    category: "wpc-panel",
-    location: "Forbesganj",
-    tag: "Best Seller",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969864/pexels-photo-6969864.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "Modular TV unit design in Forbesganj",
-    title: "Luxury TV Unit",
-    titleHi: "लक्ज़री TV यूनिट",
-    category: "tv-unit",
-    location: "Araria",
-    tag: "Trending",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969464/pexels-photo-6969464.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "UV marble sheet wall design in Bihar",
-    title: "UV Marble Sheet",
-    titleHi: "UV मार्बल शीट",
-    category: "uv-marble",
-    location: "Forbesganj",
-    tag: "New",
-  },
-  {
-    src: "https://images.pexels.com/photos/6480707/pexels-photo-6480707.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "PVC ceiling with LED lighting in Forbesganj",
-    title: "LED PVC Ceiling",
-    titleHi: "LED PVC सीलिंग",
-    category: "pvc-ceiling",
-    location: "Araria",
-    tag: "Completed",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969872/pexels-photo-6969872.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "Designer gypsum ceiling in Araria Bihar",
-    title: "Designer Gypsum",
-    titleHi: "डिज़ाइनर जिप्सम",
-    category: "gypsum-ceiling",
-    location: "Forbesganj",
-    tag: "Premium",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969460/pexels-photo-6969460.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "WPC panel bedroom wall in Bihar",
-    title: "Bedroom WPC Panel",
-    titleHi: "बेडरूम WPC पैनल",
-    category: "wpc-panel",
-    location: "Araria",
-    tag: "Completed",
-  },
-  {
-    src: "https://images.pexels.com/photos/6969864/pexels-photo-6969864.jpeg?auto=compress&cs=tinysrgb&w=800",
-    alt: "Modern TV unit with storage in Forbesganj",
-    title: "Storage TV Unit",
-    titleHi: "स्टोरेज TV यूनिट",
-    category: "tv-unit",
-    location: "Forbesganj",
-    tag: "Best Seller",
-  },
+function buildGalleryJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    name: "JK Interior Gallery - Bihar",
+    description:
+      "Professional Gypsum, PVC, Grid Ceiling and Wall Panel projects in Bihar.",
+    image: galleryImages.map(
+      (img) => `https://www.jkinterior.online${img.src}`
+    ),
+  };
+}
+
+const categoryList = [
+  { id: "all", label: "All Projects", labelHi: "सभी" },
+  { id: "Gypsum False Ceiling", label: "Gypsum Ceiling", labelHi: "जिप्सम सीलिंग" },
+  { id: "PVC Ceiling", label: "PVC Ceiling", labelHi: "PVC सीलिंग" },
+  { id: "Grid Ceiling", label: "Grid Ceiling", labelHi: "ग्रिड सीलिंग" },
+  { id: "WPC fluted panels & uv marble Sheet", label: "WPC & UV Marble", labelHi: "WPC पैनल" },
+  { id: "TV Unit Design", label: "TV Unit", labelHi: "TV यूनिट" },
+  { id: "Artificial Grass", label: "Artificial Grass", labelHi: "आर्टिफिशियल ग्रास" },
 ];
+
+const categoryCounts: Record<string, number> = {};
+galleryImages.forEach((img) => {
+  categoryCounts[img.category] = (categoryCounts[img.category] || 0) + 1;
+});
 
 function FloatingOrb({
   className,
@@ -158,8 +150,8 @@ export default function Gallery() {
 
   const filtered =
     activeCategory === "all"
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === activeCategory);
+      ? galleryImages
+      : galleryImages.filter((item) => item.category === activeCategory);
 
   const openLightbox = useCallback((idx: number) => {
     setLightboxIndex(idx);
@@ -178,7 +170,9 @@ export default function Gallery() {
 
   const goPrev = useCallback(() => {
     if (lightboxIndex === null) return;
-    setLightboxIndex((lightboxIndex - 1 + filtered.length) % filtered.length);
+    setLightboxIndex(
+      (lightboxIndex - 1 + filtered.length) % filtered.length
+    );
   }, [lightboxIndex, filtered.length]);
 
   useEffect(() => {
@@ -223,7 +217,7 @@ export default function Gallery() {
           hidden: { opacity: 0 },
           visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+            transition: { staggerChildren: 0.04, delayChildren: 0.05 },
           },
         },
       };
@@ -232,15 +226,17 @@ export default function Gallery() {
     ? {}
     : {
         variants: {
-          hidden: { opacity: 0, y: 20, scale: 0.97 },
+          hidden: { opacity: 0, y: 16, scale: 0.97 },
           visible: {
             opacity: 1,
             y: 0,
             scale: 1,
-            transition: { duration: 0.5, ease: easeLux },
+            transition: { duration: 0.45, ease: easeLux },
           },
         },
       };
+
+  const jsonLd = buildGalleryJsonLd();
 
   return (
     <section
@@ -312,91 +308,100 @@ export default function Gallery() {
           {...animProps}
           className="mb-10 flex flex-wrap justify-center gap-2 sm:mb-12 sm:gap-3"
         >
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-bold transition-all duration-300 sm:px-5 sm:py-2.5 sm:text-sm ${
-                activeCategory === cat.id
-                  ? "border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-600"
-              }`}
-              aria-pressed={activeCategory === cat.id}
-              aria-label={`Filter by ${cat.label}`}
-            >
-              {cat.label}
-              <span className="text-[10px] opacity-60 sm:text-xs">
-                {cat.labelHi}
-              </span>
-            </button>
-          ))}
+          {categoryList.map((cat) => {
+            const count =
+              cat.id === "all"
+                ? galleryImages.length
+                : categoryCounts[cat.id] || 0;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-bold transition-all duration-300 sm:px-5 sm:py-2.5 sm:text-sm ${
+                  activeCategory === cat.id
+                    ? "border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/20"
+                    : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-600"
+                }`}
+                aria-pressed={activeCategory === cat.id}
+                aria-label={`Filter by ${cat.label}`}
+              >
+                {cat.label}
+                <span className="text-[10px] opacity-60 sm:text-xs">
+                  {cat.labelHi}
+                </span>
+                <span
+                  className={`ml-0.5 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-bold sm:h-5 sm:text-[10px] ${
+                    activeCategory === cat.id
+                      ? "bg-white/20 text-white"
+                      : "bg-slate-100 text-slate-500"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </motion.div>
 
         {/* Gallery Grid */}
         <motion.div
           key={activeCategory}
           {...staggerContainer}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6"
+          className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 lg:gap-5"
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((item, idx) => (
               <motion.div
-                key={`${item.title}-${idx}`}
+                key={`${item.src}-${idx}`}
                 {...staggerItem}
                 layout
-                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-slate-100 bg-white transition-all duration-500 hover:border-slate-200 hover:shadow-xl hover:shadow-blue-500/5 sm:rounded-3xl"
+                className="group relative cursor-pointer overflow-hidden rounded-xl border border-slate-100 bg-white transition-all duration-500 hover:border-slate-200 hover:shadow-xl hover:shadow-blue-500/5 sm:rounded-2xl lg:rounded-3xl"
                 onClick={() => openLightbox(idx)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") openLightbox(idx);
                 }}
-                aria-label={`View ${item.title} - ${item.alt}`}
+                aria-label={`View ${item.alt}`}
               >
                 {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-square overflow-hidden">
                   <Image
                     src={item.src}
                     alt={item.alt}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    width={item.width}
+                    height={item.height}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
                   {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/10 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                  {/* Tag badge */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1 rounded-lg bg-blue-600/90 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm sm:top-4 sm:left-4 sm:rounded-xl sm:px-2.5 sm:text-xs">
-                    <BadgeCheck className="h-3 w-3" />
-                    {item.tag}
-                  </div>
-
-                  {/* Location */}
-                  <div className="absolute top-3 right-3 flex items-center gap-1 rounded-lg bg-white/90 px-2 py-0.5 text-[10px] font-bold text-slate-700 backdrop-blur-sm sm:top-4 sm:right-4 sm:rounded-xl sm:px-2.5 sm:text-xs">
-                    <MapPin className="h-2.5 w-2.5 text-blue-600 sm:h-3 sm:w-3" />
-                    {item.location}
+                  {/* Category badge */}
+                  <div className="absolute top-2 left-2 flex items-center gap-1 rounded-md bg-blue-600/90 px-1.5 py-0.5 text-[9px] font-bold text-white backdrop-blur-sm sm:top-3 sm:left-3 sm:rounded-lg sm:px-2 sm:py-1 sm:text-[10px]">
+                    <BadgeCheck className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                    {item.category.length > 18
+                      ? item.category.substring(0, 16) + "..."
+                      : item.category}
                   </div>
 
                   {/* Expand icon */}
-                  <div className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-white opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 sm:bottom-4 sm:right-4 sm:h-10 sm:w-10 sm:rounded-xl">
-                    <Maximize2 className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 text-white opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 sm:bottom-3 sm:right-3 sm:h-9 sm:w-9 sm:rounded-xl">
+                    <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
 
-                  {/* Title on image */}
-                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4">
-                    <h3 className="text-base font-bold text-white sm:text-lg lg:text-xl">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs font-medium text-white/70 sm:text-sm">
-                      {item.titleHi}
+                  {/* Alt text on hover */}
+                  <div className="absolute bottom-2 left-2 right-10 sm:bottom-3 sm:left-3 sm:right-12">
+                    <p className="truncate text-xs font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:text-sm">
+                      {item.alt}
                     </p>
                   </div>
                 </div>
 
                 {/* Hover glow */}
                 <div
-                  className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:rounded-3xl"
+                  className="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:rounded-2xl lg:rounded-3xl"
                   style={{
                     boxShadow:
                       "inset 0 0 0 1px rgba(37,99,235,0.12), 0 0 30px -5px rgba(37,99,235,0.06)",
@@ -492,17 +497,17 @@ export default function Gallery() {
               animate={{ opacity: 1, scale: 1 }}
               exit={shouldReduce ? {} : { opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3, ease: easeLux }}
-              className="relative mx-4 flex max-h-[80dvh] w-full max-w-4xl flex-col items-center sm:mx-8"
+              className="relative mx-4 flex max-h-[85dvh] w-full max-w-4xl flex-col items-center sm:mx-8"
               onClick={(e) => e.stopPropagation()}
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
+              <div className="relative aspect-square w-full overflow-hidden rounded-2xl sm:rounded-3xl">
                 <Image
                   src={filtered[lightboxIndex].src}
                   alt={filtered[lightboxIndex].alt}
-                  fill
-                  sizes="90vw"
+                  width={filtered[lightboxIndex].width}
+                  height={filtered[lightboxIndex].height}
                   className="object-cover"
                   priority
                 />
@@ -512,11 +517,10 @@ export default function Gallery() {
               <div className="mt-4 flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-4">
                 <div className="text-center sm:text-left">
                   <h3 className="text-lg font-bold text-white sm:text-xl">
-                    {filtered[lightboxIndex].title}
+                    {filtered[lightboxIndex].alt}
                   </h3>
                   <p className="text-sm text-slate-400">
-                    {filtered[lightboxIndex].titleHi} &bull;{" "}
-                    {filtered[lightboxIndex].location}
+                    {filtered[lightboxIndex].category}
                   </p>
                 </div>
                 <div className="flex gap-2 sm:gap-3">
@@ -529,7 +533,7 @@ export default function Gallery() {
                     Inquire
                   </a>
                   <a
-                    href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20liked%20the%20${encodeURIComponent(filtered[lightboxIndex].title)}%20project`}
+                    href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20liked%20the%20${encodeURIComponent(filtered[lightboxIndex].alt)}%20project`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white transition-all hover:bg-emerald-700 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm"
@@ -550,17 +554,25 @@ export default function Gallery() {
         )}
       </AnimatePresence>
 
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Hidden SEO text */}
       <div className="sr-only" aria-hidden="true">
         <h2>Interior Design Gallery - JK Interior Forbesganj</h2>
         <p>
           Browse our gallery of completed interior design projects in Forbesganj,
-          Araria, and Bihar. See real examples of PVC false ceiling designs,
-          gypsum ceiling installations, WPC wall paneling, UV marble sheet work,
-          and modular TV unit designs. Every project showcases our premium
-          quality materials, waterproof solutions, and expert craftsmanship.
+          Araria, and Bihar. See real examples of gypsum false ceiling designs,
+          PVC ceiling installations, grid ceiling work, WPC fluted panels, UV
+          marble sheet installations, modular TV unit designs, and artificial
+          grass setups. Every project showcases our premium quality materials,
+          waterproof solutions, and expert craftsmanship.
         </p>
       </div>
     </section>
   );
-}
+      }
+      
