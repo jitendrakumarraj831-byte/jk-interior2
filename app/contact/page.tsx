@@ -69,6 +69,7 @@ export default function Page() {
         Contact JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar
       </h1>
 
+      <div className="pt-28" />
       <Contact />
       <Footer />
     </>

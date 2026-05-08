@@ -72,6 +72,7 @@ export default function Page() {
         False Ceiling, PVC Panel & Interior Design Gallery – JK Interior Forbesganj, Araria Bihar
       </h1>
 
+      <div className="pt-28" />
       <Gallery />
       <Footer />
     </>

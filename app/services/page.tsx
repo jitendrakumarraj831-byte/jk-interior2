@@ -3,6 +3,7 @@ import Navbar from "@/components/navbar"
 import Services from "@/components/services"
 import Footer from "@/components/footer"
 import Link from "next/link"
+import { Phone, MessageCircle } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Interior Design Services in Forbesganj | Gypsum, POP, PVC & WPC – JK Interior Bihar",
@@ -89,45 +90,54 @@ const servicesJsonLd = {
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }} />
       <Navbar />
 
       <h1 className="sr-only">
         False Ceiling Contractor & Interior Design Services in Forbesganj, Araria Bihar – Gypsum, PVC, WPC, TV Unit by JK Interior
       </h1>
 
+      <div className="pt-28" />
       <Services />
 
-      <section className="py-16 text-center bg-blue-50/60">
-        <div className="mx-auto max-w-2xl px-6 space-y-5">
-          <h2 className="text-2xl font-black text-blue-950 md:text-3xl">
+      <section className="py-16 text-center relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#071126] to-[#0d1f3c]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(37,99,235,0.08),transparent)]" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-2xl px-6 space-y-6">
+          <h2 className="text-2xl font-black text-white md:text-3xl">
             Ready to Transform Your Space?
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-slate-400 text-base">
             Get a free quote for any of our services. We serve{" "}
-            <Link href="/#areas" className="underline decoration-blue-300 underline-offset-2 hover:text-blue-700" title="JK Interior service areas in Araria district">
+            <Link href="/#areas" className="underline decoration-blue-500 underline-offset-4 text-blue-400 hover:text-blue-300 transition-colors" title="JK Interior service areas in Araria district">
               Forbesganj, Araria, Narpatganj, Jogbani
             </Link>{" "}
             and all across Bihar. You can also{" "}
-            <Link href="/gallery" className="underline decoration-blue-300 underline-offset-2 hover:text-blue-700" title="View our false ceiling and interior design gallery in Araria">
+            <Link href="/gallery" className="underline decoration-blue-500 underline-offset-4 text-blue-400 hover:text-blue-300 transition-colors" title="View our false ceiling and interior design gallery in Araria">
               browse our recent false ceiling &amp; interior projects
-            </Link>
-            .
+            </Link>.
           </p>
-          <Link
-            href="/contact"
-            title="Contact JK Interior Forbesganj for a free interior design quote"
-            className="inline-flex items-center gap-2 rounded-full gold-gradient text-primary-foreground font-bold px-8 py-4 btn-luxury-glow luxury-animated-shine text-sm uppercase tracking-wide transition-all active:scale-95"
-          >
-            Get Free Quote →
-          </Link>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a
+              href="tel:+918651070831"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white font-bold px-8 py-4 text-sm shadow-[0_4px_24px_rgba(37,99,235,0.4)] hover:bg-blue-500 transition-all active:scale-95 luxury-animated-shine"
+            >
+              <Phone className="h-4 w-4" />
+              Get Free Quote
+            </a>
+            <a
+              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] text-white font-bold px-8 py-4 text-sm shadow-[0_4px_24px_rgba(37,205,102,0.3)] hover:bg-green-500 transition-all active:scale-95"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp Us
+            </a>
+          </div>
         </div>
       </section>
 

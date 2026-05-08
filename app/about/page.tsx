@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Navbar from "@/components/navbar"
 import WhyUs from "@/components/why-us"
+import Testimonials from "@/components/testimonials"
 import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
@@ -69,7 +70,9 @@ export default function Page() {
         Best Interior Designer & False Ceiling Contractor in Forbesganj, Araria Bihar – About JK Interior
       </h1>
 
+      <div className="pt-28" />
       <WhyUs />
+      <Testimonials />
       <Footer />
     </>
   )

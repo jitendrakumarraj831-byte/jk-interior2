@@ -14,20 +14,25 @@ A Next.js 15 website for JK Interior, a PVC wall paneling and false ceiling cont
 
 ## Design System
 
-### Background
-Global body background: `radial-gradient(circle at top, #dbeafe, #f0f7ff)` — light blue (Tailwind blue-100 to near-white) with `background-attachment: fixed` — applied in `app/globals.css` @layer base. Do NOT add `bg-background` utility class to `<body>` in layout.tsx as it overrides the gradient.
+### Background — DARK NAVY THEME (May 2026)
+Body: `#071126` base + radial gradient overlays (blue glow on top, right, left). Applied directly in `app/globals.css` @layer base on `body`. Do NOT add `bg-background` class to body — it will override the dark navy.
 
-### Glassmorphism (Light Theme)
-- `glass-panel`: `rgba(255,255,255,0.78)` bg, `blur(6px)`, `rgba(37,99,235,0.12)` border, subtle blue shadow
-- `glass-card`: `rgba(255,255,255,0.80)` bg, `blur(6px)`, `rgba(37,99,235,0.10)` border, `border-radius: 1.25rem`
-- `glass-input`: `rgba(255,255,255,0.88)` bg, `blur(4px)`, blue border accent
+### Glassmorphism (Dark Theme)
+- `glass-panel`: `rgba(13,31,60,0.75)` bg, `blur(16px)`, `rgba(37,99,235,0.2)` border, dark shadow
+- `glass-card`: `rgba(13,31,60,0.8)` bg, `blur(16px)`, `rgba(37,99,235,0.2)` border, `border-radius: 1.25rem`
+- `glass-card-bright`: `rgba(17,34,74,0.85)` bg, `blur(20px)`, `rgba(59,130,246,0.3)` border — used for prominent cards
+- `glass-input`: `rgba(7,17,38,0.9)` bg, `blur(8px)`, blue border accent — for dark form inputs
 
-### Blue Palette (replaces Gold)
-- `--gold` (primary blue): `#2563eb`
+### Color Palette
+- `--bg-primary`: `#071126` (darkest navy)
+- `--bg-secondary`: `#0d1f3c` (slightly lighter navy)
+- `--gold` / primary blue: `#2563eb`
 - `--gold-light`: `#60a5fa`
 - `--gold-dark`: `#1d4ed8`
 - `--gold-hover`: `#3b82f6`
-- `.gold-gradient`: deep-to-bright blue gradient for CTA buttons
+- `--amber`: `#fbbf24` — secondary accent
+- Text: `#f0f6ff` bright, `#94a3b8` muted, `#64748b` dim
+- `.gold-gradient`: `linear-gradient(135deg, #1e3a8a, #2563eb, #3b82f6, #1d4ed8)` for CTA buttons
 - `.gold-text`: blue gradient text clip
 - `.btn-luxury-glow`: blue box-shadow glow effect
 - `.luxury-animated-shine`: animated shine sweep on buttons
