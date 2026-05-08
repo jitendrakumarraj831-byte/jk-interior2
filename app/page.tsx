@@ -120,7 +120,7 @@ return (
   <Services />
 
   {/* Why Choose Us */}
-  <WhyUs layout="experience" />
+  <WhyUs />
 
   {/* Service Areas */}
   <ServiceAreas />
