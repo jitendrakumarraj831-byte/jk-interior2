@@ -15,9 +15,6 @@ export default function ExperienceSection() {
       </div>
 
       <div className="relative z-10">
-        <WhyUs layout="experience" />
-        <Gallery layout="experience" />
-      </div>
-    </section>
-  )
-}
+  <WhyUs />
+  <Gallery />
+</div>
