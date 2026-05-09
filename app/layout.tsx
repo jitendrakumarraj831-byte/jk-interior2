@@ -134,7 +134,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-inter min-h-screen text-foreground antialiased">
+      <body className="font-inter min-h-screen text-foreground antialiased" suppressHydrationWarning>
 
         <script
           type="application/ld+json"

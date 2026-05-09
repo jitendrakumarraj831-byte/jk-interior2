@@ -27,8 +27,6 @@ const trustBadges = [
   { icon: ShieldCheck, label: "ISI Certified", color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
   { icon: Droplets, label: "Waterproof", color: "text-cyan-400", bg: "bg-cyan-500/10 border-cyan-500/20" },
   { icon: Sparkles, label: "Dust-Free", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
-  { icon: Clock, label: "Fast Install", color: "text-orange-400", bg: "bg-orange-500/10 border-orange-500/20" },
-  { icon: CheckCircle2, label: "5 Yr Warranty", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
 ]
 
 const serviceCards = [
@@ -63,14 +61,11 @@ export default function Hero() {
     <section
       id="home"
       className="relative min-h-[100dvh] w-full overflow-hidden"
-      aria-label="JK Interior - Premium Interior Design in Forbesganj, Bihar"
+      aria-label="JK Interior - Best Interior Designer in Forbesganj Araria Bihar"
     >
       {/* Background layers */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        {/* Base dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#040d20] via-[#071126] to-[#0a1630]" />
-
-        {/* Blue glow orbs */}
         {!shouldReduce && (
           <>
             <motion.div
@@ -83,18 +78,9 @@ export default function Hero() {
               animate={{ opacity: [0.3, 0.55, 0.3], y: [0, -30, 0] }}
               transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 2 }}
             />
-            <motion.div
-              className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-amber-600/8 blur-[80px]"
-              animate={{ opacity: [0.2, 0.4, 0.2] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-            />
           </>
         )}
-
-        {/* Grid texture */}
         <div className="absolute inset-0 grid-texture opacity-40" />
-
-        {/* Top fade */}
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#040d20] to-transparent" />
       </div>
 
@@ -107,12 +93,12 @@ export default function Hero() {
 
             {/* Trust Badges */}
             <motion.div {...anim(0.1)} className="mb-6 flex flex-wrap gap-2">
-              {trustBadges.slice(0, 4).map((badge) => (
+              {trustBadges.map((badge) => (
                 <div
                   key={badge.label}
                   className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 ${badge.bg}`}
                 >
-                  <badge.icon className={`h-3 w-3 ${badge.color}`} />
+                  <badge.icon className={`h-3 w-3 ${badge.color}`} aria-hidden="true" />
                   <span className={`text-[9px] font-bold uppercase tracking-widest sm:text-[10px] ${badge.color}`}>
                     {badge.label}
                   </span>
@@ -120,9 +106,9 @@ export default function Hero() {
               ))}
             </motion.div>
 
-            {/* Main Heading */}
+            {/* Brand Wordmark — div with heading role to avoid duplicate H1 */}
             <motion.div {...anim(0.15)} className="mb-5">
-              <h1 className="font-black leading-none tracking-tighter text-white">
+              <div role="heading" aria-level={2} className="font-black leading-none tracking-tighter text-white">
                 <span
                   className="block"
                   style={{ fontSize: "clamp(3rem, 10vw, 6.5rem)" }}
@@ -138,7 +124,7 @@ export default function Hero() {
                 >
                   INTERIOR
                 </span>
-              </h1>
+              </div>
               <motion.div
                 initial={shouldReduce ? {} : { scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -170,11 +156,11 @@ export default function Hero() {
 
             {/* Hindi Tagline */}
             <motion.div {...anim(0.3)} className="mb-7 max-w-xl">
-              <h2 className="mb-3 text-2xl font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">
+              <p className="mb-3 text-2xl font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">
                 साधारण दीवारों को दें
                 <br />
                 <span className="hero-gradient-text">एक शाही पहचान</span>
-              </h2>
+              </p>
               <p className="text-sm font-medium leading-relaxed text-slate-400 sm:text-base">
                 फारबिसगंज में इंटीरियर का{" "}
                 <span className="font-bold text-blue-400 underline decoration-blue-800 underline-offset-4">
@@ -188,46 +174,47 @@ export default function Hero() {
             <motion.div {...anim(0.4)} className="mb-6 flex flex-wrap gap-3">
               <a
                 href="tel:+918651070831"
-                aria-label="Call for free quotation"
+                aria-label="Call JK Interior for free quotation"
                 className="group relative flex items-center gap-2 overflow-hidden rounded-xl bg-blue-600 px-7 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(37,99,235,0.4)] transition-all hover:bg-blue-500 hover:shadow-[0_4px_32px_rgba(37,99,235,0.6)] active:scale-95 sm:px-8 sm:py-4 sm:text-base luxury-animated-shine"
               >
-                <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Phone className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 फ्री कोटेशन लें
               </a>
               <a
-                href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation"
+                href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation%20for%20interior%20work."
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="WhatsApp us now"
+                aria-label="WhatsApp JK Interior now"
                 className="group flex items-center gap-2 rounded-xl bg-emerald-600 px-7 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)] active:scale-95 sm:px-8 sm:py-4 sm:text-base"
               >
-                <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+                <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 WhatsApp Now
               </a>
               <Link
                 href="/gallery"
+                aria-label="View our work gallery"
                 className="flex items-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/10 px-6 py-4 text-sm font-bold text-blue-300 transition-all hover:border-blue-400/60 hover:bg-blue-500/20 hover:text-blue-200 active:scale-95 sm:px-7 sm:py-4 sm:text-base"
               >
                 देखें काम
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </motion.div>
 
             {/* Extra Trust */}
             <motion.div {...anim(0.5)} className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
               <span className="flex items-center gap-1.5">
-                <Zap className="h-3.5 w-3.5 text-amber-400" />
+                <Zap className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
                 Free Site Visit Available
               </span>
-              <span className="text-slate-700">•</span>
+              <span className="text-slate-700" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
                 5 Year Written Warranty
               </span>
-              <span className="text-slate-700">•</span>
+              <span className="text-slate-700" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-blue-400" />
-                Forbesganj & Araria
+                <MapPin className="h-3.5 w-3.5 text-blue-400" aria-hidden="true" />
+                Forbesganj &amp; Araria
               </span>
             </motion.div>
           </div>
@@ -248,25 +235,25 @@ export default function Hero() {
                   className="group flex items-center gap-4 rounded-2xl border border-blue-500/20 bg-blue-900/20 p-4 backdrop-blur-sm transition-all duration-300 hover:border-blue-400/40 hover:bg-blue-900/35 hover:shadow-[0_4px_24px_rgba(37,99,235,0.12)] sm:gap-5 sm:p-5"
                 >
                   <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${item.color} text-white shadow-lg transition-transform duration-300 group-hover:scale-110 sm:h-14 sm:w-14 sm:rounded-2xl`}>
-                    <item.icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                    <item.icon className="h-6 w-6 sm:h-7 sm:w-7" aria-hidden="true" />
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-white sm:text-lg">{item.title}</h4>
+                    <p className="text-base font-bold text-white sm:text-lg">{item.title}</p>
                     <p className="text-xs font-medium text-slate-400 sm:text-sm">{item.desc}</p>
                   </div>
-                  <CheckCircle2 className="ml-auto h-5 w-5 shrink-0 text-blue-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <CheckCircle2 className="ml-auto h-5 w-5 shrink-0 text-blue-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Area Chips */}
-            <motion.div {...anim(0.55)} className="flex flex-wrap gap-2">
+            <motion.div {...anim(0.55)} className="flex flex-wrap gap-2" aria-label="Service areas">
               {areaChips.map((area) => (
                 <span
                   key={area}
                   className="flex items-center gap-1 rounded-full border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-400"
                 >
-                  <MapPin className="h-2.5 w-2.5 text-blue-400" />
+                  <MapPin className="h-2.5 w-2.5 text-blue-400" aria-hidden="true" />
                   {area}
                 </span>
               ))}
@@ -276,13 +263,14 @@ export default function Hero() {
             <motion.div
               {...anim(0.6)}
               className="grid grid-cols-4 gap-0 overflow-hidden rounded-2xl border border-blue-500/20 bg-gradient-to-br from-[#0d1f3c] to-[#071126]"
+              aria-label="JK Interior achievements"
             >
               {stats.map((s, i) => (
                 <div
                   key={s.label}
                   className={`flex flex-col items-center py-5 text-center ${i < stats.length - 1 ? "border-r border-blue-500/15" : ""}`}
                 >
-                  <s.icon className="mb-1.5 h-4 w-4 text-blue-400/60" />
+                  <s.icon className="mb-1.5 h-4 w-4 text-blue-400/60" aria-hidden="true" />
                   <div className="text-lg font-black text-blue-300 sm:text-xl lg:text-2xl">{s.value}</div>
                   <div className="mt-0.5 px-1 text-[8px] font-bold uppercase tracking-widest text-slate-500 sm:text-[9px]">{s.label}</div>
                 </div>
@@ -290,13 +278,6 @@ export default function Hero() {
             </motion.div>
           </div>
         </div>
-      </div>
-
-      {/* Hidden SEO Rich Text */}
-      <div className="sr-only" aria-hidden="true">
-        <h1>JK Interior - Best Interior Designer in Forbesganj, Araria, Bihar</h1>
-        <p>Premium Interior Design Services in Araria and Forbesganj – PVC Ceiling, Gypsum Ceiling, WPC Wall Panel, UV Marble Sheet and Complete Interior Solutions in Bihar.</p>
-        <p>Services: PVC False Ceiling in Forbesganj, Gypsum Ceiling in Araria, WPC Wall Panel in Bihar, UV Marble Sheet Installation, Modular TV Unit Design, Interior Designer in Forbesganj, Interior Designer in Araria, False Ceiling Contractor, Wall Paneling Expert.</p>
       </div>
     </section>
   )

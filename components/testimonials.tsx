@@ -62,6 +62,39 @@ const testimonials = [
   },
 ]
 
+const reviewJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "JK Interior",
+  url: "https://www.jkinterior.online",
+  telephone: "+91-8651070831",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Forbesganj",
+    addressRegion: "Bihar",
+    addressCountry: "IN",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    reviewCount: "100",
+    bestRating: "5",
+    worstRating: "1",
+  },
+  review: testimonials.map((t) => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: t.name },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: t.rating.toString(),
+      bestRating: "5",
+    },
+    reviewBody: t.text,
+    name: `${t.service} – JK Interior Review`,
+    publisher: { "@type": "Organization", name: "JK Interior" },
+  })),
+}
+
 export default function Testimonials() {
   const shouldReduce = useReducedMotion()
 
@@ -97,6 +130,12 @@ export default function Testimonials() {
 
   return (
     <section id="testimonials" className="relative overflow-hidden py-20 sm:py-24 lg:py-32">
+      {/* Review Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }}
+      />
+
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1630] via-[#071126] to-[#0a1630]" />
@@ -108,7 +147,7 @@ export default function Testimonials() {
         {/* Header */}
         <motion.div {...animProps} className="mb-14 text-center">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-1.5">
-            <Star className="h-3.5 w-3.5 text-amber-400" />
+            <Star className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300">Client Reviews</span>
           </div>
           <h2 className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
@@ -128,21 +167,21 @@ export default function Testimonials() {
 
         {/* Rating Summary */}
         <motion.div {...animProps} className="mb-10 flex justify-center">
-          <div className="glass-card px-8 py-5 flex items-center gap-6">
+          <div className="glass-card px-6 py-5 flex items-center gap-5 sm:px-8 sm:gap-6" aria-label="Overall rating: 5 stars, 100+ reviews">
             <div className="text-center">
               <div className="text-4xl font-black text-amber-400">5.0</div>
               <div className="flex gap-0.5 mt-1 justify-center">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />
+                  <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
                 ))}
               </div>
             </div>
-            <div className="h-12 w-px bg-blue-500/20" />
+            <div className="h-12 w-px bg-blue-500/20" aria-hidden="true" />
             <div className="text-center">
               <div className="text-2xl font-black text-white">100+</div>
               <div className="text-xs text-slate-500 font-semibold mt-1">Reviews</div>
             </div>
-            <div className="h-12 w-px bg-blue-500/20" />
+            <div className="h-12 w-px bg-blue-500/20" aria-hidden="true" />
             <div className="text-center">
               <div className="text-2xl font-black text-white">Bihar</div>
               <div className="text-xs text-slate-500 font-semibold mt-1">Wide Service</div>
@@ -160,19 +199,21 @@ export default function Testimonials() {
               key={t.name}
               {...staggerItem}
               className="group relative overflow-hidden rounded-2xl border border-blue-500/15 bg-gradient-to-br from-[#0d1f3c]/80 to-[#071126]/90 p-6 transition-all duration-500 hover:-translate-y-1 hover:border-blue-400/30 hover:shadow-[0_20px_60px_rgba(0,0,20,0.6)] sm:rounded-3xl"
+              itemScope
+              itemType="https://schema.org/Review"
             >
               {/* Quote icon */}
-              <Quote className="absolute top-4 right-4 h-8 w-8 text-blue-500/15" />
+              <Quote className="absolute top-4 right-4 h-8 w-8 text-blue-500/15" aria-hidden="true" />
 
               {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
+              <div className="flex gap-0.5 mb-4" aria-label={`${t.rating} out of 5 stars`}>
                 {[...Array(t.rating)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />
+                  <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
                 ))}
               </div>
 
               {/* Review Text */}
-              <p className="mb-5 text-sm leading-relaxed text-slate-300 sm:text-base">{t.text}</p>
+              <p className="mb-5 text-sm leading-relaxed text-slate-300 sm:text-base" itemProp="reviewBody">{t.text}</p>
 
               {/* Service Badge */}
               <div className="mb-4 inline-flex items-center gap-1 rounded-lg border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-[10px] font-bold text-blue-400">
@@ -181,13 +222,13 @@ export default function Testimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-3 border-t border-blue-500/10 pt-4">
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${t.color} text-white text-xs font-black shadow-lg`}>
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${t.color} text-white text-xs font-black shadow-lg`} aria-hidden="true">
                   {t.initials}
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-white">{t.name}</div>
+                  <div className="text-sm font-bold text-white" itemProp="author">{t.name}</div>
                   <div className="flex items-center gap-1 text-xs text-slate-500">
-                    <MapPin className="h-3 w-3 text-blue-400" />
+                    <MapPin className="h-3 w-3 text-blue-400" aria-hidden="true" />
                     {t.location}, Bihar
                   </div>
                 </div>
@@ -200,10 +241,11 @@ export default function Testimonials() {
         <motion.div {...animProps} className="mt-14 text-center">
           <p className="mb-5 text-base text-slate-400">अपने घर को भी दें premium interior का look</p>
           <a
-            href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20want%20to%20get%20interior%20work%20done."
+            href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20want%20to%20get%20interior%20work%20done.%20Please%20share%20details."
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(37,99,235,0.4)] transition-all hover:bg-blue-500 hover:shadow-[0_4px_32px_rgba(37,99,235,0.55)] active:scale-95"
+            aria-label="WhatsApp JK Interior for free consultation"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(37,99,235,0.4)] transition-all hover:bg-blue-500 hover:shadow-[0_4px_32px_rgba(37,99,235,0.55)] active:scale-95 touch-manipulation"
           >
             Get Free Consultation
           </a>

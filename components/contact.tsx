@@ -64,7 +64,7 @@ export default function Contact() {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             name: "JK Interior",
-            telephone: "+91-8541849118",
+            telephone: "+91-8651070831",
             email: "jkinteriorofficial@gmail.com",
             address: {
               "@type": "PostalAddress",

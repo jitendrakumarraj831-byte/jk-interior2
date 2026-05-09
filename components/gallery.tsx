@@ -81,6 +81,7 @@ function Lightbox({
       className="fixed inset-0 z-[9999] bg-[#040d20]/97 backdrop-blur-xl flex items-center justify-center"
       role="dialog"
       aria-modal="true"
+      aria-label={`Image: ${image.alt}`}
       onClick={onClose}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -96,25 +97,25 @@ function Lightbox({
           ref={closeButtonRef}
           onClick={onClose}
           aria-label="Close lightbox"
-          className="p-2.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/15 transition-colors"
+          className="p-2.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/15 transition-colors touch-manipulation"
         >
-          <X size={20} />
+          <X size={20} aria-hidden="true" />
         </button>
       </div>
 
       <button
-        className="absolute left-3 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white hover:bg-white/10 rounded-full hidden md:flex transition-colors"
+        className="absolute left-3 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white hover:bg-white/10 rounded-full hidden md:flex transition-colors touch-manipulation"
         onClick={(e) => { e.stopPropagation(); onPrev() }}
         aria-label="Previous image"
       >
-        <ChevronLeft size={40} />
+        <ChevronLeft size={40} aria-hidden="true" />
       </button>
       <button
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white hover:bg-white/10 rounded-full hidden md:flex transition-colors"
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white hover:bg-white/10 rounded-full hidden md:flex transition-colors touch-manipulation"
         onClick={(e) => { e.stopPropagation(); onNext() }}
         aria-label="Next image"
       >
-        <ChevronRight size={40} />
+        <ChevronRight size={40} aria-hidden="true" />
       </button>
 
       <motion.div
@@ -134,31 +135,34 @@ function Lightbox({
       >
         <div className="flex gap-1 md:hidden">
           {images.map((_, i) => (
-            <span key={i} className={`rounded-full transition-all duration-300 h-1.5 ${i === activeIndex ? "bg-blue-400 w-5" : "bg-white/20 w-1.5"}`} />
+            <span key={i} className={`rounded-full transition-all duration-300 h-1.5 ${i === activeIndex ? "bg-blue-400 w-5" : "bg-white/20 w-1.5"}`} aria-hidden="true" />
           ))}
         </div>
         <div className="flex flex-wrap items-center justify-center gap-2">
           <a
-            href={`https://wa.me/918651070831?text=${encodeURIComponent(`Hello! Mujhe is design ke baare me jaankari chahiye: "${image.alt}". Quote bhej dijiye.`)}`}
+            href={`https://wa.me/918651070831?text=${encodeURIComponent(`Hello JK Interior! Mujhe is design ke baare me jaankari chahiye: "${image.alt}". Quote bhej dijiye.`)}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#25D366] hover:bg-green-500 text-white text-sm font-bold rounded-full transition-all shadow-lg active:scale-95"
+            aria-label="WhatsApp about this design"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#25D366] hover:bg-green-500 text-white text-sm font-bold rounded-full transition-all shadow-lg active:scale-95 touch-manipulation"
           >
-            <MessageCircle size={15} /> इस Design पर WhatsApp
+            <MessageCircle size={15} aria-hidden="true" /> इस Design पर WhatsApp
           </a>
           <a
             href="tel:+918651070831"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-full transition-all shadow-lg active:scale-95"
+            aria-label="Call JK Interior"
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-full transition-all shadow-lg active:scale-95 touch-manipulation"
           >
-            <Phone size={15} /> Call करें
+            <Phone size={15} aria-hidden="true" /> Call करें
           </a>
           <button
             onClick={onClose}
-            className="flex items-center gap-2 px-5 py-2.5 bg-white/8 hover:bg-white/15 border border-white/15 text-white text-sm font-semibold rounded-full transition-all active:scale-95"
+            aria-label="Close gallery"
+            className="flex items-center gap-2 px-5 py-2.5 bg-white/8 hover:bg-white/15 border border-white/15 text-white text-sm font-semibold rounded-full transition-all active:scale-95 touch-manipulation"
           >
-            <X size={15} /> Close
+            <X size={15} aria-hidden="true" /> Close
           </button>
         </div>
       </div>
@@ -175,20 +179,24 @@ function CardThumb({ img, index, onOpen }: { img: GalleryImage; index: number; o
       viewport={{ once: true }}
       transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.25) }}
       onClick={() => onOpen(img)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && onOpen(img)}
+      aria-label={`View: ${img.alt}`}
       className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer border border-blue-500/10 hover:border-blue-400/35 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(0,0,20,0.6)]"
     >
       <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" sizes="(max-width: 640px) 50vw, 25vw" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#071126]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
         <div className="flex items-end justify-between w-full gap-1">
           <span className="text-white text-[11px] font-medium truncate drop-shadow pr-1">{img.alt}</span>
-          <ZoomIn size={14} className="text-blue-400 shrink-0" />
+          <ZoomIn size={14} className="text-blue-400 shrink-0" aria-hidden="true" />
         </div>
       </div>
     </motion.div>
   )
 }
 
-function FeaturedSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
+function FeaturedSection({ images, onOpen }: { images: GalleryImage[]; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
   const [featured, ...rest] = images
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
@@ -198,6 +206,10 @@ function FeaturedSection({ images, sectionIndex, onOpen }: { images: GalleryImag
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
         onClick={() => onOpen(featured)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && onOpen(featured)}
+        aria-label={`View featured: ${featured.alt}`}
         className="col-span-2 group relative aspect-[16/9] overflow-hidden rounded-2xl cursor-pointer border border-blue-500/15 hover:border-blue-400/40 transition-all duration-500"
       >
         <Image src={featured.src} alt={featured.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" sizes="(max-width: 768px) 100vw, 66vw" />
@@ -205,7 +217,7 @@ function FeaturedSection({ images, sectionIndex, onOpen }: { images: GalleryImag
           <span className="text-white font-semibold text-sm drop-shadow">{featured.alt}</span>
         </div>
         <div className="absolute top-3 left-3 rounded-full border border-blue-500/30 bg-blue-500/20 text-blue-300 text-[10px] font-bold px-3 py-1 tracking-wider uppercase backdrop-blur-sm">
-          <Sparkles className="inline h-3 w-3 mr-1" />Featured
+          <Sparkles className="inline h-3 w-3 mr-1" aria-hidden="true" />Featured
         </div>
       </motion.div>
       {rest.map((img, i) => (
@@ -215,7 +227,7 @@ function FeaturedSection({ images, sectionIndex, onOpen }: { images: GalleryImag
   )
 }
 
-function GridSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
+function GridSection({ images, onOpen }: { images: GalleryImage[]; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
       {images.map((img, i) => (
@@ -225,7 +237,7 @@ function GridSection({ images, sectionIndex, onOpen }: { images: GalleryImage[];
   )
 }
 
-function StripSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
+function StripSection({ images, onOpen }: { images: GalleryImage[]; sectionIndex: number; onOpen: (img: GalleryImage) => void }) {
   return (
     <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-luxury md:grid md:grid-cols-4 md:overflow-visible">
       {images.map((img, i) => (
@@ -236,13 +248,17 @@ function StripSection({ images, sectionIndex, onOpen }: { images: GalleryImage[]
           viewport={{ once: true }}
           transition={{ duration: 0.35, delay: Math.min(i * 0.05, 0.25) }}
           onClick={() => onOpen(img)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === "Enter" && onOpen(img)}
+          aria-label={`View: ${img.alt}`}
           className="group relative flex-shrink-0 w-[68vw] md:w-auto snap-start aspect-[3/4] overflow-hidden rounded-2xl cursor-pointer border border-blue-500/10 hover:border-blue-400/35 transition-all duration-400"
         >
           <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" sizes="(max-width: 768px) 68vw, 25vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#071126]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
             <div className="flex items-end justify-between w-full">
               <span className="text-white text-xs font-medium truncate drop-shadow pr-1">{img.alt}</span>
-              <ZoomIn size={14} className="text-blue-400 shrink-0" />
+              <ZoomIn size={14} className="text-blue-400 shrink-0" aria-hidden="true" />
             </div>
           </div>
         </motion.div>
@@ -262,11 +278,15 @@ function MasonrySection({ images, onOpen }: { images: GalleryImage[]; onOpen: (i
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.3) }}
           onClick={() => onOpen(img)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === "Enter" && onOpen(img)}
+          aria-label={`View: ${img.alt}`}
           className={`group relative block w-full overflow-hidden rounded-xl cursor-pointer border border-blue-500/10 hover:border-blue-400/35 mb-3 md:mb-4 break-inside-avoid transition-all duration-500 ${i % 3 === 0 ? "aspect-[3/4]" : i % 3 === 1 ? "aspect-square" : "aspect-[4/3]"}`}
         >
           <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" sizes="(max-width: 768px) 50vw, 33vw" />
           <div className="absolute inset-0 bg-[#071126]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <ZoomIn size={22} className="text-blue-400 drop-shadow" />
+            <ZoomIn size={22} className="text-blue-400 drop-shadow" aria-hidden="true" />
           </div>
         </motion.div>
       ))}
@@ -285,10 +305,41 @@ function SectionHeader({ title, index }: { title: string; index: number }) {
       transition={{ duration: 0.4 }}
       className="flex items-center gap-4 mb-6"
     >
-      <div className={`w-1 h-10 rounded-full ${accent}`} />
+      <div className={`w-1 h-10 rounded-full ${accent}`} aria-hidden="true" />
       <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">{title}</h3>
-      <div className="flex-1 h-px bg-blue-500/10 ml-2" />
+      <div className="flex-1 h-px bg-blue-500/10 ml-2" aria-hidden="true" />
     </motion.div>
+  )
+}
+
+/* Skeleton shown on server / before mount — avoids CLS */
+function GallerySkeleton() {
+  return (
+    <section id="gallery" className="relative overflow-hidden min-h-[100dvh]">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071126] to-[#0a1630]" />
+        <div className="absolute inset-0 grid-texture opacity-20" />
+      </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-12 pt-20 sm:pt-24 pb-12">
+        <div className="glass-card-bright rounded-3xl px-6 py-14 md:px-14 text-center mb-16">
+          <div className="h-5 bg-blue-500/10 rounded-full w-36 mx-auto mb-5 animate-pulse" />
+          <div className="h-10 bg-blue-500/10 rounded-xl w-72 mx-auto mb-4 animate-pulse" />
+          <div className="h-4 bg-blue-500/10 rounded-full w-56 mx-auto animate-pulse" />
+        </div>
+        <div className="space-y-16">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="rounded-3xl border border-blue-500/10 bg-gradient-to-b from-[#0d1f3c]/50 to-[#071126]/70 px-5 py-8 md:px-8 md:py-10">
+              <div className="h-6 bg-blue-500/10 rounded-full w-44 mb-6 animate-pulse" />
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {Array.from({ length: 8 }).map((_, j) => (
+                  <div key={j} className="aspect-square bg-blue-500/5 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -332,14 +383,15 @@ export default function Gallery({ layout }: { layout?: string }) {
   const next = useCallback(() => { setActiveIndex((prev) => (prev !== null ? (prev + 1) % lightboxImages.length : null)) }, [lightboxImages.length])
   const prev = useCallback(() => { setActiveIndex((prev) => (prev !== null ? (prev - 1 + lightboxImages.length) % lightboxImages.length : null)) }, [lightboxImages.length])
 
-  if (!mounted) return null
+  /* Render skeleton until hydrated — eliminates CLS */
+  if (!mounted) return <GallerySkeleton />
 
   const LAYOUTS = ["featured", "grid", "strip", "masonry"] as const
   type LayoutType = typeof LAYOUTS[number]
 
-  const renderSection = (images: GalleryImage[], layout: LayoutType, sectionIndex: number) => {
+  const renderSection = (images: GalleryImage[], sectionLayout: LayoutType, sectionIndex: number) => {
     const open = (img: GalleryImage) => openLightbox(images, img)
-    switch (layout) {
+    switch (sectionLayout) {
       case "featured": return <FeaturedSection images={images} sectionIndex={sectionIndex} onOpen={open} />
       case "strip":    return <StripSection images={images} sectionIndex={sectionIndex} onOpen={open} />
       case "masonry":  return <MasonrySection images={images} onOpen={open} />
@@ -356,7 +408,7 @@ export default function Gallery({ layout }: { layout?: string }) {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-12 pt-20 sm:pt-24 pb-12">
-        {/* Header CTA */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -365,16 +417,16 @@ export default function Gallery({ layout }: { layout?: string }) {
           className="glass-card-bright rounded-3xl px-6 py-12 md:px-14 md:py-14 text-center mb-16"
         >
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+            <Sparkles className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300">Our Work Gallery</span>
           </div>
           <h2 className="text-white text-2xl md:text-4xl font-black mb-4 leading-tight">
             हमारे काम, <span className="hero-gradient-text">आपका विश्वास</span>
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-6">
-            JK Interior के द्वारा किए गए premium interior और modular false ceiling के शानदार projects देखें।
+            JK Interior के द्वारा किए गए premium interior और false ceiling के शानदार projects देखें — Forbesganj, Araria, Bihar।
           </p>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mb-6" />
+          <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mb-6" aria-hidden="true" />
           <p className="text-slate-600 text-[10px] md:text-xs tracking-[0.15em] font-bold uppercase">
             REAL PROJECTS • REAL CLIENTS • REAL RESULTS
           </p>
@@ -419,13 +471,14 @@ export default function Gallery({ layout }: { layout?: string }) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="tel:+918651070831"
-              className="flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-all shadow-[0_4px_20px_rgba(37,99,235,0.4)] active:scale-95 luxury-animated-shine"
+              aria-label="Call JK Interior"
+              className="flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-all shadow-[0_4px_20px_rgba(37,99,235,0.4)] active:scale-95 luxury-animated-shine touch-manipulation"
             >
-              <Phone size={18} /> अभी कॉल करें
+              <Phone size={18} aria-hidden="true" /> अभी कॉल करें
             </a>
             <a
               href="/contact"
-              className="flex items-center justify-center gap-2 px-8 py-4 border border-blue-500/30 bg-blue-500/10 hover:border-blue-400/50 hover:bg-blue-500/20 text-blue-300 text-sm font-bold rounded-xl transition-all active:scale-95"
+              className="flex items-center justify-center gap-2 px-8 py-4 border border-blue-500/30 bg-blue-500/10 hover:border-blue-400/50 hover:bg-blue-500/20 text-blue-300 text-sm font-bold rounded-xl transition-all active:scale-95 touch-manipulation"
             >
               Free Quote लें
             </a>

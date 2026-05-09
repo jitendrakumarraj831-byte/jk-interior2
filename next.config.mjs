@@ -3,7 +3,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev', '*.repl.co'],
+  allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev', '*.sisko.replit.dev', '*.repl.co'],
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
@@ -14,7 +14,8 @@ const nextConfig = {
   images: {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200],
+    deviceSizes: [375, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 31536000,
     qualities: [50, 52, 58, 62, 68, 72, 78, 80, 82, 100],
   },
@@ -24,6 +25,7 @@ const nextConfig = {
         source: '/images/:path*',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
         ],
       },
       {
@@ -36,6 +38,14 @@ const nextConfig = {
         source: '/:path*.{jpg,jpeg,png,webp,avif,svg,ico}',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         ],
       },
     ]

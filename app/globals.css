@@ -76,12 +76,14 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
 
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif) !important;
     font-weight: 700;
     @apply tracking-tight;
+    text-rendering: optimizeLegibility;
   }
 
   body, p, span, button, li, .font-sans {
@@ -91,6 +93,9 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -105,6 +110,28 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior-y: none;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  /* Improve tap targets on mobile */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
@@ -162,11 +189,6 @@
   100% { background-position: 0% 50%; }
 }
 
-@keyframes scroll-progress {
-  from { width: 0%; }
-  to { width: 100%; }
-}
-
 @keyframes slide-down {
   from { transform: translateY(-100%); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -174,7 +196,13 @@
 
 @keyframes ping-slow {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.08); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+@keyframes wa-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
 @keyframes number-count {
@@ -182,10 +210,9 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .aura-orb-1, .aura-orb-2, .aura-orb-3, .floating-blob {
-    animation: none !important;
-  }
+@keyframes skeleton-wave {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
 }
 
 /* ── Utility Classes ─────────────────────────────────────────────────────────── */
@@ -233,6 +260,13 @@
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(37, 99, 235, 0.25);
     color: #f0f6ff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .glass-input:focus {
+    border-color: rgba(37, 99, 235, 0.6);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    outline: none;
   }
 
   /* Gradients */
@@ -345,7 +379,8 @@
   .aura-orb-2 { animation: aura-drift-2 26s ease-in-out infinite; animation-delay: 1s; }
   .aura-orb-3 { animation: aura-pulse-soft 14s ease-in-out infinite; }
   .floating-blob { animation: float 14s ease-in-out infinite; }
-  .animate-ping-slow { animation: ping-slow 2.5s ease-in-out infinite; }
+  .animate-ping-slow { animation: ping-slow 2s ease-in-out infinite; }
+  .animate-wa-pulse { animation: wa-pulse 2s ease-in-out infinite; }
 
   /* Scroll bar */
   .scrollbar-luxury {
@@ -366,10 +401,22 @@
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Content visibility for offscreen sections */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 800px;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.05) 25%, rgba(37, 99, 235, 0.1) 50%, rgba(37, 99, 235, 0.05) 75%);
+    background-size: 400px 100%;
+    animation: skeleton-wave 1.6s ease-in-out infinite;
+  }
+
   /* Utilities */
   .animate-fade-up { animation: fade-up 0.8s ease-out forwards; }
   .animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
-  .cv-auto { content-visibility: auto; contain-intrinsic-size: 1px 800px; }
   .break-inside-avoid { break-inside: avoid; }
   .shadow-xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
   .field-sizing-content { field-sizing: content; }
@@ -398,6 +445,9 @@
   .text-muted { color: #94a3b8; }
   .text-accent-blue { color: #60a5fa; }
   .text-accent-amber { color: #fbbf24; }
+
+  /* Touch manipulation for interactive elements */
+  .touch-manipulation { touch-action: manipulation; }
 }
 
 @layer base {
@@ -413,10 +463,11 @@
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   height: 3px;
   z-index: 9999;
-  background: linear-gradient(90deg, #2563eb, #60a5fa, #fbbf24);
-  transform-origin: left;
+  background: linear-gradient(90deg, #1d4ed8, #2563eb, #60a5fa, #fbbf24, #60a5fa);
+  transform-origin: left center;
 }
 
 /* ── Mobile Bottom CTA ────────────────────────────────────────────────────── */
@@ -426,9 +477,24 @@
   left: 0;
   right: 0;
   z-index: 40;
-  background: rgba(7, 17, 38, 0.95);
-  backdrop-filter: blur(16px);
+  background: rgba(7, 17, 38, 0.97);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid rgba(37, 99, 235, 0.25);
-  padding: 12px 16px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  padding: 10px 16px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  box-shadow: 0 -8px 32px rgba(0, 0, 20, 0.5);
+}
+
+/* ── Focus visible styles for keyboard nav ──────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Selection highlight ─────────────────────────────────────────────────── */
+::selection {
+  background: rgba(37, 99, 235, 0.3);
+  color: #f0f6ff;
 }
