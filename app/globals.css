@@ -466,9 +466,10 @@
 }
 
 /* ── Mobile Bottom CTA ────────────────────────────────────────────────────── */
-/* ── Hide floating buttons instantly when chat is open (CSS, no JS timing) ── */
+/* ── Hide floating elements instantly when chat is open (CSS, no JS timing) ── */
 body[data-chat-open] .float-wa,
-body[data-chat-open] .float-back-top {
+body[data-chat-open] .float-back-top,
+body[data-chat-open] .mobile-cta-bar {
   display: none !important;
 }
 

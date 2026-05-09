@@ -566,7 +566,7 @@ export default function JKChat() {
           aria-modal="true"
           aria-label="JK Interior Chat"
           className="fixed z-50 flex flex-col rounded-2xl shadow-2xl border border-emerald-200 overflow-hidden
-                     bottom-[5.5rem] left-3 right-3 h-[78vh] max-h-[560px]
+                     bottom-4 left-3 right-3 h-[88vh] max-h-[640px]
                      md:left-auto md:bottom-6 md:right-6 md:h-[590px] md:w-[390px]
                      animate-in fade-in zoom-in-95 slide-in-from-bottom-6 duration-300"
           style={{ background: "rgba(255,255,255,0.99)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" }}
