@@ -60,21 +60,21 @@ export default function FAQSection() {
     <section id="faq" className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1630] to-[#071126]" />
-        <div className="absolute inset-0 grid-texture opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0fdf4] to-white" />
+        <div className="absolute inset-0 grid-texture opacity-10" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
         <motion.div {...animProps} className="mb-12 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-4 py-1.5">
-            <HelpCircle className="h-3.5 w-3.5 text-blue-400" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">FAQ</span>
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
+            <HelpCircle className="h-3.5 w-3.5 text-emerald-600" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">FAQ</span>
           </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
             Frequently Asked <span className="hero-gradient-text">Questions</span>
           </h2>
-          <p className="text-slate-400 text-base max-w-xl mx-auto">
+          <p className="text-gray-500 text-base max-w-xl mx-auto">
             JK Interior के बारे में सबसे common questions के answers — अपना doubt clear करें
           </p>
         </motion.div>
@@ -86,8 +86,8 @@ export default function FAQSection() {
               key={i}
               className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
                 openIndex === i
-                  ? "border-blue-400/35 bg-gradient-to-br from-[#0d1f3c]/90 to-[#0a1630]/90"
-                  : "border-blue-500/15 bg-gradient-to-br from-[#0d1f3c]/60 to-[#071126]/80 hover:border-blue-500/30"
+                  ? "border-emerald-300 bg-emerald-50/60"
+                  : "border-gray-200 bg-white hover:border-emerald-200"
               }`}
             >
               <button
@@ -95,12 +95,12 @@ export default function FAQSection() {
                 onClick={() => toggle(i)}
                 aria-expanded={openIndex === i}
               >
-                <span className={`text-sm font-bold leading-snug sm:text-base ${openIndex === i ? "text-white" : "text-slate-300"}`}>
+                <span className={`text-sm font-bold leading-snug sm:text-base ${openIndex === i ? "text-emerald-800" : "text-gray-800"}`}>
                   {faq.q}
                 </span>
                 <ChevronDown
                   className={`h-5 w-5 shrink-0 transition-transform duration-300 ${
-                    openIndex === i ? "rotate-180 text-blue-400" : "text-slate-600"
+                    openIndex === i ? "rotate-180 text-emerald-600" : "text-gray-400"
                   }`}
                 />
               </button>
@@ -114,8 +114,8 @@ export default function FAQSection() {
                     transition={{ duration: 0.3, ease: easeLux }}
                     className="overflow-hidden"
                   >
-                    <div className="border-t border-blue-500/15 px-6 pb-5 pt-4">
-                      <p className="text-sm leading-relaxed text-slate-400">{faq.a}</p>
+                    <div className="border-t border-emerald-200 px-6 pb-5 pt-4">
+                      <p className="text-sm leading-relaxed text-gray-600">{faq.a}</p>
                     </div>
                   </motion.div>
                 )}
@@ -126,11 +126,11 @@ export default function FAQSection() {
 
         {/* Bottom CTA */}
         <motion.div {...animProps} className="mt-12 text-center">
-          <p className="mb-5 text-slate-500 text-sm">और questions हैं? हमसे directly बात करें</p>
+          <p className="mb-5 text-gray-500 text-sm">और questions हैं? हमसे directly बात करें</p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
               href="tel:+918651070831"
-              className="flex items-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/10 px-6 py-3.5 text-sm font-bold text-blue-300 transition-all hover:border-blue-400/50 hover:bg-blue-500/20 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-6 py-3.5 text-sm font-bold text-emerald-700 transition-all hover:border-emerald-400 hover:bg-emerald-100 active:scale-95"
             >
               <Phone className="h-4 w-4" />
               Call: +91 8651070831

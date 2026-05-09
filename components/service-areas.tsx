@@ -83,21 +83,21 @@ export default function ServiceAreas() {
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1630] to-[#071126]" />
-        <div className="absolute inset-0 dot-pattern opacity-30" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(37,99,235,0.06),transparent)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0fdf4] to-white" />
+        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(5,150,105,0.05),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         <motion.div {...animProps} className="mb-14 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-4 py-1.5">
-            <Navigation className="h-3.5 w-3.5 text-blue-400" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300 sm:text-xs">Service Areas</span>
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
+            <Navigation className="h-3.5 w-3.5 text-emerald-600" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">Service Areas</span>
           </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
             हमारी <span className="hero-gradient-text">पहुंच</span>
           </h2>
-          <p className="mx-auto max-w-xl text-base font-semibold text-slate-400">
+          <p className="mx-auto max-w-xl text-base font-semibold text-gray-600">
             बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा — Araria, Supaul और Purnia जिलों में
           </p>
           <motion.div
@@ -105,7 +105,7 @@ export default function ServiceAreas() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="mx-auto mt-5 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+            className="mx-auto mt-5 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
           />
         </motion.div>
 
@@ -114,18 +114,18 @@ export default function ServiceAreas() {
           {!shouldReduce && (
             <>
               <motion.div
-                className="absolute inset-12 rounded-full border border-dashed border-blue-500/20"
+                className="absolute inset-12 rounded-full border border-dashed border-emerald-300/40"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
               />
               <motion.div
-                className="absolute inset-24 rounded-full border border-dashed border-blue-400/15"
+                className="absolute inset-24 rounded-full border border-dashed border-emerald-400/30"
                 animate={{ rotate: -360 }}
                 transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
               />
             </>
           )}
-          <div className="absolute left-1/2 top-1/2 h-[50%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/6 blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-[50%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400/8 blur-3xl" />
 
           <motion.div {...staggerContainer} className="absolute inset-0">
             {areas.map((area, index) => {
@@ -137,21 +137,21 @@ export default function ServiceAreas() {
                   className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
                   style={{ top: pos.top, left: pos.left }}
                 >
-                  <div className={`group flex items-center gap-2 rounded-2xl border px-4 py-2.5 shadow-lg transition-all duration-300 cursor-default backdrop-blur-sm hover:scale-110 hover:z-50 ${
+                  <div className={`group flex items-center gap-2 rounded-2xl border px-4 py-2.5 shadow-sm transition-all duration-300 cursor-default backdrop-blur-sm hover:scale-110 hover:z-50 ${
                     area.highlight
-                      ? "border-blue-400/40 bg-blue-600/20 shadow-[0_4px_20px_rgba(37,99,235,0.25)]"
-                      : "border-blue-500/20 bg-[rgba(13,31,60,0.85)]"
+                      ? "border-emerald-300 bg-emerald-50 shadow-[0_4px_20px_rgba(5,150,105,0.15)]"
+                      : "border-gray-200 bg-white"
                   }`}>
                     <span className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
                       area.highlight
-                        ? "bg-blue-500 text-white"
-                        : "bg-blue-500/15 text-blue-400 group-hover:bg-blue-500 group-hover:text-white"
+                        ? "bg-emerald-600 text-white"
+                        : "bg-gray-100 text-gray-500 group-hover:bg-emerald-600 group-hover:text-white"
                     }`}>
                       <MapPin className="h-3.5 w-3.5" />
                     </span>
                     <div>
-                      <span className={`block text-sm font-bold ${area.highlight ? "text-blue-300" : "text-white"}`}>{area.name}</span>
-                      <span className="block text-[9px] font-medium text-slate-500">{area.desc}</span>
+                      <span className={`block text-sm font-bold ${area.highlight ? "text-emerald-700" : "text-gray-800"}`}>{area.name}</span>
+                      <span className="block text-[9px] font-medium text-gray-400">{area.desc}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -168,14 +168,14 @@ export default function ServiceAreas() {
               {...staggerItem}
               className={`flex items-center gap-2 rounded-xl border p-3.5 ${
                 area.highlight
-                  ? "border-blue-400/35 bg-blue-600/15"
-                  : "border-blue-500/15 bg-[rgba(13,31,60,0.7)]"
+                  ? "border-emerald-300 bg-emerald-50"
+                  : "border-gray-200 bg-white"
               }`}
             >
-              <MapPin className={`h-4 w-4 shrink-0 ${area.highlight ? "text-blue-400" : "text-slate-500"}`} />
+              <MapPin className={`h-4 w-4 shrink-0 ${area.highlight ? "text-emerald-600" : "text-gray-400"}`} />
               <div>
-                <span className="block text-sm font-bold text-white">{area.name}</span>
-                <span className="block text-[9px] text-slate-600">{area.desc}</span>
+                <span className="block text-sm font-bold text-gray-900">{area.name}</span>
+                <span className="block text-[9px] text-gray-400">{area.desc}</span>
               </div>
             </motion.div>
           ))}
@@ -183,22 +183,22 @@ export default function ServiceAreas() {
 
         {/* Bottom CTA Card */}
         <motion.div {...animProps} className="text-center">
-          <div className="mx-auto inline-block max-w-2xl w-full rounded-2xl border border-blue-500/20 bg-gradient-to-br from-[#0d1f3c]/80 to-[#071126]/90 p-8 shadow-[0_8px_40px_rgba(0,0,20,0.4)] backdrop-blur-sm">
-            <p className="mb-2 text-base font-bold text-white md:text-lg">
+          <div className="mx-auto inline-block max-w-2xl w-full rounded-2xl border border-emerald-200 bg-white p-8 shadow-sm">
+            <p className="mb-2 text-base font-bold text-gray-900 md:text-lg">
               Araria, Supaul और Purnia के सभी प्रमुख क्षेत्रों में उपलब्ध
             </p>
-            <p className="mb-6 text-sm text-slate-500">कहीं भी हो आपका घर — हम पहुंचेंगे</p>
+            <p className="mb-6 text-sm text-gray-500">कहीं भी हो आपका घर — हम पहुंचेंगे</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href="tel:+918651070831"
-                className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_20px_rgba(37,99,235,0.35)] transition-all hover:bg-blue-500 active:scale-95"
+                className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_20px_rgba(5,150,105,0.3)] transition-all hover:bg-emerald-500 active:scale-95"
               >
                 <Phone className="h-4 w-4" />
                 Check Availability
               </a>
               <Link
                 href="/contact"
-                className="flex items-center justify-center gap-2 rounded-xl border border-blue-500/25 bg-blue-500/10 px-6 py-3.5 text-sm font-bold text-blue-300 transition-all hover:border-blue-400/50 hover:bg-blue-500/20 active:scale-95"
+                className="flex items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-6 py-3.5 text-sm font-bold text-emerald-700 transition-all hover:border-emerald-400 hover:bg-emerald-100 active:scale-95"
               >
                 Get Free Quote
                 <ArrowRight className="h-4 w-4" />

@@ -13,9 +13,9 @@ const services = [
     titleHi: "PVC फॉल्स सीलिंग",
     desc: "Premium PVC false ceiling installation with waterproof panels, modern designs, and long-lasting finish. Perfect for homes and offices in Forbesganj.",
     descHi: "वॉटरप्रूफ पैनल, मॉडर्न डिज़ाइन और लंबे समय तक चलने वाली फिनिश के साथ प्रीमियम PVC फॉल्स सीलिंग।",
-    color: "from-blue-500 to-blue-700",
+    color: "from-emerald-500 to-emerald-700",
     badge: "Most Popular",
-    badgeColor: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+    badgeColor: "bg-emerald-100 text-emerald-700 border-emerald-300",
     features: ["Waterproof", "Dust-Free", "Fast Install"],
     image: "/images/pvc.jpg",
     imageAlt: "PVC False Ceiling Installation in Forbesganj Bihar by JK Interior",
@@ -28,7 +28,7 @@ const services = [
     descHi: "स्मूथ फिनिश और क्रिएटिव लाइटिंग के साथ एलिगेंट जिप्सम सीलिंग डिज़ाइन।",
     color: "from-slate-500 to-slate-700",
     badge: "Premium",
-    badgeColor: "bg-slate-500/20 text-slate-300 border-slate-500/30",
+    badgeColor: "bg-gray-100 text-gray-700 border-gray-300",
     features: ["Smooth Finish", "Light Ready", "Durable"],
     image: "/images/gypsum.jpg",
     imageAlt: "Gypsum Ceiling Design in Araria Bihar by JK Interior",
@@ -41,7 +41,7 @@ const services = [
     descHi: "टर्माइट-प्रूफ, वॉटरप्रूफ और मेंटेनेंस-फ्री हाई-क्वालिटी WPC वॉल पैनल।",
     color: "from-amber-500 to-amber-700",
     badge: "Best Seller",
-    badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+    badgeColor: "bg-amber-100 text-amber-700 border-amber-300",
     features: ["Termite-Proof", "Waterproof", "Zero Maintain"],
     image: "/images/wpc.jpg",
     imageAlt: "WPC Wall Paneling in Bihar by JK Interior Forbesganj",
@@ -52,9 +52,9 @@ const services = [
     titleHi: "UV मार्बल शीट",
     desc: "Luxurious UV marble sheets that give the look of real marble at a fraction of the cost. Premium finish for walls in Forbesganj.",
     descHi: "रियल मार्बल जैसा लुक कम कीमत में - प्रीमियम UV मार्बल शीट।",
-    color: "from-emerald-500 to-emerald-700",
+    color: "from-teal-500 to-teal-700",
     badge: "New",
-    badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+    badgeColor: "bg-teal-100 text-teal-700 border-teal-300",
     features: ["Marble Look", "Scratch-Free", "Easy Clean"],
     image: "/images/uv-marble.jpg",
     imageAlt: "UV Marble Sheet Wall Installation in Forbesganj Bihar",
@@ -67,7 +67,7 @@ const services = [
     descHi: "मॉडर्न स्टोरेज और प्रीमियम फिनिश के साथ कस्टम मॉड्यूलर TV यूनिट।",
     color: "from-violet-500 to-violet-700",
     badge: "Trending",
-    badgeColor: "bg-violet-500/20 text-violet-300 border-violet-500/30",
+    badgeColor: "bg-violet-100 text-violet-700 border-violet-300",
     features: ["Custom Design", "Storage", "Cable Hide"],
     image: "/images/tv-unit.jpg",
     imageAlt: "Modular TV Unit Design in Forbesganj Araria Bihar",
@@ -80,7 +80,7 @@ const services = [
     descHi: "सीलिंग से फ्लोरिंग तक पूर्ण इंटीरियर डिज़ाइन समाधान।",
     color: "from-cyan-500 to-cyan-700",
     badge: "Complete",
-    badgeColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+    badgeColor: "bg-cyan-100 text-cyan-700 border-cyan-300",
     features: ["Full Design", "Execution", "Warranty"],
     image: "/images/gypsum-ceiling.jpg",
     imageAlt: "Complete Interior Design Services in Bihar by JK Interior",
@@ -88,12 +88,12 @@ const services = [
 ]
 
 const trustItems = [
-  { icon: ShieldCheck, label: "Premium Quality", sublabel: "Best Materials", color: "text-emerald-400", border: "border-emerald-500/20 bg-emerald-500/8" },
-  { icon: Droplets, label: "100% Waterproof", sublabel: "Water Resistant", color: "text-cyan-400", border: "border-cyan-500/20 bg-cyan-500/8" },
-  { icon: Clock, label: "Fast Installation", sublabel: "On-Time Delivery", color: "text-amber-400", border: "border-amber-500/20 bg-amber-500/8" },
-  { icon: Zap, label: "Dust-Free Work", sublabel: "Clean Process", color: "text-blue-400", border: "border-blue-500/20 bg-blue-500/8" },
-  { icon: Gem, label: "5 Year Warranty", sublabel: "Guaranteed", color: "text-violet-400", border: "border-violet-500/20 bg-violet-500/8" },
-  { icon: CheckCircle2, label: "Free Site Visit", sublabel: "No Cost", color: "text-emerald-400", border: "border-emerald-500/20 bg-emerald-500/8" },
+  { icon: ShieldCheck, label: "Premium Quality", sublabel: "Best Materials", color: "text-emerald-600", border: "border-emerald-200 bg-emerald-50" },
+  { icon: Droplets, label: "100% Waterproof", sublabel: "Water Resistant", color: "text-cyan-600", border: "border-cyan-200 bg-cyan-50" },
+  { icon: Clock, label: "Fast Installation", sublabel: "On-Time Delivery", color: "text-amber-600", border: "border-amber-200 bg-amber-50" },
+  { icon: Zap, label: "Dust-Free Work", sublabel: "Clean Process", color: "text-blue-600", border: "border-blue-200 bg-blue-50" },
+  { icon: Gem, label: "5 Year Warranty", sublabel: "Guaranteed", color: "text-violet-600", border: "border-violet-200 bg-violet-50" },
+  { icon: CheckCircle2, label: "Free Site Visit", sublabel: "No Cost", color: "text-emerald-600", border: "border-emerald-200 bg-emerald-50" },
 ]
 
 export default function Services() {
@@ -137,34 +137,34 @@ export default function Services() {
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1630] to-[#071126]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_30%_20%,rgba(37,99,235,0.07),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_80%,rgba(37,99,235,0.05),transparent)]" />
-        <div className="absolute inset-0 grid-texture opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0fdf4] to-white" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_30%_20%,rgba(5,150,105,0.06),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_80%,rgba(5,150,105,0.04),transparent)]" />
+        <div className="absolute inset-0 grid-texture opacity-20" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Section Header */}
         <motion.div {...animProps} className="mb-14 text-center sm:mb-16 lg:mb-20">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-4 py-1.5 backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5 text-blue-400" aria-hidden="true" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300 sm:text-xs">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-1.5 backdrop-blur-sm">
+            <Sparkles className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">
               Premium Services
             </span>
           </div>
 
           <h2
             id="services-heading"
-            className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
+            className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl lg:text-6xl"
           >
             Premium Interior{" "}
             <span className="hero-gradient-text">Solutions</span>
           </h2>
 
-          <p className="mx-auto mb-2 max-w-2xl text-base font-medium text-slate-400 sm:text-lg">
+          <p className="mx-auto mb-2 max-w-2xl text-base font-medium text-gray-600 sm:text-lg">
             हम लेकर आए हैं फारबिसगंज में इंटीरियर का बेस्ट कलेक्शन
           </p>
-          <p className="mx-auto max-w-xl text-sm text-slate-500 sm:text-base">
+          <p className="mx-auto max-w-xl text-sm text-gray-500 sm:text-base">
             From PVC ceilings to modular TV units — every service crafted with precision, waterproof materials, and premium finish.
           </p>
 
@@ -173,7 +173,7 @@ export default function Services() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.8, ease: easeLux }}
-            className="mx-auto mt-6 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+            className="mx-auto mt-6 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
           />
         </motion.div>
 
@@ -186,11 +186,11 @@ export default function Services() {
             <motion.div
               key={item.label}
               {...staggerItem}
-              className={`group flex flex-col items-center gap-1.5 rounded-xl border ${item.border} p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:gap-2 sm:rounded-2xl sm:p-4`}
+              className={`group flex flex-col items-center gap-1.5 rounded-xl border ${item.border} p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-md sm:gap-2 sm:rounded-2xl sm:p-4`}
             >
               <item.icon className={`h-5 w-5 ${item.color} sm:h-6 sm:w-6`} aria-hidden="true" />
-              <span className="text-center text-[10px] font-bold text-slate-300 sm:text-xs">{item.label}</span>
-              <span className="text-[9px] text-slate-600 sm:text-[10px]">{item.sublabel}</span>
+              <span className="text-center text-[10px] font-bold text-gray-800 sm:text-xs">{item.label}</span>
+              <span className="text-[9px] text-gray-500 sm:text-[10px]">{item.sublabel}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -204,9 +204,9 @@ export default function Services() {
             <motion.div
               key={service.title}
               {...staggerItem}
-              className="group relative overflow-hidden rounded-2xl border border-blue-500/15 bg-gradient-to-b from-[#0d1f3c]/80 to-[#071126]/90 transition-all duration-500 hover:border-blue-400/35 hover:shadow-[0_8px_40px_rgba(0,0,20,0.6),0_0_30px_rgba(37,99,235,0.15)] hover:-translate-y-1 sm:rounded-3xl"
+              className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-500 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] hover:-translate-y-1 sm:rounded-3xl"
             >
-              {/* Image area — next/image for AVIF/WebP optimization */}
+              {/* Image area */}
               <div className="relative h-44 overflow-hidden sm:h-52">
                 <Image
                   src={service.image}
@@ -216,7 +216,7 @@ export default function Services() {
                   loading="lazy"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071126] via-[#071126]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
                 {/* Badge */}
                 <div className={`absolute left-3 top-3 flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[10px] font-bold backdrop-blur-sm sm:rounded-xl sm:px-3 sm:text-xs ${service.badgeColor}`}>
@@ -232,23 +232,23 @@ export default function Services() {
                 {/* Title on image */}
                 <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4">
                   <h3 className="text-lg font-black text-white sm:text-xl">{service.title}</h3>
-                  <p className="text-xs font-medium text-white/50 sm:text-sm">{service.titleHi}</p>
+                  <p className="text-xs font-medium text-white/70 sm:text-sm">{service.titleHi}</p>
                 </div>
               </div>
 
               {/* Content */}
               <div className="p-4 sm:p-5 lg:p-6">
-                <p className="mb-2 text-sm leading-relaxed text-slate-400 sm:text-base">{service.desc}</p>
-                <p className="mb-4 text-xs leading-relaxed text-slate-600 sm:text-sm">{service.descHi}</p>
+                <p className="mb-2 text-sm leading-relaxed text-gray-700 sm:text-base">{service.desc}</p>
+                <p className="mb-4 text-xs leading-relaxed text-gray-500 sm:text-sm">{service.descHi}</p>
 
                 {/* Feature tags */}
                 <div className="mb-4 flex flex-wrap gap-1.5 sm:gap-2">
                   {service.features.map((feat) => (
                     <span
                       key={feat}
-                      className="inline-flex items-center gap-1 rounded-md border border-blue-500/15 bg-blue-500/8 px-2 py-0.5 text-[10px] font-semibold text-blue-300 sm:rounded-lg sm:px-2.5 sm:text-xs"
+                      className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 sm:rounded-lg sm:px-2.5 sm:text-xs"
                     >
-                      <CheckCircle2 className="h-2.5 w-2.5 text-emerald-400 sm:h-3 sm:w-3" aria-hidden="true" />
+                      <CheckCircle2 className="h-2.5 w-2.5 text-emerald-600 sm:h-3 sm:w-3" aria-hidden="true" />
                       {feat}
                     </span>
                   ))}
@@ -258,7 +258,7 @@ export default function Services() {
                 <div className="flex gap-2">
                   <a
                     href="tel:+918651070831"
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-blue-500 hover:shadow-[0_4px_16px_rgba(37,99,235,0.4)] active:scale-95 sm:text-sm touch-manipulation"
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
                     aria-label={`Call for ${service.title} quote`}
                   >
                     <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
@@ -268,7 +268,7 @@ export default function Services() {
                     href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20am%20interested%20in%20${encodeURIComponent(service.title)}%20service%20in%20Forbesganj.%20Please%20share%20details.`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2.5 text-xs font-bold text-emerald-400 transition-all hover:bg-emerald-500/20 hover:border-emerald-400/40 active:scale-95 sm:text-sm touch-manipulation"
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-all hover:bg-[#25D366]/20 hover:border-[#25D366]/60 active:scale-95 sm:text-sm touch-manipulation"
                     aria-label={`WhatsApp for ${service.title}`}
                   >
                     <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
@@ -282,12 +282,12 @@ export default function Services() {
 
         {/* Bottom CTA */}
         <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 text-center lg:mt-20">
-          <p className="text-base font-medium text-slate-400 sm:text-lg">अपने घर को बनाएं एक शाही महल</p>
+          <p className="text-base font-medium text-gray-600 sm:text-lg">अपने घर को बनाएं एक शाही महल</p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
               href="tel:+918651070831"
               aria-label="Call for free site visit"
-              className="flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(37,99,235,0.4)] transition-all hover:bg-blue-500 hover:shadow-[0_4px_32px_rgba(37,99,235,0.55)] active:scale-95 luxury-animated-shine touch-manipulation"
+              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.55)] active:scale-95 luxury-animated-shine touch-manipulation"
             >
               <Phone className="h-5 w-5" aria-hidden="true" />
               Free Site Visit
@@ -297,7 +297,7 @@ export default function Services() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp for free quotation"
-              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] transition-all hover:bg-emerald-500 active:scale-95 touch-manipulation"
+              className="flex items-center gap-2 rounded-xl bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(37,211,102,0.35)] transition-all hover:bg-[#20c05c] active:scale-95 touch-manipulation"
             >
               <MessageCircle className="h-5 w-5" aria-hidden="true" />
               Get Free Quotation
@@ -309,7 +309,6 @@ export default function Services() {
         <div className="sr-only">
           <h2>Best Interior Design Services in Forbesganj, Araria, Bihar</h2>
           <p>JK Interior offers premium PVC False Ceiling in Forbesganj, Gypsum Ceiling in Araria, WPC Wall Paneling in Bihar, UV Marble Sheet installation, Modular TV Unit design in Forbesganj, and complete interior design solutions. All 100% waterproof, dust-free, 5-year warranty. Free site visits and quotations.</p>
-          <p>Interior designer in Araria | Interior designer in Forbesganj | PVC ceiling in Bihar | Gypsum ceiling in Araria | WPC panel near me | Modular TV unit Bihar | False ceiling contractor Bihar</p>
         </div>
       </div>
     </section>

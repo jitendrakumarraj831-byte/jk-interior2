@@ -155,7 +155,7 @@ export default function SmartAIChat() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open JK Interior chat"
-          className="fixed bottom-[5.5rem] left-4 z-50 flex h-13 w-13 items-center justify-center rounded-full bg-blue-600 text-white shadow-[0_4px_20px_rgba(37,99,235,0.5)] transition-all hover:scale-110 hover:bg-blue-500 active:scale-95 md:bottom-24 md:left-6"
+          className="fixed bottom-[5.5rem] left-4 z-50 flex h-13 w-13 items-center justify-center rounded-full bg-emerald-600 text-white shadow-[0_4px_20px_rgba(5,150,105,0.45)] transition-all hover:scale-110 hover:bg-emerald-500 active:scale-95 md:bottom-24 md:left-6"
           style={{ height: "52px", width: "52px" }}
         >
           <IconChat className="h-5 w-5" />
@@ -164,18 +164,18 @@ export default function SmartAIChat() {
 
       {open && (
         <div
-          className="fixed z-50 flex flex-col overflow-hidden rounded-2xl shadow-2xl border border-blue-500/30
+          className="fixed z-50 flex flex-col overflow-hidden rounded-2xl shadow-2xl border border-emerald-200
                      bottom-[5.5rem] right-3 left-3 h-[80vh]
                      md:left-auto md:bottom-6 md:right-6 md:h-[580px] md:w-[380px]
                      animate-in fade-in zoom-in-95 slide-in-from-bottom-8 duration-300"
           style={{
-            background: "rgba(7, 17, 38, 0.96)",
+            background: "rgba(255, 255, 255, 0.98)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-blue-600 text-white">
+          <div className="flex items-center justify-between px-4 py-3 bg-emerald-600 text-white">
             <div>
               <p className="text-sm font-bold leading-tight">JK Interior Assistant</p>
               <p className="flex items-center gap-1 text-[11px] opacity-80">
@@ -188,14 +188,14 @@ export default function SmartAIChat() {
           </div>
 
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-3 py-4 scrollbar-luxury">
+          <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-3 py-4 scrollbar-luxury bg-gray-50">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
                   className={`max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2.5 text-sm ${
                     m.role === "user"
-                      ? "bg-blue-600 text-white rounded-br-sm"
-                      : "bg-white/10 text-slate-200 rounded-bl-sm border border-blue-500/20"
+                      ? "bg-emerald-600 text-white rounded-br-sm"
+                      : "bg-white text-gray-800 rounded-bl-sm border border-gray-200 shadow-sm"
                   }`}
                 >
                   {m.text}
@@ -205,7 +205,7 @@ export default function SmartAIChat() {
           </div>
 
           {/* Quick CTA */}
-          <div className="flex gap-2 border-t border-blue-500/20 bg-white/5 px-3 py-2">
+          <div className="flex gap-2 border-t border-gray-200 bg-white px-3 py-2">
             <a
               href={waHref}
               target="_blank"
@@ -219,7 +219,7 @@ export default function SmartAIChat() {
                 href={bookHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-blue-600 px-3 py-2 text-xs font-bold text-white hover:opacity-90 transition-opacity"
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white hover:opacity-90 transition-opacity"
               >
                 <IconCal className="h-3.5 w-3.5" /> Book Visit
               </a>
@@ -227,18 +227,18 @@ export default function SmartAIChat() {
           </div>
 
           {/* Input */}
-          <div className="flex items-center gap-2 border-t border-blue-500/20 bg-white/5 px-3 py-2.5">
+          <div className="flex items-center gap-2 border-t border-gray-200 bg-white px-3 py-2.5">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKey}
               placeholder={lead ? "Ask about services or pricing…" : "Your name & 10-digit phone"}
-              className="flex-1 rounded-full border border-blue-500/30 bg-white/8 px-4 py-2.5 text-sm text-white placeholder:text-slate-600 outline-none focus:border-blue-400 focus:bg-white/12 transition-all"
+              className="flex-1 rounded-full border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 outline-none focus:border-emerald-400 focus:bg-white transition-all"
             />
             <button
               onClick={send}
               aria-label="Send"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm hover:bg-blue-500 transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 transition-colors"
             >
               <IconSend className="h-4 w-4" />
             </button>
