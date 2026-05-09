@@ -55,7 +55,7 @@ export default function Footer() {
               alt="JK Interior – False Ceiling Contractor in Forbesganj Bihar"
               width={180}
               height={70}
-              className="object-contain h-14 w-auto mb-6 mix-blend-screen brightness-110"
+              className="object-contain h-14 w-auto mb-6"
               loading="lazy"
             />
             <div className="space-y-4 mb-6">
