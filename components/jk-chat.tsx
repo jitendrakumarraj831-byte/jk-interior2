@@ -452,9 +452,14 @@ export default function JKChat() {
   const inputRef                  = useRef<HTMLInputElement>(null)
   const sendLock                  = useRef(false)
 
-  // Notify floating-actions to hide when chat is open
+  // Set body attribute so floating buttons can hide themselves reliably
   useEffect(() => {
-    window.dispatchEvent(new CustomEvent(open ? "jk-chat-open" : "jk-chat-close"))
+    if (open) {
+      document.body.setAttribute("data-chat-open", "1")
+    } else {
+      document.body.removeAttribute("data-chat-open")
+    }
+    return () => { document.body.removeAttribute("data-chat-open") }
   }, [open])
 
   // Restore from storage

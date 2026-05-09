@@ -11,16 +11,20 @@ export default function FloatingActions() {
 
   useEffect(() => {
     setMounted(true)
-    const onScroll   = () => setShowBackTop(window.scrollY > 400)
-    const onChatOpen  = () => setChatOpen(true)
-    const onChatClose = () => setChatOpen(false)
+
+    // Scroll listener for back-to-top
+    const onScroll = () => setShowBackTop(window.scrollY > 400)
     window.addEventListener("scroll", onScroll, { passive: true })
-    window.addEventListener("jk-chat-open",  onChatOpen)
-    window.addEventListener("jk-chat-close", onChatClose)
+
+    // Watch body attribute set by jk-chat — no race condition
+    const sync = () => setChatOpen(document.body.hasAttribute("data-chat-open"))
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(document.body, { attributes: true, attributeFilter: ["data-chat-open"] })
+
     return () => {
       window.removeEventListener("scroll", onScroll)
-      window.removeEventListener("jk-chat-open",  onChatOpen)
-      window.removeEventListener("jk-chat-close", onChatClose)
+      observer.disconnect()
     }
   }, [])
 
