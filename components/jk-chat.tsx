@@ -17,26 +17,29 @@ const SERVICE_AREAS = ["Forbesganj", "Araria", "Purnia", "Narpatganj", "Raniganj
 
 const WELCOME_MESSAGE: Message = {
   role: "bot",
-  text: "Welcome to JK Interior! May I know your Name and 10-digit Phone Number to provide a personalized consultation?",
+  text: "नमस्ते! 👋 Welcome to JK Interior!\n\nApna naam aur 10-digit phone number share karein — main aapko personalized consultation dunga.\n\n(e.g. Rahul 9876543210)",
 }
 
 const SERVICE_KNOWLEDGE: Record<string, string> = {
-  pvc: "PVC Wall Paneling — waterproof, termite-proof, and easy to maintain. A premium, budget-friendly finish that lasts for years.",
-  gypsum: "Gypsum Ceiling — perfect for elegant false ceilings with smooth finish, hidden lighting, and modern designs.",
-  wpc: "WPC Louvers & Panels — moisture-resistant, eco-friendly, and ideal for accent walls or TV units with a luxury wood look.",
-  "uv marble": "UV Marble Sheets — high-gloss marble-look panels that are scratch-resistant, hygienic, and far more affordable than real marble.",
-  grid: "Grid Ceiling — clean modular ceiling perfect for offices, shops, and clinics, allowing easy access for wiring and AC.",
-  "artificial grass": "Artificial Grass — evergreen, low-maintenance turf perfect for balconies, terraces, and feature walls.",
+  pvc: "🏠 PVC Wall Paneling — waterproof, termite-proof, easy to maintain. Budget-friendly premium finish jo saalon tak tikti hai.",
+  gypsum: "✨ Gypsum Ceiling — elegant false ceiling with smooth finish, hidden lighting, aur modern designs ke liye perfect.",
+  wpc: "🪵 WPC Louvers & Panels — moisture-resistant, eco-friendly. TV unit ya accent wall ke liye luxury wood look.",
+  marble: "💎 UV Marble Sheets — high-gloss marble look, scratch-resistant, hygienic. Real marble se kaafi sasta.",
+  grid: "🏢 Grid Ceiling — offices, shops, clinics ke liye clean modular ceiling. Wiring aur AC access easy.",
+  grass: "🌿 Artificial Grass — low-maintenance, evergreen turf for balconies, terraces, aur feature walls.",
+  interior: "🏡 Complete Interior — hum full home interior karte hain: ceiling, wall paneling, TV unit, kitchen — sab ek jagah.",
 }
 
-function detectService(text: string): string | null {
-  const t = text.toLowerCase()
+const QUICK_REPLIES = ["PVC Ceiling", "Gypsum Ceiling", "WPC Panels", "Price / Rate", "Book Site Visit", "Hamara Area"]
+
+function detectService(t: string): string | null {
   if (t.includes("pvc")) return SERVICE_KNOWLEDGE.pvc
-  if (t.includes("gypsum") || t.includes("pop")) return SERVICE_KNOWLEDGE.gypsum
-  if (t.includes("wpc")) return SERVICE_KNOWLEDGE.wpc
-  if (t.includes("uv") || t.includes("marble")) return SERVICE_KNOWLEDGE["uv marble"]
+  if (t.includes("gypsum") || t.includes("pop") || t.includes("chhat") || t.includes("ceiling")) return SERVICE_KNOWLEDGE.gypsum
+  if (t.includes("wpc") || t.includes("louver") || t.includes("panel") || t.includes("deewar") || t.includes("diwar") || t.includes("wall")) return SERVICE_KNOWLEDGE.wpc
+  if (t.includes("uv") || t.includes("marble") || t.includes("sangmarmar")) return SERVICE_KNOWLEDGE.marble
   if (t.includes("grid")) return SERVICE_KNOWLEDGE.grid
-  if (t.includes("grass") || t.includes("turf")) return SERVICE_KNOWLEDGE["artificial grass"]
+  if (t.includes("grass") || t.includes("turf") || t.includes("ghans")) return SERVICE_KNOWLEDGE.grass
+  if (t.includes("interior") || t.includes("design") || t.includes("ghar") || t.includes("home") || t.includes("room")) return SERVICE_KNOWLEDGE.interior
   return null
 }
 
@@ -47,28 +50,62 @@ function extractPhone(text: string): string | null {
 }
 
 function extractName(text: string): string {
-  const cleaned = text
-    .replace(/\d+/g, "")
-    .replace(/[^a-zA-Z\s]/g, " ")
-    .replace(/\b(my|name|is|i|am|this|phone|number|mobile|contact)\b/gi, "")
-    .trim()
-  const parts = cleaned.split(/\s+/).filter(Boolean)
-  return parts.slice(0, 3).join(" ")
+  const phone = text.replace(/\d+/g, "").trim()
+  const stopWords = /\b(my|name|is|i|am|this|phone|number|mobile|contact|mera|naam|hai|hoon|ka|ki|ke)\b/gi
+  const cleaned = phone.replace(stopWords, " ").replace(/\s+/g, " ").trim()
+  if (!cleaned) return ""
+  const parts = cleaned.split(/\s+/).filter(p => p.length > 1)
+  return parts.slice(0, 2).join(" ")
 }
 
 function botReply(input: string, lead: Lead | null): string {
   const t = input.toLowerCase()
+
   const service = detectService(t)
-  if (service) return `${service}\n\nWe install this across ${SERVICE_AREAS.join(", ")}. Want a free quote?`
-  if (t.includes("price") || t.includes("cost") || t.includes("rate") || t.includes("charge") || t.includes("budget"))
-    return "Pricing is calculated per sq. ft. based on material quality. Please share your room dimensions, or tap WhatsApp to chat with our expert."
-  if (t.includes("location") || t.includes("area") || t.includes("where") || t.includes("serve"))
-    return `We proudly serve ${SERVICE_AREAS.join(", ")} and nearby regions.`
-  if (t.includes("visit") || t.includes("book") || t.includes("appointment"))
-    return `Great ${lead?.name || "there"}! Tap the "Book Site Visit" button below and our team will reach out shortly.`
-  if (t.includes("hi") || t.includes("hello") || t.includes("hey"))
-    return `Hi ${lead?.name || "there"}! Ask me about PVC, Gypsum, WPC, UV Marble, Grid Ceiling, or Artificial Grass.`
-  return "I'm your JK Interior specialist. Ask about PVC, Gypsum, WPC, UV Marble, Grid Ceiling, or Artificial Grass — or request pricing."
+  if (service) return `${service}\n\nHum yeh ${SERVICE_AREAS.join(", ")} aur aas-paas install karte hain. Free quote chahiye?`
+
+  if (
+    t.includes("price") || t.includes("cost") || t.includes("rate") ||
+    t.includes("charge") || t.includes("budget") || t.includes("daam") ||
+    t.includes("kimat") || t.includes("kitna") || t.includes("paisa") ||
+    t.includes("rupee") || t.includes("rs") || t.includes("quote") ||
+    t.includes("how much") || t.includes("kharcha") || t.includes("lagega")
+  )
+    return "💰 Pricing per sq. ft. hoti hai aur material quality pe depend karti hai.\n\nApne room ka size share karein ya WhatsApp pe hamare expert se baat karein — turant estimate milegi!"
+
+  if (
+    t.includes("location") || t.includes("area") || t.includes("where") ||
+    t.includes("serve") || t.includes("kahan") || t.includes("kaha") ||
+    t.includes("jagah") || t.includes("city") || t.includes("district")
+  )
+    return `📍 Hum in areas mein kaam karte hain:\n${SERVICE_AREAS.join(" • ")}\n\nAur bhi nearby areas covered hain — check karne ke liye WhatsApp karein.`
+
+  if (
+    t.includes("visit") || t.includes("book") || t.includes("appointment") ||
+    t.includes("bulao") || t.includes("aao") || t.includes("milna") ||
+    t.includes("survey") || t.includes("measurement")
+  )
+    return `📅 ${lead?.name || "Aap"} ke liye site visit book ho sakti hai!\n\nNeeche "Book Visit" button dabayein — hamare team aapse 24 ghante mein contact karega.`
+
+  if (
+    t.includes("quality") || t.includes("material") || t.includes("guarantee") ||
+    t.includes("warranty") || t.includes("guarantee") || t.includes("bharosa") ||
+    t.includes("kitne saal") || t.includes("kitna time") || t.includes("waterproof")
+  )
+    return "✅ JK Interior uses ISI-certified, waterproof materials with 5-year written warranty.\n\n5000+ sqft installed, 100+ happy clients across Bihar."
+
+  if (
+    t.includes("hi") || t.includes("hello") || t.includes("hey") ||
+    t.includes("namaste") || t.includes("namaskar") || t.includes("helo")
+  )
+    return `Namaste ${lead?.name || ""}! 😊\n\nIn services ke baare mein poochhein:\n• PVC / Gypsum Ceiling\n• WPC / UV Marble Panels\n• Grid Ceiling / Artificial Grass\n• Price & Site Visit`
+
+  if (
+    t.includes("thank") || t.includes("shukriya") || t.includes("dhanyawad") || t.includes("thanks")
+  )
+    return `Shukriya ${lead?.name || ""}! 🙏 Koi bhi sawaal ho toh zaroor poochhein. Hum hamesha ready hain!`
+
+  return `🤔 Samajh nahi aaya. Neeche se koi option select karein ya directly poochhein:\n\n• PVC, Gypsum, WPC, UV Marble\n• Price / Rate\n• Site Visit Book\n• Apna Area\n\nYa WhatsApp pe directly message karein!`
 }
 
 const IconChat = ({ className }: { className?: string }) => (
@@ -115,27 +152,35 @@ export default function SmartAIChat() {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
   }, [messages, open])
 
-  const send = () => {
-    const text = input.trim()
+  const addMessages = (userText: string, replyText: string) => {
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", text: userText },
+      { role: "bot", text: replyText },
+    ])
+  }
+
+  const send = (overrideText?: string) => {
+    const text = (overrideText ?? input).trim()
     if (!text) return
-    const userMsg: Message = { role: "user", text }
-    setInput("")
+    if (!overrideText) setInput("")
+
     let reply: string
     if (!lead) {
       const phone = extractPhone(text)
       if (!phone) {
-        reply = "Please share a valid 10-digit phone number along with your name so I can assist with services and pricing."
+        reply = "📱 Please apna 10-digit phone number share karein.\n\nExample: Rahul 9876543210"
       } else {
         const name = extractName(text) || "Friend"
         const newLead: Lead = { name, phone }
         setLead(newLead)
         try { localStorage.setItem("jk_lead", JSON.stringify(newLead)) } catch {}
-        reply = `Thanks ${name}! You're all set. Ask me anything about PVC, Gypsum, WPC, UV Marble, Grid Ceiling or Artificial Grass. We serve ${SERVICE_AREAS.join(", ")}.`
+        reply = `Shukriya ${name}! 🎉 Aap register ho gaye hain.\n\nAb poochhein — PVC, Gypsum, WPC, UV Marble, Grid Ceiling, Price ya Site Visit ke baare mein!`
       }
     } else {
       reply = botReply(text, lead)
     }
-    setMessages((prev) => [...prev, userMsg, { role: "bot", text: reply }])
+    addMessages(text, reply)
   }
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -155,7 +200,7 @@ export default function SmartAIChat() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open JK Interior chat"
-          className="fixed bottom-[5.5rem] left-4 z-50 flex h-13 w-13 items-center justify-center rounded-full bg-emerald-600 text-white shadow-[0_4px_20px_rgba(5,150,105,0.45)] transition-all hover:scale-110 hover:bg-emerald-500 active:scale-95 md:bottom-24 md:left-6"
+          className="fixed bottom-[5.5rem] left-4 z-50 flex items-center justify-center rounded-full bg-emerald-600 text-white shadow-[0_4px_20px_rgba(5,150,105,0.45)] transition-all hover:scale-110 hover:bg-emerald-500 active:scale-95 md:bottom-24 md:left-6"
           style={{ height: "52px", width: "52px" }}
         >
           <IconChat className="h-5 w-5" />
@@ -165,7 +210,7 @@ export default function SmartAIChat() {
       {open && (
         <div
           className="fixed z-50 flex flex-col overflow-hidden rounded-2xl shadow-2xl border border-emerald-200
-                     bottom-[5.5rem] right-3 left-3 h-[80vh]
+                     bottom-[5.5rem] right-3 left-3 h-[80vh] max-h-[560px]
                      md:left-auto md:bottom-6 md:right-6 md:h-[580px] md:w-[380px]
                      animate-in fade-in zoom-in-95 slide-in-from-bottom-8 duration-300"
           style={{
@@ -175,7 +220,7 @@ export default function SmartAIChat() {
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-emerald-600 text-white">
+          <div className="flex items-center justify-between px-4 py-3 bg-emerald-600 text-white shrink-0">
             <div>
               <p className="text-sm font-bold leading-tight">JK Interior Assistant</p>
               <p className="flex items-center gap-1 text-[11px] opacity-80">
@@ -192,7 +237,7 @@ export default function SmartAIChat() {
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2.5 text-sm ${
+                  className={`max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2.5 text-sm leading-relaxed ${
                     m.role === "user"
                       ? "bg-emerald-600 text-white rounded-br-sm"
                       : "bg-white text-gray-800 rounded-bl-sm border border-gray-200 shadow-sm"
@@ -204,8 +249,23 @@ export default function SmartAIChat() {
             ))}
           </div>
 
-          {/* Quick CTA */}
-          <div className="flex gap-2 border-t border-gray-200 bg-white px-3 py-2">
+          {/* Quick replies — shown only after lead is captured */}
+          {lead && (
+            <div className="flex gap-1.5 overflow-x-auto px-3 py-2 bg-white border-t border-gray-100 scrollbar-luxury shrink-0">
+              {QUICK_REPLIES.map((q) => (
+                <button
+                  key={q}
+                  onClick={() => send(q)}
+                  className="shrink-0 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors whitespace-nowrap"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* CTA buttons */}
+          <div className="flex gap-2 border-t border-gray-200 bg-white px-3 py-2 shrink-0">
             <a
               href={waHref}
               target="_blank"
@@ -227,18 +287,18 @@ export default function SmartAIChat() {
           </div>
 
           {/* Input */}
-          <div className="flex items-center gap-2 border-t border-gray-200 bg-white px-3 py-2.5">
+          <div className="flex items-center gap-2 border-t border-gray-200 bg-white px-3 py-2.5 shrink-0">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKey}
-              placeholder={lead ? "Ask about services or pricing…" : "Your name & 10-digit phone"}
+              placeholder={lead ? "Kuch bhi poochhein…" : "Naam aur phone number likhein"}
               className="flex-1 rounded-full border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 outline-none focus:border-emerald-400 focus:bg-white transition-all"
             />
             <button
-              onClick={send}
+              onClick={() => send()}
               aria-label="Send"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 transition-colors"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 transition-colors active:scale-95"
             >
               <IconSend className="h-4 w-4" />
             </button>
