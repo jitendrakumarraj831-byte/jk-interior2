@@ -44,14 +44,14 @@ const CALL_KW    = ["call","phone","contact","baat","number","reach","milna","ta
 const NO_KW      = ["nahi","no","not","band","busy","later","baad mein","abhi nahi","thik hai","ok","okay","theek"]
 
 // ── Service knowledge ─────────────────────────────────────────────────────────
-const SERVICES: Record<string, { name: string; emoji: string; short: string; desc: string; waterproof: boolean }> = {
-  pvc:    { name: "PVC False Ceiling",    emoji: "🏠", short: "PVC",    waterproof: true,  desc: "Waterproof, termite-proof, dust-free.\nBudget-friendly premium finish — 10+ saal ki life.\nKitchen, bathroom, hall — sab jagah perfect!" },
-  gypsum: { name: "Gypsum False Ceiling", emoji: "✨", short: "Gypsum", waterproof: false, desc: "Elegant smooth finish — cove lighting, POP designs.\nBest for living rooms & bedrooms.\nNote: Dry areas ke liye ideal hai." },
-  wpc:    { name: "WPC Wall Paneling",    emoji: "🪵", short: "WPC",    waterproof: true,  desc: "Moisture-resistant eco-friendly wood-look panels.\nTV unit, accent wall, full room — sab possible.\nLuxury wood look at very affordable price!" },
-  marble: { name: "UV Marble Sheets",     emoji: "💎", short: "Marble", waterproof: true,  desc: "High-gloss marble finish — scratch-resistant, hygienic.\nWall, kitchen, counter — everywhere premium looks.\nReal marble se 80% sasta, 2x shine!" },
-  grid:   { name: "Grid Ceiling",         emoji: "🏢", short: "Grid",   waterproof: false, desc: "Clean modular ceiling for offices, shops, clinics.\nEasy wiring & AC access — neat professional look.\nFast installation, very low maintenance." },
-  grass:  { name: "Artificial Grass",     emoji: "🌿", short: "Grass",  waterproof: true,  desc: "Evergreen low-maintenance turf — balconies & terraces.\nNo watering, always fresh garden look!\nBest for feature walls & kids rooms too." },
-  interior:{ name: "Complete Interior",   emoji: "🏡", short: "Full",   waterproof: false, desc: "Full home: ceiling + wall paneling + TV unit + kitchen.\nOne team, one timeline, guaranteed quality.\nForbesganj ki most trusted interior team!" },
+const SERVICES: Record<string, { name: string; emoji: string; short: string; desc: string; waterproof: boolean; price: string; priceNote: string }> = {
+  pvc:    { name: "PVC False Ceiling",    emoji: "🏠", short: "PVC",    waterproof: true,  price: "₹45 – ₹85 / sq ft", priceNote: "Design aur material grade ke hisaab se.",  desc: "Waterproof, termite-proof, dust-free.\nBudget-friendly premium finish — 10+ saal ki life.\nKitchen, bathroom, hall — sab jagah perfect!" },
+  gypsum: { name: "Gypsum False Ceiling", emoji: "✨", short: "Gypsum", waterproof: false, price: "₹55 – ₹110 / sq ft", priceNote: "Plain se cove lighting design tak.",          desc: "Elegant smooth finish — cove lighting, POP designs.\nBest for living rooms & bedrooms.\nNote: Dry areas ke liye ideal hai." },
+  wpc:    { name: "WPC Wall Paneling",    emoji: "🪵", short: "WPC",    waterproof: true,  price: "₹80 – ₹160 / sq ft", priceNote: "Texture aur finish ke hisaab se.",            desc: "Moisture-resistant eco-friendly wood-look panels.\nTV unit, accent wall, full room — sab possible.\nLuxury wood look at very affordable price!" },
+  marble: { name: "UV Marble Sheets",     emoji: "💎", short: "Marble", waterproof: true,  price: "₹50 – ₹95 / sq ft", priceNote: "Sheet size aur design pe depend.",            desc: "High-gloss marble finish — scratch-resistant, hygienic.\nWall, kitchen, counter — everywhere premium looks.\nReal marble se 80% sasta, 2x shine!" },
+  grid:   { name: "Grid Ceiling",         emoji: "🏢", short: "Grid",   waterproof: false, price: "₹35 – ₹65 / sq ft", priceNote: "Sabse budget-friendly option.",               desc: "Clean modular ceiling for offices, shops, clinics.\nEasy wiring & AC access — neat professional look.\nFast installation, very low maintenance." },
+  grass:  { name: "Artificial Grass",     emoji: "🌿", short: "Grass",  waterproof: true,  price: "₹40 – ₹75 / sq ft", priceNote: "Pile height aur density ke hisaab se.",      desc: "Evergreen low-maintenance turf — balconies & terraces.\nNo watering, always fresh garden look!\nBest for feature walls & kids rooms too." },
+  interior:{ name: "Complete Interior",   emoji: "🏡", short: "Full",   waterproof: false, price: "Custom Quote",        priceNote: "Room count aur services pe depend.",         desc: "Full home: ceiling + wall paneling + TV unit + kitchen.\nOne team, one timeline, guaranteed quality.\nForbesganj ki most trusted interior team!" },
 }
 
 // ── Business hours (IST UTC+5:30) ─────────────────────────────────────────────
@@ -64,11 +64,25 @@ function offHoursSuffix(): string {
   return "\n\n🌙 _Abhi office hours ke baad hai. Hamare team kal subah 8 baje tak aapko call karegi!_"
 }
 
+// ── Full price list (shown when no context topic) ────────────────────────────
+const PRICE_LIST_REPLY = `💰 **JK Interior — Price List** (per sq. ft.)
+
+🏠 PVC False Ceiling      ₹45 – ₹85
+✨ Gypsum False Ceiling   ₹55 – ₹110
+🪵 WPC Wall Paneling      ₹80 – ₹160
+💎 UV Marble Sheets       ₹50 – ₹95
+🏢 Grid Ceiling           ₹35 – ₹65
+🌿 Artificial Grass       ₹40 – ₹75
+🏡 Complete Interior      Custom Quote
+
+_Note: Final rate room size, design complexity aur material grade pe depend karti hai._
+
+📐 Free site visit mein exact quotation milegi — **koi hidden charge nahi!** ✅`
+
 // ── Response packs ────────────────────────────────────────────────────────────
 const PRICE_GENERIC = [
-  "💰 Bilkul! Pricing per sq. ft. hoti hai — material, design aur room size pe depend karti hai.\n\n📐 Room ka size share karein ya WhatsApp pe photo bhejein — same day **free estimate** milegi!",
-  "💸 Ji haan 😊 Rate depend karta hai design aur material quality pe.\n\nSabse best hai ek free site visit — hum wahan aayenge, measure karenge, aur turant quotation denge. Koi hidden charge nahi! ✅",
-  "💰 Har project alag hota hai — size + material + design se price decide hoti hai.\n\nBest hoga agar room dimensions WhatsApp pe bhejein — main turant estimate dunga! 👍",
+  PRICE_LIST_REPLY,
+  PRICE_LIST_REPLY,
 ]
 
 const QUALITY_GENERIC = [
@@ -107,9 +121,12 @@ function contextualQuality(topic: string | null): string {
 
 // ── Context-aware price replies ────────────────────────────────────────────────
 function contextualPrice(topic: string | null): string {
-  if (!topic || !SERVICES[topic]) return PRICE_GENERIC[Math.floor(Math.random() * PRICE_GENERIC.length)]
+  if (!topic || !SERVICES[topic]) return PRICE_LIST_REPLY
   const s = SERVICES[topic]
-  return `💰 **${s.name}** ki pricing per sq. ft. hoti hai.\n\nRate depend karta hai:\n• Room size (sqft)\n• Design complexity\n• Material grade\n\n📐 Best hoga free site visit lein — same day exact quotation milegi! Koi hidden charge nahi. ✅`
+  const priceLine = s.price === "Custom Quote"
+    ? "💬 **Custom Quote** — room count aur scope ke hisaab se"
+    : `💰 **${s.price}**`
+  return `${s.emoji} **${s.name}** — Rate:\n\n${priceLine}\n_${s.priceNote}_\n\n📐 Exact amount ke liye room ka size batayein ya free site visit book karein — same day quotation milegi! Koi hidden charge nahi. ✅`
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
