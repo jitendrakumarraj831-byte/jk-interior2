@@ -7,47 +7,32 @@ import { MessageCircle, Phone, ArrowUp } from "lucide-react"
 export default function FloatingActions() {
   const [showBackTop, setShowBackTop] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [chatOpen, setChatOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-
-    // Scroll listener for back-to-top
     const onScroll = () => setShowBackTop(window.scrollY > 400)
     window.addEventListener("scroll", onScroll, { passive: true })
-
-    // Watch body attribute set by jk-chat — no race condition
-    const sync = () => setChatOpen(document.body.hasAttribute("data-chat-open"))
-    sync()
-    const observer = new MutationObserver(sync)
-    observer.observe(document.body, { attributes: true, attributeFilter: ["data-chat-open"] })
-
-    return () => {
-      window.removeEventListener("scroll", onScroll)
-      observer.disconnect()
-    }
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   if (!mounted) return null
 
   return (
     <>
-      {/* Floating WhatsApp button — hidden when chat is open */}
-      {!chatOpen && (
-        <a
-          href="https://wa.me/918651070831?text=Hello%20JK%20Interior%2C%20I%20need%20interior%20design%20help.%20Please%20share%20details."
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Chat on WhatsApp with JK Interior"
-          className="fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_20px_rgba(37,211,102,0.5)] transition-all hover:scale-110 hover:shadow-[0_4px_32px_rgba(37,211,102,0.7)] active:scale-95 md:bottom-6 md:right-6 animate-wa-pulse"
-        >
-          <MessageCircle className="relative h-6 w-6 z-10" aria-hidden="true" />
-        </a>
-      )}
+      {/* Floating WhatsApp — CSS hides it when body[data-chat-open] is set */}
+      <a
+        href="https://wa.me/918651070831?text=Hello%20JK%20Interior%2C%20I%20need%20interior%20design%20help.%20Please%20share%20details."
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp with JK Interior"
+        className="float-wa fixed bottom-20 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_4px_20px_rgba(37,211,102,0.5)] transition-all hover:scale-110 hover:shadow-[0_4px_32px_rgba(37,211,102,0.7)] active:scale-95 md:bottom-6 md:right-6 animate-wa-pulse"
+      >
+        <MessageCircle className="relative h-6 w-6 z-10" aria-hidden="true" />
+      </a>
 
-      {/* Back to Top — hidden when chat is open */}
+      {/* Back to Top — CSS hides it when body[data-chat-open] is set */}
       <AnimatePresence>
-        {showBackTop && !chatOpen && (
+        {showBackTop && (
           <motion.button
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -55,7 +40,7 @@ export default function FloatingActions() {
             transition={{ duration: 0.25 }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="Back to top of page"
-            className="fixed bottom-36 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full glass-card border border-emerald-300 text-emerald-600 shadow-lg hover:border-emerald-400 hover:text-emerald-700 transition-all hover:scale-110 active:scale-95 md:bottom-24 md:right-6"
+            className="float-back-top fixed bottom-36 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full glass-card border border-emerald-300 text-emerald-600 shadow-lg hover:border-emerald-400 hover:text-emerald-700 transition-all hover:scale-110 active:scale-95 md:bottom-24 md:right-6"
           >
             <ArrowUp className="h-5 w-5" aria-hidden="true" />
           </motion.button>
