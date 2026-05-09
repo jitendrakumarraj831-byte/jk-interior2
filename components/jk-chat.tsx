@@ -452,6 +452,11 @@ export default function JKChat() {
   const inputRef                  = useRef<HTMLInputElement>(null)
   const sendLock                  = useRef(false)
 
+  // Notify floating-actions to hide when chat is open
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(open ? "jk-chat-open" : "jk-chat-close"))
+  }, [open])
+
   // Restore from storage
   useEffect(() => {
     try {
