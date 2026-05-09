@@ -32,7 +32,7 @@ export default function Footer() {
     <footer className="relative overflow-hidden pt-20 pb-28 md:pb-12">
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040d20] to-[#020810]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1830] to-[#071224]" />
         <div className="absolute inset-0 grid-texture opacity-20" />
         <div className="absolute top-0 inset-x-0 h-px section-divider" />
       </div>

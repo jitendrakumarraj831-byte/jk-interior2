@@ -15,7 +15,7 @@ A Next.js 15 website for JK Interior, a PVC wall paneling and false ceiling cont
 ## Design System
 
 ### Background — DARK NAVY THEME (May 2026)
-Body: `#071126` base + radial gradient overlays (blue glow on top, right, left). Applied directly in `app/globals.css` @layer base on `body`. Do NOT add `bg-background` class to body — it will override the dark navy.
+Body: `#0e1f3d` base + radial gradient overlays (blue glow on top, right, left). Applied directly in `app/globals.css` @layer base on `body`. Do NOT add `bg-background` class to body — it will override the dark navy.
 
 ### Glassmorphism (Dark Theme)
 - `glass-panel`: `rgba(13,31,60,0.75)` bg, `blur(16px)`, `rgba(37,99,235,0.2)` border, dark shadow
@@ -24,8 +24,8 @@ Body: `#071126` base + radial gradient overlays (blue glow on top, right, left).
 - `glass-input`: `rgba(7,17,38,0.9)` bg, `blur(8px)`, blue border accent — for dark form inputs
 
 ### Color Palette
-- `--bg-primary`: `#071126` (darkest navy)
-- `--bg-secondary`: `#0d1f3c` (slightly lighter navy)
+- `--bg-primary`: `#0e1f3d` (dark navy — lighter than before)
+- `--bg-secondary`: `#152742` (slightly lighter navy)
 - `--gold` / primary blue: `#2563eb`
 - `--gold-light`: `#60a5fa`
 - `--gold-dark`: `#1d4ed8`
