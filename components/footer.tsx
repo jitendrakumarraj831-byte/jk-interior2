@@ -85,27 +85,28 @@ export default function Footer() {
             </div>
 
             {/* Social */}
-            <div className="flex gap-3">
-              <a
-                href="https://www.facebook.com/jkinterior"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="JK Interior on Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50 transition-all"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a
-                href="https://www.instagram.com/jkinterior"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="JK Interior on Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50 transition-all"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-            </div>
-          </motion.div>
+<div className="flex gap-3">
+  <a
+    href="https://www.facebook.com/share/1GpAKHZZtb/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="JK Interior on Facebook"
+    className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50 transition-all"
+  >
+    <Facebook className="h-4 w-4" />
+  </a>
+
+  <a
+    href="https://www.instagram.com/jk_interior_ceiling_designer?igsh=endrOTBuY3hpdzJ6"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="JK Interior on Instagram"
+    className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50 transition-all"
+  >
+    <Instagram className="h-4 w-4" />
+  </a>
+</div>
+</motion.div>
 
           {/* Quick Links */}
           <motion.div
