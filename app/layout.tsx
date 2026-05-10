@@ -190,30 +190,26 @@ export default function RootLayout({
                     {
                       "@type": "OpeningHoursSpecification",
                       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                      opens: "08:00",
-                      closes: "20:00",
-                    },
-                    {
-                      "@type": "OpeningHoursSpecification",
-                      dayOfWeek: "Sunday",
                       opens: "09:00",
-                      closes: "18:00",
+                      closes: "19:00",
                     },
                   ],
                   hasOfferCatalog: {
                     "@type": "OfferCatalog",
                     name: "Interior & Ceiling Services – Araria, Forbesganj, Bihar",
                     itemListElement: [
-                      "False Ceiling (Gypsum & PVC)",
-                      "PVC Wall Paneling",
-                      "Gypsum Ceiling Design",
-                      "Interior Design",
-                      "Wall Paneling",
-                      "WPC Louvers",
-                      "TV Unit Design",
+                      "PVC False Ceiling",
+                      "Gypsum Ceiling",
+                      "WPC Wall Panel",
                       "UV Marble Sheet",
-                      "Fluted Panels",
-                      "Modular Kitchen",
+                      "Modular TV Unit",
+                      "Complete Interior Design",
+                      "Bedroom Interior",
+                      "Kitchen Interior",
+                      "Office Interior",
+                      "ACP Exterior",
+                      "Louvers Panel",
+                      "Charcoal Panel",
                     ].map((s) => ({
                       "@type": "Offer",
                       itemOffered: { "@type": "Service", name: s, areaServed: "Araria, Forbesganj, Bihar" },
@@ -232,7 +228,48 @@ export default function RootLayout({
                   url: "https://www.jkinterior.online",
                   name: "JK Interior",
                   publisher: { "@id": "https://www.jkinterior.online/#business" },
-                  inLanguage: "en-IN",
+                  inLanguage: ["en-IN", "hi-IN"],
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: {
+                      "@type": "EntryPoint",
+                      urlTemplate: "https://www.jkinterior.online/?s={search_term_string}",
+                    },
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.jkinterior.online/#organization",
+                  name: "JK Interior",
+                  url: "https://www.jkinterior.online",
+                  logo: {
+                    "@type": "ImageObject",
+                    url: "https://www.jkinterior.online/logo.png",
+                    width: 180,
+                    height: 70,
+                  },
+                  contactPoint: [
+                    {
+                      "@type": "ContactPoint",
+                      telephone: "+91-8651070831",
+                      contactType: "customer service",
+                      areaServed: "IN",
+                      availableLanguage: ["Hindi", "English"],
+                      contactOption: "TollFree",
+                    },
+                    {
+                      "@type": "ContactPoint",
+                      telephone: "+91-8541849118",
+                      contactType: "sales",
+                      areaServed: "IN",
+                      availableLanguage: ["Hindi", "English"],
+                    },
+                  ],
+                  sameAs: [
+                    "https://www.facebook.com/jkinterior",
+                    "https://www.instagram.com/jkinterior",
+                  ],
                 },
                 {
                   "@type": "FAQPage",
@@ -243,7 +280,7 @@ export default function RootLayout({
                       name: "Who is the best false ceiling contractor in Araria?",
                       acceptedAnswer: {
                         "@type": "Answer",
-                        text: "JK Interior is a leading false ceiling contractor in Araria, Bihar with 5+ years of experience and 100+ completed projects. We provide PVC and gypsum ceiling at affordable prices with free site visits.",
+                        text: "JK Interior is a leading false ceiling contractor in Araria, Bihar with 8+ years of experience and 500+ completed projects. We provide PVC and gypsum ceiling at affordable prices with free site visits.",
                       },
                     },
                     {
@@ -276,6 +313,14 @@ export default function RootLayout({
                       acceptedAnswer: {
                         "@type": "Answer",
                         text: "Yes, JK Interior offers free consultation and on-site visits anywhere in Araria district and surrounding areas before starting any false ceiling, PVC paneling or interior design project.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "What is the opening time of JK Interior?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "JK Interior is open Monday to Saturday, 9:00 AM to 7:00 PM. You can also WhatsApp at +91 8651070831 any time for inquiries.",
                       },
                     },
                   ],

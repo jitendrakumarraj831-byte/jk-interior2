@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/services", label: "Our Services" },
   { href: "/gallery", label: "Work Gallery" },
   { href: "/about", label: "About Us" },
+  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact Us" },
 ]
 
@@ -22,7 +23,18 @@ const serviceLinks = [
   { label: "Complete Interior" },
 ]
 
-const areas = ["Forbesganj", "Araria", "Jogbani", "Purnia", "Narpatganj", "Supaul"]
+const cityLinks = [
+  { slug: "forbesganj", name: "Forbesganj" },
+  { slug: "araria", name: "Araria" },
+  { slug: "purnia", name: "Purnia" },
+  { slug: "jogbani", name: "Jogbani" },
+  { slug: "supaul", name: "Supaul" },
+  { slug: "narpatganj", name: "Narpatganj" },
+  { slug: "raniganj", name: "Raniganj" },
+  { slug: "tribeniganj", name: "Tribeniganj" },
+  { slug: "kursakanta", name: "Kursakanta" },
+  { slug: "chhatapur", name: "Chhatapur" },
+]
 
 export default function Footer() {
   const shouldReduce = useReducedMotion()
@@ -220,18 +232,47 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Areas strip */}
-        <div className="mt-14 flex flex-wrap gap-2">
-          <span className="text-[10px] font-black uppercase tracking-widest text-emerald-700 py-1">Areas:</span>
-          {areas.map((area) => (
-            <span key={area} className="text-[10px] font-bold text-emerald-700 rounded-full border border-emerald-300 bg-white/60 px-3 py-1">{area}</span>
-          ))}
-        </div>
+        {/* Service Areas — linked city pages */}
+        <motion.div
+          {...(shouldReduce ? {} : {
+            initial: { opacity: 0, y: 16 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
+          })}
+          className="mt-14"
+        >
+          <h4 className="mb-4 text-[10px] font-black uppercase tracking-widest text-emerald-700">
+            Service Areas:
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {cityLinks.map((city) => (
+              <Link
+                key={city.slug}
+                href={`/cities/${city.slug}`}
+                className="text-[10px] font-bold text-emerald-700 rounded-full border border-emerald-300 bg-white/60 px-3 py-1 hover:border-emerald-500 hover:bg-emerald-50 transition-all"
+                title={`Interior design and false ceiling in ${city.name}, Bihar`}
+              >
+                {city.name}
+              </Link>
+            ))}
+          </div>
+        </motion.div>
 
         {/* SEO text */}
         <div className="mt-6 mb-12 rounded-xl border border-emerald-200 bg-white/50 p-4">
           <p className="text-xs leading-relaxed text-gray-500">
-            JK Interior — Best interior designer in Forbesganj, Araria, Bihar. We provide PVC false ceiling, gypsum ceiling design, WPC wall paneling, UV marble sheet, modular TV unit design, and complete interior solutions across Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia.
+            JK Interior — Best interior designer in Forbesganj, Araria, Bihar. We provide PVC false ceiling, gypsum ceiling design, WPC wall paneling, UV marble sheet, modular TV unit design, and complete interior solutions across{' '}
+            <Link href="/cities/forbesganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Forbesganj</Link>,{' '}
+            <Link href="/cities/araria" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Araria</Link>,{' '}
+            <Link href="/cities/jogbani" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Jogbani</Link>,{' '}
+            <Link href="/cities/raniganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Raniganj</Link>,{' '}
+            <Link href="/cities/narpatganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Narpatganj</Link>,{' '}
+            <Link href="/cities/kursakanta" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Kursakanta</Link>,{' '}
+            <Link href="/cities/tribeniganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Tribeniganj</Link>,{' '}
+            <Link href="/cities/chhatapur" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Chhatapur</Link>,{' '}
+            <Link href="/cities/supaul" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Supaul</Link> and{' '}
+            <Link href="/cities/purnia" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Purnia</Link>.
           </p>
         </div>
 
@@ -249,6 +290,8 @@ export default function Footer() {
             <Link href="/contact" className="hover:text-emerald-600 transition-colors">Privacy Policy</Link>
             <span>•</span>
             <Link href="/services" className="hover:text-emerald-600 transition-colors">All Services</Link>
+            <span>•</span>
+            <Link href="/faq" className="hover:text-emerald-600 transition-colors">FAQ</Link>
             <span>•</span>
             <span>Made with ❤ in Bihar</span>
           </div>
