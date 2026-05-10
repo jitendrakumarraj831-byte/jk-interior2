@@ -271,60 +271,6 @@ export default function RootLayout({
                     "https://www.instagram.com/jkinterior",
                   ],
                 },
-                {
-                  "@type": "FAQPage",
-                  "@id": "https://www.jkinterior.online/#faq",
-                  mainEntity: [
-                    {
-                      "@type": "Question",
-                      name: "Who is the best false ceiling contractor in Araria?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "JK Interior is a leading false ceiling contractor in Araria, Bihar with 8+ years of experience and 500+ completed projects. We provide PVC and gypsum ceiling at affordable prices with free site visits.",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "What is the cost of PVC ceiling in Araria, Bihar?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "PVC ceiling cost in Araria typically starts from ₹70-₹120 per sq.ft depending on panel quality, design and lighting. Contact JK Interior on +91 8651070831 for a free quote.",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "Do you provide gypsum ceiling services in Forbesganj?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. JK Interior provides gypsum false ceiling, POP design, cove lighting and modern living-room ceiling work throughout Forbesganj and Araria district.",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "Which areas does JK Interior serve?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We serve Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia – covering all of Araria, Supaul and Purnia districts of Bihar.",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "Do you offer free consultation and site visit?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes, JK Interior offers free consultation and on-site visits anywhere in Araria district and surrounding areas before starting any false ceiling, PVC paneling or interior design project.",
-                      },
-                    },
-                    {
-                      "@type": "Question",
-                      name: "What is the opening time of JK Interior?",
-                      acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "JK Interior is open Monday to Saturday, 9:00 AM to 7:00 PM. You can also WhatsApp at +91 8651070831 any time for inquiries.",
-                      },
-                    },
-                  ],
-                },
               ],
             }),
           }}
