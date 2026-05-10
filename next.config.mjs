@@ -19,6 +19,16 @@ const nextConfig = {
     minimumCacheTTL: 31536000,
     qualities: [50, 52, 58, 62, 68, 72, 78, 80, 82, 100],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'jkinterior.online' }],
+        destination: 'https://www.jkinterior.online/:path*',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

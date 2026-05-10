@@ -279,7 +279,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="flex flex-col items-center justify-between gap-5 border-t border-emerald-200 pt-8 md:flex-row">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700" suppressHydrationWarning>
               © {currentYear} JK Interior Forbesganj
             </p>
             <p className="mt-0.5 text-[10px] font-semibold text-gray-500">
