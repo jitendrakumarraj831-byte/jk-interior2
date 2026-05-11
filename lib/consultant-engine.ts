@@ -144,6 +144,14 @@ function expandPatterns(words: string[]): string[] {
 }
 
 const INTENT_PATTERNS: Record<Intent, string[]> = {
+  services: expandPatterns([
+    "service",
+    "services",
+    "kya kya",
+    "konsa kaam",
+    "aap kya karte",
+    "what services"
+  ]),
   pricing: expandPatterns([
     "price","cost","rate","kimat","daam","kitna","kharcha","budget","lagat",
     "paisa","rs ","quote","how much","lagega","charge","per sqft","per sq",
@@ -389,6 +397,7 @@ export function detectIntent(text: string): Intent {
     t.includes("aap kya karte") ||
     t.includes("what services")
   ) return "services"
+  
   // Service info
   if (INTENT_PATTERNS["service-info"].some(k => t.includes(k))) return "service-info"
 
