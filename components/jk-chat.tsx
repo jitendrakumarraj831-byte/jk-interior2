@@ -331,11 +331,15 @@ export default function JKChat() {
   const [lead,      setLead]      = useState<Partial<Lead> | null>(null)
   const [lastTopic, setLastTopic] = useState<string | null>(null)
   const [typing,    setTyping]    = useState(false)
-  const [aiMode,    setAiMode]    = useState(true)   // optimistic: assume AI works until proven otherwise
+  const [aiMode,    setAiMode]    = useState(true)
+  const [offHours,  setOffHours]  = useState(false)  // client-only, avoids hydration mismatch
   const historyRef                = useRef<ConvMsg[]>([])
   const scrollRef                 = useRef<HTMLDivElement>(null)
   const inputRef                  = useRef<HTMLInputElement>(null)
   const sendLock                  = useRef(false)
+
+  // ── Resolve off-hours status on client only (avoids SSR/client mismatch)
+  useEffect(() => { setOffHours(isOffHours()) }, [])
 
   // ── body attribute so CSS can hide floating buttons when chat is open
   useEffect(() => {
@@ -458,7 +462,7 @@ export default function JKChat() {
   const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hi JK Interior! Main ${lead.name}${lead.phone ? ` (${lead.phone})` : ""}. Free site visit book karna chahta/chahti hoon.` : "Hi JK Interior! Free site visit book karna chahta hoon.")}`
   const qrSet    = getQR(lastTopic, !!lead?.phone)
 
-  const statusText = isOffHours()
+  const statusText = offHours
     ? "🌙 Opens 9 AM • WhatsApp available"
     : "🟢 Online — Forbesganj • Araria • Purnia"
 

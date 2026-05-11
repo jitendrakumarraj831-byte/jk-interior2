@@ -45,7 +45,7 @@ async function callGemini(
   currentMessage: string,
   apiKey: string
 ): Promise<string> {
-  const model = "gemini-2.0-flash"
+  const model = "gemini-2.5-flash"
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
 
   // Build Gemini-format conversation (must alternate user/model, end with user)

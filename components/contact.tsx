@@ -1,14 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Phone, Mail, MapPin, MessageCircle, Loader2, Clock, Star } from "lucide-react"
-import { motion, useReducedMotion } from "framer-motion"
+import { motion } from "framer-motion"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const shouldReduce = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -46,7 +47,7 @@ export default function Contact() {
     }
   }
 
-  const animProps = shouldReduce
+  const animProps = !mounted
     ? {}
     : {
         initial: { opacity: 0, y: 24 },
@@ -122,7 +123,7 @@ export default function Contact() {
               </motion.div>
 
               <motion.div
-                {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
+                {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
                 className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
@@ -140,7 +141,7 @@ export default function Contact() {
 
             {/* Location */}
             <motion.div
-              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
+              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
               className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
             >
               <div className="flex gap-4">
@@ -157,7 +158,7 @@ export default function Contact() {
 
             {/* Hours */}
             <motion.div
-              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
+              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
               className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
             >
               <div className="flex gap-4">
@@ -182,7 +183,7 @@ export default function Contact() {
 
             {/* WhatsApp CTA */}
             <motion.div
-              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.18 } })}
+              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.18 } })}
             >
               <a
                 href="https://wa.me/918651070831?text=Hello%20JK%20Interior%2C%20I%20am%20interested%20in%20your%20services."
@@ -197,7 +198,7 @@ export default function Contact() {
 
             {/* Map */}
             <motion.div
-              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.2 } })}
+              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.2 } })}
               className="overflow-hidden rounded-2xl border border-emerald-200 h-44 shadow-sm"
             >
               <iframe
@@ -215,7 +216,7 @@ export default function Contact() {
 
           {/* RIGHT: Form */}
           <motion.div
-            {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.1 } })}
+            {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.1 } })}
             className="glass-card-bright rounded-3xl p-7 md:p-9"
           >
             {/* Form Header */}
