@@ -1,5 +1,5 @@
 // consultant-engine.ts
-import KNOWLEDGE_BASE from "./knowledge-base";
+import KNOWLEDGE_BASE, { STANDARD_ROOM_SIZES } from "./knowledge-base";
 
 // ============================================
 // Types & Interfaces
