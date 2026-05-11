@@ -219,7 +219,7 @@ export default async function CityPage({
           </h2>
 
           <p className="mb-8 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
-            {city.description} Serving homes, offices, and shops in {city.name} with 5-year
+            {city.description} Serving homes, offices, and shops in {city.name} with 1-year
             written warranty and ISI-certified materials.
           </p>
 
@@ -228,7 +228,7 @@ export default async function CityPage({
             {[
               { val: '500+', lbl: 'Projects Done' },
               { val: '8+', lbl: 'Years Experience' },
-              { val: '5 Yr', lbl: 'Written Warranty' },
+              { val: '1 Yr', lbl: 'Written Warranty' },
               { val: '100%', lbl: 'Satisfaction' },
             ].map((s) => (
               <div
