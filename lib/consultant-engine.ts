@@ -422,3 +422,8 @@ export class ConsultantEngine {
 // Export a singleton instance for easy use
 // ============================================
 export const consultantEngine = new ConsultantEngine();
+
+export const consultantReply =
+  consultantEngine.generateReply.bind(consultantEngine);
+
+export type { ConversationContext };
