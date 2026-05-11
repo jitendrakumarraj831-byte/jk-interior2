@@ -717,7 +717,24 @@ if (!svc && ctx.lastTopic) {
   if (city && t.length < 50 && !svc) {
     return `**${city}** mein hum regularly kaam karte hain! 💪\n\nCeiling ya wall paneling kisliye chahiye? Room size batao toh estimate bhi de deti hoon!`
   }
+// ─── SERVICES LIST
+  if (intent === "services") {
+    return `JK Interior Services:
 
+✨ Gypsum Ceiling
+🏠 PVC Ceiling
+🪵 WPC Wall Panels
+💎 UV Marble Sheets
+🏢 Grid Ceiling
+📺 TV Unit
+🚪 Wall Paneling
+💡 Cove Lighting
+🛏 Bedroom Interior
+🏠 Hall Interior
+🏢 Office Interior
+
+Aapko kis service ke baare mein detail chahiye? 😊`
+  }
   // ─── QUALITY / WARRANTY
   if (intent === "quality") {
     return `JK Interior Quality Guarantee:\n\n✅ **1 saal ki written warranty** — koi bhi issue, free repair\n✅ **ISI-certified branded materials** — koi duplicate nahi\n✅ **100% waterproof options** — bathroom/kitchen safe\n✅ **8+ saal experience, 500+ projects** — proven track record\n\nMaterial sample bhi dikhaya jaata hai kaam shuru hone se pehle! 🙏`
