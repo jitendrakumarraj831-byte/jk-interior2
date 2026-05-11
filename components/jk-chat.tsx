@@ -16,7 +16,7 @@ type MsgKind = "text" | "card"
 type Message = { id: number; role: Role; text: string; kind?: MsgKind; cardData?: LeadCard }
 type ConvMsg = { role: "user" | "assistant"; content: string }
 type Lead    = { name: string; phone: string; city?: string; service?: string }
-type LeadCard = Lead & { timestamp: string }
+type LeadCard = Lead & { timestamp: string; estimate?: string; preferredTime?: string }
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 const WA_NUMBER   = "918651070831"
@@ -79,15 +79,36 @@ function detectService(t: string): string | null {
   return null
 }
 
-function storeAdminLead(lead: Lead) {
+function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string) {
   try {
     const raw = localStorage.getItem("jk_admin_leads") || "[]"
     const leads: LeadCard[] = JSON.parse(raw)
-    const entry: LeadCard = { ...lead, timestamp: new Date().toISOString() }
+    const entry: LeadCard = { ...lead, timestamp: new Date().toISOString(), estimate, preferredTime }
     leads.unshift(entry)
     localStorage.setItem("jk_admin_leads", JSON.stringify(leads.slice(0, 100)))
   } catch {}
+  saveLeadToDB({ name: lead.name, phone: lead.phone, city: lead.city, service: lead.service, estimate, preferred_time: preferredTime })
 }
+
+function saveLeadToDB(data: { name: string; phone: string; city?: string; service?: string; estimate?: string; preferred_time?: string }) {
+  try {
+    fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      keepalive: true,
+    }).catch(() => {})
+  } catch {}
+}
+
+function extractEstimateSummary(text: string): string | null {
+  const std = text.match(/Standard[^:\n]*:\s*(₹[\d,]+ – ₹[\d,]+)/)
+  if (std) return std[1]
+  const rng = text.match(/(₹[\d,]+ – ₹[\d,]+)/)
+  return rng ? rng[1] : null
+}
+
+const LEAD_INTENT_RE = /\b(theek\s*hai|theek\b|thik\b|accha|achha|sahi\s*hai|haan\s*ji|han\s*ji|haan\b|han\b|yes\b|zaroor|bilkul|karwana\s*hai|karwana\s*h\b|site\s*visit|booking|book\s*karo|confirm|interested|number\s*le|milna\s*hai|baat\s*karni|sampark|quote\s*chahiye)\b/i
 
 // ── AI API call ────────────────────────────────────────────────────────────────
 async function getAIReply(
@@ -440,22 +461,39 @@ function TypingDots() {
 }
 
 // ── Lead card ──────────────────────────────────────────────────────────────────
-function LeadConfirmCard({ data, waHref, bookHref }: { data: LeadCard; waHref: string; bookHref: string }) {
+function LeadConfirmCard({ data }: { data: LeadCard }) {
   const rows = [
     { label: "👤 Name",    value: data.name },
     { label: "📱 Phone",   value: data.phone },
-    { label: "📍 City",    value: data.city    || "—" },
-    { label: "🔧 Service", value: data.service || "—" },
+    { label: "📍 City",    value: data.city       || "—" },
+    { label: "🔧 Service", value: data.service    || "—" },
+    ...(data.estimate     ? [{ label: "💰 Estimate",  value: data.estimate }]     : []),
+    ...(data.preferredTime ? [{ label: "📅 Visit",     value: data.preferredTime }] : []),
   ]
   const d  = new Date(data.timestamp)
   const ts = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`
+
+  const waMsg = [
+    `🏠 JK Interior Inquiry`,
+    `👤 ${data.name}`,
+    `📱 ${data.phone}`,
+    data.city       ? `📍 ${data.city}`              : null,
+    data.service    ? `🔧 ${data.service}`            : null,
+    data.estimate   ? `💰 Estimate: ${data.estimate}` : null,
+    data.preferredTime ? `📅 Visit: ${data.preferredTime}` : null,
+    `\nFree site visit confirm kar dijiye! 🙏`,
+  ].filter(Boolean).join("\n")
+  const waHref   = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`
+  const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+    `Hi JK Interior! Main ${data.name} hoon${data.city ? ` (${data.city})` : ""}. Free site visit book karna chahta/chahti hoon${data.preferredTime ? ` — ${data.preferredTime}` : ""}. Please confirm! 🙏`
+  )}`
 
   return (
     <div className="w-full max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-emerald-200 shadow-md bg-white animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 px-3.5 py-2.5 flex items-center gap-2.5">
         <span className="text-lg">🎉</span>
         <div>
-          <p className="text-xs font-bold text-white leading-tight">Lead Confirmed!</p>
+          <p className="text-xs font-bold text-white leading-tight">Inquiry Confirmed!</p>
           <p className="text-[10px] text-white/65">{ts}</p>
         </div>
       </div>
@@ -463,7 +501,7 @@ function LeadConfirmCard({ data, waHref, bookHref }: { data: LeadCard; waHref: s
         {rows.map(r => (
           <div key={r.label} className="flex items-start gap-2 text-xs">
             <span className="text-gray-400 shrink-0 w-20 text-[11px]">{r.label}</span>
-            <span className="font-semibold text-gray-800 break-all text-[12px]">{r.value}</span>
+            <span className={`font-semibold break-all text-[12px] ${r.label.startsWith("💰") ? "text-emerald-700" : "text-gray-800"}`}>{r.value}</span>
           </div>
         ))}
       </div>
@@ -475,7 +513,7 @@ function LeadConfirmCard({ data, waHref, bookHref }: { data: LeadCard; waHref: s
           <a href={waHref} target="_blank" rel="noopener noreferrer"
             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2.5 text-[11px] font-bold text-white hover:opacity-90 active:scale-95 transition-all touch-manipulation"
           >
-            <IWA /> WhatsApp
+            <IWA /> WhatsApp Now
           </a>
           <a href={bookHref} target="_blank" rel="noopener noreferrer"
             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2.5 text-[11px] font-bold text-white hover:bg-emerald-500 active:scale-95 transition-all touch-manipulation"
@@ -508,6 +546,8 @@ export default function JKChat() {
   const scrollRef                 = useRef<HTMLDivElement>(null)
   const inputRef                  = useRef<HTMLInputElement>(null)
   const sendLock                  = useRef(false)
+  const [collectStep, setCollectStep]       = useState<null | "name" | "phone" | "city" | "time">(null)
+  const [pendingEstimate, setPendingEstimate] = useState<string | null>(null)
 
   // ── Resolve off-hours status on client only (avoids SSR/client mismatch)
   useEffect(() => { setOffHours(isOffHours()) }, [])
@@ -558,6 +598,84 @@ export default function JKChat() {
     // Update conversation history for AI
     historyRef.current = [...historyRef.current, { role: "user", content: text }]
 
+    // ── COLLECTION MODE: intercept when gathering lead details step-by-step ───
+    if (collectStep) {
+      const t = text.toLowerCase()
+      await delay(600 + Math.random() * 400)
+      let collReply = ""
+
+      if (collectStep === "name") {
+        const phone = tryExtractPhone(text)
+        const nameRaw = phone ? text.replace(phone, "").replace(/\b91\b/, "") : text
+        const name = tryExtractName(nameRaw)
+        if (name.length < 2) {
+          collReply = `Naam clearly likhein — jaise 'Rahul Kumar' ya 'Priya'! 😊`
+        } else {
+          const city = detectCity(t) || lead?.city
+          const updated: Partial<Lead> = { ...(lead || {}), name, ...(phone ? { phone } : {}), city: city || lead?.city }
+          setLead(updated)
+          persist(updated, lastTopic)
+          if (phone && city) {
+            setCollectStep("time")
+            collReply = `${name} ji! Sab note ho gaya 😊\n\nKab visit convenient hogi? Jaise 'Saturday evening' ya 'Sunday morning'?`
+          } else if (phone) {
+            setCollectStep("city")
+            collReply = `${name} ji, number bhi mil gaya! 📱✅\n\nAap kis city/area mein hain?`
+          } else {
+            setCollectStep("phone")
+            collReply = `${name} ji! 😊\n\nAapka WhatsApp number share karein — main JK Interior ki team ko aapki inquiry forward kar deti hoon! 📱`
+          }
+        }
+      } else if (collectStep === "phone") {
+        const phone = tryExtractPhone(text)
+        if (!phone) {
+          collReply = `Valid Indian mobile number chahiye (10 digits, 6–9 se shuru). Phir try karein! 📱`
+        } else {
+          const city = detectCity(t) || lead?.city
+          const updated: Partial<Lead> = { ...(lead || {}), phone, city: city || undefined }
+          setLead(updated)
+          persist(updated, lastTopic)
+          if (city) {
+            setCollectStep("time")
+            collReply = `Number note ho gaya! 📱✅\n\nKab site visit convenient hogi? Jaise 'Saturday afternoon' ya 'Sunday morning'?`
+          } else {
+            setCollectStep("city")
+            collReply = `Number note ho gaya! 📱✅\n\nAap kis city/area mein hain? (Araria, Forbesganj, Purnia, etc.)`
+          }
+        }
+      } else if (collectStep === "city") {
+        const city = detectCity(t) || (text.trim().length > 2 && text.trim().length < 50 ? text.trim() : null)
+        if (!city) {
+          collReply = `City ka naam batayein — jaise Araria, Forbesganj, Purnia! 📍`
+        } else {
+          const updated: Partial<Lead> = { ...(lead || {}), city }
+          setLead(updated)
+          persist(updated, lastTopic)
+          setCollectStep("time")
+          collReply = `${city} — perfect! 📍\n\nKab site visit convenient hogi? Jaise 'Saturday evening' ya 'Weekday afternoon'?`
+        }
+      } else if (collectStep === "time") {
+        const preferredTime = text.trim()
+        setCollectStep(null)
+        const finalLead: Lead = {
+          name:    lead?.name    || "Friend",
+          phone:   lead?.phone   || "",
+          city:    lead?.city,
+          service: lead?.service,
+        }
+        storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime)
+        const card: LeadCard = { ...finalLead, estimate: pendingEstimate || undefined, preferredTime, timestamp: new Date().toISOString() }
+        setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
+        collReply = `🎉 **Booking confirmed!**\n\nJK Interior ki team **${preferredTime}** mein aapko contact karegi!\n\n📞 Ya abhi call/WhatsApp: **+91 8651070831**`
+      }
+
+      historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
+      setMsgs(prev => [...prev, mk("bot", collReply)])
+      setTyping(false)
+      sendLock.current = false
+      return
+    }
+
     // Detect service/city from user message
     const svc  = detectService(text.toLowerCase())
     const city = detectCity(text.toLowerCase())
@@ -576,7 +694,7 @@ export default function JKChat() {
         service: svc || lead?.service,
       }
       setLead(updatedLead)
-      storeAdminLead(updatedLead as Lead)
+      storeAdminLead(updatedLead as Lead, pendingEstimate || undefined)
     } else if (city && !lead?.city) {
       updatedLead = { ...(lead || {}), city }
       setLead(updatedLead)
@@ -611,6 +729,10 @@ export default function JKChat() {
     setLastTopic(newTopic)
     persist(updatedLead, newTopic)
 
+    // Capture estimate from reply text
+    const estSummary = extractEstimateSummary(reply)
+    if (estSummary && !pendingEstimate) setPendingEstimate(estSummary)
+
     // Add reply(s) to messages
     setMsgs(prev => {
       const next = [...prev, mk("bot", reply as string)]
@@ -621,6 +743,7 @@ export default function JKChat() {
           phone:     updatedLead.phone!,
           city:      updatedLead.city,
           service:   updatedLead.service,
+          estimate:  pendingEstimate || estSummary || undefined,
           timestamp: new Date().toISOString(),
         }
         next.push(mk("bot", "lead_card", "card", card))
@@ -628,9 +751,28 @@ export default function JKChat() {
       return next
     })
 
+    // ── Trigger sequential lead collection when user shows booking intent ──────
+    const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone
+    if (hasLeadIntent) {
+      setTyping(false)
+      await delay(1100)
+      setTyping(true)
+      await delay(700)
+      const nm = updatedLead?.name
+      const startMsg = nm
+        ? `${nm} ji! Free site visit ke liye aapka WhatsApp number share karein 📱 — main JK Interior ki team ko abhi inform karti hoon!`
+        : `Free site visit book karne ke liye pehle aapka naam bata dijiye! 😊`
+      setCollectStep(nm ? "phone" : "name")
+      historyRef.current = [...historyRef.current, { role: "assistant", content: startMsg }]
+      setMsgs(prev => [...prev, mk("bot", startMsg)])
+      setTyping(false)
+      sendLock.current = false
+      return
+    }
+
     setTyping(false)
     sendLock.current = false
-  }, [input, lead, typing, lastTopic, aiMode])
+  }, [input, lead, typing, lastTopic, aiMode, collectStep, pendingEstimate])
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() }
@@ -751,7 +893,7 @@ export default function JKChat() {
 
                 {/* Content */}
                 {m.kind === "card" && m.cardData ? (
-                  <LeadConfirmCard data={m.cardData} waHref={waHref} bookHref={bookHref} />
+                  <LeadConfirmCard data={m.cardData} />
                 ) : (
                   <div
                     className={`max-w-[82%] whitespace-pre-line rounded-2xl px-3.5 py-2.5 text-[13px] leading-relaxed ${

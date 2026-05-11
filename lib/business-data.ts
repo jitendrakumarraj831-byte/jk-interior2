@@ -449,7 +449,7 @@ export function generateMultiRoomEstimate(rooms: Record<string, number>): string
     grid:    { low: 45,  high: 90,  premLow: 65,  premHigh: 90  },
   }
 
-  const fmt = (n: number) => "₹" + Math.round(n / 100) * 100 === n
+  const fmt = (n: number) => Math.round(n / 100) * 100 === n
     ? "₹" + n.toLocaleString("en-IN")
     : "₹" + (Math.round(n / 100) * 100).toLocaleString("en-IN")
   const fmtN = (n: number) => "₹" + (Math.round(n / 500) * 500).toLocaleString("en-IN")
