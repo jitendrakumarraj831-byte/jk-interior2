@@ -28,11 +28,12 @@ const sessions = new Map<string, SessionData>()
 // Cleanup expired sessions every hour
 setInterval(() => {
   const now = Date.now()
-  for (const [sid, data] of sessions.entries()) {
+
+  sessions.forEach((data, sid) => {
     if (now - data.lastAccessed > SESSION_TTL_MS) {
       sessions.delete(sid)
     }
-  }
+  })
 }, 60 * 60 * 1000)
 
 // ============================================
