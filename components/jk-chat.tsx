@@ -1,6 +1,12 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import {
+  MATERIAL_KNOWLEDGE,
+  COMPARISONS,
+  FAQ,
+  formatPriceEstimate,
+} from "@/lib/business-data"
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 type Role    = "bot" | "user"
@@ -86,101 +92,174 @@ async function getAIReply(
   message: string,
   history: ConvMsg[],
   lead: Partial<Lead> | null
-): Promise<string | null> {
+): Promise<{ reply: string; source: "gemini" | "local" } | null> {
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
-        history: history.slice(-12),
+        history: history.slice(-16),
         leadContext: lead
           ? {
-              name: lead.name || undefined,
-              phone: lead.phone || undefined,
-              city: lead.city || undefined,
+              name:    lead.name    || undefined,
+              phone:   lead.phone   || undefined,
+              city:    lead.city    || undefined,
               service: lead.service || undefined,
             }
           : undefined,
       }),
-      signal: AbortSignal.timeout(9000),
+      signal: AbortSignal.timeout(12000),
     })
     if (!res.ok) return null
     const data = await res.json()
-    return data.ok && data.reply ? (data.reply as string) : null
+    if (!data.ok || !data.reply) return null
+    return { reply: data.reply as string, source: (data.source as "gemini" | "local") ?? "gemini" }
   } catch {
     return null
   }
 }
 
-// ── Local fallback (used when AI unavailable) ──────────────────────────────────
-const PRICE_LIST = `💰 **JK Interior — Price List**
-
-✨ Gypsum Ceiling     ₹80 – ₹140 / sq.ft
-🏠 PVC Ceiling        ₹60 – ₹120 / sq.ft
-🪵 WPC Wall Panels    ₹180 – ₹450 / sq.ft
-💎 UV Marble Sheets   ₹50 – ₹95 / sq.ft
-📺 Modular TV Unit    ₹15,000+
-
-_Exact rate room size aur design ke hisaab se vary karti hai. Free site visit mein same-day exact quotation milegi!_ ✅`
-
-const SERVICE_INFO: Record<string, string> = {
-  pvc:      "🏠 **PVC False Ceiling** (₹60–₹120/sq.ft)\n\n100% waterproof, termite-proof aur dust-free — kitchen, bathroom, hall sab ke liye perfect hai! 10+ saal ki life aur very low maintenance. Free site visit book karein?",
-  gypsum:   "✨ **Gypsum False Ceiling** (₹80–₹140/sq.ft)\n\nSmooth elegant finish — cove lighting, POP designs, modern look! Living rooms aur bedrooms ke liye best hai. Dry areas ke liye ideal. Quote ke liye batayein! 😊",
-  wpc:      "🪵 **WPC Wall Panels** (₹180–₹450/sq.ft)\n\nLuxury wood-look panels — moisture resistant, eco-friendly! TV wall, accent wall, ya full room — sab possible hai. Asli lakdi se sasta aur zyada durable! 💪",
-  uv:       "💎 **UV Marble Sheets** (₹50–₹95/sq.ft)\n\nHigh-gloss scratch-resistant finish — walls, kitchen aur counters ke liye perfect! Real marble jaisi shine at 70% less cost! 😍",
-  tvunit:   "📺 **Modular TV Unit** (₹15,000+)\n\nCustom designed, premium finish — aapke room ke exact size mein banate hain! Built-in shelves, cable management, LED lighting bhi add kar sakte hain. 🎨",
-  fluted:   "🏛️ **Fluted Panels** (₹200–₹500/sq.ft)\n\nModern 3D textured look — feature walls aur reception areas ke liye trending design! Bohot premium lagta hai! ✨",
-  interior: "🏡 **Complete Interior Design** (Custom Quote)\n\nFull home package — ceiling + wall panels + TV unit + kitchen — ek team, ek timeline! Forbesganj ka most trusted interior team! Free consultation ke liye call karein. 🙌",
-}
-
+// ── Local fallback (rich knowledge-base powered) ────────────────────────────
 function localFallback(input: string, lead: Partial<Lead> | null): string {
-  const t   = input.toLowerCase().trim()
-  const nm  = lead?.name || ""
-  const oh  = isOffHours()
+  const t  = input.toLowerCase().trim()
+  const nm = lead?.name || ""
+  const oh = isOffHours()
 
-  const PRICE_KW   = ["price","cost","rate","kimat","daam","kitna","kharcha","budget","lagat","paisa","rs ","quote","how much","lagega","charge","per sqft","per sq","mahnga","sasta"]
-  const BOOK_KW    = ["visit","book","site visit","measurement","quotation","bulao","aao","milna","survey","appointment","schedule","bula lo","bhejo","free visit"]
-  const QUALITY_KW = ["guarantee","warranty","waterproof","quality","bharosa","trust","kitne saal","durable","material","isi","certified","strong","tuta","girta","peeling"]
-  const GREET_KW   = ["hi","hello","hey","namaste","namaskar","helo","good morning","good evening","good afternoon","hy","hii","salam"]
-  const THANKS_KW  = ["thank","shukriya","dhanyawad","thanks","thx","bahut accha","great","perfect","nice","superb","awesome","shabash","badiya","wah"]
-  const AREA_KW    = ["area","location","where","kahan","serve","district","kaun sa","konsa","aata hai","available","cover"]
-  const CALL_KW    = ["call","phone","contact","baat","number","reach","talk"]
+  // ── Greetings
+  const GREET_KW = ["hi","hello","hey","namaste","namaskar","helo","good morning","good evening","good afternoon","hy","hii","salam","kaise ho"]
+  if (has(t, GREET_KW) && t.length < 35) return pick([
+    `Namaste${nm ? " " + nm : ""}! 😊 Main Riya hoon, JK Interior ki AI assistant.\n\nGypsum ceiling, PVC ceiling, WPC panels, pricing, ya site visit — kuch bhi poochhein!`,
+    `Hello${nm ? " " + nm : ""}! 🏠 JK Interior mein aapka swagat hai. Kya aap ceiling ya wall paneling ke baare mein jaanna chahte hain?`,
+  ])
 
-  // Service detection
-  if (t.includes("pvc"))                                    return SERVICE_INFO.pvc
-  if (t.includes("gypsum") || t.includes("pop "))          return SERVICE_INFO.gypsum
-  if (t.includes("wpc") || t.includes("wood panel") || t.includes("louver")) return SERVICE_INFO.wpc
-  if (t.includes("uv ") || t.includes("marble"))           return SERVICE_INFO.uv
-  if (t.includes("tv unit") || t.includes("tv panel"))     return SERVICE_INFO.tvunit
-  if (t.includes("fluted"))                                return SERVICE_INFO.fluted
-  if (t.includes("complete interior") || t.includes("full interior")) return SERVICE_INFO.interior
-  if (t.includes("false ceiling") || t.includes("ceiling") || t.includes("chhat")) return SERVICE_INFO.gypsum
+  // ── Thanks
+  const THANKS_KW = ["thank","shukriya","dhanyawad","thanks","thx","bahut accha","great","perfect","nice","superb","awesome","shabash","badiya","wah","theek hai"]
+  if (has(t, THANKS_KW) && t.length < 40) return `Bahut shukriya${nm ? " " + nm : ""}! 🙏 Koi bhi sawaal ho toh main yahaan hoon. JK Interior mein aapki seva karna hamara farz hai! ✨`
 
-  if (has(t, PRICE_KW))   return PRICE_LIST
-  if (has(t, QUALITY_KW)) return `✅ Ji haan! JK Interior sirf ISI-certified, fully waterproof materials use karta hai.\n\n🏆 **5 saal ki written warranty** — koi bhi issue aaye toh free repair. 500+ happy clients, 8+ saal ka experience — aapka kaam safe hands mein hai! 🙏`
-  if (has(t, BOOK_KW))    return `📅 **Bilkul ${nm}!** Site visit **bilkul free** hai — koi hidden charge nahi.\n\nNeeche "WhatsApp" button tap karein ya **+91 8651070831** pe call karein.${oh ? "\n\n🌙 _Abhi office hours ke baad hai — team kal 9 baje aapko contact karegi!_" : "\n\nAaj hi fix ho sakti hai! ✅"}`
-  if (has(t, CALL_KW) && !has(t, BOOK_KW)) return oh
-    ? `📞 **+91 8651070831** — hum zaroor call karenge!\n\n🌙 Abhi raat ka time hai — team **kal subah 9 baje** aapko call karegi. Ya neeche WhatsApp pe message karein — hum available hain! 💬`
-    : `📞 **Call karein:** +91 86510 70831\n\nYa neeche WhatsApp button tap karein — seedha baat karein hamare expert se! 💬`
+  // ── Room size estimate (e.g. "12x14", "10 by 12", "10×10")
+  const dimMatch = t.match(/(\d{1,2})\s*[x×by]\s*(\d{1,2})/)
+  if (dimMatch) {
+    const l = parseInt(dimMatch[1])
+    const w = parseInt(dimMatch[2])
+    const svc = t.includes("pvc") ? "pvc" :
+                t.includes("wpc") ? "wpc" :
+                t.includes("uv") || t.includes("marble") ? "uv" :
+                t.includes("gypsum") ? "gypsum" : "gypsum"
+    const svcName = svc === "pvc" ? "PVC Ceiling" : svc === "wpc" ? "WPC Wall Panel" :
+                    svc === "uv" ? "UV Marble Sheet" : "Gypsum Ceiling"
+    return formatPriceEstimate(l, w, svc, svcName) +
+      `\n\nExact quote ke liye free site visit — call/WhatsApp: **+91 8651070831** 📞`
+  }
+
+  // ── Material comparisons
+  const bothPvcGypsum = (t.includes("pvc") && t.includes("gypsum")) ||
+    ((t.includes("difference") || t.includes("better") || t.includes("konsa") || t.includes("kaunsa") || t.includes("vs")) && (t.includes("pvc") || t.includes("gypsum")))
+  if (bothPvcGypsum) return COMPARISONS["pvc-vs-gypsum"]
+
+  const bothWpcUv = (t.includes("wpc") && (t.includes("uv") || t.includes("marble"))) ||
+    ((t.includes("difference") || t.includes("better") || t.includes("konsa") || t.includes("vs")) && t.includes("wpc"))
+  if (bothWpcUv) return COMPARISONS["wpc-vs-uv"]
+
+  const pvcWpcCompare = t.includes("pvc") && t.includes("wpc")
+  if (pvcWpcCompare) return COMPARISONS["pvc-vs-wpc"]
+
+  // ── Deep material info
+  if (t.includes("gypsum") || (t.includes("pop ") && !t.includes("popular"))) {
+    const m = MATERIAL_KNOWLEDGE.gypsum
+    const isWaterQ = has(t, ["paani","water","bathroom","nami","moisture","geela"])
+    if (isWaterQ) return `Gypsum ceiling waterproof nahi hoti — bathroom ya kitchen ke liye **PVC ceiling** best hai (₹60-120/sq.ft, 100% waterproof).\n\nHall aur bedroom ke liye gypsum perfect hai! 😊 Koi sawaal?`
+    return `✨ **Gypsum False Ceiling** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n❌ Avoid: ${m.avoidIn}\n⏱ Install time: ${m.installTime}\n🛡 ${m.warranty}\n\nFree site visit mein exact design dekhein! 📐`
+  }
+
+  if (t.includes("pvc")) {
+    const m = MATERIAL_KNOWLEDGE.pvc
+    return `🏠 **PVC False Ceiling** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Install time: ${m.installTime}\n🛡 ${m.warranty}\n\nHar ghar ke liye perfect — koi bhi room ho! Site visit free hai. 😊`
+  }
+
+  if (t.includes("wpc") || (t.includes("wood panel")) || t.includes("louver")) {
+    const m = MATERIAL_KNOWLEDGE.wpc
+    return `🪵 **WPC Wall Panels** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Install time: ${m.installTime}\n🛡 ${m.warranty}\n\nTV wall ke liye #1 choice! Free site visit book karein? 💪`
+  }
+
+  if (t.includes("uv ") || t.includes("uv-") || t.includes("marble") || t.includes("marble sheet")) {
+    const m = MATERIAL_KNOWLEDGE.uv
+    return `💎 **UV Marble Sheets** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n❌ Avoid: ${m.avoidIn}\n⏱ Install time: ${m.installTime}\n🛡 ${m.warranty}`
+  }
+
+  if (t.includes("tv unit") || t.includes("tv panel") || t.includes("tv cabinet") || t.includes("tv wall")) {
+    const m = MATERIAL_KNOWLEDGE.tvunit
+    return `📺 **Modular TV Unit** — ${m.price}\n\nCustom designed for your exact room!\n\n📐 Size & price:\n• 6-8 ft: ${m.sizes.small}\n• 8-10 ft: ${m.sizes.medium}\n• 10-14 ft: ${m.sizes.large}\n\nLED lighting bhi add ho sakti hai. Design dekhne ke liye free visit karein! 🎨`
+  }
+
+  if (t.includes("fluted") || t.includes("ribbed") || t.includes("louver panel") || t.includes("3d panel")) {
+    return `🏛️ **Fluted / Louver Panels** (₹200–₹500/sq.ft)\n\nModern 3D textured look — abhi ka sabse trending wall design! Feature walls, reception areas, office lobby ke liye perfect. WPC material mein available hai.\n\nFree site visit mein samples dekhein! ✨`
+  }
+
+  if (t.includes("grid") || t.includes("office ceiling") || t.includes("mineral")) {
+    return `🏢 **Grid Ceiling** (₹45–₹90/sq.ft)\n\nCommercial offices, shops, hospitals ke liye standard. Easy maintenance — AC aur electrical ke liye convenient access. Quick installation — 1 floor in 2-3 days.\n\nFree quotation ke liye call karein! 📞`
+  }
+
+  if (t.includes("complete interior") || t.includes("full interior") || t.includes("poora ghar") || t.includes("pura ghar") || t.includes("full home")) {
+    return `🏡 **Complete Interior Package**\n\nFull home: Ceiling + Wall Panels + TV Unit + Kitchen — ek team, ek timeline!\n\n✅ One point of contact\n✅ Combo discount available\n✅ 5-year warranty on everything\n✅ 500+ full home projects done\n\nRoom by room estimate ke liye **free consultation** book karein! 🙌`
+  }
+
+  if (t.includes("artificial grass") || t.includes("grass") || t.includes("turf")) {
+    return `🌿 **Artificial Grass** (₹40–₹120/sq.ft)\n\nBalcony, terrace, wall decor ke liye perfect! Zero maintenance — kabhi cut nahi karna, kabhi dry nahi hoti. UV resistant, weatherproof.\n\nFree site visit available! 😊`
+  }
+
+  // ── FAQ matching
+  for (const faq of FAQ) {
+    if (faq.q.some(kw => t.includes(kw))) return faq.a
+  }
+
+  // ── Pricing intent
+  const PRICE_KW = ["price","cost","rate","kimat","daam","kitna","kharcha","budget","lagat","paisa","quote","how much","lagega","charge","per sqft","per sq","mahnga","sasta","kitne mein"]
+  if (has(t, PRICE_KW)) {
+    return `💰 **JK Interior — Price List**\n\n✨ Gypsum Ceiling    ₹80–₹140 / sq.ft\n🏠 PVC Ceiling       ₹60–₹120 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹450 / sq.ft\n💎 UV Marble Sheets  ₹50–₹95 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n🏢 Grid Ceiling      ₹45–₹90 / sq.ft\n\nRoom ka size batayein (jaise 12×14) — main estimate nikaal deti hoon! 📐`
+  }
+
+  // ── Quality/warranty intent
+  const QUALITY_KW = ["guarantee","warranty","waterproof","quality","bharosa","trust","kitne saal","durable","material","isi","certified","strong","tuta","girta","peeling","life","chalega"]
+  if (has(t, QUALITY_KW)) {
+    return `✅ **JK Interior Quality Guarantee:**\n\n🏆 **5 saal ki written warranty** — koi bhi issue aaye, free repair\n🔬 ISI-certified, branded materials — koi duplicate nahi\n💧 Waterproof options available for every room\n👷 8+ saal ka experience, 500+ completed projects\n\nAapka kaam safe hands mein hai! 🙏`
+  }
+
+  // ── Booking intent
+  const BOOK_KW = ["visit","book","site visit","measurement","quotation","bulao","aao","milna","survey","appointment","schedule","bula lo","free visit","aana hai"]
+  if (has(t, BOOK_KW)) {
+    return `📅 **Free Site Visit — Bilkul Free!**\n\nHamare expert aayenge, measurements lenge, aur same day exact quotation denge. Koi hidden charge nahi, koi obligation nahi!\n\n📞 **+91 8651070831** pe call/WhatsApp karein${oh ? "\n\n🌙 Abhi office hours ke baad hai — team kal 9 baje contact karegi!" : " — aaj hi schedule ho sakta hai! ✅"}`
+  }
+
+  // ── Call intent
+  const CALL_KW = ["call","phone","contact","baat","number","reach","talk"]
+  if (has(t, CALL_KW)) {
+    return oh
+      ? `📞 **+91 8651070831**\n\n🌙 Abhi raat ka time hai — team **kal subah 9 baje** aapko call karegi. Ya WhatsApp pe message karein — hum available hain! 💬`
+      : `📞 **Call karein:** +91 8651070831\n\nYa neeche WhatsApp button tap karein — seedha baat karein hamare expert se! 💬`
+  }
+
+  // ── Area/location intent
+  const AREA_KW = ["area","location","where","kahan","serve","district","kaun sa","aata hai","available","cover","city"]
   if (has(t, AREA_KW)) {
     const city = detectCity(t)
-    if (city) return `📍 **${city}** — haan, hum wahan kaam karte hain! 👍\n\nHum cover karte hain: ${AREAS.join(" • ")}\n\nFree site visit book karein! 🙌`
-    return `📍 Hum in areas mein kaam karte hain:\n\n${AREAS.join(" • ")}\n\nApna city batayein — main confirm kar deta hoon! 😊`
+    if (city) return `📍 **${city}** — haan, hum wahan kaam karte hain! 👍\n\nHum cover karte hain:\n${AREAS.join(" • ")}\n\nFree site visit book karein! 🙌`
+    return `📍 Hum in sabhi areas mein kaam karte hain:\n\n${AREAS.join(" • ")}\n\nApna city batayein — main confirm kar deti hoon! 😊`
   }
-  if (has(t, GREET_KW)) return pick([
-    `Namaste ${nm}! 😊 JK Interior mein aapka swagat hai! Gypsum ceiling, PVC ceiling, WPC panels — kya jaanna chahte hain?`,
-    `Arey waah! 😄 ${nm ? nm + " ji, " : ""}aap aaye! Kya aap ceiling ya wall paneling ke baare mein poochhna chahte hain?`,
-  ])
-  if (has(t, THANKS_KW)) return `Shukriya ${nm}! 🙏 Hamesha aapki seva ke liye taiyaar hain. Kuch aur poochhna ho toh zaroor batayein! ✨`
 
-  // City mention
+  // City mention alone
   const city = detectCity(t)
-  if (city && t.length < 40) return `📍 **${city}** mein hum regularly kaam karte hain! 💪\n\nFree site visit arrange ho sakti hai — kab convenient hai aapko? 😊`
+  if (city && t.length < 50) return `📍 **${city}** mein hum regularly kaam karte hain! 💪\n\nFree site visit arrange ho sakti hai — ceiling ya wall paneling kisliye chahiye? 😊`
 
+  // ── LED / Lighting
+  if (t.includes("led") || t.includes("light") || t.includes("cove light") || t.includes("strip")) {
+    return `✨ **LED Cove Lighting** gypsum ceiling ke saath add kar sakte hain:\n• Running cost: ₹40–₹80/running ft\n• WPC TV wall LED backlight: ₹2,000–₹5,000\n\nBahut premium look aata hai! Night mein ghar cinema jaisa lagta hai 😍\n\nFree site visit mein design discuss karein!`
+  }
+
+  // ── Default — helpful, not generic
   return pick([
-    `😊 Kuch bhi poochhein — PVC ceiling, gypsum ceiling, WPC panels, ya price. Main yahan hoon!\n\nYa neeche se service choose karein. 👇`,
-    `🤔 Ek baar aur try karein ya neeche buttons se choose karein!\n\n• PVC / Gypsum Ceiling  • WPC Panels  • Price  • Site Visit`,
+    `😊 Main Riya hoon — JK Interior ki AI consultant!\n\nKuch bhi poochhein:\n• **PVC ya Gypsum Ceiling** ka rate\n• **WPC Wall Panels** ki jankari\n• **Room size** batayein — estimate nikaaluungi\n• **Free site visit** book karein\n\nKya jaanna chahte hain?`,
+    `🏠 Hamare services ke baare mein jaanna chahte hain?\n\nGypsum / PVC Ceiling • WPC Panels • UV Marble • TV Unit • Complete Interior\n\nRoom ka size batayein ya koi specific sawaal poochhein — main detail mein samjha deti hoon! 😊`,
   ])
 }
 
@@ -320,7 +399,7 @@ function LeadConfirmCard({ data, waHref, bookHref }: { data: LeadCard; waHref: s
 // ── Welcome message ────────────────────────────────────────────────────────────
 const WELCOME_MSG = mk(
   "bot",
-  "नमस्ते! 👋 Main **JK Interior AI Assistant** hoon!\n\nGypsum ceiling, PVC ceiling, WPC panels, ya koi bhi interior — kuch bhi poochhein, main help karunga. 😊"
+  "नमस्ते! 👋 Main **Riya** hoon — JK Interior ki AI consultant!\n\nGypsum ya PVC ceiling, WPC wall panels, pricing, room estimate — kuch bhi poochhein. Main aapko sahi direction dene mein help karungi. 😊\n\n_Room ka size batayein — estimate abhi nikaal deti hoon!_"
 )
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -417,11 +496,18 @@ export default function JKChat() {
     // Natural typing delay
     await delay(550 + Math.random() * 450)
 
-    // Try AI — fallback to local on failure
+    // Try AI — smart local fallback on failure
     let reply: string | null = null
     if (aiMode) {
-      reply = await getAIReply(text, historyRef.current.slice(0, -1), updatedLead)
-      if (!reply) setAiMode(false) // disable AI if it fails
+      const aiResult = await getAIReply(text, historyRef.current.slice(0, -1), updatedLead)
+      if (aiResult) {
+        reply = aiResult.reply
+        // Only disable AI mode if server itself is unreachable (null result)
+        // If server returns local fallback (source: "local"), keep aiMode on
+      } else {
+        // Server unreachable — disable AI mode and use pure local fallback
+        setAiMode(false)
+      }
     }
     if (!reply) reply = localFallback(text, updatedLead)
 
