@@ -120,17 +120,94 @@ async function getAIReply(
   }
 }
 
+// ── Context-aware consultant reasoning ────────────────────────────────────────
+function consultantReply(t: string, lead: Partial<Lead> | null): string | null {
+  const city    = detectCity(t)
+  const svc     = detectService(t)
+  const knownCity = city || lead?.city
+  const knownSvc  = svc  || lead?.service
+
+  // detect room count mentions
+  const roomMatch = t.match(/(\d+)\s*room|ek\s*room|do\s*room|teen\s*room|char\s*room|1\s*room|2\s*room|3\s*room|4\s*room/)
+  const roomCount = roomMatch ? (roomMatch[1] || (t.includes("ek") ? "1" : t.includes("do") ? "2" : t.includes("teen") ? "3" : "1")) : null
+  const hasHall   = /\bhall\b|\bdrawing room\b|\bbaithak\b/.test(t)
+  const hasBedroom= /\bbedroom\b|\bkamra\b|\broom\b/.test(t)
+  const hasKitchen= /\bkitchen\b|\bradhoi\b/.test(t)
+  const hasBathroom= /\bbathroom\b|\btoilet\b|\blatrine\b/.test(t)
+  const hasDimension = /\d+\s*[x×by]\s*\d+/.test(t)
+  const wantsWork = /karwana|lagwana|karna|banana|chahiye|chahta|chahti|karwa/.test(t)
+  const budgetLow = /kam budget|budget kam|sasta|cheap|affordable|kitna kharcha|low budget|budget tight|budget nahi/.test(t)
+  const wantsWaterproof = /waterproof|water proof|bathroom|kitchen|paani/.test(t)
+  const wantsPremium = /premium|luxury|achha|accha|best|sundar|beautiful|designer/.test(t)
+  const askingPrice = /kitna|price|rate|cost|kharcha|lagega|estimate|quote|budget/.test(t)
+
+  // ── City + room intent (no material yet) — ask size or material
+  if ((knownCity || city) && (roomCount || hasHall || hasBedroom) && wantsWork && !hasDimension && !knownSvc) {
+    const cityLine = knownCity ? `${knownCity} mein bilkul karte hain hum! 😊` : ""
+    const roomLine = roomCount ? `${roomCount} room` : hasHall ? "hall" : "room"
+    return `${cityLine ? cityLine + "\n" : ""}${roomLine} ke liye room ka approximate size bata dijiye — jaise 10×12 ya 12×14?\n\nAur ceiling ke liye PVC ya Gypsum prefer karenge, ya abhi decide nahi kiya?`
+  }
+
+  // ── City + room intent (with material) — ask size
+  if ((knownCity || city) && (roomCount || hasHall || hasBedroom) && wantsWork && !hasDimension && knownSvc) {
+    const cityLine = knownCity ? `${knownCity} mein karte hain! 👍` : ""
+    return `${cityLine ? cityLine + " " : ""}${knownSvc} ke liye ${roomCount ? roomCount + " room" : "room"} ka size bata dijiye — jaise 10×12 ya 12×14? Estimate abhi nikaalta hoon! 📐`
+  }
+
+  // ── Hall mentioned without service or size
+  if (hasHall && !hasDimension && !knownSvc && !roomCount) {
+    return `Hall ke liye Gypsum ceiling sabse popular choice hai — cove lighting ke saath bilkul amazing lagti hai! ✨\n\nHall ka size approx kitna hai? Jaise 14×16 ya 16×18? Size batao toh estimate abhi bata deti hoon.`
+  }
+
+  // ── Kitchen / Bathroom — suggest PVC directly
+  if ((hasKitchen || hasBathroom) && wantsWork && !hasDimension) {
+    const room = hasKitchen ? "kitchen" : "bathroom"
+    return `${room.charAt(0).toUpperCase() + room.slice(1)} ke liye PVC ceiling best hai — 100% waterproof, termite-proof, zero maintenance. 💧\n\n${room.charAt(0).toUpperCase() + room.slice(1)} ka size kya hai (jaise 8×10 ya 10×12)? Estimate abhi nikaaluun!`
+  }
+
+  // ── Budget low hint — recommend PVC, ask size
+  if (budgetLow && !hasDimension) {
+    return `Budget-friendly ke liye PVC ceiling best option hai — ₹60–120/sq.ft, waterproof bhi hai aur maintenance zero. 😊\n\nRoom ka size kya hai? Estimate nikaaluun!`
+  }
+
+  // ── Waterproof intent — confirm PVC/UV, ask room
+  if (wantsWaterproof && !hasKitchen && !hasBathroom && !hasDimension && !knownSvc) {
+    return `Waterproof ke liye PVC ceiling (₹60–120/sq.ft) ya UV Marble Sheets (₹50–95/sq.ft) — dono 100% waterproof hain. 💧\n\nKaunsi room ke liye chahiye? Size bata dijiye toh exact estimate de deti hoon!`
+  }
+
+  // ── Premium interest — suggest Gypsum/WPC, ask what room
+  if (wantsPremium && !hasDimension && !knownSvc) {
+    return `Premium look ke liye Gypsum cove ceiling ya WPC wall panels — dono bahut stunning lagte hain! ✨\n\nKis room ke liye hai — hall, bedroom, ya kuch aur? Size bata dijiye toh estimate nikaaluun.`
+  }
+
+  // ── Asking price/estimate without enough context
+  if (askingPrice && !hasDimension && !knownSvc && t.length < 60) {
+    return `Estimate ke liye room ka size batao (jaise 12×14) aur material — PVC ya Gypsum ceiling?\n\nSize milte hi abhi calculate kar deti hoon! 📐`
+  }
+
+  // ── PVC is the right choice? — confirm + ask room
+  if (/pvc sahi|pvc theek|pvc accha|pvc lena|pvc lagwana/.test(t)) {
+    return `Haan, PVC excellent choice hai! 100% waterproof, 20+ saal ki life, kabhi repaint nahi. 🏠\n\nKaunsi room ke liye — bedroom, kitchen, ya hall? Size batao toh estimate bhi bata sakti hoon.`
+  }
+
+  return null
+}
+
 // ── Local fallback (rich knowledge-base powered) ────────────────────────────
 function localFallback(input: string, lead: Partial<Lead> | null): string {
   const t  = input.toLowerCase().trim()
   const nm = lead?.name || ""
   const oh = isOffHours()
 
+  // ── Consultant reasoning first — handles context-rich messages
+  const consultantResponse = consultantReply(t, lead)
+  if (consultantResponse) return consultantResponse
+
   // ── Greetings
   const GREET_KW = ["hi","hello","hey","namaste","namaskar","helo","good morning","good evening","good afternoon","hy","hii","salam","kaise ho"]
   if (has(t, GREET_KW) && t.length < 35) return pick([
-    `Namaste${nm ? " " + nm : ""}! 😊 Main Riya hoon, JK Interior ki AI assistant.\n\nGypsum ceiling, PVC ceiling, WPC panels, pricing, ya site visit — kuch bhi poochhein!`,
-    `Hello${nm ? " " + nm : ""}! 🏠 JK Interior mein aapka swagat hai. Kya aap ceiling ya wall paneling ke baare mein jaanna chahte hain?`,
+    `Namaste${nm ? " " + nm : ""}! 😊 Main Riya hoon, JK Interior ki AI consultant.\n\nCeiling ya wall paneling ke baare mein poochhein, ya room ka size batayein — estimate abhi nikaalta hoon!`,
+    `Hello${nm ? " " + nm : ""}! 🏠 JK Interior mein swagat hai. Ceiling, wall panels, pricing — kuch bhi poochhein, main help karungi!`,
   ])
 
   // ── Thanks
@@ -256,10 +333,12 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     return `✨ **LED Cove Lighting** gypsum ceiling ke saath add kar sakte hain:\n• Running cost: ₹40–₹80/running ft\n• WPC TV wall LED backlight: ₹2,000–₹5,000\n\nBahut premium look aata hai! Night mein ghar cinema jaisa lagta hai 😍\n\nFree site visit mein design discuss karein!`
   }
 
-  // ── Default — helpful, not generic
+  // ── Default — ask for the most useful next detail
   return pick([
-    `😊 Main Riya hoon — JK Interior ki AI consultant!\n\nKuch bhi poochhein:\n• **PVC ya Gypsum Ceiling** ka rate\n• **WPC Wall Panels** ki jankari\n• **Room size** batayein — estimate nikaaluungi\n• **Free site visit** book karein\n\nKya jaanna chahte hain?`,
-    `🏠 Hamare services ke baare mein jaanna chahte hain?\n\nGypsum / PVC Ceiling • WPC Panels • UV Marble • TV Unit • Complete Interior\n\nRoom ka size batayein ya koi specific sawaal poochhein — main detail mein samjha deti hoon! 😊`,
+    nm
+      ? `${nm}, room ka size bata dijiye (jaise 12×14) — main abhi estimate nikaalta hoon! 📐`
+      : `Room ka size bata dijiye (jaise 10×12 ya 12×14) aur kaunsa kaam chahiye — ceiling ya wall paneling? Estimate abhi nikaaluun! 😊`,
+    `Thoda aur bata dijiye — kaunsi room ke liye hai aur approximately size kya hoga? Size milte hi estimate bata deti hoon! 📐`,
   ])
 }
 

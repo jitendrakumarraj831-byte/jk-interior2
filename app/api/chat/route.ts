@@ -111,81 +111,130 @@ async function callGemini(
 }
 
 // ── Smart local fallback using business knowledge ──────────────────────────
-function smartFallback(message: string, leadCtx?: { name?: string; service?: string }): string {
+function smartFallback(message: string, leadCtx?: { name?: string; service?: string; city?: string }): string {
   const t   = message.toLowerCase().trim()
   const nm  = leadCtx?.name || ""
+  const knownCity = leadCtx?.city || ""
+  const knownSvc  = leadCtx?.service || ""
 
-  // Room size estimate
+  // ── Context detection helpers
+  const CITY_MAP: Record<string, string> = {
+    forbesganj: "Forbesganj", araria: "Araria", purnia: "Purnia", purnea: "Purnia",
+    jogbani: "Jogbani", narpatganj: "Narpatganj", raniganj: "Raniganj",
+    supaul: "Supaul", chhatapur: "Chhatapur", tribeniganj: "Tribeniganj",
+    kishanganj: "Kishanganj", katihar: "Katihar",
+  }
+  const detectedCity = Object.entries(CITY_MAP).find(([k]) => t.includes(k))?.[1] || knownCity
+
+  const roomMatch    = t.match(/(\d+)\s*room|ek\s*room|do\s*room|1\s*room|2\s*room|3\s*room/)
+  const roomCount    = roomMatch ? (roomMatch[1] || "1") : null
+  const hasHall      = /\bhall\b|\bdrawing room\b/.test(t)
+  const hasKitchen   = /\bkitchen\b/.test(t)
+  const hasBathroom  = /\bbathroom\b|\btoilet\b/.test(t)
+  const hasDimension = /\d+\s*[x×by]\s*\d+/.test(t)
+  const wantsWork    = /karwana|lagwana|karna|banana|chahiye|chahta|chahti|karwa/.test(t)
+  const budgetLow    = /kam budget|budget kam|sasta|cheap|affordable|low budget|budget tight/.test(t)
+  const wantsWaterproof = /waterproof|water proof/.test(t) || hasKitchen || hasBathroom
+
+  // ── Room size estimate (has dimensions)
   const dimMatch = t.match(/(\d{1,2})\s*[x×by]\s*(\d{1,2})/)
   if (dimMatch) {
     const l = parseInt(dimMatch[1])
     const w = parseInt(dimMatch[2])
-    const svc = t.includes("pvc") ? "pvc" :
-                t.includes("wpc") ? "wpc" :
+    const svc = t.includes("pvc") ? "pvc" : t.includes("wpc") ? "wpc" :
                 t.includes("uv") || t.includes("marble") ? "uv" :
                 t.includes("gypsum") ? "gypsum" : "gypsum"
-    const svcName = svc === "pvc" ? "PVC Ceiling" : svc === "wpc" ? "WPC Wall Panel" : svc === "uv" ? "UV Marble Sheet" : "Gypsum Ceiling"
+    const svcName = svc === "pvc" ? "PVC Ceiling" : svc === "wpc" ? "WPC Wall Panel" :
+                    svc === "uv" ? "UV Marble Sheet" : "Gypsum Ceiling"
     return formatPriceEstimate(l, w, svc, svcName) +
-      `\n\nFree site visit book karein — exact quotation milegi! 📞 +91 8651070831`
+      `\n\nExact quote ke liye free site visit — call/WhatsApp: **+91 8651070831** 📞`
   }
 
-  // Comparisons
+  // ── City + room work intent → ask size + material
+  if (detectedCity && (roomCount || hasHall) && wantsWork && !hasDimension) {
+    const cityLine = `${detectedCity} mein bilkul karte hain hum! 😊`
+    const roomLine = roomCount ? `${roomCount} room` : "hall"
+    if (knownSvc) {
+      return `${cityLine}\n${knownSvc} ke liye ${roomLine} ka size bata dijiye — jaise 10×12 ya 12×14? Estimate abhi nikaalta hoon! 📐`
+    }
+    return `${cityLine}\n${roomLine} ke liye room ka approximate size bata dijiye — jaise 10×12 ya 12×14?\n\nAur ceiling ke liye PVC ya Gypsum prefer karenge, ya abhi decide nahi kiya?`
+  }
+
+  // ── Hall without size → suggest Gypsum, ask size
+  if (hasHall && !hasDimension && !roomCount && wantsWork) {
+    return `Hall ke liye Gypsum ceiling sabse popular choice hai — cove lighting ke saath bilkul amazing lagti hai! ✨\n\nHall ka size approx kitna hai? Jaise 14×16 ya 16×18? Size batao toh estimate abhi bata deta hoon.`
+  }
+
+  // ── Kitchen / Bathroom → PVC recommendation + ask size
+  if ((hasKitchen || hasBathroom) && wantsWork && !hasDimension) {
+    const room = hasKitchen ? "Kitchen" : "Bathroom"
+    return `${room} ke liye PVC ceiling best hai — 100% waterproof, termite-proof, zero maintenance. 💧\n\n${room} ka size kya hai (jaise 8×10)? Estimate abhi nikaaluun!`
+  }
+
+  // ── Budget low → PVC recommendation + ask size
+  if (budgetLow && !hasDimension) {
+    return `Budget-friendly ke liye PVC ceiling best option hai — ₹60–120/sq.ft, waterproof bhi hai aur maintenance zero. 😊\n\nRoom ka size kya hai? Size batao toh estimate nikaaluun!`
+  }
+
+  // ── Waterproof asked directly
+  if (wantsWaterproof && !wantsWork && !hasDimension) {
+    return `Waterproof ke liye PVC ceiling (₹60–120/sq.ft) perfect hai — 100% waterproof, 20+ saal ki life. 💧\n\nKaunsi room ke liye chahiye aur size kya hai? Estimate abhi de deta hoon!`
+  }
+
+  // ── Comparisons
   if ((t.includes("pvc") && t.includes("gypsum")) ||
       (t.includes("difference") && (t.includes("pvc") || t.includes("gypsum")))) {
     return COMPARISONS["pvc-vs-gypsum"]
   }
-  if ((t.includes("wpc") && t.includes("uv")) ||
-      (t.includes("wpc") && t.includes("marble")) ||
+  if ((t.includes("wpc") && (t.includes("uv") || t.includes("marble"))) ||
       (t.includes("better") && (t.includes("wpc") || t.includes("marble")))) {
     return COMPARISONS["wpc-vs-uv"]
   }
 
-  // Material deep info
+  // ── Material info
   if (t.includes("gypsum")) {
     const m = MATERIAL_KNOWLEDGE.gypsum
-    return `✨ **Gypsum False Ceiling** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Installation: ${m.installTime}\n🛡 Warranty: ${m.warranty}\n\nFree site visit book karein? 😊`
+    return `✨ **Gypsum False Ceiling** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Installation: ${m.installTime}\n🛡 ${m.warranty}\n\nRoom ka size bata dijiye — estimate nikaalta hoon! 😊`
   }
   if (t.includes("pvc")) {
     const m = MATERIAL_KNOWLEDGE.pvc
-    return `🏠 **PVC False Ceiling** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Installation: ${m.installTime}\n🛡 Warranty: ${m.warranty}\n\nKisi bhi room ke liye perfect! Site visit free hai. 😊`
+    return `🏠 **PVC False Ceiling** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ ${m.installTime}\n🛡 ${m.warranty}\n\nKaunsi room ke liye? Size batao toh estimate bhi deta hoon! 😊`
   }
   if (t.includes("wpc") || t.includes("wood panel") || t.includes("louver")) {
     const m = MATERIAL_KNOWLEDGE.wpc
-    return `🪵 **WPC Wall Panels** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Installation: ${m.installTime}\n🛡 Warranty: ${m.warranty}\n\nTV wall ke liye best choice hai! 💪`
+    return `🪵 **WPC Wall Panels** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ ${m.installTime}\n🛡 ${m.warranty}\n\nTV wall ka size bata dijiye — estimate nikaaluun! 💪`
   }
   if (t.includes("uv") || t.includes("marble")) {
     const m = MATERIAL_KNOWLEDGE.uv
-    return `💎 **UV Marble Sheets** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ Installation: ${m.installTime}\n🛡 Warranty: ${m.warranty}`
+    return `💎 **UV Marble Sheets** — ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱ ${m.installTime}\n🛡 ${m.warranty}\n\nWall ka size bata dijiye — estimate abhi deta hoon!`
   }
   if (t.includes("tv unit") || t.includes("tv panel") || t.includes("tv cabinet")) {
     const m = MATERIAL_KNOWLEDGE.tvunit
-    return `📺 **Modular TV Unit** — ${m.price}\n\n${m.description}\n\n✅ ${m.features.slice(0, 3).join(" | ")}\n\n🎯 Size & price:\n• 6-8 ft: ${m.sizes.small}\n• 8-10 ft: ${m.sizes.medium}\n• 10-14 ft: ${m.sizes.large}\n\nCustom design ke liye free consultation available! 📐`
+    return `📺 **Modular TV Unit** — ${m.price}\n\n✅ ${m.features.slice(0, 3).join(" | ")}\n\n🎯 Size & price:\n• 6-8 ft: ${m.sizes.small}\n• 8-10 ft: ${m.sizes.medium}\n• 10-14 ft: ${m.sizes.large}\n\nTV wall ka width bata dijiye — custom design ke liye free site visit available! 📐`
   }
 
-  // FAQ matching
+  // ── FAQ matching
   for (const faq of FAQ) {
-    if (faq.q.some(kw => t.includes(kw))) {
-      return faq.a
-    }
+    if (faq.q.some(kw => t.includes(kw))) return faq.a
   }
 
-  // Price list
+  // ── Price intent → ask for size to give real estimate
   const PRICE_KW = ["price","cost","rate","kimat","daam","kitna","kharcha","budget","lagat","paisa","quote","how much","lagega"]
   if (PRICE_KW.some(k => t.includes(k))) {
-    return `💰 **JK Interior — Price List**\n\n✨ Gypsum Ceiling    ₹80–₹140 / sq.ft\n🏠 PVC Ceiling       ₹60–₹120 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹450 / sq.ft\n💎 UV Marble Sheets  ₹50–₹95 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n\nRoom ka size batayein — main estimate calculate kar deta hoon! 📐`
+    return `Estimate ke liye room ka size batao (jaise 12×14) aur material — PVC ya Gypsum ceiling?\n\nSize milte hi abhi calculate kar deta hoon! 📐`
   }
 
-  // Booking
+  // ── Booking intent
   const BOOK_KW = ["visit","book","site visit","bulao","aao","appointment","free visit","quotation"]
   if (BOOK_KW.some(k => t.includes(k))) {
     const oh = isOffHours()
-    return `📅 **Free Site Visit — Bilkul Free!**\n\nHamare expert aayenge, measurements lenge, aur same day accurate quotation denge. Koi hidden charge nahi!\n\n📞 **+91 8651070831** pe call/WhatsApp karein${oh ? "\n\n🌙 Abhi office hours ke baad hai — team kal subah 9 baje contact karegi!" : " — aaj hi fix ho sakti hai! ✅"}`
+    return `📅 **Free Site Visit — Bilkul Free!**\n\nHamare expert aayenge, measurements lenge, aur same day accurate quotation denge. Koi hidden charge nahi!\n\n📞 **+91 8651070831** pe call/WhatsApp karein${oh ? "\n\n🌙 Abhi office hours ke baad hai — team kal 9 baje contact karegi!" : " — aaj hi fix ho sakti hai! ✅"}`
   }
 
-  // Default helpful response
+  // ── Default — ask for the most useful next detail
   return nm
-    ? `Kya jaanna chahte hain ${nm}? Main aapke liye kuch bhi explain kar sakti hoon — kisi bhi service ki pricing, material comparison, ya room estimate! 😊`
-    : `Kya jaanna chahte hain? Main explain kar sakti hoon:\n\n• PVC ya Gypsum Ceiling ke baare mein\n• WPC ya UV Marble wall panels\n• Room ka price estimate\n• Free site visit booking\n\nKuch bhi poochhein! 😊`
+    ? `${nm}, room ka size bata dijiye (jaise 12×14) aur kaunsa kaam chahiye — main abhi estimate nikaalta hoon! 📐`
+    : `Room ka size bata dijiye (jaise 10×12 ya 12×14) aur ceiling ya wall paneling? Estimate abhi nikaaluun! 😊`
 }
 
 function isOffHours(): boolean {
