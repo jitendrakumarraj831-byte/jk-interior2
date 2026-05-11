@@ -208,7 +208,7 @@ export default function Hero() {
               <span className="text-gray-300" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                5 Year Written Warranty
+                1 Year Written Warranty
               </span>
               <span className="text-gray-300" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
