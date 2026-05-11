@@ -42,7 +42,7 @@ const steps = [
     title: "1 Year Warranty",
     titleHi: "1 साल की वारंटी",
     desc: "Project handed over with a written 5-year warranty. Your investment is fully protected with JK Interior.",
-    descHi: "लिखित 5 साल की warranty के साथ project हैंडओवर। आपका investment पूरी तरह protected।",
+    descHi: "लिखित 1 साल की warranty के साथ project हैंडओवर। आपका investment पूरी तरह protected।",
     color: "from-violet-500 to-violet-700",
     glow: "rgba(139,92,246,0.25)",
   },
