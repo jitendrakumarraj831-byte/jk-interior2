@@ -555,7 +555,7 @@ const ROOM_DEFAULTS: Record<string, RoomDef> = {
   storeroom: { label: "Store Room", sqft: 50,  material: "pvc",    isWet: false },
   // added missing types from ROOM_SUGGESTIONS
   "pooja-room": { label: "Pooja Room", sqft: 40, material: "pvc", isWet: false },
-  "tv-wall":   { label: "TV Wall", sqft: 40, material: "wpc", isWet: false },
+  "tv-wall":   { label: "TV Wall", sqft: 40, material: "pvc", isWet: false },
 }
 
 const PRESET_HOMES: Record<string, Record<string, number>> = {
