@@ -6,6 +6,8 @@ import {
   COMPARISONS,
   FAQ,
   formatPriceEstimate,
+  parseMultiRoomQuery,
+  generateMultiRoomEstimate,
 } from "@/lib/business-data"
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -140,6 +142,17 @@ function consultantReply(t: string, lead: Partial<Lead> | null): string | null {
   const wantsWaterproof = /waterproof|water proof|bathroom|kitchen|paani/.test(t)
   const wantsPremium = /premium|luxury|achha|accha|best|sundar|beautiful|designer/.test(t)
   const askingPrice = /kitna|price|rate|cost|kharcha|lagega|estimate|quote|budget/.test(t)
+
+  // ── Multi-room estimate — runs first (most specific, broadest match)
+  const multiRooms = parseMultiRoomQuery(t)
+  if (multiRooms) {
+    const est = generateMultiRoomEstimate(multiRooms)
+    const knownCityAlready = city || lead?.city
+    const cta = knownCityAlready
+      ? `\n\n📞 Free site visit ke liye WhatsApp karein: **+91 8651070831** — same day visit possible! ✅`
+      : `\n\nAap kis city mein hain? City batao toh free site visit arrange kar sakti hoon! 😊`
+    return est + cta
+  }
 
   // ── City + room intent (no material yet) — ask size or material
   if ((knownCity || city) && (roomCount || hasHall || hasBedroom) && wantsWork && !hasDimension && !knownSvc) {

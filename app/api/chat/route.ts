@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
-import { buildSystemPrompt, detectIntent, MATERIAL_KNOWLEDGE, COMPARISONS, FAQ, formatPriceEstimate } from "@/lib/business-data"
+import { buildSystemPrompt, detectIntent, MATERIAL_KNOWLEDGE, COMPARISONS, FAQ, formatPriceEstimate, parseMultiRoomQuery, generateMultiRoomEstimate } from "@/lib/business-data"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -148,6 +148,16 @@ function smartFallback(message: string, leadCtx?: { name?: string; service?: str
                     svc === "uv" ? "UV Marble Sheet" : "Gypsum Ceiling"
     return formatPriceEstimate(l, w, svc, svcName) +
       `\n\nExact quote ke liye free site visit — call/WhatsApp: **+91 8651070831** 📞`
+  }
+
+  // ── Multi-room estimate — check before single-room logic
+  const multiRooms = parseMultiRoomQuery(t)
+  if (multiRooms) {
+    const est = generateMultiRoomEstimate(multiRooms)
+    const cta = detectedCity
+      ? `\n\n📞 Free site visit ke liye WhatsApp karein: **+91 8651070831** — same day possible! ✅`
+      : `\n\nAap kis city mein hain? City batao toh free site visit arrange ho sakti hai! 😊`
+    return est + cta
   }
 
   // ── City + room work intent → ask size + material

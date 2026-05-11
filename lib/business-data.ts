@@ -328,6 +328,193 @@ export function formatPriceEstimate(l: number, w: number, service: string, servi
 _Exact rate lighting, design aur materials pe depend karti hai. Free site visit mein accurate quotation milegi!_`
 }
 
+// ─── Multi-Room Parser & Estimator ───────────────────────────────────────────
+
+export interface RoomDef {
+  label: string
+  sqft: number
+  material: "gypsum" | "pvc" | "grid"
+  isWet: boolean
+}
+
+const ROOM_DEFAULTS: Record<string, RoomDef> = {
+  bedroom:   { label: "Bedroom",    sqft: 120, material: "gypsum", isWet: false },
+  hall:      { label: "Hall",       sqft: 180, material: "gypsum", isWet: false },
+  kitchen:   { label: "Kitchen",    sqft: 80,  material: "pvc",    isWet: true  },
+  bathroom:  { label: "Bathroom",   sqft: 50,  material: "pvc",    isWet: true  },
+  office:    { label: "Office",     sqft: 150, material: "grid",   isWet: false },
+  reception: { label: "Reception",  sqft: 200, material: "gypsum", isWet: false },
+  balcony:   { label: "Balcony",    sqft: 60,  material: "pvc",    isWet: true  },
+  lobby:     { label: "Lobby",      sqft: 120, material: "gypsum", isWet: false },
+  dining:    { label: "Dining",     sqft: 100, material: "gypsum", isWet: false },
+  pooja:     { label: "Pooja Room", sqft: 40,  material: "pvc",    isWet: false },
+  storeroom: { label: "Store Room", sqft: 50,  material: "pvc",    isWet: false },
+}
+
+const PRESET_HOMES: Record<string, Record<string, number>> = {
+  "1bhk":     { bedroom: 1, hall: 1, kitchen: 1, bathroom: 1 },
+  "2bhk":     { bedroom: 2, hall: 1, kitchen: 1, bathroom: 2 },
+  "3bhk":     { bedroom: 3, hall: 1, kitchen: 1, bathroom: 3 },
+  "flat":     { bedroom: 2, hall: 1, kitchen: 1, bathroom: 1 },
+  "duplex":   { bedroom: 3, hall: 2, kitchen: 1, bathroom: 3 },
+  "bungalow": { bedroom: 4, hall: 2, kitchen: 1, bathroom: 4 },
+  "pooraghar":{ bedroom: 2, hall: 1, kitchen: 1, bathroom: 2 },
+  "shop":     { reception: 1, office: 1 },
+  "office2":  { office: 2, reception: 1 },
+}
+
+function hindiToNum(s: string): number {
+  const MAP: Record<string, number> = {
+    ek: 1, "1": 1, do: 2, "2": 2, teen: 3, tin: 3, "3": 3,
+    char: 4, chaar: 4, "4": 4, paanch: 5, panch: 5, "5": 5,
+    chhah: 6, "6": 6, saat: 7, "7": 7, aath: 8, "8": 8,
+  }
+  return MAP[s.trim()] ?? parseInt(s.trim()) ?? 1
+}
+
+export function parseMultiRoomQuery(text: string): Record<string, number> | null {
+  const t = text.toLowerCase()
+    .replace(/[+,&]/g, " aur ")
+    .replace(/\band\b/g, " aur ")
+    .replace(/\bwith\b/g, " aur ")
+
+  // ── Preset home types
+  if (/\bpoora\s*ghar\b|\bpura\s*ghar\b|\bfull\s*home\b|\bpure\s*ghar\b|\bpura\s*makan\b/.test(t)) return PRESET_HOMES["pooraghar"]
+  if (/\bduplex\b/.test(t)) return PRESET_HOMES["duplex"]
+  if (/\b3\s*bhk\b|\bteen\s*bhk\b/.test(t)) return PRESET_HOMES["3bhk"]
+  if (/\b2\s*bhk\b|\bdo\s*bhk\b/.test(t)) return PRESET_HOMES["2bhk"]
+  if (/\b1\s*bhk\b|\bek\s*bhk\b/.test(t)) return PRESET_HOMES["1bhk"]
+  if (/\bflat\s*interior\b|\bapartment\b|\bflat\b(?!\s*panel)/.test(t)) return PRESET_HOMES["flat"]
+  if (/\bbungalow\b|\bkothi\b/.test(t)) return PRESET_HOMES["bungalow"]
+  if (/\boffice\s*(?:interior|reception)\b/.test(t)) return PRESET_HOMES["office2"]
+  if (/\bshop\s*interior\b/.test(t)) return PRESET_HOMES["shop"]
+
+  // ── Pattern-based room parsing
+  const rooms: Record<string, number> = {}
+  const add = (type: string, n: number) => { rooms[type] = (rooms[type] || 0) + n }
+
+  const NUM = "(?:ek|do|teen|tin|char|chaar|paanch|panch|\\d+)"
+
+  const PATTERNS: Array<[RegExp, string]> = [
+    [new RegExp(`(${NUM})\\s*(?:bed\\s*room|bedroom|bed|kamra|room(?!\\s*size|\\s*mein|\\s*me\\b))`, "gi"), "bedroom"],
+    [new RegExp(`(${NUM})\\s*(?:hall|drawing\\s*room|living\\s*room|baithak|darbar|lounge)`, "gi"), "hall"],
+    [new RegExp(`(${NUM})\\s*(?:kitchen|rasoi|rasoighar)`, "gi"), "kitchen"],
+    [new RegExp(`(${NUM})\\s*(?:bathroom|toilet|washroom|latrine)`, "gi"), "bathroom"],
+    [new RegExp(`(${NUM})\\s*(?:office|cabin)`, "gi"), "office"],
+    [new RegExp(`(${NUM})\\s*(?:reception)`, "gi"), "reception"],
+    [new RegExp(`(${NUM})\\s*(?:balcony|balkoni)`, "gi"), "balcony"],
+    [new RegExp(`(${NUM})\\s*(?:pooja\\s*room|mandir|puja)`, "gi"), "pooja"],
+    [new RegExp(`(${NUM})\\s*(?:dining|khane\\s*ka\\s*kamra)`, "gi"), "dining"],
+    [new RegExp(`(${NUM})\\s*(?:store\\s*room|store|godown)`, "gi"), "storeroom"],
+    [new RegExp(`(${NUM})\\s*(?:lobby)`, "gi"), "lobby"],
+  ]
+
+  for (const [pat, type] of PATTERNS) {
+    pat.lastIndex = 0
+    let m: RegExpExecArray | null
+    while ((m = pat.exec(t)) !== null) add(type, hindiToNum(m[1]))
+  }
+
+  // ── Bare mentions (no number → assume 1)
+  const BARE: Array<[RegExp, string]> = [
+    [/\bhall\b|\bdrawing\s*room\b|\bliving\s*room\b|\bbaithak\b/g, "hall"],
+    [/\bkitchen\b|\brasoi\b/g, "kitchen"],
+    [/\bbathroom\b|\btoilet\b|\bwashroom\b/g, "bathroom"],
+    [/\bbedroom\b|\bbed\s*room\b/g, "bedroom"],
+    [/\bbalcony\b/g, "balcony"],
+    [/\breception\b/g, "reception"],
+    [/\bpooja\s*room\b|\bmandir\b|\bpuja\b/g, "pooja"],
+    [/\bdining\b/g, "dining"],
+    [/\boffice\b/g, "office"],
+    [/\blobby\b/g, "lobby"],
+  ]
+  for (const [pat, type] of BARE) {
+    pat.lastIndex = 0
+    if (pat.test(t) && !rooms[type]) add(type, 1)
+  }
+
+  if (Object.keys(rooms).length === 0) return null
+
+  // Must be multi-room: either 2+ different types OR 2+ of same type
+  const total = Object.values(rooms).reduce((a, b) => a + b, 0)
+  if (total < 2) return null
+
+  return rooms
+}
+
+export function generateMultiRoomEstimate(rooms: Record<string, number>): string {
+  const RATES = {
+    gypsum:  { low: 80,  high: 140, premLow: 120, premHigh: 200 },
+    pvc:     { low: 60,  high: 120, premLow: 60,  premHigh: 120 },
+    grid:    { low: 45,  high: 90,  premLow: 65,  premHigh: 90  },
+  }
+
+  const fmt = (n: number) => "₹" + Math.round(n / 100) * 100 === n
+    ? "₹" + n.toLocaleString("en-IN")
+    : "₹" + (Math.round(n / 100) * 100).toLocaleString("en-IN")
+  const fmtN = (n: number) => "₹" + (Math.round(n / 500) * 500).toLocaleString("en-IN")
+
+  let totalSqft = 0
+  let budgetLow = 0, budgetHigh = 0
+  let stdLow = 0,    stdHigh = 0
+  let premLow = 0,   premHigh = 0
+  const dryRooms: string[] = []
+  const wetRooms: string[] = []
+  const lines: string[] = []
+
+  for (const [type, count] of Object.entries(rooms)) {
+    const def = ROOM_DEFAULTS[type] ?? { label: type, sqft: 100, material: "gypsum" as const, isWet: false }
+    const sqft = def.sqft * count
+    totalSqft += sqft
+    const label = count > 1 ? `${count} ${def.label}` : def.label
+    lines.push(`• ${label} — ${sqft} sq.ft`)
+
+    // Budget: PVC everywhere
+    budgetLow  += sqft * RATES.pvc.low
+    budgetHigh += sqft * RATES.pvc.high
+
+    // Standard: Gypsum for dry, PVC for wet
+    const mat = def.isWet ? "pvc" : (def.material === "grid" ? "grid" : "gypsum")
+    stdLow  += sqft * RATES[mat].low
+    stdHigh += sqft * RATES[mat].high
+
+    // Premium: Gypsum+LED for dry, PVC for wet
+    premLow  += sqft * RATES[mat].premLow
+    premHigh += sqft * RATES[mat].premHigh
+
+    if (def.isWet) wetRooms.push(def.label)
+    else dryRooms.push(def.label)
+  }
+
+  // Build recommendation line
+  let recLine = ""
+  if (dryRooms.length > 0 && wetRooms.length > 0) {
+    recLine = `• ${dryRooms.join(" + ")} → Gypsum ceiling ✨\n• ${wetRooms.join(" + ")} → PVC waterproof ceiling 💧`
+  } else if (dryRooms.length > 0) {
+    recLine = `Gypsum ceiling — cove lighting ke saath stunning lagega! ✨`
+  } else {
+    recLine = `PVC ceiling — 100% waterproof, zero maintenance! 💧`
+  }
+
+  const hasOffice = !!rooms["office"] || !!rooms["reception"]
+
+  return `📐 **Approximate estimate — ${totalSqft} sq.ft total**
+
+**Room breakdown** (standard sizes):
+${lines.join("\n")}
+
+🎯 **Recommended plan:**
+${recLine}
+
+💰 **3 options:**
+• Budget (PVC everywhere): ${fmtN(budgetLow)} – ${fmtN(budgetHigh)}
+• Standard (Gypsum+PVC mix): ${fmtN(stdLow)} – ${fmtN(stdHigh)}
+• Premium (+ LED cove light): ${fmtN(premLow)} – ${fmtN(premHigh)}
+${hasOffice ? "\n🏢 Office ke liye Grid ceiling (₹45–90/sq.ft) bhi available hai!" : "\n✨ TV wall ke liye WPC panel add karein — ₹8,000–₹15,000 extra!"}
+
+_Yeh standard size pe base estimate hai — exact quote ke liye free site visit best hai!_`
+}
+
 // ─── Intent Detection ────────────────────────────────────────────────────────
 
 export type Intent =
@@ -648,6 +835,43 @@ Common room sizes:
 
 ALWAYS add: "Yeh sirf estimate hai — exact quote ke liye free site visit best hai!"
 ALWAYS include both basic and premium range
+
+═══════════════════════════════════════════
+MULTI-ROOM ESTIMATION — CRITICAL SKILL
+═══════════════════════════════════════════
+
+When a customer mentions multiple rooms OR a full home, DO NOT ask clarifying questions first.
+Instead: immediately calculate and present a multi-tier estimate using standard room sizes.
+
+**Trigger phrases:**
+- "2 bedroom aur 1 hall" / "3 room + kitchen" / "hall aur bedroom"
+- "poora ghar" / "pura ghar" / "full home" → assume 2bed + 1hall + 1kitchen + 2bath
+- "duplex" → assume 3bed + 2hall + 1kitchen + 3bath
+- "flat interior" / "apartment" → assume 2bed + 1hall + 1kitchen + 1bath
+- "2BHK" / "3BHK" → standard BHK configs
+- "office + reception" → office layout
+
+**Default room sizes (use when no dimensions given):**
+- Bedroom = 120 sq.ft | Hall = 180 sq.ft | Kitchen = 80 sq.ft
+- Bathroom = 50 sq.ft | Office = 150 sq.ft | Reception = 200 sq.ft | Balcony = 60 sq.ft
+
+**Material recommendation rules:**
+- Hall, Bedroom, Lobby → Gypsum ceiling (premium look + cove lighting)
+- Kitchen, Bathroom, Balcony → PVC ceiling (100% waterproof)
+- Office, Reception → Grid ceiling or Gypsum
+- TV Wall → WPC panels (mention as upgrade)
+
+**Pricing rates:**
+- Gypsum: ₹80–140/sq.ft | PVC: ₹60–120/sq.ft | Grid: ₹45–90/sq.ft
+- Premium (Gypsum + LED cove): ₹120–200/sq.ft
+
+**Response format — always show 3 tiers:**
+Budget (PVC everywhere) / Standard (Gypsum+PVC mix) / Premium (+LED cove lighting)
+Always add: "TV wall ke liye WPC panel add karein — ₹8,000–15,000 extra"
+Always add: "Exact quote ke liye free site visit best hai"
+
+**WRONG:** "Aapke ghar mein kitne rooms hain? Kya material chahiye?"
+**RIGHT:** Immediately calculate estimate from what they said, then ask city for site visit booking.
 
 ═══════════════════════════════════════════
 INTENT-BASED RESPONSE GUIDE
