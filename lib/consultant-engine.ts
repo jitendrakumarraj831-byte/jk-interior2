@@ -1,5 +1,6 @@
 // consultant-engine.ts
 import * as KNOWLEDGE_BASE from "./business-data";
+import { SERVICE_CATALOG } from "./business-data";
 // ============================================
 // Types & Interfaces
 // ============================================
@@ -164,9 +165,9 @@ function generateEstimateResponse(session: SessionContext, requestedSize?: numbe
   }
   if (!size) {
     // Use standard room size as fallback
-    size = STANDARD_ROOM_SIZES.mediumBedroom.sqft;
+    size = 120;
   }
-  const service = KNOWLEDGE_BASE.services.find(s => s.id === session.serviceId);
+  const service = SERVICE_CATALOG.find(s => s.id === session.serviceId);
   let rateLow = 80, rateHigh = 140;
   if (service) {
     rateLow = service.priceMin;
