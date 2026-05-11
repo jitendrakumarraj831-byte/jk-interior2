@@ -379,7 +379,15 @@ export function detectIntent(text: string): Intent {
 
   // Pricing (check after budget & comparison to avoid misclassification)
   if (INTENT_PATTERNS.pricing.some(k => t.includes(k))) return "pricing"
-
+// Services list
+  if (
+    t.includes("service")
+    t.includes("services")
+    t.includes("kya kya")
+    t.includes("konsa kaam")
+    t.includes("aap kya karte")
+    t.includes("what services")
+  ) return "services"
   // Service info
   if (INTENT_PATTERNS["service-info"].some(k => t.includes(k))) return "service-info"
 
