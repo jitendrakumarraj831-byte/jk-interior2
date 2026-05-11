@@ -39,8 +39,8 @@ const steps = [
   {
     icon: CheckCircle2,
     step: "04",
-    title: "5 Year Warranty",
-    titleHi: "5 साल की वारंटी",
+    title: "1 Year Warranty",
+    titleHi: "1 साल की वारंटी",
     desc: "Project handed over with a written 5-year warranty. Your investment is fully protected with JK Interior.",
     descHi: "लिखित 5 साल की warranty के साथ project हैंडओवर। आपका investment पूरी तरह protected।",
     color: "from-violet-500 to-violet-700",
