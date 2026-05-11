@@ -1,14 +1,5 @@
 // consultant-engine.ts
-import KNOWLEDGE_BASE, {
-  SERVICE,
-  MATERIAL,
-  ROOM_SUGGESTION,
-  FAQ,
-  COMPANY,
-  RATES_PER_SQFT,
-  STANDARD_ROOM_SIZES,
-  getRecommendation,
-} from "./knowledge-base";
+import KNOWLEDGE_BASE from "./knowledge-base";
 
 // ============================================
 // Types & Interfaces
