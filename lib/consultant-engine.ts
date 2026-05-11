@@ -1,6 +1,5 @@
 // consultant-engine.ts
-import KNOWLEDGE_BASE, { STANDARD_ROOM_SIZES } from "./knowledge-base";
-
+import KNOWLEDGE_BASE, { STANDARD_ROOM_SIZES, COMPANY } from "./business-data";
 // ============================================
 // Types & Interfaces
 // ============================================
