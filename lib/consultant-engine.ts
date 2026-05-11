@@ -556,7 +556,10 @@ export function consultantReply(
       : `\n\nAap kis city mein hain? City batao toh free site visit arrange ho sakti hai!`
     return est + cta
   }
-
+// Reuse previous service context
+if (!svc && ctx.lastTopic) {
+  ctx.service = ctx.lastTopic
+}
   // ─── Room dimension estimate (e.g. "12x14 pvc")
   if (hasDimension) {
     let serviceKey = "gypsum"
@@ -568,6 +571,16 @@ export function consultantReply(
     else if (t.includes("grid")) { serviceKey = "grid"; svcName = "Grid Ceiling" }
     else if (t.includes("fluted")) { serviceKey = "fluted"; svcName = "Fluted Panels" }
     // If user mentioned a specific service in context
+  else if (ctx.lastTopic) {
+  const found = SERVICE_CATALOG.find(
+    s => s.key === ctx.lastTopic
+  )
+
+  if (found) {
+    serviceKey = found.key
+    svcName = found.name
+  }
+  }
     else if (knownSvc) {
       const found = SERVICE_CATALOG.find(s => s.name.toLowerCase() === knownSvc.toLowerCase())
       if (found) { serviceKey = found.key; svcName = found.name }
