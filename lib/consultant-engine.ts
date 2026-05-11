@@ -298,7 +298,7 @@ const ROOM_PATTERNS: Array<[RegExp, string, boolean]> = [
 function extractRoomDimensions(text: string): { length: number; width: number } | null {
   const t = text.toLowerCase()
   // Pattern 1: 12x14, 12×14, 12*14, 12 by 14
-  let match = t.match(/(\d+(?:\.\d+)?)\s*[x×*by]\s*(\d+(?:\.\d+)?)/)
+  let match = t.match(/(\d+(?:\.\d+)?)\s*(?:x|×|\*|by)\s*(\d+(?:\.\d+)?)/i)
   if (match) {
     return { length: parseInt(match[1]), width: parseInt(match[2]) }
   }
