@@ -48,8 +48,8 @@ const reasons = [
   },
   {
     icon: Award,
-    title: "5 Year Written Warranty",
-    titleHi: "5 साल की लिखित वारंटी",
+    title: "1 Year Written Warranty",
+    titleHi: "1 साल की लिखित वारंटी",
     desc: "Every project comes with a written 5-year warranty. We stand behind our work — that's the JK Interior guarantee.",
     descHi: "हर प्रोजेक्ट के साथ 5 साल की लिखित वारंटी। हम अपने काम के पीछे खड़े हैं।",
     color: "from-blue-500 to-blue-700",
@@ -223,7 +223,7 @@ export default function WhyUs() {
           <span className="hidden text-gray-300 sm:inline">|</span>
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-emerald-600" />
-            <span>5-Year Written Warranty</span>
+            <span>1-Year Written Warranty</span>
           </div>
         </motion.div>
       </div>
