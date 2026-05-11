@@ -92,7 +92,7 @@ const trustItems = [
   { icon: Droplets, label: "100% Waterproof", sublabel: "Water Resistant", color: "text-cyan-600", border: "border-cyan-200 bg-cyan-50" },
   { icon: Clock, label: "Fast Installation", sublabel: "On-Time Delivery", color: "text-amber-600", border: "border-amber-200 bg-amber-50" },
   { icon: Zap, label: "Dust-Free Work", sublabel: "Clean Process", color: "text-blue-600", border: "border-blue-200 bg-blue-50" },
-  { icon: Gem, label: "5 Year Warranty", sublabel: "Guaranteed", color: "text-violet-600", border: "border-violet-200 bg-violet-50" },
+  { icon: Gem, label: "1 Year Warranty", sublabel: "Guaranteed", color: "text-violet-600", border: "border-violet-200 bg-violet-50" },
   { icon: CheckCircle2, label: "Free Site Visit", sublabel: "No Cost", color: "text-emerald-600", border: "border-emerald-200 bg-emerald-50" },
 ]
 
