@@ -509,7 +509,10 @@ export function consultantReply(
 
   // Update context with new info
   if (city && !ctx.city) ctx.city = city
-  if (svc && !ctx.service) ctx.service = svc
+  if (svc) {
+  ctx.service = svc
+  ctx.lastTopic = svc
+  }
   if (budget) ctx.budget = budget
   if (room) ctx.roomType = room.label
   ctx.lastIntent = intent
