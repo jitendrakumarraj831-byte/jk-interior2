@@ -381,11 +381,11 @@ export function detectIntent(text: string): Intent {
   if (INTENT_PATTERNS.pricing.some(k => t.includes(k))) return "pricing"
 // Services list
   if (
-    t.includes("service")
-    t.includes("services")
-    t.includes("kya kya")
-    t.includes("konsa kaam")
-    t.includes("aap kya karte")
+    t.includes("service") ||
+    t.includes("services") ||
+    t.includes("kya kya") ||
+    t.includes("konsa kaam") ||
+    t.includes("aap kya karte") ||
     t.includes("what services")
   ) return "services"
   // Service info
