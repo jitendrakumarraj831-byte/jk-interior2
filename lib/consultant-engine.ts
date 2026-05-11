@@ -53,12 +53,13 @@ export interface ConversationContext {
   pendingRoomType?: string // Which room type we asked size for
 }
 
-export type Intent =
+ export type Intent =
   | "pricing"
   | "comparison"
   | "booking"
   | "quality"
   | "service-info"
+  | "services"
   | "complaint"
   | "area"
   | "greeting"
