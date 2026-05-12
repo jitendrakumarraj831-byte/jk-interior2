@@ -10,6 +10,8 @@ import {
   summarizeForPrompt,
 } from "@/lib/memory"
 
+import { KNOWLEDGE_BASE } from "@/lib/knowledge-base"
+import { GALLERY_DATA } from "@/lib/gallery-data"
 const ai = new GoogleGenAI({
   apiKey: process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "",
   httpOptions: {
@@ -95,31 +97,42 @@ if (
     // Build rich memory summary for Gemini system prompt
     const memorySummary = sessionMemory ? summarizeForPrompt(sessionMemory) : undefined
 
-    const systemPrompt = buildSystemPrompt({
-      name:     ctx.name,
-      phone:    ctx.phone,
-      city:     ctx.city,
-      service:  ctx.service,
-      budget:   ctx.budget as string | undefined,
-      roomSize: ctx.roomSize,
-      memorySummary,
-    })
+    const basePrompt = buildSystemPrompt({
+  name: ctx.name,
+  phone: ctx.phone,
+  city: ctx.city,
+  service: ctx.service,
+  budget: ctx.budget as string | undefined,
+  roomSize: ctx.roomSize,
+  memorySummary,
+})
 
-    const historyMsgs = (history as { role: string; content: string }[])
-      .slice(-14)
-      .map(h => ({
-        role:  h.role === "assistant" ? "model" : "user",
-        parts: [{ text: h.content }],
-      }))
+// Website knowledge injection
+const websiteKnowledge = `
+FAQ DATA:
+${JSON.stringify(KNOWLEDGE_BASE).slice(0, 4000)}
 
-    const contents = [
-      ...historyMsgs,
-      { role: "user", parts: [{ text: message }] },
-    ]
+DESIGN GALLERY:
+${JSON.stringify(GALLERY_DATA).slice(0, 3000)}
+`
 
-    ctx.messagesExchanged++
-    sessionStore.set(sid, ctx)
+const systemPrompt = `
+${basePrompt}
 
+You are JK Interior's premium AI consultant.
+
+Use the website knowledge below to answer accurately.
+
+Rules:
+- Give direct useful answers
+- Use website data first
+- Never say "I am busy"
+- Answer naturally in Hindi + English
+- Help users with pricing, design, PVC, WPC, false ceiling, wall panels, etc.
+- Ask for WhatsApp or site visit only after answering properly
+
+${websiteKnowledge}
+`
     // ── Streaming response (for chat UI) ─────────────────────────────────────
     if (shouldStream) {
       const result = await ai.models.generateContentStream({
