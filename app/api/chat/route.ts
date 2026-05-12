@@ -205,6 +205,7 @@ ${websiteKnowledge}
 `
 
 const historyMsgs: any[] = (history as { role: string; content: string }[])
+  .filter(h => h?.content?.trim())
   .slice(-14)
   .map(h => ({
     role: h.role === "assistant" ? "model" : "user",
@@ -223,10 +224,12 @@ Customer Info:
 
 const contents: any[] = [
   {
-    role: "user",
+    role: "model",
     parts: [{ text: contextMemory }],
   },
+
   ...historyMsgs,
+
   {
     role: "user",
     parts: [{ text: message }],
@@ -238,12 +241,19 @@ sessionStore.set(sid, ctx)
 
 // ── Streaming response (for chat UI) ─────────────────────────────────────
 if (shouldStream) {
+
+  console.log("Sending STREAM request to Gemini:", {
+    message,
+    hasKey,
+    historyLength: history.length,
+  })
+
   const result = await ai.models.generateContentStream({
     model: "gemini-1.5-flash",
     contents,
     config: {
       systemInstruction: systemPrompt,
-      maxOutputTokens: 700,
+      maxOutputTokens: 500,
       temperature: 0.8,
     },
   })
@@ -279,12 +289,19 @@ if (shouldStream) {
 }
 
 // ── Non-streaming fallback ────────────────────────────────────────────────
+
+console.log("Sending NORMAL request to Gemini:", {
+  message,
+  hasKey,
+  historyLength: history.length,
+})
+
 const result = await ai.models.generateContent({
   model: "gemini-1.5-flash",
   contents,
   config: {
     systemInstruction: systemPrompt,
-    maxOutputTokens: 700,
+    maxOutputTokens: 500,
     temperature: 0.8,
   },
 })
@@ -298,15 +315,18 @@ return NextResponse.json({
 })
 
 } catch (err: unknown) {
-const msg = err instanceof Error ? err.message : String(err)
 
-console.error("Chat API error:", msg)
+  console.error("FULL GEMINI ERROR:", err)
 
-return NextResponse.json({
-  ok: true,
-  reply:
-    "Thoda network issue aa gaya 😅 Aap dobara message bhejiye ya WhatsApp kar sakte hain: +91 8651070831",
-  source: "fallback",
-})
+  const msg = err instanceof Error ? err.message : String(err)
+
+  console.error("Chat API error:", msg)
+
+  return NextResponse.json({
+    ok: true,
+    reply:
+      "Thoda network issue aa gaya 😅 Aap dobara message bhejiye ya WhatsApp kar sakte hain: +91 8651070831",
+    source: "fallback",
+  })
 }
-    }
+}
