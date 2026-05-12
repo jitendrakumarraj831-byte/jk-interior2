@@ -754,7 +754,17 @@ export default function JKChat() {
       if (wasStreamed && finalStreamId !== null) {
         next = prev.map(m => m.id === finalStreamId ? { ...m, text: reply! } : m)
       } else {
-        next = [...prev, mk("bot", reply as string)]
+        const botMessage = mk("bot", reply as string) as any
+
+botMessage.galleryType =
+  reply?.toLowerCase().includes("gypsum") ? "Gypsum False Ceiling" :
+  reply?.toLowerCase().includes("pvc") ? "PVC Ceiling" :
+  reply?.toLowerCase().includes("wpc") ? "WPC fluted panels & uv marble Sheet" :
+  reply?.toLowerCase().includes("grid") ? "Grid Ceiling" :
+  reply?.toLowerCase().includes("tv") ? "TV Unit Design" :
+  undefined
+
+next = [...prev, botMessage]
       }
       if (extractedPhone && !lead?.phone && updatedLead?.phone) {
         const card: LeadCard = { name: updatedLead.name || "Friend", phone: updatedLead.phone!, city: updatedLead.city, service: updatedLead.service, estimate: pendingEstimate || estSummary || undefined, timestamp: new Date().toISOString() }
