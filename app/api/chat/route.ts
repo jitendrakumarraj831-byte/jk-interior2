@@ -205,62 +205,76 @@ ctx.messagesExchanged++
 sessionStore.set(sid, ctx)
 
 // ── Streaming response (for chat UI) ─────────────────────────────────────
-    if (shouldStream) {
-      const result = await ai.models.generateContentStream({
-        model:    "gemini-2.5-flash",
-        contents,
-        config: {
-          systemInstruction: systemPrompt,
-          maxOutputTokens:   1024,
-        },
-      })
+if (shouldStream) {
+  const result = await ai.models.generateContentStream({
+    model: "gemini-2.5-flash",
+    contents,
+    config: {
+      systemInstruction: systemPrompt,
+      maxOutputTokens: 700,
+      temperature: 0.8,
+    },
+  })
 
-      const encoder = new TextEncoder()
-      const stream = new ReadableStream({
-        async start(controller) {
-          try {
-            for await (const chunk of result) {
-              const text = chunk.text ?? ""
-              if (text) controller.enqueue(encoder.encode(text))
-            }
-          } catch {
-            // stream might already be closed
-          } finally {
-            controller.close()
+  const encoder = new TextEncoder()
+
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const chunk of result) {
+          const text = chunk.text ?? ""
+
+          if (text) {
+            controller.enqueue(encoder.encode(text))
           }
-        },
-      })
+        }
+      } catch (error) {
+        console.error("Streaming error:", error)
+      } finally {
+        controller.close()
+      }
+    },
+  })
 
-      return new Response(stream, {
-        headers: {
-          "Content-Type":           "text/plain; charset=utf-8",
-          "X-Source":               "gemini",
-          "X-Content-Type-Options": "nosniff",
-          "Cache-Control":          "no-cache",
-        },
-      })
-    }
-
-    // ── Non-streaming fallback ────────────────────────────────────────────────
-    const result = await ai.models.generateContent({
-      model:    "gemini-2.5-flash",
-      contents,
-      config: {
-        systemInstruction: systemPrompt,
-        maxOutputTokens:   1024,
-      },
-    })
-
-    const reply = result.text ?? ""
-    return NextResponse.json({ ok: true, reply, source: "gemini" })
-
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error("Chat API error:", msg)
-    return NextResponse.json({
-      ok: true,
-      reply: "Ek second rukein — dobara try karein ya WhatsApp karein: +91 8651070831 📱",
-      source: "fallback",
-    })
-  }
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-Source": "gemini",
+      "X-Content-Type-Options": "nosniff",
+      "Cache-Control": "no-cache",
+    },
+  })
 }
+
+// ── Non-streaming fallback ────────────────────────────────────────────────
+const result = await ai.models.generateContent({
+  model: "gemini-2.5-flash",
+  contents,
+  config: {
+    systemInstruction: systemPrompt,
+    maxOutputTokens: 700,
+    temperature: 0.8,
+  },
+})
+
+const reply = result.text ?? ""
+
+return NextResponse.json({
+  ok: true,
+  reply,
+  source: "gemini",
+})
+
+} catch (err: unknown) {
+const msg = err instanceof Error ? err.message : String(err)
+
+console.error("Chat API error:", msg)
+
+return NextResponse.json({
+  ok: true,
+  reply:
+    "Thoda network issue aa gaya 😅 Aap dobara message bhejiye ya WhatsApp kar sakte hain: +91 8651070831",
+  source: "fallback",
+})
+}
+    }
