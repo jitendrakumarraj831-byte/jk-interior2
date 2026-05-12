@@ -53,7 +53,7 @@ export interface ConversationContext {
   pendingRoomType?: string // Which room type we asked size for
 }
 
- export type Intent =
+export type Intent =
   | "pricing"
   | "comparison"
   | "booking"
@@ -73,6 +73,11 @@ export interface ConversationContext {
   | "confused"
   | "image-reference"
   | "call-request"
+  | "color"
+  | "maintenance"
+  | "trends"
+  | "acoustic"
+  | "flooring"
   | "general"
 
 export interface LeadCard {
@@ -278,6 +283,39 @@ const INTENT_PATTERNS: Record<Intent, string[]> = {
     "contact karo","call back","phone number chahiye",
     "aapka number do","tumhara number do","baat karna hai",
   ]),
+  color: expandPatterns([
+    "color","colour","rang","rango","shade","combination","color theme",
+    "colour scheme","paint color","room color","kaun sa rang","konsa color",
+    "wall color","ceiling color","color combination","interior color",
+    "color chahiye","kaun sa combination","ranga chahiye","kaunsa rang",
+    "color suggest","colour suggest","room ka color","wall ka rang",
+  ]),
+  maintenance: expandPatterns([
+    "clean","cleaning","maintain","maintenance","safai","saaf karna",
+    "damp cloth","repair karna","maintain kaise","kitne saal chalega",
+    "care kaise","kaise saaf karein","dust","dhool","polish",
+    "paani se saaf","chemical use","kaise bachayein","care tips",
+    "wash kaise","dhona","saaf","warranty ke baad","upkeep",
+  ]),
+  trends: expandPatterns([
+    "trend","trending","latest design","2025","2026","new design",
+    "popular design","instagram worthy","pinterest","modern look",
+    "abhi ka trend","aaj kal ka","latest style","naya design",
+    "fashion mein","popular hai","sabse accha design","in style",
+    "trendy design","new fashion","new trend","kya chal raha",
+  ]),
+  acoustic: expandPatterns([
+    "acoustic","soundproof","sound proof","echo","noise",
+    "home theatre","theatre room","studio","recording",
+    "sound absorbent","echo kam","noise reduction","awaz kam",
+    "awaaz","dhwani","sound wala","silent room",
+  ]),
+  flooring: expandPatterns([
+    "flooring","floor","laminate","vinyl","wooden floor",
+    "floor design","floor karna","naya floor","floor install",
+    "laminate flooring","vinyl flooring","wood floor",
+    "floor ka kaam","farz","phars",
+  ]),
   general: [],
 }
 
@@ -395,7 +433,15 @@ export function detectIntent(text: string): Intent {
 
   // Pricing (check after budget & comparison to avoid misclassification)
   if (INTENT_PATTERNS.pricing.some(k => t.includes(k))) return "pricing"
-// Services list
+
+  // New intent types
+  if (INTENT_PATTERNS.color.some(k => t.includes(k))) return "color"
+  if (INTENT_PATTERNS.maintenance.some(k => t.includes(k))) return "maintenance"
+  if (INTENT_PATTERNS.trends.some(k => t.includes(k))) return "trends"
+  if (INTENT_PATTERNS.acoustic.some(k => t.includes(k))) return "acoustic"
+  if (INTENT_PATTERNS.flooring.some(k => t.includes(k))) return "flooring"
+
+  // Services list
   if (
     t.includes("service") ||
     t.includes("services") ||
@@ -404,7 +450,7 @@ export function detectIntent(text: string): Intent {
     t.includes("aap kya karte") ||
     t.includes("what services")
   ) return "services"
-  
+
   // Service info
   if (INTENT_PATTERNS["service-info"].some(k => t.includes(k))) return "service-info"
 
@@ -925,9 +971,55 @@ Aapko kis service ke baare mein detail chahiye? 😊`
     return `**Artificial Grass** (₹40-120/sq.ft)\n\nBalcony, terrace, wall decor ke liye perfect! Zero maintenance, UV resistant, weatherproof.\n\nArea size batao toh estimate de deti hoon!`
   }
 
+  // ─── Color Combinations (returns null → Gemini Layer 2 enriches)
+  if (intent === "color") {
+    const room = knownRoom
+    if (room) {
+      return null // Let Gemini handle with Layer 2 color knowledge for specific room
+    }
+    return `**Interior Color Combinations** — kaunsi room ke liye?
+
+🏠 **Hall**: Off-white ceiling + charcoal feature wall + walnut WPC panels (trending!)
+🛏 **Bedroom**: Sage green walls + warm wood + soft white ceiling — very calming
+🍳 **Kitchen**: White cabinets + grey countertop + UV marble walls (classic & clean)
+🚿 **Bathroom**: White PVC ceiling + light grey UV marble (spacious feel)
+
+Kaunsi room ke liye color suggest karna hai? 😊`
+  }
+
+  // ─── Maintenance Tips
+  if (intent === "maintenance") {
+    const svc = knownSvc?.toLowerCase() || ""
+    if (svc.includes("pvc")) {
+      return `**PVC Ceiling Care** — bahut easy hai!\n\n✅ Damp cloth + mild soap se saaf karein\n✅ Paani lagaao — bilkul safe hai (waterproof)\n✅ Harsh chemicals avoid karein\n✅ Annually joints check karein\n\nPVC ki khasiyat: 20+ saal without any major maintenance! 💪`
+    }
+    if (svc.includes("gypsum")) {
+      return `**Gypsum Ceiling Care:**\n\n✅ Barely damp cloth se gently wipe karein\n❌ Direct paani avoid karein (waterproof nahi hai)\n✅ Joints annually inspect karein\n✅ Touch-up paint 3-5 saal mein\n\nSeepage ya cracks aaye toh hume call karein — warranty coverage mein hai! 📞`
+    }
+    if (svc.includes("wpc")) {
+      return `**WPC Panel Care** — almost maintenance-free!\n\n✅ Weekly dusting — bas itna kaafi\n✅ Stains ke liye damp cloth\n❌ Abrasive scrubbers avoid karein\n✅ 15+ saal without major upkeep\n\nWPC ekdum low-maintenance material hai — isliye itna popular hai! 🪵`
+    }
+    return `**Material Care Guide:**\n\n🏠 **PVC**: Damp cloth — waterproof, no worries!\n🏛 **Gypsum**: Gentle wipe, avoid direct paani\n🪵 **WPC Panels**: Weekly dust, damp cloth for stains\n💎 **UV Marble**: Glass cleaner works great\n\nKaunse material ka care tips chahiye detail mein?`
+  }
+
+  // ─── Trends (returns null → Gemini Layer 2 handles with design knowledge)
+  if (intent === "trends") {
+    return null // Gemini Layer 2 has detailed 2025-2026 trend knowledge
+  }
+
+  // ─── Acoustic Panels
+  if (intent === "acoustic") {
+    return `**Acoustic Panels** — ₹150-400/sq.ft\n\nSound absorbing panels for:\n🎬 **Home Theatre**: Rich bass, no echo — cinema quality\n🎙 **Studio/Recording Room**: Professional sound isolation\n🏢 **Conference Room**: Clear speech, no reverberation\n\n✨ Available in fabric wrap, foam, or decorative wood slat design\n🛡 UV resistant, fire retardant options available\n\nRoom ka size batao — acoustic layout design kar deti hoon! Site visit free hai: **+91 8651070831**`
+  }
+
+  // ─── Flooring
+  if (intent === "flooring") {
+    return `**Laminate / Vinyl Flooring** — ₹80-200/sq.ft\n\n🏠 **Laminate Wood Flooring** (₹80-150/sq.ft):\n- Scratch resistant, easy to clean\n- Real wood look without wood price\n- Best for bedrooms & living rooms\n\n🔷 **Vinyl Plank Flooring** (₹60-120/sq.ft):\n- 100% waterproof — kitchen/bathroom perfect\n- Soft underfoot, sound absorbing\n- Click-lock easy installation\n\nFloor ka area batao — estimate nikaalta hoon! Free site visit: **+91 8651070831**`
+  }
+
   // ─── LED / Lighting
   if (t.includes("led") || t.includes("cove light") || t.includes("strip light") || t.includes("backlight")) {
-    return `**LED Cove Lighting** gypsum ceiling ke saath:\n- Running cost: ₹40-80/running ft\n- WPC TV wall LED backlight: ₹2,000-5,000\n\nBahut premium look aata hai! Night mein ghar cinema jaisa lagta hai.\n\nFree site visit mein design discuss karein!`
+    return `**LED Lighting Design** — ek gamechanger hai! 💡\n\n✨ **Cove Lighting** (gypsum ke saath): ₹40-80/running ft — most popular, premium feel\n📺 **TV Unit Backlight**: ₹1,500-3,000 — dramatic effect\n🔆 **Spot/Downlights**: ₹200-500/point — task lighting\n🌡 **Warm White** (3000K): Bedroom/hall — cozy feel\n❄️ **Cool White** (6500K): Kitchen/office — fresh & bright\n\nNight mein ghar bilkul hotel jaisa lagta hai! Free visit mein design discuss karein! 🏠`
   }
 
   // ─── FAQ matching
@@ -958,25 +1050,25 @@ export function getSmartQuickReplies(ctx: ConversationContext): string[] {
   const intent = ctx.lastIntent
 
   if (intent === "pricing" || intent === "room-estimate") {
-    return ["Book Site Visit", "Compare Materials", "Other Services", "Quality & Warranty"]
+    return ["Book Site Visit", "Compare Materials", "LED Lighting", "Quality & Warranty"]
   }
   if (intent === "comparison") {
     return ["Get Estimate", "Book Site Visit", "Budget Options", "Premium Options"]
   }
   if (intent === "design") {
-    return ["Get Estimate", "Book Site Visit", "See Gallery", "Material Options"]
+    return ["Color Ideas", "Latest Trends", "Get Estimate", "Book Site Visit"]
   }
   if (intent === "booking") {
     return ["WhatsApp Us", "Call Now", "Other Services"]
   }
   if (intent === "waterproof") {
-    return ["PVC Ceiling Rate", "UV Marble Rate", "Book Site Visit", "Kitchen Options"]
+    return ["PVC Ceiling Rate", "UV Marble Rate", "Book Site Visit", "Bathroom Options"]
   }
   if (intent === "budget") {
     return ["PVC Ceiling", "UV Marble", "Get Estimate", "Book Site Visit"]
   }
   if (intent === "quality") {
-    return ["Book Site Visit", "PVC Ceiling", "Gypsum Ceiling", "WPC Panels"]
+    return ["Book Site Visit", "Maintenance Tips", "Warranty Details", "WPC Panels"]
   }
   if (intent === "installation") {
     return ["Book Site Visit", "Get Estimate", "Urgent Work"]
@@ -987,10 +1079,25 @@ export function getSmartQuickReplies(ctx: ConversationContext): string[] {
   if (intent === "area") {
     return ["Get Estimate", "Book Site Visit", "Our Services"]
   }
-  if (ctx.phone) {
-    return ["Book Site Visit", "Get Estimate", "Other Services"]
+  if (intent === "color") {
+    return ["Hall Colors", "Bedroom Colors", "Book Site Visit", "WPC Panels"]
   }
-  return ["PVC Ceiling", "Gypsum Ceiling", "Price List", "Free Site Visit", "Our Areas"]
+  if (intent === "maintenance") {
+    return ["PVC Care", "Gypsum Care", "WPC Care", "Book Site Visit"]
+  }
+  if (intent === "trends") {
+    return ["Fluted Panels", "Gypsum Ceiling", "WPC TV Wall", "Book Site Visit"]
+  }
+  if (intent === "acoustic") {
+    return ["Home Theatre", "Get Quote", "Book Site Visit", "Flooring Options"]
+  }
+  if (intent === "flooring") {
+    return ["Laminate Rate", "Vinyl Rate", "Book Site Visit", "Complete Package"]
+  }
+  if (ctx.phone) {
+    return ["Book Site Visit", "Get Estimate", "Color Ideas", "Latest Trends"]
+  }
+  return ["PVC Ceiling", "Gypsum Ceiling", "Price List", "Free Site Visit", "2026 Trends"]
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

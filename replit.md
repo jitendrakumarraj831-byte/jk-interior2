@@ -111,6 +111,19 @@ npm run start  # Production server on port 5000
 - `app/globals.css` (earlier): Removed `transform: translateZ(0)` and `will-change: transform` from `.mesh-aurora` so it no longer creates a containing block that broke the gallery lightbox `position: fixed`.
 - `components/gallery.tsx` (earlier): WPC masonry rewritten to CSS multi-column (`columns-2 md:columns-3` + `break-inside-avoid`) instead of the broken 3-col-in-2-grid layout.
 
+## Chatbot Phase-3 Upgrade (May 2026)
+
+### Files Changed
+- `app/api/chat/route.ts` — Added `?stream=1` query param support. Rule-based replies return JSON immediately; Gemini responses stream as `text/plain` using `generateContentStream`. Session context passed via `sessionId`.
+- `lib/business-data.ts` — Added **Layer 2 design knowledge** section to `buildSystemPrompt()`: 2025-2026 interior design trends, color combinations by room type, maintenance tips by material, small-space advice, budget optimization combos, LED lighting guide. Gemini now uses its own training knowledge to enrich answers beyond business data.
+- `lib/consultant-engine.ts` — Added 5 new intent types: `color`, `maintenance`, `trends`, `acoustic`, `flooring`. Added INTENT_PATTERNS entries and `detectIntent()` cases for each. Added handlers: color combination cards (or null→Gemini for room-specific), material-specific maintenance tips, acoustic panel info, flooring price guide, trends returns null (Gemini Layer 2 handles with training knowledge). LED handler upgraded with full lighting design info. Updated `getSmartQuickReplies()` with topic-specific suggestions for all new intents.
+- `components/jk-chat.tsx` — **Streaming UI**: Added `mkId` helper, `sessionIdRef`, `streamingIdRef`. `getAIReply()` now supports `onChunk` callback for progressive rendering — text appears word-by-word as Gemini generates it. `send()` streaming logic: typing dots shown until first chunk, then replaced with live-updating message. Graceful fallback if stream fails. Welcome message updated to Hinglish. `getContextualQuickReplies()` expanded with UV, TV unit, color, trend, acoustic, flooring topic cases + "2026 Trends" initial chip.
+
+### Architecture — 3-Layer Response System
+1. **Layer 1 (Rule Engine)**: `consultantReply()` — instant response for ~25 intent types, no API call
+2. **Layer 2 (Gemini + Business Data)**: Falls through when no rule match → Gemini uses detailed business system prompt
+3. **Layer 3 (Gemini Design Knowledge)**: System prompt's Layer 2 section instructs Gemini to augment answers with real design trends, colors, maintenance from its own training data
+
 ## Contact Email Backup (Apr 2026)
 
 - **Goal**: Every contact-form submission must reach the owner even if the customer closes the WhatsApp tab.

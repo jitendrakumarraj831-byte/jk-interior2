@@ -1,10 +1,8 @@
-// app/api/chat/route.ts
 import { NextRequest, NextResponse } from "next/server"
 import { GoogleGenAI } from "@google/genai"
 import { consultantReply, ConversationContext } from "@/lib/consultant-engine"
 import { buildSystemPrompt } from "@/lib/business-data"
 
-// ── Gemini init — Replit AI Integration pattern (required) ───────────────────
 const ai = new GoogleGenAI({
   apiKey: process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "",
   httpOptions: {
@@ -13,11 +11,12 @@ const ai = new GoogleGenAI({
   },
 })
 
-// ── In-memory server-side session context ────────────────────────────────────
+// In-memory server-side session context (resets on cold start — acceptable for chat)
 const sessionStore = new Map<string, ConversationContext>()
 
-// ── POST handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
+  const shouldStream = req.nextUrl.searchParams.get("stream") === "1"
+
   try {
     const body = await req.json()
     const { message, history = [], sessionId, leadContext } = body
@@ -26,11 +25,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "Message is required" }, { status: 400 })
     }
 
-    // Retrieve or create server-side context
     const sid = (sessionId as string) || "default"
     const ctx: ConversationContext = sessionStore.get(sid) ?? { messagesExchanged: 0 }
 
-    // Merge client lead context (never overwrite existing data)
     if (leadContext) {
       if (leadContext.name    && !ctx.name)    ctx.name    = leadContext.name
       if (leadContext.phone   && !ctx.phone)   ctx.phone   = leadContext.phone
@@ -38,7 +35,7 @@ export async function POST(req: NextRequest) {
       if (leadContext.service && !ctx.service) ctx.service = leadContext.service
     }
 
-    // ── Step 1: Fast rule-based consultant engine ─────────────────────────────
+    // ── Step 1: Fast rule-based consultant engine ────────────────────────────
     const ruleReply = consultantReply(message, ctx)
     if (ruleReply) {
       ctx.messagesExchanged++
@@ -46,7 +43,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, reply: ruleReply, source: "rule" })
     }
 
-    // ── Step 2: Gemini AI with conversation history ───────────────────────────
+    // ── Step 2: Gemini AI ────────────────────────────────────────────────────
     const hasKey = !!process.env.AI_INTEGRATIONS_GEMINI_API_KEY
     if (!hasKey) {
       return NextResponse.json({
@@ -65,7 +62,6 @@ export async function POST(req: NextRequest) {
       roomSize: ctx.roomSize,
     })
 
-    // Build message history for Gemini (last 14 exchanges + current message)
     const historyMsgs = (history as { role: string; content: string }[])
       .slice(-14)
       .map(h => ({
@@ -78,20 +74,57 @@ export async function POST(req: NextRequest) {
       { role: "user", parts: [{ text: message }] },
     ]
 
+    ctx.messagesExchanged++
+    sessionStore.set(sid, ctx)
+
+    // ── Streaming response (for chat UI) ─────────────────────────────────────
+    if (shouldStream) {
+      const result = await ai.models.generateContentStream({
+        model:    "gemini-2.5-flash",
+        contents,
+        config: {
+          systemInstruction: systemPrompt,
+          maxOutputTokens:   1024,
+        },
+      })
+
+      const encoder = new TextEncoder()
+      const stream = new ReadableStream({
+        async start(controller) {
+          try {
+            for await (const chunk of result) {
+              const text = chunk.text ?? ""
+              if (text) controller.enqueue(encoder.encode(text))
+            }
+          } catch {
+            // stream might already be closed
+          } finally {
+            controller.close()
+          }
+        },
+      })
+
+      return new Response(stream, {
+        headers: {
+          "Content-Type":           "text/plain; charset=utf-8",
+          "X-Source":               "gemini",
+          "X-Content-Type-Options": "nosniff",
+          "Cache-Control":          "no-cache",
+        },
+      })
+    }
+
+    // ── Non-streaming fallback ────────────────────────────────────────────────
     const result = await ai.models.generateContent({
       model:    "gemini-2.5-flash",
       contents,
       config: {
         systemInstruction: systemPrompt,
-        maxOutputTokens:   2048,
+        maxOutputTokens:   1024,
       },
     })
 
     const reply = result.text ?? ""
-
-    ctx.messagesExchanged++
-    sessionStore.set(sid, ctx)
-
     return NextResponse.json({ ok: true, reply, source: "gemini" })
 
   } catch (err: unknown) {

@@ -40,6 +40,8 @@ const pick  = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 const has   = (t: string, kw: string[]) => kw.some(k => t.includes(k))
 const mk    = (role: Role, text: string, kind?: MsgKind, cardData?: LeadCard): Message =>
   ({ id: uid(), role, text, kind: kind ?? "text", cardData })
+const mkId  = (id: number, role: Role, text: string, kind?: MsgKind, cardData?: LeadCard): Message =>
+  ({ id, role, text, kind: kind ?? "text", cardData })
 const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 
 function isOffHours(): boolean {
@@ -175,19 +177,24 @@ function extractEstimateSummary(text: string): string | null {
 
 const LEAD_INTENT_RE = /\b(site\s*visit|book\s*(?:visit|karo|karein)|karwana\s*(?:hai|h\b)|visit\s*chahiye|free\s*visit|milna\s*chahta|milna\s*chahti|baat\s*karni\s*hai|sampark\s*karo|visit\s*book|appointment|bulao\s*(?:ji|please)?|aao\s*(?:zara|ji|please)?|booking\s*karni|visit\s*chahiye|aana\s*hai|visit\s*confirm)\b/i
 
-// ── AI API call ────────────────────────────────────────────────────────────────
+// ── AI API call (with streaming support) ───────────────────────────────────────
 async function getAIReply(
   message: string,
   history: ConvMsg[],
-  lead: Partial<Lead> | null
+  lead: Partial<Lead> | null,
+  sessionId: string,
+  onChunk?: (partial: string, isFirst: boolean) => void,
 ): Promise<{ reply: string; source: "gemini" | "local" } | null> {
   try {
-    const res = await fetch("/api/chat", {
+    const useStream = typeof onChunk === "function"
+    const url = useStream ? "/api/chat?stream=1" : "/api/chat"
+    const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
         history: history.slice(-16),
+        sessionId,
         leadContext: lead
           ? {
               name:    lead.name    || undefined,
@@ -197,9 +204,30 @@ async function getAIReply(
             }
           : undefined,
       }),
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(30000),
     })
     if (!res.ok) return null
+    const contentType = res.headers.get("content-type") || ""
+
+    // ── Streaming path (Gemini text/plain) ──────────────────────────────────
+    if (contentType.includes("text/plain") && res.body && onChunk) {
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let fullText = ""
+      let isFirst = true
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        if (!chunk) continue
+        fullText += chunk
+        onChunk(fullText, isFirst)
+        isFirst = false
+      }
+      return fullText ? { reply: fullText, source: "gemini" } : null
+    }
+
+    // ── JSON path (rule-based or non-streaming fallback) ─────────────────────
     const data = await res.json()
     if (!data.ok || !data.reply) return null
     return { reply: data.reply as string, source: (data.source as "gemini" | "local") ?? "gemini" }
@@ -316,14 +344,21 @@ function getContextualQuickReplies(
   lastBotText: string,
   lastTopic: string | null,
 ): string[] {
-  if (hasEstimate) return ["Book Free Visit", "Add LED Lighting", "Compare Material", "Call Expert"]
+  if (hasEstimate) return ["Book Free Visit", "Add LED Lighting", "Color Ideas", "Call Expert"]
   if (hasLead) {
-    if (lastTopic?.includes("pvc"))    return ["Get Quote", "Book Site Visit", "PVC vs Gypsum", "WPC Panels"]
-    if (lastTopic?.includes("gypsum")) return ["Book Site Visit", "Add Cove Lighting", "PVC vs Gypsum", "Price List"]
-    if (lastTopic?.includes("wpc"))    return ["Book Site Visit", "Get Quote", "Price List", "WPC vs UV Marble"]
-    return ["Get Estimate", "Book Site Visit", "Price List", "Compare Materials"]
+    if (lastTopic?.includes("pvc"))      return ["Get Quote", "Book Site Visit", "PVC vs Gypsum", "WPC Panels"]
+    if (lastTopic?.includes("gypsum"))   return ["Book Site Visit", "Add Cove Lighting", "PVC vs Gypsum", "Maintenance Tips"]
+    if (lastTopic?.includes("wpc"))      return ["Book Site Visit", "Get Quote", "WPC vs UV Marble", "Color Ideas"]
+    if (lastTopic?.includes("uv"))       return ["Book Site Visit", "Get Quote", "UV Marble Care", "Bathroom Design"]
+    if (lastTopic?.includes("tv"))       return ["Book Site Visit", "Add LED Backlight", "Get Quote", "WPC Panels"]
+    if (lastTopic?.includes("color"))    return ["Hall Colors", "Bedroom Colors", "Book Site Visit", "WPC Panels"]
+    if (lastTopic?.includes("trend"))    return ["Fluted Panels", "Gypsum Ceiling", "WPC TV Wall", "Book Site Visit"]
+    if (lastTopic?.includes("acoustic")) return ["Home Theatre", "Get Quote", "Book Site Visit", "Flooring"]
+    if (lastTopic?.includes("floor"))    return ["Laminate Rate", "Vinyl Rate", "Book Site Visit", "Complete Package"]
+    return ["Get Estimate", "Book Site Visit", "Color Ideas", "Latest Trends"]
   }
-  return INITIAL_QUICK_REPLIES.slice(0, 5)
+  const initial = INITIAL_QUICK_REPLIES.slice(0, 4)
+  return [...initial, "2026 Trends"]
 }
 
 // ── Icons (inline SVG) ────────────────────────────────────────────────────────
@@ -401,7 +436,7 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
   )
 }
 
-const WELCOME_MSG = mk("bot","✨ **Namaste! I'm Riya, your Premium AI Consultant at JK Interior** ✨\n\nShare your room dimensions (e.g., *12×10*, *15 by 12*) and I'll give you an instant estimate with material suggestions, design tips, and a luxury touch.\n\n_No need to ask twice – one size and I'll calculate everything!_")
+const WELCOME_MSG = mk("bot","✨ **Namaste! Main hoon Riya — JK Interior ki Premium AI Consultant** ✨\n\nAapke ghar ke liye best interior material, design, aur estimate — sab kuch yahaan milega!\n\n📐 Room ka size share karein (jaise *12×10*) — main turant estimate nikaalt hoon\n💬 Ya seedha puchho: PVC, Gypsum, WPC, color combination, ya koi bhi sawaal 😊")
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function JKChat() {
@@ -416,7 +451,9 @@ export default function JKChat() {
   const historyRef = useRef<ConvMsg[]>([])
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const sendLock = useRef(false)
+  const sendLock       = useRef(false)
+  const sessionIdRef   = useRef<string>(Math.random().toString(36).slice(2, 10))
+  const streamingIdRef = useRef<number | null>(null)
   const [collectStep, setCollectStep] = useState<null | "name" | "phone" | "city" | "time">(null)
   const [pendingEstimate, setPendingEstimate] = useState<string | null>(null)
 
@@ -554,13 +591,41 @@ export default function JKChat() {
     } else if (city && !lead?.city) { updatedLead = { ...(lead || {}), city }; setLead(updatedLead) }
     else if (svc && !lead?.service) { updatedLead = { ...(lead || {}), service: svc }; setLead(updatedLead) }
 
-    await delay(550)
     let reply: string | null = null
+    let wasStreamed = false
+
     if (aiMode) {
-      const aiResult = await getAIReply(text, historyRef.current.slice(0, -1), updatedLead)
+      const aiResult = await getAIReply(
+        text,
+        historyRef.current.slice(0, -1),
+        updatedLead,
+        sessionIdRef.current,
+        (partial, isFirst) => {
+          wasStreamed = true
+          if (isFirst) {
+            setTyping(false)
+            const newId = uid()
+            streamingIdRef.current = newId
+            setMsgs(prev => [...prev, mkId(newId, "bot", partial)])
+          } else if (streamingIdRef.current !== null) {
+            const sid = streamingIdRef.current
+            setMsgs(prev => prev.map(m => m.id === sid ? { ...m, text: partial } : m))
+          }
+        },
+      )
       if (aiResult) reply = aiResult.reply
     }
-    if (!reply) reply = localFallback(text, updatedLead)
+
+    if (!reply) {
+      if (wasStreamed && streamingIdRef.current !== null) {
+        setMsgs(prev => prev.filter(m => m.id !== streamingIdRef.current))
+        streamingIdRef.current = null
+        setTyping(true)
+      }
+      wasStreamed = false
+      await delay(400)
+      reply = localFallback(text, updatedLead)
+    }
 
     historyRef.current = [...historyRef.current, { role: "assistant", content: reply }]
     const newTopic = svc ? svc.toLowerCase().replace(/\s+/g, "-") : lastTopic
@@ -569,11 +634,19 @@ export default function JKChat() {
     const estSummary = extractEstimateSummary(reply)
     if (estSummary && !pendingEstimate) setPendingEstimate(estSummary)
 
+    const finalStreamId = streamingIdRef.current
+    streamingIdRef.current = null
+
     setMsgs(prev => {
-      const next = [...prev, mk("bot", reply as string)]
+      let next: Message[]
+      if (wasStreamed && finalStreamId !== null) {
+        next = prev.map(m => m.id === finalStreamId ? { ...m, text: reply! } : m)
+      } else {
+        next = [...prev, mk("bot", reply as string)]
+      }
       if (extractedPhone && !lead?.phone && updatedLead?.phone) {
         const card: LeadCard = { name: updatedLead.name || "Friend", phone: updatedLead.phone!, city: updatedLead.city, service: updatedLead.service, estimate: pendingEstimate || estSummary || undefined, timestamp: new Date().toISOString() }
-        next.push(mk("bot", "lead_card", "card", card))
+        next = [...next, mk("bot", "lead_card", "card", card)]
       }
       return next
     })
