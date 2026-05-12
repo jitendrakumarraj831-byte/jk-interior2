@@ -113,7 +113,7 @@ FAQ DATA:
 ${JSON.stringify(KNOWLEDGE_BASE).slice(0, 4000)}
 
 DESIGN GALLERY:
-${JSON.stringify(GALLERY_DATA).slice(0, 3000)}
+${JSON.stringify(galleryImages).slice(0, 3000)}
 `
 
 const systemPrompt = `
