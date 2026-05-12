@@ -837,22 +837,70 @@ export default function JKChat() {
             {aiMode && <div className="shrink-0 flex items-center gap-2 px-4 py-1.5 bg-emerald-50 border-b border-emerald-100"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /><p className="text-[10px] text-emerald-700 font-medium">Powered by Gemini AI + Luxury Estimator</p></div>}
 
             {/* Messages */}
-            <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3 scrollbar-luxury" style={{ background: "linear-gradient(145deg, #f8faf7 0%, #ffffff 100%)" }}>
-              {messages.map((m, idx) => (
-                <motion.div key={m.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.03 }} className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                  {m.role === "bot" && m.kind !== "card" && <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center"><span className="text-[8px] font-black text-white">JK</span></div>}
-                  {m.role === "bot" && m.kind === "card" && <div className="h-6 w-6 shrink-0" />}
-                  {m.kind === "card" && m.cardData ? <LeadConfirmCard data={m.cardData} /> : (
-                    <div className={`max-w-[82%] whitespace-pre-line rounded-2xl px-4 py-2.5 text-[13.5px] leading-relaxed shadow-sm ${m.role === "user" ? "bg-gradient-to-br from-emerald-700 to-emerald-500 text-white rounded-br-sm" : "bg-white text-gray-800 rounded-bl-sm border border-gray-200"}`}>
-                      <RichText text={m.text} />
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-              {typing && <TypingDots />}
-            </div>
+<div
+  ref={scrollRef}
+  className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3 scrollbar-luxury"
+  style={{ background: "linear-gradient(145deg, #f8faf7 0%, #ffffff 100%)" }}
+>
+  {messages.map((m, idx) => (
+    <motion.div
+      key={m.id}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: idx * 0.03 }}
+      className={`flex items-end gap-2 ${
+        m.role === "user" ? "justify-end" : "justify-start"
+      }`}
+    >
+      {m.role === "bot" && m.kind !== "card" && (
+        <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
+          <span className="text-[8px] font-black text-white">JK</span>
+        </div>
+      )}
 
-            {/* Dynamic Quick Replies */}
+      {m.role === "bot" && m.kind === "card" && (
+        <div className="h-6 w-6 shrink-0" />
+      )}
+
+      {m.kind === "card" && m.cardData ? (
+        <LeadConfirmCard data={m.cardData} />
+      ) : (
+        <div
+          className={`max-w-[82%] whitespace-pre-line rounded-2xl px-4 py-2.5 text-[13.5px] leading-relaxed shadow-sm ${
+            m.role === "user"
+              ? "bg-gradient-to-br from-emerald-700 to-emerald-500 text-white rounded-br-sm"
+              : "bg-white text-gray-800 rounded-bl-sm border border-gray-200"
+          }`}
+        >
+          <RichText text={m.text} />
+
+          {(m as any).galleryType && (
+            <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+              {galleryImages
+                .filter(
+                  (img) =>
+                    img.category === (m as any).galleryType
+                )
+                .slice(0, 6)
+                .map((img, i) => (
+                  <img
+                    key={i}
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-40 h-40 rounded-xl object-cover border"
+                  />
+                ))}
+            </div>
+          )}
+        </div>
+      )}
+    </motion.div>
+  ))}
+
+  {typing && <TypingDots />}
+</div>
+
+{/* Dynamic Quick Replies */}
             <div className="shrink-0 flex gap-1.5 overflow-x-auto px-3 py-2 bg-white border-t border-gray-100 scrollbar-luxury">
               {qrSet.map(q => (
                 <button key={q} onClick={() => send(q)} disabled={typing} className="shrink-0 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all whitespace-nowrap disabled:opacity-40">{q}</button>
