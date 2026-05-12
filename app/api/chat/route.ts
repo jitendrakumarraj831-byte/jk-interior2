@@ -65,12 +65,22 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Step 1: Fast rule-based consultant engine ────────────────────────────
-    const ruleReply = consultantReply(message, ctx)
-    if (ruleReply) {
-      ctx.messagesExchanged++
-      sessionStore.set(sid, ctx)
-      return NextResponse.json({ ok: true, reply: ruleReply, source: "rule" })
-    }
+   const ruleReply = consultantReply(message, ctx)
+
+if (
+  ruleReply &&
+  !ruleReply.toLowerCase().includes("please call") &&
+  !ruleReply.toLowerCase().includes("main abhi busy hoon")
+) {
+  ctx.messagesExchanged++
+  sessionStore.set(sid, ctx)
+
+  return NextResponse.json({
+    ok: true,
+    reply: ruleReply,
+    source: "rule",
+  })
+}
 
     // ── Step 2: Gemini AI ────────────────────────────────────────────────────
     const hasKey = !!process.env.AI_INTEGRATIONS_GEMINI_API_KEY
