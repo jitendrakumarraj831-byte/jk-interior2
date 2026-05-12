@@ -84,8 +84,19 @@ const aiQuestions =
   lowerMsg.includes("hall") ||
   lowerMsg.includes("kaunsa") ||
   lowerMsg.includes("kon sa") ||
-  lowerMsg.includes("kaun sa")
-
+  lowerMsg.includes("kaun sa") ||
+  lowerMsg.includes("gypsum") ||
+  lowerMsg.includes("pvc") ||
+  lowerMsg.includes("price") ||
+  lowerMsg.includes("rate") ||
+  lowerMsg.includes("prize") ||
+  lowerMsg.includes("cost") ||
+  lowerMsg.includes("kharcha") ||
+  lowerMsg.includes("estimate") ||
+  lowerMsg.includes("ceiling") ||
+  lowerMsg.includes("wpc") ||
+  lowerMsg.includes("charcoal")
+    
 // Use rules only for greetings + quick estimate replies
 const shouldUseRule =
   ruleReply &&
