@@ -133,6 +133,20 @@ Rules:
 
 ${websiteKnowledge}
 `
+const historyMsgs = (history as { role: string; content: string }[])
+  .slice(-14)
+  .map(h => ({
+    role: h.role === "assistant" ? "model" : "user",
+    parts: [{ text: h.content }],
+  }))
+
+const contents = [
+  ...historyMsgs,
+  { role: "user", parts: [{ text: message }] },
+]
+
+ctx.messagesExchanged++
+sessionStore.set(sid, ctx)
     // ── Streaming response (for chat UI) ─────────────────────────────────────
     if (shouldStream) {
       const result = await ai.models.generateContentStream({
