@@ -9,6 +9,7 @@ import {
   formatPriceEstimate,
   parseMultiRoomQuery,
   generateMultiRoomEstimate,
+  INITIAL_QUICK_REPLIES,
 } from "@/lib/business-data"
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -172,7 +173,7 @@ function extractEstimateSummary(text: string): string | null {
   return rng ? rng[1] : null
 }
 
-const LEAD_INTENT_RE = /\b(theek\s*hai|theek\b|thik\b|accha|achha|sahi\s*hai|haan\s*ji|han\s*ji|haan\b|han\b|yes\b|zaroor|bilkul|karwana\s*hai|karwana\s*h\b|site\s*visit|booking|book\s*karo|confirm|interested|number\s*le|milna\s*hai|baat\s*karni|sampark|quote\s*chahiye)\b/i
+const LEAD_INTENT_RE = /\b(site\s*visit|book\s*(?:visit|karo|karein)|karwana\s*(?:hai|h\b)|visit\s*chahiye|free\s*visit|milna\s*chahta|milna\s*chahti|baat\s*karni\s*hai|sampark\s*karo|visit\s*book|appointment|bulao\s*(?:ji|please)?|aao\s*(?:zara|ji|please)?|booking\s*karni|visit\s*chahiye|aana\s*hai|visit\s*confirm)\b/i
 
 // ── AI API call ────────────────────────────────────────────────────────────────
 async function getAIReply(
@@ -250,9 +251,29 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     return `📺 **Modular TV Unit** – ${m.price}\n\nCustom designs available!\n📐 Size & price:\n• 6-8 ft: ${m.sizes.small}\n• 8-10 ft: ${m.sizes.medium}\n• 10-14 ft: ${m.sizes.large}\n\nLED backlight adds a premium touch.`
   }
 
+  if (/\bmodular\s*kitchen\b|\bkitchen\s*cabinet\b|\bkitchen\s*design\b/.test(t)) {
+    return `🍳 **Modular Kitchen** – ₹60,000 – ₹2,00,000\n\nFully custom — L-shape, U-shape, parallel layouts. Soft-close hinges, pull-outs, laminates/acrylic shutters.\n\nShare kitchen dimensions for an exact quote!`
+  }
+
+  if (/\bwardrobe\b|\bwardrop\b|\balmirah\b|\bcupboard\b|\balmari\b/.test(t)) {
+    return `🚪 **Custom Wardrobe** – ₹800–₹2,000/sq.ft\n\nFloor-to-ceiling storage — sliding or hinged doors, LED inside option, fully customized shelves & drawers.\n\nShare bedroom size and wardrobe dimensions for a quote!`
+  }
+
+  // Budget amount query — "₹2 lakh mein kya ho jayega"
+  if (/(?:lakh|lac\b|hazar|hajar)/.test(t) && /(?:mein|budget|kya|hoga|milega)/.test(t)) {
+    const budgetAmt = extractBudgetAmount(t)
+    if (budgetAmt) {
+      const num = parseFloat(budgetAmt.replace(/[₹k,]/g, "")) * (budgetAmt.includes("k") ? 1000 : 1)
+      if (num < 30000) return `${budgetAmt} budget mein: 1 room PVC ceiling ho sakti hai (₹60-120/sq.ft). Room ka size batao!`
+      if (num < 80000) return `${budgetAmt} mein 1-2 rooms ka ceiling kaam hoga. Gypsum (hall) + PVC (kitchen/bath) – best combo!\n\nRoom details share karo!`
+      if (num < 150000) return `${budgetAmt} mein 2BHK ki full ceiling + 1 accent wall WPC panel ho sakti hai. Rooms batao!`
+      return `${budgetAmt} budget ke saath premium 2BHK interior possible hai — Gypsum cove lighting, WPC TV wall, UV marble bathroom!\n\nFree site visit: **+91 8651070831**`
+    }
+  }
+
   // Pricing intent
   if (has(t, ["price","cost","rate","kimat","daam","kitna","kharcha","budget","quote"])) {
-    return `💰 **JK Interior – Luxury & Standard Price List**\n\n✨ Gypsum Ceiling    ₹80–₹140 / sq.ft\n🏠 PVC Ceiling       ₹60–₹120 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹450 / sq.ft\n💎 UV Marble Sheets  ₹50–₹95 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n🏢 Grid Ceiling      ₹45–₹90 / sq.ft\n\nGive me your room dimensions for an exact estimate!`
+    return `💰 **JK Interior – Luxury & Standard Price List**\n\n✨ Gypsum Ceiling    ₹80–₹140 / sq.ft\n🏠 PVC Ceiling       ₹60–₹120 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹450 / sq.ft\n💎 UV Marble Sheets  ₹50–₹95 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n🏢 Grid Ceiling      ₹45–₹90 / sq.ft\n🍳 Modular Kitchen   ₹60,000+\n🚪 Custom Wardrobe   ₹800/sq.ft+\n\nGive me your room dimensions for an exact estimate!`
   }
 
   // Booking
@@ -267,11 +288,42 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   ])
 }
 
+// ── Budget amount extractor ("₹2 lakh", "50 hazar", "1.5 lakh") ──────────────
+function extractBudgetAmount(text: string): string | null {
+  const t = text.toLowerCase().replace(/,/g, "")
+  const lakhM = t.match(/(\d+(?:\.\d+)?)\s*(?:lakh|lac|l\b)/)
+  if (lakhM) {
+    const val = parseFloat(lakhM[1]) * 100000
+    return `₹${(val / 1000).toFixed(0)}k`
+  }
+  const hzrM = t.match(/(\d+(?:\.\d+)?)\s*(?:hazar|hajar|thousand|k\b)/)
+  if (hzrM) {
+    const val = parseFloat(hzrM[1]) * 1000
+    return `₹${val.toLocaleString("en-IN")}`
+  }
+  const rupM = t.match(/₹\s*(\d+(?:\.\d+)?)/)
+  if (rupM) {
+    const val = parseFloat(rupM[1])
+    if (val > 1000) return `₹${val.toLocaleString("en-IN")}`
+  }
+  return null
+}
+
 // ── Quick replies (dynamic based on context) ──────────────────────────────────
-function getContextualQuickReplies(hasLead: boolean, hasEstimate: boolean, lastBotText: string): string[] {
-  if (hasEstimate) return ["Book Free Visit", "Change Material", "Call Expert", "View Portfolio"]
-  if (hasLead) return ["Get Quote", "View Portfolio", "Book Site Visit", "Price List"]
-  return ["PVC Ceiling", "Gypsum Ceiling", "WPC Panels", "Price List", "Free Site Visit"]
+function getContextualQuickReplies(
+  hasLead: boolean,
+  hasEstimate: boolean,
+  lastBotText: string,
+  lastTopic: string | null,
+): string[] {
+  if (hasEstimate) return ["Book Free Visit", "Add LED Lighting", "Compare Material", "Call Expert"]
+  if (hasLead) {
+    if (lastTopic?.includes("pvc"))    return ["Get Quote", "Book Site Visit", "PVC vs Gypsum", "WPC Panels"]
+    if (lastTopic?.includes("gypsum")) return ["Book Site Visit", "Add Cove Lighting", "PVC vs Gypsum", "Price List"]
+    if (lastTopic?.includes("wpc"))    return ["Book Site Visit", "Get Quote", "Price List", "WPC vs UV Marble"]
+    return ["Get Estimate", "Book Site Visit", "Price List", "Compare Materials"]
+  }
+  return INITIAL_QUICK_REPLIES.slice(0, 5)
 }
 
 // ── Icons (inline SVG) ────────────────────────────────────────────────────────
@@ -462,11 +514,25 @@ export default function JKChat() {
       } else if (collectStep === "time") {
         const preferredTime = text.trim()
         setCollectStep(null)
-        const finalLead: Lead = { name: lead?.name || "Friend", phone: lead?.phone || "", city: lead?.city, service: lead?.service }
+        const finalLead: Lead = {
+          name:    lead?.name    || "Friend",
+          phone:   lead?.phone   || "",
+          city:    lead?.city,
+          service: lead?.service,
+        }
         storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime)
-        const card: LeadCard = { ...finalLead, estimate: pendingEstimate || undefined, preferredTime, timestamp: new Date().toISOString() }
+        const card: LeadCard = {
+          ...finalLead,
+          estimate:      pendingEstimate || undefined,
+          preferredTime,
+          timestamp:     new Date().toISOString(),
+        }
+        // Push ONLY the card — avoids duplicate confirmation text
+        historyRef.current = [...historyRef.current, { role: "assistant", content: "Booking confirmed! Team will contact you shortly." }]
         setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
-        collReply = `🎉 **Booking confirmed!** Our team will contact you on **${preferredTime}**.\n\n📞 Call/WhatsApp: +91 8651070831 for urgent appointments.`
+        setTyping(false)
+        sendLock.current = false
+        return
       }
       historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
       setMsgs(prev => [...prev, mk("bot", collReply)])
@@ -532,7 +598,7 @@ export default function JKChat() {
 
   const lastBotMsg = messages.filter(m => m.role === "bot").slice(-1)[0]?.text || ""
   const hasEstimate = lastBotMsg.includes("₹") || !!pendingEstimate
-  const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg)
+  const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg, lastTopic)
 
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hello JK Interior, I'm ${lead.name} ${lead.phone ? `(${lead.phone})` : ""} – need interior work.` : "Hello JK Interior, need interior work.")}`
   const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hi JK Interior! ${lead.name} wants a free site visit.` : "Hi JK Interior! Free site visit please.")}`

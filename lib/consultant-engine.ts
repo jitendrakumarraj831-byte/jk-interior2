@@ -115,7 +115,10 @@ const SERVICE_PATTERNS: Array<[RegExp, string]> = [
   [/\btv\s*unit\b|\btv\s*panel\b|\btv\s*wall\b|\btv\s*cabinet\b|\btelevision\b/, "Modular TV Unit"],
   [/\bfluted\b|\bribbed\b|\b3d\s*panel\b/, "Fluted Panels"],
   [/\bgrid\b|\boffice\s*ceiling\b|\bmineral\s*fiber\b/, "Grid Ceiling"],
-  [/\bfalse\s*ceiling\b|\bceiling\b|\bchhat\b|\bchhat\b/, "False Ceiling"],
+  [/\bmodular\s*kitchen\b|\bkitchen\s*cabinet\b|\bkitchen\s*design\b/, "Modular Kitchen"],
+  [/\bwardrobe\b|\bwardrop\b|\balmirah\b|\bcupboard\b|\balmari\b/, "Wardrobe"],
+  [/\bcharcoal\b|\btexture\s*paint\b|\btextured\s*wall\b/, "Texture Design"],
+  [/\bfalse\s*ceiling\b|\bceiling\b|\bchhat\b/, "False Ceiling"],
   [/\bwall\s*panel\b|\bdeewar\b|\baccent\s*wall\b/, "Wall Panels"],
   [/\bcomplete\s*interior\b|\bfull\s*interior\b|\bpoora\s*ghar\b|\bpura\s*ghar\b|\bfull\s*home\b/, "Complete Interior"],
   [/\bartificial\s*grass\b|\bgrass\b|\bturf\b/, "Artificial Grass"],
@@ -193,7 +196,7 @@ const INTENT_PATTERNS: Record<Intent, string[]> = {
   complaint: expandPatterns([
     "problem","issue","complaint","shikayat","kharab","khali","chutta",
     "girna","toota","peeling","water drop","leaking","broken","repair",
-    "fix","theek","thik karo","repair karo","complaint hai","shikayat hai",
+    "fix","theek karo","thik karo","repair karo","complaint hai","shikayat hai",
     "problem hai","issue hai","kaam kharab hai","material kharab",
   ]),
   area: expandPatterns([
@@ -237,7 +240,7 @@ const INTENT_PATTERNS: Record<Intent, string[]> = {
   ]),
   waterproof: expandPatterns([
     "waterproof","water proof","paani","seepage","moisture","humidity",
-    "bathroom","kitchen","geela","nami","barish","monsoon","rain",
+    "geela","nami","barish","monsoon","rain",
     "water resistant","water damage","leak","leakage","damp",
     "paani se bachana","paani nahi jaana","seepage problem",
   ]),
@@ -339,14 +342,18 @@ export function detectIntent(text: string): Intent {
   // Short greetings first
   if (INTENT_PATTERNS.greeting.some(k => t.includes(k)) && t.length < 40) return "greeting"
 
-  // Thanks (short messages)
-  if (INTENT_PATTERNS.thanks.some(k => t.includes(k)) && t.length < 50) return "thanks"
-
-  // Complaint (high priority)
+  // Complaint (high priority — before thanks so "problem hai" doesn't become thanks)
   if (INTENT_PATTERNS.complaint.some(k => t.includes(k))) return "complaint"
 
-  // Booking intent
+  // Booking intent — before thanks so "book karo", "visit chahiye" aren't swallowed by "ok" substring
   if (INTENT_PATTERNS.booking.some(k => t.includes(k))) return "booking"
+
+  // Thanks — ONLY after booking, uses word-boundary guard for short tokens like "ok"
+  const thanksHit = INTENT_PATTERNS.thanks.filter(k => {
+    if (k.length <= 3) return new RegExp(`\\b${k}\\b`).test(t)
+    return t.includes(k)
+  })
+  if (thanksHit.length > 0 && t.length < 50) return "thanks"
 
   // Room dimensions
   if (INTENT_PATTERNS["room-estimate"].some(k => t.includes(k)) || /\d+\s*[x×by*]\s*\d+/.test(t)) return "room-estimate"
@@ -418,6 +425,33 @@ export function detectBudgetLevel(text: string): "low" | "mid" | "high" | null {
   if (/\bpremium\b|\bluxury\b|\bbest\b|\bhigh[\s-]*end\b|\bexpensive\b|\bdesigner\b|\bbest\s*material\b/.test(t)) return "high"
   if (/\bstandard\b|\bmid\b|\bmedium\b|\bnormal\b|\baverage\b/.test(t)) return "mid"
   return null
+}
+
+// ── Budget Amount Parser — "₹2 lakh mein kya ho jayega" ─────────────────────
+export function extractBudgetAmount(text: string): number | null {
+  const t = text.toLowerCase().replace(/,/g, "")
+  const lakh = t.match(/(\d+(?:\.\d+)?)\s*(?:lakh|lac\b|l\b)/)
+  if (lakh) return Math.round(parseFloat(lakh[1]) * 100000)
+  const hzr  = t.match(/(\d+(?:\.\d+)?)\s*(?:hazar|hajar|thousand\b)/)
+  if (hzr)  return Math.round(parseFloat(hzr[1]) * 1000)
+  return null
+}
+
+function budgetAmountReply(budget: number): string {
+  const fmt = (n: number) => "₹" + Math.round(n / 1000) + "k"
+  if (budget < 30000) {
+    return `${fmt(budget)} mein ek room ki PVC ceiling ho sakti hai — ₹60-120/sq.ft. Ek bedroom ya kitchen ke liye perfect hoga!\n\nRoom ka size batao (jaise 10×12) — exact plan bana deti hoon! 😊`
+  }
+  if (budget < 80000) {
+    return `${fmt(budget)} mein 1-2 rooms ka kaam ho sakta hai:\n\n✨ Hall mein Gypsum ceiling — ₹80-140/sq.ft\n🏠 Kitchen/bathroom mein PVC ceiling — ₹60-120/sq.ft\n\nRooms batao toh full estimate de deti hoon!`
+  }
+  if (budget < 150000) {
+    return `${fmt(budget)} mein kaafi achha kaam ho sakta hai:\n\n• 2BHK ki full ceiling (Gypsum + PVC mix)\n• Hall mein LED cove lighting bhi\n• 1 accent wall WPC panel\n\nKis cheez mein invest karna chahte hain — ceiling, walls, ya TV unit? Batao!`
+  }
+  if (budget < 300000) {
+    return `${fmt(budget)} mein premium 2BHK interior possible hai:\n\n✨ Gypsum cove ceiling (hall + bedrooms)\n🪵 WPC TV wall + modular TV unit\n💎 UV marble bathroom walls\n🏠 PVC kitchen ceiling\n\nFree site visit mein detailed plan banayenge — call/WhatsApp: **+91 8651070831**`
+  }
+  return `${fmt(budget)} budget hai — toh bilkul luxury interior ho sakta hai! 🏠✨\n\nGypsum cove lighting, WPC fluted panels, modular kitchen, custom wardrobes — sab kuch plan ho sakta hai.\n\nFree site visit mein hamare expert aapka dream home design karenge — WhatsApp: **+91 8651070831**`
 }
 
 export function tryExtractPhone(raw: string): string | null {
@@ -528,8 +562,8 @@ export function consultantReply(
   // Update context with new info
   if (city && !ctx.city) ctx.city = city
   if (svc) {
-  ctx.service = svc
-  ctx.lastTopic = svc
+    ctx.service = svc
+    ctx.lastTopic = svc
   }
   if (budget) ctx.budget = budget
   if (room) ctx.roomType = room.label
@@ -562,6 +596,16 @@ export function consultantReply(
     ctx.roomSize = `${dimensions.length}x${dimensions.width}`
     ctx.pendingSizeForService = undefined
     return est + `\n\nExact quote ke liye free site visit — call/WhatsApp: **+91 8651070831**`
+  }
+
+  // ─── Budget amount query — "₹2 lakh mein kya hoga", "50 hazar budget" ────────
+  if (/(?:lakh|lac\b|l\b|hazar|hajar|thousand\b)/.test(t) && /(?:mein|budget|kya\s*ho|kya\s*milega|lagega|chahiye|hoga|ho\s*jayega)/.test(t)) {
+    const amt = extractBudgetAmount(t)
+    if (amt) {
+      const rep = budgetAmountReply(amt)
+      ctx.estimateGiven = rep.slice(0, 80)
+      return rep
+    }
   }
 
   // ─── Multi-room estimate (highest priority for room combos)
@@ -859,6 +903,18 @@ Aapko kis service ke baare mein detail chahiye? 😊`
 
   if (t.includes("grid") || t.includes("office ceiling") || t.includes("mineral")) {
     return `**Grid Ceiling** (₹45-90/sq.ft)\n\nCommercial offices, shops, hospitals ke liye standard. Easy maintenance — AC aur electrical ke liye convenient access.\n\nOffice size batao toh estimate de deti hoon!`
+  }
+
+  if (/\bmodular\s*kitchen\b|\bkitchen\s*cabinet\b|\bkitchen\s*design\b/.test(t)) {
+    return `**Modular Kitchen** — ₹60,000 – ₹2,00,000\n\nFull custom design with high-quality shutters, pull-out cabinets, soft-close hinges!\n\n🍳 L-shape, U-shape, parallel kitchen — sab bana sakte hain\n✨ Laminates, acrylic, PVC shutters available\n🔧 1-year warranty on hardware\n\nKitchen ka size batao (length × width) — detailed plan bana deti hoon! Ya free site visit book karein: **+91 8651070831**`
+  }
+
+  if (/\bwardrobe\b|\bwardrop\b|\balmirah\b|\bcupboard\b|\balmari\b/.test(t)) {
+    return `**Custom Wardrobe / Almirah** — ₹800 – ₹2,000/sq.ft\n\nFloor-to-ceiling custom wardrobes — maximum storage, premium look!\n\n🚪 Sliding door: space-saving, modern\n🚪 Hinged door: classic, easy access\n💡 LED inside bhi laga sakte hain\n📦 Drawers, shelves, hanger rod — fully customized\n\nBedroom ka size aur wardrobe dimensions batao — estimate nikaalta hoon! Site visit: **+91 8651070831**`
+  }
+
+  if (/\bcharcoal\b|\btexture\s*paint\b|\btextured\s*wall\b/.test(t)) {
+    return `**Texture / Charcoal Design** — ₹40 – ₹120/sq.ft\n\nEk feature wall ko unique texture se transform karo!\n\n🎨 Charcoal texture, sand texture, metallic finish available\n✨ 3D effect — bina panel ke amazing look\n🔧 1 din mein complete\n\nWall size batao toh estimate de deti hoon!`
   }
 
   if (t.includes("complete interior") || t.includes("full interior") || t.includes("poora ghar") || t.includes("pura ghar") || t.includes("full home")) {
