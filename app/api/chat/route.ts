@@ -16,7 +16,10 @@ import { galleryImages } from "@/lib/gallery-data"
 const ai = new GoogleGenAI({
   apiKey: process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "",
 })
-
+console.log(
+  "GEMINI KEY EXISTS:",
+  !!process.env.AI_INTEGRATIONS_GEMINI_API_KEY
+)
 // In-memory server-side session context (resets on cold start — acceptable for chat)
 const sessionStore = new Map<string, ConversationContext>()
 
