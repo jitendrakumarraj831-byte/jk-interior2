@@ -133,16 +133,19 @@ Rules:
 
 ${websiteKnowledge}
 `
-const historyMsgs = (history as { role: string; content: string }[])
+const historyMsgs: any[] = (history as { role: string; content: string }[])
   .slice(-14)
   .map(h => ({
     role: h.role === "assistant" ? "model" : "user",
     parts: [{ text: h.content }],
   }))
 
-const contents = [
+const contents: any[] = [
   ...historyMsgs,
-  { role: "user", parts: [{ text: message }] },
+  {
+    role: "user",
+    parts: [{ text: message }],
+  },
 ]
 
 ctx.messagesExchanged++
