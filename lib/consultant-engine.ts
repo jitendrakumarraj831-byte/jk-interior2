@@ -599,7 +599,25 @@ export function consultantReply(
   input: string,
   ctx: ConversationContext
 ): string | null {
-  const t = input.toLowerCase().trim()
+  const t = input.toLowerCase().trim()  
+  // Allow normal pricing/design questions without forcing phone number
+const freeQuestion =
+  t.includes("price") ||
+  t.includes("cost") ||
+  t.includes("kharcha") ||
+  t.includes("rate") ||
+  t.includes("pvc") ||
+  t.includes("ceiling") ||
+  t.includes("false ceiling") ||
+  t.includes("wall panel") ||
+  t.includes("wardrobe") ||
+  t.includes("kitchen") ||
+  t.includes("design") ||
+  t.includes("panel")
+
+if (freeQuestion) {
+  return null
+}
   const intent = detectIntent(input)
   const city = detectCity(t)
   const svc = detectService(t)
