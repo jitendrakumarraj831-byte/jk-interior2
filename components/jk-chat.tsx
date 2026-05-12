@@ -448,8 +448,10 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
   )
 }
 
-const WELCOME_MSG = mk("bot","✨ **Namaste! Main hoon Riya — JK Interior ki Premium AI Consultant** ✨\n\nAapke ghar ke liye best interior material, design, aur estimate — sab kuch yahaan milega!\n\n📐 Room ka size share karein (jaise *12×10*) — main turant estimate nikaalt hoon\n💬 Ya seedha puchho: PVC, Gypsum, WPC, color combination, ya koi bhi sawaal 😊")
-
+const WELCOME_MSG = mk(
+  "bot",
+  "Namaste 😊\n\nMain Riya hoon — JK Interior ki AI consultant.\n\nAap gypsum ceiling, PVC, WPC wall panels, TV unit, lighting, ya room design ke baare me kuch bhi pooch sakte hain.\n\n📐 Room ka size bata dijiye (jaise 12×10) — main turant estimate aur best suggestion bata dungi ✨"
+)
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function JKChat() {
   const [open, setOpen] = useState(false)
