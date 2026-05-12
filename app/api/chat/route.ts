@@ -331,10 +331,8 @@ return NextResponse.json({
   console.error("Chat API error:", msg)
 
   return NextResponse.json({
-    ok: true,
-    reply:
-    "Ek second 😅 Reply generate karne me thodi problem hui. Dobara bhejiye."
-    source: "fallback",
-  })
-}
-}
+  ok: true,
+  reply:
+    "Ek second 😅 Reply generate karne me thodi problem hui. Dobara bhejiye.",
+  source: "fallback",
+})
