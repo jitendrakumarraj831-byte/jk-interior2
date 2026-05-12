@@ -615,6 +615,15 @@ const freeQuestion =
   t.includes("design") ||
   t.includes("panel")
 
+const ceilingQuery =
+  t.includes("ceiling") ||
+  t.includes("false ceiling") ||
+  t.includes("gypsum") ||
+  t.includes("pvc") ||
+  t.includes("grid") ||
+  t.includes("wpc") ||
+  t.includes("panel")
+
 if (freeQuestion) {
   return null
 }
@@ -626,7 +635,7 @@ if (freeQuestion) {
   const dimensions = extractRoomDimensions(t)
 
   // Update context with new info
-  if (city && !ctx.city) ctx.city = city
+  if (city && !ctx.city && !ceilingQuery) ctx.city = city
   if (svc) {
     ctx.service = svc
     ctx.lastTopic = svc
