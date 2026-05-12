@@ -666,7 +666,18 @@ if (freeQuestion) {
   const hasDimension = dimensions !== null
 
   // Check if user is replying to a size question we asked earlier
-  if (!hasDimension && ctx.pendingSizeForService && t.match(/\d+\s*(?:sq|sqft|feets?|ft|feet)/)) {
+  if (hasDimension && !ctx.pendingSizeForService) {
+  return `12×15 ka room kaafi accha size hai 😊
+
+Agar modern aur premium look chahiye toh Gypsum False Ceiling best rahega.
+
+Agar low maintenance aur budget-friendly option chahiye toh PVC bhi accha rahega.
+
+Room kis purpose ke liye hai — bedroom, hall, office ya shop? Uske hisaab se best suggestion bata deta hoon.`
+}
+
+if (hasDimension && ctx.pendingSizeForService) {
+  
     // User gave size in sqft without dimensions, try to parse
     const sqftMatch = t.match(/(\d+)\s*(?:sq|sqft|feets?|ft|feet)/)
     if (sqftMatch) {
