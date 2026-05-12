@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import { galleryImages } from "@/lib/gallery-data"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   MATERIAL_KNOWLEDGE,
