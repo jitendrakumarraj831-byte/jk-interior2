@@ -11,7 +11,7 @@ import {
 } from "@/lib/memory"
 
 import { KNOWLEDGE_BASE } from "@/lib/knowledge-base"
-import { GALLERY_DATA } from "@/lib/gallery-data"
+import { galleryImages } from "@/lib/gallery-data"
 const ai = new GoogleGenAI({
   apiKey: process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "",
   httpOptions: {
