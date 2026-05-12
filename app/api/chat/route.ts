@@ -68,12 +68,33 @@ const ruleReply = consultantReply(message, ctx)
 
 const lowerMsg = message.toLowerCase()
 
+// Questions that should go to Gemini AI
+const aiQuestions =
+  lowerMsg.includes("best") ||
+  lowerMsg.includes("better") ||
+  lowerMsg.includes("compare") ||
+  lowerMsg.includes("suggest") ||
+  lowerMsg.includes("idea") ||
+  lowerMsg.includes("design") ||
+  lowerMsg.includes("modern") ||
+  lowerMsg.includes("premium") ||
+  lowerMsg.includes("office") ||
+  lowerMsg.includes("bedroom") ||
+  lowerMsg.includes("bathroom") ||
+  lowerMsg.includes("hall") ||
+  lowerMsg.includes("kaunsa") ||
+  lowerMsg.includes("kon sa") ||
+  lowerMsg.includes("kaun sa")
+
+// Use rules only for greetings + quick estimate replies
 const shouldUseRule =
   ruleReply &&
+  !aiQuestions &&
   (
     lowerMsg === "hi" ||
     lowerMsg === "hello" ||
     lowerMsg === "hii" ||
+    lowerMsg === "hey" ||
     lowerMsg.includes("12x") ||
     lowerMsg.includes("10x") ||
     lowerMsg.includes("estimate") ||
