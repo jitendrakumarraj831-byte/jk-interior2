@@ -111,6 +111,56 @@ npm run start  # Production server on port 5000
 - `app/globals.css` (earlier): Removed `transform: translateZ(0)` and `will-change: transform` from `.mesh-aurora` so it no longer creates a containing block that broke the gallery lightbox `position: fixed`.
 - `components/gallery.tsx` (earlier): WPC masonry rewritten to CSS multi-column (`columns-2 md:columns-3` + `break-inside-avoid`) instead of the broken 3-col-in-2-grid layout.
 
+## Advanced Conversation Memory (May 2026)
+
+### New File: `lib/memory.ts`
+Complete memory system — no database needed. Client is source of truth; memory travels with every API request.
+
+**`ConversationMemory` type tracks:**
+- Identity: `name`, `phone`, `city`
+- Budget: `budgetRaw` (text like "2 lakh"), `budgetMin`/`budgetMax` (in rupees)
+- Rooms: `rooms: RoomContext[]` — each with `name`, `size`, `sqft`, `material`, `estimateRange`, `status`
+- `currentRoom` — most recently discussed room
+- Preferences: `preferredStyle`, `preferredMaterial`, `projectType`
+- Conversation: `stage` (discovery→qualification→consultation→consideration→booking), `topicHistory` (last 15), `askedFields` (never ask again), `previousTopics`
+- `latestEstimate`, `bookingInterest`, `messagesExchanged`
+
+**Key helpers exported:**
+- `createMemory()` — empty memory (SSR-safe)
+- `extractFromText(text, existing, source)` — extracts budget/rooms/size/style/material from any message
+- `mergeMemory(existing, updates, incrementMessages?)` — safe merge, never overwrites known fields with undefined
+- `updateStage(memory)` — auto-determines conversation stage
+- `summarizeForPrompt(memory)` — structured text block for Gemini system prompt
+- `getBudgetContext(memory, newRoom?)` — budget-aware advice string
+- `loadMemory()` / `saveMemory()` — localStorage persistence (`jk_memory_v1`, 24h TTL)
+- `clearMemory()` — reset
+
+### Memory Flow (Client → Server, no DB)
+1. User sends message → client `extractFromText(text, memory, "user")` → `mergeMemory` → save to localStorage
+2. Client sends `{ message, history, memory, sessionId }` to `/api/chat`
+3. Server: `extractFromText` on incoming message, merges into session copy → calls `summarizeForPrompt(memory)` → passes to `buildSystemPrompt({ memorySummary })`
+4. Gemini receives full structured memory block in system prompt → gives personalized, non-repetitive answers
+5. Bot reply arrives → client `extractFromText(reply, memory, "bot")` → captures estimates, merges, saves
+
+### Smart Context Recall (Key Behavior)
+- User: "2 lakh budget" → bot: "₹2 lakh ke liye kaunsi room se shuru karein?"
+- Later user: "Kitchen bhi" → memory already has budget → "₹2 lakh budget mein kitchen ka kaam bhi comfortable ho sakta hai. Size batao!"
+- Bot never asks budget again — `NEVER ASK AGAIN` block in Gemini prompt
+- Estimates captured from bot replies → stored per-room in `rooms[].estimateRange`
+
+### Multi-Room Tracking
+- Each room tracked with `{ name, size, sqft, material, estimateRange, status }`
+- Status: `mentioned → sized → estimated → confirmed`
+- Context switching (hall → wardrobe → hall again) works because all rooms persist in `rooms[]`
+- `currentRoom` always points to the most recently mentioned room
+
+### Files Changed
+- `lib/memory.ts` — NEW: complete memory system (~450 lines)
+- `app/api/chat/route.ts` — accepts `memory` in POST body; imports `extractFromText`, `summarizeForPrompt`; passes `memorySummary` to `buildSystemPrompt()`
+- `lib/business-data.ts` — `LeadContext` interface: added `memorySummary?: string`; `buildSystemPrompt()`: uses `memorySummary` (full structured block) when available, falls back to basic `knownInfo`
+- `lib/consultant-engine.ts` — `ConversationContext`: added `memory?: ConversationMemory`; `consultantReply()`: syncs flat ctx fields from memory on every call; updated default handler to use memory for room-aware, budget-aware, name-personalized follow-ups
+- `components/jk-chat.tsx` — `memory` state + `memoryRef` (SSR-safe: `createMemory` init, `loadMemory` after mount); `updateMemory()` callback; `send()` now extracts from user messages + bot replies + topic history; passes `memoryRef.current` to every `getAIReply` call; syncs identity back to `lead` state
+
 ## Chatbot Phase-3 Upgrade (May 2026)
 
 ### Files Changed

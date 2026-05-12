@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server"
 import { GoogleGenAI } from "@google/genai"
 import { consultantReply, ConversationContext } from "@/lib/consultant-engine"
 import { buildSystemPrompt } from "@/lib/business-data"
+import {
+  ConversationMemory,
+  extractFromText,
+  mergeMemory,
+  updateStage,
+  summarizeForPrompt,
+} from "@/lib/memory"
 
 const ai = new GoogleGenAI({
   apiKey: process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "",
@@ -19,7 +26,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-    const { message, history = [], sessionId, leadContext } = body
+    const { message, history = [], sessionId, leadContext, memory: incomingMemory } = body
 
     if (!message?.trim()) {
       return NextResponse.json({ ok: false, error: "Message is required" }, { status: 400 })
@@ -28,6 +35,28 @@ export async function POST(req: NextRequest) {
     const sid = (sessionId as string) || "default"
     const ctx: ConversationContext = sessionStore.get(sid) ?? { messagesExchanged: 0 }
 
+    // ── Merge incoming rich memory into session context ───────────────────────
+    let sessionMemory: ConversationMemory | undefined = ctx.memory
+
+    if (incomingMemory && typeof incomingMemory === "object") {
+      const mem = incomingMemory as ConversationMemory
+
+      // Extract new info from the current user message into memory
+      const textUpdates = extractFromText(message, mem, "user")
+      const mergedMem = mergeMemory(mem, textUpdates, false)
+      mergedMem.stage = updateStage(mergedMem)
+
+      sessionMemory = mergedMem
+      ctx.memory = mergedMem
+
+      // Back-fill the flat ctx fields from memory for rule engine
+      if (mergedMem.name    && !ctx.name)    ctx.name    = mergedMem.name
+      if (mergedMem.phone   && !ctx.phone)   ctx.phone   = mergedMem.phone
+      if (mergedMem.city    && !ctx.city)    ctx.city    = mergedMem.city
+      if (mergedMem.currentRoom && !ctx.roomType) ctx.roomType = mergedMem.currentRoom
+    }
+
+    // Legacy leadContext back-fill (kept for compatibility)
     if (leadContext) {
       if (leadContext.name    && !ctx.name)    ctx.name    = leadContext.name
       if (leadContext.phone   && !ctx.phone)   ctx.phone   = leadContext.phone
@@ -53,6 +82,9 @@ export async function POST(req: NextRequest) {
       })
     }
 
+    // Build rich memory summary for Gemini system prompt
+    const memorySummary = sessionMemory ? summarizeForPrompt(sessionMemory) : undefined
+
     const systemPrompt = buildSystemPrompt({
       name:     ctx.name,
       phone:    ctx.phone,
@@ -60,6 +92,7 @@ export async function POST(req: NextRequest) {
       service:  ctx.service,
       budget:   ctx.budget as string | undefined,
       roomSize: ctx.roomSize,
+      memorySummary,
     })
 
     const historyMsgs = (history as { role: string; content: string }[])

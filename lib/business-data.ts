@@ -8,6 +8,7 @@ export interface LeadContext {
   service?: string
   budget?: string
   roomSize?: string
+  memorySummary?: string  // full structured memory block from lib/memory.ts
 }
 
 // ─── Service Catalog (expanded) ─────────────────────────────────────────────
@@ -1055,7 +1056,11 @@ CRITICAL RULES
 8. Use the new SMART_RECOMMENDATIONS, WATERPROOF_SOLUTIONS, ROOM_SUGGESTIONS data when relevant
 9. If business hours are over → team will reply next morning at 9 AM, WhatsApp available 24/7
 
-${knownInfo ? `\n═══════════════════════════════════════════\nCUSTOMER PROFILE (use naturally)\n═══════════════════════════════════════════\n${knownInfo}\n\nUse this info naturally in conversation — do NOT ask again what you already know.` : ""}
+${leadCtx?.memorySummary
+  ? `\n${leadCtx.memorySummary}`
+  : knownInfo
+    ? `\n═══════════════════════════════════════════\nCUSTOMER PROFILE (use naturally)\n═══════════════════════════════════════════\n${knownInfo}\n\nUse this info naturally in conversation — do NOT ask again what you already know.`
+    : ""}
 
 ═══════════════════════════════════════════
 LAYER 2 — USE YOUR OWN DESIGN KNOWLEDGE

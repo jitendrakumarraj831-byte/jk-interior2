@@ -48,9 +48,11 @@ export interface ConversationContext {
   askedBudget?: boolean
   comparisonShown?: string
   designDiscussed?: string
-  lastResponse?: string // Store last bot response for context
-  pendingSizeForService?: string // Which service we asked size for
-  pendingRoomType?: string // Which room type we asked size for
+  lastResponse?: string
+  pendingSizeForService?: string
+  pendingRoomType?: string
+  // Rich persistent memory (from client localStorage)
+  memory?: import("./memory").ConversationMemory
 }
 
 export type Intent =
@@ -616,6 +618,20 @@ export function consultantReply(
   ctx.lastIntent = intent
   ctx.messagesExchanged++
 
+  // Fall back to rich memory when session ctx is missing data
+  const mem = ctx.memory
+  if (mem) {
+    if (mem.city    && !ctx.city)    ctx.city    = mem.city
+    if (mem.name    && !ctx.name)    ctx.name    = mem.name
+    if (mem.phone   && !ctx.phone)   ctx.phone   = mem.phone
+    if (mem.budgetRaw && !ctx.budget) {
+      ctx.budget = mem.budgetMax && mem.budgetMax < 60000 ? "low"
+        : mem.budgetMax && mem.budgetMax < 200000 ? "mid" : "high"
+    }
+    if (mem.currentRoom && !ctx.roomType) ctx.roomType = mem.currentRoom
+    if (mem.preferredMaterial && !ctx.service) ctx.service = mem.preferredMaterial
+  }
+
   const knownCity = ctx.city
   const knownSvc = ctx.service
   const knownRoom = ctx.roomType
@@ -1027,10 +1043,44 @@ Kaunsi room ke liye color suggest karna hai? 😊`
     if (faq.q.some(kw => t.includes(kw))) return faq.a
   }
 
-  // ─── Default — smart follow-up based on context and memory
+  // ─── Default — memory-aware smart follow-up ──────────────────────────────
+  // 1. If memory has a room we know about but no size yet, ask for size
+  if (mem) {
+    const roomNeedingSize = mem.rooms.find(r => !r.size)
+    if (roomNeedingSize && !ctx.askedSize) {
+      ctx.askedSize = true
+      const budgetNote = mem.budgetRaw ? ` (${mem.budgetRaw} budget ke hisaab se estimate bhi nikaluungi)` : ""
+      return `${roomNeedingSize.name} ka size batao (jaise 12×14)${budgetNote} — abhi estimate nikaalt hoon!`
+    }
+
+    // 2. Have budget but no room context — ask which room
+    if (mem.budgetRaw && mem.rooms.length === 0) {
+      return `${mem.budgetRaw} budget ke liye kaunsi room se shuru karein — hall, bedroom, ya kitchen?`
+    }
+
+    // 3. Multiple rooms discussed, one newly added without estimate
+    if (mem.rooms.length > 1) {
+      const unestimated = mem.rooms.find(r => r.status === "mentioned" || r.status === "sized")
+      if (unestimated && !ctx.askedSize) {
+        if (!unestimated.size) {
+          ctx.askedSize = true
+          const prevRooms = mem.rooms.filter(r => r.estimateRange).map(r => r.name).join(" + ")
+          const prefix = prevRooms ? `${prevRooms} ke baad ab ` : ""
+          return `${prefix}${unestimated.name} ka size batao (jaise 12×14) — estimate nikaalt hoon!`
+        }
+      }
+    }
+
+    // 4. Personalize with name when we know it
+    if (ctx.name && knownRoom && !ctx.askedSize) {
+      ctx.askedSize = true
+      return `${ctx.name} ji, ${knownRoom} ka size batao (jaise 12×14) — estimate abhi nikaalt hoon!`
+    }
+  }
+
   if (knownRoom && !ctx.askedSize) {
     ctx.askedSize = true
-    return `${knownRoom} ka size batao (jaise 12×14) — main estimate abhi nikaalta hoon!`
+    return `${knownRoom} ka size batao (jaise 12×14) — main estimate abhi nikaalt hoon!`
   }
   if (knownSvc && !knownRoom) {
     return `${knownSvc} ke liye kaunsi room hai — hall, bedroom, kitchen? Room type batao toh best option recommend karunga!`

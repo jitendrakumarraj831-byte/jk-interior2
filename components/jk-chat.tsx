@@ -11,6 +11,16 @@ import {
   generateMultiRoomEstimate,
   INITIAL_QUICK_REPLIES,
 } from "@/lib/business-data"
+import {
+  type ConversationMemory,
+  createMemory,
+  loadMemory,
+  saveMemory,
+  extractFromText,
+  mergeMemory,
+  updateStage,
+  getBudgetContext,
+} from "@/lib/memory"
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 type Role    = "bot" | "user"
@@ -183,6 +193,7 @@ async function getAIReply(
   history: ConvMsg[],
   lead: Partial<Lead> | null,
   sessionId: string,
+  memory?: ConversationMemory,
   onChunk?: (partial: string, isFirst: boolean) => void,
 ): Promise<{ reply: string; source: "gemini" | "local" } | null> {
   try {
@@ -195,6 +206,7 @@ async function getAIReply(
         message,
         history: history.slice(-16),
         sessionId,
+        memory: memory ?? undefined,
         leadContext: lead
           ? {
               name:    lead.name    || undefined,
@@ -448,6 +460,10 @@ export default function JKChat() {
   const [typing, setTyping] = useState(false)
   const [aiMode, setAiMode] = useState(true)
   const [offHours, setOffHours] = useState(false)
+  // ── Conversation memory (persistent across page refreshes) ────────────────
+  const [memory, setMemory] = useState<ConversationMemory>(createMemory)
+  const memoryRef = useRef<ConversationMemory>(memory)
+
   const historyRef = useRef<ConvMsg[]>([])
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -457,14 +473,39 @@ export default function JKChat() {
   const [collectStep, setCollectStep] = useState<null | "name" | "phone" | "city" | "time">(null)
   const [pendingEstimate, setPendingEstimate] = useState<string | null>(null)
 
+  // Keep memory ref in sync with state
+  useEffect(() => { memoryRef.current = memory }, [memory])
+
   useEffect(() => { setOffHours(isOffHours()) }, [])
   useEffect(() => { document.body[open ? "setAttribute" : "removeAttribute"]("data-chat-open", "1") }, [open])
+
+  // Load persisted data from localStorage after mount (avoids SSR mismatch)
   useEffect(() => {
+    // Load rich memory
+    const savedMem = loadMemory()
+    memoryRef.current = savedMem
+    setMemory(savedMem)
+
+    // Legacy flat lead + topic
     try {
       const raw = localStorage.getItem("jk_chat_v5")
-      if (raw) { const { lead: l, topic: tp } = JSON.parse(raw); if (l) { setLead(l); setLastTopic(tp ?? null) } }
+      if (raw) {
+        const { lead: l, topic: tp } = JSON.parse(raw)
+        if (l) {
+          setLead(l)
+          setLastTopic(tp ?? null)
+          // Sync identity fields from legacy lead into memory if missing
+          if (!savedMem.name && l.name) {
+            const updated = mergeMemory(savedMem, { name: l.name, phone: l.phone, city: l.city })
+            memoryRef.current = updated
+            setMemory(updated)
+            saveMemory(updated)
+          }
+        }
+      }
     } catch {}
   }, [])
+
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
@@ -475,6 +516,33 @@ export default function JKChat() {
   const persist = (l: Partial<Lead> | null, tp: string | null) => {
     try { localStorage.setItem("jk_chat_v5", JSON.stringify({ lead: l, topic: tp })) } catch {}
   }
+
+  // Update memory from a user or bot message and persist it
+  const updateMemory = useCallback((text: string, source: "user" | "bot") => {
+    const updates = extractFromText(text, memoryRef.current, source)
+    if (Object.keys(updates).length === 0) return
+    const merged = mergeMemory(
+      memoryRef.current,
+      updates,
+      source === "user", // increment message count only for user msgs
+    )
+    merged.stage = updateStage(merged)
+    memoryRef.current = merged
+    setMemory(merged)
+    saveMemory(merged)
+    // Sync identity back to lead state if newly discovered
+    setLead(prev => {
+      const needsSync =
+        (!prev?.name && merged.name) ||
+        (!prev?.city && merged.city)
+      if (!needsSync) return prev
+      return {
+        ...(prev ?? {}),
+        name: prev?.name || merged.name,
+        city: prev?.city || merged.city,
+      }
+    })
+  }, [])
 
   // Core send with dimension anti-loop
   const send = useCallback(async (override?: string) => {
@@ -487,6 +555,18 @@ export default function JKChat() {
     setTyping(true)
 
     historyRef.current = [...historyRef.current, { role: "user", content: text }]
+
+    // ── Extract context from user message into persistent memory ─────────────
+    {
+      const memUpd = extractFromText(text, memoryRef.current, "user")
+      if (Object.keys(memUpd).length > 0) {
+        const merged = mergeMemory(memoryRef.current, memUpd, true)
+        merged.stage = updateStage(merged)
+        memoryRef.current = merged
+        setMemory(merged)
+        saveMemory(merged)
+      }
+    }
 
     // ---- DIMENSION HANDLER (NO LOOP) ----
     const dims = extractDimensions(text)
@@ -600,6 +680,7 @@ export default function JKChat() {
         historyRef.current.slice(0, -1),
         updatedLead,
         sessionIdRef.current,
+        memoryRef.current,
         (partial, isFirst) => {
           wasStreamed = true
           if (isFirst) {
@@ -628,7 +709,35 @@ export default function JKChat() {
     }
 
     historyRef.current = [...historyRef.current, { role: "assistant", content: reply }]
+
+    // ── Extract estimates + context from bot reply into memory ───────────────
+    {
+      const replyUpd = extractFromText(reply, memoryRef.current, "bot")
+      if (Object.keys(replyUpd).length > 0) {
+        const merged = mergeMemory(memoryRef.current, replyUpd)
+        merged.stage = updateStage(merged)
+        memoryRef.current = merged
+        setMemory(merged)
+        saveMemory(merged)
+      }
+    }
+
+    // Track topic in memory topicHistory
     const newTopic = svc ? svc.toLowerCase().replace(/\s+/g, "-") : lastTopic
+    if (svc && newTopic) {
+      const slug = newTopic
+      const prevTopics = memoryRef.current.topicHistory
+      if (!prevTopics.includes(slug)) {
+        const topicMem = mergeMemory(memoryRef.current, {
+          topicHistory: [slug, ...prevTopics].slice(0, 15),
+          previousTopics: { ...memoryRef.current.previousTopics, [slug]: true },
+        })
+        memoryRef.current = topicMem
+        setMemory(topicMem)
+        saveMemory(topicMem)
+      }
+    }
+
     setLastTopic(newTopic)
     persist(updatedLead, newTopic)
     const estSummary = extractEstimateSummary(reply)
