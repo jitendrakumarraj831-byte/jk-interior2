@@ -1,4 +1,4 @@
-import { galleryImages } from "@/lib/gallery-data"
+export const galleryImages = [
   // ── Gypsum False Ceiling (11 Images) ────────────────────────────────────────────
   { src: "/images/gypsum.jpg",    alt: "Gypsum ceiling design", category: "Gypsum False Ceiling", width: 1080, height: 1080 },
   { src: "/images/gypsum1.jpg",   alt: "Modern gypsum work",    category: "Gypsum False Ceiling", width: 1080, height: 1080 },
