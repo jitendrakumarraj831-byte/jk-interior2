@@ -228,7 +228,7 @@ sessionStore.set(sid, ctx)
 // ── Streaming response (for chat UI) ─────────────────────────────────────
 if (shouldStream) {
   const result = await ai.models.generateContentStream({
-    model: "gemini-2.5-flash",
+    model: "gemini-1.5-flash",
     contents,
     config: {
       systemInstruction: systemPrompt,
@@ -269,7 +269,7 @@ if (shouldStream) {
 
 // ── Non-streaming fallback ────────────────────────────────────────────────
 const result = await ai.models.generateContent({
-  model: "gemini-2.5-flash",
+  model: "gemini-1.5-flash",
   contents,
   config: {
     systemInstruction: systemPrompt,
