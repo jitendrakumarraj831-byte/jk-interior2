@@ -16,10 +16,6 @@ import { galleryImages } from "@/lib/gallery-data"
 const ai = new GoogleGenAI({
   apiKey: process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "",
 })
-console.log(
-  "GEMINI KEY EXISTS:",
-  !!process.env.AI_INTEGRATIONS_GEMINI_API_KEY
-)
 // In-memory server-side session context (resets on cold start — acceptable for chat)
 const sessionStore = new Map<string, ConversationContext>()
 
@@ -67,13 +63,25 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Step 1: Fast rule-based consultant engine ────────────────────────────
-   const ruleReply = consultantReply(message, ctx)
 
-if (
+const ruleReply = consultantReply(message, ctx)
+
+const lowerMsg = message.toLowerCase()
+
+const shouldUseRule =
   ruleReply &&
-  !ruleReply.toLowerCase().includes("please call") &&
-  !ruleReply.toLowerCase().includes("main abhi busy hoon")
-) {
+  (
+    lowerMsg === "hi" ||
+    lowerMsg === "hello" ||
+    lowerMsg === "hii" ||
+    lowerMsg.includes("12x") ||
+    lowerMsg.includes("10x") ||
+    lowerMsg.includes("estimate") ||
+    lowerMsg.includes("sqft") ||
+    lowerMsg.includes("price list")
+  )
+
+if (shouldUseRule) {
   ctx.messagesExchanged++
   sessionStore.set(sid, ctx)
 
@@ -83,7 +91,6 @@ if (
     source: "rule",
   })
 }
-
     // ── Step 2: Gemini AI ────────────────────────────────────────────────────
     const hasKey = !!process.env.AI_INTEGRATIONS_GEMINI_API_KEY
     if (!hasKey) {
@@ -119,9 +126,16 @@ ${JSON.stringify(galleryImages).slice(0, 3000)}
 const systemPrompt = `
 ${basePrompt}
 
- You are JK Interior's premium AI consultant from Bihar.
+You are JK Interior's premium AI consultant from Bihar.
 
 Use the website knowledge below to answer accurately.
+
+Current Conversation Context:
+- Last topic: ${ctx.lastTopic || "unknown"}
+- Current service: ${ctx.service || "unknown"}
+- Room type: ${ctx.roomType || "unknown"}
+- Budget level: ${ctx.budget || "unknown"}
+- Customer city: ${ctx.city || "unknown"}
 
 Rules:
 - Talk like a real human interior consultant, not a robot
@@ -139,6 +153,11 @@ Rules:
 - Suggest site visit or WhatsApp only when helpful
 - Keep replies short to medium length
 - Sound confident, friendly, and local
+- Remember previous conversation naturally
+- Continue follow-up questions intelligently
+- Do not suddenly change topics
+- If user asks "best", compare options practically
+- If user gives room size, recommend suitable material first, then estimate
 
 Tone Examples:
 
@@ -149,8 +168,10 @@ Agar office ko modern aur premium look dena hai toh gypsum false ceiling best ra
 User: PVC ya gypsum?
 Assistant:
 Agar moisture ya pani ka issue ho toh PVC better rahega kyunki waterproof hota hai. Lekin premium finishing aur elegant office look ke liye gypsum zyada stylish lagta hai.
+
 ${websiteKnowledge}
 `
+
 const historyMsgs: any[] = (history as { role: string; content: string }[])
   .slice(-14)
   .map(h => ({
@@ -158,7 +179,21 @@ const historyMsgs: any[] = (history as { role: string; content: string }[])
     parts: [{ text: h.content }],
   }))
 
+const contextMemory = `
+Customer Info:
+- Name: ${ctx.name || "Unknown"}
+- City: ${ctx.city || "Unknown"}
+- Service Interest: ${ctx.service || "Unknown"}
+- Room Type: ${ctx.roomType || "Unknown"}
+- Budget: ${ctx.budget || "Unknown"}
+- Previous Topic: ${ctx.lastTopic || "Unknown"}
+`
+
 const contents: any[] = [
+  {
+    role: "user",
+    parts: [{ text: contextMemory }],
+  },
   ...historyMsgs,
   {
     role: "user",
@@ -168,7 +203,8 @@ const contents: any[] = [
 
 ctx.messagesExchanged++
 sessionStore.set(sid, ctx)
-    // ── Streaming response (for chat UI) ─────────────────────────────────────
+
+// ── Streaming response (for chat UI) ─────────────────────────────────────
     if (shouldStream) {
       const result = await ai.models.generateContentStream({
         model:    "gemini-2.5-flash",
