@@ -196,6 +196,8 @@ Rules:
 - Do not suddenly change topics
 - If user asks "best", compare options practically
 - If user gives room size, recommend suitable material first, then estimate
+- If user already started conversation, do not say hello again
+- Always give a practical recommendation before asking another question
 
 Tone Examples:
 
@@ -331,7 +333,7 @@ return NextResponse.json({
   return NextResponse.json({
     ok: true,
     reply:
-      "Thoda network issue aa gaya 😅 Aap dobara message bhejiye ya WhatsApp kar sakte hain: +91 8651070831",
+    "Ek second 😅 Reply generate karne me thodi problem hui. Dobara bhejiye."
     source: "fallback",
   })
 }
