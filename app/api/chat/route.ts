@@ -80,11 +80,12 @@ export async function POST(req: NextRequest) {
       memorySummary,
     })
 
-        // Line 83 se 87 tak isse replace karein
+            // Sabse zyada compatible model name aur endpoint
     const model = genAI.getGenerativeModel(
-      { model: "gemini-1.5-flash" }, 
-      { apiVersion: "v1" }
+      { model: "gemini-1.5-flash-8b" }, 
+      { apiVersion: "v1beta" }
     );
+    
     
     
     // History trimming to save tokens and keep context
