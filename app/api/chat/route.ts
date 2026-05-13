@@ -10,8 +10,9 @@ import {
   summarizeForPrompt,
 } from "@/lib/memory"
 
-// Official SDK Initialization
+// Isse naya SDK version use hoga
 const genAI = new GoogleGenerativeAI(process.env.AI_INTEGRATIONS_GEMINI_API_KEY || "");
+
 
 const sessionStore = new Map<string, ConversationContext>()
 
@@ -79,12 +80,12 @@ export async function POST(req: NextRequest) {
       memorySummary,
     })
 
-    // Model initialization (Using 1.5-flash for speed and intelligence)
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-      systemInstruction: systemPrompt 
-    });
-
+    // Ise GitHub par edit karke 'gemini-1.5-flash-latest' likh dein
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-1.5-flash-latest", 
+  systemInstruction: systemPrompt 
+});
+    
     // History trimming to save tokens and keep context
     const historyMsgs = (history as { role: string; content: string }[])
       .filter(h => h?.content?.trim())
