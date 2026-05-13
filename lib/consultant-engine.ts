@@ -599,34 +599,8 @@ export function consultantReply(
   input: string,
   ctx: ConversationContext
 ): string | null {
-  const t = input.toLowerCase().trim()  
-  // Allow normal pricing/design questions without forcing phone number
-const freeQuestion =
-  t.includes("price") ||
-  t.includes("cost") ||
-  t.includes("kharcha") ||
-  t.includes("rate") ||
-  t.includes("pvc") ||
-  t.includes("ceiling") ||
-  t.includes("false ceiling") ||
-  t.includes("wall panel") ||
-  t.includes("wardrobe") ||
-  t.includes("kitchen") ||
-  t.includes("design") ||
-  t.includes("panel")
+  const t = input.toLowerCase().trim()
 
-const ceilingQuery =
-  t.includes("ceiling") ||
-  t.includes("false ceiling") ||
-  t.includes("gypsum") ||
-  t.includes("pvc") ||
-  t.includes("grid") ||
-  t.includes("wpc") ||
-  t.includes("panel")
-
-if (freeQuestion) {
-  return null
-}
   const intent = detectIntent(input)
   const city = detectCity(t)
   const svc = detectService(t)
@@ -635,7 +609,8 @@ if (freeQuestion) {
   const dimensions = extractRoomDimensions(t)
 
   // Update context with new info
-  if (city && !ctx.city && !ceilingQuery) ctx.city = city
+  const isCeilingQuery = t.includes("ceiling") || t.includes("gypsum") || t.includes("pvc") || t.includes("wpc") || t.includes("panel")
+  if (city && !ctx.city && !isCeilingQuery) ctx.city = city
   if (svc) {
     ctx.service = svc
     ctx.lastTopic = svc
