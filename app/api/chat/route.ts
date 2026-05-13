@@ -80,11 +80,12 @@ export async function POST(req: NextRequest) {
       memorySummary,
     })
 
-    // Ise GitHub par edit karke 'gemini-1.5-flash-latest' likh dein
-const model = genAI.getGenerativeModel({ 
-  model: "gemini-1.5-flash-latest", 
-  systemInstruction: systemPrompt 
-});
+        // Line 83 se 87 tak isse replace karein
+    const model = genAI.getGenerativeModel(
+      { model: "gemini-1.5-flash" }, 
+      { apiVersion: "v1" }
+    );
+    
     
     // History trimming to save tokens and keep context
     const historyMsgs = (history as { role: string; content: string }[])
