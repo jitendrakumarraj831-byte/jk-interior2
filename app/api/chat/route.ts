@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     })
 
      const model = genAI.getGenerativeModel(
-  { model: "gemini-1.5-flash-8b" }, 
+  { model: "gemini-2.0-flash" }, 
   { apiVersion: "v1beta" }
 );
     
