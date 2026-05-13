@@ -353,31 +353,61 @@ Rules:
 
     let galleryType: string | undefined
 
-    if (lowerMsg.includes("gypsum")) {
-      galleryType = "Gypsum False Ceiling"
-    } else if (lowerMsg.includes("pvc")) {
-      galleryType = "PVC Ceiling"
-    } else if (
-      lowerMsg.includes("wpc") ||
-      lowerMsg.includes("wall panel")
-    ) {
-      galleryType =
-        "WPC fluted panels & uv marble Sheet"
-    } else if (lowerMsg.includes("grid")) {
-      galleryType = "Grid Ceiling"
-    } else if (lowerMsg.includes("tv")) {
-      galleryType = "TV Unit Design"
-    }
+const wantsImages =
+  /\b(photo|photos|image|images|pic|pics|picture|pictures|design|designs|sample|samples|catalog|catalogue|dikhao|dikhaiye|show|ideas|idea|inspiration|latest|modern|premium|look|finish|texture|style|option|options|ceiling design|wall design|tv unit design)\b/i.test(lowerMsg)
 
-    const gallery =
-      galleryType
-        ? galleryImages
-            .filter(
-              (img) =>
-                img.category === galleryType
-            )
-            .slice(0, 6)
-        : []
+const isPriceQuery =
+  /\b(price|rate|cost|budget|estimate|kitna|sqft|sq\.ft|per\s*square|quotation|quote)\b/i.test(lowerMsg)
+
+if (
+  wantsImages &&
+  !isPriceQuery &&
+  lowerMsg.includes("gypsum")
+) {
+  galleryType = "Gypsum False Ceiling"
+
+} else if (
+  wantsImages &&
+  !isPriceQuery &&
+  lowerMsg.includes("pvc")
+) {
+  galleryType = "PVC Ceiling"
+
+} else if (
+  wantsImages &&
+  !isPriceQuery &&
+  (
+    lowerMsg.includes("wpc") ||
+    lowerMsg.includes("wall panel")
+  )
+) {
+  galleryType =
+    "WPC fluted panels & uv marble Sheet"
+
+} else if (
+  wantsImages &&
+  !isPriceQuery &&
+  lowerMsg.includes("grid")
+) {
+  galleryType = "Grid Ceiling"
+
+} else if (
+  wantsImages &&
+  !isPriceQuery &&
+  lowerMsg.includes("tv")
+) {
+  galleryType = "TV Unit Design"
+}
+
+const gallery =
+  galleryType
+    ? galleryImages
+        .filter(
+          (img) =>
+            img.category === galleryType
+        )
+        .slice(0, 6)
+    : []
 
     return NextResponse.json({
       ok: true,
