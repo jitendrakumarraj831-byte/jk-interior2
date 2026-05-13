@@ -80,10 +80,9 @@ export async function POST(req: NextRequest) {
       memorySummary,
     })
 
-     const model = genAI.getGenerativeModel(
-  { model: "gemini-1.5-flash" }, 
-  { apiVersion: "v1beta" } 
-);
+     // Bina apiVersion ke try karein
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    
      
     
     // History trimming to save tokens and keep context
