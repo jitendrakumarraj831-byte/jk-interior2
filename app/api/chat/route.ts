@@ -146,9 +146,14 @@ export async function POST(req: NextRequest) {
       lowerMsg.includes("whatsapp")
 
     if (localQuestions) {
+   const lowerMsg = message.trim().toLowerCase()
+
+const shouldUseRuleEngine =
+  message.trim().length < 80 ||
+  /\b(price|rate|cost|estimate|gypsum|pvc|wpc|grid|tv unit|kitchen|wardrobe|hi|hello|design|budget)\b/i.test(message)
       const ruleReply = consultantReply(message, ctx)
 
-      if (ruleReply) {
+      if (ruleReply && shouldUseRuleEngine) {
         ctx.messagesExchanged++
         sessionStore.set(sid, ctx)
 
