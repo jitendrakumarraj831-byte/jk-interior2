@@ -80,10 +80,11 @@ export async function POST(req: NextRequest) {
       memorySummary,
     })
 
-     // Bina apiVersion ke try karein
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
-     
+     // Is code ko try karein, ye versioning issue ko bypass karta hai
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-1.5-flash" 
+}); 
+        
     
     // History trimming to save tokens and keep context
     const historyMsgs = (history as { role: string; content: string }[])
