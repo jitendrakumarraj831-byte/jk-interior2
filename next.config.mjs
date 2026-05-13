@@ -3,7 +3,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev', '*.sisko.replit.dev', '*.repl.co'],
+  allowedDevOrigins: [
+    '*.replit.dev',
+    '*.worf.replit.dev',
+    '*.picard.replit.dev',
+    '*.sisko.replit.dev',
+    '*.kirk.replit.dev',
+    '*.repl.co',
+  ],
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
