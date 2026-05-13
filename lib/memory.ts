@@ -319,9 +319,7 @@ export function summarizeForPrompt(memory: ConversationMemory): string {
   }
 
   const lines: string[] = [
-    "═══════════════════════════════════════════",
-    "CONVERSATION MEMORY — MANDATORY CONTEXT",
-    "═══════════════════════════════════════════",
+    "--- CONVERSATION MEMORY (mandatory context) ---",
   ]
 
   // Identity
@@ -378,8 +376,8 @@ export function summarizeForPrompt(memory: ConversationMemory): string {
     neverAsk.forEach(f => lines.push(`✗ ${f}`))
   }
 
-  lines.push(`\nStage: ${memory.stage} | Messages: ${memory.messagesExchanged}`)
-  lines.push("═══════════════════════════════════════════")
+  lines.push(`Stage: ${memory.stage} | Messages: ${memory.messagesExchanged}`)
+  lines.push("---")
 
   return lines.join("\n")
 }

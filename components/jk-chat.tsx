@@ -205,7 +205,7 @@ async function getAIReply(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
-        history: history.slice(-16),
+        history: history.slice(-8),
         sessionId,
         memory: memory ?? undefined,
         leadContext: lead
@@ -217,7 +217,7 @@ async function getAIReply(
             }
           : undefined,
       }),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(12000),
     })
     if (!res.ok) return null
     const contentType = res.headers.get("content-type") || ""
@@ -554,7 +554,7 @@ export default function JKChat() {
 
     sendLock.current = true
     setInput("")
-    setMsgs(prev => [...prev, mk("user", text)])
+    setMsgs(prev => [...prev, mk("user", text)].slice(-60))
     setTyping(true)
 
     historyRef.current = [...historyRef.current, { role: "user", content: text }]
