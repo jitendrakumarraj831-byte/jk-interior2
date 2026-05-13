@@ -417,13 +417,32 @@ const gallery =
       gallery,
     })
   } catch (err: any) {
-    console.error("Chat API Error:", err)
 
+  console.error("Chat API Error:", err)
+
+  const msg =
+    err instanceof Error
+      ? err.message
+      : String(err)
+
+  // Gemini quota exceeded
+  if (
+    msg.includes("429") ||
+    msg.includes("quota")
+  ) {
     return NextResponse.json({
       ok: true,
       reply:
-        "Maaf kijiye 😅 Abhi thoda technical issue hai. Please dobara try karein.",
-      source: "fallback",
+        "AI abhi thoda busy hai 😅 Please 1 minute baad try karein.",
+      source: "quota",
     })
   }
-      }
+
+  // Generic fallback
+  return NextResponse.json({
+    ok: true,
+    reply:
+      "Maaf kijiye 😅 Abhi thoda technical issue hai. Please dobara try karein.",
+    source: "fallback",
+  })
+  }
