@@ -600,8 +600,16 @@ export function consultantReply(
   ctx: ConversationContext
 ): string | null {
   const t = input.toLowerCase().trim()
+ const intent = detectIntent(input)
 
-  const intent = detectIntent(input)
+const isPriceQuery =
+  t.includes("price") ||
+  t.includes("rate") ||
+  t.includes("cost") ||
+  t.includes("pricing") ||
+  t.includes("kitna") ||
+  t.includes("kitne") ||
+  t.includes("sqft");
   const city = detectCity(t)
   const svc = detectService(t)
   const room = detectRoomType(t)
