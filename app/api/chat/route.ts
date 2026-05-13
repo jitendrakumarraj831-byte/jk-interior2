@@ -80,13 +80,11 @@ export async function POST(req: NextRequest) {
       memorySummary,
     })
 
-            // Sabse zyada compatible model name aur endpoint
-    const model = genAI.getGenerativeModel(
-      { model: "gemini-1.5-flash-8b" }, 
-      { apiVersion: "v1beta" }
-    );
-    
-    
+     const model = genAI.getGenerativeModel(
+  { model: "gemini-1.5-flash" }, 
+  { apiVersion: "v1beta" } 
+);
+     
     
     // History trimming to save tokens and keep context
     const historyMsgs = (history as { role: string; content: string }[])
