@@ -775,13 +775,16 @@ export default function JKChat() {
       } else {
         const botMessage = mk("bot", reply as string) as any
 
-botMessage.galleryType =
-  reply?.toLowerCase().includes("gypsum") ? "Gypsum False Ceiling" :
-  reply?.toLowerCase().includes("pvc") ? "PVC Ceiling" :
-  reply?.toLowerCase().includes("wpc") ? "WPC fluted panels & uv marble Sheet" :
-  reply?.toLowerCase().includes("grid") ? "Grid Ceiling" :
-  reply?.toLowerCase().includes("tv") ? "TV Unit Design" :
-  undefined
+// Only show gallery when user explicitly asks for photos/images/gallery
+const userWantsPhoto = /photo|photos|image|images|gallery|dikhao|dekh|show|design\s+dekh|kaam\s+dekh/i.test(text)
+botMessage.galleryType = userWantsPhoto
+  ? (reply?.toLowerCase().includes("gypsum") ? "Gypsum False Ceiling"
+    : reply?.toLowerCase().includes("pvc") ? "PVC Ceiling"
+    : reply?.toLowerCase().includes("wpc") ? "WPC fluted panels & uv marble Sheet"
+    : reply?.toLowerCase().includes("grid") ? "Grid Ceiling"
+    : reply?.toLowerCase().includes("tv") ? "TV Unit Design"
+    : "Gypsum False Ceiling")
+  : undefined
 
 next = [...prev, botMessage]
       }
@@ -903,8 +906,7 @@ next = [...prev, botMessage]
         >
           <RichText text={m.text} />
 
-          {(m as any).galleryType &&
-  /design|designs|photo|photos|image|images|gallery|dikhao|show/i.test(m.text || "") && (
+          {(m as any).galleryType && (
             <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
               {galleryImages
                 .filter(
