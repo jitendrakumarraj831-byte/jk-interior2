@@ -1,13 +1,10 @@
 /**
- * JK Interior — /api/chat Route v3.0
+ * JK Interior — /api/chat Route v4.0
  * ────────────────────────────────────
- * Clean API endpoint:
- * - Input validation + typo normalization
- * - Gemini AI call with timeout safety
- * - Smart local fallback (never blank)
- * - Structured JSON response
- * - Rate limiting
- * - Detailed logging
+ * Clean 3-layer response system:
+ *   Layer 1: Rule engine (consultantReply) — instant, no API call
+ *   Layer 2: Groq AI — complex/open conversations
+ *   Layer 3: Smart local fallback — if Groq fails, never blank
  */
 
 import { NextResponse } from "next/server"
@@ -19,8 +16,10 @@ import {
   detectService,
   detectIntent,
   detectRoomType,
+  detectBudgetLevel,
   normalizeTypos,
   isOffHours,
+  resolveServiceKey,
   type ConversationContext,
 } from "@/lib/consultant-engine"
 
@@ -44,6 +43,7 @@ const ChatSchema = z.object({
     service:    z.string().optional(),
     budget:     z.enum(["low", "mid", "high"]).optional(),
     roomSize:   z.string().optional(),
+    roomType:   z.string().optional(),
     lastTopic:  z.string().optional(),
     lastIntent: z.string().optional(),
   }).optional(),
@@ -51,17 +51,10 @@ const ChatSchema = z.object({
 
 type ChatRequest = z.infer<typeof ChatSchema>
 
-// ─── Structured response ───────────────────────────────────────────────────────
+// ─── Structured responses ──────────────────────────────────────────────────────
 
-function ok(
-  reply: string,
-  source: "gemini" | "local" | "groq"
-): NextResponse {
-  return NextResponse.json({
-    ok: true,
-    reply,
-    source,
-  })
+function ok(reply: string, source: "groq" | "local"): NextResponse {
+  return NextResponse.json({ ok: true, reply, source })
 }
 
 function err(message: string, status: number): NextResponse {
@@ -72,7 +65,7 @@ function err(message: string, status: number): NextResponse {
 
 const rateMap = new Map<string, { count: number; resetAt: number }>()
 
-function checkRate(ip: string, limit = 25, windowMs = 60_000): boolean {
+function checkRate(ip: string, limit = 30, windowMs = 60_000): boolean {
   const now = Date.now()
   const entry = rateMap.get(ip)
   if (!entry || now > entry.resetAt) {
@@ -84,9 +77,41 @@ function checkRate(ip: string, limit = 25, windowMs = 60_000): boolean {
   return true
 }
 
-// ─── Gemini API ────────────────────────────────────────────────────────────────
+// ─── Context builder ───────────────────────────────────────────────────────────
+// Converts leadContext + recent history into a ConversationContext for the engine
 
-// ─── Groq API ───────────────────────────────────────────────────────────────
+function buildEngineContext(
+  lead: ChatRequest["leadContext"],
+  history: { role: string; content: string }[]
+): ConversationContext {
+  const ctx: ConversationContext = {
+    name:      lead?.name,
+    phone:     lead?.phone,
+    city:      lead?.city,
+    service:   lead?.service,
+    roomSize:  lead?.roomSize,
+    roomType:  lead?.roomType,
+    lastTopic: lead?.lastTopic,
+    lastIntent: lead?.lastIntent as any,
+    budget:    (lead?.budget as "low" | "mid" | "high" | undefined) ?? null,
+    messagesExchanged: history.length,
+  }
+
+  // Enrich from recent user messages (last 6)
+  for (const msg of history.slice(-6)) {
+    if (msg.role !== "user") continue
+    const norm = normalizeTypos(msg.content.toLowerCase())
+    if (!ctx.city)     { const c = detectCity(norm);     if (c) ctx.city     = c }
+    if (!ctx.service)  { const s = detectService(norm);  if (s) ctx.service  = s.name }
+    if (!ctx.roomType) { const r = detectRoomType(norm); if (r) ctx.roomType = r.label }
+    if (!ctx.budget)   { const b = detectBudgetLevel(norm); if (b) ctx.budget = b }
+  }
+
+  return ctx
+}
+
+// ─── Groq API call ─────────────────────────────────────────────────────────────
+
 async function callGroq(
   systemPrompt: string,
   history: { role: string; content: string }[],
@@ -94,251 +119,130 @@ async function callGroq(
   apiKey: string,
   timeoutMs = 12_000
 ): Promise<string> {
-
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
 
   try {
-
-    const res = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-
-        signal: controller.signal,
-
-        body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
-
-          messages: [
-            {
-              role: "system",
-              content: systemPrompt,
-            },
-
-            ...history.map((m) => ({
-              role:
-                m.role === "assistant"
-                  ? "assistant"
-                  : "user",
-
-              content: m.content,
-            })),
-
-            {
-              role: "user",
-              content: message,
-            },
-          ],
-
-          temperature: 0.7,
-          max_tokens: 700,
-        }),
-      }
-    )
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...history.map(m => ({ role: m.role === "assistant" ? "assistant" : "user", content: m.content })),
+          { role: "user", content: message },
+        ],
+        temperature: 0.65,
+        max_tokens: 600,
+      }),
+    })
 
     clearTimeout(timer)
 
     if (!res.ok) {
-      const bodyText = await res.text()
-
-      console.error("Groq API Error:", {
-        status: res.status,
-        body: bodyText,
-      })
-
-      throw new Error(
-        `Groq HTTP ${res.status}: ${bodyText}`
-      )
+      const body = await res.text()
+      throw new Error(`Groq ${res.status}: ${body}`)
     }
 
     const data = await res.json()
-
-    const text =
-      data?.choices?.[0]?.message?.content
-
-    if (!text?.trim()) {
-      throw new Error(
-        "Groq returned empty response"
-      )
-    }
+    const text = data?.choices?.[0]?.message?.content
+    if (!text?.trim()) throw new Error("Groq empty response")
 
     return text.trim()
-
   } catch (e) {
-
     clearTimeout(timer)
     throw e
   }
 }
 
-// ─── Smart local fallback ──────────────────────────────────────────────────────
-// Builds full context from available data, runs consultant engine,
-// then falls back to generic-but-helpful message. NEVER returns blank.
+// ─── Generic fallback — never blank ───────────────────────────────────────────
 
-function smartLocalFallback(
-  message: string,
-  history: { role: string; content: string }[],
-  lead?: ChatRequest["leadContext"]
-): string {
-  // Build context from lead data + recent history
-  const ctx: ConversationContext = {
-    name:      lead?.name,
-    phone:     lead?.phone,
-    city:      lead?.city,
-    service:   lead?.service,
-    roomSize:  lead?.roomSize,
-    lastTopic: lead?.lastTopic,
-    lastIntent: lead?.lastIntent as any,
-    budget:    lead?.budget ?? null,
-    messagesExchanged: history.length,
-  }
-
-  // Enrich context from last few user messages
-  for (const msg of history.slice(-4)) {
-    if (msg.role !== "user") continue
-    const norm = normalizeTypos(msg.content.toLowerCase())
-    if (!ctx.city)     { const c = detectCity(norm);        if (c) ctx.city    = c }
-    if (!ctx.service)  { const s = detectService(norm);     if (s) ctx.service = s.name }
-    if (!ctx.roomType) { const r = detectRoomType(norm);    if (r) ctx.roomType = r.label }
-  }
-
-  // Run consultant engine
-  const reply = consultantReply(message, ctx)
-  if (reply) return reply
-
-  // Absolute fallback — always price-first, helpful
-  const norm = normalizeTypos(message.toLowerCase())
-  const oh   = isOffHours()
-
-  if (/price|rate|cost|kitna|lagega|estimate/.test(norm)) {
-    return `💰 **JK Interior — Price List**\n\n✨ Gypsum Ceiling — ₹80–140/sq.ft\n🏠 PVC Ceiling — ₹60–120/sq.ft\n🪵 WPC Wall Panels — ₹180–450/sq.ft\n💎 UV Marble Sheets — ₹50–95/sq.ft\n📺 Modular TV Unit — ₹15,000+\n\nRoom ka size batayein (jaise 12×14) — exact estimate nikaal deti hoon! 📐`
-  }
-
+function genericFallback(lead?: ChatRequest["leadContext"], message?: string): string {
   const nm = lead?.name ? `${lead.name} ji, ` : ""
+  const oh = isOffHours()
+
+  if (message && /price|rate|cost|kitna|lagega|estimate/.test(message.toLowerCase())) {
+    return `💰 **JK Interior — Price Guide**\n\n✨ Gypsum Ceiling — ₹80–140/sq.ft\n🏠 PVC Ceiling — ₹60–120/sq.ft\n🪵 WPC Wall Panels — ₹180–450/sq.ft\n💎 UV Marble Sheets — ₹50–95/sq.ft\n📺 Modular TV Unit — ₹15,000+\n\nRoom ka size bataiye (jaise 12×14) — exact estimate nikaaluun! 📐`
+  }
+
   return oh
-    ? `${nm}abhi office hours ke baad hai — team kal 9 AM pe contact karegi. 😊\n\nKoi urgent sawaal? WhatsApp karein: **+91 8651070831**`
-    : `${nm}room ka size batao (jaise 12×14) aur kaunsa kaam chahiye — ceiling ya wall paneling?\n\nEstimate abhi nikaal deti hoon! 📐\n\nYa call/WhatsApp: **+91 8651070831**`
+    ? `${nm}abhi office hours ke baad hai — team kal 9 AM pe contact karegi. 😊\n\nUrgent? WhatsApp: **+91 8651070831**`
+    : `${nm}Room ka size batao (jaise 12×14) aur kaunsa kaam — ceiling ya wall paneling?\n\nEstimate abhi nikaaluun! 📐\n\nYa call/WhatsApp: **+91 8651070831**`
 }
 
 // ─── POST /api/chat ────────────────────────────────────────────────────────────
 
 export async function POST(req: Request): Promise<NextResponse> {
-  // IP + rate limit
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown"
+  // Rate limit
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    ?? req.headers.get("x-real-ip")
+    ?? "unknown"
 
   if (!checkRate(ip)) {
     return err("Too many requests. Please wait a moment.", 429)
   }
 
-  // Parse body
+  // Parse + validate body
   let rawBody: unknown
-
   try {
     rawBody = await req.json()
   } catch {
     return err("Invalid JSON body", 400)
   }
 
-  // Validate
   const parsed = ChatSchema.safeParse(rawBody)
-
   if (!parsed.success) {
     return err("Invalid request body", 400)
   }
 
   const { message, history, leadContext } = parsed.data
-
-  // Normalize + detect intent for logging
   const normMessage = normalizeTypos(message)
   const intent = detectIntent(normMessage)
 
-  console.log(
-    `[chat] ip=${ip} intent=${intent} msg="${message.slice(0, 60)}"`
-  )
+  console.log(`[chat] ip=${ip} intent=${intent} msg="${message.slice(0, 60)}"`)
 
-  // API key
-const apiKey =
-  process.env.GROQ_API_KEY ?? ""
+  // ── Layer 1: Rule engine — always try first (instant, no API cost)
+  const ctx = buildEngineContext(leadContext, history)
+  const engineReply = consultantReply(normMessage, ctx)
 
-// No API key → use smart local fallback
-if (!apiKey) {
-  console.log("[chat] No API key — using local fallback")
-
-  const reply = smartLocalFallback(
-    message,
-    history,
-    leadContext
-  )
-
-  return ok(reply, "local")
-}
-
-// Simple queries → local AI first
-const simpleQuery =
-  /price|rate|cost|kitna|gypsum|pvc|wpc|ceiling|panel|room|design|contact|call|whatsapp/i.test(
-    normMessage.toLowerCase()
-  )
-
-// Build system prompt
-const systemPrompt = buildSystemPrompt(leadContext)
-
-// AI call
-try {
-
-  // Use local AI for simple interior queries
-  if (simpleQuery) {
-    const localReply = smartLocalFallback(
-      message,
-      history,
-      leadContext
-    )
-
-    return ok(localReply, "local")
+  if (engineReply) {
+    console.log(`[chat] Layer 1 (rule engine) handled intent=${intent}`)
+    return ok(engineReply, "local")
   }
 
-  // Use Groq for complex conversations
-const reply = await callGroq(
-  systemPrompt,
-  history,
-  message,
-  apiKey
-)
+  // ── Layer 2: Groq AI — for open/complex conversations the engine didn't handle
+  const apiKey = process.env.GROQ_API_KEY ?? ""
 
-return ok(reply, "groq")
-
-} catch (e: any) {
-
-  console.error("[chat] Groq failed:", {
-    message: e?.message,
-    stack: e?.stack,
-  })
-
-  const errMsg = e?.message || ""
-
-  if (
-    errMsg.includes("429") ||
-    errMsg.toLowerCase().includes("quota")
-  ) {
-    console.log(
-      "[chat] Groq quota exceeded — switched to local AI"
-    )
+  if (!apiKey) {
+    console.log("[chat] No API key — using generic fallback")
+    return ok(genericFallback(leadContext, message), "local")
   }
 
-  const fallback = smartLocalFallback(
-    message,
-    history,
-    leadContext
-  )
+  const systemPrompt = buildSystemPrompt(leadContext)
 
-  return ok(fallback, "local")
-}
+  try {
+    const reply = await callGroq(systemPrompt, history, message, apiKey)
+    console.log(`[chat] Layer 2 (Groq) responded, ${reply.length} chars`)
+    return ok(reply, "groq")
+  } catch (e: any) {
+    const errMsg = (e?.message || "").toLowerCase()
+
+    if (errMsg.includes("429") || errMsg.includes("quota")) {
+      console.warn("[chat] Groq quota exceeded — Layer 3 fallback")
+    } else if (errMsg.includes("abort")) {
+      console.warn("[chat] Groq timeout — Layer 3 fallback")
+    } else {
+      console.error("[chat] Groq error:", e?.message)
+    }
+
+    // ── Layer 3: Smart local fallback — run engine again with fresh message context
+    const fallbackCtx = buildEngineContext(leadContext, history)
+    const fallbackReply = consultantReply(normMessage, fallbackCtx)
+    return ok(fallbackReply ?? genericFallback(leadContext, message), "local")
+  }
 }
