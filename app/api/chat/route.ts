@@ -80,7 +80,6 @@ function checkRate(ip: string, limit = 25, windowMs = 60_000): boolean {
 // ─── Gemini API ────────────────────────────────────────────────────────────────
 
 // ─── Groq API ───────────────────────────────────────────────────────────────
-
 async function callGroq(
   systemPrompt: string,
   history: { role: string; content: string }[],
@@ -116,9 +115,11 @@ async function callGroq(
             },
 
             ...history.map((m) => ({
-              role: m.role === "assistant"
-                ? "assistant"
-                : "user",
+              role:
+                m.role === "assistant"
+                  ? "assistant"
+                  : "user",
+
               content: m.content,
             })),
 
@@ -144,7 +145,9 @@ async function callGroq(
         body: bodyText,
       })
 
-      throw new Error(`Groq HTTP ${res.status}: ${bodyText}`)
+      throw new Error(
+        `Groq HTTP ${res.status}: ${bodyText}`
+      )
     }
 
     const data = await res.json()
@@ -153,15 +156,19 @@ async function callGroq(
       data?.choices?.[0]?.message?.content
 
     if (!text?.trim()) {
-      throw new Error("Groq returned empty response")
+      throw new Error(
+        "Groq returned empty response"
+      )
     }
 
     return text.trim()
 
   } catch (e) {
+
     clearTimeout(timer)
     throw e
   }
+}
 
 // ─── Smart local fallback ──────────────────────────────────────────────────────
 // Builds full context from available data, runs consultant engine,
