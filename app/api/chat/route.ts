@@ -162,8 +162,6 @@ async function callGroq(
     clearTimeout(timer)
     throw e
   }
-}
-}
 
 // ─── Smart local fallback ──────────────────────────────────────────────────────
 // Builds full context from available data, runs consultant engine,
