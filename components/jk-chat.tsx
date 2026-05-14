@@ -469,6 +469,7 @@ const WELCOME_MSG = mk(
 )
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function JKChat() {
+  const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
   const [messages, setMsgs] = useState<Message[]>([WELCOME_MSG])
   const [input, setInput] = useState("")
@@ -493,6 +494,16 @@ export default function JKChat() {
 
   // Keep memory ref in sync with state
   useEffect(() => { memoryRef.current = memory }, [memory])
+
+  useEffect(() => {
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback
+    if (ric) {
+      ric(() => setMounted(true), { timeout: 2000 })
+    } else {
+      const t = setTimeout(() => setMounted(true), 800)
+      return () => clearTimeout(t)
+    }
+  }, [])
 
   useEffect(() => { setOffHours(isOffHours()) }, [])
   useEffect(() => { document.body[open ? "setAttribute" : "removeAttribute"]("data-chat-open", "1") }, [open])
@@ -847,6 +858,8 @@ next = [...prev, botMessage]
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hello JK Interior, I'm ${lead.name} ${lead.phone ? `(${lead.phone})` : ""} – need interior work.` : "Hello JK Interior, need interior work.")}`
   const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hi JK Interior! ${lead.name} wants a free site visit.` : "Hi JK Interior! Free site visit please.")}`
   const statusText = offHours ? "🌙 Opens 9 AM • WhatsApp available" : "🟢 Online — Premium Consultant"
+
+  if (!mounted) return null
 
   return (
     <>
