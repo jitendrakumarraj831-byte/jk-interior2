@@ -884,7 +884,8 @@ next = [...prev, botMessage]
         >
           <RichText text={m.text} />
 
-          {(m as any).galleryType && (
+          {(m as any).galleryType &&
+  /design|designs|photo|photos|image|images|gallery|dikhao|show/i.test(m.text || "") && (
             <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
               {galleryImages
                 .filter(
