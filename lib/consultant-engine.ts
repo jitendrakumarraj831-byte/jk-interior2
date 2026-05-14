@@ -460,8 +460,32 @@ function r_quality(): string {
 
 function r_area(t: string, knownCity?: string): string {
   const city = detectCity(t) || knownCity
-  if (city) return `**${city}** — haan, hum wahan kaam karte hain! 👍\n\nHum cover karte hain:\n${ALL_AREAS.join(" • ")}\n\nFree site visit book karein! 🙌`
-  return `Hum in sabhi areas mein kaam karte hain:\n\n${ALL_AREAS.join(" • ")}\n\nApna city batayein — confirm kar deti hoon!`
+
+  if (city) {
+    return `📍 **${city}** — haan ji, hum wahan kaam karte hain 😊
+
+JK Interior ka main service area Forbesganj & Araria hai, lekin nearby cities bhi cover karte hain.
+
+✅ Free site visit available
+✅ Modern ceiling & wall panel work
+✅ Bihar local team
+
+Aapko kaunsa kaam karwana hai — gypsum, PVC, WPC ya full interior?`
+  }
+
+  return `📍 JK Interior ka main service area Forbesganj & Araria hai.
+
+Hum nearby areas me bhi kaam karte hain:
+• Jogbani
+• Raniganj
+• Narpatganj
+• Kursakanta
+• Tribeniganj
+• Chhatapur
+• Supaul
+• Purnia
+
+Aap apna city batayein 😊`
 }
 
 function r_serviceInfo(): string {
