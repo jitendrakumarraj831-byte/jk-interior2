@@ -292,14 +292,14 @@ try {
   }
 
   // Use Groq for complex conversations
-  const reply = await callGroq(
-    systemPrompt,
-    history,
-    message,
-    apiKey
-  )
+const reply = await callGroq(
+  systemPrompt,
+  history,
+  message,
+  apiKey
+)
 
-  return ok(reply, "groq")
+return ok(reply, "groq")
 
 } catch (e: any) {
 
@@ -327,5 +327,4 @@ try {
 
   return ok(fallback, "local")
 }
-
 }
