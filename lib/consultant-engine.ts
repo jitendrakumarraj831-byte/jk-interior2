@@ -660,7 +660,7 @@ export function consultantReply(
     case "greeting":       return r_greeting(ctx)
     case "thanks":         return r_thanks(ctx)
     case "complaint":      return r_complaint()
-    case "booking":        return r_booking(ctx)
+    case "booking":        return r_booking(ctx, t)
     case "call-request":   return r_call()
     case "comparison":     return r_comparison(t)
     case "room-estimate":  return r_estimate(t, ctx)
