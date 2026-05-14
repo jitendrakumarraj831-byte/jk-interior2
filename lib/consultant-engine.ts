@@ -319,10 +319,40 @@ function r_complaint(): string {
   return `Mujhe bahut dukh hua sunke. 😔\n\nPlease detail mein batayein — kya hua aur kab hua? Main team ko abhi inform karti hoon.\n\n📞 Direct: **${WA}** — hum hamesha ready hain!`
 }
 
-function r_booking(ctx: ConversationContext): string {
-  if (ctx.phone) return `Aapki inquiry already note hai! 😊\n\nTeam aapko jald contact karegi. Ya seedha call/WhatsApp: **${WA}**`
-  if (ctx.name) return `${ctx.name} ji! Free site visit ke liye WhatsApp number share karein 📱 — team abhi inform ho jaayegi!`
-  return `Free site visit bilkul free hai! 😊\n\nPehle aapka naam bata dijiye?`
+function r_booking(
+  ctx: ConversationContext,
+  input?: string
+): string {
+
+  const t = (input || "").toLowerCase()
+
+  // Pricing / material questions → don't ask for number
+  if (
+    /price|rate|cost|kitna|estimate|gypsum|pvc|wpc|ceiling|panel/i.test(t)
+  ) {
+    return r_pricing(t, ctx)
+  }
+
+  // Already has phone
+  if (ctx.phone) {
+    return `Aapki inquiry already note hai! 😊
+
+Team aapko jald contact karegi.
+
+Ya seedha call/WhatsApp: **${WA}**`
+  }
+
+  // Has name but no phone
+  if (ctx.name) {
+    return `${ctx.name} ji 😊
+
+Free site visit aur exact quotation ke liye WhatsApp number share karein 📱`
+  }
+
+  // No details yet
+  return `Free site visit bilkul free hai 😊
+
+Pehle aapka naam bata dijiye?`
 }
 
 function r_call(): string {
