@@ -795,7 +795,6 @@ export function getSmartQuickReplies(ctx: ConversationContext): string[] {
   if (i === "quality")      return ["Book Site Visit", "PVC Ceiling", "Gypsum Ceiling"]
   if (i === "area")         return ["Get Estimate", "Book Site Visit", "Our Services"]
   if (i === "installation") return ["Book Site Visit", "Get Estimate", "Call Now"]
-  if (i === "waterproof")   return ["PVC Ceiling", "UV Marble", "Book Site Visit"]
   if (ctx.phone)            return ["Book Site Visit", "Get Estimate", "Other Services"]
   return ["PVC Ceiling", "Gypsum Ceiling", "Price List", "Free Site Visit", "Compare"]
 }
