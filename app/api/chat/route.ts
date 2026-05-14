@@ -89,7 +89,7 @@ async function callGemini(
   baseUrl: string,
   timeoutMs = 12_000
 ): Promise<string> {
-  const model = "gemini-1.5-flash-latest"
+  const model = "gemini-2.0-flash"
   const url   = `${baseUrl}/models/${model}:generateContent?key=${apiKey}`
 
   const contents: GeminiMessage[] = [
