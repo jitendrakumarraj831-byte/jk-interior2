@@ -9,6 +9,8 @@ const nextConfig = {
     '*.picard.replit.dev',
     '*.sisko.replit.dev',
     '*.kirk.replit.dev',
+    '*.pike.replit.dev',
+    '*.replit.app',
     '*.repl.co',
   ],
   compress: true,
