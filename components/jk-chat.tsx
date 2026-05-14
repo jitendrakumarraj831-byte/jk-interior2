@@ -196,7 +196,8 @@ async function getAIReply(
   sessionId: string,
   memory?: ConversationMemory,
   onChunk?: (partial: string, isFirst: boolean) => void,
-): Promise<{ reply: string; source: "gemini" | "local" } | null> {
+  extras?: { roomSize?: string | null; lastTopic?: string | null },
+): Promise<{ reply: string; source: "gemini" | "local"; updatedRoomSize?: string } | null> {
   try {
     const useStream = typeof onChunk === "function"
     const url = useStream ? "/api/chat?stream=1" : "/api/chat"
@@ -208,21 +209,22 @@ async function getAIReply(
         history: history.slice(-8),
         sessionId,
         memory: memory ?? undefined,
-        leadContext: lead
-          ? {
-              name:    lead.name    || undefined,
-              phone:   lead.phone   || undefined,
-              city:    lead.city    || undefined,
-              service: lead.service || undefined,
-            }
-          : undefined,
+        leadContext: {
+          name:      lead?.name      || undefined,
+          phone:     lead?.phone     || undefined,
+          city:      lead?.city      || undefined,
+          service:   lead?.service   || undefined,
+          // ── Context memory — so API engine remembers room size + topic ──
+          roomSize:  extras?.roomSize  || undefined,
+          lastTopic: extras?.lastTopic || undefined,
+        },
       }),
       signal: AbortSignal.timeout(12000),
     })
     if (!res.ok) return null
     const contentType = res.headers.get("content-type") || ""
 
-    // ── Streaming path (Gemini text/plain) ──────────────────────────────────
+    // ── Streaming path (text/plain) ──────────────────────────────────────────
     if (contentType.includes("text/plain") && res.body && onChunk) {
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
@@ -243,7 +245,11 @@ async function getAIReply(
     // ── JSON path (rule-based or non-streaming fallback) ─────────────────────
     const data = await res.json()
     if (!data.ok || !data.reply) return null
-    return { reply: data.reply as string, source: (data.source as "gemini" | "local") ?? "gemini" }
+    return {
+      reply: data.reply as string,
+      source: (data.source as "gemini" | "local") ?? "gemini",
+      updatedRoomSize: data.updatedContext?.roomSize ?? undefined,
+    }
   } catch {
     return null
   }
@@ -460,6 +466,7 @@ export default function JKChat() {
   const [input, setInput] = useState("")
   const [lead, setLead] = useState<Partial<Lead> | null>(null)
   const [lastTopic, setLastTopic] = useState<string | null>(null)
+  const [roomSize, setRoomSize] = useState<string | null>(null)
   const [typing, setTyping] = useState(false)
   const [aiMode, setAiMode] = useState(true)
   const [offHours, setOffHours] = useState(false)
@@ -583,12 +590,15 @@ export default function JKChat() {
       if (estSummary) setPendingEstimate(estSummary)
       historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
       setMsgs(prev => [...prev, mk("bot", estimateReply)])
-      // Update lead service if missing
-      if (!lead?.service && currentService) {
-        const newLead = { ...(lead || {}), service: currentService }
-        setLead(newLead)
-        persist(newLead, lastTopic)
-      }
+      // ── Save room size so the NEXT message remembers it ──────────────────
+      const newRoomSize = `${dims.length}x${dims.width}`
+      setRoomSize(newRoomSize)
+      // ── Update service + topic if detected in this message ───────────────
+      const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
+      if (svcSlug) setLastTopic(svcSlug)
+      const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
+      setLead(newLead)
+      persist(newLead, svcSlug)
       setTyping(false)
       sendLock.current = false
       return
@@ -696,8 +706,17 @@ export default function JKChat() {
             setMsgs(prev => prev.map(m => m.id === sid ? { ...m, text: partial } : m))
           }
         },
+        // ── Pass current room size + topic so API engine remembers context ──
+        { roomSize, lastTopic },
       )
-      if (aiResult) reply = aiResult.reply
+      if (aiResult) {
+        reply = aiResult.reply
+        // ── If API extracted a new room size (e.g. user typed it inline),
+        //    save it so the NEXT message also has it ──────────────────────
+        if (aiResult.updatedRoomSize && !roomSize) {
+          setRoomSize(aiResult.updatedRoomSize)
+        }
+      }
     }
 
     if (!reply) {
@@ -787,7 +806,7 @@ next = [...prev, botMessage]
 
     setTyping(false)
     sendLock.current = false
-  }, [input, lead, typing, lastTopic, aiMode, collectStep, pendingEstimate])
+  }, [input, lead, typing, lastTopic, roomSize, aiMode, collectStep, pendingEstimate])
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() } }
 

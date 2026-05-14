@@ -53,8 +53,12 @@ type ChatRequest = z.infer<typeof ChatSchema>
 
 // ─── Structured responses ──────────────────────────────────────────────────────
 
-function ok(reply: string, source: "groq" | "local"): NextResponse {
-  return NextResponse.json({ ok: true, reply, source })
+function ok(
+  reply: string,
+  source: "groq" | "local",
+  updatedContext?: { roomSize?: string },
+): NextResponse {
+  return NextResponse.json({ ok: true, reply, source, ...(updatedContext ? { updatedContext } : {}) })
 }
 
 function err(message: string, status: number): NextResponse {
@@ -204,6 +208,12 @@ export async function POST(req: Request): Promise<NextResponse> {
   const normMessage = normalizeTypos(message)
   const intent = detectIntent(normMessage)
 
+  // Extract room size from message to return as updatedContext
+  const dimMatch = normMessage.match(/(\d{1,3})\s*(?:[x×X]|by)\s*(\d{1,3})/)
+  const extractedRoomSize = dimMatch
+    ? `${dimMatch[1]}x${dimMatch[2]}`
+    : leadContext?.roomSize ?? undefined
+
   console.log(`[chat] ip=${ip} intent=${intent} msg="${message.slice(0, 60)}"`)
 
   // ── Layer 1: Rule engine — always try first (instant, no API cost)
@@ -212,7 +222,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   if (engineReply) {
     console.log(`[chat] Layer 1 (rule engine) handled intent=${intent}`)
-    return ok(engineReply, "local")
+    return ok(engineReply, "local", extractedRoomSize ? { roomSize: extractedRoomSize } : undefined)
   }
 
   // ── Layer 2: Groq AI — for open/complex conversations the engine didn't handle
