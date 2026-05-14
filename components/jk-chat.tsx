@@ -777,14 +777,33 @@ export default function JKChat() {
 
 // Only show gallery when user explicitly asks for photos/images/gallery
 const userWantsPhoto = /photo|photos|image|images|gallery|dikhao|dekh|show|design\s+dekh|kaam\s+dekh/i.test(text)
-botMessage.galleryType = userWantsPhoto
-  ? (reply?.toLowerCase().includes("gypsum") ? "Gypsum False Ceiling"
-    : reply?.toLowerCase().includes("pvc") ? "PVC Ceiling"
-    : reply?.toLowerCase().includes("wpc") ? "WPC fluted panels & uv marble Sheet"
-    : reply?.toLowerCase().includes("grid") ? "Grid Ceiling"
-    : reply?.toLowerCase().includes("tv") ? "TV Unit Design"
-    : "Gypsum False Ceiling")
-  : undefined
+if (userWantsPhoto) {
+  // Detect category from USER message first (most accurate)
+  const ut = text.toLowerCase()
+  let cat: string | undefined
+  if (/gypsum|pop\b|false\s*ceil/.test(ut))                      cat = "Gypsum False Ceiling"
+  else if (/\bpvc\b/.test(ut))                                    cat = "PVC Ceiling"
+  else if (/wpc|wall\s*panel|fluted|uv\s*marble|louver/.test(ut)) cat = "WPC fluted panels & uv marble Sheet"
+  else if (/grid|mineral|office\s*ceil/.test(ut))                 cat = "Grid Ceiling"
+  else if (/tv\s*unit|tv\s*cabinet|television|\btv\b/.test(ut))   cat = "TV Unit Design"
+  else if (/grass|turf|garden/.test(ut))                         cat = "Artificial Grass"
+  // Fallback 1: use lastTopic state (what was being discussed)
+  else if (lastTopic?.includes("gypsum"))  cat = "Gypsum False Ceiling"
+  else if (lastTopic?.includes("pvc"))     cat = "PVC Ceiling"
+  else if (lastTopic?.includes("wpc") || lastTopic?.includes("wall")) cat = "WPC fluted panels & uv marble Sheet"
+  else if (lastTopic?.includes("grid"))    cat = "Grid Ceiling"
+  else if (lastTopic?.includes("tv"))      cat = "TV Unit Design"
+  else if (lastTopic?.includes("grass"))   cat = "Artificial Grass"
+  // Fallback 2: use current service from lead
+  else if (updatedLead?.service?.toLowerCase().includes("gypsum")) cat = "Gypsum False Ceiling"
+  else if (updatedLead?.service?.toLowerCase().includes("pvc"))    cat = "PVC Ceiling"
+  else if (updatedLead?.service?.toLowerCase().includes("wpc"))    cat = "WPC fluted panels & uv marble Sheet"
+  else if (updatedLead?.service?.toLowerCase().includes("grid"))   cat = "Grid Ceiling"
+  else if (updatedLead?.service?.toLowerCase().includes("tv"))     cat = "TV Unit Design"
+  // Fallback 3: default to most popular service
+  else cat = "Gypsum False Ceiling"
+  botMessage.galleryType = cat
+}
 
 next = [...prev, botMessage]
       }
