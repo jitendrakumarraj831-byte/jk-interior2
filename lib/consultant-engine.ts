@@ -399,7 +399,7 @@ function r_pricing(t: string, ctx: ConversationContext): string {
 
   if (matKey) {
   const p = PRICE_MAP[matKey]
-
+ctx.lastTopic = matKey
   const nameMap: Record<string, string> = {
     pvc: "PVC Ceiling",
     gypsum: "Gypsum Ceiling",
