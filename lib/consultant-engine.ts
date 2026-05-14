@@ -423,22 +423,38 @@ function r_pricing(t: string, ctx: ConversationContext): string {
   }
 
   return lines.join("\n")
-  }
-    const lines = [`**${nameMap[matKey]}** — ${p.range}`]
-    if (p.premium) lines.push(`Premium: ${p.premium}`)
-    lines.push(`\nRoom ka size batao (jaise 12×14) — exact estimate abhi nikaaluun! 📐`)
-    return lines.join("\n")
-  }
-
-  // Room-context price recommendation
-  if (ctx.roomType) {
-    const rec = recommendMaterial(ctx.roomType, false, ctx.budget ?? null)
-    return `${ctx.roomType} ke liye **${rec.primary}** — ${PRICE_MAP[rec.primary.toLowerCase().includes("pvc") ? "pvc" : "gypsum"].range}\n\nRoom ka size batao (jaise 12×14) — exact estimate nikaaluun!`
-  }
-// Full price list — always helpful
-  return `💰 **JK Interior — Price List**\n\n✨ Gypsum Ceiling — ${PRICE_MAP.gypsum.range}\n🏠 PVC Ceiling — ${PRICE_MAP.pvc.range}\n🪵 WPC Wall Panels — ${PRICE_MAP.wpc.range}\n💎 UV Marble Sheets — ${PRICE_MAP.uv.range}\n📺 Modular TV Unit — ${PRICE_MAP.tvunit.range}\n🏛 Fluted Panels — ${PRICE_MAP.fluted.range}\n🏢 Grid Ceiling — ${PRICE_MAP.grid.range}\n\nRoom ka size batayein — main exact estimate nikaal deti hoon! 📐`
 }
 
+// Room-context price recommendation
+if (ctx.roomType) {
+  const rec = recommendMaterial(
+    ctx.roomType,
+    false,
+    ctx.budget ?? null
+  )
+
+  return `${ctx.roomType} ke liye **${rec.primary}** — ${
+    PRICE_MAP[
+      rec.primary.toLowerCase().includes("pvc")
+        ? "pvc"
+        : "gypsum"
+    ].range
+  }\n\nRoom ka size batao (jaise 12×14) — exact estimate nikaaluun!`
+}
+
+// Full price list — always helpful
+return `💰 **JK Interior — Price List**
+
+✨ Gypsum Ceiling — ${PRICE_MAP.gypsum.range}
+🏠 PVC Ceiling — ${PRICE_MAP.pvc.range}
+🪵 WPC Wall Panels — ${PRICE_MAP.wpc.range}
+💎 UV Marble Sheets — ${PRICE_MAP.uv.range}
+📺 Modular TV Unit — ${PRICE_MAP.tvunit.range}
+🏛 Fluted Panels — ${PRICE_MAP.fluted.range}
+🏢 Grid Ceiling — ${PRICE_MAP.grid.range}
+
+Room ka size batayein — main exact estimate nikaal deti hoon! 📐`
+} 
 function r_estimate(t: string, ctx: ConversationContext): string {
   const dimMatch = t.match(/(\d{1,2})\s*[x×by]\s*(\d{1,2})/)
   if (!dimMatch) return r_pricing(t, ctx)
