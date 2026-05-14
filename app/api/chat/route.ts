@@ -53,8 +53,15 @@ type ChatRequest = z.infer<typeof ChatSchema>
 
 // ─── Structured response ───────────────────────────────────────────────────────
 
-function ok(reply: string, source: "gemini" | "local"): NextResponse {
-  return NextResponse.json({ ok: true, reply, source })
+function ok(
+  reply: string,
+  source: "gemini" | "local" | "groq"
+): NextResponse {
+  return NextResponse.json({
+    ok: true,
+    reply,
+    source,
+  })
 }
 
 function err(message: string, status: number): NextResponse {
