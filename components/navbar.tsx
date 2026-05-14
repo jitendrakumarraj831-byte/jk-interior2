@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/services", label: "Services", labelHi: "सेवाएं" },
   { href: "/gallery", label: "Gallery", labelHi: "गैलरी" },
   { href: "/about", label: "About", labelHi: "हमारे बारे में" },
+  { href: "/faq", label: "FAQ", labelHi: "सवाल-जवाब" },
   { href: "/contact", label: "Contact", labelHi: "संपर्क" },
 ]
 

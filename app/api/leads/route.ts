@@ -50,7 +50,7 @@ export async function GET(req: Request) {
   }
   try {
     const { rows } = await pool.query(
-      `SELECT id,name,phone,city,service,estimate,preferred_time,is_read,created_at
+      `SELECT id,name,phone,city,service,estimate,preferred_time,chat_summary,is_read,created_at
        FROM leads ORDER BY created_at DESC LIMIT 300`
     )
     return NextResponse.json({ ok: true, leads: rows })

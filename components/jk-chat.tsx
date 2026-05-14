@@ -157,7 +157,7 @@ function generateEstimateFromDimensions(
 }
 
 // ── store admin lead ──────────────────────────────────────────────────────────
-function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string) {
+function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string, chatHistory?: ConvMsg[]) {
   try {
     const raw = localStorage.getItem("jk_admin_leads") || "[]"
     const leads: LeadCard[] = JSON.parse(raw)
@@ -165,10 +165,18 @@ function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string) {
     leads.unshift(entry)
     localStorage.setItem("jk_admin_leads", JSON.stringify(leads.slice(0, 100)))
   } catch {}
-  saveLeadToDB({ name: lead.name, phone: lead.phone, city: lead.city, service: lead.service, estimate, preferred_time: preferredTime })
+  const chat_summary = chatHistory && chatHistory.length > 0
+    ? chatHistory
+        .filter(m => m.role === "user")
+        .slice(-5)
+        .map(m => m.content.slice(0, 120))
+        .join(" | ")
+        .slice(0, 800)
+    : undefined
+  saveLeadToDB({ name: lead.name, phone: lead.phone, city: lead.city, service: lead.service, estimate, preferred_time: preferredTime, chat_summary })
 }
 
-function saveLeadToDB(data: { name: string; phone: string; city?: string; service?: string; estimate?: string; preferred_time?: string }) {
+function saveLeadToDB(data: { name: string; phone: string; city?: string; service?: string; estimate?: string; preferred_time?: string; chat_summary?: string }) {
   try {
     fetch("/api/leads", {
       method: "POST",
@@ -650,7 +658,7 @@ export default function JKChat() {
           city:    lead?.city,
           service: lead?.service,
         }
-        storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime)
+        storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
         const card: LeadCard = {
           ...finalLead,
           estimate:      pendingEstimate || undefined,
@@ -680,7 +688,7 @@ export default function JKChat() {
       const extractedName = tryExtractName(text)
       updatedLead = { ...(lead || {}), phone: extractedPhone, name: extractedName || lead?.name || "Friend", city: city || lead?.city, service: svc || lead?.service }
       setLead(updatedLead)
-      storeAdminLead(updatedLead as Lead, pendingEstimate || undefined)
+      storeAdminLead(updatedLead as Lead, pendingEstimate || undefined, undefined, historyRef.current)
     } else if (city && !lead?.city) { updatedLead = { ...(lead || {}), city }; setLead(updatedLead) }
     else if (svc && !lead?.service) { updatedLead = { ...(lead || {}), service: svc }; setLead(updatedLead) }
 
@@ -882,7 +890,28 @@ next = [...prev, botMessage]
                 <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-black text-sm ring-2 ring-white/30">JK<span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-300 border-2 border-emerald-600" /></div>
                 <div><p className="text-sm font-bold leading-tight">Riya — AI Consultant</p><p className="text-[10px] text-white/80">{statusText}</p></div>
               </div>
-              <button onClick={() => setOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20"><IClose /></button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => {
+                    setMsgs([WELCOME_MSG])
+                    setLead(null)
+                    setLastTopic(null)
+                    setRoomSize(null)
+                    setCollectStep(null)
+                    setPendingEstimate(null)
+                    historyRef.current = []
+                    const freshMem = createMemory()
+                    memoryRef.current = freshMem
+                    setMemory(freshMem)
+                    try { localStorage.removeItem("jk_chat_v5"); localStorage.removeItem("jk_chat_memory_v2") } catch {}
+                  }}
+                  title="Clear chat"
+                  className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 text-white/70 hover:text-white text-[11px] font-bold"
+                >
+                  ↺
+                </button>
+                <button onClick={() => setOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20"><IClose /></button>
+              </div>
             </div>
 
             {aiMode && <div className="shrink-0 flex items-center gap-2 px-4 py-1.5 bg-emerald-50 border-b border-emerald-100"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /><p className="text-[10px] text-emerald-700 font-medium">Powered by Gemini AI + Luxury Estimator</p></div>}

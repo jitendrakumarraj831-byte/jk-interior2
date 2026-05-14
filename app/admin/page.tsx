@@ -10,6 +10,7 @@ interface Lead {
   service: string | null
   estimate: string | null
   preferred_time: string | null
+  chat_summary: string | null
   is_read: boolean
   created_at: string
 }
@@ -84,6 +85,13 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
         <Row icon="🔧" label="Service" value={lead.service ?? "—"} />
         {lead.estimate && <Row icon="💰" label="Estimate" value={lead.estimate} highlight />}
         {lead.preferred_time && <Row icon="📅" label="Visit" value={lead.preferred_time} />}
+        {lead.chat_summary && (
+          <div className="flex items-start gap-2 text-xs mt-1.5 pt-1.5 border-t border-gray-100">
+            <span className="w-4 shrink-0">💬</span>
+            <span className="text-gray-400 w-14 shrink-0 text-[11px]">Chat</span>
+            <span className="text-gray-600 text-[11px] italic leading-relaxed">{lead.chat_summary}</span>
+          </div>
+        )}
       </div>
 
       <div className="px-4 pb-4 flex gap-2">
@@ -182,6 +190,45 @@ export default function AdminPage() {
     setLeads(prev => prev.map(l => l.id === id ? { ...l, is_read: true } : l))
   }
 
+  async function markAllRead() {
+    const unread = leads.filter(l => !l.is_read)
+    if (unread.length === 0) return
+    await Promise.all(
+      unread.map(l =>
+        fetch(`/api/leads?key=${key}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: l.id }),
+        })
+      )
+    )
+    setLeads(prev => prev.map(l => ({ ...l, is_read: true })))
+  }
+
+  function exportCSV() {
+    const header = ["ID", "Name", "Phone", "City", "Service", "Estimate", "Visit Time", "Chat Summary", "Read", "Date"]
+    const rows = leads.map(l => [
+      l.id,
+      l.name,
+      l.phone,
+      l.city ?? "",
+      l.service ?? "",
+      l.estimate ?? "",
+      l.preferred_time ?? "",
+      (l.chat_summary ?? "").replace(/,/g, ";"),
+      l.is_read ? "Yes" : "No",
+      new Date(l.created_at).toLocaleDateString("en-IN"),
+    ])
+    const csv = [header, ...rows].map(r => r.join(",")).join("\n")
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `jk-leads-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   const filtered = leads.filter(l => {
     if (filter === "new" && l.is_read) return false
     if (filter === "read" && !l.is_read) return false
@@ -256,6 +303,20 @@ export default function AdminPage() {
                 className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-50 active:scale-95 transition-all"
               >
                 {loading ? "…" : "↻ Refresh"}
+              </button>
+              {newCount > 0 && (
+                <button
+                  onClick={markAllRead}
+                  className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all"
+                >
+                  ✓ All Read
+                </button>
+              )}
+              <button
+                onClick={exportCSV}
+                className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-600 hover:bg-gray-50 active:scale-95 transition-all"
+              >
+                ↓ CSV
               </button>
               <button
                 onClick={() => { setKey(""); sessionStorage.removeItem(ADMIN_KEY_LS) }}
