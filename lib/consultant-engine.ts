@@ -398,11 +398,32 @@ function r_pricing(t: string, ctx: ConversationContext): string {
                : null
 
   if (matKey) {
-    const p = PRICE_MAP[matKey]
-    const nameMap: Record<string, string> = {
-      pvc: "PVC Ceiling", gypsum: "Gypsum Ceiling", wpc: "WPC Wall Panels",
-      uv: "UV Marble Sheets", grid: "Grid Ceiling", fluted: "Fluted Panels",
-    }
+  const p = PRICE_MAP[matKey]
+
+  const nameMap: Record<string, string> = {
+    pvc: "PVC Ceiling",
+    gypsum: "Gypsum Ceiling",
+    wpc: "WPC Wall Panels",
+    uv: "UV Marble Sheets",
+    grid: "Grid Ceiling",
+    fluted: "Fluted Panels",
+  }
+
+  const lines = [`**${nameMap[matKey]}** — ${p.range}`]
+
+  if (p.premium) {
+    lines.push(`Premium: ${p.premium}`)
+  }
+
+  if (ctx.roomSize) {
+    lines.push(`\nAapne room size ${ctx.roomSize} bataya tha 👍`)
+    lines.push(`Exact estimate bhi nikaal sakti hoon.`)
+  } else {
+    lines.push(`\nRoom ka size batao (jaise 12×14) — exact estimate abhi nikaaluun! 📐`)
+  }
+
+  return lines.join("\n")
+  }
     const lines = [`**${nameMap[matKey]}** — ${p.range}`]
     if (p.premium) lines.push(`Premium: ${p.premium}`)
     lines.push(`\nRoom ka size batao (jaise 12×14) — exact estimate abhi nikaaluun! 📐`)
