@@ -249,45 +249,77 @@ export async function POST(req: Request): Promise<NextResponse> {
     "https://generativelanguage.googleapis.com/v1beta"
 
   // No API key → use smart local fallback
-  if (!apiKey) {
-    console.log("[chat] No API key — using local fallback")
+if (!apiKey) {
+  console.log("[chat] No API key — using local fallback")
 
-    const reply = smartLocalFallback(
+  const reply = smartLocalFallback(
+    message,
+    history,
+    leadContext
+  )
+
+  return ok(reply, "local")
+}
+
+// Simple queries → local AI first
+const simpleQuery =
+  /price|rate|cost|kitna|gypsum|pvc|wpc|ceiling|panel|room|design|contact|call|whatsapp/i.test(
+    normMessage.toLowerCase()
+  )
+
+// Build system prompt
+const systemPrompt = buildSystemPrompt(leadContext)
+
+// Gemini call
+try {
+
+  // Use local AI for simple interior queries
+  if (simpleQuery) {
+    const localReply = smartLocalFallback(
       message,
       history,
       leadContext
     )
 
-    return ok(reply, "local")
+    return ok(localReply, "local")
   }
 
-  // Build system prompt
-  const systemPrompt = buildSystemPrompt(leadContext)
+  // Use Gemini for complex conversations
+  const reply = await callGemini(
+    systemPrompt,
+    history,
+    message,
+    apiKey,
+    baseUrl
+  )
 
-  // Gemini call
-  try {
-    const reply = await callGemini(
-      systemPrompt,
-      history,
-      message,
-      apiKey,
-      baseUrl
+  return ok(reply, "gemini")
+
+} catch (e: any) {
+
+  console.error("[chat] Gemini failed:", {
+    message: e?.message,
+    stack: e?.stack,
+  })
+
+  const errMsg = e?.message || ""
+
+  if (
+    errMsg.includes("429") ||
+    errMsg.toLowerCase().includes("quota")
+  ) {
+    console.log(
+      "[chat] Gemini quota exceeded — switched to local AI"
     )
-
-    return ok(reply, "gemini")
-
-  } catch (e: any) {
-    console.error("[chat] Gemini failed:", {
-      message: e?.message,
-      stack: e?.stack,
-    })
-
-    const fallback = smartLocalFallback(
-      message,
-      history,
-      leadContext
-    )
-
-    return ok(fallback, "local")
   }
+
+  const fallback = smartLocalFallback(
+    message,
+    history,
+    leadContext
+  )
+
+  return ok(fallback, "local")
+}
+
 }
