@@ -236,10 +236,14 @@ export function detectIntent(text: string): Intent {
 
   // Order matters — most specific first
   if (has(t, KW.greeting) && t.length < 35) return "greeting"
-  if (has(t, KW.thanks)   && t.length < 40) return "thanks"
-  if (has(t, KW.complaint))   return "complaint"
-  if (has(t, KW.booking))     return "booking"
-  if (/\d+\s*[x×by]\s*\d+/.test(t)) return "room-estimate"
+if (has(t, KW.thanks) && t.length < 40) return "thanks"
+if (has(t, KW.complaint)) return "complaint"
+
+if (/\d{1,2}\s*[x×by]\s*\d{1,2}/.test(t))
+  return "room-estimate"
+
+if (has(t, KW.booking))
+  return "booking"
 
   // Comparison — STRICT: explicit word OR material pair
   const isCompare = COMPARE_EXPLICIT.some(kw => (` ${t} `).includes(kw)) ||
