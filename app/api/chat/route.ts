@@ -79,75 +79,90 @@ function checkRate(ip: string, limit = 25, windowMs = 60_000): boolean {
 
 // ─── Gemini API ────────────────────────────────────────────────────────────────
 
-interface GeminiMessage { role: "user" | "model"; parts: { text: string }[] }
+// ─── Groq API ───────────────────────────────────────────────────────────────
 
-async function callGemini(
+async function callGroq(
   systemPrompt: string,
   history: { role: string; content: string }[],
   message: string,
   apiKey: string,
-  baseUrl: string,
   timeoutMs = 12_000
 ): Promise<string> {
-  const model = "gemini-2.0-flash"
-  const url   = `${baseUrl}/models/${model}:generateContent?key=${apiKey}`
-
-  const contents: GeminiMessage[] = [
-    ...history.slice(-16).map(m => ({
-      role: (m.role === "user" ? "user" : "model") as "user" | "model",
-      parts: [{ text: m.content }],
-    })),
-    { role: "user", parts: [{ text: message }] },
-  ]
 
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
 
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      signal: controller.signal,
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-        contents,
-        generationConfig: {
-          maxOutputTokens: 800,
-          temperature: 0.72,
-          topP: 0.9,
-          topK: 40,
+
+    const res = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
         },
-        safetySettings: [
-          { category: "HARM_CATEGORY_HARASSMENT",       threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-          { category: "HARM_CATEGORY_HATE_SPEECH",       threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
-          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        ],
-      }),
-    })
+
+        signal: controller.signal,
+
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+
+          messages: [
+            {
+              role: "system",
+              content: systemPrompt,
+            },
+
+            ...history.map((m) => ({
+              role: m.role === "assistant"
+                ? "assistant"
+                : "user",
+              content: m.content,
+            })),
+
+            {
+              role: "user",
+              content: message,
+            },
+          ],
+
+          temperature: 0.7,
+          max_tokens: 700,
+        }),
+      }
+    )
 
     clearTimeout(timer)
 
     if (!res.ok) {
-  const bodyText = await res.text()
+      const bodyText = await res.text()
 
-  console.error("Gemini API Error:", {
-    status: res.status,
-    body: bodyText,
-    url,
-  })
+      console.error("Groq API Error:", {
+        status: res.status,
+        body: bodyText,
+      })
 
-  throw new Error(`Gemini HTTP ${res.status}: ${bodyText}`)
+      throw new Error(`Groq HTTP ${res.status}: ${bodyText}`)
     }
 
     const data = await res.json()
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text as string | undefined
-    if (!text?.trim()) throw new Error("Gemini returned empty response")
+
+    const text =
+      data?.choices?.[0]?.message?.content
+
+    if (!text?.trim()) {
+      throw new Error("Groq returned empty response")
+    }
+
     return text.trim()
+
   } catch (e) {
     clearTimeout(timer)
     throw e
   }
+}
 }
 
 // ─── Smart local fallback ──────────────────────────────────────────────────────
@@ -238,17 +253,11 @@ export async function POST(req: Request): Promise<NextResponse> {
     `[chat] ip=${ip} intent=${intent} msg="${message.slice(0, 60)}"`
   )
 
-  // API key + Base URL
-  const apiKey =
-    process.env.AI_INTEGRATIONS_GEMINI_API_KEY ??
-    process.env.GEMINI_API_KEY ??
-    ""
+  // API key
+const apiKey =
+  process.env.GROQ_API_KEY ?? ""
 
-  const baseUrl =
-    process.env.AI_INTEGRATIONS_GEMINI_BASE_URL ??
-    "https://generativelanguage.googleapis.com/v1beta"
-
-  // No API key → use smart local fallback
+// No API key → use smart local fallback
 if (!apiKey) {
   console.log("[chat] No API key — using local fallback")
 
@@ -270,7 +279,7 @@ const simpleQuery =
 // Build system prompt
 const systemPrompt = buildSystemPrompt(leadContext)
 
-// Gemini call
+// AI call
 try {
 
   // Use local AI for simple interior queries
@@ -284,20 +293,19 @@ try {
     return ok(localReply, "local")
   }
 
-  // Use Gemini for complex conversations
-  const reply = await callGemini(
+  // Use Groq for complex conversations
+  const reply = await callGroq(
     systemPrompt,
     history,
     message,
-    apiKey,
-    baseUrl
+    apiKey
   )
 
-  return ok(reply, "gemini")
+  return ok(reply, "groq")
 
 } catch (e: any) {
 
-  console.error("[chat] Gemini failed:", {
+  console.error("[chat] Groq failed:", {
     message: e?.message,
     stack: e?.stack,
   })
@@ -309,7 +317,7 @@ try {
     errMsg.toLowerCase().includes("quota")
   ) {
     console.log(
-      "[chat] Gemini quota exceeded — switched to local AI"
+      "[chat] Groq quota exceeded — switched to local AI"
     )
   }
 
