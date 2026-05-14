@@ -357,7 +357,8 @@ function r_pricing(t: string, ctx: ConversationContext): string {
     const nameMap: Record<string, string> = { pvc: "PVC Ceiling", wpc: "WPC Wall Panel", uv: "UV Marble Sheet", grid: "Grid Ceiling", gypsum: "Gypsum Ceiling" }
     return formatPriceEstimate(l, w, key, nameMap[key] || "Gypsum Ceiling") + `\n\n📞 Exact quote ke liye free site visit: **${WA}**`
   }
-// Material-specific price (no dimensions yet)
+
+  // Material-specific price (no dimensions yet)
   const matKey = t.includes("pvc") ? "pvc"
                : t.includes("gypsum") ? "gypsum"
                : t.includes("wpc") ? "wpc"
@@ -376,13 +377,14 @@ function r_pricing(t: string, ctx: ConversationContext): string {
     if (p.premium) lines.push(`Premium: ${p.premium}`)
     lines.push(`\nRoom ka size batao (jaise 12×14) — exact estimate abhi nikaaluun! 📐`)
     return lines.join("\n")
-// Room-context price recommendation
+  }
+
+  // Room-context price recommendation
   if (ctx.roomType) {
     const rec = recommendMaterial(ctx.roomType, false, ctx.budget ?? null)
     return `${ctx.roomType} ke liye **${rec.primary}** — ${PRICE_MAP[rec.primary.toLowerCase().includes("pvc") ? "pvc" : "gypsum"].range}\n\nRoom ka size batao (jaise 12×14) — exact estimate nikaaluun!`
   }
-    
-    // Full price list — always helpful
+// Full price list — always helpful
   return `💰 **JK Interior — Price List**\n\n✨ Gypsum Ceiling — ${PRICE_MAP.gypsum.range}\n🏠 PVC Ceiling — ${PRICE_MAP.pvc.range}\n🪵 WPC Wall Panels — ${PRICE_MAP.wpc.range}\n💎 UV Marble Sheets — ${PRICE_MAP.uv.range}\n📺 Modular TV Unit — ${PRICE_MAP.tvunit.range}\n🏛 Fluted Panels — ${PRICE_MAP.fluted.range}\n🏢 Grid Ceiling — ${PRICE_MAP.grid.range}\n\nRoom ka size batayein — main exact estimate nikaal deti hoon! 📐`
 }
 
@@ -702,3 +704,4 @@ function pick<T>(arr: T[]): T {
 }
 
 export { ALL_AREAS, CITY_MAP }
+  
