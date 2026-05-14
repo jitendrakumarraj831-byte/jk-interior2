@@ -383,7 +383,7 @@ function r_pricing(t: string, ctx: ConversationContext): string {
               : t.includes("uv") || t.includes("marble") ? "uv"
               : t.includes("grid") ? "grid"
               : t.includes("gypsum") ? "gypsum"
-              : ctx.lastTopic || "gypsum"
+              : ctx.lastTopic || ctx.service || "pvc"
     const nameMap: Record<string, string> = { pvc: "PVC Ceiling", wpc: "WPC Wall Panel", uv: "UV Marble Sheet", grid: "Grid Ceiling", gypsum: "Gypsum Ceiling" }
     return formatPriceEstimate(l, w, key, nameMap[key] || "Gypsum Ceiling") + `\n\n📞 Exact quote ke liye free site visit: **${WA}**`
   }
@@ -424,11 +424,11 @@ function r_estimate(t: string, ctx: ConversationContext): string {
 
   const l = parseInt(dimMatch[1]), w = parseInt(dimMatch[2])
   const key = t.includes("pvc") ? "pvc"
-            : t.includes("wpc") ? "wpc"
-            : t.includes("uv") || t.includes("marble") ? "uv"
-            : t.includes("grid") ? "grid"
-            : t.includes("gypsum") ? "gypsum"
-            : ctx.lastTopic || "gypsum"
+          : t.includes("wpc") ? "wpc"
+          : t.includes("uv") || t.includes("marble") ? "uv"
+          : t.includes("grid") ? "grid"
+          : t.includes("gypsum") ? "gypsum"
+          : ctx.lastTopic || ctx.service || "pvc"
   const nameMap: Record<string, string> = {
     pvc: "PVC Ceiling", wpc: "WPC Wall Panel", uv: "UV Marble Sheet",
     grid: "Grid Ceiling", gypsum: "Gypsum Ceiling"
