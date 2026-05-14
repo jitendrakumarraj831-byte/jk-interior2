@@ -89,7 +89,7 @@ async function callGemini(
   baseUrl: string,
   timeoutMs = 12_000
 ): Promise<string> {
-  const model = "gemini-2.5-flash"
+  const model = "gemini-1.5-flash-latest"
   const url   = `${baseUrl}/models/${model}:generateContent?key=${apiKey}`
 
   const contents: GeminiMessage[] = [
@@ -129,8 +129,15 @@ async function callGemini(
     clearTimeout(timer)
 
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
-      throw new Error(`Gemini HTTP ${res.status}: ${JSON.stringify(body)}`)
+  const bodyText = await res.text()
+
+  console.error("Gemini API Error:", {
+    status: res.status,
+    body: bodyText,
+    url,
+  })
+
+  throw new Error(`Gemini HTTP ${res.status}: ${bodyText}`)
     }
 
     const data = await res.json()
@@ -207,6 +214,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   // Parse body
   let rawBody: unknown
+
   try {
     rawBody = await req.json()
   } catch {
@@ -215,6 +223,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   // Validate
   const parsed = ChatSchema.safeParse(rawBody)
+
   if (!parsed.success) {
     return err("Invalid request body", 400)
   }
@@ -223,17 +232,32 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   // Normalize + detect intent for logging
   const normMessage = normalizeTypos(message)
-  const intent      = detectIntent(normMessage)
-  console.log(`[chat] ip=${ip} intent=${intent} msg="${message.slice(0, 60)}"`)
+  const intent = detectIntent(normMessage)
 
-  // API key check
-  const apiKey  = process.env.AI_INTEGRATIONS_GEMINI_API_KEY ?? process.env.GEMINI_API_KEY ?? ""
-  const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL ?? "https://generativelanguage.googleapis.com"
+  console.log(
+    `[chat] ip=${ip} intent=${intent} msg="${message.slice(0, 60)}"`
+  )
+
+  // API key + Base URL
+  const apiKey =
+    process.env.AI_INTEGRATIONS_GEMINI_API_KEY ??
+    process.env.GEMINI_API_KEY ??
+    ""
+
+  const baseUrl =
+    process.env.AI_INTEGRATIONS_GEMINI_BASE_URL ??
+    "https://generativelanguage.googleapis.com/v1beta"
 
   // No API key → use smart local fallback
   if (!apiKey) {
     console.log("[chat] No API key — using local fallback")
-    const reply = smartLocalFallback(message, history, leadContext)
+
+    const reply = smartLocalFallback(
+      message,
+      history,
+      leadContext
+    )
+
     return ok(reply, "local")
   }
 
@@ -242,12 +266,28 @@ export async function POST(req: Request): Promise<NextResponse> {
 
   // Gemini call
   try {
-    const reply = await callGemini(systemPrompt, history, message, apiKey, baseUrl)
+    const reply = await callGemini(
+      systemPrompt,
+      history,
+      message,
+      apiKey,
+      baseUrl
+    )
+
     return ok(reply, "gemini")
-  } catch (e) {
-    const errMsg = e instanceof Error ? e.message : String(e)
-    console.error(`[chat] Gemini failed: ${errMsg}`)
-    const fallback = smartLocalFallback(message, history, leadContext)
+
+  } catch (e: any) {
+    console.error("[chat] Gemini failed:", {
+      message: e?.message,
+      stack: e?.stack,
+    })
+
+    const fallback = smartLocalFallback(
+      message,
+      history,
+      leadContext
+    )
+
     return ok(fallback, "local")
   }
-    }
+}
