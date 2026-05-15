@@ -630,11 +630,24 @@ function r_quality(ctx: ConversationContext): string {
   return `JK Interior Quality${n}:\n\n✅ **1 saal ki written warranty** — koi issue, free repair\n✅ **ISI-certified** branded materials\n✅ 100% waterproof options\n✅ **8+ saal, 500+ projects**\n✅ Kaam se pehle material sample\n\nNishchint rahein — quality guarantee hai! 🙏`
 }
 
-function r_area(t: string, knownCity?: string): string {
+function r_area(t: string, knownCity?: string, ctx?: ConversationContext): string {
   const city = detectCity(t) || knownCity
   if (city) {
-    const isMain = ["Forbesganj", "Araria"].includes(city)
-    return `📍 **${city}** — haan, hum wahan kaam karte hain! 😊${isMain ? " (hamara main area)" : ""}\n\nKaunsa kaam karwana hai?`
+  const isMain = ["Forbesganj", "Araria"].includes(city)
+  const cityLine = `✅ **${city}** mein bilkul kaam karte hain!${isMain ? " 💪 (hamara main area)" : " 😊"}`
+  const topic = ctx?.lastTopic || ctx?.service
+  if (topic) {
+    const topicName: Record<string, string> = {
+      gypsum: "Gypsum Ceiling", pvc: "PVC Ceiling",
+      wpc: "WPC Wall Panels", uv: "UV Marble Sheets", tvunit: "Modular TV Unit",
+    }
+    const readable = topicName[topic] || topic
+    const sizePrompt = ctx?.roomSize
+      ? `Room size already noted — estimate nikaalte hain!`
+      : `Room ka size batao (jaise 12×14) — exact estimate abhi nikalti hoon! 📐`
+    return `${cityLine}\n\n${readable} ke liye — ${sizePrompt}\n\n📞 **${WA}**`
+  }
+  return `${cityLine}\n\nKaunsa kaam karwana hai? Room size bataiye — estimate abhi! 📐`
   }
   return `📍 Main service area: **Forbesganj & Araria**\n\nNearby cities:\nJogbani • Raniganj • Narpatganj • Kursakanta\nTribeniganj • Chhatapur • Supaul • Purnia\n\nAap kis city mein hain?`
 }
