@@ -395,10 +395,7 @@ Wall size bhejiye — exact estimate bata deta hoon ✨`
 ✅ Modern Wall Design`
   }
 
-  const cityMentioned = detectCity(t)
-
-if (cityMentioned) {
-
+  // Default city response
   return `✅ ${cityMentioned} mein bilkul kaam karte hain! 💪
 
 🏠 PVC Ceiling
@@ -409,9 +406,9 @@ if (cityMentioned) {
 
 📞 Free site visit available:
 +91 8651070831`
-        }       
-        
-  // Default
+}
+
+// Default
   return pick([
     nm ? `${nm}, share your room dimensions (like 12×10 or 14×12) and I’ll give you a detailed premium estimate!` : `Hi there! I'm Riya, your interior AI consultant. Give me your room size (e.g., 12×10) and I'll prepare a luxury estimate instantly ✨`,
     `Room dimensions please? (e.g., 12 feet by 14 feet) – then I can calculate costs, material suggestions, and design advice.`,
