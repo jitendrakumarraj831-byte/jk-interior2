@@ -173,21 +173,25 @@ function buildEngineContext(
   }>
 ): ConversationContext {
   const ctx: ConversationContext = {
-    name: lead?.name,
-    phone: lead?.phone,
-    city: lead?.city,
-    service: lead?.service,
-    roomSize: lead?.roomSize,
-    roomType: lead?.roomType,
-    lastTopic: lead?.lastTopic,
-    lastIntent: lead?.lastIntent ?? undefined,
-    budget:
-      (lead?.budget as
-        | "low"
-        | "mid"
-        | "high"
-        | undefined) ?? null,
-    messagesExchanged: history.length,
+  name: lead?.name,
+  phone: lead?.phone,
+  city: lead?.city,
+  service: lead?.service,
+  roomSize: lead?.roomSize,
+  roomType: lead?.roomType,
+  lastTopic: lead?.lastTopic,
+
+  lastIntent:
+    lead?.lastIntent as ConversationContext["lastIntent"],
+
+  budget:
+    (lead?.budget as
+      | "low"
+      | "mid"
+      | "high"
+      | undefined) ?? null,
+
+  messagesExchanged: history.length,
   }
 
   // Enrich from recent user messages
