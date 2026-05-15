@@ -395,10 +395,12 @@ Wall size bhejiye — exact estimate bata deta hoon ✨`
 ✅ Modern Wall Design`
   }
 
-  // Default city response
+  const cityMentioned = detectCity(t)
+
+if (cityMentioned) {
+
   return `✅ ${cityMentioned} mein bilkul kaam karte hain! 💪
 
-✨ Available Services:
 🏠 PVC Ceiling
 ✨ Gypsum Ceiling
 🪵 WPC Wall Panels
