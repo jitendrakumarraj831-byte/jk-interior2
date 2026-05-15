@@ -846,6 +846,11 @@ export function consultantReply(
 
   const hasDim = DIM_REGEX.test(t)
 
+  // ── Complex/detailed questions → let Groq handle (length > 80 chars with specific words)
+  // These indicate nuanced situations the rule engine can't answer properly
+  const COMPLEX_SIGNALS = /uneven|column|pillar|purana|old\s*wall|damage|crack|seepage.*wall|wall.*seepage|corner|curved|irregular|sloped|ceiling.*low|low.*ceiling|renovation|pehle\s*se|already|existing|already\s*laga|pehle\s*laga/i
+  if (t.length > 70 && COMPLEX_SIGNALS.test(t)) return null
+
   // ── 1. Context-aware follow-up FIRST (highest priority)
   const followUp = resolveContextualFollowUp(input, ctx)
   if (followUp) return followUp
@@ -888,9 +893,11 @@ export function consultantReply(
     return `**${city}** mein hum kaam karte hain! 💪\n\nKaunsa kaam karwana hai? Room size bataiye — estimate abhi!`
   }
 
-  // ── 5. Deep material info
-  const matDetail = r_materialDetail(t, ctx)
-  if (matDetail) return matDetail
+  // ── 5. Deep material info — only for short/direct material questions
+  if (t.length < 80) {
+    const matDetail = r_materialDetail(t, ctx)
+    if (matDetail) return matDetail
+  }
 
   // ── 6. FAQ matching
   for (const faq of FAQ) {
