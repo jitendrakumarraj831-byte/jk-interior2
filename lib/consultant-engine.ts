@@ -624,7 +624,6 @@ function r_confused(ctx: ConversationContext, room: { label: string; isWet: bool
   }
   return `Main guide karungi! 😊\n\n1️⃣ Kaunsi room? (Hall, Bedroom, Kitchen, Bathroom)\n2️⃣ Budget basic hai ya premium?\n\nBataiye — best option suggest karungi!`
 }
-}
 
 function r_quality(ctx: ConversationContext): string {
   const n = nm(ctx)
