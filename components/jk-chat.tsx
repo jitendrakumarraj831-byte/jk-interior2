@@ -361,7 +361,7 @@ if (cityMentioned) {
   }
 
   // Gypsum already discussed — push to estimate
-  if (nm && lastBotText && /gypsum/i.test(lastBotText)) {
+  if (nm) {
     return `**${cityMentioned}** mein bilkul kaam karte hain! 💪\n\nAapne Gypsum ke baare mein pooch raha tha — room ka size batao, estimate abhi nikalti hoon! 📐\n\n📞 +91 8651070831`
   }
 
