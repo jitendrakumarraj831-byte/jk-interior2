@@ -32,7 +32,7 @@ export type Intent =
   | "greeting" | "thanks" | "complaint" | "booking" | "call-request"
   | "comparison" | "pricing" | "room-estimate" | "waterproof" | "design"
   | "installation" | "budget" | "negotiation" | "confused" | "image-reference"
-  | "quality" | "area" | "service-info" | "general"
+  | "quality" | "area" | "service-info" | "vastu" | "competitor" | "urgent" | "general"
 
 export interface ConversationContext {
   name?: string
@@ -176,6 +176,11 @@ export function normalizeTypos(text: string): string {
     // Greeting normalization
     .replace(/\bkya\s+hal\b/gi,    "kya haal")
     .replace(/\bkaise\s+hain\b/gi, "kaise ho")
+    // Casual filler words — strip before intent detection
+    // "bhai gypsum ka rate kya hai yaar" → "gypsum ka rate kya hai"
+    .replace(/\b(bhai|yaar|yar|bro|dost|yrr|yr)\b/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim()
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -299,7 +304,7 @@ export function detectBudgetLevel(text: string): "low" | "mid" | "high" | null {
 // ── Intent keyword groups
 const KW: Record<string, string[]> = {
   greeting:    ["hi", "hello", "hey", "namaste", "namaskar", "helo", "good morning", "good evening", "good afternoon", "hy", "hii", "salam", "kaise ho", "kya haal", "how are you", "hlo", "assalamualaikum", "jai hind"],
-  thanks:      ["thank", "shukriya", "dhanyawad", "thanks", "thx", "bahut accha", "great", "perfect", "superb", "awesome", "shabash", "badiya", "wah", "bdhiya", "bilkul sahi", "ekdum sahi"],
+  thanks:      ["thank", "shukriya", "dhanyawad", "thanks", "thx", "bahut accha", "great", "perfect", "superb", "awesome", "shabash", "badiya", "wah", "bdhiya", "bilkul sahi", "ekdum sahi", "achha laga", "acha laga", "accha laga", "baat karke", "helpful", "bahut helpful", "helpful rahi", "helpful tha", "maza aaya", "maja aaya", "khushi hui", "helpful hai", "bohot accha"],
   complaint:   ["problem", "issue", "complaint", "shikayat", "girna", "toota", "peeling", "leaking", "broken", "repair", "thik karo", "kharab", "nahi chal raha"],
   booking:     ["site visit", "measurement", "bulao", "survey", "appointment", "schedule", "bula lo", "free visit", "aana hai", "book karo", "shuru karein", "kab aao", "aap aa sakte", "visit karo", "aao ghar", "ghar aao", "kab aa sakte"],
   waterproof:  ["waterproof", "water proof", "paani", "seepage", "moisture", "humidity", "geela", "nami", "barish", "water resistant", "leak", "bheega", "namkin"],
@@ -314,6 +319,9 @@ const KW: Record<string, string[]> = {
   quality:     ["guarantee", "warranty", "quality", "bharosa", "trust", "kitne saal", "durable", "isi", "certified", "strong", "life", "chalega", "original", "branded", "tikau"],
   pricing:     ["price", "cost", "rate", "kimat", "daam", "kitna", "kharcha", "lagat", "paisa", "quote", "how much", "kitna lagega", "kaisa lagega", "charge", "per sqft", "mahnga", "estimate", "quotation", "labour", "fitting charge", "rupaye", "rs ", "kitne rupaye", "kharch"],
   service:     ["service", "kya karte", "kya milta", "bataiye", "samjhao", "kya kaam", "kya options", "kya kya hai"],
+  vastu:       ["vastu", "vaastu", "vastu shastra", "vastu ke hisaab", "direction", "north facing", "south facing", "east facing", "west facing", "disha"],
+  competitor:  ["competitor", "dusri company", "doosri company", "xyz company", "kisi aur se", "kisi doosre se", "market mein", "se sasta", "se accha", "se better", "se kam", "bahar se", "kisi aur company", "doosra"],
+  urgent:      ["kal tak", "aaj chahiye", "abhi chahiye", "jaldi chahiye", "urgent hai", "asap", "kal karwana", "aaj hi", "turant", "jaldi se", "bahut jaldi", "emergency", "kal se shuru"],
 }
 
 // Strict comparison — ONLY explicit compare signals
@@ -338,7 +346,9 @@ export function detectIntent(text: string): Intent {
 
   // Greeting & social — short messages only
   if (has(t, KW.greeting) && t.length < 40)  return "greeting"
-  if (has(t, KW.thanks) && t.length < 60)    return "thanks"
+  // "Aapse baat karke achha laga" type closing messages
+  if (/\b(baat\s*karke|helpful\s*(rahi|tha|hai)|achha\s*laga|acha\s*laga|accha\s*laga|maza\s*aaya|maja\s*aaya)\b/.test(t)) return "thanks"
+  if (has(t, KW.thanks) && t.length < 80)    return "thanks"
   if (has(t, KW.complaint))                  return "complaint"
 
   // Explicit booking signals (not just "visit" as a word in passing)
@@ -365,6 +375,11 @@ export function detectIntent(text: string): Intent {
   if (has(t, KW.budget))  return "budget"
   if (has(t, KW.design))  return "design"
   if (has(t, KW.service)) return "service-info"
+
+  // Specific intent detection for new cases
+  if (has(t, KW.vastu))      return "vastu"
+  if (has(t, KW.competitor)) return "competitor"
+  if (has(t, KW.urgent))     return "urgent"
 
   return "general"
 }
@@ -427,6 +442,9 @@ function r_thanks(ctx: ConversationContext): string {
   const opts = [
     `Shukriya${n}! 🙏 Koi sawaal ho toh poochhte rehna.\n\nFree site visit chahiye? **${WA}** pe WhatsApp karein!`,
     `Bahut shukriya${n}! 😊 Aur koi sawaal?\n\nFree site visit — **${WA}**`,
+    `Khushi hui${n} ki baat helpful lagi! 😊\n\nJab bhi room ka kaam karwana ho — main hoon. Free site visit ke liye WhatsApp: **${WA}**`,
+    `Shukriya${n}! 🙏 Aap ke ghar ki design sundar hogi.\n\nKuch aur poochna ho toh batayein — main hoon!`,
+    `Bahut accha laga baat karke${n}! 😊 Jab bhi estimate ya design chahiye — direct poochh lena.\n\nWhatsApp: **${WA}**`,
   ]
   return pick(opts)
 }
@@ -458,7 +476,7 @@ function r_comparison(t: string): string {
     return COMPARISONS["wpc-vs-uv"]
   if (t.includes("pvc") && t.includes("wpc"))
     return COMPARISONS["pvc-vs-wpc"]
-  return `Kya compare karna hai?\n\n🏠 **PVC vs Gypsum** — ceiling ke liye\n🪵 **WPC vs UV Marble** — wall ke liye\n\nBataiye — honest comparison dunga!`
+  return `Kya compare karna hai?\n\n🏠 **PVC vs Gypsum** — ceiling ke liye\n🪵 **WPC vs UV Marble** — wall ke liye\n\nBataiye — honest comparison dungi!`
 }
 
 /**
@@ -549,7 +567,7 @@ function r_design(t: string, ctx: ConversationContext): string {
     t.includes("kitchen")                       ? "Kitchen" : null
   )
 
-  const sizeAsk = ctx.roomSize ? "" : "\n\nSize bataiye — exact estimate dunga!"
+  const sizeAsk = ctx.roomSize ? "" : "\n\nSize bataiye — exact estimate dungi!"
 
   if (roomType === "Hall" || roomType === "Dining")
     return `Hall ke liye trending designs:\n\n✨ **Gypsum cove ceiling** — LED strip ke saath\n🪵 **WPC fluted panels** — TV wall pe 3D look\n💎 **UV marble accent** — premium feel${sizeAsk}`
@@ -566,6 +584,13 @@ function r_design(t: string, ctx: ConversationContext): string {
 
 function r_installation(t: string, ctx: ConversationContext): string {
   const key = resolveServiceKey(t, ctx)
+  // Urgent timeline query — specific response
+  if (/kal\s*tak|aaj\s*(hi|chahiye)|abhi\s*chahiye|urgent|asap|turant/.test(t)) {
+    const oh = isOffHours()
+    return oh
+      ? `Urgent request samajh aa gayi! ⚡\n\nAbhi WhatsApp karein — kal ke liye slot confirm karte hain:\n📱 **${WA}**`
+      : `Kal tak possible hai! ⚡\n\n🏠 PVC — sirf 1 din\n✨ Gypsum — 2-3 din (kal tak 1 room ho sakta)\n\nAbhi WhatsApp karein — slot book karte hain:\n📱 **${WA}**`
+  }
   if (key === "pvc" || t.includes("pvc"))
     return `PVC ceiling — **1 room mein sirf 1 din!** Poore ghar mein 3-4 din. ⚡\n\nJaldi start karwana chahte hain? **${WA}**`
   if (key === "gypsum" || t.includes("gypsum"))
@@ -591,16 +616,19 @@ function r_negotiation(t: string): string {
 function r_confused(ctx: ConversationContext, room: { label: string; isWet: boolean } | null): string {
   const roomLabel = ctx.roomType || room?.label
   if (roomLabel) {
-    const rec = recommendMaterial(roomLabel, room?.isWet ?? false, ctx.budget ?? null)
-    const sizeAsk = ctx.roomSize ? "" : "\n\nRoom ka size batao — estimate bhi de deta hoon!"
+    // Check isWet from detected room OR from ctx.roomType string directly
+    const isWet = room?.isWet ?? /kitchen|bathroom|balcony/i.test(ctx.roomType || "")
+    const rec = recommendMaterial(roomLabel, isWet, ctx.budget ?? null)
+    const sizeAsk = ctx.roomSize ? "" : "\n\nRoom ka size batao — estimate bhi de dungi!"
     return `Koi baat nahi! 😊\n\n${roomLabel} ke liye: **${rec.primary}** — ${rec.reason}${rec.alternative ? `\n\nAlternative: **${rec.alternative}** — ${rec.altReason}` : ""}${sizeAsk}`
   }
-  return `Main guide karunga! 😊\n\n1️⃣ Kaunsi room? (Hall, Bedroom, Kitchen, Bathroom)\n2️⃣ Budget basic hai ya premium?\n\nBataiye — best option suggest karunga!`
+  return `Main guide karungi! 😊\n\n1️⃣ Kaunsi room? (Hall, Bedroom, Kitchen, Bathroom)\n2️⃣ Budget basic hai ya premium?\n\nBataiye — best option suggest karungi!`
+}
 }
 
 function r_quality(ctx: ConversationContext): string {
   const n = nm(ctx)
-  return `JK Interior Quality${n}:\n\n✅ **1 saal ki written warranty** — koi issue, free repair\n✅ **ISI-certified** branded materials\n✅ 100% waterproof options\n✅ **8+ saal, 500+ projects**\n✅ Kaam se pehle material sample\n\nNiश्चint rahein — quality guarantee hai! 🙏`
+  return `JK Interior Quality${n}:\n\n✅ **1 saal ki written warranty** — koi issue, free repair\n✅ **ISI-certified** branded materials\n✅ 100% waterproof options\n✅ **8+ saal, 500+ projects**\n✅ Kaam se pehle material sample\n\nNishchint rahein — quality guarantee hai! 🙏`
 }
 
 function r_area(t: string, knownCity?: string): string {
@@ -684,7 +712,7 @@ function r_materialDetail(t: string, ctx: ConversationContext): string | null {
         return `**LED Cove Lighting** — ₹40–80/running ft\n\n${ctx.roomSize} room mein roughly ₹${lo.toLocaleString("en-IN")}–₹${hi.toLocaleString("en-IN")} extra.\n\nGhar cinema jaisa! 😍`
       }
     }
-    return `**LED Cove Lighting** — ₹40–80/running ft\n\nGypsum ceiling ke saath LED = ghar cinema jaisa! 😍\n\nRoom size batao — LED ka estimate bhi nikaalta hoon!`
+    return `**LED Cove Lighting** — ₹40–80/running ft\n\nGypsum ceiling ke saath LED = ghar cinema jaisa! 😍\n\nRoom size batao — LED ka estimate bhi nikalti hoon!`
   }
   return null
 }
@@ -715,7 +743,7 @@ export function resolveContextualFollowUp(
           return `Gypsum + LED cove:\n\n✨ ₹40–80/running ft\n${ctx.roomSize} room mein roughly **₹${lo.toLocaleString("en-IN")}–₹${hi.toLocaleString("en-IN")}** extra.\n\nGhar cinema jaisa! 😍`
         }
       }
-      return `Gypsum + LED cove:\n\n✨ ₹40–80/running ft\nRoom size batao — total estimate ke saath LED bhi nikaalta hoon! 📐`
+      return `Gypsum + LED cove:\n\n✨ ₹40–80/running ft\nRoom size batao — total estimate ke saath LED bhi nikalti hoon! 📐`
     }
   }
 
@@ -776,6 +804,58 @@ export function resolveContextualFollowUp(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// NEW RESPONDERS — vastu, competitor, urgent
+// ─────────────────────────────────────────────────────────────────────────────
+
+function r_vastu(ctx: ConversationContext): string {
+  const n = nm(ctx)
+  return `Vastu ke hisaab se kuch tips${n}:
+
+🧭 **Ceiling design** — koi bhi material vastu-neutral hota hai
+✨ **Gypsum** — hall mein north/east direction pe cove lighting best hai
+🏠 **PVC** — bathroom/kitchen ke liye (water zones) — vastu bhi yahi kehta hai
+💎 **UV marble** — south wall pe marble effect — prosperity ke liye maana jaata hai
+
+Hum design mein vastu ka dhyan rakhte hain! Free site visit mein discuss karein.
+
+📞 **${WA}**`
+}
+
+function r_competitor(ctx: ConversationContext): string {
+  const n = nm(ctx)
+  return `${ctx.name ? ctx.name + " ji, " : ""}hamare baare mein honestly bolunga:
+
+✅ **ISI-certified materials** — local market se alag
+✅ **1 saal written warranty** — market mein rare hai
+✅ **500+ projects, 8+ saal** — proven track record
+✅ **No hidden charges** — jo quote, wohi final
+✅ **Labour + material** — ek hi team
+
+Rate compare karna ho toh — free site visit mein exact quote lo, phir decide karo. Koi pressure nahi! 🙏
+
+📞 **${WA}**`
+}
+
+function r_urgent(ctx: ConversationContext): string {
+  const n = nm(ctx)
+  const oh = isOffHours()
+  if (oh) {
+    return `Urgent kaam ke liye${n} — abhi WhatsApp karein:
+
+📱 **${WA}**
+
+Team kal 9 AM pe contact karegi. Urgent message likh dein — priority mein lenge! ⚡`
+  }
+  return `Urgent kaam ke liye${n} — abhi seedha contact karein:
+
+📞 **Call/WhatsApp: ${WA}**
+
+Team available hai — aaj ya kal ka slot milega! ⚡
+
+Room ka size aur kaam bata dijiye — estimate bhi abhi nikalti hoon!`
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 8. SMART LOCAL FALLBACK — when intent is "general" and no match found
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -804,6 +884,12 @@ function smartLocalFallback(ctx: ConversationContext, t: string): string | null 
   if (svcObj && !ctx.roomType && !ctx.askedRoomType) {
     ctx.askedRoomType = true
     return `**${svcObj.name}** — accha choice! 👍\n\nKaunsi room ke liye? Hall, bedroom, kitchen ya koi aur?`
+  }
+
+  // Multi-room query WITHOUT sizes — "2 bedroom aur 1 hall ka total"
+  const multiRoomPattern = /\b(\d+)\s*(bedroom|bed\s*room|kamra|hall|drawing|living|kitchen|bathroom|room)\b.*\b(aur|and|\+|or)\b.*\b(\d+)\s*(bedroom|bed\s*room|kamra|hall|drawing|living|kitchen|bathroom|room)\b/i
+  if (multiRoomPattern.test(t) && !DIM_REGEX.test(t)) {
+    return `Multiple rooms ka estimate chahiye! 📐\n\nSabse accha hoga agar har room ka size batao:\n\nJaise: "2 bedroom 12×14, hall 16×18"\n\nYa seedha free site visit mein sab measure karke exact quote denge!\n\n📞 **${WA}**`
   }
 
   return null
@@ -882,10 +968,18 @@ export function consultantReply(
     case "budget":          return r_budget(room, ctx)
     case "negotiation":     return r_negotiation(t)
     case "confused":        return r_confused(ctx, room)
-    case "image-reference": return `Design reference ke hisaab se bilkul bana sakte hain! 🎨\n\nFree site visit mein photo dikhaiye — exact style mein estimate.\n\nWhatsApp pe photo bhejein: **${WA}**`
+    case "image-reference": {
+      const photoMsg = /photo\s*(dekh|dekha|dekho|bhejo|bhej|send)|image\s*(dekh|send)|pic\s*(dekh|send)/.test(t)
+        ? `Photo dekh ke bilkul bata sakti hoon! 📸\n\nWhatsApp pe photo bhejein — exact same design ka estimate aur feasibility bataungi:\n\n📱 **${WA}**\n\nYa free site visit mein directly dikhaiye!`
+        : `Design reference ke hisaab se bilkul bana sakte hain! 🎨\n\nFree site visit mein photo dikhaiye — exact style mein estimate.\n\nWhatsApp pe photo bhejein: **${WA}**`
+      return photoMsg
+    }
     case "quality":         return r_quality(ctx)
     case "area":            return r_area(t, ctx.city)
     case "service-info":    return r_serviceInfo()
+    case "vastu":           return r_vastu(ctx)
+    case "competitor":      return r_competitor(ctx)
+    case "urgent":          return r_urgent(ctx)
   }
 
   // ── 4. City mention alone (short message)
