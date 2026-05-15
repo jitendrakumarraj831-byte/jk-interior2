@@ -987,7 +987,7 @@ export function consultantReply(
       return photoMsg
     }
     case "quality":         return r_quality(ctx)
-    case "area":            return r_area(t, ctx.city)
+    case "area":            return r_area(t, ctx.city, ctx)
     case "service-info":    return r_serviceInfo()
     case "vastu":           return r_vastu(ctx)
     case "competitor":      return r_competitor(ctx)
