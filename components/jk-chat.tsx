@@ -338,9 +338,7 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
 // City mention with existing estimate → context-aware reply
 const cityMentioned = detectCity(t)
 if (cityMentioned) {
-  const estText = pendingEstimate
-    ? `\n\nAapka estimate ready hai: **${pendingEstimate}**`
-    : ""
+  const estText = ""
   return `**${cityMentioned}** mein bilkul kaam karte hain! 💪${estText}\n\nFree site visit book karein?\n📞 +91 8651070831`
         }
         
