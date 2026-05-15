@@ -335,7 +335,15 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   if (has(t, ["visit","book","site visit","measurement","quotation","bulao","aao","free visit"])) {
     return `📅 **Free Site Visit** – No hidden charges. Our expert will measure, suggest designs, and give a final quote.\n\n📞 **+91 8651070831** (call/WhatsApp)${oh ? "\n🌙 Off-hours – we'll call tomorrow 9 AM." : " – available now!"}`
   }
-
+// City mention with existing estimate → context-aware reply
+const cityMentioned = detectCity(t)
+if (cityMentioned) {
+  const estText = pendingEstimate
+    ? `\n\nAapka estimate ready hai: **${pendingEstimate}**`
+    : ""
+  return `**${cityMentioned}** mein bilkul kaam karte hain! 💪${estText}\n\nFree site visit book karein?\n📞 +91 8651070831`
+        }
+        
   // Default
   return pick([
     nm ? `${nm}, share your room dimensions (like 12×10 or 14×12) and I’ll give you a detailed premium estimate!` : `Hi there! I'm Riya, your interior AI consultant. Give me your room size (e.g., 12×10) and I'll prepare a luxury estimate instantly ✨`,
