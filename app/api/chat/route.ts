@@ -1,10 +1,17 @@
 /**
- * JK Interior — /api/chat Route v4.1
+ * JK Interior — /api/chat Route v4.2
  * ────────────────────────────────────
  * Clean 3-layer response system:
  *   Layer 1: Rule engine (consultantReply) — instant, no API call
  *   Layer 2: Groq AI — complex/open conversations
  *   Layer 3: Smart local fallback — if Groq fails, never blank
+ *
+ * Fixes in v4.2:
+ *   [1] Removed dead consultantReply() duplicate call in Layer 3
+ *   [2] Pricing now lives only in genericFallback (single source of truth)
+ *   [3] extractedRoomSize now propagated in Layer 2 + Layer 3 returns
+ *   [4] Removed unused `intent` variable — detectIntent removed from route
+ *   [5] Missing GROQ_API_KEY now logs a clear warning (not silent)
  */
 
 import { NextResponse } from "next/server"
@@ -14,7 +21,6 @@ import { buildSystemPrompt } from "@/lib/business-data"
 
 import {
   consultantReply,
-  detectIntent,
   detectService,
   detectRoomType,
   detectBudgetLevel,
@@ -173,25 +179,25 @@ function buildEngineContext(
   }>
 ): ConversationContext {
   const ctx: ConversationContext = {
-  name: lead?.name,
-  phone: lead?.phone,
-  city: lead?.city,
-  service: lead?.service,
-  roomSize: lead?.roomSize,
-  roomType: lead?.roomType,
-  lastTopic: lead?.lastTopic,
+    name: lead?.name,
+    phone: lead?.phone,
+    city: lead?.city,
+    service: lead?.service,
+    roomSize: lead?.roomSize,
+    roomType: lead?.roomType,
+    lastTopic: lead?.lastTopic,
 
-  lastIntent:
-    lead?.lastIntent as ConversationContext["lastIntent"],
+    lastIntent:
+      lead?.lastIntent as ConversationContext["lastIntent"],
 
-  budget:
-    (lead?.budget as
-      | "low"
-      | "mid"
-      | "high"
-      | undefined) ?? null,
+    budget:
+      (lead?.budget as
+        | "low"
+        | "mid"
+        | "high"
+        | undefined) ?? null,
 
-  messagesExchanged: history.length,
+    messagesExchanged: history.length,
   }
 
   // Enrich from recent user messages
@@ -205,26 +211,17 @@ function buildEngineContext(
 
     if (!ctx.service) {
       const s = detectService(norm)
-
-      if (s) {
-        ctx.service = s.name
-      }
+      if (s) ctx.service = s.name
     }
 
     if (!ctx.roomType) {
       const r = detectRoomType(norm)
-
-      if (r) {
-        ctx.roomType = r.label
-      }
+      if (r) ctx.roomType = r.label
     }
 
     if (!ctx.budget) {
       const b = detectBudgetLevel(norm)
-
-      if (b) {
-        ctx.budget = b
-      }
+      if (b) ctx.budget = b
     }
   }
 
@@ -297,10 +294,7 @@ async function callGroq(
 
     if (!response.ok) {
       const body = await response.text()
-
-      throw new Error(
-        `Groq ${response.status}: ${body}`
-      )
+      throw new Error(`Groq ${response.status}: ${body}`)
     }
 
     const data = await response.json()
@@ -325,6 +319,8 @@ async function callGroq(
 
 // ─────────────────────────────────────────────────────────────
 // Generic Fallback
+// Single source of truth for fallback pricing + off-hours reply.
+// This fires when: GROQ_API_KEY is missing, or Groq fails.
 // ─────────────────────────────────────────────────────────────
 
 function genericFallback(
@@ -339,9 +335,7 @@ function genericFallback(
 
   if (
     message &&
-    /price|rate|cost|kitna|lagega|estimate/i.test(
-      message
-    )
+    /price|rate|cost|kitna|lagega|estimate/i.test(message)
   ) {
     return `
 💰 *JK Interior — Price Guide*
@@ -427,10 +421,10 @@ export async function POST(
       message?.trim() || ""
     )
 
-    const intent = detectIntent(normMessage)
-
     // ─────────────────────────────────────────
     // Extract Room Size
+    // Shared across all layers so context is
+    // never lost regardless of which layer replies.
     // ─────────────────────────────────────────
 
     const dimMatch = normMessage.match(
@@ -441,67 +435,49 @@ export async function POST(
       ? `${dimMatch[1]}x${dimMatch[2]}`
       : leadContext?.roomSize ?? undefined
 
+    // Helper: build updatedContext only when there's a room size
+    const roomCtx = extractedRoomSize
+      ? { roomSize: extractedRoomSize }
+      : undefined
+
     console.log(
-      `[chat] ip=${ip} intent=${intent} msg="${message.slice(
-        0,
-        60
-      )}"`
+      `[chat] ip=${ip} msg="${message.slice(0, 60)}"`
     )
 
     // ─────────────────────────────────────────
     // Layer 1 — Rule Engine
     // ─────────────────────────────────────────
 
-    const ctx = buildEngineContext(
-      leadContext,
-      history
-    )
+    const ctx = buildEngineContext(leadContext, history)
 
-    const engineReply = consultantReply(
-      normMessage,
-      ctx
-    )
+    const engineReply = consultantReply(normMessage, ctx)
 
     if (engineReply) {
-      console.log(
-        `[chat] Layer 1 handled intent=${intent}`
-      )
+      console.log("[chat] Layer 1 handled")
 
-      return ok(
-        engineReply,
-        "local",
-        extractedRoomSize
-          ? {
-              roomSize:
-                extractedRoomSize,
-            }
-          : undefined
-      )
+      return ok(engineReply, "local", roomCtx)
     }
 
     // ─────────────────────────────────────────
     // Layer 2 — Groq
     // ─────────────────────────────────────────
 
-    const apiKey =
-      process.env.GROQ_API_KEY ?? ""
+    const apiKey = process.env.GROQ_API_KEY ?? ""
 
     if (!apiKey) {
-      console.log(
-        "[chat] Missing GROQ_API_KEY"
+      // FIX [5]: warn clearly — this is a config problem, not normal flow
+      console.warn(
+        "[chat] GROQ_API_KEY is not set — falling back to genericFallback"
       )
 
       return ok(
-        genericFallback(
-          leadContext,
-          message
-        ),
-        "local"
+        genericFallback(leadContext, message),
+        "local",
+        roomCtx // FIX [3]: propagate roomSize even on key-missing path
       )
     }
 
-    const systemPrompt =
-      buildSystemPrompt(leadContext)
+    const systemPrompt = buildSystemPrompt(leadContext)
 
     try {
       const reply = await callGroq(
@@ -511,11 +487,10 @@ export async function POST(
         apiKey
       )
 
-      console.log(
-        `[chat] Layer 2 (Groq) success`
-      )
+      console.log("[chat] Layer 2 (Groq) success")
 
-      return ok(reply, "groq")
+      // FIX [3]: propagate roomSize from Groq replies too
+      return ok(reply, "groq", roomCtx)
     } catch (error: any) {
       const errMsg = String(
         error?.message || ""
@@ -525,56 +500,32 @@ export async function POST(
         errMsg.includes("429") ||
         errMsg.includes("quota")
       ) {
-        console.warn(
-          "[chat] Groq quota exceeded"
-        )
-      } else if (
-        errMsg.includes("abort")
-      ) {
-        console.warn(
-          "[chat] Groq timeout"
-        )
+        console.warn("[chat] Groq quota exceeded")
+      } else if (errMsg.includes("abort")) {
+        console.warn("[chat] Groq timeout")
       } else {
-        console.error(
-          "[chat] Groq error:",
-          error
-        )
+        console.error("[chat] Groq error:", error)
       }
 
       // ─────────────────────────────────────
       // Layer 3 — Local Fallback
+      //
+      // FIX [1]: Removed dead consultantReply() call here.
+      // If consultantReply() returned null in Layer 1, it will
+      // always return null again with the same inputs — nothing
+      // has changed. genericFallback() is the real fallback.
+      // FIX [3]: propagate roomSize here too.
       // ─────────────────────────────────────
 
-      const fallbackCtx =
-        buildEngineContext(
-          leadContext,
-          history
-        )
-
-      const fallbackReply =
-        consultantReply(
-          normMessage,
-          fallbackCtx
-        )
-
       return ok(
-        fallbackReply ??
-          genericFallback(
-            leadContext,
-            message
-          ),
-        "local"
+        genericFallback(leadContext, message),
+        "local",
+        roomCtx
       )
     }
   } catch (error) {
-    console.error(
-      "[chat] Fatal server error:",
-      error
-    )
+    console.error("[chat] Fatal server error:", error)
 
-    return err(
-      "Internal server error",
-      500
-    )
+    return err("Internal server error", 500)
   }
-        }
+}
