@@ -205,7 +205,7 @@ async function getAIReply(
   memory?: ConversationMemory,
   onChunk?: (partial: string, isFirst: boolean) => void,
   extras?: { roomSize?: string | null; lastTopic?: string | null },
-): Promise<{ reply: string; source: "gemini" | "local"; updatedRoomSize?: string } | null> {
+): Promise<{ reply: string; source: "groq" | "local"; updatedRoomSize?: string } | null> {
   try {
     const useStream = typeof onChunk === "function"
     const url = useStream ? "/api/chat?stream=1" : "/api/chat"
@@ -247,7 +247,7 @@ async function getAIReply(
         onChunk(fullText, isFirst)
         isFirst = false
       }
-      return fullText ? { reply: fullText, source: "gemini" } : null
+      return fullText ? { reply: fullText, source: "groq" } : null
     }
 
     // ── JSON path (rule-based or non-streaming fallback) ─────────────────────
@@ -255,7 +255,7 @@ async function getAIReply(
     if (!data.ok || !data.reply) return null
     return {
       reply: data.reply as string,
-      source: (data.source as "gemini" | "local") ?? "gemini",
+      source: (data.source as "groq" | "local") ?? "groq",
       updatedRoomSize: data.updatedContext?.roomSize ?? undefined,
     }
   } catch {
@@ -927,7 +927,7 @@ next = [...prev, botMessage]
               </div>
             </div>
 
-            {aiMode && <div className="shrink-0 flex items-center gap-2 px-4 py-1.5 bg-emerald-50 border-b border-emerald-100"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /><p className="text-[10px] text-emerald-700 font-medium">Powered by Gemini AI + Luxury Estimator</p></div>}
+            {aiMode && <div className="shrink-0 flex items-center gap-2 px-4 py-1.5 bg-emerald-50 border-b border-emerald-100"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /><p className="text-[10px] text-emerald-700 font-medium">Powered by AI + Luxury Estimator</p></div>}
 
             {/* Messages */}
 <div
@@ -1017,4 +1017,4 @@ next = [...prev, botMessage]
       </AnimatePresence>
     </>
   )
-}
+    } 
