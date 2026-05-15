@@ -335,12 +335,11 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   if (has(t, ["visit","book","site visit","measurement","quotation","bulao","aao","free visit"])) {
     return `📅 **Free Site Visit** – No hidden charges. Our expert will measure, suggest designs, and give a final quote.\n\n📞 **+91 8651070831** (call/WhatsApp)${oh ? "\n🌙 Off-hours – we'll call tomorrow 9 AM." : " – available now!"}`
   }
-// City mention with existing estimate → context-aware reply
-const cityMentioned = detectCity(t)
+
+ const cityMentioned = detectCity(t)
 if (cityMentioned) {
-  const estText = ""
-  return `**${cityMentioned}** mein bilkul kaam karte hain! 💪${estText}\n\nFree site visit book karein?\n📞 +91 8651070831`
-        }
+  return `**${cityMentioned}** mein bilkul kaam karte hain! 💪\n\nFree site visit book karein?\n📞 +91 8651070831`
+        }       
         
   // Default
   return pick([
