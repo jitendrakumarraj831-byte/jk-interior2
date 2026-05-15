@@ -257,9 +257,6 @@ const SERVICE_PATTERNS: Array<[RegExp, string, string]> = [
   [/\bwall\s*panel\b|\baccent\s*wall\b|\bdeewar\b/,                            "Wall Panels",          "wpc"],
   [/\bcomplete\s*interior\b|\bfull\s*interior\b|\bpoora\s*ghar\b|\bpura\s*ghar\b|\bfull\s*home\b/, "Complete Interior", "interior"],
   [/\bartificial\s*grass\b|\bturf\b/,                                           "Artificial Grass",     "artificial-grass"],
-  [/\bkitchen\b|\brasoi\b/,                                                     "Kitchen Interior",     "pvc"],
-  [/\bbedroom\b|\bkamra\b/,                                                     "Bedroom Interior",     "gypsum"],
-  [/\boffice\b/,                                                                "Office Interior",      "grid"],
 ]
 
 export function detectService(text: string): { name: string; key: string } | null {
@@ -306,8 +303,8 @@ const KW: Record<string, string[]> = {
   complaint:   ["problem", "issue", "complaint", "shikayat", "girna", "toota", "peeling", "leaking", "broken", "repair", "thik karo", "kharab", "nahi chal raha"],
   booking:     ["site visit", "measurement", "bulao", "survey", "appointment", "schedule", "bula lo", "free visit", "aana hai", "book karo", "shuru karein", "kab aao", "aap aa sakte", "visit karo", "aao ghar", "ghar aao", "kab aa sakte"],
   waterproof:  ["waterproof", "water proof", "paani", "seepage", "moisture", "humidity", "geela", "nami", "barish", "water resistant", "leak", "bheega", "namkin"],
-  design:      ["design", "modern", "simple", "luxury", "latest", "trending", "beautiful", "sundar", "stylish", "cove", "pop design", "3d", "texture", "look", "style", "dikhna", "kaisa lagega", "dikhaiye", "acha lagega"],
-  install:     ["kitne din", "kitna time", "kab tak", "jaldi", "time lagega", "installation", "install", "fitting", "din lagega", "urgent", "kitna samay", "kab start"],
+  design:      ["design", "modern", "luxury", "latest", "trending", "beautiful", "sundar", "stylish", "cove", "pop design", "3d", "texture", "kaisa dikhega", "kaisa dikhta", "dikhaiye", "design chahiye", "design dikhao"],
+  install:     ["kitne din", "kitna time", "kab tak", "time lagega", "installation", "install", "fitting", "din lagega", "urgent", "kitna samay", "kab start"],
   budget:      ["sasta", "cheap", "affordable", "low budget", "budget tight", "sasta option", "minimum", "basic", "simple wala", "kam mein", "sabse sasta", "saste mein", "budget mein"],
   negotiation: ["final rate", "discount", "offer", "chhut", "kam karo", "negotiate", "last price", "best price", "sample", "thoda kam", "aur kam"],
   confused:    ["samajh nahi", "nahi aa raha", "kya sahi", "aap batao", "confused", "pata nahi", "decide nahi", "doubt", "madad", "guide", "suggest karo", "kya lagaun", "kya better", "konsa loon", "kaunsa loon"],
@@ -315,7 +312,7 @@ const KW: Record<string, string[]> = {
   call:        ["call karo", "phone karo", "number do", "call back", "contact karo", "call karein", "phone number"],
   area:        ["area", "location", "kahan", "serve", "district", "aata hai", "available", "cover", "jila", "service area", "kis city", "aate ho"],
   quality:     ["guarantee", "warranty", "quality", "bharosa", "trust", "kitne saal", "durable", "isi", "certified", "strong", "life", "chalega", "original", "branded", "tikau"],
-  pricing:     ["price", "cost", "rate", "kimat", "daam", "kitna", "kharcha", "lagat", "paisa", "quote", "how much", "lagega", "charge", "per sqft", "mahnga", "estimate", "quotation", "labour", "fitting charge", "rupaye", "rs ", "kitne rupaye", "kharch"],
+  pricing:     ["price", "cost", "rate", "kimat", "daam", "kitna", "kharcha", "lagat", "paisa", "quote", "how much", "kitna lagega", "kaisa lagega", "charge", "per sqft", "mahnga", "estimate", "quotation", "labour", "fitting charge", "rupaye", "rs ", "kitne rupaye", "kharch"],
   service:     ["service", "kya karte", "kya milta", "bataiye", "samjhao", "kya kaam", "kya options", "kya kya hai"],
 }
 
@@ -362,11 +359,11 @@ export function detectIntent(text: string): Intent {
   if (has(t, KW.image))       return "image-reference"
   if (has(t, KW.negotiation)) return "negotiation"
   if (has(t, KW.confused))    return "confused"
-  if (has(t, KW.design))      return "design"
-  if (has(t, KW.budget))      return "budget"
 
-  // Pricing — after normalizeTypos converts Hinglish signals
+  // Pricing BEFORE design — "kaisa lagega", "kitna lagega" are pricing, not design
   if (has(t, KW.pricing)) return "pricing"
+  if (has(t, KW.budget))  return "budget"
+  if (has(t, KW.design))  return "design"
   if (has(t, KW.service)) return "service-info"
 
   return "general"
