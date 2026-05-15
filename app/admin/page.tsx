@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import * as XLSX from "xlsx"
 
 interface Lead {
   id: number
@@ -229,6 +230,114 @@ export default function AdminPage() {
     URL.revokeObjectURL(url)
   }
 
+  function exportExcel() {
+    const wb = XLSX.utils.book_new()
+
+    // ── Sheet 1: All Leads ──────────────────────────────────────────────────
+    const leadsData = [
+      ["JK Interior — Leads Report", "", "", "", "", "", "", "", "", ""],
+      [`Exported: ${new Date().toLocaleString("en-IN")}`, "", "", "", "", "", "", "", "", ""],
+      [],
+      ["#", "Name", "Phone", "City", "Service", "Estimate", "Preferred Visit", "Chat Summary", "Status", "Date"],
+      ...leads.map((l, i) => [
+        i + 1,
+        l.name,
+        l.phone,
+        l.city ?? "—",
+        l.service ?? "—",
+        l.estimate ?? "—",
+        l.preferred_time ?? "—",
+        l.chat_summary ?? "—",
+        l.is_read ? "Read" : "New",
+        new Date(l.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+      ]),
+    ]
+    const ws1 = XLSX.utils.aoa_to_sheet(leadsData)
+
+    // Column widths
+    ws1["!cols"] = [
+      { wch: 4 }, { wch: 20 }, { wch: 14 }, { wch: 14 },
+      { wch: 18 }, { wch: 18 }, { wch: 18 }, { wch: 45 },
+      { wch: 8 }, { wch: 14 },
+    ]
+    XLSX.utils.book_append_sheet(wb, ws1, "All Leads")
+
+    // ── Sheet 2: New Leads Only ─────────────────────────────────────────────
+    const newLeads = leads.filter(l => !l.is_read)
+    if (newLeads.length > 0) {
+      const newData = [
+        ["JK Interior — New / Unread Leads", "", "", "", "", "", "", "", ""],
+        [`${newLeads.length} new lead(s) as of ${new Date().toLocaleString("en-IN")}`, "", "", "", "", "", "", "", ""],
+        [],
+        ["#", "Name", "Phone", "City", "Service", "Estimate", "Preferred Visit", "Chat Summary", "Date"],
+        ...newLeads.map((l, i) => [
+          i + 1,
+          l.name,
+          l.phone,
+          l.city ?? "—",
+          l.service ?? "—",
+          l.estimate ?? "—",
+          l.preferred_time ?? "—",
+          l.chat_summary ?? "—",
+          new Date(l.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+        ]),
+      ]
+      const ws2 = XLSX.utils.aoa_to_sheet(newData)
+      ws2["!cols"] = [
+        { wch: 4 }, { wch: 20 }, { wch: 14 }, { wch: 14 },
+        { wch: 18 }, { wch: 18 }, { wch: 18 }, { wch: 45 }, { wch: 14 },
+      ]
+      XLSX.utils.book_append_sheet(wb, ws2, "New Leads")
+    }
+
+    // ── Sheet 3: Chat Summaries ─────────────────────────────────────────────
+    const withChat = leads.filter(l => l.chat_summary)
+    if (withChat.length > 0) {
+      const chatData = [
+        ["JK Interior — Chatbot Conversation Summaries", "", "", ""],
+        [`${withChat.length} conversation(s) — ${new Date().toLocaleString("en-IN")}`, "", "", ""],
+        [],
+        ["Name", "Phone", "Service", "Chat Summary", "Date"],
+        ...withChat.map(l => [
+          l.name,
+          l.phone,
+          l.service ?? "—",
+          l.chat_summary ?? "",
+          new Date(l.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+        ]),
+      ]
+      const ws3 = XLSX.utils.aoa_to_sheet(chatData)
+      ws3["!cols"] = [{ wch: 20 }, { wch: 14 }, { wch: 18 }, { wch: 60 }, { wch: 14 }]
+      XLSX.utils.book_append_sheet(wb, ws3, "Chat Summaries")
+    }
+
+    // ── Sheet 4: Summary Stats ──────────────────────────────────────────────
+    const serviceCount: Record<string, number> = {}
+    leads.forEach(l => {
+      const svc = l.service ?? "Unknown"
+      serviceCount[svc] = (serviceCount[svc] || 0) + 1
+    })
+    const statsData = [
+      ["JK Interior — Summary Statistics", ""],
+      [`Report Date: ${new Date().toLocaleDateString("en-IN")}`, ""],
+      [],
+      ["Metric", "Count"],
+      ["Total Leads", leads.length],
+      ["New (Unread)", leads.filter(l => !l.is_read).length],
+      ["Read", leads.filter(l => l.is_read).length],
+      ["With Chat Summary", leads.filter(l => l.chat_summary).length],
+      ["With Estimate", leads.filter(l => l.estimate).length],
+      [],
+      ["Service Breakdown", ""],
+      ...Object.entries(serviceCount).sort((a, b) => b[1] - a[1]).map(([svc, cnt]) => [svc, cnt]),
+    ]
+    const ws4 = XLSX.utils.aoa_to_sheet(statsData)
+    ws4["!cols"] = [{ wch: 28 }, { wch: 10 }]
+    XLSX.utils.book_append_sheet(wb, ws4, "Stats")
+
+    XLSX.writeFile(wb, `jk-interior-leads-${new Date().toISOString().slice(0, 10)}.xlsx`)
+  }
+
   const filtered = leads.filter(l => {
     if (filter === "new" && l.is_read) return false
     if (filter === "read" && !l.is_read) return false
@@ -313,8 +422,16 @@ export default function AdminPage() {
                 </button>
               )}
               <button
+                onClick={exportExcel}
+                className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all"
+                title="Download Excel report with all leads, chat summaries & stats"
+              >
+                ↓ Excel
+              </button>
+              <button
                 onClick={exportCSV}
-                className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-600 hover:bg-gray-50 active:scale-95 transition-all"
+                className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all"
+                title="Download CSV"
               >
                 ↓ CSV
               </button>
