@@ -341,10 +341,7 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
 if (cityMentioned) {
 
   // PVC context
-  if (
-    has(t, ["pvc"]) ||
-    lastBotReply?.includes("PVC")
-  ) {
+  if (has(t, ["pvc"])) {
     return `✅ ${cityMentioned} mein PVC ceiling ka kaam ho jayega 👍
 
 💰 PVC Ceiling Rate:
@@ -359,13 +356,10 @@ Room size bata dijiye (jaise 12×14) — exact estimate bata deta hoon ✨`
   }
 
   // Gypsum context
-  if (
-    has(t, ["gypsum","false ceiling"]) ||
-    lastBotReply?.includes("Gypsum")
-  ) {
+  if (has(t, ["gypsum", "false ceiling"])) {
     return `✅ ${cityMentioned} mein Gypsum false ceiling available hai ✨
 
-💰 Gypsum Rate:
+💰 Gypsum Ceiling Rate:
 ₹80–140 / sq.ft
 
 ✅ Premium Luxury Finish
@@ -376,10 +370,7 @@ Room size bataiye — exact estimate bata deta hoon 👍`
   }
 
   // WPC context
-  if (
-    has(t, ["wpc","wall panel"]) ||
-    lastBotReply?.includes("WPC")
-  ) {
+  if (has(t, ["wpc", "wall panel"])) {
     return `✅ ${cityMentioned} mein WPC wall panel installation available hai 🪵
 
 💰 WPC Panel Rate:
@@ -392,14 +383,11 @@ Room size bataiye — exact estimate bata deta hoon 👍`
 Wall size bhejiye — exact estimate bata deta hoon ✨`
   }
 
-  // UV Sheet context
-  if (
-    has(t, ["uv","marble"]) ||
-    lastBotReply?.includes("UV")
-  ) {
+  // UV Marble context
+  if (has(t, ["uv", "marble"])) {
     return `✅ ${cityMentioned} mein UV marble sheet ka kaam available hai 💎
 
-💰 UV Sheet Rate:
+💰 UV Marble Sheet Rate:
 ₹50–95 / sq.ft
 
 ✅ Glossy Luxury Finish
@@ -410,6 +398,7 @@ Wall size bhejiye — exact estimate bata deta hoon ✨`
   // Default city response
   return `✅ ${cityMentioned} mein bilkul kaam karte hain! 💪
 
+✨ Available Services:
 🏠 PVC Ceiling
 ✨ Gypsum Ceiling
 🪵 WPC Wall Panels
