@@ -966,7 +966,15 @@ export function consultantReply(
 
   // ── 3. Intent routing
   switch (intent) {
-    case "greeting":        return r_greeting(ctx)
+    case "greeting": {
+      // Don't repeat greeting mid-conversation (after >2 messages exchanged)
+      // Only show greeting for first message or explicit "hello/hi"
+      if (ctx.messagesExchanged && ctx.messagesExchanged > 2 && !/(^hi$|^hello$|^hey$|^hii$|namaste|assalamualaikum)/i.test(t)) {
+        // User sent "hi" mid-conversation - acknowledge but continue context
+        return `Haan! 👋 Bol re — kaun sa kaam?`
+      }
+      return r_greeting(ctx)
+    }
     case "thanks":          return r_thanks(ctx)
     case "complaint":       return r_complaint()
     case "booking":         return r_booking(ctx)

@@ -29,6 +29,11 @@ import {
   type ConversationContext,
 } from "@/lib/consultant-engine"
 
+import {
+  resolveFollowUpIntent,
+  shouldShowGreeting,
+} from "@/lib/context-engine"
+
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
@@ -449,6 +454,45 @@ export async function POST(
     // ─────────────────────────────────────────
 
     const ctx = buildEngineContext(leadContext, history)
+
+    // Enhance context with follow-up resolution for short messages
+    // This helps the rule engine understand short replies like "Araria me", "PVC", "kitna lagega"
+    if (normMessage.length < 30 && (leadContext?.lastTopic || leadContext?.lastIntent)) {
+      const followUpResolution = resolveFollowUpIntent(normMessage, {
+        lastIntent: leadContext?.lastIntent,
+        lastMaterial: leadContext?.lastTopic,
+        lastCity: leadContext?.city,
+        lastRoomType: leadContext?.roomType,
+        lastBudget: leadContext?.budget,
+        lastTopic: leadContext?.lastTopic,
+        messagesSinceGreeting: ctx.messagesExchanged || 0,
+        isInActivePricing: ctx.lastTopic ? true : false,
+      })
+
+      if (followUpResolution.confidence > 0.5) {
+        console.log(
+          `[chat] Follow-up resolved: ${followUpResolution.intent} (${followUpResolution.reason})`
+        )
+        // Keep the detected intent for better routing
+        if (followUpResolution.intent === "pricing_continuation") {
+          ctx.lastIntent = "pricing"
+        } else if (followUpResolution.intent === "material_change") {
+          ctx.lastIntent = "service-info"
+        } else if (followUpResolution.intent === "lead_confirmation") {
+          ctx.lastIntent = "booking"
+        }
+      }
+    }
+
+    // Prevent greeting reset mid-conversation
+    if (
+      ctx.messagesExchanged &&
+      ctx.messagesExchanged > 2 &&
+      !shouldShowGreeting(normMessage, ctx.messagesExchanged, false)
+    ) {
+      // If it looks like a greeting but we're mid-conversation, don't mark as greeting
+      // The greeting case will be handled specially in the switch statement
+    }
 
     const engineReply = consultantReply(normMessage, ctx)
 
