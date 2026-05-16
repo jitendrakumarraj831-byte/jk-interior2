@@ -479,19 +479,19 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`
   const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hi JK Interior! Main ${data.name} hoon${data.city ? ` (${data.city})` : ""}. Free site visit book karna chahta/chahti hoon${data.preferredTime ? ` — ${data.preferredTime}` : ""}. Please confirm! 🙏`)}`
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-emerald-200 shadow-xl bg-white">
-      <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 px-3.5 py-2.5 flex items-center gap-2.5">
-        <span className="text-lg">🎉</span>
-        <div><p className="text-xs font-bold text-white leading-tight">Booking Confirmed!</p><p className="text-[10px] text-white/65">{ts}</p></div>
+    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-[90%] sm:max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-emerald-200 shadow-lg bg-white">
+      <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2">
+        <span className="text-lg shrink-0">🎉</span>
+        <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">Booking Confirmed!</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
       </div>
-      <div className="px-3.5 py-2.5 space-y-1.5">
-        {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-xs"><span className="text-gray-400 shrink-0 w-20 text-[11px]">{r.label}</span><span className="font-semibold break-all text-[12px] text-gray-800">{r.value}</span></div>))}
+      <div className="px-3 md:px-4 py-2 md:py-2.5 space-y-1.5">
+        {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-[11px] md:text-xs"><span className="text-gray-400 shrink-0 w-16 md:w-20 text-[10px] md:text-[11px] font-medium">{r.label}</span><span className="font-semibold break-all text-[11px] md:text-[12px] text-gray-800 flex-1">{r.value}</span></div>))}
       </div>
-      <div className="px-3.5 pb-3.5 pt-1 space-y-2">
-        <p className="text-[11px] text-emerald-700 font-semibold text-center bg-emerald-50 rounded-lg py-1.5">✅ Our team will contact you shortly!</p>
-        <div className="flex gap-2">
-          <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2.5 text-[11px] font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp Now</a>
-          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2.5 text-[11px] font-bold text-white hover:bg-emerald-500 transition-all"><ICal /> Book Visit</a>
+      <div className="px-3 md:px-4 pb-3 md:pb-3.5 pt-1 md:pt-1.5 space-y-2">
+        <p className="text-[10px] md:text-[11px] text-emerald-700 font-semibold text-center bg-emerald-50 rounded-lg py-1.5">✅ Our team will contact you shortly!</p>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp</a>
+          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-emerald-500 transition-all"><ICal /> Book Visit</a>
         </div>
       </div>
     </motion.div>
@@ -514,7 +514,7 @@ export default function JKChat() {
   const [typing, setTyping] = useState(false)
   const [aiMode, setAiMode] = useState(true)
   const [offHours, setOffHours] = useState(false)
-  // ── Conversation memory (persistent across page refreshes) ────────────────
+  // ���─ Conversation memory (persistent across page refreshes) ────────────────
   const [memory, setMemory] = useState<ConversationMemory>(createMemory)
   const memoryRef = useRef<ConversationMemory>(memory)
 
@@ -930,15 +930,15 @@ next = [...prev, botMessage]
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             transition={{ type: "spring", damping: 20 }}
-            className="fixed z-50 flex flex-col overflow-hidden shadow-2xl bottom-0 left-0 right-0 h-[92dvh] max-h-[680px] rounded-t-3xl md:bottom-6 md:left-auto md:right-6 md:h-[620px] md:w-[420px] md:rounded-2xl bg-white/95 backdrop-blur-md"
+            className="fixed z-50 flex flex-col overflow-hidden shadow-2xl bottom-0 left-0 right-0 h-[92dvh] max-h-[680px] rounded-t-3xl md:bottom-6 md:left-auto md:right-6 md:h-[620px] md:w-[420px] md:rounded-2xl bg-white/98 backdrop-blur-md"
           >
             {/* Header */}
-            <div className="flex shrink-0 items-center justify-between px-5 py-3.5 bg-gradient-to-r from-emerald-800 to-emerald-600 text-white">
-              <div className="flex items-center gap-3">
-                <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-black text-sm ring-2 ring-white/30">JK<span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-300 border-2 border-emerald-600" /></div>
-                <div><p className="text-sm font-bold leading-tight">Riya — AI Consultant</p><p className="text-[10px] text-white/80">{statusText}</p></div>
+            <div className="flex shrink-0 items-center justify-between px-4 py-3 md:px-5 md:py-3.5 bg-gradient-to-r from-emerald-800 to-emerald-600 text-white">
+              <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 font-black text-[10px] md:text-sm ring-2 ring-white/30 shrink-0">JK<span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-300 border-2 border-emerald-600" /></div>
+                <div className="min-w-0"><p className="text-xs md:text-sm font-bold leading-tight truncate">Riya — AI Consultant</p><p className="text-[9px] md:text-[10px] text-white/75">{statusText}</p></div>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={() => {
                     setMsgs([WELCOME_MSG])
@@ -954,98 +954,98 @@ next = [...prev, botMessage]
                     try { localStorage.removeItem("jk_chat_v5"); localStorage.removeItem("jk_chat_memory_v2") } catch {}
                   }}
                   title="Clear chat"
-                  className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 text-white/70 hover:text-white text-[11px] font-bold"
+                  className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 text-white/70 hover:text-white text-[11px] font-bold transition-colors"
                 >
                   ↺
                 </button>
-                <button onClick={() => setOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20"><IClose /></button>
+                <button onClick={() => setOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 transition-colors"><IClose /></button>
               </div>
             </div>
 
-            {aiMode && <div className="shrink-0 flex items-center gap-2 px-4 py-1.5 bg-emerald-50 border-b border-emerald-100"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /><p className="text-[10px] text-emerald-700 font-medium">Powered by AI + Luxury Estimator</p></div>}
+            {aiMode && <div className="shrink-0 flex items-center gap-2 px-3 md:px-4 py-1.5 bg-emerald-50 border-b border-emerald-100"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" /><p className="text-[9px] md:text-[10px] text-emerald-700 font-medium">Powered by AI + Luxury Estimator</p></div>}
 
             {/* Messages */}
-<div
-  ref={scrollRef}
-  className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3 scrollbar-luxury"
-  style={{ background: "linear-gradient(145deg, #f8faf7 0%, #ffffff 100%)" }}
->
-  {messages.map((m, idx) => (
-    <motion.div
-      key={m.id}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: idx * 0.03 }}
-      className={`flex items-end gap-2 ${
-        m.role === "user" ? "justify-end" : "justify-start"
-      }`}
-    >
-      {m.role === "bot" && m.kind !== "card" && (
-        <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
-          <span className="text-[8px] font-black text-white">JK</span>
-        </div>
-      )}
+            <div
+              ref={scrollRef}
+              className="flex-1 min-h-0 overflow-y-auto px-3 md:px-4 py-3 md:py-4 space-y-3 scrollbar-luxury"
+              style={{ background: "linear-gradient(145deg, #f8faf7 0%, #ffffff 100%)" }}
+            >
+              {messages.map((m, idx) => (
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.03 }}
+                  className={`flex items-end gap-2 ${
+                    m.role === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  {m.role === "bot" && m.kind !== "card" && (
+                    <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
+                      <span className="text-[8px] font-black text-white">JK</span>
+                    </div>
+                  )}
 
-      {m.role === "bot" && m.kind === "card" && (
-        <div className="h-6 w-6 shrink-0" />
-      )}
+                  {m.role === "bot" && m.kind === "card" && (
+                    <div className="h-6 w-6 shrink-0" />
+                  )}
 
-      {m.kind === "card" && m.cardData ? (
-        <LeadConfirmCard data={m.cardData} />
-      ) : (
-        <div
-          className={`max-w-[82%] whitespace-pre-line rounded-2xl px-4 py-2.5 text-[13.5px] leading-relaxed shadow-sm ${
-            m.role === "user"
-              ? "bg-gradient-to-br from-emerald-700 to-emerald-500 text-white rounded-br-sm"
-              : "bg-white text-gray-800 rounded-bl-sm border border-gray-200"
-          }`}
-        >
-          <RichText text={m.text} />
+                  {m.kind === "card" && m.cardData ? (
+                    <LeadConfirmCard data={m.cardData} />
+                  ) : (
+                    <div
+                      className={`max-w-[85%] sm:max-w-[80%] whitespace-pre-line rounded-2xl px-3 md:px-4 py-2 md:py-2.5 text-[12px] sm:text-[13px] md:text-[13.5px] leading-relaxed shadow-sm ${
+                        m.role === "user"
+                          ? "bg-gradient-to-br from-emerald-700 to-emerald-500 text-white rounded-br-sm break-words"
+                          : "bg-white text-gray-800 rounded-bl-sm border border-gray-200 break-words"
+                      }`}
+                    >
+                      <RichText text={m.text} />
 
-          {(m as any).galleryType && (
-            <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
-              {galleryImages
-                .filter(
-                  (img) =>
-                    img.category === (m as any).galleryType
-                )
-                .slice(0, 6)
-                .map((img, i) => (
-                  <img
-                    key={i}
-                    src={img.src}
-                    alt={img.alt}
-                    className="w-40 h-40 rounded-xl object-cover border"
-                  />
-                ))}
+                      {(m as any).galleryType && (
+                        <div className="mt-2 md:mt-3 flex gap-2 md:gap-3 overflow-x-auto pb-1.5">
+                          {galleryImages
+                            .filter(
+                              (img) =>
+                                img.category === (m as any).galleryType
+                            )
+                            .slice(0, 6)
+                            .map((img, i) => (
+                              <img
+                                key={i}
+                                src={img.src}
+                                alt={img.alt}
+                                className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0"
+                              />
+                            ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+
+              {typing && <TypingDots />}
             </div>
-          )}
-        </div>
-      )}
-    </motion.div>
-  ))}
 
-  {typing && <TypingDots />}
-</div>
-
-{/* Dynamic Quick Replies */}
-            <div className="shrink-0 flex gap-1.5 overflow-x-auto px-3 py-2 bg-white border-t border-gray-100 scrollbar-luxury">
+            {/* Dynamic Quick Replies */}
+            <div className="shrink-0 flex gap-1.5 overflow-x-auto px-3 md:px-4 py-2 bg-white border-t border-gray-100 scrollbar-luxury">
               {qrSet.map(q => (
-                <button key={q} onClick={() => send(q)} disabled={typing} className="shrink-0 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all whitespace-nowrap disabled:opacity-40">{q}</button>
+                <button key={q} onClick={() => send(q)} disabled={typing} className="shrink-0 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[10px] md:text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all whitespace-nowrap disabled:opacity-40">{q}</button>
               ))}
             </div>
 
             {/* CTA Buttons */}
-            <div className="shrink-0 flex gap-2 border-t border-gray-200 bg-white px-3 py-2">
-              <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] px-2 py-2.5 text-xs font-bold text-white"><IWA /> WhatsApp</a>
-              <a href={`tel:${CALL_NUMBER}`} className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2.5 text-xs font-bold text-emerald-700"><IPhone /> Call</a>
-              {lead?.phone && <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-2 py-2.5 text-xs font-bold text-white"><ICal /> Book Visit</a>}
+            <div className="shrink-0 flex flex-col sm:flex-row gap-2 border-t border-gray-200 bg-white px-3 md:px-4 py-2 md:py-3">
+              <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] px-3 py-2.5 md:py-3 text-[11px] md:text-xs font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp</a>
+              <a href={`tel:${CALL_NUMBER}`} className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2.5 md:py-3 text-[11px] md:text-xs font-bold text-emerald-700 hover:bg-emerald-100 transition-all"><IPhone /> Call</a>
+              {lead?.phone && <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 md:py-3 text-[11px] md:text-xs font-bold text-white hover:bg-emerald-500 transition-all"><ICal /> Book</a>}
             </div>
 
             {/* Input */}
-            <div className="shrink-0 flex items-center gap-2 border-t border-gray-200 bg-white px-3 py-2.5 pb-[max(10px,env(safe-area-inset-bottom))]">
-              <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={onKey} placeholder="Ask about sizes, materials, or book a visit..." className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-2.5 text-[13px] text-gray-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" autoComplete="off" />
-              <button onClick={() => send()} disabled={!input.trim() || typing} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-white shadow hover:bg-emerald-600 active:scale-90 transition-all disabled:opacity-40"><ISend /></button>
+            <div className="shrink-0 flex items-center gap-2 border-t border-gray-200 bg-white px-3 md:px-4 py-2 md:py-3 pb-[max(10px,env(safe-area-inset-bottom))]">
+              <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={onKey} placeholder="Ask about materials, pricing..." className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 md:px-4 py-2 md:py-2.5 text-[12px] md:text-[13px] text-gray-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-colors" autoComplete="off" />
+              <button onClick={() => send()} disabled={!input.trim() || typing} className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-white shadow hover:bg-emerald-600 active:scale-90 transition-all disabled:opacity-40"><ISend /></button>
             </div>
           </motion.div>
         )}
