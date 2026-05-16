@@ -1,187 +1,63 @@
-/**
- * Estimate Generation & Management
- * Creates personalized quotes based on dimensions and materials
- */
+import { ConversationState } from "./context";
+import { getMaterialPrice } from "./pricing"; // Assuming this function exists
 
-export interface QuoteDetails {
-  roomSize: string
-  material: string
-  area: number
-  customerName?: string
-  city?: string
-  estimateLow: number
-  estimateHigh: number
-  advice: string
-  estimateId: string
-  createdAt: Date
+interface EstimateResponse {
+    answer: string;
+    updatedState: Partial<ConversationState>;
 }
 
 /**
- * Generate quote ID
+ * Generates a cost estimate based on the current conversation state.
+ * It will ask for missing information if necessary.
  */
-function generateQuoteId(): string {
-  return `EST-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-}
+export function getEstimateResponse(state: ConversationState, userQuery: string): EstimateResponse {
+    const { roomDimensions, lastMaterialMentioned } = state;
 
-/**
- * Create estimate from dimensions and material
- */
-export function createEstimate(
-  dimensions: { length: number; width: number; area: number },
-  material: string,
-  customerName?: string,
-  city?: string
-): QuoteDetails | null {
-  const { length, width, area } = dimensions
+    // 1. Check if we have enough information to generate an estimate.
+    if (!roomDimensions || !roomDimensions.area) {
+        // If we just got dimensions, calculate area and then proceed.
+        if (roomDimensions && roomDimensions.length && roomDimensions.width) {
+            const area = roomDimensions.length * roomDimensions.width;
+            const newState: Partial<ConversationState> = {
+                roomDimensions: { ...roomDimensions, area, unit: "sqft" }
+            };
+            // Re-call the function with the updated state to get the price.
+            return getEstimateResponse({ ...state, ...newState }, userQuery);
+        }
+        // If not, ask for the dimensions.
+        return {
+            answer: "Estimate ke liye, mujhe room ka size (length aur width) chahiye. Vo bata sakte hain?",
+            updatedState: { activeGoal: 'get_estimate' },
+        };
+    }
 
-  let matName = ""
-  let priceLow = 0
-  let priceHigh = 0
+    if (!lastMaterialMentioned) {
+        // If we don't have a material, ask for it.
+        return {
+            answer: "Theek hai, size note kar liya. Aap kis material mein interested hain? For example, PVC, Gypsum, etc.",
+            updatedState: { activeGoal: 'get_estimate' },
+        };
+    }
 
-  const matLower = material.toLowerCase()
+    // 2. If we have all info, calculate the price.
+    try {
+        const priceInfo = getMaterialPrice(lastMaterialMentioned);
+        const totalCost = priceInfo.pricePerSqFt * roomDimensions.area;
 
-  if (matLower.includes("pvc")) {
-    matName = "PVC Ceiling"
-    priceLow = 60
-    priceHigh = 120
-  } else if (
-    matLower.includes("gypsum") ||
-    matLower.includes("pop")
-  ) {
-    matName = "Gypsum False Ceiling"
-    priceLow = 80
-    priceHigh = 140
-  } else if (matLower.includes("wpc")) {
-    matName = "WPC Wall Panels"
-    priceLow = 180
-    priceHigh = 450
-  } else if (matLower.includes("uv") || matLower.includes("marble")) {
-    matName = "UV Marble Sheets"
-    priceLow = 50
-    priceHigh = 95
-  } else {
-    return null
-  }
+        const answer = `Okay! For a ${roomDimensions.area} sq. ft. area using ${lastMaterialMentioned}, aapka total kharcha lagbhag ₹${totalCost.toLocaleString('en-IN')} aayega. Ismein labour aur material dono included hai.`;
 
-  const estLow = Math.round(area * priceLow)
-  const estHigh = Math.round(area * priceHigh)
-
-  let advice = ""
-  if (area > 250) {
-    advice =
-      "For this spacious area, consider cove lighting with premium Gypsum for luxury ambiance!"
-  } else if (area > 150) {
-    advice =
-      "Great size! LED strips around perimeter will add modern, premium feel."
-  } else if (matName.includes("WPC")) {
-    advice =
-      "WPC panels bring rich wooden texture – ideal for feature walls!"
-  } else if (matName.includes("PVC")) {
-    advice =
-      "PVC is waterproof and low-maintenance – perfect for kitchens!"
-  } else {
-    advice = "Professional installation included for perfect finish."
-  }
-
-  return {
-    roomSize: `${length}' × ${width}'`,
-    material: matName,
-    area,
-    customerName,
-    city,
-    estimateLow: estLow,
-    estimateHigh: estHigh,
-    advice,
-    estimateId: generateQuoteId(),
-    createdAt: new Date(),
-  }
-}
-
-/**
- * Format estimate as readable message
- */
-export function formatEstimate(quote: QuoteDetails): string {
-  const greeting = quote.customerName
-    ? `${quote.customerName} ji, `
-    : ""
-
-  return `
-${greeting}according to your **${quote.roomSize}** room (${quote.area} sq.ft), the estimate for **${quote.material}** is:
-
-💰 **₹${quote.estimateLow.toLocaleString("en-IN")} – ₹${quote.estimateHigh.toLocaleString("en-IN")}**
-
-✨ ${quote.advice}
-
-**Next steps:**
-📅 Book a free site visit for exact measurements
-📞 Call/WhatsApp: +91 8651070831
-
-📊 Quote ID: ${quote.estimateId}
-`.trim()
-}
-
-/**
- * Store estimate (localStorage for client-side)
- */
-export function storeEstimate(quote: QuoteDetails): void {
-  try {
-    const key = "jk_recent_estimates"
-    const raw = localStorage.getItem(key) || "[]"
-    const estimates: QuoteDetails[] = JSON.parse(raw)
-
-    // Add new estimate at beginning
-    estimates.unshift(quote)
-
-    // Keep only last 10 estimates
-    localStorage.setItem(
-      key,
-      JSON.stringify(estimates.slice(0, 10))
-    )
-  } catch (error) {
-    console.error("[v0] Failed to store estimate:", error)
-  }
-}
-
-/**
- * Get recent estimates
- */
-export function getRecentEstimates(): QuoteDetails[] {
-  try {
-    const raw = localStorage.getItem("jk_recent_estimates") || "[]"
-    return JSON.parse(raw)
-  } catch {
-    return []
-  }
-}
-
-/**
- * Generate compare-estimates message
- */
-export function getComparisonAdvice(
-  estimate: QuoteDetails,
-  alternativeMaterial?: string
-): string {
-  if (!alternativeMaterial) {
-    return `Want to compare with another material? Ask about PVC, Gypsum, WPC, or UV Marble!`
-  }
-
-  // This would require calculating another estimate
-  return `Great choice to compare! Let me know the dimensions for the alternative material too.`
-}
-
-/**
- * Check if estimate is recent (within 24 hours)
- */
-export function isEstimateRecent(quote: QuoteDetails): boolean {
-  const now = new Date()
-  const diff = now.getTime() - quote.createdAt.getTime()
-  const hoursAgo = diff / (1000 * 60 * 60)
-  return hoursAgo < 24
-}
-
-/**
- * Get estimate summary for lead tracking
- */
-export function getEstimateSummary(quote: QuoteDetails): string {
-  return `${quote.material} for ${quote.roomSize} = ₹${quote.estimateLow.toLocaleString("en-IN")}–₹${quote.estimateHigh.toLocaleString("en-IN")}`
+        return {
+            answer,
+            updatedState: {
+                activeGoal: 'general_query', // Reset goal after giving the estimate
+                isPriceSensitive: true, // Mark user as price sensitive
+            },
+        };
+    } catch (error: any) {
+        // This will happen if getMaterialPrice throws an error (e.g., material not found)
+        return {
+            answer: error.message,
+            updatedState: { activeGoal: 'material_info' }, // Steer conversation back to materials
+        };
+    }
 }

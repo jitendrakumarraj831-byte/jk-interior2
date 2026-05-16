@@ -1,0 +1,79 @@
+Unused files (22)
+.replit_integration_files/server/replit_integrations/batch/index.ts 
+.replit_integration_files/server/replit_integrations/batch/utils.ts 
+.replit_integration_files/server/replit_integrations/chat/index.ts  
+.replit_integration_files/server/replit_integrations/chat/routes.ts 
+.replit_integration_files/server/replit_integrations/chat/storage.ts
+.replit_integration_files/server/replit_integrations/image/client.ts
+.replit_integration_files/server/replit_integrations/image/index.ts 
+.replit_integration_files/server/replit_integrations/image/routes.ts
+.replit_integration_files/shared/models/chat.ts                     
+components/experience-section.tsx                                   
+components/motion-reveal.tsx                                        
+components/ui/button.tsx                                            
+lib/chatbot/ai.ts                                                   
+lib/chatbot/context.ts                                              
+lib/chatbot/estimate.ts                                             
+lib/chatbot/fallback.ts                                             
+lib/chatbot/intent.ts                                               
+lib/chatbot/knowledge.ts                                            
+lib/chatbot/materials.ts                                            
+lib/chatbot/pricing.ts                                              
+lib/chatbot/router.ts                                               
+lib/knowledge-base.ts                                               
+Unused dependencies (10)
+@google/generative-ai             package.json:15:6
+@radix-ui/react-slot              package.json:16:6
+@tailwindcss/oxide                package.json:17:6
+@tailwindcss/oxide-linux-x64-gnu  package.json:18:6
+autoprefixer                      package.json:21:6
+class-variance-authority          package.json:22:6
+drizzle-zod                       package.json:24:6
+p-limit                           package.json:29:6
+p-retry                           package.json:30:6
+zod-validation-error              package.json:37:6
+Unlisted dependencies (1)
+postcss-load-config  postcss.config.mjs:1:2
+Unused exports (30)
+WA_NUMBER                            lib/business-data.ts:1:14       
+CALL_NUMBER                          lib/business-data.ts:2:14       
+WATERPROOF_SOLUTIONS                 lib/business-data.ts:381:14     
+ROOM_SUGGESTIONS                     lib/business-data.ts:414:14     
+getSmartRecommendation     function  lib/business-data.ts:464:17     
+calculatePriceEstimate     function  lib/business-data.ts:498:17     
+detectIntent               function  lib/business-data.ts:732:17     
+GENERAL_QUICK_REPLIES                lib/business-data.ts:823:14     
+SERVICE_QUICK_REPLIES                lib/business-data.ts:834:14     
+resolveServiceKey          function  lib/consultant-engine.ts:203:17 
+detectCity                 function  lib/consultant-engine.ts:249:17 
+detectIntent               function  lib/consultant-engine.ts:349:17 
+recommendMaterial          function  lib/consultant-engine.ts:405:17 
+resolveContextualFollowUp  function  lib/consultant-engine.ts:750:17 
+getSmartQuickReplies       function  lib/consultant-engine.ts:1163:17
+tryExtractPhone            function  lib/consultant-engine.ts:1189:17
+tryExtractName             function  lib/consultant-engine.ts:1194:17
+ALL_AREAS                            lib/consultant-engine.ts:1207:10
+CITY_MAP                             lib/consultant-engine.ts:1207:21
+updateConversationContext  function  lib/context-engine.ts:346:17    
+getActiveTopic             function  lib/context-engine.ts:420:17    
+resetFollowUpContext       function  lib/context-engine.ts:440:17    
+mergeContexts              function  lib/context-engine.ts:471:17    
+buildGalleryJsonLd         function  lib/gallery-data.ts:86:17       
+summarizeForPrompt         function  lib/memory.ts:315:17            
+clearMemory                function  lib/memory.ts:444:17            
+SITE_NAME                            lib/seo.ts:2:14                 
+OG_IMAGE                             lib/seo.ts:3:14                 
+BUSINESS                             lib/seo.ts:5:14                 
+zSmtpMessage                         src/utils/replitmail.ts:7:14    
+Unused exported types (9)
+LeadContext                interface  lib/business-data.ts:4:18     
+SmartRecommendationParams  interface  lib/business-data.ts:456:18   
+RoomDef                    interface  lib/business-data.ts:538:18   
+Intent                     type       lib/business-data.ts:719:13   
+LeadCard                   interface  lib/consultant-engine.ts:63:18
+FollowUpContext            interface  lib/context-engine.ts:8:18    
+RoomStatus                 type       lib/memory.ts:20:13           
+CityData                   interface  lib/seo.ts:42:18              
+SmtpMessage                type       src/utils/replitmail.ts:26:13 
+Configuration hints (1)
+. (root)    .  Create knip.json configuration file, and add entry and/or refine project files (22 unused files)

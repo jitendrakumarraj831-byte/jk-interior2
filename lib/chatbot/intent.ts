@@ -1,166 +1,46 @@
-/**
- * Intent Detection Engine
- * Detects user intent from input (Hindi/Hinglish)
- * Supports: pricing, booking, service inquiry, budget, material, etc.
- */
+import { ConversationState, ConversationGoal } from "./context";
 
-export type Intent =
-  | "greeting"
-  | "pricing"
-  | "booking"
-  | "material_inquiry"
-  | "room_size"
-  | "budget"
-  | "complaint"
-  | "follow_up"
-  | "unknown"
-
-export interface DetectedIntent {
-  type: Intent
-  confidence: number
-  keywords: string[]
-  context?: {
-    material?: string
-    service?: string
-    budget?: number
-  }
-}
-
-const INTENT_KEYWORDS: Record<Intent, string[]> = {
-  greeting: [
-    "hi",
-    "hello",
-    "hey",
-    "namaste",
-    "namaskar",
-    "helo",
-    "good morning",
-    "good afternoon",
-    "good evening",
-    "hii",
-    "salam",
-    "kaise ho",
-  ],
-  pricing: [
-    "price",
-    "cost",
-    "rate",
-    "kimat",
-    "daam",
-    "kitna",
-    "kharcha",
-    "budget",
-    "quote",
-    "lagega",
-    "estimate",
-  ],
-  booking: [
-    "visit",
-    "book",
-    "site visit",
-    "measurement",
-    "quotation",
-    "bulao",
-    "aao",
-    "free visit",
-    "appointment",
-    "booking",
-    "confirm",
-  ],
-  material_inquiry: [
-    "pvc",
-    "gypsum",
-    "pop",
-    "wpc",
-    "marble",
-    "uv",
-    "panel",
-    "ceiling",
-    "chhat",
-  ],
-  room_size: [
-    "room",
-    "dimensions",
-    "size",
-    "12x14",
-    "feet",
-    "ft",
-    "x",
-    "×",
-    "by",
-    "length",
-    "width",
-  ],
-  budget: ["lakh", "lac", "hazar", "thousand", "k", "rupees"],
-  complaint: ["issue", "problem", "broken", "not working", "quality"],
-  follow_up: ["also", "aur", "plus", "more", "aur kya"],
-  unknown: [],
-}
+// A simple regex-based intent detection.
+// In a real-world scenario, this would be a more sophisticated NLU model.
+const intentMatchers = [
+    { intent: 'greeting', regex: /\b(hello|hi|hey|namaste|salaam)\b/i },
+    { intent: 'get_estimate', regex: /\b(estimate|price|cost|kharcha|bhav|rate|budget)\b/i },
+    { intent: 'material_info', regex: /\b(material|types|options|pvc|gypsum|veneer|wpc|fabric|glass|metal)\b/i },
+    { intent: 'design_advice', regex: /\b(design|idea|suggestion|recommend|kaise banaye|kaisa lagega)\b/i },
+    { intent: 'complaint', regex: /\b(complaint|issue|problem|not working|theek nahi hai)\b/i },
+    { intent: 'follow_up', regex: /\b(aur|more|next|continue|agey|aur batao)\b/i },
+    { intent: 'confirm', regex: /\b(yes|haan|theek hai|ok|confirm|done|final)\b/i },
+    { intent: 'deny', regex: /\b(no|na|nahi|cancel|stop|rehne do)\b/i },
+];
 
 /**
- * Detect intent from user message
+ * Determines the user's intent based on their query and the conversation context.
+ * This is a crucial step to decide what the chatbot should do next.
  */
-export function detectIntent(message: string): DetectedIntent {
-  const text = message.toLowerCase().trim()
-  const matched: Map<Intent, number> = new Map()
-
-  for (const [intent, keywords] of Object.entries(INTENT_KEYWORDS)) {
-    let score = 0
-    for (const kw of keywords) {
-      if (text.includes(kw)) {
-        score++
-      }
+export function detectIntent(state: ConversationState, userQuery: string): ConversationGoal {
+    // 1. Check for explicit intent in the user's query
+    for (const matcher of intentMatchers) {
+        if (matcher.regex.test(userQuery)) {
+            // If the intent is a follow-up, it needs special handling
+            if (matcher.intent === 'follow_up') {
+                // If there was an active goal, the follow-up relates to that goal.
+                return state.activeGoal || 'general_query';
+            }
+            return matcher.intent as ConversationGoal;
+        }
     }
-    if (score > 0) {
-      matched.set(intent as Intent, score)
+
+    // 2. If no explicit intent, infer from context
+    // If the last topic was pricing, and the user gives numbers, they are likely providing dimensions for an estimate.
+    if (state.lastTopic === 'pricing' && /\d/.test(userQuery)) {
+        return 'get_estimate';
     }
-  }
 
-  if (matched.size === 0) {
-    return {
-      type: "unknown",
-      confidence: 0,
-      keywords: [],
+    // If a material was just mentioned, and the user asks for a price, it's a material_info turning into a get_estimate
+    if (state.lastMaterialMentioned && /\b(price|cost|kharcha)\b/i.test(userQuery)){
+        return 'get_estimate';
     }
-  }
 
-  const sorted = Array.from(matched.entries()).sort(
-    (a, b) => b[1] - a[1]
-  )
-  const topIntent = sorted[0]
-
-  return {
-    type: topIntent[0],
-    confidence: Math.min(topIntent[1] / 5, 1),
-    keywords: INTENT_KEYWORDS[topIntent[0]],
-  }
-}
-
-/**
- * Check if message contains specific intent
- */
-export function hasIntent(
-  message: string,
-  intent: Intent
-): boolean {
-  const text = message.toLowerCase()
-  return INTENT_KEYWORDS[intent].some((kw) => text.includes(kw))
-}
-
-/**
- * Extract keywords from message for context
- */
-export function extractKeywords(message: string): string[] {
-  const text = message.toLowerCase()
-  const keywordSet = new Set<string>()
-
-  for (const intents of Object.values(INTENT_KEYWORDS)) {
-    for (const kw of intents) {
-      if (text.includes(kw)) {
-        keywordSet.add(kw)
-      }
-    }
-  }
-
-  return Array.from(keywordSet)
+    // 3. If still no intent, mark as unknown.
+    return 'unknown';
 }
