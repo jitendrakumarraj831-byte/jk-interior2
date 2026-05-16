@@ -1,4 +1,5 @@
-import { ConversationState, ConversationGoal } from "./context";
+import { ConversationState } from "./context";
+import { ConversationGoal } from "@/lib/types";
 
 // A simple regex-based intent detection.
 // In a real-world scenario, this would be a more sophisticated NLU model.

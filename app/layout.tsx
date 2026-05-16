@@ -2,9 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import ScrollProgress from '@/components/scroll-progress'
-import FloatingActions from '@/components/floating-actions'
-import JKChat from '@/components/jk-chat'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -284,15 +281,12 @@ export default function RootLayout({
           }}
         />
 
-        <ScrollProgress />
 
         <div className="relative z-10 min-h-screen">
           {children}
         </div>
 
-        <FloatingActions />
-        <JKChat />
-
+        
         <Analytics />
       </body>
     </html>

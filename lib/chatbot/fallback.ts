@@ -1,4 +1,5 @@
-import { ConversationState, ConversationGoal, ConversationTopic } from "./context";
+import { ConversationState } from "./context";
+import { ConversationGoal, ConversationTopic } from "@/lib/types";
 
 interface FallbackResponse {
     clarifyingQuestion: string;

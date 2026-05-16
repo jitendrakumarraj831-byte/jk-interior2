@@ -1,63 +1,31 @@
 import { ConversationState } from "./context";
-import { getMaterialPrice } from "./pricing"; // Assuming this function exists
+import { extractDimensions, calculateEstimate, getBudgetRecommendation, extractBudgetAmount } from "./pricing";
 
-interface EstimateResponse {
-    answer: string;
-    updatedState: Partial<ConversationState>;
-}
+export function getEstimateResponse(state: ConversationState, userInput: string) {
+    let updatedState = { ...state };
+    let answer: string | null = null;
 
-/**
- * Generates a cost estimate based on the current conversation state.
- * It will ask for missing information if necessary.
- */
-export function getEstimateResponse(state: ConversationState, userQuery: string): EstimateResponse {
-    const { roomDimensions, lastMaterialMentioned } = state;
+    const dimensions = extractDimensions(userInput);
+    const budget = extractBudgetAmount(userInput);
 
-    // 1. Check if we have enough information to generate an estimate.
-    if (!roomDimensions || !roomDimensions.area) {
-        // If we just got dimensions, calculate area and then proceed.
-        if (roomDimensions && roomDimensions.length && roomDimensions.width) {
-            const area = roomDimensions.length * roomDimensions.width;
-            const newState: Partial<ConversationState> = {
-                roomDimensions: { ...roomDimensions, area, unit: "sqft" }
-            };
-            // Re-call the function with the updated state to get the price.
-            return getEstimateResponse({ ...state, ...newState }, userQuery);
+    if (dimensions) {
+        if (state.lastMaterialMentioned) {
+            const estimate = calculateEstimate(dimensions, state.lastMaterialMentioned);
+            if (estimate) {
+                answer = estimate.message;
+            } else {
+                answer = "I can't seem to find pricing for that material. We specialize in PVC, Gypsum, and WPC panels. Which one are you interested in?";
+            }
+        } else {
+            answer = "I can give you an estimate. What material are you interested in? We offer PVC, Gypsum, and WPC panels.";
         }
-        // If not, ask for the dimensions.
-        return {
-            answer: "Estimate ke liye, mujhe room ka size (length aur width) chahiye. Vo bata sakte hain?",
-            updatedState: { activeGoal: 'get_estimate' },
-        };
+        updatedState.roomDimensions = dimensions;
+    } else if (budget) {
+        answer = getBudgetRecommendation(budget);
+        updatedState.isPriceSensitive = true;
+    } else {
+        answer = "I can help with that. To give you an estimate, I need to know the room dimensions (e.g., 'a 10x12 feet room') and the material you're interested in (PVC, Gypsum, or WPC).";
     }
 
-    if (!lastMaterialMentioned) {
-        // If we don't have a material, ask for it.
-        return {
-            answer: "Theek hai, size note kar liya. Aap kis material mein interested hain? For example, PVC, Gypsum, etc.",
-            updatedState: { activeGoal: 'get_estimate' },
-        };
-    }
-
-    // 2. If we have all info, calculate the price.
-    try {
-        const priceInfo = getMaterialPrice(lastMaterialMentioned);
-        const totalCost = priceInfo.pricePerSqFt * roomDimensions.area;
-
-        const answer = `Okay! For a ${roomDimensions.area} sq. ft. area using ${lastMaterialMentioned}, aapka total kharcha lagbhag ₹${totalCost.toLocaleString('en-IN')} aayega. Ismein labour aur material dono included hai.`;
-
-        return {
-            answer,
-            updatedState: {
-                activeGoal: 'general_query', // Reset goal after giving the estimate
-                isPriceSensitive: true, // Mark user as price sensitive
-            },
-        };
-    } catch (error: any) {
-        // This will happen if getMaterialPrice throws an error (e.g., material not found)
-        return {
-            answer: error.message,
-            updatedState: { activeGoal: 'material_info' }, // Steer conversation back to materials
-        };
-    }
+    return { answer, updatedState };
 }

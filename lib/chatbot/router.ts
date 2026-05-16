@@ -5,6 +5,7 @@ import { getFallbackResponse } from "./fallback";
 import { callPrimaryAI } from "./llm";
 import { getAdvice } from "./recommendations";
 import { getTriageResult } from "./triage"; // Import the new Triage AI
+import { ConversationGoal } from "@/lib/types";
 
 interface ChatbotResponse {
     response: string;
@@ -21,12 +22,11 @@ export async function routeConversation(
     // 2. Update the conversation state with the new, structured information.
     let workingState = updateConversationState(state, {
         fullHistory: [{ role: "user", content: userQuery }],
-        lastIntent: triage.intent,
-        activeGoal: triage.intent, // Align active goal with the detected intent
+        lastIntent: triage.intent as ConversationGoal, // Cast to ConversationGoal
+        activeGoal: triage.intent as ConversationGoal, // Cast to ConversationGoal
         city: triage.entities.city || state.city, // Persist if already known
         lastMaterialMentioned: triage.entities.material || state.lastMaterialMentioned,
         roomType: triage.entities.roomType || state.roomType,
-        userPriorities: triage.userPriorities,
     });
 
     let response: string;
