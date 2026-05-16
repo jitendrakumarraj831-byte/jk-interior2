@@ -1,276 +1,39 @@
-/**
- * AI Response Handler
- * Manages Groq API calls and streaming responses
- */
+import { ConversationState } from "./context";
 
-export interface AIRequestConfig {
-  systemPrompt: string
-  userMessage: string
-  conversationHistory: Array<{
-    role: "user" | "assistant"
-    content: string
-  }>
-  maxTokens?: number
-  temperature?: number
-  timeoutMs?: number
-}
+const currentDate = new Date().toLocaleDateString("en-US", {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+});
 
-export interface AIResponse {
-  content: string
-  source: "groq" | "fallback"
-  tokensUsed?: number
-  error?: string
-}
+export function buildSystemPrompt(state: ConversationState): string {
+    const { userName, city } = state;
 
-/**
- * Default system prompt for Riya consultant
- */
-export function buildSystemPrompt(context?: {
-  userName?: string
-  city?: string
-  service?: string
-  budget?: "low" | "mid" | "high"
-}): string {
-  const parts: string[] = [
-    "You are Riya, JK Interior's premium AI consultant.",
-    "You help customers with:",
-    "- Material recommendations (PVC, Gypsum, WPC, UV Marble)",
-    "- Price estimates based on room dimensions",
-    "- Design advice and suggestions",
-    "- Booking free site visits",
-    "",
-    "RESPONSE GUIDELINES:",
-    "1. Be warm, helpful, and professional",
-    "2. Always include relevant pricing when discussing materials",
-    "3. If user shares room dimensions, calculate estimates",
-    "4. Understand Hindi/Hinglish input naturally",
-    "5. Encourage site visits for exact quotes",
-    "6. Keep responses concise (under 500 chars)",
-    "7. End with clear next steps or CTA",
-    "8. Mention contact: +91 8651070831",
-    "",
-  ]
+    const intro = `You are Riya, an expert interior design assistant for JK Interior, based in Bhopal. Today is ${currentDate}. Your goal is to be helpful, friendly, and highly conversational. You are chatting with ${userName || 'a potential client'} from ${city || 'an unspecified location'}.`;
 
-  if (context?.userName) {
-    parts.push(`User's name: ${context.userName}`)
-  }
+    const context = `
+      **Conversation Context Snapshot:**
+      - Client's Name: ${state.userName || 'Not yet provided'}
+      - Client's Location: ${state.city || 'Not yet provided'}
+      - Stated Budget: ${state.budget || 'Not specified'}
+      - Last Topic: ${state.lastTopic || 'None'}
+      - Last Material Mentioned: ${state.lastMaterialMentioned || 'None'}
+      - Client seems price sensitive: ${state.isPriceSensitive ? 'Yes' : 'No'}
+    `;
 
-  if (context?.city) {
-    parts.push(`Location: ${context.city}`)
-  }
+    const rules = `
+      **Your Core Persona & Rules:**
+      1.  **Language:** Respond in conversational Hinglish. Keep it simple, clear, and human-like.
+      2.  **Goal:** Your main job is to understand the client's needs, provide helpful advice, and guide them towards an estimate.
+      3.  **Pricing Safety:** NEVER make up a price. The system will provide exact pricing. You can talk about price *ranges* (low, mid, high) based on material data, but not specific numbers.
+      4.  **Stay in Character:** You are Riya from JK Interior. Do not break character or answer questions unrelated to interior design.
+    `;
 
-  if (context?.service) {
-    parts.push(`Interested in: ${context.service}`)
-  }
+    const reasoning_rules = `
+      **How to Reason and Compare (IMPORTANT):**
+      1.  **Trust Instructions:** When you are given "Important Instructions for This Turn", treat it as expert advice. Base your *entire* answer on that instruction. This is the single source of truth.
+      2.  **Reason from Data:** If you are NOT given instructions, and the user asks a comparative question (e.g., "which is better for kids?", "which is cheaper?"), use the MATERIAL_DATA from the knowledge base to form your answer. For example, if asked for something durable and premium, you can compare the 'maintenance' and 'look' properties of WPC and Charcoal panels.
+      3.  **Synthesize, Don't List:** Do not just list data. Synthesize it. For example, instead of saying "PVC is cheap, WPC is premium", say "PVC budget-friendly hai, lekin WPC se aapko ekdum premium wooden look milta hai."
+      4.  **Handle Ambiguity:** If a user asks "konsa aacha hai?", ask a clarifying question. For example, "Aapke liye 'accha' ka matlab kya hai? Look-wise, budget-wise, ya maintenance-wise?"
+    `;
 
-  if (context?.budget) {
-    const budgetText = {
-      low: "Budget-conscious (affordable solutions)",
-      mid: "Mid-range (quality & value)",
-      high: "Premium (luxury options)",
-    }
-    parts.push(`Budget level: ${budgetText[context.budget]}`)
-  }
-
-  return parts.join("\n")
-}
-
-/**
- * Call Groq API for chat response
- */
-export async function callGroqAPI(
-  config: AIRequestConfig
-): Promise<AIResponse> {
-  const {
-    systemPrompt,
-    userMessage,
-    conversationHistory,
-    maxTokens = 500,
-    temperature = 0.65,
-    timeoutMs = 15000,
-  } = config
-
-  try {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
-
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-          model: "llama3-70b-8192",
-          messages: [
-            {
-              role: "system",
-              content: systemPrompt,
-            },
-            ...conversationHistory.map((msg) => ({
-              role: msg.role,
-              content: msg.content,
-            })),
-            {
-              role: "user",
-              content: userMessage,
-            },
-          ],
-          temperature,
-          max_tokens: maxTokens,
-        }),
-      }
-    )
-
-    clearTimeout(timeoutId)
-
-    if (!response.ok) {
-      const error = await response.text()
-      throw new Error(
-        `Groq API error ${response.status}: ${error}`
-      )
-    }
-
-    const data = await response.json()
-
-    if (!data.choices || !data.choices[0]?.message?.content) {
-      throw new Error("Empty response from Groq")
-    }
-
-    return {
-      content: data.choices[0].message.content.trim(),
-      source: "groq",
-      tokensUsed: data.usage?.total_tokens,
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-
-    console.error("[v0] Groq API failed:", message)
-
-    return {
-      content: "",
-      source: "fallback",
-      error: message,
-    }
-  }
-}
-
-/**
- * Stream response from Groq (for real-time updates)
- */
-export async function streamGroqResponse(
-  config: AIRequestConfig,
-  onChunk: (chunk: string, isComplete: boolean) => void
-): Promise<AIResponse> {
-  const {
-    systemPrompt,
-    userMessage,
-    conversationHistory,
-    maxTokens = 500,
-    temperature = 0.65,
-    timeoutMs = 20000,
-  } = config
-
-  try {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
-
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-        },
-        signal: controller.signal,
-        body: JSON.stringify({
-          model: "llama3-70b-8192",
-          messages: [
-            {
-              role: "system",
-              content: systemPrompt,
-            },
-            ...conversationHistory,
-            {
-              role: "user",
-              content: userMessage,
-            },
-          ],
-          temperature,
-          max_tokens: maxTokens,
-          stream: true,
-        }),
-      }
-    )
-
-    clearTimeout(timeoutId)
-
-    if (!response.ok) {
-      throw new Error(
-        `Groq stream error: ${response.statusText}`
-      )
-    }
-
-    if (!response.body) {
-      throw new Error("No response body")
-    }
-
-    let fullContent = ""
-    const reader = response.body.getReader()
-    const decoder = new TextDecoder()
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-
-      const chunk = decoder.decode(value, { stream: true })
-      const lines = chunk.split("\n")
-
-      for (const line of lines) {
-        if (!line.startsWith("data: ")) continue
-
-        const json = line.slice(6)
-        if (json === "[DONE]") continue
-
-        try {
-          const parsed = JSON.parse(json)
-          const content =
-            parsed.choices?.[0]?.delta?.content || ""
-
-          if (content) {
-            fullContent += content
-            onChunk(fullContent, false)
-          }
-        } catch {}
-      }
-    }
-
-    onChunk(fullContent, true)
-
-    return {
-      content: fullContent,
-      source: "groq",
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-
-    console.error("[v0] Stream error:", message)
-
-    return {
-      content: "",
-      source: "fallback",
-      error: message,
-    }
-  }
-}
-
-/**
- * Check if API key is configured
- */
-export function isGroqConfigured(): boolean {
-  return Boolean(process.env.GROQ_API_KEY)
+    return `${intro}\n\n${context}\n\n${rules}\n\n${reasoning_rules}`;
 }

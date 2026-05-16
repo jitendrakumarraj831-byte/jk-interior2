@@ -49,6 +49,15 @@ export interface ConversationContext {
   askedSize?: boolean
   askedRoomType?: boolean
   askedName?: boolean
+  // NEW: Enhanced context tracking
+  lastQuestionAsked?: 'room_size' | 'room_type' | 'city' | 'budget' | 'material' | 'phone' | 'name' | null
+  lastEstimateFlow?: {
+    active: boolean
+    material?: string
+    roomSize?: string
+    step: 'asking_material' | 'asking_size' | 'showing_estimate' | 'asking_booking'
+  }
+  conversationStage?: 'greeting' | 'discovery' | 'consultation' | 'estimation' | 'booking'
 }
 
 export interface LeadCard {
@@ -344,8 +353,13 @@ export function detectIntent(text: string): Intent {
   // Dimension in text → estimate is ALWAYS top priority
   if (DIM_REGEX.test(t)) return "room-estimate"
 
-  // Greeting & social — short messages only
-  if (has(t, KW.greeting) && t.length < 40)  return "greeting"
+  // Greeting & social — STRICT: Only standalone short greetings, not part of other messages
+  // This prevents greeting reset problem
+  const isStandaloneGreeting = /^(hi|hello|hey|namaste|namaskar|helo|hlo|hii|hiii|salam|assalamualaikum|jai\s*hind|pranam|good\s*(morning|evening|afternoon))[\s!.]*$/i.test(t)
+  if (isStandaloneGreeting) return "greeting"
+  
+  // For non-standalone greetings with other content, skip greeting detection
+  // Example: "hi, PVC ceiling ka rate" should NOT trigger greeting
   // "Aapse baat karke achha laga" type closing messages
   if (/\b(baat\s*karke|helpful\s*(rahi|tha|hai)|achha\s*laga|acha\s*laga|accha\s*laga|maza\s*aaya|maja\s*aaya)\b/.test(t)) return "thanks"
   if (has(t, KW.thanks) && t.length < 80)    return "thanks"
@@ -949,7 +963,111 @@ export function consultantReply(
   const COMPLEX_SIGNALS = /uneven|column|pillar|purana|old\s*wall|damage|crack|seepage.*wall|wall.*seepage|corner|curved|irregular|sloped|ceiling.*low|low.*ceiling|renovation|pehle\s*se|already|existing|already\s*laga|pehle\s*laga/i
   if (t.length > 70 && COMPLEX_SIGNALS.test(t)) return null
 
-  // ── 1. Context-aware follow-up FIRST (highest priority)
+  // ── 1. SHORT MESSAGE FOLLOW-UP HANDLING (Highest Priority)
+  // Handle short replies in context BEFORE normal intent routing
+  // This prevents "Araria me", "PVC", "12x14", "haan" from breaking flow
+  if (t.length < 40 && ctx.messagesExchanged && ctx.messagesExchanged > 0) {
+    // Check for dimension-only replies
+    const dimOnly = DIM_REGEX.exec(t)
+    if (dimOnly && !/(pvc|gypsum|wpc|uv|marble|grid|fluted|acoustic|flooring|wallpaper)/.test(t)) {
+      const l = parseInt(dimOnly[1]), w = parseInt(dimOnly[2])
+      ctx.roomSize = `${l}x${w}`
+      const key = ctx.lastTopic || resolveServiceKey("", ctx)
+      const name = SERVICE_NAME[key] || "Ceiling"
+      ctx.lastTopic = key
+      return formatPriceEstimate(l, w, key, name) + `\n\n📞 Exact quote ke liye free site visit — **${WA}**`
+    }
+
+    // Check for city-only short replies like "Araria me", "Forbesganj mein"
+    const cityOnlyPattern = /^(\w+)\s*(me|mein|main|में|mai)[\s]*$/i
+    const cityMatch = cityOnlyPattern.exec(t)
+    if (cityMatch) {
+      const cityKey = cityMatch[1].toLowerCase()
+      const resolvedCity = CITY_MAP[cityKey]
+      if (resolvedCity) {
+        ctx.city = resolvedCity
+        // Continue with last topic if available
+        if (ctx.lastTopic) {
+          const topicName = SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic
+          const sizePrompt = ctx.roomSize
+            ? `Room size ${ctx.roomSize} already noted — estimate nikaalte hain!`
+            : `Room ka size batao (jaise 12×14) — exact estimate abhi! 📐`
+          return `✅ **${resolvedCity}** mein ${topicName} available hai! 💪\n\n${sizePrompt}\n\n📞 **${WA}**`
+        }
+        return `✅ **${resolvedCity}** mein hum kaam karte hain! 💪\n\nKaunsa kaam karwana hai? Room size bataiye — estimate abhi!`
+      }
+    }
+
+    // Check for material-only short replies
+    const materialOnlyPatterns: [RegExp, string, string][] = [
+      [/^pvc$/i, "PVC Ceiling", "pvc"],
+      [/^gypsum$/i, "Gypsum Ceiling", "gypsum"],
+      [/^pop$/i, "Gypsum Ceiling", "gypsum"],
+      [/^wpc$/i, "WPC Wall Panels", "wpc"],
+      [/^uv$/i, "UV Marble Sheets", "uv"],
+      [/^marble$/i, "UV Marble Sheets", "uv"],
+      [/^grid$/i, "Grid Ceiling", "grid"],
+      [/^fluted$/i, "Fluted Panels", "fluted"],
+      [/^louver$/i, "Louver Panels", "wpc"],
+    ]
+    
+    for (const [pattern, name, key] of materialOnlyPatterns) {
+      if (pattern.test(t.trim())) {
+        ctx.lastTopic = key
+        // If we have room size, give estimate
+        if (ctx.roomSize) {
+          const parts = ctx.roomSize.split("x").map(Number)
+          if (parts.length === 2 && parts[0] && parts[1]) {
+            return formatPriceEstimate(parts[0], parts[1], key, name) + `\n\n📞 Free site visit: **${WA}**`
+          }
+        }
+        // Ask for room size
+        return `**${name}** — ${PRICE_MAP[key]?.range || "custom quote"}\n\nRoom ka size batao (jaise 12×14) — exact estimate nikaaluun! 📐`
+      }
+    }
+
+    // Check for short affirmation with active topic
+    if (/^(haan|yes|ok|ha|ji|hnji|accha|thik)$/i.test(t) && ctx.lastTopic) {
+      if (!ctx.roomSize) {
+        return `Bilkul! 😊 ${SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic} ke liye room ka size bataiye (jaise 12×14)`
+      }
+      return `${SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic} ke liye ready hain! 👍\n\nFree site visit book karein?\n\n📞 **${WA}**`
+    }
+
+    // Check for budget preference replies
+    if (/^(sasta|cheap|budget|kam|basic)$/i.test(t)) {
+      ctx.budget = "low"
+      const rec = recommendMaterial(ctx.roomType || null, false, "low")
+      return `Budget-friendly option: **${rec.primary}** — ${rec.reason}\n\nRoom ka size? 📐`
+    }
+
+    if (/^(premium|luxury|best|accha|mahnga)$/i.test(t)) {
+      ctx.budget = "high"
+      const rec = recommendMaterial(ctx.roomType || null, false, "high")
+      return `Premium option: **${rec.primary}** — ${rec.reason}\n\nRoom ka size? 📐`
+    }
+
+    // Check for waterproof keyword
+    if (/^(waterproof|water\s*proof)$/i.test(t)) {
+      return `Waterproof ke liye best options:\n\n🏠 **PVC Ceiling** — ${PRICE_MAP.pvc.range}\n💎 **UV Marble** — ${PRICE_MAP.uv?.range}\n\nDono 100% waterproof! Room ka size? 📐`
+    }
+
+    // Check for "kitna lagega" type price inquiries
+    if (/^kitna\s*(lag|hoga|padega|cost|rs|rupay)/i.test(t)) {
+      if (ctx.lastTopic) {
+        if (ctx.roomSize) {
+          const parts = ctx.roomSize.split("x").map(Number)
+          if (parts.length === 2 && parts[0] && parts[1]) {
+            return formatPriceEstimate(parts[0], parts[1], ctx.lastTopic, SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic) + `\n\n📞 **${WA}**`
+          }
+        }
+        return `${SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic} — ${PRICE_MAP[ctx.lastTopic]?.range || "custom quote"}\n\nRoom ka size batao — exact estimate! 📐`
+      }
+      return `Kaunse kaam ka rate chahiye?\n\n🏠 PVC Ceiling — ${PRICE_MAP.pvc.range}\n✨ Gypsum — ${PRICE_MAP.gypsum.range}\n🪵 WPC Panels — ${PRICE_MAP.wpc.range}`
+    }
+  }
+
+  // ── 2. Context-aware follow-up (existing logic, enhanced)
   const followUp = resolveContextualFollowUp(input, ctx)
   if (followUp) return followUp
 
@@ -968,10 +1086,22 @@ export function consultantReply(
   switch (intent) {
     case "greeting": {
       // Don't repeat greeting mid-conversation (after >2 messages exchanged)
-      // Only show greeting for first message or explicit "hello/hi"
-      if (ctx.messagesExchanged && ctx.messagesExchanged > 2 && !/(^hi$|^hello$|^hey$|^hii$|namaste|assalamualaikum)/i.test(t)) {
-        // User sent "hi" mid-conversation - acknowledge but continue context
-        return `Haan! 👋 Bol re — kaun sa kaam?`
+      // Only show greeting for TRULY first message or EXPLICIT standalone hello/hi
+      const isExplicitGreeting = /^(hi|hello|hey|namaste|namaskar|hii|hiii|salam|assalamualaikum|jai\s*hind|pranam|hlo|good\s*(morning|evening|afternoon))[\s!.]*$/i.test(t)
+      
+      if (ctx.messagesExchanged && ctx.messagesExchanged > 1) {
+        // We're in an active conversation
+        if (!isExplicitGreeting) {
+          // Not an explicit greeting, check if we have context to continue
+          if (ctx.lastTopic || ctx.service) {
+            // Continue with pricing/material discussion
+            return r_pricing(t, ctx)
+          }
+          // Generic continuation
+          return `Haan! Kaunsa kaam karwana hai? Ceiling ya wall paneling?`
+        }
+        // Explicit greeting mid-conversation - acknowledge briefly but don't restart
+        return `Haan ji! 😊 Batao - ${ctx.lastTopic ? `${SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic} ke baare mein aur jaanna hai?` : 'kaunsa kaam?'}`
       }
       return r_greeting(ctx)
     }

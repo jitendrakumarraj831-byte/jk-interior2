@@ -1,210 +1,67 @@
-/**
- * Conversation Context Manager
- * Tracks user preferences, room details, and conversation state
- */
+import { Message, ConversationGoal, ConversationTopic } from "@/lib/types";
 
-export interface UserContext {
-  name?: string
-  phone?: string
-  city?: string
-  service?: string
-  budget?: "low" | "mid" | "high"
-  roomType?: string
-  roomSize?: string
-  estimateShown?: boolean
-  visitBooked?: boolean
-}
-
+// The core state of the conversation, to be passed and updated on each turn.
 export interface ConversationState {
-  messageCount: number
-  hasExchangedGreetings: boolean
-  lastIntentType?: string
-  lastMaterial?: string
-  lastTopic?: string
-  userAskedForPrice: boolean
-  userAskedForEstimate: boolean
-  messagesWithoutContext: number
-}
-
-/**
- * Initialize fresh context
- */
-export function createUserContext(): UserContext {
-  return {}
-}
-
-/**
- * Initialize fresh conversation state
- */
-export function createConversationState(): ConversationState {
-  return {
-    messageCount: 0,
-    hasExchangedGreetings: false,
-    userAskedForPrice: false,
-    userAskedForEstimate: false,
-    messagesWithoutContext: 0,
-  }
-}
-
-/**
- * Update context based on new message
- */
-export function updateUserContext(
-  context: UserContext,
-  message: string,
-  detectedData?: {
-    name?: string
+    // User profile
+    userName?: string
     city?: string
-    service?: string
-    roomSize?: string
-  }
-): UserContext {
-  const updated = { ...context }
 
-  if (detectedData?.name && !updated.name) {
-    updated.name = detectedData.name
-  }
-
-  if (detectedData?.city && !updated.city) {
-    updated.city = detectedData.city
-  }
-
-  if (detectedData?.service && !updated.service) {
-    updated.service = detectedData.service
-  }
-
-  if (detectedData?.roomSize && !updated.roomSize) {
-    updated.roomSize = detectedData.roomSize
-  }
-
-  // Detect budget level from message
-  if (/budget|affordable|cheap|expensive|premium/i.test(message)) {
-    if (/cheap|budget|affordable|sasta/i.test(message)) {
-      updated.budget = "low"
-    } else if (/premium|luxury|expensive|mehnga/i.test(message)) {
-      updated.budget = "high"
+    // Project details
+    service?: "Ceiling" | "Wall Panels" | "TV Unit"
+    budget?: "low" | "mid" | "high"
+    roomType?: string // e.g., "Living Room", "Bedroom"
+    roomDimensions?: {
+        length?: number
+        width?: number
+        area?: number
+        unit?: "ft" | "m"
     }
-  }
 
-  return updated
+    // Conversation flow management
+    activeGoal?: ConversationGoal // What the user is trying to achieve right now
+    lastIntent?: ConversationGoal // The intent of the *last* user message
+    lastTopic?: ConversationTopic // The topic of the *last* turn
+
+    // Memory
+    lastMaterialMentioned?: string // e.g., "PVC", "Gypsum"
+    fullHistory: Message[] // The complete chat log for the LLM
+    turnHistory: {
+        userQuery: string
+        botResponse: string
+        intent: ConversationGoal
+        topic: ConversationTopic
+    }[]
+
+    // Safety & Determinism
+    isPriceSensitive: boolean // True if user has mentioned budget/price recently
+    isAwaitingConfirmation?: {
+        for: string // e.g., "city_confirmation"
+        on: string // The original piece of data, e.g. "Bhopal"
+    }
 }
 
-/**
- * Update conversation state
- */
-export function updateConversationState(
-  state: ConversationState,
-  message: string,
-  intentType?: string
+// Creates the initial state for a new conversation.
+export function createInitialState(
+    initialHistory: Message[] = []
 ): ConversationState {
-  const updated = { ...state }
-
-  updated.messageCount++
-
-  if (
-    /hi|hello|hey|namaste|good morning/i.test(message)
-  ) {
-    updated.hasExchangedGreetings = true
-  }
-
-  if (intentType) {
-    updated.lastIntentType = intentType
-  }
-
-  if (/price|cost|rate|estimate/i.test(message)) {
-    updated.userAskedForPrice = true
-  }
-
-  if (/dimension|size|feet|ft|x|×/i.test(message)) {
-    updated.userAskedForEstimate = true
-  }
-
-  if (message.length < 20) {
-    updated.messagesWithoutContext++
-  } else {
-    updated.messagesWithoutContext = 0
-  }
-
-  return updated
-}
-
-/**
- * Check if we should ask for missing info
- */
-export function shouldAskForInfo(
-  context: UserContext,
-  state: ConversationState
-): string | null {
-  if (
-    !context.name &&
-    state.messageCount > 2 &&
-    state.hasExchangedGreetings
-  ) {
-    return "name"
-  }
-
-  if (
-    !context.roomSize &&
-    state.userAskedForEstimate &&
-    state.messageCount > 3
-  ) {
-    return "roomSize"
-  }
-
-  if (
-    !context.phone &&
-    state.userAskedForPrice &&
-    state.messageCount > 4
-  ) {
-    return "phone"
-  }
-
-  return null
-}
-
-/**
- * Format context summary for AI system prompt
- */
-export function formatContextForAI(
-  context: UserContext,
-  state: ConversationState
-): string {
-  const parts: string[] = []
-
-  if (context.name) {
-    parts.push(`User: ${context.name}`)
-  }
-
-  if (context.city) {
-    parts.push(`Location: ${context.city}`)
-  }
-
-  if (context.roomSize) {
-    parts.push(`Room Size: ${context.roomSize}`)
-  }
-
-  if (context.service) {
-    parts.push(`Service Interest: ${context.service}`)
-  }
-
-  if (context.budget) {
-    const budgetLabel = {
-      low: "Budget-friendly",
-      mid: "Mid-range",
-      high: "Premium/Luxury",
+    return {
+        fullHistory: initialHistory,
+        turnHistory: [],
+        isPriceSensitive: false,
     }
-    parts.push(`Budget: ${budgetLabel[context.budget]}`)
-  }
+}
 
-  if (state.userAskedForPrice) {
-    parts.push("User is interested in pricing")
-  }
-
-  if (state.userAskedForEstimate) {
-    parts.push("User has requested an estimate")
-  }
-
-  return parts.length > 0
-    ? parts.join(" • ")
-    : "No specific context yet"
+// A function to update the state.
+export function updateConversationState(
+    currentState: ConversationState,
+    updates: Partial<ConversationState>
+): ConversationState {
+    const newState = { ...currentState, ...updates };
+    // Ensure history is always appended, not overwritten, if provided in updates.
+    if (updates.fullHistory) {
+        newState.fullHistory = currentState.fullHistory.concat(
+            updates.fullHistory
+        );
+    }
+    return newState;
 }
