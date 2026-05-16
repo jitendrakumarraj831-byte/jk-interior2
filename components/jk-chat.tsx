@@ -204,8 +204,20 @@ async function getAIReply(
   sessionId: string,
   memory?: ConversationMemory,
   onChunk?: (partial: string, isFirst: boolean) => void,
-  extras?: { roomSize?: string | null; lastTopic?: string | null },
-): Promise<{ reply: string; source: "groq" | "local"; updatedRoomSize?: string } | null> {
+  extras?: { roomSize?: string | null; lastTopic?: string | null; messagesExchanged?: number },
+): Promise<{ 
+  reply: string; 
+  source: "groq" | "local"; 
+  updatedContext?: {
+    roomSize?: string
+    lastTopic?: string
+    lastIntent?: string
+    city?: string
+    service?: string
+    lastQuestionAsked?: string | null
+    conversationStage?: string
+  }
+} | null> {
   try {
     const useStream = typeof onChunk === "function"
     const url = useStream ? "/api/chat?stream=1" : "/api/chat"
@@ -222,9 +234,10 @@ async function getAIReply(
           phone:     lead?.phone     || undefined,
           city:      lead?.city      || undefined,
           service:   lead?.service   || undefined,
-          // ── Context memory — so API engine remembers room size + topic ──
+          // ── Context memory — so API engine remembers context across messages ──
           roomSize:  extras?.roomSize  || undefined,
           lastTopic: extras?.lastTopic || undefined,
+          messagesExchanged: extras?.messagesExchanged || 0,
         },
       }),
       signal: AbortSignal.timeout(12000),
@@ -256,7 +269,7 @@ async function getAIReply(
     return {
       reply: data.reply as string,
       source: (data.source as "groq" | "local") ?? "groq",
-      updatedRoomSize: data.updatedContext?.roomSize ?? undefined,
+      updatedContext: data.updatedContext ?? undefined,
     }
   } catch {
     return null
@@ -761,14 +774,27 @@ export default function JKChat() {
           }
         },
         // ── Pass current room size + topic so API engine remembers context ──
-        { roomSize, lastTopic },
+        { roomSize, lastTopic, messagesExchanged: historyRef.current.length },
       )
       if (aiResult) {
         reply = aiResult.reply
-        // ── If API extracted a new room size (e.g. user typed it inline),
-        //    save it so the NEXT message also has it ──────────────────────
-        if (aiResult.updatedRoomSize && !roomSize) {
-          setRoomSize(aiResult.updatedRoomSize)
+        // ── Update local state from API response context ──────────────────────
+        if (aiResult.updatedContext) {
+          const ctx = aiResult.updatedContext
+          if (ctx.roomSize && !roomSize) {
+            setRoomSize(ctx.roomSize)
+          }
+          if (ctx.lastTopic && ctx.lastTopic !== lastTopic) {
+            setLastTopic(ctx.lastTopic)
+          }
+          // Update lead with city/service if detected
+          if (ctx.city || ctx.service) {
+            setLead(prev => ({
+              ...prev,
+              city: ctx.city || prev?.city,
+              service: ctx.service || prev?.service,
+            }))
+          }
         }
       }
     }
