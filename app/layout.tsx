@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import Chatbot from '@/components/chatbot'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -286,7 +287,7 @@ export default function RootLayout({
           {children}
         </div>
 
-        
+        <Chatbot />
         <Analytics />
       </body>
     </html>
