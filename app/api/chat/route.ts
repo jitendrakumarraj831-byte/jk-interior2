@@ -32,6 +32,7 @@ import {
 import {
   resolveFollowUpIntent,
   shouldShowGreeting,
+  isExplicitGreetingOnly,
 } from "@/lib/context-engine"
 
 export const runtime = "nodejs"
@@ -66,6 +67,10 @@ const ChatSchema = z.object({
       roomType: z.string().optional(),
       lastTopic: z.string().optional(),
       lastIntent: z.string().optional(),
+      // NEW: Enhanced context fields
+      lastQuestionAsked: z.enum(['room_size', 'room_type', 'city', 'budget', 'material', 'phone', 'name']).nullable().optional(),
+      conversationStage: z.enum(['greeting', 'discovery', 'consultation', 'estimation', 'booking']).optional(),
+      messagesExchanged: z.number().optional(),
     })
     .optional(),
 })
@@ -79,7 +84,15 @@ type ChatRequest = z.infer<typeof ChatSchema>
 function ok(
   reply: string,
   source: "groq" | "local",
-  updatedContext?: { roomSize?: string }
+  updatedContext?: { 
+    roomSize?: string
+    lastTopic?: string
+    lastIntent?: string
+    lastQuestionAsked?: string | null
+    city?: string
+    service?: string
+    conversationStage?: string
+  }
 ): NextResponse {
   return NextResponse.json(
     {
@@ -202,7 +215,11 @@ function buildEngineContext(
         | "high"
         | undefined) ?? null,
 
-    messagesExchanged: history.length,
+    messagesExchanged: lead?.messagesExchanged ?? history.length,
+    
+    // NEW: Enhanced context fields
+    lastQuestionAsked: lead?.lastQuestionAsked ?? null,
+    conversationStage: lead?.conversationStage ?? 'discovery',
   }
 
   // Enrich from recent user messages
@@ -324,7 +341,7 @@ async function callGroq(
 
 // ─────────────────────────────────────────────────────────────
 // Generic Fallback
-// Single source of truth for fallback pricing + off-hours reply.
+// Context-aware fallback that maintains conversation flow.
 // This fires when: GROQ_API_KEY is missing, or Groq fails.
 // ─────────────────────────────────────────────────────────────
 
@@ -338,12 +355,31 @@ function genericFallback(
 
   const oh = isOffHours()
 
+  // ── Context-aware responses ──
+  // If we have an active topic, stay on topic
+  if (lead?.lastTopic) {
+    const topicNames: Record<string, string> = {
+      pvc: "PVC Ceiling",
+      gypsum: "Gypsum Ceiling",
+      wpc: "WPC Wall Panels",
+      uv: "UV Marble Sheets",
+      tvunit: "Modular TV Unit",
+    }
+    const topicName = topicNames[lead.lastTopic] || lead.lastTopic
+
+    if (lead.roomSize) {
+      return `${nm}${topicName} ke liye ${lead.roomSize} room — estimate ready hai!\n\nFree site visit book karein?\n\n📞 WhatsApp: +91 8651070831`
+    }
+    return `${nm}${topicName} ke baare mein aur jaanna hai?\n\nRoom ka size batao (jaise 12×14) — exact estimate! 📐`
+  }
+
+  // Price inquiry
   if (
     message &&
     /price|rate|cost|kitna|lagega|estimate/i.test(message)
   ) {
     return `
-💰 *JK Interior — Price Guide*
+💰 **Price Guide**
 
 ✨ Gypsum Ceiling — ₹80–140/sq.ft
 🏠 PVC Ceiling — ₹60–120/sq.ft
@@ -351,20 +387,22 @@ function genericFallback(
 💎 UV Marble Sheets — ₹50–95/sq.ft
 📺 Modular TV Unit — ₹15,000+
 
-Room ka size bataiye (jaise 12×14) — exact estimate nikaaluun! 📐
+Room ka size batao (jaise 12×14) — exact estimate nikaaluun! 📐
 `.trim()
   }
 
-  return oh
-    ? `${nm}abhi office hours ke baad hai — team kal 9 AM pe contact karegi 😊
+  // Off-hours response
+  if (oh) {
+    return `${nm}abhi office band hai 🌙\n\nTeam kal 9 AM pe contact karegi.\n\nUrgent? WhatsApp: +91 8651070831`
+  }
 
-Urgent? WhatsApp: +91 8651070831`
+  // Default with context awareness
+  if (lead?.messagesExchanged && lead.messagesExchanged > 2) {
+    // Mid-conversation fallback - don't restart
+    return `${nm}Aur kya jaanna chahte ho?\n\n• Material options\n• Price estimate\n• Free site visit\n\nRoom ka size batao ya sawaal poochho! 📐`
+  }
 
-    : `${nm}Room ka size batao (jaise 12×14) aur kaunsa kaam — ceiling ya wall paneling?
-
-Estimate abhi nikaaluun 📐
-
-Call/WhatsApp: +91 8651070831`
+  return `${nm}Room ka size batao (jaise 12×14) aur kaunsa kaam — ceiling ya wall paneling?\n\nEstimate abhi nikaaluun! 📐\n\nCall/WhatsApp: +91 8651070831`
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -440,10 +478,17 @@ export async function POST(
       ? `${dimMatch[1]}x${dimMatch[2]}`
       : leadContext?.roomSize ?? undefined
 
-    // Helper: build updatedContext only when there's a room size
-    const roomCtx = extractedRoomSize
-      ? { roomSize: extractedRoomSize }
-      : undefined
+    // Helper: build updatedContext with all relevant fields
+    // This ensures frontend gets the latest context after each response
+    const buildUpdatedContext = (ctx: ConversationContext) => ({
+      roomSize: ctx.roomSize || extractedRoomSize,
+      lastTopic: ctx.lastTopic,
+      lastIntent: ctx.lastIntent,
+      lastQuestionAsked: ctx.lastQuestionAsked,
+      city: ctx.city,
+      service: ctx.service,
+      conversationStage: ctx.conversationStage,
+    })
 
     console.log(
       `[chat] ip=${ip} msg="${message.slice(0, 60)}"`
@@ -499,7 +544,7 @@ export async function POST(
     if (engineReply) {
       console.log("[chat] Layer 1 handled")
 
-      return ok(engineReply, "local", roomCtx)
+      return ok(engineReply, "local", buildUpdatedContext(ctx))
     }
 
     // ─────────────────────────────────────────
@@ -517,7 +562,7 @@ export async function POST(
       return ok(
         genericFallback(leadContext, message),
         "local",
-        roomCtx // FIX [3]: propagate roomSize even on key-missing path
+        buildUpdatedContext(ctx) // Propagate context even on key-missing path
       )
     }
 
@@ -533,8 +578,8 @@ export async function POST(
 
       console.log("[chat] Layer 2 (Groq) success")
 
-      // FIX [3]: propagate roomSize from Groq replies too
-      return ok(reply, "groq", roomCtx)
+      // Propagate context from Groq replies too
+      return ok(reply, "groq", buildUpdatedContext(ctx))
     } catch (error: any) {
       const errMsg = String(
         error?.message || ""
@@ -564,7 +609,7 @@ export async function POST(
       return ok(
         genericFallback(leadContext, message),
         "local",
-        roomCtx
+        buildUpdatedContext(ctx)
       )
     }
   } catch (error) {
