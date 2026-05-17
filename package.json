@@ -31,10 +31,12 @@
     "zod-validation-error": "^5.0.0"
   },
   "devDependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/postcss": "^4.3.0",
     "@types/node": "^22.19.18",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "class-variance-authority": "^0.7.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.3",
     "postcss": "^8.5.14",
