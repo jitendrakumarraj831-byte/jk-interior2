@@ -16,6 +16,7 @@
 
 import { NextResponse } from "next/server"
 import { z } from "zod"
+import { Pool } from "pg"
 
 import { buildSystemPrompt } from "@/lib/business-data"
 
@@ -26,17 +27,30 @@ import {
   detectBudgetLevel,
   normalizeTypos,
   isOffHours,
+  detectCity,
+  getSmartQuickReplies,
+  tryExtractPhone,
+  tryExtractName,
   type ConversationContext,
 } from "@/lib/consultant-engine"
 
 import {
   resolveFollowUpIntent,
   shouldShowGreeting,
-  isExplicitGreetingOnly,
 } from "@/lib/context-engine"
+import {
+  buildWebsiteAwareSystemPrompt,
+  cleanAssistantReply,
+  getChatMetadata,
+  getWebsiteKnowledgeReply,
+} from "@/lib/chatbot/site-context"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
+
+const leadPool = process.env.DATABASE_URL
+  ? new Pool({ connectionString: process.env.DATABASE_URL })
+  : null
 
 // ─────────────────────────────────────────────────────────────
 // Request Schema
@@ -71,6 +85,7 @@ const ChatSchema = z.object({
       lastQuestionAsked: z.enum(['room_size', 'room_type', 'city', 'budget', 'material', 'phone', 'name']).nullable().optional(),
       conversationStage: z.enum(['greeting', 'discovery', 'consultation', 'estimation', 'booking']).optional(),
       messagesExchanged: z.number().optional(),
+      leadSaved: z.boolean().optional(),
     })
     .optional(),
 })
@@ -92,7 +107,13 @@ function ok(
     city?: string
     service?: string
     conversationStage?: string
-  }
+    name?: string
+    phone?: string
+    budget?: string | null
+    roomType?: string
+    leadSaved?: boolean
+  },
+  metadata?: ReturnType<typeof getChatMetadata>
 ): NextResponse {
   return NextResponse.json(
     {
@@ -100,6 +121,7 @@ function ok(
       reply,
       source,
       ...(updatedContext ? { updatedContext } : {}),
+      ...(metadata ? { metadata } : {}),
     },
     {
       headers: {
@@ -250,6 +272,107 @@ function buildEngineContext(
   return ctx
 }
 
+
+function enrichContextFromMessage(
+  ctx: ConversationContext,
+  lead: ChatRequest["leadContext"],
+  rawMessage: string,
+  normalizedMessage: string,
+  extractedRoomSize?: string
+): ConversationContext {
+  if (extractedRoomSize) ctx.roomSize = extractedRoomSize
+
+  const service = detectService(normalizedMessage)
+  if (service) {
+    ctx.service = service.name
+    ctx.lastTopic = service.key
+  } else if (/\bcharcoal\b|charcol|charcole/i.test(normalizedMessage)) {
+    ctx.service = "Charcoal Panel"
+    ctx.lastTopic = "charcoal"
+  } else if (/\bpop\b|plaster\s*of\s*paris/i.test(normalizedMessage)) {
+    ctx.service = "POP / Gypsum Ceiling"
+    ctx.lastTopic = "gypsum"
+  }
+
+  const room = detectRoomType(normalizedMessage)
+  if (room) ctx.roomType = room.label
+
+  const budget = detectBudgetLevel(normalizedMessage)
+  if (budget) ctx.budget = budget
+
+  const city = detectCity(normalizedMessage)
+  if (city) ctx.city = city
+
+  const phone = tryExtractPhone(rawMessage)
+  if (phone) {
+    ctx.phone = phone
+    ctx.conversationStage = "booking"
+  }
+
+  const explicitName = /\b(?:mera\s+naam|my\s+name\s+is|name\s+is|main\s+hoon|mai\s+hoon)\b/i.test(rawMessage)
+  if (!ctx.name && (explicitName || lead?.lastQuestionAsked === "name")) {
+    const name = tryExtractName(rawMessage)
+    if (name && name.length <= 60 && !/^(pvc|gypsum|wpc|price|rate|estimate)$/i.test(name)) {
+      ctx.name = name
+    }
+  }
+
+  if (ctx.phone) {
+    ctx.conversationStage = "booking"
+  } else if (ctx.roomSize || ctx.service) {
+    ctx.conversationStage = "estimation"
+  } else if (!ctx.conversationStage) {
+    ctx.conversationStage = "discovery"
+  }
+
+  return ctx
+}
+
+function summarizeChat(history: ChatRequest["history"], message: string): string {
+  return [...history.slice(-4), { role: "user" as const, content: message }]
+    .map((entry) => `${entry.role}: ${entry.content}`)
+    .join(" | ")
+    .slice(0, 900)
+}
+
+async function saveLeadIfReady(
+  ctx: ConversationContext,
+  lead: ChatRequest["leadContext"],
+  history: ChatRequest["history"],
+  message: string
+): Promise<boolean> {
+  if (!leadPool || lead?.leadSaved || !ctx.phone) return Boolean(lead?.leadSaved)
+
+  const hasUsefulLeadDetail = Boolean(ctx.name || ctx.city || ctx.service || ctx.roomSize || ctx.roomType)
+  if (!hasUsefulLeadDetail) return false
+
+  try {
+    await leadPool.query(
+      `INSERT INTO leads (name, phone, city, service, estimate, preferred_time, chat_summary)
+       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+      [
+        ctx.name || "Chat Lead",
+        ctx.phone,
+        ctx.city ?? null,
+        ctx.service ?? ctx.lastTopic ?? null,
+        ctx.roomSize ? `Room size: ${ctx.roomSize}` : null,
+        null,
+        summarizeChat(history, message),
+      ]
+    )
+    return true
+  } catch (error) {
+    console.error("[chat] lead capture failed:", error)
+    return false
+  }
+}
+
+function mergeQuickReplies(ctx: ConversationContext): string[] {
+  const replies = new Set<string>(getChatMetadata(ctx).quickReplies)
+  for (const reply of getSmartQuickReplies(ctx)) replies.add(reply)
+  return Array.from(replies).slice(0, 7)
+}
+
 // ─────────────────────────────────────────────────────────────
 // Groq API Call
 // ─────────────────────────────────────────────────────────────
@@ -346,7 +469,7 @@ async function callGroq(
 // ─────────────────────────────────────────────────────────────
 
 function genericFallback(
-  lead?: ChatRequest["leadContext"],
+  lead?: Partial<ConversationContext> & { messagesExchanged?: number },
   message?: string
 ): string {
   const nm = lead?.name
@@ -478,6 +601,8 @@ export async function POST(
       ? `${dimMatch[1]}x${dimMatch[2]}`
       : leadContext?.roomSize ?? undefined
 
+    let leadSaved = Boolean(leadContext?.leadSaved)
+
     // Helper: build updatedContext with all relevant fields
     // This ensures frontend gets the latest context after each response
     const buildUpdatedContext = (ctx: ConversationContext) => ({
@@ -488,6 +613,16 @@ export async function POST(
       city: ctx.city,
       service: ctx.service,
       conversationStage: ctx.conversationStage,
+      name: ctx.name,
+      phone: ctx.phone,
+      budget: ctx.budget,
+      roomType: ctx.roomType,
+      leadSaved,
+    })
+
+    const buildMetadata = (ctx: ConversationContext) => ({
+      ...getChatMetadata(ctx),
+      quickReplies: mergeQuickReplies(ctx),
     })
 
     console.log(
@@ -498,18 +633,24 @@ export async function POST(
     // Layer 1 — Rule Engine
     // ─────────────────────────────────────────
 
-    const ctx = buildEngineContext(leadContext, history)
+    const ctx = enrichContextFromMessage(
+      buildEngineContext(leadContext, history),
+      leadContext,
+      message,
+      normMessage,
+      extractedRoomSize
+    )
 
     // Enhance context with follow-up resolution for short messages
     // This helps the rule engine understand short replies like "Araria me", "PVC", "kitna lagega"
     if (normMessage.length < 30 && (leadContext?.lastTopic || leadContext?.lastIntent)) {
       const followUpResolution = resolveFollowUpIntent(normMessage, {
-        lastIntent: leadContext?.lastIntent,
-        lastMaterial: leadContext?.lastTopic,
-        lastCity: leadContext?.city,
-        lastRoomType: leadContext?.roomType,
-        lastBudget: leadContext?.budget,
-        lastTopic: leadContext?.lastTopic,
+        lastIntent: ctx.lastIntent ?? leadContext?.lastIntent,
+        lastMaterial: ctx.lastTopic ?? leadContext?.lastTopic,
+        lastCity: ctx.city ?? leadContext?.city,
+        lastRoomType: ctx.roomType ?? leadContext?.roomType,
+        lastBudget: ctx.budget ?? leadContext?.budget,
+        lastTopic: ctx.lastTopic ?? leadContext?.lastTopic,
         messagesSinceGreeting: ctx.messagesExchanged || 0,
         isInActivePricing: ctx.lastTopic ? true : false,
       })
@@ -539,12 +680,22 @@ export async function POST(
       // The greeting case will be handled specially in the switch statement
     }
 
+    leadSaved = await saveLeadIfReady(ctx, leadContext, history, message)
+
     const engineReply = consultantReply(normMessage, ctx)
 
     if (engineReply) {
       console.log("[chat] Layer 1 handled")
 
-      return ok(engineReply, "local", buildUpdatedContext(ctx))
+      return ok(cleanAssistantReply(engineReply), "local", buildUpdatedContext(ctx), buildMetadata(ctx))
+    }
+
+    const websiteKnowledgeReply = getWebsiteKnowledgeReply(normMessage, ctx)
+
+    if (websiteKnowledgeReply) {
+      console.log("[chat] Website knowledge handled")
+
+      return ok(cleanAssistantReply(websiteKnowledgeReply), "local", buildUpdatedContext(ctx), buildMetadata(ctx))
     }
 
     // ─────────────────────────────────────────
@@ -560,18 +711,19 @@ export async function POST(
       )
 
       return ok(
-        genericFallback(leadContext, message),
+        cleanAssistantReply(genericFallback(buildUpdatedContext(ctx), message)),
         "local",
-        buildUpdatedContext(ctx) // Propagate context even on key-missing path
+        buildUpdatedContext(ctx),
+        buildMetadata(ctx) // Propagate context even on key-missing path
       )
     }
 
-    const systemPrompt = buildSystemPrompt(leadContext)
+    const systemPrompt = buildWebsiteAwareSystemPrompt(buildSystemPrompt(buildUpdatedContext(ctx)), ctx)
 
     try {
       const reply = await callGroq(
         systemPrompt,
-        history,
+        history.slice(-12),
         message,
         apiKey
       )
@@ -579,7 +731,7 @@ export async function POST(
       console.log("[chat] Layer 2 (Groq) success")
 
       // Propagate context from Groq replies too
-      return ok(reply, "groq", buildUpdatedContext(ctx))
+      return ok(cleanAssistantReply(reply), "groq", buildUpdatedContext(ctx), buildMetadata(ctx))
     } catch (error: any) {
       const errMsg = String(
         error?.message || ""
@@ -607,9 +759,10 @@ export async function POST(
       // ─────────────────────────────────────
 
       return ok(
-        genericFallback(leadContext, message),
+        cleanAssistantReply(genericFallback(buildUpdatedContext(ctx), message)),
         "local",
-        buildUpdatedContext(ctx)
+        buildUpdatedContext(ctx),
+        buildMetadata(ctx)
       )
     }
   } catch (error) {
