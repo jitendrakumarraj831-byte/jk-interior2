@@ -321,6 +321,8 @@ async function getAIReply(
           roomSize:  extras?.roomSize  || undefined,
           lastTopic: extras?.lastTopic || undefined,
           messagesExchanged: extras?.messagesExchanged || 0,
+    lastQuestionAsked: null,
+  conversationStage: (extras?.messagesExchanged ?? 0) > 2 ? "consultation" : "discovery",
         },
       }),
       signal: AbortSignal.timeout(12000),
