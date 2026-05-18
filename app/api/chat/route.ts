@@ -220,56 +220,44 @@ function buildEngineContext(
 // Problem था: Groq को customer context नहीं मिलता था properly
 // ─────────────────────────────────────────────────────────────
 
-function buildEnhancedSystemPrompt(
-  leadContext: ChatRequest["leadContext"],
-  ctx: ConversationContext
+function injectContextIntoSystemPrompt(
+  basePrompt: string,
+  leadContext: any,
+  ctx: any  // ConversationContext
 ): string {
-  // Base system prompt from business-data
-  const base = buildSystemPrompt(leadContext)
-
-  // Customer context block — Groq को clearly बताएं
-  const contextLines: string[] = []
-
-  const name = ctx.name || leadContext?.name
-  const city = ctx.city || leadContext?.city
+  const name    = ctx.name    || leadContext?.name
+  const city    = ctx.city    || leadContext?.city
   const service = ctx.service || leadContext?.service
   const roomSize = ctx.roomSize || leadContext?.roomSize
   const roomType = ctx.roomType || leadContext?.roomType
-  const budget = ctx.budget || leadContext?.budget
   const lastTopic = ctx.lastTopic || leadContext?.lastTopic
-  const stage = ctx.conversationStage || leadContext?.conversationStage || "discovery"
-  const msgCount = ctx.messagesExchanged || 0
+  const stage   = ctx.conversationStage || leadContext?.conversationStage || "discovery"
 
-  if (name || city || service || roomSize || budget || lastTopic) {
-    contextLines.push("\n\n=== CURRENT CUSTOMER CONTEXT ===")
-    if (name)      contextLines.push(`Customer Name: ${name}`)
-    if (city)      contextLines.push(`City: ${city}`)
-    if (service)   contextLines.push(`Service Interest: ${service}`)
-    if (roomSize)  contextLines.push(`Room Size: ${roomSize} feet`)
-    if (roomType)  contextLines.push(`Room Type: ${roomType}`)
-    if (budget)    contextLines.push(`Budget Level: ${budget}`)
-    if (lastTopic) contextLines.push(`Last Topic Discussed: ${lastTopic}`)
-    contextLines.push(`Conversation Stage: ${stage}`)
-    contextLines.push(`Messages Exchanged: ${msgCount}`)
-    contextLines.push("=================================")
-  }
+  const contextBlock = `
 
-  // Critical behavior rules
-  contextLines.push(`
-=== CRITICAL RULES (FOLLOW STRICTLY) ===
-1. You are Riya — JK Interior's AI consultant. ONLY answer about JK Interior's services.
-2. NEVER answer unrelated questions (politics, cricket, news, jokes, general knowledge).
-3. If asked something unrelated, politely redirect: "Main sirf JK Interior ke baare mein help kar sakti hoon. Kaunsa room design karna hai aapko?"
-4. If customer already gave room size (${roomSize || "not yet given"}), DO NOT ask again. Use it directly for estimate.
-5. If customer already mentioned city (${city || "not yet given"}), DO NOT ask again.
-6. Keep responses SHORT — max 5-6 lines. Use bullet points.
-7. Always end with ONE clear next step: estimate, site visit booking, or specific question.
-8. Respond in the SAME language as the customer (Hindi/Hinglish/English).
-9. ${stage === "estimation" || roomSize ? "Customer is ready for estimate — give pricing directly." : "Guide customer toward sharing room dimensions."}
-10. Do NOT repeat what was said before. Move the conversation FORWARD.
-=========================================`)
+=== ACTIVE CUSTOMER CONTEXT ===
+${name     ? `Name: ${name}`            : "Name: Unknown"}
+${city     ? `City: ${city}`            : "City: Not mentioned yet"}
+${service  ? `Service: ${service}`      : "Service: Not specified yet"}
+${roomSize ? `Room Size: ${roomSize} ft`: "Room Size: Not given yet"}
+${roomType ? `Room Type: ${roomType}`   : "Room Type: Not specified"}
+${lastTopic? `Last Topic: ${lastTopic}` : ""}
+Conversation Stage: ${stage}
+================================
 
-  return base + contextLines.join("\n")
+=== STRICT RESPONSE RULES ===
+1. आप Riya हैं — JK Interior की AI consultant। SIRF interior services के बारे में बात करें।
+2. अगर कोई unrelated topic पूछे (cricket, news, politics, jokes) — politely redirect करें:
+   "Main sirf JK Interior ke baare mein help kar sakti hoon. Kaunsa room design karna hai?"
+3. अगर room size पहले से मिली है (${roomSize || "नहीं मिली"}), तो DOBARA मत पूछो — directly estimate दो।
+4. अगर city पहले से मिली है (${city || "नहीं मिली"}), तो DOBARA मत पूछो।
+5. Response SHORT रखो — max 5-6 lines। Bullet points use करो।
+6. हर response एक clear next step पर खत्म हो।
+7. Customer जिस language में बात करे (Hindi/Hinglish/English) — उसी में जवाब दो।
+8. Previous context को CONTINUE करो — repeat मत करो।
+=============================`
+
+  return basePrompt + contextBlock
 }
 
 // ─────────────────────────────────────────────────────────────
