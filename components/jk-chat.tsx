@@ -778,24 +778,29 @@ export default function JKChat() {
       setLead(updLead)
       persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
     }
+// ✅ Room size दिया तो collectStep cancel करो
+    if (dims && collectStep) {
+      setCollectStep(null)
+    }
 
-    if (collectStep) {
-      const tLower = text.toLowerCase()
-      await delay(600)
-      let collReply = ""
-      if (collectStep === "name") {
-        const phone = tryExtractPhone(text)
-        const nameRaw = phone ? text.replace(phone, "").replace(/\b91\b/, "") : text
-        const name = tryExtractName(nameRaw)
-        if (name.length < 2) collReply = `Please write your full name – like "Rahul Kumar" or "Priya Singh" 😊`
-        else {
-          const city = detectCity(tLower) || lead?.city
-          const updated = { ...(lead || {}), name, ...(phone ? { phone } : {}), city: city || lead?.city }
-          setLead(updated); persist(updated, lastTopic)
-          if (phone && city) { setCollectStep("time"); collReply = `${name} ji! ✅ When is a good time for site visit? (e.g., Saturday morning)` }
-          else if (phone) { setCollectStep("city"); collReply = `${name} ji, got your number! 📱 Which city are you in?` }
-          else { setCollectStep("phone"); collReply = `${name} ji! Share your WhatsApp number 📱` }
-        }
+    if (dims && !collectStep) {
+      await delay(400)
+      const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
+      const estSummary = extractEstimateSummary(estimateReply)
+      if (estSummary) setPendingEstimate(estSummary)
+      historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
+      setMsgs(prev => [...prev, mk("bot", estimateReply)])
+      const newRoomSize = `${dims.length}x${dims.width}`
+      setRoomSize(newRoomSize)
+      const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
+      if (svcSlug) setLastTopic(svcSlug)
+      const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
+      setLead(newLead)
+      persist(newLead, svcSlug)
+      setTyping(false)
+      sendLock.current = false
+      return
+    }
       } else if (collectStep === "phone") {
         const phone = tryExtractPhone(text)
         if (!phone) collReply = `Valid 10-digit mobile number needed.`
