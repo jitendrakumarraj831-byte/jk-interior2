@@ -289,7 +289,7 @@ export default function RootLayout({
           {children}
         </div>
 
-        <FloatingActions />
+        
         <JKChat />
 
         <Analytics />
