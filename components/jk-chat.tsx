@@ -772,83 +772,93 @@ export default function JKChat() {
     const serviceFromMsg = detectService(text.toLowerCase())
     const currentService = serviceFromMsg || lead?.service || null
 
-    // ✅ Service तुरंत save करो — यही fix है
-    if (serviceFromMsg && !lead?.service) {
-      const updLead = { ...(lead || {}), service: serviceFromMsg }
-      setLead(updLead)
-      persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
-    }
-// ✅ Room size दिया तो collectStep cancel करो
-    if (dims && collectStep) {
-      setCollectStep(null)
-    }
-
-    if (dims && !collectStep) {
-      await delay(400)
-      const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
-      const estSummary = extractEstimateSummary(estimateReply)
-      if (estSummary) setPendingEstimate(estSummary)
-      historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
-      setMsgs(prev => [...prev, mk("bot", estimateReply)])
-      const newRoomSize = `${dims.length}x${dims.width}`
-      setRoomSize(newRoomSize)
-      const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
-      if (svcSlug) setLastTopic(svcSlug)
-      const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
-      setLead(newLead)
-      persist(newLead, svcSlug)
-      setTyping(false)
-      sendLock.current = false
-      return
-    }
-     else if (collectStep === "phone") {
-        const phone = tryExtractPhone(text)
-        if (!phone) collReply = `Valid 10-digit mobile number needed.`
-        else {
-          const city = detectCity(tLower) || lead?.city
-          const updated = { ...(lead || {}), phone, city: city || undefined }
-          setLead(updated); persist(updated, lastTopic)
-          if (city) { setCollectStep("time"); collReply = `Number saved! 📱 When should we schedule the visit?` }
-          else { setCollectStep("city"); collReply = `Thanks! Which city? (Araria, Forbesganj, Purnia, etc.)` }
-        }
-      } else if (collectStep === "city") {
-        const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
-        if (!city) collReply = `Please tell your city name.`
-        else {
-          const updated = { ...(lead || {}), city }
-          setLead(updated); persist(updated, lastTopic)
-          setCollectStep("time")
-          collReply = `${city} – perfect! 📍 When would you like a site visit? (day/time)`
-        }
-      } else if (collectStep === "time") {
-        const preferredTime = text.trim()
-        setCollectStep(null)
-        const finalLead: Lead = {
-          name:    lead?.name    || "Friend",
-          phone:   lead?.phone   || "",
-          city:    lead?.city,
-          service: lead?.service,
-        }
-        storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
-        const card: LeadCard = {
-          ...finalLead,
-          estimate:      pendingEstimate || undefined,
-          preferredTime,
-          timestamp:     new Date().toISOString(),
-        }
-        historyRef.current = [...historyRef.current, { role: "assistant", content: "Booking confirmed! Team will contact you shortly." }]
-        setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
-        setTyping(false)
-        sendLock.current = false
-        return
-      }
-      historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
-      setMsgs(prev => [...prev, mk("bot", collReply)])
-      setTyping(false)
-      sendLock.current = false
-      return
-    }
     
+    // ✅ Service save
+if (serviceFromMsg && !lead?.service) {
+  const updLead = { ...(lead || {}), service: serviceFromMsg }
+  setLead(updLead)
+  persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
+}
+
+// ✅ Room size मिला तो collectStep cancel
+if (dims && collectStep) {
+  setCollectStep(null)
+}
+
+// ✅ Dimensions वाला block — अलग if, else if से जोड़ो मत
+if (dims && !collectStep) {
+  await delay(400)
+  const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
+  const estSummary = extractEstimateSummary(estimateReply)
+  if (estSummary) setPendingEstimate(estSummary)
+  historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
+  setMsgs(prev => [...prev, mk("bot", estimateReply)])
+  const newRoomSize = `${dims.length}x${dims.width}`
+  setRoomSize(newRoomSize)
+  const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
+  if (svcSlug) setLastTopic(svcSlug)
+  const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
+  setLead(newLead)
+  persist(newLead, svcSlug)
+  setTyping(false)
+  sendLock.current = false
+  return  // ← यहाँ return है, इसलिए else if नहीं चलेगा
+}
+
+// ✅ CollectStep block — बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
+if (collectStep) {
+  let collReply = ""
+
+  if (collectStep === "phone") {
+    const phone = tryExtractPhone(text)
+    if (!phone) collReply = `Valid 10-digit mobile number needed.`
+    else {
+      const city = detectCity(tLower) || lead?.city
+      const updated = { ...(lead || {}), phone, city: city || undefined }
+      setLead(updated); persist(updated, lastTopic)
+      if (city) { setCollectStep("time"); collReply = `Number saved! 📱 When should we schedule the visit?` }
+      else { setCollectStep("city"); collReply = `Thanks! Which city? (Araria, Forbesganj, Purnia, etc.)` }
+    }
+  } else if (collectStep === "city") {
+    const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
+    if (!city) collReply = `Please tell your city name.`
+    else {
+      const updated = { ...(lead || {}), city }
+      setLead(updated); persist(updated, lastTopic)
+      setCollectStep("time")
+      collReply = `${city} – perfect! 📍 When would you like a site visit? (day/time)`
+    }
+  } else if (collectStep === "time") {
+    const preferredTime = text.trim()
+    setCollectStep(null)
+    const finalLead: Lead = {
+      name:    lead?.name    || "Friend",
+      phone:   lead?.phone   || "",
+      city:    lead?.city,
+      service: lead?.service,
+    }
+    storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
+    const card: LeadCard = {
+      ...finalLead,
+      estimate:      pendingEstimate || undefined,
+      preferredTime,
+      timestamp:     new Date().toISOString(),
+    }
+    historyRef.current = [...historyRef.current, { role: "assistant", content: "Booking confirmed! Team will contact you shortly." }]
+    setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
+    setTyping(false)
+    sendLock.current = false
+    return
+  }
+
+  // phone/city steps का shared footer
+  historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
+  setMsgs(prev => [...prev, mk("bot", collReply)])
+  setTyping(false)
+  sendLock.current = false
+  return
+} // ← यह बंद करता है if (collectStep) को
+
     const svc = detectService(text.toLowerCase())
     const city = detectCity(text.toLowerCase())
     const extractedPhone = tryExtractPhone(text)
