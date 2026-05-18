@@ -890,6 +890,13 @@ function smartLocalFallback(ctx: ConversationContext, t: string): string | null 
 
   // Has city + wants work but no service/size
   if (ctx.city && !ctx.service && !ctx.roomType) {
+    if (ctx.lastTopic) {
+      const topicName = SERVICE_NAME[ctx.lastTopic] || ctx.lastTopic
+      const sizePrompt = ctx.roomSize
+        ? `Room size ${ctx.roomSize} already noted!`
+        : `Room ka size batao (jaise 12×14) — exact estimate abhi! 📐`
+      return `✅ **${ctx.city}** mein **${topicName}** ka kaam hota hai! 💪\n\n${sizePrompt}\n\n📞 **${WA}**`
+    }
     return `${ctx.city} mein karte hain! 💪\n\nKaunsa kaam karwana hai${n}? Ceiling, wall paneling, TV unit?`
   }
 
