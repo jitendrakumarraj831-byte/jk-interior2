@@ -848,7 +848,7 @@ export default function JKChat() {
       sendLock.current = false
       return
     }
-    }
+    
     const svc = detectService(text.toLowerCase())
     const city = detectCity(text.toLowerCase())
     const extractedPhone = tryExtractPhone(text)
