@@ -808,7 +808,7 @@ if (dims && !collectStep) {
 // ✅ CollectStep block — बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
 if (collectStep) {
   let collReply = ""
-
+const tLower = text.toLowerCase()
   if (collectStep === "phone") {
     const phone = tryExtractPhone(text)
     if (!phone) collReply = `Valid 10-digit mobile number needed.`
