@@ -564,6 +564,10 @@ const WELCOME_MSG = mk(
 )
 
 // ── Main Component ────────────────────────────────────────────────────────────
+// NOTE: The large WhatsApp and Call buttons visible below the chat are rendered
+// in the PARENT PAGE (not here). Remove them from your page layout/component.
+// Example: Delete any <a href="https://wa.me/..."> and <a href="tel:..."> buttons
+// that appear outside this JKChat component in your page JSX.
 export default function JKChat() {
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
@@ -681,30 +685,6 @@ export default function JKChat() {
     try { localStorage.setItem("jk_chat_v5", JSON.stringify({ lead: l, topic: tp })) } catch {}
   }
 
-  const updateMemory = useCallback((text: string, source: "user" | "bot") => {
-    const updates = extractFromText(text, memoryRef.current, source)
-    if (Object.keys(updates).length === 0) return
-    const merged = mergeMemory(
-      memoryRef.current,
-      updates,
-      source === "user",
-    )
-    merged.stage = updateStage(merged)
-    memoryRef.current = merged
-    setMemory(merged)
-    saveMemory(merged)
-    setLead(prev => {
-      const needsSync =
-        (!prev?.name && merged.name) ||
-        (!prev?.city && merged.city)
-      if (!needsSync) return prev
-      return {
-        ...(prev ?? {}),
-        name: prev?.name || merged.name,
-        city: prev?.city || merged.city,
-      }
-    })
-  }, [])
 
   // Core send
   const send = useCallback(async (override?: string) => {
@@ -985,9 +965,6 @@ export default function JKChat() {
   const lastBotMsg = messages.filter(m => m.role === "bot").slice(-1)[0]?.text || ""
   const hasEstimate = lastBotMsg.includes("₹") || !!pendingEstimate
   const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg, lastTopic)
-
-  const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hello JK Interior, I'm ${lead.name} ${lead.phone ? `(${lead.phone})` : ""} – need interior work.` : "Hello JK Interior, need interior work.")}`
-  const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lead?.name ? `Hi JK Interior! ${lead.name} wants a free site visit.` : "Hi JK Interior! Free site visit please.")}`
   const statusText = offHours ? "🌙 Opens 9 AM • WhatsApp available" : "🟢 Online — Premium Consultant"
 
   if (!mounted) return null
@@ -1009,47 +986,66 @@ export default function JKChat() {
         .jk-soundbar:nth-child(5) { animation-delay: 0.05s; }
       `}</style>
 
-      {/* ── Floating Button — Voice Style ─────────────────────────────────── */}
+      {/* ── Floating Button — Glossy Green Mic ────────────────────────────── */}
       {!open && (
         <motion.button
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.08 }}
+          whileHover={{ scale: 1.07 }}
           whileTap={{ scale: 0.93 }}
           onClick={() => setOpen(true)}
-          className="fixed bottom-[5.5rem] left-4 z-50 md:bottom-24 md:left-6"
-          style={{ width: 60, height: 60 }}
+          className="fixed bottom-24 right-4 z-50 md:bottom-28 md:right-6"
+          style={{ width: 72, height: 72 }}
           aria-label="Open chat"
         >
-          {/* Pulsing rings — voice style */}
-          <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-40" style={{ animation: "jk-ring 2s ease-out infinite" }} />
-          <span className="absolute inset-[-6px] rounded-full border-2 border-emerald-400 opacity-20 jk-voice-pulse" />
+          {/* Pulsing glow ring */}
+          <span className="absolute inset-0 rounded-full bg-[#6fe86f] opacity-30" style={{ animation: "jk-ring 2.2s ease-out infinite" }} />
 
-          {/* Main button body */}
-          <span className="relative flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 text-white shadow-2xl flex-col gap-[3px]">
-            {/* Soundwave bars inside button */}
-            <div className="flex items-end gap-[2.5px] h-[18px]">
-              {[1,2,3,4,5].map((_, i) => (
-                <span
-                  key={i}
-                  className="w-[3px] rounded-full bg-white jk-soundbar"
-                  style={{
-                    height: [8, 14, 18, 12, 7][i],
-                    animationDelay: `${i * 0.08}s`,
-                  }}
-                />
-              ))}
-            </div>
+          {/* Metallic outer ring — matches screenshot */}
+          <span className="absolute inset-0 rounded-full shadow-2xl"
+            style={{
+              background: "conic-gradient(from 135deg, #c0c0c0, #888, #d4d4d4, #666, #c0c0c0)",
+              padding: "5px",
+            }}
+          />
+
+          {/* Inner green glossy button */}
+          <span className="absolute inset-[5px] rounded-full overflow-hidden flex items-center justify-center"
+            style={{ background: "linear-gradient(145deg, #7de87d 0%, #4cc94c 35%, #2e9e2e 70%, #1d6e1d 100%)" }}
+          >
+            {/* Glossy top-left highlight */}
+            <span className="absolute top-[4%] left-[8%] w-[60%] h-[45%] rounded-full bg-white/40"
+              style={{ filter: "blur(3px)" }}
+            />
+            {/* Classic broadcast mic SVG */}
+            <svg viewBox="0 0 56 56" fill="none" className="relative z-10" style={{ width: 38, height: 38 }} aria-hidden="true">
+              {/* Left sound waves */}
+              <path d="M9 20 Q3 28 9 36" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none"/>
+              <path d="M13 16 Q5 28 13 40" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.75"/>
+              {/* Right sound waves */}
+              <path d="M47 20 Q53 28 47 36" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none"/>
+              <path d="M43 16 Q51 28 43 40" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.75"/>
+              {/* Mic capsule (top rounded) */}
+              <rect x="20" y="8" width="16" height="22" rx="8" fill="white"/>
+              {/* Grille lines inside mic */}
+              <line x1="20" y1="16" x2="36" y2="16" stroke="#2e9e2e" strokeWidth="1.8"/>
+              <line x1="20" y1="20" x2="36" y2="20" stroke="#2e9e2e" strokeWidth="1.8"/>
+              <line x1="20" y1="24" x2="36" y2="24" stroke="#2e9e2e" strokeWidth="1.8"/>
+              {/* Mic yoke / arms */}
+              <line x1="22" y1="29" x2="22" y2="34" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+              <line x1="34" y1="29" x2="34" y2="34" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+              {/* Mic arc bottom */}
+              <path d="M17 30 Q17 40 28 40 Q39 40 39 30" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round"/>
+              {/* Stand pole */}
+              <line x1="28" y1="40" x2="28" y2="47" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+              {/* Base */}
+              <ellipse cx="28" cy="48" rx="8" ry="3" fill="white"/>
+            </svg>
           </span>
 
           {/* AI badge */}
-          <span className="absolute -top-1 -right-1 flex items-center gap-0.5 rounded-full bg-amber-400 px-1.5 py-0.5 text-[8px] font-black text-amber-900 shadow">
+          <span className="absolute -top-1 -right-0.5 flex items-center gap-0.5 rounded-full bg-amber-400 px-1.5 py-0.5 text-[8px] font-black text-amber-900 shadow-md z-20">
             <ISparkle />AI
-          </span>
-
-          {/* "Baat karo" label */}
-          <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-bold text-emerald-700 bg-white/90 px-2 py-0.5 rounded-full shadow-sm border border-emerald-100">
-            Baat karo
           </span>
         </motion.button>
       )}
@@ -1191,24 +1187,24 @@ export default function JKChat() {
 
             {/* Input Row — with Voice Mic Button */}
             <div className="shrink-0 flex items-center gap-1.5 border-t border-gray-200 bg-white px-3 py-2 pb-[max(8px,env(safe-area-inset-bottom))]">
-              {/* Voice Mic Button */}
-              {voiceSupported && (
-                <motion.button
-                  onClick={toggleVoice}
-                  whileTap={{ scale: 0.9 }}
-                  className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all ${
-                    isListening
-                      ? "bg-red-500 text-white shadow-lg"
-                      : "bg-emerald-100 border border-emerald-400 text-emerald-800 hover:bg-emerald-200"
-                  }`}
-                  title={isListening ? "Recording... tap to stop" : "Bolkar type karo"}
-                >
-                  {isListening && (
-                    <span className="absolute inset-0 rounded-full bg-red-400 opacity-40 animate-ping" />
-                  )}
-                  {isListening ? <IMicStop /> : <IMic />}
-                </motion.button>
-              )}
+              {/* Voice Mic Button — always visible */}
+              <motion.button
+                onClick={voiceSupported ? toggleVoice : undefined}
+                whileTap={{ scale: 0.9 }}
+                className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all ${
+                  isListening
+                    ? "bg-red-500 text-white shadow-lg"
+                    : voiceSupported
+                    ? "bg-emerald-100 border border-emerald-400 text-emerald-800 hover:bg-emerald-200"
+                    : "bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed"
+                }`}
+                title={isListening ? "Recording... tap to stop" : voiceSupported ? "Bolkar type karo" : "Voice not supported"}
+              >
+                {isListening && (
+                  <span className="absolute inset-0 rounded-full bg-red-400 opacity-40 animate-ping" />
+                )}
+                {isListening ? <IMicStop /> : <IMic />}
+              </motion.button>
 
               <input
                 ref={inputRef}
@@ -1232,4 +1228,5 @@ export default function JKChat() {
       </AnimatePresence>
     </>
   )
-}
+                      }
+ 
