@@ -45,45 +45,49 @@ const CITY_MAP: Record<string, string> = {
 }
 
 // ── EXACT FAQ ANSWERS — Fixed Questions ka Fixed Answer ───────────────────────
-const EXACT_FAQ: Array<{ patterns: RegExp; answer: string }> = [
+const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
-    patterns: /\b(price list|rate list|sab ka rate|all material rate|poori list|rate kya hai|price kya hai)\b/i,
+    // Strict: sirf clear price list requests
+    patterns: /\b(price\s*list|rate\s*list|sab\s*ka\s*rate|all\s*(?:material\s*)?rate|poori\s*list)\b/i,
     answer: `📋 **JK Interior – Complete Rate List**\n\n✨ Gypsum False Ceiling   ₹80 – ₹140 / sq.ft\n🏠 PVC False Ceiling     ₹60 – ₹120 / sq.ft\n🪵 WPC Wall Panels       ₹180 – ₹450 / sq.ft\n💎 UV Marble Sheets      ₹50 – ₹95 / sq.ft\n📺 Modular TV Unit       ₹15,000 – ₹60,000\n🏛️ Fluted Panels         ₹200 – ₹500 / sq.ft\n🏢 Grid Ceiling          ₹45 – ₹90 / sq.ft\n🍳 Modular Kitchen       ₹60,000 – ₹2,00,000\n🚪 Custom Wardrobe       ₹800 – ₹2,000 / sq.ft\n\n📞 Free site visit & exact quote: **+91 8651070831**`,
   },
   {
-    patterns: /\b(warranty|guarantee|kitne saal|how many years|kitne din)\b/i,
+    // Strict warranty: must mention warranty/guarantee explicitly
+    patterns: /\b(warranty|guarantee|kitne\s*saal\s*(?:ki\s*)?(?:warranty|guarantee)|how\s*many\s*years)\b/i,
     answer: `🛡️ **JK Interior Warranty**\n\n✅ Gypsum Ceiling – **5 साल** की warranty\n✅ PVC Ceiling – **10 साल** की warranty\n✅ WPC Wall Panels – **7 साल** की warranty\n✅ UV Marble Sheets – **5 साल** की warranty\n✅ Modular TV Unit – **2 साल** की warranty\n\n🔧 Material defect pe free replacement\n📞 +91 8651070831`,
   },
   {
-    patterns: /\b(kitne din|kitna time|time lagta|installation time|kab tak|kab ho jayega|days|din mein)\b/i,
+    // Installation time — must be specifically about installation, not general time
+    patterns: /(?:installation|kaam|lagan[ae])\s*(?:mein\s*)?(?:kitna|kab|time|din)|(?:kitne\s*din\s*mein\s*(?:hoga|lagega|complete))/i,
     answer: `⏱️ **Installation Time**\n\n✅ PVC Ceiling (1 room) – **1–2 दिन**\n✅ Gypsum Ceiling (1 room) – **2–4 दिन**\n✅ WPC Wall Panels – **2–3 दिन**\n✅ UV Marble Sheets – **1–2 दिन**\n✅ TV Unit (Modular) – **3–5 दिन**\n✅ Full Home Interior – **15–30 दिन**\n\n📞 Exact timeline ke liye: **+91 8651070831**`,
   },
   {
-    patterns: /\b(contact|number|phone|call karo|contact karo|helpline|customer care|reach)\b/i,
-    answer: `📞 **JK Interior – Contact Us**\n\n📱 WhatsApp & Call: **+91 8651070831**\n🕐 Timing: **सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे**\n📍 Forbesganj, Araria, Bihar\n\n💬 WhatsApp pe message karo ya seedha call karo – team turant reply karegi! 🙏`,
+    // Contact — must ask for number/contact explicitly
+    patterns: /\b(?:(?:aapka|JK\s*interior\s*ka|company\s*ka)\s*)?(?:contact|phone\s*number|helpline|customer\s*care)\b/i,
+    answer: `📞 **JK Interior – Contact Us**\n\n📱 WhatsApp & Call: **+91 8651070831**\n🕐 Timing: **सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे**\n📍 Forbesganj, Araria, Bihar\n\n💬 WhatsApp pe message karo ya seedha call karo! 🙏`,
   },
   {
-    patterns: /\b(free visit|site visit|free site visit|measurement|maap|free consultation|ghar aao|visit chahiye)\b/i,
+    patterns: /\b(free\s*(?:site\s*)?visit|site\s*visit|free\s*consultation|ghar\s*(?:aa?o|aana)|visit\s*chahiye|measurement\s*(?:chahiye|karo))\b/i,
     answer: `📅 **Free Site Visit – 100% Free!**\n\n✅ Hamare expert aapke ghar aayenge\n✅ Room measure karenge\n✅ Best design suggest karenge\n✅ Exact quote on-the-spot milega\n✅ Koi hidden charge nahi!\n\n📞 Book karo: **+91 8651070831**\nYa "Book Visit" button dabao niche 👇`,
   },
   {
-    patterns: /\b(waterproof|paani|bathroom ceiling|wet area|moisture|geela|nami)\b/i,
+    patterns: /\b(waterproof|(?:bathroom|kitchen)\s*(?:ke\s*liye\s*)?ceiling|wet\s*area|(?:paani|nami|moisture)\s*(?:se\s*)?(?:safe|resist))\b/i,
     answer: `💧 **Waterproof Ceiling Options**\n\n✅ **PVC Ceiling** – 100% waterproof, bathroom/kitchen ke liye best\n   Rate: ₹60–120 / sq.ft\n\n❌ Gypsum – waterproof NAHI hai, wet areas me avoid karo\n\n✅ **UV Marble Sheets** – bathroom walls ke liye\n   Rate: ₹50–95 / sq.ft\n\nRoom ka size bata dijiye — estimate turant nikalti hoon! 📐`,
   },
   {
-    patterns: /\b(gypsum vs pvc|pvc vs gypsum|kaunsa behtar|which is better|difference|antar|comparison)\b/i,
+    patterns: /\b(gypsum\s*vs\s*pvc|pvc\s*vs\s*gypsum|kaunsa\s*(?:better|behtar|acha)|(?:gypsum|pvc)\s*(?:mein\s*)?(?:kya\s*)?(?:difference|antar|fark))\b/i,
     answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹80–140 | ₹60–120 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8651070831**`,
   },
   {
-    patterns: /\b(konse area|kahan kahan|service area|areas covered|kahan kaam|which city|kahan milega)\b/i,
-    answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj\n✅ Araria\n✅ Jogbani\n✅ Raniganj\n✅ Narpatganj\n✅ Kursakanta\n✅ Tribeniganj\n✅ Chhatapur\n✅ Supaul\n✅ Purnia\n\nAur bhi nearby areas cover karte hain! Apna city batao 📞 **+91 8651070831**`,
+    patterns: /\b(?:konse|kahan\s*kahan|service\s*area|areas?\s*(?:cover|covered)|kahan\s*kaam|which\s*cit(?:y|ies)|kahan\s*milega)\b/i,
+    answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj ✅ Araria ✅ Jogbani\n✅ Raniganj ✅ Narpatganj ✅ Kursakanta\n✅ Tribeniganj ✅ Chhatapur ✅ Supaul ✅ Purnia\n\nAur bhi nearby areas cover karte hain!\n📞 **+91 8651070831**`,
   },
   {
-    patterns: /\b(payment|advance|payment mode|upi|cash|online payment|kitna advance|deposit)\b/i,
+    patterns: /\b(?:payment|advance|payment\s*mode|upi|(?:cash|online)\s*payment|kitna\s*advance|deposit)\b/i,
     answer: `💳 **Payment Details**\n\n✅ UPI / PhonePe / GPay accepted\n✅ Cash payment bhi chalega\n✅ Site visit ke baad 30–50% advance\n✅ Kaam complete hone pe remaining payment\n✅ No full advance required!\n\n📞 Details ke liye: **+91 8651070831**`,
   },
   {
-    patterns: /\b(led|lighting|cove light|indirect light|led strip|light design|rgb)\b/i,
+    patterns: /\b(?:led|cove\s*light|indirect\s*light|led\s*strip|light\s*design|rgb\s*light)\b/i,
     answer: `💡 **LED Lighting Options**\n\n✅ Cove Lighting (Gypsum ke saath) – ₹40–80 / running ft\n✅ LED Strip (RGB/White) – ₹30–60 / running ft\n✅ Spot Lights – ₹200–500 / piece\n✅ Backlit TV Panel – ₹800–2000\n\n✨ LED lighting se room ka look 3x premium ho jaata hai!\n\nRoom size bata dijiye — LED estimate bhi saath mein dunga 🙏`,
   },
 ]
@@ -140,32 +144,60 @@ function detectService(t: string): string | null {
 
 // ── EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
 function matchExactFAQ(text: string): string | null {
-  for (const faq of EXACT_FAQ) {
+  for (const faq of EXACT_FAQ_FIXED) {
     if (faq.patterns.test(text)) return faq.answer
   }
   return null
-}
+    }
 
 // ─── DIMENSIONS ENGINE ────────────────────────────────────────────────────────
 function extractDimensions(text: string): { length: number; width: number; rawMatch: string } | null {
-  const patterns = [
-    /(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)/i,
-    /(\d+(?:\.\d+)?)\s*(?:feet|ft)?\s*by\s*(\d+(?:\.\d+)?)/i,
-    /(\d+(?:\.\d+)?)\s*(?:length|lg|len)[^\d]*(\d+(?:\.\d+)?)/i,
+  const t = text.toLowerCase()
+
+  // ❌ Time/date patterns को IGNORE करें — यही main bug था
+  const IGNORE_PATTERNS = [
+    /\d+\s*(?:baj[eo]?|am\b|pm\b)/i,         // "12 baje", "10 am"
+    /\d+\s*(?:din|day|week|month|saal|year)/i, // "10 din mein"
+    /\d+\s*(?:january|february|march|april|may|june|july|august|september|october|november|december)/i,
+    /(?:subah|sham|raat|dopahar)\s*\d+/i,      // "subah 10"
+    /\d+\s*(?:ghante|hour|minute|second)/i,     // "2 ghante"
+    /(?:call|phone|number|contact)\s*\d+/i,     // phone numbers
+    /\d{10,}/,                                  // 10+ digit numbers = phone
+    /\b(?:ek|do|teen|char|paanch)\s+(?:din|week|month)\b/i, // "teen din"
   ]
+
+  for (const pattern of IGNORE_PATTERNS) {
+    if (pattern.test(t)) return null
+  }
+
+  // ✅ Dimension patterns — सिर्फ clear size indicators
+  const patterns = [
+    // "12x10", "12×10", "12*10" — most common
+    /(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot|फ़ीट|sqft)?/i,
+    // "12 by 10 feet"
+    /(\d+(?:\.\d+)?)\s*(?:feet|ft|foot)?\s*by\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot)?/i,
+    // "length 12 width 10" / "12 feet length 10 feet width"
+    /(\d+(?:\.\d+)?)\s*(?:feet|ft)?\s*(?:length|lg|len|lambai|लंबाई)[^\d]{0,10}(\d+(?:\.\d+)?)/i,
+  ]
+
   for (const pattern of patterns) {
     const match = text.match(pattern)
     if (match) {
       let l = parseFloat(match[1])
       let w = parseFloat(match[2])
-      if (!isNaN(l) && !isNaN(w) && l > 0 && w > 0) {
-        if (l < w) [l, w] = [w, l]
-        return { length: l, width: w, rawMatch: match[0] }
-      }
+
+      // Sanity check — realistic room sizes only (5ft to 100ft)
+      if (isNaN(l) || isNaN(w) || l < 5 || w < 5 || l > 100 || w > 100) continue
+      
+      // अगर एक ही number repeat हो (जैसे 10x10 ok है, but 99x99 suspicious)
+      if (l > 60 && w > 60) continue
+
+      if (l < w) [l, w] = [w, l]
+      return { length: l, width: w, rawMatch: match[0] }
     }
   }
   return null
-}
+        }
 
 function getPremiumAdvice(area: number, materialType: string): string {
   if (area > 250) return "For this spacious area, we recommend a cove lighting design with premium Gypsum or WPC panels to enhance the luxury feel."
