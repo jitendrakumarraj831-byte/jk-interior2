@@ -801,7 +801,7 @@ export default function JKChat() {
       sendLock.current = false
       return
     }
-      } else if (collectStep === "phone") {
+     else if (collectStep === "phone") {
         const phone = tryExtractPhone(text)
         if (!phone) collReply = `Valid 10-digit mobile number needed.`
         else {
