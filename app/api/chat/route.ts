@@ -437,7 +437,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 
     // FIX [F2] + [F3]: enriched ctx को system prompt में pass करें
-    const systemPrompt = buildEnhancedSystemPrompt(leadContext, ctx)
+    const systemPrompt = buildSystemPrompt(leadContext, ctx)
 
     try {
       const reply = await callGroq(systemPrompt, history, message, apiKey)
