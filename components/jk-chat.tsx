@@ -760,24 +760,12 @@ export default function JKChat() {
     const dims = extractDimensions(text)
     const serviceFromMsg = detectService(text.toLowerCase())
     const currentService = serviceFromMsg || lead?.service || null
-    
-    if (dims && !collectStep) {
-      await delay(400)
-      const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
-      const estSummary = extractEstimateSummary(estimateReply)
-      if (estSummary) setPendingEstimate(estSummary)
-      historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
-      setMsgs(prev => [...prev, mk("bot", estimateReply)])
-      const newRoomSize = `${dims.length}x${dims.width}`
-      setRoomSize(newRoomSize)
-      const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
-      if (svcSlug) setLastTopic(svcSlug)
-      const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
-      setLead(newLead)
-      persist(newLead, svcSlug)
-      setTyping(false)
-      sendLock.current = false
-      return
+
+    // ✅ Service तुरंत save करो — यही fix है
+    if (serviceFromMsg && !lead?.service) {
+      const updLead = { ...(lead || {}), service: serviceFromMsg }
+      setLead(updLead)
+      persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
     }
 
     if (collectStep) {
