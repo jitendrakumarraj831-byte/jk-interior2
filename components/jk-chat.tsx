@@ -432,24 +432,32 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   }
 
   const cityMentioned = detectCity(t)
-  if (cityMentioned) {
-    if (has(t, ["pvc"])) {
-      return `✅ ${cityMentioned} mein PVC ceiling ka kaam ho jayega 👍\n\n💰 PVC Ceiling Rate:\n₹60–120 / sq.ft\nPremium: ₹90–150 / sq.ft\n\n✅ Waterproof\n✅ Budget Friendly\n✅ Fast Installation\n\nRoom size bata dijiye (jaise 12×14) — exact estimate nikalti hoon ✨`
-    }
-    if (has(t, ["gypsum", "false ceiling"])) {
-      return `✅ ${cityMentioned} mein Gypsum false ceiling available hai ✨\n\n💰 Gypsum Ceiling Rate:\n₹80–140 / sq.ft\n\n✅ Premium Luxury Finish\n✅ Best for LED Lighting\n✅ Modern Design Look\n\nRoom size bataiye — exact estimate nikalti hoon 👍`
-    }
-    if (has(t, ["wpc", "wall panel"])) {
-      return `✅ ${cityMentioned} mein WPC wall panel installation available hai 🪵\n\n💰 WPC Panel Rate:\n₹180–450 / sq.ft\n\n✅ Waterproof\n✅ Wooden Luxury Finish\n✅ TV Wall & Bedroom Design\n\nWall size bhejiye — exact estimate nikalti hoon ✨`
-    }
-    if (has(t, ["uv", "marble"])) {
-      return `✅ ${cityMentioned} mein UV marble sheet ka kaam available hai 💎\n\n💰 UV Marble Sheet Rate:\n₹50–95 / sq.ft\n\n✅ Glossy Luxury Finish\n✅ Easy Maintenance\n✅ Modern Wall Design`
-    }
-    if (nm) {
-      return `**${cityMentioned}** mein bilkul kaam karte hain! 💪\n\nAapne Gypsum ke baare mein pooch raha tha — room ka size batao, estimate abhi nikalti hoon! 📐\n\n📞 +91 8651070831`
-    }
-    return `✅ ${cityMentioned} mein bilkul kaam karte hain! 💪\n\n🏠 PVC Ceiling\n✨ Gypsum Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n\n📞 Free site visit available:\n+91 8651070831`
+if (cityMentioned) {
+  const svc = lead?.service?.toLowerCase() || ""
+
+  if (has(t, ["pvc"]) || svc.includes("pvc")) {
+    return `✅ ${cityMentioned} mein PVC ceiling ka kaam ho jayega 👍\n\n💰 PVC Ceiling Rate:\n₹60–120 / sq.ft\nPremium: ₹90–150 / sq.ft\n\n✅ Waterproof\n✅ Budget Friendly\n✅ Fast Installation\n\nRoom size bata dijiye (jaise 12×14) — exact estimate nikalti hoon ✨`
   }
+  if (has(t, ["gypsum", "false ceiling"]) || svc.includes("gypsum")) {
+    return `✅ ${cityMentioned} mein Gypsum false ceiling available hai ✨\n\n💰 Gypsum Ceiling Rate:\n₹80–140 / sq.ft\n\n✅ Premium Luxury Finish\n✅ Best for LED Lighting\n✅ Modern Design Look\n\nRoom size bataiye — exact estimate nikalti hoon 👍`
+  }
+  if (has(t, ["wpc", "wall panel"]) || svc.includes("wpc")) {
+    return `✅ ${cityMentioned} mein WPC wall panel installation available hai 🪵\n\n💰 WPC Panel Rate:\n₹180–450 / sq.ft\n\n✅ Waterproof\n✅ Wooden Luxury Finish\n✅ TV Wall & Bedroom Design\n\nWall size bhejiye — exact estimate nikalti hoon ✨`
+  }
+  if (has(t, ["uv", "marble"]) || svc.includes("uv")) {
+    return `✅ ${cityMentioned} mein UV marble sheet ka kaam available hai 💎\n\n💰 UV Marble Sheet Rate:\n₹50–95 / sq.ft\n\n✅ Glossy Luxury Finish\n✅ Easy Maintenance\n✅ Modern Wall Design`
+  }
+
+  // ✅ यह नया — lead की service याद रखेगा
+  if (lead?.service) {
+    return `✅ ${cityMentioned} mein **${lead.service}** ka kaam hota hai! 💪\n\nRoom ka size bataiye — exact estimate nikalti hoon! 📐\n\n📞 +91 8651070831`
+  }
+
+  if (nm) {
+    return `**${cityMentioned}** mein bilkul kaam karte hain! 💪\n\nRoom ka size batao, estimate abhi nikalti hoon! 📐\n\n📞 +91 8651070831`
+  }
+  return `✅ ${cityMentioned} mein bilkul kaam karte hain! 💪\n\n🏠 PVC Ceiling\n✨ Gypsum Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n\n📞 Free site visit available:\n+91 8651070831`
+        }
 
   return pick([
     nm ? `${nm}, share your room dimensions (like 12×10 or 14×12) and I'll give you a detailed premium estimate!` : `Hi there! I'm Riya, your interior AI consultant. Give me your room size (e.g., 12×10) and I'll prepare a luxury estimate instantly ✨`,
