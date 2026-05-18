@@ -733,6 +733,17 @@ export default function JKChat() {
     const text = (override ?? input).trim()
     if (!text || typing || sendLock.current) return
 
+    // ✅ Service हर message में detect करके तुरंत save करो
+    const detectedSvc = detectService(text.toLowerCase())
+    if (detectedSvc) {
+      setLead(prev => {
+        const updated = { ...(prev || {}), service: detectedSvc }
+        persist(updated, detectedSvc.toLowerCase().replace(/\s+/g, "-"))
+        return updated
+      })
+      setLastTopic(detectedSvc.toLowerCase().replace(/\s+/g, "-"))
+    }
+
     // Stop listening if voice was active
     if (isListening && recognitionRef.current) {
       recognitionRef.current.stop()
