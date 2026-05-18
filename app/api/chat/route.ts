@@ -391,8 +391,10 @@ export async function POST(req: Request): Promise<NextResponse> {
       lastTopic: ctx.lastTopic,
       lastIntent: ctx.lastIntent,
       lastQuestionAsked: ctx.lastQuestionAsked,
-      city: ctx.city,
-      service: ctx.service,
+      city: ctx.city || leadContext?.city,           // FIX: city persist करो
+      service: ctx.service || leadContext?.service,  // FIX: service persist करो
+      roomType: ctx.roomType || leadContext?.roomType, // FIX: roomType persist करो
+      budget: ctx.budget || leadContext?.budget,      // FIX: budget persist करो
       conversationStage: ctx.conversationStage,
     })
 
@@ -400,6 +402,13 @@ export async function POST(req: Request): Promise<NextResponse> {
 
     // ── Layer 1: Rule Engine ──────────────────────────────────
     const ctx = buildEngineContext(leadContext, history)
+
+    // FIX: ctx में missing fields को leadContext से fill करो
+    if (!ctx.city && leadContext?.city) ctx.city = leadContext.city
+    if (!ctx.service && leadContext?.service) ctx.service = leadContext.service
+    if (!ctx.roomType && leadContext?.roomType) ctx.roomType = leadContext.roomType
+    if (!ctx.budget && leadContext?.budget) ctx.budget = leadContext.budget
+    if (!ctx.roomSize && extractedRoomSize) ctx.roomSize = extractedRoomSize
 
     // Short message follow-up resolution
     if (normMessage.length < 30 && (leadContext?.lastTopic || leadContext?.lastIntent)) {
@@ -460,5 +469,5 @@ export async function POST(req: Request): Promise<NextResponse> {
     console.error("[chat] Fatal server error:", error)
     return err("Internal server error", 500)
   }
-       }
+}
   
