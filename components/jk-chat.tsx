@@ -371,7 +371,7 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
 
   const GREET_KW = ["hi","hello","hey","namaste","namaskar","helo","good morning","good evening","good afternoon","hy","hii","salam","kaise ho"]
   if (has(t, GREET_KW) && t.length < 35) return `🌟 Namaste! JK Interior mein aapka swagat hai!\n\nKya aap chahte hain:\n✅ Design ideas\n✅ Room size ke hisaab se estimate\n✅ Ya kuch aur?\n\nBas batao — main poori madad karungi! 😊`
-  ])
+  
 
   if (has(t, ["thank","shukriya","dhanyawad","thanks","thx","great","perfect"])) return `You're welcome${nm ? " " + nm : ""}! 🙏 Always here to help you design your dream space.`
 
