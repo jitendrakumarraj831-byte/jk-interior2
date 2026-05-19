@@ -47,6 +47,10 @@ const CITY_MAP: Record<string, string> = {
 // ── EXACT FAQ ANSWERS — Fixed Questions ka Fixed Answer ───────────────────────
 const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
+  patterns: /^(hi|hello|hey|namaste|namaskar|helo|good morning|good evening|good afternoon|hy|hii|salam|kaise ho)$/i,
+  answer: `🌟 Namaste! JK Interior mein aapka swagat hai!\n\nKya aap chahte hain:\n✅ Design ideas\n✅ Room size ke hisaab se estimate\n✅ Ya kuch aur?\n\nBas batao — main poori madad karungi! 😊`,
+},
+  {
     // Strict: sirf clear price list requests
     patterns: /\b(price\s*list|rate\s*list|sab\s*ka\s*rate|all\s*(?:material\s*)?rate|poori\s*list)\b/i,
     answer: `📋 **JK Interior – Complete Rate List**\n\n✨ Gypsum False Ceiling   ₹80 – ₹140 / sq.ft\n🏠 PVC False Ceiling     ₹60 – ₹120 / sq.ft\n🪵 WPC Wall Panels       ₹180 – ₹450 / sq.ft\n💎 UV Marble Sheets      ₹50 – ₹95 / sq.ft\n📺 Modular TV Unit       ₹15,000 – ₹60,000\n🏛️ Fluted Panels         ₹200 – ₹500 / sq.ft\n🏢 Grid Ceiling          ₹45 – ₹90 / sq.ft\n🍳 Modular Kitchen       ₹60,000 – ₹2,00,000\n🚪 Custom Wardrobe       ₹800 – ₹2,000 / sq.ft\n\n📞 Free site visit & exact quote: **+91 8651070831**`,
