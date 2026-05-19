@@ -325,7 +325,7 @@ async function getAIReply(
           roomSize:  extras?.roomSize  || undefined,
           lastTopic: extras?.lastTopic || undefined,
           messagesExchanged: extras?.messagesExchanged || 0,
-    lastQuestionAsked: null,
+    lastQuestionAsked: history.filter(m => m.role === "assistant").slice(-1)[0]?.content?.slice(0, 200) || null,
   conversationStage: (extras?.messagesExchanged ?? 0) > 2 ? "consultation" : "discovery",
         },
       }),
@@ -372,10 +372,6 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   // ── EXACT FAQ CHECK FIRST ─────────────────────────────────────────────────
   const exactAnswer = matchExactFAQ(input)
   if (exactAnswer) return exactAnswer
-
-  const GREET_KW = ["hi","hello","hey","namaste","namaskar","helo","good morning","good evening","good afternoon","hy","hii","salam","kaise ho"]
-  if (has(t, GREET_KW) && t.length < 35) return `🌟 Namaste! JK Interior mein aapka swagat hai!\n\nKya aap chahte hain:\n✅ Design ideas\n✅ Room size ke hisaab se estimate\n✅ Ya kuch aur?\n\nBas batao — main poori madad karungi! 😊`
-  
 
   if (has(t, ["thank","shukriya","dhanyawad","thanks","thx","great","perfect"])) return `You're welcome${nm ? " " + nm : ""}! 🙏 Always here to help you design your dream space.`
 
@@ -811,7 +807,18 @@ if (dims && !collectStep) {
 if (collectStep) {
   let collReply = ""
 const tLower = text.toLowerCase()
-  if (collectStep === "phone") {
+  if (collectStep === "name") {
+    const extractedName = tryExtractName(text)
+    const name = extractedName || text.trim()
+    if (!name || name.length < 2) {
+      collReply = `Aapka naam sahi se nahi mila. Kripya sirf apna naam likho (jaise: Rahul, Priya) 😊`
+    } else {
+      const updated = { ...(lead || {}), name }
+      setLead(updated); persist(updated, lastTopic)
+      setCollectStep("phone")
+      collReply = `${name} ji, aapka WhatsApp number share karein please 📱`
+    }
+  } else if (collectStep === "phone") {
     const phone = tryExtractPhone(text)
     if (!phone) collReply = `Valid 10-digit mobile number needed.`
     else {
@@ -879,7 +886,7 @@ const tLower = text.toLowerCase()
     if (aiMode) {
       const aiResult = await getAIReply(
         text,
-        historyRef.current.slice(0, -1),
+        historyRef.current,
         updatedLead,
         sessionIdRef.current,
         memoryRef.current,
@@ -1005,8 +1012,17 @@ const tLower = text.toLowerCase()
     const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone
     if (hasLeadIntent) {
       setTyping(false); await delay(1100); setTyping(true); await delay(700)
-      const startMsg = updatedLead?.name ? `${updatedLead.name} ji! For free site visit, please share your WhatsApp number 📱` : `Please share your name to book a free site visit 😊`
-      setCollectStep(updatedLead?.name ? "phone" : "name")
+      let startMsg: string
+      if (updatedLead?.name && updatedLead?.phone) {
+        startMsg = `${updatedLead.name} ji, kab aana chahenge? (din aur samay batao) 📅`
+        setCollectStep("time")
+      } else if (updatedLead?.name) {
+        startMsg = `${updatedLead.name} ji! Free site visit ke liye aapka WhatsApp number chahiye 📱`
+        setCollectStep("phone")
+      } else {
+        startMsg = `Free site visit book karne ke liye, pehle aapka naam batao 😊`
+        setCollectStep("name")
+      }
       historyRef.current = [...historyRef.current, { role: "assistant", content: startMsg }]
       setMsgs(prev => [...prev, mk("bot", startMsg)])
       setTyping(false)
@@ -1286,5 +1302,5 @@ const tLower = text.toLowerCase()
       </AnimatePresence>
     </>
   )
-                      }
- 
+          }
+       
