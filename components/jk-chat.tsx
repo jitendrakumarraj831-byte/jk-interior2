@@ -340,7 +340,7 @@ async function getAIReply(
     lastIntent?: string
     city?: string
     service?: string
-    lastQuestionAsked: extras?.lastTopic || null,
+lastQuestionAsked?: string | null
     conversationStage?: string
   }
 } | null> {
@@ -363,7 +363,7 @@ async function getAIReply(
   roomSize:  extras?.roomSize  || undefined,
   lastTopic: extras?.lastTopic || undefined,
   messagesExchanged: extras?.messagesExchanged || 0,
-  lastQuestionAsked: extras?.lastTopic || null,  // ← fix: null mat rakho
+  lastQuestionAsked: extras?.lastTopic || null,
   conversationStage: ...,
 },
       }),
