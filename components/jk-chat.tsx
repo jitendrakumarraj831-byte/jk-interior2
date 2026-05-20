@@ -88,6 +88,7 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
     answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹80–140 | ₹60–120 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8651070831**`,
   },
   {
+  
     // Service areas
     patterns: /\b(?:konse|kahan[\s-]*kahan|kahan\s*(?:service|kaam|milega|tak|dete)|service\s*area|areas?\s*(?:cover|covered|mein)|kahan\s*kaam|which\s*cit(?:y|ies)|kahan\s*milega|kahan\s*tak|aate\s*ho|aate\s*hain|kaam\s*karte\s*ho|service\s*dete|kahan\s*dete)\b/i,
     answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj ✅ Araria ✅ Jogbani\n✅ Raniganj ✅ Narpatganj ✅ Kursakanta\n✅ Tribeniganj ✅ Chhatapur ✅ Supaul ✅ Purnia\n\nAur bhi nearby areas cover karte hain!\n📞 **+91 8651070831**`,
@@ -131,6 +132,11 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
     // Grid ceiling
     patterns: /\b(?:grid\s*ceiling|grid\s*tile|office\s*ceiling|false\s*grid|mineral\s*fiber|grid\s*ka\s*rate)\b/i,
     answer: `🏢 **Grid Ceiling (Office/Commercial)**\n\n💰 Rate: ₹45 – ₹90 / sq.ft\n✅ Best for offices, shops, showrooms\n✅ Easy maintenance — tiles replace karna easy\n✅ Fire resistant options available\n⏱️ Installation: 1–2 din per room\n\nArea size batao — estimate nikaalta hoon! 📐`,
+  },
+{
+    // Office location / address
+    patterns: /\b(?:office\s*(?:kahan|kaha|hai|address|location)|location\s*(?:kya|kahan|batao|hai)|aapka\s*(?:office|address|location|ghar|showroom)|showroom\s*(?:kahan|hai)|kahan\s*(?:ho|hain|hai)\s*aap|address\s*(?:kya|batao|do|chahiye))\b/i,
+    answer: `📍 **JK Interior – Office Location**\n\n🏢 Forbesganj, Araria District, Bihar\n\n✅ Hum ghar aake FREE site visit karte hain\n✅ Aapko office aane ki zaroorat nahi!\n\n📞 Call/WhatsApp: **+91 8651070831**\n🕐 Timing: Mon–Sat, 9 AM – 9 PM`,
   },
 ]
 
@@ -465,7 +471,11 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   if (/\bwardrobe\b|\bwardrop\b|\balmirah\b|\bcupboard\b|\balmari\b|\bkapdon\s*ki\s*cabinet\b/.test(t)) {
     return `🚪 **Custom Wardrobe** – ₹800–₹2,000/sq.ft\n\nFloor-to-ceiling storage — sliding ya hinged doors.\n✅ LED inside option\n✅ Custom shelves & drawers\n✅ Mirror shutters available\n\nBedroom size aur wardrobe dimensions share karo!`
   }
-
+// ── Office / location query ───────────────────────────────────────────────
+  if (has(t, ["office","location","address","showroom","kahan ho","kahan hain","ghar kahan","office kahan"])) {
+    return `📍 **JK Interior – Location**\n\nHumara office **Forbesganj, Araria, Bihar** mein hai.\n\n✅ Lekin hum aapke **ghar aake FREE site visit** karte hain — aapko aane ki zaroorat nahi!\n\n📞 **+91 8651070831**`
+  }
+ 
   // ── Services list query ───────────────────────────────────────────────────
   if (has(t, ["kya kya service","kya service","kaun kaun si service","services kya","kya kya kaam","kya kya milega","kaun si service","services list","aap kya kya","kya kya hai","kya kya karte"])) {
     return `🏠 **JK Interior – Hamari Services**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n🏛️ Fluted Panels\n🏢 Grid Ceiling (Office)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Lighting\n\nKisi bhi service ka rate ya estimate chahiye? Bas batao! 😊\n📞 +91 8651070831`
