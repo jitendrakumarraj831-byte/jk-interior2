@@ -243,12 +243,12 @@ function extractDimensions(text: string): { length: number; width: number; rawMa
         }
 
 function getPremiumAdvice(area: number, materialType: string): string {
-  if (area > 250) return "For this spacious area, we recommend a cove lighting design with premium Gypsum or WPC panels to enhance the luxury feel."
-  if (area > 150) return "Great size! You can add elegant LED strips around the perimeter for a modern, high-end atmosphere."
-  if (materialType.includes("WPC")) return "WPC panels will give a rich wooden texture – perfect for a feature wall or TV unit backdrop."
-  if (materialType.includes("PVC")) return "PVC is lightweight and waterproof – ideal for kitchens or balconies, with zero maintenance."
-  return "We can customize the design with subtle indirect lighting to elevate the look."
-}
+  if (area > 250) return "Itne bade area ke liye cove lighting design best rahega — Gypsum ya WPC ke saath ekdum premium look aayega!"
+  if (area > 150) return "Achha size hai! Perimeter pe LED strip lagane se modern aur high-end look milega."
+  if (materialType.includes("WPC")) return "WPC panels TV wall ya bedroom ke liye perfect — rich wooden texture deta hai."
+  if (materialType.includes("PVC")) return "PVC waterproof hai — kitchen ya balcony ke liye ideal, zero maintenance."
+  return "Subtle indirect lighting se room ka look aur bhi premium ho jaayega!"
+        }
 
 function generateEstimateFromDimensions(
   length: number,
