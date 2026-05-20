@@ -352,20 +352,20 @@ async function getAIReply(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
-        history: history.slice(-8),
+        history: history.slice(-16),
         sessionId,
         memory: memory ?? undefined,
         leadContext: {
-          name:      lead?.name      || undefined,
-          phone:     lead?.phone     || undefined,
-          city:      lead?.city      || undefined,
-          service:   lead?.service   || undefined,
-          roomSize:  extras?.roomSize  || undefined,
-          lastTopic: extras?.lastTopic || undefined,
-          messagesExchanged: extras?.messagesExchanged || 0,
-    lastQuestionAsked: null,
-  conversationStage: (extras?.messagesExchanged ?? 0) > 6 ? "consultation" : (extras?.messagesExchanged ?? 0) > 2 ? "discovery" : "greeting",
-        },
+  name:      lead?.name      || undefined,
+  phone:     lead?.phone     || undefined,
+  city:      lead?.city      || undefined,
+  service:   lead?.service   || undefined,
+  roomSize:  extras?.roomSize  || undefined,
+  lastTopic: extras?.lastTopic || undefined,
+  messagesExchanged: extras?.messagesExchanged || 0,
+  lastQuestionAsked: extras?.lastTopic || null,  // ← fix: null mat rakho
+  conversationStage: ...,
+},
       }),
       signal: AbortSignal.timeout(12000),
     })
@@ -843,7 +843,7 @@ export default function JKChat() {
 
     sendLock.current = true
     setInput("")
-    setMsgs(prev => [...prev, mk("user", text)].slice(-60))
+    setMsgs(prev => [...prev, mk("user", text)].slice(-100))
     setTyping(true)
 
     historyRef.current = [...historyRef.current, { role: "user", content: text }]
