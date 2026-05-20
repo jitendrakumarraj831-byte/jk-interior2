@@ -874,13 +874,9 @@ if (serviceFromMsg && !lead?.service) {
   persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
 }
 
-// ✅ Room size मिला तो collectStep cancel
-if (dims && collectStep) {
+// ✅ Dimensions मिले तो हमेशा estimate nikalo — collectStep ignore karo
+if (dims) {
   setCollectStep(null)
-}
-
-// ✅ Dimensions वाला block — अलग if, else if से जोड़ो मत
-if (dims && !collectStep) {
   await delay(400)
   const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
   const estSummary = extractEstimateSummary(estimateReply)
@@ -896,8 +892,8 @@ if (dims && !collectStep) {
   persist(newLead, svcSlug)
   setTyping(false)
   sendLock.current = false
-  return  // ← यहाँ return है, इसलिए else if नहीं चलेगा
-}
+  return
+    }
 
 // ✅ CollectStep block — बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
 if (collectStep) {
