@@ -329,7 +329,7 @@ async function getAIReply(
   sessionId: string,
   memory?: ConversationMemory,
   onChunk?: (partial: string, isFirst: boolean) => void,
-  extras?: { roomSize?: string | null; lastTopic?: string | null; messagesExchanged?: number },
+  extras?: { roomSize?: string | null; lastTopic?: string | null; messagesExchanged?: number; conversationStage?: string },
 ): Promise<{ 
   reply: string; 
   source: "groq" | "local"; 
@@ -362,8 +362,8 @@ async function getAIReply(
           roomSize:  extras?.roomSize  || undefined,
           lastTopic: extras?.lastTopic || undefined,
           messagesExchanged: extras?.messagesExchanged || 0,
-    lastQuestionAsked: history.filter(m => m.role === "assistant").slice(-1)[0]?.content?.slice(0, 200) || null,
-  conversationStage: (extras?.messagesExchanged ?? 0) > 2 ? "consultation" : "discovery",
+          lastQuestionAsked: null,
+          conversationStage: extras?.conversationStage || "discovery",
         },
       }),
       signal: AbortSignal.timeout(12000),
@@ -708,6 +708,7 @@ export default function JKChat() {
   const [lead, setLead] = useState<Partial<Lead> | null>(null)
   const [lastTopic, setLastTopic] = useState<string | null>(null)
   const [roomSize, setRoomSize] = useState<string | null>(null)
+  const [conversationStage, setConversationStage] = useState<string>("discovery")
   const [typing, setTyping] = useState(false)
   const [aiMode, setAiMode] = useState(true)
   const [offHours, setOffHours] = useState(false)
@@ -822,17 +823,6 @@ export default function JKChat() {
   const send = useCallback(async (override?: string) => {
     const text = (override ?? input).trim()
     if (!text || typing || sendLock.current) return
-
-    // ✅ Service हर message में detect करके तुरंत save करो
-    const detectedSvc = detectService(text.toLowerCase())
-    if (detectedSvc) {
-      setLead(prev => {
-        const updated = { ...(prev || {}), service: detectedSvc }
-        persist(updated, detectedSvc.toLowerCase().replace(/\s+/g, "-"))
-        return updated
-      })
-      setLastTopic(detectedSvc.toLowerCase().replace(/\s+/g, "-"))
-    }
 
     // Stop listening if voice was active
     if (isListening && recognitionRef.current) {
@@ -994,7 +984,7 @@ const tLower = text.toLowerCase()
             setMsgs(prev => prev.map(m => m.id === sid ? { ...m, text: partial } : m))
           }
         },
-        { roomSize, lastTopic, messagesExchanged: historyRef.current.length },
+        { roomSize, lastTopic, messagesExchanged: historyRef.current.length, conversationStage },
       )
       if (aiResult) {
         reply = aiResult.reply
@@ -1002,6 +992,7 @@ const tLower = text.toLowerCase()
           const ctx = aiResult.updatedContext
           if (ctx.roomSize && !roomSize) setRoomSize(ctx.roomSize)
           if (ctx.lastTopic && ctx.lastTopic !== lastTopic) setLastTopic(ctx.lastTopic)
+          if (ctx.conversationStage) setConversationStage(ctx.conversationStage)
           if (ctx.city || ctx.service) {
             setLead(prev => ({
               ...prev,
@@ -1124,7 +1115,7 @@ const tLower = text.toLowerCase()
 
     setTyping(false)
     sendLock.current = false
-  }, [input, lead, typing, lastTopic, roomSize, aiMode, collectStep, pendingEstimate, isListening])
+  }, [input, lead, typing, lastTopic, roomSize, aiMode, collectStep, pendingEstimate, isListening, conversationStage])
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() } }
 
