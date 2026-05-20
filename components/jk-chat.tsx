@@ -407,8 +407,7 @@ lastQuestionAsked?: string | null
   }
 }
 
-// ── Local fallback ─────────────────────────────────────────────────────────────
-function localFallback(input: string, lead: Partial<Lead> | null): string {
+function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: string | null): string {
   const t  = input.toLowerCase().trim()
   const nm = lead?.name || ""
   const oh = isOffHours()
@@ -429,6 +428,10 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     if (isWaterQ) return `Gypsum ceiling bathroom/kitchen ke liye suitable **nahi** hai — paani se kharab ho jaati hai.\n\nBathroom ke liye **PVC Ceiling** best hai:\n✅ 100% waterproof\n💰 ₹60–120 / sq.ft\n⏱️ 1–2 din installation\n\nRoom size bataiye — estimate nikaalta hoon! 📐`
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
     if (rateQ) return `✨ **Gypsum False Ceiling Rate**\n\n💰 Standard: ₹80–100 / sq.ft\n💎 Premium (cove design): ₹100–140 / sq.ft\n\n✅ Best for hall, bedroom, drawing room\n✅ LED cove lighting ke saath bahut sundar lagta hai\n🛡️ 5 saal warranty\n\nRoom ka size batao — exact total cost nikaalta hoon! 📐`
+    if (roomSize) {
+      const [l, w] = roomSize.split("x").map(Number)
+      return generateEstimateFromDimensions(l, w, "Gypsum Ceiling", lead?.name || undefined)
+    }
     return `✨ **Gypsum False Ceiling** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n❌ Avoid in: ${m.avoidIn}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nRoom size bhejo (jaise 12×14) — estimate turant nikalti hoon!`
   }
 
@@ -437,6 +440,10 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     const m = MATERIAL_KNOWLEDGE.pvc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
     if (rateQ) return `🏠 **PVC Ceiling Rate**\n\n💰 Standard: ₹60–90 / sq.ft\n💎 Premium: ₹90–120 / sq.ft\n\n✅ 100% waterproof — bathroom & kitchen ke liye best\n✅ Low maintenance\n🛡️ 10 saal warranty\n\nRoom ka size batao — exact total nikaalta hoon! 📐`
+    if (roomSize) {
+      const [l, w] = roomSize.split("x").map(Number)
+      return generateEstimateFromDimensions(l, w, "PVC Ceiling", lead?.name || undefined)
+    }
     return `🏠 **PVC False Ceiling** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nDimensions bhejo jaise 12×10 — total cost instantly nikalega!`
   }
 
@@ -445,6 +452,10 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     const m = MATERIAL_KNOWLEDGE.wpc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
     if (rateQ) return `🪵 **WPC Wall Panel Rate**\n\n💰 Standard: ₹180–300 / sq.ft\n💎 Premium: ₹300–450 / sq.ft\n\n✅ Waterproof & termite-proof\n✅ TV wall, bedroom accent wall ke liye best\n🛡️ 7 saal warranty\n\nWall size batao — exact quote nikaalta hoon! 📐`
+    if (roomSize) {
+      const [l, w] = roomSize.split("x").map(Number)
+      return generateEstimateFromDimensions(l, w, "WPC Wall Panels", lead?.name || undefined)
+    }
     return `🪵 **WPC Wall Panels** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nAccent wall ya TV background ke liye perfect! Dimensions chahiye?`
   }
 
@@ -453,6 +464,10 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     const m = MATERIAL_KNOWLEDGE.uv
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
     if (rateQ) return `💎 **UV Marble Sheet Rate**\n\n💰 Standard: ₹50–70 / sq.ft\n💎 Premium: ₹70–95 / sq.ft\n\n✅ Bathroom walls, kitchen backsplash ke liye best\n✅ Glossy finish, easy cleaning\n🛡️ 5 saal warranty\n\nArea size batao — estimate nikalte hain! 📐`
+    if (roomSize) {
+      const [l, w] = roomSize.split("x").map(Number)
+      return generateEstimateFromDimensions(l, w, "UV Marble Sheets", lead?.name || undefined)
+    }
     return `💎 **UV Marble Sheets** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n❌ Avoid: ${m.avoidIn}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}`
   }
 
@@ -471,14 +486,20 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
   if (/\bwardrobe\b|\bwardrop\b|\balmirah\b|\bcupboard\b|\balmari\b|\bkapdon\s*ki\s*cabinet\b/.test(t)) {
     return `🚪 **Custom Wardrobe** – ₹800–₹2,000/sq.ft\n\nFloor-to-ceiling storage — sliding ya hinged doors.\n✅ LED inside option\n✅ Custom shelves & drawers\n✅ Mirror shutters available\n\nBedroom size aur wardrobe dimensions share karo!`
   }
-// ── Office / location query ───────────────────────────────────────────────
+
+  // ── Office / location query ───────────────────────────────────────────────
   if (has(t, ["office","location","address","showroom","kahan ho","kahan hain","ghar kahan","office kahan"])) {
     return `📍 **JK Interior – Location**\n\nHumara office **Forbesganj, Araria, Bihar** mein hai.\n\n✅ Lekin hum aapke **ghar aake FREE site visit** karte hain — aapko aane ki zaroorat nahi!\n\n📞 **+91 8651070831**`
   }
- 
+
   // ── Services list query ───────────────────────────────────────────────────
   if (has(t, ["kya kya service","kya service","kaun kaun si service","services kya","kya kya kaam","kya kya milega","kaun si service","services list","aap kya kya","kya kya hai","kya kya karte"])) {
     return `🏠 **JK Interior – Hamari Services**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n🏛️ Fluted Panels\n🏢 Grid Ceiling (Office)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Lighting\n\nKisi bhi service ka rate ya estimate chahiye? Bas batao! 😊\n📞 +91 8651070831`
+  }
+
+  // ── Complete/full home interior ───────────────────────────────────────────
+  if (has(t, ["complete interior","full interior","poora ghar","pura ghar","2bhk","3bhk","flat interior","ghar banana","ghar design","full home","complete home"])) {
+    return `🏠 **Complete Home Interior Package**\n\nHum full home interior karte hain:\n✅ All rooms ceiling (Gypsum/PVC)\n✅ TV wall + accent walls (WPC/Fluted)\n✅ Modular kitchen\n✅ Wardrobes\n✅ LED lighting throughout\n\n💰 **2BHK estimate:** ₹2,50,000 – ₹5,00,000\n💰 **3BHK estimate:** ₹4,00,000 – ₹8,00,000\n*(depends on materials & design)*\n\n📞 Free site visit ke liye: **+91 8651070831**`
   }
 
   // ── Budget queries ────────────────────────────────────────────────────────
@@ -495,7 +516,6 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
 
   // ── Price/rate general query ──────────────────────────────────────────────
   if (has(t, ["price","cost","rate","kimat","daam","kitna","kharcha","budget","quote","paisa","rupaye","rupees"])) {
-    // If a specific service is in context, give that price
     if (lead?.service) {
       const svcL = lead.service.toLowerCase()
       if (svcL.includes("pvc")) return `🏠 **PVC Ceiling Rate: ₹60–120 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
@@ -511,7 +531,7 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
       return `📅 **Free Site Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8651070831`
     }
     return `📅 **Free Site Visit** – Koi hidden charge nahi!\n\nBook karne ke liye aapka naam batao 😊`
-        }
+  }
 
   // ── City mentioned ────────────────────────────────────────────────────────
   const cityMentioned = detectCity(t)
@@ -532,44 +552,43 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     return `✅ ${cityMentioned} mein JK Interior ki services available hain! 💪\n\n🏠 PVC | ✨ Gypsum | 🪵 WPC | 💎 UV Marble | 📺 TV Unit\n\n📞 Free site visit: **+91 8651070831**`
   }
 
-  // ── "Haan/ha/okay" short affirmative replies ─────────────────────────────
+  // ── Short affirmative ─────────────────────────────────────────────────────
   if (/^(haan|ha|ok|okay|theek|theek\s*hai|bilkul|zaroor|sure|yes|yep|hmm|accha|acha)$/i.test(t)) {
     if (lead?.service) return `Bilkul! ${lead.service} ke baare mein kya jaanna chahte hain?\n\n✅ Rate chahiye?\n✅ Room size estimate?\n✅ Free site visit book karni hai?`
     return `Batao — main aapki help ke liye yahan hoon! 😊\n\nKya jaanna chahte hain:\n✅ Kisi material ka rate\n✅ Room estimate\n✅ Design ideas`
   }
 
-  // ── "Nahi/no" short rejection ─────────────────────────────────────────────
-  if (/^(nahi|nahi\s*ji|nope|no|na|nope|nahin)$/i.test(t)) {
+  // ── Short rejection ───────────────────────────────────────────────────────
+  if (/^(nahi|nahi\s*ji|nope|no|na|nahin)$/i.test(t)) {
     return `Koi baat nahi! 😊 Kuch aur poochna ho toh batao.\n\nMain yahan hoon — gypsum, PVC, WPC, pricing, ya koi bhi sawaal! 🙏`
   }
 
-  // ── Design / ideas / color / trends queries ───────────────────────────────
+  // ── Design / trends ───────────────────────────────────────────────────────
   if (has(t, ["design","idea","color","colour","rang","trend","2025","2026","latest","modern","style","look","beautiful","sundar","khubsurat"])) {
     return `🎨 **2025–26 Interior Trends**\n\n✅ **Fluted/Louver panels** — TV wall pe most popular\n✅ **Cove lighting** (Gypsum ceiling + LED strip)\n✅ **WPC wooden finish** — bedroom accent walls\n✅ **UV marble** — bathroom statement walls\n✅ **Earth tones** — beige, terracotta, sage green\n\nKaunse room ke liye design chahiye? Hall, bedroom, bathroom?\n\n📞 Free consultation: **+91 8651070831**`
   }
 
-  // ── Comparison queries ────────────────────────────────────────────────────
+  // ── Comparison ────────────────────────────────────────────────────────────
   if (/(?:better|behtar|acha|sahi|difference|fark|antar|vs|versus|ya)/.test(t) && /(?:gypsum|pvc|wpc|uv|marble|ceiling|panel)/.test(t)) {
     return `⚖️ Quick comparison:\n\n🏆 **Hall/Drawing Room** → Gypsum (premium look, LED cove)\n🏆 **Kitchen/Bathroom** → PVC (100% waterproof)\n🏆 **TV Wall/Bedroom** → WPC panels (woody luxury feel)\n🏆 **Bathroom walls** → UV Marble sheets\n\nKaunse room ke liye soch rahe hain? Main exact suggestion dunga! 😊`
   }
 
-  // ── Estimation without dimensions — ask for size ─────────────────────────
+  // ── Estimate without dimensions ───────────────────────────────────────────
   if (has(t, ["estimate","quotation","quote","total","kitna aayega","kitna lagega","total cost","kitne ka","kitna hoga"])) {
     const svcName = lead?.service || "ceiling/interior"
     return `📐 **${nm ? nm + " ji, aapke " : "Aapke "}${svcName} ka estimate nikaalte hain!**\n\nBas room ka size batao:\n\nJaise: **12×14** ya **15 feet by 12 feet**\n\nMain turant calculate kar dunga! ✨`
   }
 
-
-  // ── Smart contextual fallback — sirf tab jab koi keyword match na ho ─────
+  // ── Smart contextual fallback ─────────────────────────────────────────────
   const prevTopic = lead?.service
   const isGeneralQuery = has(t, ["service","kya","kaun","kya kya","batao","bolo","list","sab","poori"])
   if (prevTopic && !isGeneralQuery) {
     return `${nm ? nm + " ji, " : ""}**${prevTopic}** ke baare mein aur kuch jaanna chahte hain?\n\n✅ Rate chahiye?\n✅ Room ka estimate?\n✅ Free site visit book karni hai?\n\nBas batao! 😊`
-        }
+  }
 
-  // ── True last resort — helpful, not pushy ────────────────────────────────
+  // ── Last resort ───────────────────────────────────────────────────────────
   return `Aapka sawaal samajh nahi aaya — thoda aur clearly batao! 😊\n\nMain in topics mein help kar sakta hoon:\n✅ Ceiling rates (PVC / Gypsum)\n✅ Wall panels (WPC / Fluted / UV Marble)\n✅ TV unit / Kitchen / Wardrobe\n✅ Room size estimate\n\nKya jaanna hai? 🙏`
-}
+        }    
 
 function extractBudgetAmount(text: string): string | null {
   const t = text.toLowerCase().replace(/,/g, "")
