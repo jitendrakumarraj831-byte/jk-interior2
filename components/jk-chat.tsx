@@ -364,7 +364,7 @@ lastQuestionAsked?: string | null
   lastTopic: extras?.lastTopic || undefined,
   messagesExchanged: extras?.messagesExchanged || 0,
   lastQuestionAsked: extras?.lastTopic || null,
-  conversationStage: ...,
+  conversationStage: (extras?.messagesExchanged ?? 0) > 6 ? "consultation" : (extras?.messagesExchanged ?? 0) > 2 ? "discovery" : "greeting",
 },
       }),
       signal: AbortSignal.timeout(12000),
