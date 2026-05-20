@@ -498,8 +498,11 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
 
   // ── Visit / booking ───────────────────────────────────────────────────────
   if (has(t, ["visit","book","site visit","measurement","quotation","bulao","aao","free visit","aana","aaye","bhejo"])) {
-    return `📅 **Free Site Visit** – Koi hidden charge nahi!\n\nHamare expert aapke ghar aayenge, measure karenge, aur exact quote denge.\n\n📞 **+91 8651070831** (call/WhatsApp)${oh ? "\n🌙 Off-hours — kal subah 9 baje call karenge!" : " — abhi available hain!"}`
-  }
+    if (lead?.phone) {
+      return `📅 **Free Site Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8651070831`
+    }
+    return `📅 **Free Site Visit** – Koi hidden charge nahi!\n\nBook karne ke liye aapka naam batao 😊`
+        }
 
   // ── City mentioned ────────────────────────────────────────────────────────
   const cityMentioned = detectCity(t)
@@ -1103,7 +1106,7 @@ const tLower = text.toLowerCase()
       return next
     })
 
-    const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone
+    const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone && !dims
     if (hasLeadIntent) {
       setTyping(false); await delay(1100); setTyping(true); await delay(700)
       let startMsg: string
