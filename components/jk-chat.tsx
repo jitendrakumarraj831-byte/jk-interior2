@@ -89,7 +89,7 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   },
   {
     // Service areas
-    patterns: /\b(?:konse|kahan\s*kahan|service\s*area|areas?\s*(?:cover|covered|mein)|kahan\s*kaam|which\s*cit(?:y|ies)|kahan\s*milega|kahan\s*tak|aate\s*ho|aate\s*hain|kaam\s*karte\s*ho)\b/i,
+    patterns: /\b(?:konse|kahan[\s-]*kahan|kahan\s*(?:service|kaam|milega|tak|dete)|service\s*area|areas?\s*(?:cover|covered|mein)|kahan\s*kaam|which\s*cit(?:y|ies)|kahan\s*milega|kahan\s*tak|aate\s*ho|aate\s*hain|kaam\s*karte\s*ho|service\s*dete|kahan\s*dete)\b/i,
     answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj ✅ Araria ✅ Jogbani\n✅ Raniganj ✅ Narpatganj ✅ Kursakanta\n✅ Tribeniganj ✅ Chhatapur ✅ Supaul ✅ Purnia\n\nAur bhi nearby areas cover karte hain!\n📞 **+91 8651070831**`,
   },
   {
