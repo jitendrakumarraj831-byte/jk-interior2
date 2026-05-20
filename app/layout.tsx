@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import dynamic from 'next/dynamic'
 import './globals.css'
 import ScrollProgress from '@/components/scroll-progress'
-import JKChat from '@/components/jk-chat'
+
+const JKChat = dynamic(() => import('@/components/jk-chat'), {
+  ssr: false,
+  loading: () => null,
+})
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
