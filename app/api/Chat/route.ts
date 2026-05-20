@@ -463,8 +463,13 @@ function smartFallback(
       : null
 
     if (topicName && ctx.roomSize) {
-      const area = ctx.roomSize.split("x").reduce((a, b) => parseInt(a as any) * parseInt(b), 1 as any)
-      return `${nm}${topicName} ke liye rough estimate:\n• ${topicName.includes("Gypsum") ? `₹${(area as number * 100).toLocaleString("en-IN")}–₹${(area as number * 140).toLocaleString("en-IN")}` : `₹${(area as number * 70).toLocaleString("en-IN")}–₹${(area as number * 120).toLocaleString("en-IN")}`}\n\nFinal quote ke liye free site visit? 📐`
+      const parts = ctx.roomSize.split("x").map(Number)
+      const area = parts.length === 2 ? parts[0] * parts[1] : 0
+      if (area > 0) {
+        const low = topicName.includes("Gypsum") ? area * 100 : area * 70
+        const high = topicName.includes("Gypsum") ? area * 140 : area * 120
+        return `${nm}${topicName} ke liye rough estimate:\n• ₹${low.toLocaleString("en-IN")}–₹${high.toLocaleString("en-IN")}\n\nFinal quote ke liye free site visit? 📐`
+      }
     }
     if (topicName) {
       return `${nm}${topicName} ke liye room ka size batao (jaise 12×14 ft) — exact estimate nikaalta hoon! 📐`
