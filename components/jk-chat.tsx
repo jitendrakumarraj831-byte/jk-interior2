@@ -340,7 +340,7 @@ async function getAIReply(
     lastIntent?: string
     city?: string
     service?: string
-    lastQuestionAsked?: string | null
+    lastQuestionAsked: extras?.lastTopic || null,
     conversationStage?: string
   }
 } | null> {
@@ -352,7 +352,7 @@ async function getAIReply(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
-        history: history.slice(-16),
+        history: history.slice(-8),
         sessionId,
         memory: memory ?? undefined,
         leadContext: {
