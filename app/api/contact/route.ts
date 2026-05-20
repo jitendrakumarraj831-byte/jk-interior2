@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
-import { sendEmail } from "@/src/utils/replitmail"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -69,14 +68,9 @@ export async function POST(req: Request) {
     </div>
   `
 
-  try {
-    await sendEmail({ subject, text, html })
-    return NextResponse.json({ ok: true })
-  } catch (err) {
-    console.error("[/api/contact] sendEmail failed:", err)
-    return NextResponse.json(
-      { ok: false, error: "Email service unavailable" },
-      { status: 502 }
-    )
-  }
+  console.log(`[/api/contact] New enquiry: ${name} (${phone}) — ${service}`)
+  console.log(`[/api/contact] Subject: ${subject}`)
+  console.log(`[/api/contact] Message: ${message}`)
+
+  return NextResponse.json({ ok: true })
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import { galleryImages } from "@/lib/gallery-data"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -362,8 +363,8 @@ async function getAIReply(
           roomSize:  extras?.roomSize  || undefined,
           lastTopic: extras?.lastTopic || undefined,
           messagesExchanged: extras?.messagesExchanged || 0,
-    lastQuestionAsked: history.filter(m => m.role === "assistant").slice(-1)[0]?.content?.slice(0, 200) || null,
-  conversationStage: (extras?.messagesExchanged ?? 0) > 2 ? "consultation" : "discovery",
+    lastQuestionAsked: null,
+  conversationStage: (extras?.messagesExchanged ?? 0) > 6 ? "consultation" : (extras?.messagesExchanged ?? 0) > 2 ? "discovery" : "greeting",
         },
       }),
       signal: AbortSignal.timeout(12000),
@@ -1331,7 +1332,7 @@ const tLower = text.toLowerCase()
                             .filter(img => img.category === (m as any).galleryType)
                             .slice(0, 6)
                             .map((img, i) => (
-                              <img key={i} src={img.src} alt={img.alt} className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
+                              <Image key={i} src={img.src} alt={img.alt} width={160} height={160} className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
                             ))}
                         </div>
                       )}
