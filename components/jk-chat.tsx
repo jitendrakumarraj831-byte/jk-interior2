@@ -280,9 +280,8 @@ function generateEstimateFromDimensions(
   const greeting = leadName ? `${leadName} ji, ` : ""
   const advice = getPremiumAdvice(area, materialName)
   
-  return `${greeting}according to your **${length}' × ${width}'** room (${area} sq.ft), the estimate for **${materialName}** is:\n\n💰 ${priceRange}\n📐 Total project range: **₹${estimatedTotalLow.toLocaleString()} – ₹${estimatedTotalHigh.toLocaleString()}**\n\n✨ ${advice}\n\nWould you like me to arrange a **free site visit** for an exact quote? Just say "Book Visit" or share your preferred date.`
-}
-
+  return `${greeting}aapke **${length}' × ${width}'** room (${area} sq.ft) ka estimate:\n\n💰 Rate: ${priceRange}\n📐 Total kharcha: **₹${estimatedTotalLow.toLocaleString()} – ₹${estimatedTotalHigh.toLocaleString()}**\n\n✨ ${advice}\n\n📅 Free site visit ke liye "Book Visit" bolein ya apna naam batao! 😊`  
+  }
 // ── store admin lead ──────────────────────────────────────────────────────────
 function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string, chatHistory?: ConvMsg[]) {
   try {
