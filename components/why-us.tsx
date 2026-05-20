@@ -155,7 +155,7 @@ export default function WhyUs() {
             फारबिसगंज और अररिया में इंटीरियर के लिए JK Interior सबसे भरोसेमंद
           </p>
           <p className="mx-auto max-w-xl text-sm text-gray-500 sm:text-base">
-            Premium materials, expert craftsmanship, and a commitment to excellence — that's what sets us apart.
+            Premium materials, expert craftsmanship, and a commitment to excellence — that&apos;s what sets us apart.
           </p>
 
           <motion.div

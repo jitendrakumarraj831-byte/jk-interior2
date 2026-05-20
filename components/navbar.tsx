@@ -6,7 +6,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
-import JKChat from "./jk-chat"
 
 const navLinks = [
   { href: "/", label: "Home", labelHi: "होम" },
@@ -202,7 +201,6 @@ export default function Navbar() {
         </nav>
       </header>
 
-      <JKChat />
     </>
   )
 }

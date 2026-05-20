@@ -79,7 +79,7 @@ export default function Footer() {
               </p>
               <div className="rounded-xl border border-emerald-200 bg-white/60 p-4">
                 <p className="text-xs leading-relaxed text-emerald-700/70 italic">
-                  "बिहार में प्रीमियम इंटीरियर डिज़ाइन और सीलिंग समाधान। आपके बजट में बेमिसाल कारीगरी।"
+                  {"\u201C"}बिहार में प्रीमियम इंटीरियर डिज़ाइन और सीलिंग समाधान। आपके बजट में बेमिसाल कारीगरी।{"\u201D"}
                 </p>
               </div>
             </div>
@@ -284,7 +284,7 @@ export default function Footer() {
               © {currentYear} JK Interior Forbesganj
             </p>
             <p className="mt-0.5 text-[10px] font-semibold text-gray-500">
-              Araria's Most Trusted Interior Contractor
+              Araria&apos;s Most Trusted Interior Contractor
             </p>
           </div>
           <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-500">
