@@ -216,6 +216,7 @@ function extractDimensions(text: string): { length: number; width: number; rawMa
   const patterns = [
     // "12x10", "12×10", "12*10" — most common
     /(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot|फ़ीट|sqft)?/i,
+   /(\d+(?:\.\d+)?)\s+[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot|फ़ीट|sqft)?/i,
     // "12 by 10 feet"
     /(\d+(?:\.\d+)?)\s*(?:feet|ft|foot)?\s*by\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot)?/i,
     // "length 12 width 10" / "12 feet length 10 feet width"
