@@ -466,9 +466,9 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     return `🚪 **Custom Wardrobe** – ₹800–₹2,000/sq.ft\n\nFloor-to-ceiling storage — sliding ya hinged doors.\n✅ LED inside option\n✅ Custom shelves & drawers\n✅ Mirror shutters available\n\nBedroom size aur wardrobe dimensions share karo!`
   }
 
-  // ── Complete/full home interior ───────────────────────────────────────────
-  if (has(t, ["complete interior","full interior","poora ghar","pura ghar","2bhk","3bhk","flat interior","ghar banana","ghar design","full home","complete home"])) {
-    return `🏠 **Complete Home Interior Package**\n\nHum full home interior karte hain:\n✅ All rooms ceiling (Gypsum/PVC)\n✅ TV wall + accent walls (WPC/Fluted)\n✅ Modular kitchen\n✅ Wardrobes\n✅ LED lighting throughout\n\n💰 **2BHK estimate:** ₹2,50,000 – ₹5,00,000\n💰 **3BHK estimate:** ₹4,00,000 – ₹8,00,000\n*(depends on materials & design)*\n\n📞 Free site visit ke liye: **+91 8651070831**`
+  // ── Services list query ───────────────────────────────────────────────────
+  if (has(t, ["kya kya service","kya service","kaun kaun si service","services kya","kya kya kaam","kya kya milega","kaun si service","services list","aap kya kya","kya kya hai","kya kya karte"])) {
+    return `🏠 **JK Interior – Hamari Services**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n🏛️ Fluted Panels\n🏢 Grid Ceiling (Office)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Lighting\n\nKisi bhi service ka rate ya estimate chahiye? Bas batao! 😊\n📞 +91 8651070831`
   }
 
   // ── Budget queries ────────────────────────────────────────────────────────
@@ -549,11 +549,13 @@ function localFallback(input: string, lead: Partial<Lead> | null): string {
     return `📐 **${nm ? nm + " ji, aapke " : "Aapke "}${svcName} ka estimate nikaalte hain!**\n\nBas room ka size batao:\n\nJaise: **12×14** ya **15 feet by 12 feet**\n\nMain turant calculate kar dunga! ✨`
   }
 
-  // ── Smart contextual fallback (not random) ────────────────────────────────
+
+  // ── Smart contextual fallback — sirf tab jab koi keyword match na ho ─────
   const prevTopic = lead?.service
-  if (prevTopic) {
+  const isGeneralQuery = has(t, ["service","kya","kaun","kya kya","batao","bolo","list","sab","poori"])
+  if (prevTopic && !isGeneralQuery) {
     return `${nm ? nm + " ji, " : ""}**${prevTopic}** ke baare mein aur kuch jaanna chahte hain?\n\n✅ Rate chahiye?\n✅ Room ka estimate?\n✅ Free site visit book karni hai?\n\nBas batao! 😊`
-  }
+        }
 
   // ── True last resort — helpful, not pushy ────────────────────────────────
   return `Aapka sawaal samajh nahi aaya — thoda aur clearly batao! 😊\n\nMain in topics mein help kar sakta hoon:\n✅ Ceiling rates (PVC / Gypsum)\n✅ Wall panels (WPC / Fluted / UV Marble)\n✅ TV unit / Kitchen / Wardrobe\n✅ Room size estimate\n\nKya jaanna hai? 🙏`
