@@ -4,14 +4,19 @@ import { Analytics } from '@vercel/analytics/next'
 import dynamic from 'next/dynamic'
 import './globals.css'
 
-const ScrollProgress = dynamic(() => import('@/components/scroll-progress'))
-const JKChat = dynamic(() => import('@/components/jk-chat'))
+const ScrollProgress = dynamic(() => import('@/components/scroll-progress'), {
+  loading: () => null,
+})
+const JKChat = dynamic(() => import('@/components/jk-chat'), {
+  loading: () => null,
+})
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
   preload: false,
+  weight: ['400', '600', '700', '800', '900'],
 })
 
 const inter = Inter({
@@ -19,6 +24,7 @@ const inter = Inter({
   variable: '--font-inter',
   display: 'swap',
   preload: true,
+  weight: ['400', '500', '600', '700', '800'],
 })
 
 export const metadata: Metadata = {
@@ -139,9 +145,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://wa.me" />
         <link rel="dns-prefetch" href="https://api.groq.com" />
+        <link rel="prefetch" href="/logo.png" as="image" />
+        <link rel="prefetch" href="/favicon.png" as="image" />
       </head>
       <body className="font-inter min-h-screen text-foreground antialiased" suppressHydrationWarning>
 
@@ -295,6 +304,16 @@ export default function RootLayout({
         <JKChat />
 
         <Analytics />
+
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+              window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {})
+              })
+            }
+          `
+        }} />
       </body>
     </html>
   )

@@ -198,7 +198,7 @@ function matchExactFAQ(text: string): string | null {
   return null
     }
 
-// ─── DIMENSIONS ENGINE ────────────────────────────��─��─────────────────────────
+// ─── DIMENSIONS ENGINE ──────────────────────────��─��─��─────────────────────────
 function extractDimensions(text: string): { length: number; width: number; rawMatch: string } | null {
   const t = text.toLowerCase()
 
@@ -341,7 +341,7 @@ async function getAIReply(
   sessionId: string,
   memory?: ConversationMemory,
   onChunk?: (partial: string, isFirst: boolean) => void,
-  extras?: { roomSize?: string | null; lastTopic?: string | null; messagesExchanged?: number },
+  extras?: { roomSize?: string | null; lastTopic?: string | null; lastQuestionAsked?: string | null; messagesExchanged?: number },
 ): Promise<{ 
   reply: string; 
   source: "groq" | "local"; 
@@ -943,7 +943,7 @@ if (dims) {
   return
     }
 
-// ✅ CollectStep block — बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
+// ✅ CollectStep block �� बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
 if (collectStep) {
   let collReply = ""
 const tLower = text.toLowerCase()

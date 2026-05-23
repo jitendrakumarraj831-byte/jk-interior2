@@ -5,39 +5,48 @@ import Navbar from "@/components/navbar"
 import Hero from "@/components/hero"
 
 const Services = dynamic(() => import("@/components/services"), {
-  loading: () => <div className="min-h-[28rem]" aria-hidden />,
+  loading: () => <div className="min-h-[28rem] bg-gradient-to-b from-white to-gray-50" aria-hidden />,
+  ssr: true,
 })
 
 const Gallery = dynamic(() => import("@/components/gallery"), {
-  loading: () => <div className="min-h-[30rem]" aria-hidden />,
+  loading: () => <div className="min-h-[30rem] bg-gradient-to-b from-gray-50 to-white" aria-hidden />,
+  ssr: true,
 })
 
 const WhyUs = dynamic(() => import("@/components/why-us"), {
-  loading: () => <div className="min-h-[24rem]" aria-hidden />,
+  loading: () => <div className="min-h-[24rem] bg-white" aria-hidden />,
+  ssr: true,
 })
 
 const Testimonials = dynamic(() => import("@/components/testimonials"), {
-  loading: () => <div className="min-h-[24rem]" aria-hidden />,
+  loading: () => <div className="min-h-[24rem] bg-gradient-to-b from-white to-gray-50" aria-hidden />,
+  ssr: true,
 })
 
 const ProcessTimeline = dynamic(() => import("@/components/process-timeline"), {
-  loading: () => <div className="min-h-[20rem]" aria-hidden />,
+  loading: () => <div className="min-h-[20rem] bg-white" aria-hidden />,
+  ssr: true,
 })
 
 const ServiceAreas = dynamic(() => import("@/components/service-areas"), {
-  loading: () => <div className="min-h-[20rem]" aria-hidden />,
+  loading: () => <div className="min-h-[20rem] bg-gray-50" aria-hidden />,
+  ssr: true,
 })
 
 const FAQSection = dynamic(() => import("@/components/faq-section"), {
-  loading: () => <div className="min-h-[20rem]" aria-hidden />,
+  loading: () => <div className="min-h-[20rem] bg-white" aria-hidden />,
+  ssr: true,
 })
 
 const Contact = dynamic(() => import("@/components/contact"), {
-  loading: () => <div className="min-h-[24rem]" aria-hidden />,
+  loading: () => <div className="min-h-[24rem] bg-gradient-to-b from-gray-50 to-white" aria-hidden />,
+  ssr: true,
 })
 
 const Footer = dynamic(() => import("@/components/footer"), {
-  loading: () => <div className="h-32" aria-hidden />,
+  loading: () => <div className="h-32 bg-gray-900" aria-hidden />,
+  ssr: true,
 })
 
 export const metadata: Metadata = {
