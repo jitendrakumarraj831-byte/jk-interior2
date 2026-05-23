@@ -190,7 +190,7 @@ function detectService(t: string): string | null {
   return null
 }
 
-// ─��� EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
+// ─����� EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
 function matchExactFAQ(text: string): string | null {
   for (const faq of EXACT_FAQ_FIXED) {
     if (faq.patterns.test(text)) return faq.answer
@@ -198,7 +198,7 @@ function matchExactFAQ(text: string): string | null {
   return null
     }
 
-// ─── DIMENSIONS ENGINE ──────────────────────────────��─────────────────────────
+// ─── DIMENSIONS ENGINE ────────────────────────────��─��─────────────────────────
 function extractDimensions(text: string): { length: number; width: number; rawMatch: string } | null {
   const t = text.toLowerCase()
 
@@ -743,6 +743,7 @@ const WELCOME_MSG = mk(
 export default function JKChat() {
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false)
+  const [isInitializing, setIsInitializing] = useState(true)
   const [messages, setMsgs] = useState<Message[]>([WELCOME_MSG])
   const [input, setInput] = useState("")
   const [lead, setLead] = useState<Partial<Lead> | null>(null)
@@ -769,6 +770,17 @@ export default function JKChat() {
   const [pendingEstimate, setPendingEstimate] = useState<string | null>(null)
 
   useEffect(() => { memoryRef.current = memory }, [memory])
+
+  // ── Handle chat opening with loading animation ──────────────────────────
+  useEffect(() => {
+    if (open) {
+      setIsInitializing(true)
+      const timer = setTimeout(() => {
+        setIsInitializing(false)
+      }, 1200)
+      return () => clearTimeout(timer)
+    }
+  }, [open])
 
   // ── Check voice support ───────────────────────────────────────────────────
   useEffect(() => {
@@ -1325,6 +1337,58 @@ const tLower = text.toLowerCase()
                     onClick={toggleVoice}
                     className="ml-auto text-[9px] text-red-500 font-bold border border-red-300 rounded-full px-2 py-0.5 hover:bg-red-100"
                   >Rok do</button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Loading Screen */}
+            <AnimatePresence>
+              {isInitializing && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-emerald-50"
+                >
+                  {/* Animated greeting */}
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.1, duration: 0.5 }}
+                    className="flex flex-col items-center gap-4"
+                  >
+                    {/* Animated avatar */}
+                    <motion.div
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="relative flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-lg"
+                    >
+                      <span className="text-2xl md:text-3xl font-black text-white">JK</span>
+                    </motion.div>
+
+                    {/* Loading text */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3, duration: 0.5 }}
+                      className="text-center"
+                    >
+                      <h2 className="text-lg md:text-xl font-bold text-emerald-900">Riya loading...</h2>
+                      <p className="text-xs md:text-sm text-emerald-600 mt-1">Setting up your consultation</p>
+                    </motion.div>
+
+                    {/* Animated dots */}
+                    <motion.div className="flex gap-2">
+                      {[0, 1, 2].map((i) => (
+                        <motion.div
+                          key={i}
+                          animate={{ y: [0, -6, 0] }}
+                          transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
+                          className="h-2 w-2 rounded-full bg-emerald-600"
+                        />
+                      ))}
+                    </motion.div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
