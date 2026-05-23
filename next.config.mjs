@@ -17,6 +17,10 @@ const nextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
+  onDemandEntries: {
+    maxInactiveAge: 25 * 60 * 1000,
+    pagesBufferLength: 2,
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
     webVitalsAttribution: ['CLS', 'LCP', 'FCP', 'FID', 'TTFB', 'INP'],
@@ -25,9 +29,10 @@ const nextConfig = {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [375, 640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000,
-    qualities: [50, 52, 58, 62, 68, 72, 78, 80, 82, 100],
+    qualities: [50, 55, 65, 75, 85, 95],
+    dangerouslyAllowSVG: true,
   },
   async redirects() {
     return [
