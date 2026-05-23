@@ -190,7 +190,7 @@ function detectService(t: string): string | null {
   return null
 }
 
-// ── EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
+// ─��� EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
 function matchExactFAQ(text: string): string | null {
   for (const faq of EXACT_FAQ_FIXED) {
     if (faq.patterns.test(text)) return faq.answer
@@ -198,11 +198,11 @@ function matchExactFAQ(text: string): string | null {
   return null
     }
 
-// ─── DIMENSIONS ENGINE ────────────────────────────────────────────────────────
+// ─── DIMENSIONS ENGINE ──────────────────────────────��─────────────────────────
 function extractDimensions(text: string): { length: number; width: number; rawMatch: string } | null {
   const t = text.toLowerCase()
 
-  // ❌ Time/date patterns को IGNORE करें — यही main bug था
+  // ✅ Time/date patterns को IGNORE करें — लेकिन अगर dimensions भी हैं तो dimensions को priority दें
   const IGNORE_PATTERNS = [
     /\d+\s*(?:baj[eo]?|am\b|pm\b)/i,         // "12 baje", "10 am"
     /\d+\s*(?:din|day|week|month|saal|year)/i, // "10 din mein"
@@ -214,8 +214,13 @@ function extractDimensions(text: string): { length: number; width: number; rawMa
     /\b(?:ek|do|teen|char|paanch)\s+(?:din|week|month)\b/i, // "teen din"
   ]
 
-  for (const pattern of IGNORE_PATTERNS) {
-    if (pattern.test(t)) return null
+  // First check if ANY ignore pattern matches
+  const hasIgnorePattern = IGNORE_PATTERNS.some(pattern => pattern.test(t))
+  // But don't skip dimensions if they're also present
+  if (hasIgnorePattern) {
+    // Check if dimensions are present — if yes, continue; if no, skip
+    const hasDimensionPattern = /(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft)/.test(t)
+    if (!hasDimensionPattern) return null
   }
 
   // ✅ Dimension patterns — सिर्फ clear size indicators
@@ -346,7 +351,7 @@ async function getAIReply(
     lastIntent?: string
     city?: string
     service?: string
-lastQuestionAsked?: string | null
+    lastQuestionAsked?: string | null
     conversationStage?: string
   }
 } | null> {
@@ -369,7 +374,7 @@ lastQuestionAsked?: string | null
   roomSize:  extras?.roomSize  || undefined,
   lastTopic: extras?.lastTopic || undefined,
   messagesExchanged: extras?.messagesExchanged || 0,
-  lastQuestionAsked: extras?.lastTopic || null,
+  lastQuestionAsked: extras?.lastQuestionAsked || null,
   conversationStage: (extras?.messagesExchanged ?? 0) > 6 ? "consultation" : (extras?.messagesExchanged ?? 0) > 2 ? "discovery" : "greeting",
 },
       }),
@@ -477,7 +482,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
     return `📺 **Modular TV Unit** – ${m.price}\n\nCustom designs available!\n📐 Size ke hisaab se price:\n• 6–8 ft: ${m.sizes.small}\n• 8–10 ft: ${m.sizes.medium}\n• 10–14 ft: ${m.sizes.large}\n\n✅ LED backlight, WPC ya laminate finish\n✅ Storage with shutters bhi available\n\nTV unit ka size batao — exact quote nikaalta hoon!`
   }
 
-  // ── Modular Kitchen ───────────────────────────────────────────────────────
+  // ── Modular Kitchen ─���─────────────────────────────────────────────────────
   if (/\bmodular\s*kitchen\b|\bkitchen\s*(?:cabinet|design|renovation|banana|banwana|rate|cost)\b/.test(t)) {
     return `🍳 **Modular Kitchen** – ₹60,000 – ₹2,00,000\n\nFully custom — L-shape, U-shape, straight layouts available.\n✅ Soft-close hinges, pull-out shelves\n✅ Laminates, acrylic, glass shutters\n✅ Chimney & hob fitting bhi karein\n\nKitchen ka size share karo — detailed quote nikalte hain!`
   }
