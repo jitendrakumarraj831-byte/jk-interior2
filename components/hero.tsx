@@ -153,19 +153,21 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            {/* Hindi Tagline */}
+            {/* Hindi Tagline - FIXED FOR BETTER VISUAL BALANCE */}
             <motion.div {...anim(0.3)} className="mb-7 max-w-xl">
-              <p className="mb-3 text-2xl font-extrabold leading-tight text-gray-900 sm:text-3xl md:text-4xl">
+              <p className="mb-4 text-3xl font-black leading-tight text-gray-900 sm:text-4xl md:text-5xl tracking-tight">
                 साधारण दीवारों को दें
                 <br />
-                <span className="hero-gradient-text">एक शाही पहचान</span>
+                <span className="hero-gradient-text bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">
+                  एक लग्जरी पहचान
+                </span>
               </p>
-              <p className="text-sm font-medium leading-relaxed text-gray-600 sm:text-base">
-                फारबिसगंज में इंटीरियर का{" "}
-                <span className="font-bold text-emerald-700 underline decoration-emerald-300 underline-offset-4">
+              <p className="text-sm font-medium leading-relaxed text-gray-600 sm:text-base antialiased">
+                फारबिसगंज और अररिया में प्रीमियम इंटीरियर का{" "}
+                <span className="font-extrabold text-emerald-700 bg-emerald-50/80 border border-emerald-100 px-1.5 py-0.5 rounded-md inline-block">
                   Next-Level Experience
                 </span>
-                । मजबूती और खूबसूरती का बेजोड़ संगम।
+                , जहाँ मिले मजबूती और खूबसूरती का बेजोड़ संगम।
               </p>
             </motion.div>
 
@@ -281,3 +283,4 @@ export default function Hero() {
     </section>
   )
 }
+
