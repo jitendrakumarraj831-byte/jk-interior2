@@ -466,9 +466,20 @@ function smartFallback(
       const parts = ctx.roomSize.split("x").map(Number).filter(n => !isNaN(n) && n > 0)
       const area = parts.length >= 2 ? parts[0] * parts[1] : parts[0] || 0
       if (area > 0) {
-        const isGypsum = topicName.includes("Gypsum")
-        const low = isGypsum ? area * 100 : area * 70
-        const high = isGypsum ? area * 140 : area * 120
+        // Get correct price range based on material type
+        let priceLow = 60, priceHigh = 120 // Default to PVC
+        if (topicName.includes("Gypsum")) {
+          priceLow = 80
+          priceHigh = 140
+        } else if (topicName.includes("WPC")) {
+          priceLow = 180
+          priceHigh = 450
+        } else if (topicName.includes("UV")) {
+          priceLow = 50
+          priceHigh = 95
+        }
+        const low = area * priceLow
+        const high = area * priceHigh
         return `${nm}${topicName} ke liye rough estimate:\n• ₹${low.toLocaleString("en-IN")}–₹${high.toLocaleString("en-IN")}\n\nFinal quote ke liye free site visit? 📐`
       }
     }
