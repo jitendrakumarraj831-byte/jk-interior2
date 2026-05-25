@@ -83,6 +83,18 @@ const reviewJsonLd = {
   },
   review: testimonials.map((t) => ({
     "@type": "Review",
+    "itemReviewed": {
+      "@type": "LocalBusiness",
+      "name": "JK Interior",
+      "telephone": "+91-8651070831",
+      "url": "https://www.jkinterior.online",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Forbesganj",
+        "addressRegion": "Bihar",
+        "addressCountry": "IN"
+      }
+    },
     author: { "@type": "Person", name: t.name },
     reviewRating: {
       "@type": "Rating",
