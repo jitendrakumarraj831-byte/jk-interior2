@@ -67,7 +67,7 @@ const reviewJsonLd = {
   "@type": "LocalBusiness",
   name: "JK Interior",
   url: "https://www.jkinterior.online",
-  telephone: "+91-8651070831",
+  telephone: "+91-8541849118",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Forbesganj",
@@ -86,7 +86,7 @@ const reviewJsonLd = {
     "itemReviewed": {
       "@type": "LocalBusiness",
       "name": "JK Interior",
-      "telephone": "+91-8651070831",
+      "telephone": "+91-8541849118",
       "url": "https://www.jkinterior.online",
       "address": {
         "@type": "PostalAddress",
