@@ -148,7 +148,7 @@ const homeFaqJsonLd = {
       name: "क्या materials waterproof हैं?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "हां, हमारे सभी products — PVC panels, WPC boards, और UV marble sheets — 100% waterproof हैं। ये Bihar के monsoon season को आसानी से withstand करते हैं। ISI-certified और branded materials use होते हैं।",
+        text: "हां, हमारे सभी products — PVC panels, WPC boards, और UV marble sheets — 100% waterproof हैं। ये Bihar के monsoon season को आसानी से withstand करते हैं। ISI-certified and branded materials use होते हैं।",
       },
     },
     {
@@ -178,6 +178,69 @@ const homeFaqJsonLd = {
   ],
 }
 
+// नया और फिक्स किया हुआ रिव्यू स्कीमा सीधे होम पेज के लिए
+const homeReviewJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "LocalBusiness",
+        "name": "JK Interior",
+        "image": "https://www.jkinterior.online/og-image.png",
+        "telephone": "+91-8651070831",
+        "priceRange": "₹₹",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Forbesganj Dumariya",
+          "addressLocality": "Forbesganj",
+          "addressRegion": "Bihar",
+          "postalCode": "854318",
+          "addressCountry": "IN"
+        }
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Rahul Kumar"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "JK Interior ने हमारे घर का PVC false ceiling का काम बहुत खूबसूरती से किया। काम की quality और speed दोनों exceptional थी। Forbesganj में best interior work!"
+    },
+    {
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "LocalBusiness",
+        "name": "JK Interior",
+        "image": "https://www.jkinterior.online/og-image.png",
+        "telephone": "+91-8651070831",
+        "priceRange": "₹₹",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Forbesganj Dumariya",
+          "addressLocality": "Forbesganj",
+          "addressRegion": "Bihar",
+          "postalCode": "854318",
+          "addressCountry": "IN"
+        }
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Priya Sharma"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "reviewBody": "Gypsum ceiling के लिए JK Interior को hire किया था। Result देखकर हमारे neighbors भी impressed हो गए। Professional team, clean work, और 5 साल की warranty! Highly recommended!"
+    }
+  ]
+}
+
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden">
@@ -188,6 +251,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeReviewJsonLd) }}
       />
 
       <h1 className="sr-only">
