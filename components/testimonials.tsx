@@ -62,51 +62,6 @@ const testimonials = [
   },
 ]
 
-const reviewJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "JK Interior",
-  url: "https://www.jkinterior.online",
-  telephone: "+91-8541849118",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Forbesganj",
-    addressRegion: "Bihar",
-    addressCountry: "IN",
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    reviewCount: "100",
-    bestRating: "5",
-    worstRating: "1",
-  },
-  review: testimonials.map((t) => ({
-    "@type": "Review",
-    "itemReviewed": {
-      "@type": "LocalBusiness",
-      "name": "JK Interior",
-      "telephone": "+91-8541849118",
-      "url": "https://www.jkinterior.online",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Forbesganj",
-        "addressRegion": "Bihar",
-        "addressCountry": "IN"
-      }
-    },
-    author: { "@type": "Person", name: t.name },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: t.rating.toString(),
-      bestRating: "5",
-    },
-    reviewBody: t.text,
-    name: `${t.service} – JK Interior Review`,
-    publisher: { "@type": "Organization", name: "JK Interior" },
-  })),
-}
-
 export default function Testimonials() {
   const shouldReduce = useReducedMotion()
 
@@ -142,11 +97,7 @@ export default function Testimonials() {
 
   return (
     <section id="testimonials" className="relative overflow-hidden py-20 sm:py-24 lg:py-32">
-      {/* Review Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }}
-      />
+      {/* पुराना स्कीमा टैग यहाँ से पूरी तरह हटा दिया गया है */}
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -211,10 +162,8 @@ export default function Testimonials() {
               key={t.name}
               {...staggerItem}
               className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_60px_rgba(5,150,105,0.1)] sm:rounded-3xl"
-              itemScope
-              itemType="https://schema.org/Review"
             >
-              {/* Quote icon */}
+              {/* पुराना itemScope और itemProp यहाँ से साफ कर दिया गया है */}
               <Quote className="absolute top-4 right-4 h-8 w-8 text-emerald-100" aria-hidden="true" />
 
               {/* Stars */}
@@ -225,7 +174,7 @@ export default function Testimonials() {
               </div>
 
               {/* Review Text */}
-              <p className="mb-5 text-sm leading-relaxed text-gray-700 sm:text-base" itemProp="reviewBody">{t.text}</p>
+              <p className="mb-5 text-sm leading-relaxed text-gray-700 sm:text-base">{t.text}</p>
 
               {/* Service Badge */}
               <div className="mb-4 inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700">
@@ -238,7 +187,7 @@ export default function Testimonials() {
                   {t.initials}
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-gray-900" itemProp="author">{t.name}</div>
+                  <div className="text-sm font-bold text-gray-900">{t.name}</div>
                   <div className="flex items-center gap-1 text-xs text-gray-500">
                     <MapPin className="h-3 w-3 text-emerald-600" aria-hidden="true" />
                     {t.location}, Bihar
