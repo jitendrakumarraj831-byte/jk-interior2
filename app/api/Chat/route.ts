@@ -321,16 +321,19 @@ function extractRoomDimensions(text: string): string | null {
     if (skip.test(t)) return null
   }
 
-  // --- यहाँ से नया मल्टी-रूम चेक शुरू होता है ---
+    // --- यहाँ से नया मल्टी-रूम चेक शुरू होता है ---
   // हम चेक करेंगे कि क्या मैसेज में एक से ज्यादा साइज पैटर्न्स मौजूद हैं
-  const allMatches = [...text.matchAll(/(\d{1,3})\s*[x×*]\s*(\d{1,3})/gi)];
-  
-  if (allMatches.length > 1) {
-    // अगर 1 से ज़्यादा रूम के साइज मिले, तो हम एक स्पेशल फ्लैग रिटर्न करेंगे 
-    // जिसे हमारा POST फंक्शन नीचे समझ जाएगा।
-    return "MULTI_ROOM_DETECTED";
+  const multiCheckRegex = /(\d{1,3})\s*[x×*]\s*(\d{1,3})/gi;
+  let matchCount = 0;
+  while (multiCheckRegex.exec(text) !== null) {
+    matchCount++;
+    if (matchCount > 1) {
+      // अगर 1 से ज़्यादा रूम के साइज मिले, तो तुरंत फ्लैग रिटर्न कर दें
+      return "MULTI_ROOM_DETECTED";
+    }
   }
   // --- मल्टी-रूम चेक ख़त्म ---
+  
 
   const ROOM_CONTEXT =
     /room|kamra|hall|bedroom|kitchen|bathroom|ceiling|floor|wall|area|size|maap|dimension|sq|sqft/i
