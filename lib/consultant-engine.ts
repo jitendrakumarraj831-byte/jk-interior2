@@ -1205,3 +1205,53 @@ export function isOffHours(): boolean {
 }
 
 export { ALL_AREAS, CITY_MAP }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NEW FUNCTION: MULTI-ROOM SIZE DETECTOR (फाइल के सबसे नीचे जोड़ें)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface DetectedRoom {
+  roomName: string;
+  length: number;
+  width: number;
+  area: number;
+}
+
+export function detectMultiRoomSizes(text: string): DetectedRoom[] {
+  const cleanText = normalizeTypos(text);
+  
+  // बेहतर और सटीक Regex ताकि कमरों के नाम आपस में मिक्स न हों
+  const multiRoomRegex = /(?:([a-zA-Zअ-ह\s]+?)\s+)?(\d+)\s*[xX**]\s*(\d+)/g;
+  const detectedRooms: DetectedRoom[] = [];
+  let match;
+
+  while ((match = multiRoomRegex.exec(cleanText)) !== null) {
+    let rawName = match[1]?.trim() || "";
+    const length = parseInt(match[2], 10);
+    const width = parseInt(match[3], 10);
+    const area = length * width;
+
+    // नाम को और साफ करना (लास्ट वर्ड निकालना अगर पीछे का कुछ कचरा आ गया हो)
+    if (rawName) {
+      const words = rawName.split(/\s+/);
+      rawName = words[words.length - 1]; // सिर्फ आखिरी शब्द लें जैसे 'bedroom' या 'kitchen'
+    }
+
+    let finalRoomName = rawName;
+    if (!rawName || /\b(size|pvc|gypsum|price|rate|kharch|ceiling|wall|me|ka|kitna|hoga)\b/i.test(rawName)) {
+      finalRoomName = `Room ${detectedRooms.length + 1}`;
+    }
+
+    // रूम का पहला अक्षर Capital कर दें (जैसे: bedroom -> Bedroom)
+    finalRoomName = finalRoomName.charAt(0).toUpperCase() + finalRoomName.slice(1);
+
+    detectedRooms.push({
+      roomName: finalRoomName,
+      length,
+      width,
+      area
+    });
+  }
+
+  return detectedRooms;
+}
