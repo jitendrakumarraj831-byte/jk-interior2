@@ -622,13 +622,38 @@ async function callGroq(
   }
 }
 
+  export async function POST(req: Request): Promise<NextResponse> {
+  try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("x-real-ip") ??
+      "unknown"
+
+    if (!checkRate(ip)) {
+      return err("Too many requests. Please wait a moment.", 429)
+    }
+
+    let rawBody: unknown
+    try {
+      rawBody = await req.json()
+    } catch {
+      return err("Invalid JSON body", 400)
+    }
+
+    const parsed = ChatSchema.safeParse(rawBody)
+    if (!parsed.success) return err("Invalid request body", 400)
+
+    const { message, history, leadContext } = parsed.data
+
+    // [I4] Enhanced normalize
+    const normMessage = enhancedNormalize(message?.trim() || "")
+
     // Extract room dimensions
     const extractedRoomSize =
       extractRoomDimensions(normMessage) ?? leadContext?.roomSize ?? undefined
 
     // ─── [NEW MULTI-ROOM HANDLING START] ───
     if (extractedRoomSize === "MULTI_ROOM_DETECTED") {
-      // consultant-engine से नए फंक्शन को डायनेमिकली इम्पोर्ट करें
       const { detectMultiRoomSizes } = await import("@/lib/consultant-engine")
       const multiRooms = detectMultiRoomSizes(normMessage)
 
@@ -636,7 +661,6 @@ async function callGroq(
         let totalArea = 0;
         let breakdownText = "";
         
-        // JK Interior PVC Ceiling Rates (₹80 से ₹140/sq.ft)
         const minRate = 80;
         const maxRate = 140;
 
@@ -644,16 +668,14 @@ async function callGroq(
           const minCost = room.area * minRate;
           const maxCost = room.area * maxRate;
           totalArea += room.area;
-          
           breakdownText += `${index + 1}. **${room.roomName}** (${room.length}×${room.width} = ${room.area} sq.ft): ₹${minCost.toLocaleString('en-IN')} – ₹${maxCost.toLocaleString('en-IN')}\n`;
         });
 
         const grandMin = totalArea * minRate;
         const grandMax = totalArea * maxRate;
 
-        const multiRoomReply = `जी बिल्कुल, आपके सभी ${multiRooms.length} कमरों का कुल एरिया **${totalArea} sq.ft** होता है। पीवीसी (PVC) फॉल्स सीलिंग का अनुमानित खर्च नीचे ब्रेकअप के साथ दिया गया है:\n\n${breakdownText}\n💰 **कुल अनुमानित बजट (Grand Total):** ₹${grandMin.toLocaleString('en-IN')} से ₹${grandMax.toLocaleString('en-IN')} के बीच।\n\n✨ इस बजट में मटेरियल, लेबर और फिनिशिंग सब शामिल है। क्या आप डिज़ाइन कैटलॉग देखने और फाइनल नाप के लिए **फ्री साइट विजिट** बुक करना चाहेंगे?`;
+        const multiRoomReply = `जी बिल्कुल, आपके सभी ${multiRooms.length} कमरों का कुल एरिया **${totalArea} sq.ft** होता है। पीवीसी (PVC) फॉल्स सीलिंग का अनुमानित खर्च नीचे ब्रेकअप के साथ दिया गया है:\n\n${breakdownText}\n💰 **कुल अनुमानित बजट (Grand Total):** ₹${grandMin.toLocaleString('en-IN')} से ₹${grandMax.toLocaleString('en-IN')} के बीच।\n\n✨ इस बजट में मटेरियल, लेबर और फिनिशिंग सब शामिल है। क्या आप डिज़ाइन कैटलॉग देखने और FINAL नाप के लिए **फ्री साइट विजिट** बुक करना चाहेंगे?`;
 
-        // अपडेटेड कॉन्टेक्स्ट ताकि चैट की मेमोरी में डेटा सुरक्षित रहे
         const multiRoomContext = {
           roomSize: `${totalArea} sqft`,
           lastTopic: "pvc",
@@ -666,15 +688,10 @@ async function callGroq(
           conversationStage: leadContext?.conversationStage,
         };
 
-        // यहीं से तुरंत रिस्पॉन्स भेज दें और आगे का कोड रोक दें
         return ok(multiRoomReply, "local", multiRoomContext)
       }
     }
     // ─── [NEW MULTI-ROOM HANDLING END] ───
-
-    // Build engine context
-    const ctx = buildEngineContext(leadContext, history)
-
 
     // Build engine context
     const ctx = buildEngineContext(leadContext, history)
@@ -786,4 +803,4 @@ async function callGroq(
     console.error("[chat] Fatal server error:", error)
     return err("Internal server error", 500)
   }
-}
+  }
