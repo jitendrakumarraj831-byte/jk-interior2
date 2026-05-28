@@ -102,7 +102,7 @@ const PRICE_MAP: Record<string, { range: string; premium?: string }> = Object.fr
   SERVICE_CATALOG.map(s => [s.key, { range: s.priceRange }])
 )
 PRICE_MAP.gypsum           = { range: "₹80–140/sq.ft",   premium: "₹120–200/sq.ft (with LED cove)" }
-PRICE_MAP.pvc              = { range: "₹60–120/sq.ft",   premium: "₹90–150/sq.ft (designer textures)" }
+PRICE_MAP.pvc              = { range: "₹80–140/sq.ft",   premium: "₹90–150/sq.ft (designer textures)" }
 PRICE_MAP.wpc              = { range: "₹180–450/sq.ft",  premium: "₹350–600/sq.ft (premium fluted)" }
 PRICE_MAP.uv               = { range: "₹50–95/sq.ft",    premium: "₹80–120/sq.ft (premium designs)" }
 PRICE_MAP.grid             = { range: "₹45–90/sq.ft" }

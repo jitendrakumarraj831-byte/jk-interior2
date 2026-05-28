@@ -153,7 +153,7 @@ function smartFallback(lead: ChatRequest["leadContext"], message: string, intent
     return `${nm}Bilkul! Free site visit arrange kar dete hain. 📞 Apna WhatsApp number share karein — team call karegi.`;
   }
   if (intent === "pricing") {
-    if (!ctx.service) return `💰 JK Interior Rates:\n• Gypsum Ceiling — ₹80–140/sq.ft\n• PVC Ceiling — ₹60–120/sq.ft\n• WPC Panels — ₹180–450/sq.ft\n• UV Marble Sheets — ₹50–95/sq.ft\n• Modular TV Unit — ₹15,000 se shuru\n\nKaunse kaam ka estimate chahiye?`;
+    if (!ctx.service) return `💰 JK Interior Rates:\n• Gypsum Ceiling — ₹80–140/sq.ft\n• PVC Ceiling — ₹80–140/sq.ft\n• WPC Panels — ₹180–450/sq.ft\n• UV Marble Sheets — ₹50–95/sq.ft\n• Modular TV Unit — ₹15,000 se shuru\n\nKaunse kaam ka estimate chahiye?`;
     if (ctx.service && !ctx.roomSize) return `${nm}${ctx.service} ke liye room ka size batao (jaise 12×14 ft) — exact estimate nikaalta hoon! 📐`;
   }
   if (!ctx.service && !ctx.roomType) return `${nm}Kaunsa kaam karwana hai — ceiling design, wall panels, modular furniture, ya kuch aur? Batao! 🏠`;
@@ -184,7 +184,7 @@ Phone Collected: ${ctx.phone ? "YES — do NOT ask again" : "no"}
 5. Off-topic: reply ONLY "Main sirf JK Interior ke services ke baare mein help kar sakti hoon."
 6. Language: reply in the SAME language the customer used.
 7. Length: max 5–6 lines. Bullet points only for pricing/features.
-8. Never hallucinate prices. Use only: Gypsum ₹80–140/sqft, PVC ₹60–120/sqft, WPC ₹180–450/sqft, UV Marble ₹50–95/sqft, TV Unit ₹15k+.
+8. Never hallucinate prices. Use only: Gypsum ₹80–140/sqft, PVC ₹80–140/sqft, WPC ₹180–450/sqft, UV Marble ₹50–95/sqft, TV Unit ₹15k+.
 ======================================`;
   return basePrompt + contextBlock;
 }

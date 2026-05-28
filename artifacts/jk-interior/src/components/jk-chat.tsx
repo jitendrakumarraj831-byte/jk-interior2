@@ -78,12 +78,12 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Waterproof / bathroom ceiling
     patterns: /\b(waterproof|(?:bathroom|kitchen|toilet|balcony)\s*(?:ke\s*liye\s*)?(?:ceiling|chhat|panel)|wet\s*area|(?:paani|baarish|nami|moisture|seepage|selan)\s*(?:se\s*)?(?:safe|resist|bachao|problem))\b/i,
-    answer: `💧 **Waterproof Options**\n\n✅ **PVC Ceiling** – 100% waterproof, bathroom/kitchen ke liye best\n   Rate: ₹60–120 / sq.ft\n\n❌ Gypsum – waterproof NAHI hai, wet areas me avoid karo\n\n✅ **UV Marble Sheets** – bathroom walls ke liye perfect\n   Rate: ₹50–95 / sq.ft\n\nRoom ka size bata dijiye — turant estimate nikaalta hoon! 📐`,
+    answer: `💧 **Waterproof Options**\n\n✅ **PVC Ceiling** – 100% waterproof, bathroom/kitchen ke liye best\n   Rate: ₹80–140 / sq.ft\n\n❌ Gypsum – waterproof NAHI hai, wet areas me avoid karo\n\n✅ **UV Marble Sheets** – bathroom walls ke liye perfect\n   Rate: ₹50–95 / sq.ft\n\nRoom ka size bata dijiye — turant estimate nikaalta hoon! 📐`,
   },
   {
     // Gypsum vs PVC comparison
     patterns: /\b(gypsum\s*vs\s*pvc|pvc\s*vs\s*gypsum|kaunsa\s*(?:better|behtar|acha|sahi|lena\s*chahiye)|(?:gypsum|pvc)\s*(?:mein\s*)?(?:kya\s*)?(?:difference|antar|fark|alag)|dono\s*mein|konsa\s*(?:lu|loon|lu\s*main|better))\b/i,
-    answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹80–140 | ₹60–120 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8651070831**`,
+    answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹80–140 | ₹80–140 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8651070831**`,
   },
   {
   
@@ -277,7 +277,7 @@ function generateEstimateFromDimensions(
   let priceRange = ""
   let priceLow = 0, priceHigh = 0
   switch (materialKey) {
-    case "pvc": priceLow = 60; priceHigh = 120; break
+    case "pvc": priceLow = 80; priceHigh = 140; break
     case "gypsum": priceLow = 80; priceHigh = 140; break
     case "wpc": priceLow = 180; priceHigh = 450; break
     case "uv": priceLow = 50; priceHigh = 95; break
@@ -428,7 +428,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (t.includes("gypsum") || (t.includes("pop ") && !t.includes("popular")) || t.includes("plaster of paris")) {
     const m = MATERIAL_KNOWLEDGE.gypsum
     const isWaterQ = has(t, ["paani","water","bathroom","nami","moisture","geela","baarish","toilet"])
-    if (isWaterQ) return `Gypsum ceiling bathroom/kitchen ke liye suitable **nahi** hai — paani se kharab ho jaati hai.\n\nBathroom ke liye **PVC Ceiling** best hai:\n✅ 100% waterproof\n💰 ₹60–120 / sq.ft\n⏱️ 1–2 din installation\n\nRoom size bataiye — estimate nikaalta hoon! 📐`
+    if (isWaterQ) return `Gypsum ceiling bathroom/kitchen ke liye suitable **nahi** hai — paani se kharab ho jaati hai.\n\nBathroom ke liye **PVC Ceiling** best hai:\n✅ 100% waterproof\n💰 ₹80–140 / sq.ft\n⏱️ 1–2 din installation\n\nRoom size bataiye — estimate nikaalta hoon! 📐`
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
     if (rateQ) return `✨ **Gypsum False Ceiling Rate**\n\n💰 Standard: ₹80–100 / sq.ft\n💎 Premium (cove design): ₹100–140 / sq.ft\n\n✅ Best for hall, bedroom, drawing room\n✅ LED cove lighting ke saath bahut sundar lagta hai\n🛡️ 5 saal warranty\n\nRoom ka size batao — exact total cost nikaalta hoon! 📐`
     if (roomSize) {
@@ -442,7 +442,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (t.includes("pvc")) {
     const m = MATERIAL_KNOWLEDGE.pvc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `🏠 **PVC Ceiling Rate**\n\n💰 Standard: ₹60–90 / sq.ft\n💎 Premium: ₹90–120 / sq.ft\n\n✅ 100% waterproof — bathroom & kitchen ke liye best\n✅ Low maintenance\n🛡️ 10 saal warranty\n\nRoom ka size batao — exact total nikaalta hoon! 📐`
+    if (rateQ) return `🏠 **PVC Ceiling Rate**\n\n💰 Standard: ₹80–110 / sq.ft\n💎 Premium: ₹110–140 / sq.ft\n\n✅ 100% waterproof — bathroom & kitchen ke liye best\n✅ Low maintenance\n🛡️ 10 saal warranty\n\nRoom ka size batao — exact total nikaalta hoon! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "PVC Ceiling", lead?.name || undefined)
@@ -510,7 +510,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
     const budgetAmt = extractBudgetAmount(t)
     if (budgetAmt) {
       const num = parseFloat(budgetAmt.replace(/[₹k,]/g, "")) * (budgetAmt.includes("k") ? 1000 : 1)
-      if (num < 30000) return `${budgetAmt} budget mein 1 room ki PVC ceiling aaram se ho jaayegi (₹60–120/sq.ft).\n\nRoom ka size batao!`
+      if (num < 30000) return `${budgetAmt} budget mein 1 room ki PVC ceiling aaram se ho jaayegi (₹80–140/sq.ft).\n\nRoom ka size batao!`
       if (num < 80000) return `${budgetAmt} mein 1–2 rooms ka ceiling kaam ho jaayega.\n\nBest combo: Gypsum (hall) + PVC (kitchen/bathroom)\n\nRooms batao — estimate nikalte hain!`
       if (num < 150000) return `${budgetAmt} mein 2BHK ki full ceiling + 1 WPC accent wall ho sakti hai.\n\nRooms ki details share karo!`
       return `${budgetAmt} budget ke saath premium 2BHK interior possible hai:\n✅ Gypsum cove lighting\n✅ WPC TV wall\n✅ UV marble bathroom\n\nFree site visit book karein: **+91 8651070831**`
@@ -521,7 +521,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (has(t, ["price","cost","rate","kimat","daam","kitna","kharcha","budget","quote","paisa","rupaye","rupees"])) {
     if (lead?.service) {
       const svcL = lead.service.toLowerCase()
-      if (svcL.includes("pvc")) return `🏠 **PVC Ceiling Rate: ₹60–120 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
+      if (svcL.includes("pvc")) return `🏠 **PVC Ceiling Rate: ₹80–140 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
       if (svcL.includes("gypsum")) return `✨ **Gypsum Ceiling Rate: ₹80–140 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
       if (svcL.includes("wpc")) return `🪵 **WPC Panel Rate: ₹180–450 / sq.ft**\n\nWall size bataiye — exact estimate nikalte hain!`
     }
@@ -541,7 +541,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (cityMentioned) {
     const svc = lead?.service?.toLowerCase() || ""
     if (has(t, ["pvc"]) || svc.includes("pvc")) {
-      return `✅ ${cityMentioned} mein PVC ceiling ka kaam hota hai! 💪\n\n💰 Rate: ₹60–120 / sq.ft | Waterproof ✅\n\nRoom size bataiye — exact estimate nikalte hain 📐`
+      return `✅ ${cityMentioned} mein PVC ceiling ka kaam hota hai! 💪\n\n💰 Rate: ₹80–140 / sq.ft | Waterproof ✅\n\nRoom size bataiye — exact estimate nikalte hain 📐`
     }
     if (has(t, ["gypsum","false ceiling"]) || svc.includes("gypsum")) {
       return `✅ ${cityMentioned} mein Gypsum false ceiling available hai! ✨\n\n💰 Rate: ₹80–140 / sq.ft | Premium look ✅\n\nRoom size bataiye — exact estimate nikalte hain 📐`

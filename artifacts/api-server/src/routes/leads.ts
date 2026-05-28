@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { z } from "zod";
+import { sendLeadNotification } from "../lib/email.js";
 
 const router = Router();
 
@@ -48,12 +49,16 @@ router.post("/leads", async (req, res) => {
       res.json({ ok: true });
       return;
     }
-    await db.query(
+    const insertResult = await db.query(
       `INSERT INTO leads (name, phone, city, service, estimate, preferred_time, chat_summary)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
       [d.name, d.phone, d.city ?? null, d.service ?? null, d.estimate ?? null,
        d.preferred_time ?? null, d.chat_summary ?? null]
     );
+    const id = insertResult.rows[0]?.id;
+    sendLeadNotification({ id, ...d }).catch((err: unknown) => {
+      console.error("[email] notification failed:", err);
+    });
     res.json({ ok: true });
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ ok: false, issues: err.issues }); return; }

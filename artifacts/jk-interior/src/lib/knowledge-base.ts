@@ -425,7 +425,7 @@ export const WATERPROOF_SOLUTIONS = {
   ceiling: {
     best: "PVC Ceiling",
     alternative: "None - only PVC is 100% waterproof for ceilings",
-    price: "₹60-120/sq.ft",
+    price: "₹80-140/sq.ft",
     features: ["Termite-proof", "Zero maintenance", "20+ year life", "Never repaint"],
   },
   walls: {
@@ -532,15 +532,15 @@ export const FAQS: FAQ[] = [
   {
     question: "Is PVC ceiling waterproof?",
     questionHi: "क्या पीवीसी सीलिंग वाटरप्रूफ है?",
-    answer: "Yes! PVC ceiling is 100% waterproof, termite-proof, and maintenance-free. It's perfect for bathrooms, kitchens, and balconies. Price: ₹60-120 per sq.ft.",
-    answerHi: "हाँ! पीवीसी सीलिंग 100% वाटरप्रूफ, दीमक प्रूफ और मेंटेनेंस-फ्री है। यह बाथरूम, किचन और बालकनी के लिए परफेक्ट है। कीमत: ₹60-120 प्रति वर्ग फुट।",
+    answer: "Yes! PVC ceiling is 100% waterproof, termite-proof, and maintenance-free. It's perfect for bathrooms, kitchens, and balconies. Price: ₹80-140 per sq.ft.",
+    answerHi: "हाँ! पीवीसी सीलिंग 100% वाटरप्रूफ, दीमक प्रूफ और मेंटेनेंस-फ्री है। यह बाथरूम, किचन और बालकनी के लिए परफेक्ट है। कीमत: ₹80-140 प्रति वर्ग फुट।",
     tags: ["waterproof", "pvc", "bathroom"],
   },
   {
     question: "What is the difference between PVC and Gypsum ceiling?",
     questionHi: "पीवीसी और जिप्सम सीलिंग में क्या अंतर है?",
-    answer: "PVC: 100% waterproof, zero maintenance, 20+ year life, ₹60-120/sq.ft - best for bathrooms/kitchens. Gypsum: premium look with cove lighting, not waterproof, ₹80-140/sq.ft - best for halls/bedrooms.",
-    answerHi: "पीवीसी: 100% वाटरप्रूफ, जीरो मेंटेनेंस, 20+ साल लाइफ, ₹60-120/वर्ग फुट - बाथरूम/किचन के लिए सबसे अच्छा। जिप्सम: कोव लाइटिंग के साथ प्रीमियम लुक, वाटरप्रूफ नहीं, ₹80-140/वर्ग फुट - हॉल/बेडरूम के लिए सबसे अच्छा।",
+    answer: "PVC: 100% waterproof, zero maintenance, 20+ year life, ₹80-140/sq.ft - best for bathrooms/kitchens. Gypsum: premium look with cove lighting, not waterproof, ₹80-140/sq.ft - best for halls/bedrooms.",
+    answerHi: "पीवीसी: 100% वाटरप्रूफ, जीरो मेंटेनेंस, 20+ साल लाइफ, ₹80-140/वर्ग फुट - बाथरूम/किचन के लिए सबसे अच्छा। जिप्सम: कोव लाइटिंग के साथ प्रीमियम लुक, वाटरप्रूफ नहीं, ₹80-140/वर्ग फुट - हॉल/बेडरूम के लिए सबसे अच्छा।",
     tags: ["comparison", "gypsum", "pvc"],
   },
   {
@@ -639,7 +639,7 @@ export function getRecommendation(
       service: pvc,
       reason: "100% waterproof, zero maintenance, perfect for bathrooms and kitchens",
       reasonHi: "100% वाटरप्रूफ, जीरो मेंटेनेंस, बाथरूम और किचन के लिए परफेक्ट",
-      estimatedPrice: "₹60-120 per sq.ft",
+      estimatedPrice: "₹80-140 per sq.ft",
     };
   }
 
@@ -651,7 +651,7 @@ export function getRecommendation(
         service: pvc,
         reason: "Budget-friendly, waterproof, zero maintenance",
         reasonHi: "बजट-फ्रेंडली, वाटरप्रूफ, जीरो मेंटेनेंस",
-        estimatedPrice: "₹60-120 per sq.ft",
+        estimatedPrice: "₹80-140 per sq.ft",
       };
     }
     const gypsum = SERVICES.find(s => s.id === "gypsum-ceiling")!;
@@ -679,7 +679,7 @@ export function getRecommendation(
       service: pvc,
       reason: "100% waterproof - essential for wet areas",
       reasonHi: "100% वाटरप्रूफ - गीले क्षेत्रों के लिए आवश्यक",
-      estimatedPrice: "₹60-120 per sq.ft",
+      estimatedPrice: "₹80-140 per sq.ft",
     };
   }
 
@@ -691,7 +691,7 @@ export function getRecommendation(
     service: defaultService,
     reason: "Versatile and popular choice for most rooms",
     reasonHi: "अधिकांश कमरों के लिए बहुमुखी और लोकप्रिय विकल्प",
-    estimatedPrice: defaultService.priceMin === 60 ? "₹60-120 per sq.ft" : "₹80-140 per sq.ft",
+    estimatedPrice: defaultService.priceMin === 60 ? "₹80-140 per sq.ft" : "₹80-140 per sq.ft",
   };
 }
 
@@ -730,7 +730,7 @@ export const BOOKING_INFO = {
 
 export const RATES_PER_SQFT = {
   gypsum: { low: 80, mid: 110, high: 140, premium: 200 },
-  pvc: { low: 60, mid: 90, high: 120, premium: 150 },
+  pvc: { low: 80, mid: 110, high: 140, premium: 170 },
   wpc: { low: 180, mid: 300, high: 450, premium: 600 },
   uv: { low: 50, mid: 70, high: 95, premium: 120 },
   fluted: { low: 200, mid: 350, high: 500, premium: 700 },
