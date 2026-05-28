@@ -19,6 +19,19 @@ function createTransport() {
   });
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function sanitizePhoneForDisplay(phone: string): string {
+  return phone.replace(/[^0-9+\-()\s]/g, "");
+}
+
 export interface LeadData {
   id?: number;
   name: string;
@@ -42,9 +55,11 @@ export async function sendLeadNotification(lead: LeadData): Promise<void> {
     minute: "2-digit",
   });
 
+  const safePhone = sanitizePhoneForDisplay(lead.phone);
+
   const rows = [
     ["Name",     lead.name],
-    ["Phone",    lead.phone],
+    ["Phone",    safePhone],
     ["City",     lead.city        || "—"],
     ["Service",  lead.service     || "—"],
     ["Estimate", lead.estimate    || "—"],
@@ -54,13 +69,14 @@ export async function sendLeadNotification(lead: LeadData): Promise<void> {
   ];
 
   const tableRows = rows
-    .map(([k, v]) => `<tr><td style="padding:6px 12px;color:#6b7280;font-size:13px;white-space:nowrap">${k}</td><td style="padding:6px 12px;font-weight:600;font-size:13px;color:#111827">${v}</td></tr>`)
+    .map(([k, v]) => `<tr><td style="padding:6px 12px;color:#6b7280;font-size:13px;white-space:nowrap">${escapeHtml(k)}</td><td style="padding:6px 12px;font-weight:600;font-size:13px;color:#111827">${escapeHtml(String(v))}</td></tr>`)
     .join("");
 
   const waMsg = encodeURIComponent(
     `👋 Namaste ${lead.name} ji!\nMain JK Interior se call kar raha hoon.\n${lead.service ? `Aapne ${lead.service} ke baare mein inquiry ki thi.` : ""}\n${lead.estimate ? `Rough estimate: ${lead.estimate}` : ""}\nFree site visit ke liye kab aana theek rahega?\n📞 +91 8651070831`.trim()
   );
-  const waLink = `https://wa.me/${lead.phone.replace(/\D/g, "").replace(/^0|^91/, "")}?text=${waMsg}`;
+  const waPhone = lead.phone.replace(/\D/g, "").replace(/^0|^91/, "");
+  const waLink = `https://wa.me/${waPhone}?text=${waMsg}`;
 
   const html = `
 <!DOCTYPE html>
@@ -83,7 +99,7 @@ export async function sendLeadNotification(lead: LeadData): Promise<void> {
       </table>
       <div style="margin-top:20px;display:flex;gap:12px">
         <a href="${waLink}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:700">💬 WhatsApp Now</a>
-        <a href="tel:${lead.phone}" style="display:inline-block;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;text-decoration:none;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:700">📞 Call</a>
+        <a href="tel:${safePhone}" style="display:inline-block;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;text-decoration:none;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:700">📞 Call</a>
       </div>
     </div>
     <div style="padding:16px 28px;background:#f9fafb;border-top:1px solid #f3f4f6;text-align:center;color:#9ca3af;font-size:11px">
@@ -99,7 +115,7 @@ export async function sendLeadNotification(lead: LeadData): Promise<void> {
   await transport.sendMail({
     from: `"JK Interior Leads" <${SMTP_USER}>`,
     to: NOTIFY_EMAIL,
-    subject: `🏠 New Lead: ${lead.name} (${lead.phone}) — ${lead.service || "General Enquiry"}`,
+    subject: `🏠 New Lead: ${lead.name} (${safePhone}) — ${lead.service || "General Enquiry"}`,
     html,
     text,
   });
