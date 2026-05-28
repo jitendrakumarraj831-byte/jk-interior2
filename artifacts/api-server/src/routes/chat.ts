@@ -249,14 +249,21 @@ router.post("/chat", async (req, res) => {
   if (extractedRoomSize === "MULTI_ROOM_DETECTED") {
     const multiRooms = detectMultiRoomSizes(normMessage);
     if (multiRooms.length > 1) {
+      // Pick price range based on known service; default to gypsum/pvc range
+      const svcKey = (leadContext?.service || "").toLowerCase();
+      const priceLow  = svcKey.includes("wpc") ? 180 : svcKey.includes("uv") || svcKey.includes("marble") ? 50 : 80;
+      const priceHigh = svcKey.includes("wpc") ? 450 : svcKey.includes("uv") || svcKey.includes("marble") ? 95 : 140;
+      const svcLabel  = svcKey.includes("wpc") ? "WPC Wall Panels" : svcKey.includes("uv") || svcKey.includes("marble") ? "UV Marble Sheets" : svcKey.includes("pvc") ? "PVC Ceiling" : "Gypsum Ceiling";
+      const topicSlug = svcKey.includes("wpc") ? "wpc" : svcKey.includes("uv") || svcKey.includes("marble") ? "uv" : svcKey.includes("pvc") ? "pvc" : "gypsum";
+
       let totalArea = 0;
       let breakdownText = "";
       multiRooms.forEach((room: any, i: number) => {
         totalArea += room.area;
-        breakdownText += `${i + 1}. **${room.roomName}** (${room.length}×${room.width} = ${room.area} sq.ft): ₹${(room.area * 80).toLocaleString('en-IN')} – ₹${(room.area * 140).toLocaleString('en-IN')}\n`;
+        breakdownText += `${i + 1}. **${room.roomName}** (${room.length}×${room.width} = ${room.area} sq.ft): ₹${(room.area * priceLow).toLocaleString('en-IN')} – ₹${(room.area * priceHigh).toLocaleString('en-IN')}\n`;
       });
-      const reply = `आपके ${multiRooms.length} कमरों का कुल एरिया **${totalArea} sq.ft**:\n\n${breakdownText}\n💰 **Grand Total:** ₹${(totalArea * 80).toLocaleString('en-IN')} – ₹${(totalArea * 140).toLocaleString('en-IN')}\n\nफ्री साइट विजिट बुक करें? 😊`;
-      res.json({ ok: true, reply, source: "local", updatedContext: { roomSize: `${totalArea} sqft`, lastTopic: "pvc", lastIntent: "pricing" } });
+      const reply = `Aapke ${multiRooms.length} rooms ka ${svcLabel} estimate:\n\n${breakdownText}\n💰 **Grand Total:** ₹${(totalArea * priceLow).toLocaleString('en-IN')} – ₹${(totalArea * priceHigh).toLocaleString('en-IN')}\n\nFree site visit book karein? 😊`;
+      res.json({ ok: true, reply, source: "local", updatedContext: { roomSize: `${totalArea} sqft`, lastTopic: topicSlug, lastIntent: "pricing" } });
       return;
     }
   }
@@ -293,12 +300,12 @@ router.post("/chat", async (req, res) => {
   }
 
   if (intent === "view_catalog") {
-    res.json({ ok: true, reply: "जी बिल्कुल! आप हमारा Design Catalog देखने के लिए WhatsApp करें: +91 8651070831 — हम PDF भेज देंगे! कोई specific design पसंद है?", source: "local", updatedContext: buildUpdatedContext() });
+    res.json({ ok: true, reply: "Bilkul! Hamara Design Catalog dekhne ke liye WhatsApp karein: +91 8651070831 — hum PDF bhej denge! Koi specific design pasand hai?", source: "local", updatedContext: buildUpdatedContext() });
     return;
   }
 
   if (intent === "book_visit") {
-    res.json({ ok: true, reply: "जी जरूर! हमारी टीम बिल्कुल फ्री में साइट विजिट करेगी। कृपया अपना **नाम, शहर और WhatsApp नंबर** यहाँ टाइप करें। 😊", source: "local", updatedContext: { ...buildUpdatedContext(), conversationStage: "booking" } });
+    res.json({ ok: true, reply: "Zaroor! Hamari team bilkul free mein site visit karegi. Apna **naam, shehar aur WhatsApp number** yahan type karein. 😊", source: "local", updatedContext: { ...buildUpdatedContext(), conversationStage: "booking" } });
     return;
   }
 

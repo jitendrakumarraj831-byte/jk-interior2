@@ -11,10 +11,10 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type ConversationStage =
-  | "discovery"      // Just arrived, minimal context
-  | "qualification"  // Gathering project details
+  | "greeting"       // Initial message, no context yet
+  | "discovery"      // Gathering project details
   | "consultation"   // Giving estimates and advice
-  | "consideration"  // Evaluating options, comparing
+  | "estimation"     // Working through pricing / room sizes
   | "booking"        // Ready to schedule / has given phone
 
 export type RoomStatus = "mentioned" | "sized" | "estimated" | "confirmed"
@@ -300,10 +300,10 @@ export function mergeMemory(
 
 export function updateStage(memory: ConversationMemory): ConversationStage {
   if (memory.bookingInterest && memory.phone) return "booking"
-  if (memory.bookingInterest || memory.rooms.some(r => r.status === "estimated")) return "consideration"
+  if (memory.bookingInterest || memory.rooms.some(r => r.status === "estimated")) return "estimation"
   if (memory.rooms.some(r => r.size) || memory.budgetRaw) return "consultation"
-  if (memory.name || memory.city || memory.rooms.length > 0) return "qualification"
-  return "discovery"
+  if (memory.name || memory.city || memory.rooms.length > 0) return "discovery"
+  return "greeting"
 }
 
 // ─── Prompt Summarizer ────────────────────────────────────────────────────────

@@ -58,7 +58,7 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Warranty / guarantee
     patterns: /\b(warranty|guarantee|kitne\s*saal\s*(?:ki\s*)?(?:warranty|guarantee)|how\s*many\s*years|kitni\s*guarantee|kitni\s*warranty|long\s*lasting|toot\s*(?:jayega|jaaye|gaya)|टूट|खराब\s*(?:ho|hoga)|kharab)\b/i,
-    answer: `🛡️ **JK Interior Warranty**\n\n✅ Gypsum Ceiling – **5 साल** की warranty\n✅ PVC Ceiling – **10 साल** की warranty\n✅ WPC Wall Panels – **7 साल** की warranty\n✅ UV Marble Sheets – **5 साल** की warranty\n✅ Modular TV Unit – **2 साल** की warranty\n\n🔧 Material defect pe free replacement milega\n📞 +91 8651070831`,
+    answer: `🛡️ **JK Interior Warranty**\n\n✅ **JK Interior ki 1 saal ki written warranty** — sab installations pe\n\n📅 Material lifespan:\n• PVC Ceiling — 20+ saal\n• Gypsum Ceiling — 10–15 saal\n• WPC Wall Panels — 15–20 saal\n• UV Marble Sheets — 15+ saal\n• Modular TV Unit — 8–10 saal\n\n🔧 Koi bhi defect pe free repair milega warranty period mein\n📞 +91 8651070831`,
   },
   {
     // Installation time
@@ -783,6 +783,7 @@ export default function JKChat() {
       }, 1200)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [open])
 
   // ── Check voice support ───────────────────────────────────────────────────
@@ -830,6 +831,7 @@ export default function JKChat() {
     const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback
     if (ric) {
       ric(() => setMounted(true), { timeout: 2000 })
+      return undefined
     } else {
       const t = setTimeout(() => setMounted(true), 800)
       return () => clearTimeout(t)

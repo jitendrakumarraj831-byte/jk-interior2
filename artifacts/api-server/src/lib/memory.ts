@@ -8,13 +8,17 @@
  * Shared by client (jk-chat.tsx) and server (api/chat/route.ts) — zero side effects.
  */
 
+// Allow typeof window checks to compile in server (Node) context
+// eslint-disable-next-line no-var
+declare var window: any
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type ConversationStage =
-  | "discovery"      // Just arrived, minimal context
-  | "qualification"  // Gathering project details
+  | "greeting"       // Initial message, no context yet
+  | "discovery"      // Gathering project details
   | "consultation"   // Giving estimates and advice
-  | "consideration"  // Evaluating options, comparing
+  | "estimation"     // Working through pricing / room sizes
   | "booking"        // Ready to schedule / has given phone
 
 export type RoomStatus = "mentioned" | "sized" | "estimated" | "confirmed"
@@ -300,10 +304,10 @@ export function mergeMemory(
 
 export function updateStage(memory: ConversationMemory): ConversationStage {
   if (memory.bookingInterest && memory.phone) return "booking"
-  if (memory.bookingInterest || memory.rooms.some(r => r.status === "estimated")) return "consideration"
+  if (memory.bookingInterest || memory.rooms.some(r => r.status === "estimated")) return "estimation"
   if (memory.rooms.some(r => r.size) || memory.budgetRaw) return "consultation"
-  if (memory.name || memory.city || memory.rooms.length > 0) return "qualification"
-  return "discovery"
+  if (memory.name || memory.city || memory.rooms.length > 0) return "discovery"
+  return "greeting"
 }
 
 // ─── Prompt Summarizer ────────────────────────────────────────────────────────

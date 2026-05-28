@@ -38,7 +38,7 @@ export default function ServiceAreas() {
         initial: { opacity: 0, y: 24 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, margin: "-50px" },
-        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+        transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
       }
 
   const staggerContainer = shouldReduce
@@ -58,7 +58,7 @@ export default function ServiceAreas() {
     : {
         variants: {
           hidden: { opacity: 0, scale: 0.9 },
-          visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+          visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
         },
       }
 
