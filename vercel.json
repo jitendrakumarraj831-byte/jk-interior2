@@ -1,0 +1,10 @@
+{
+  "framework": null,
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm --filter @workspace/api-server run build && BASE_PATH=/ PORT=3000 pnpm --filter @workspace/jk-interior run build",
+  "outputDirectory": "artifacts/jk-interior/dist/public",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/handler" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
