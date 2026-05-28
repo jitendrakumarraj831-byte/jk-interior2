@@ -13,7 +13,8 @@ function checkAdmin(req: { headers: Record<string, string | string[] | undefined
   if (!key) return false;
   const provided = req.headers["x-admin-key"];
   if (!provided) return false;
-  return String(provided) === key;
+  const normalized = Array.isArray(provided) ? provided[0] : provided;
+  return typeof normalized === "string" && normalized.length > 0 && normalized === key;
 }
 
 function escape(s: string): string {
@@ -85,10 +86,12 @@ router.get("/leads", async (req, res) => {
 router.patch("/leads", async (req, res) => {
   if (!checkAdmin(req as any)) { res.status(401).json({ ok: false }); return; }
   try {
-    const { id } = req.body;
+    const id = Number(req.body?.id);
+    if (!Number.isInteger(id) || id <= 0) { res.status(400).json({ ok: false, error: "invalid_id" }); return; }
     const db = await getPool();
     if (!db) { res.json({ ok: true }); return; }
-    await db.query("UPDATE leads SET is_read=TRUE WHERE id=$1", [id]);
+    const result = await db.query("UPDATE leads SET is_read=TRUE WHERE id=$1", [id]);
+    if ((result.rowCount ?? 0) === 0) { res.status(404).json({ ok: false, error: "not_found" }); return; }
     res.json({ ok: true });
   } catch {
     res.status(502).json({ ok: false });

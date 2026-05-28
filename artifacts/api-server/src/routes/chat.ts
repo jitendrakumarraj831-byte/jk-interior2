@@ -16,6 +16,7 @@ import {
 import {
   resolveFollowUpIntent,
 } from "../lib/context-engine.js";
+import { detectIntent, isRepetitiveReply, normalizeHinglish, type Intent } from "../lib/chat-nlp.js";
 
 const router = Router();
 
@@ -66,26 +67,20 @@ function checkRate(ip: string, limit = 30, windowMs = 60_000): boolean {
   return true;
 }
 
-type Intent =
-  | "greeting" | "pricing" | "booking" | "material_info" | "comparison"
-  | "faq" | "off_topic" | "affirmation" | "negation" | "view_catalog"
-  | "book_visit" | "unknown";
 
-function detectIntent(text: string, ctx: ConversationContext): Intent {
-  const t = text.toLowerCase();
-  if (/^(hi|hello|hey|namaste|namaskar|hii|helo|hy|hye|good\s*(morning|evening|afternoon)|salam)\b/.test(t)) return "greeting";
-  if (/^(ha(n|a)?n?|haan|yes|okay|ok|bilkul|zaroor|sure|theek|thik|sahi|right|correct|perfect|done|proceed)\b/.test(t)) return "affirmation";
-  if (/^(nahi|no|nope|mat|band karo|ruk|stop|cancel|baad mein|later)\b/.test(t)) return "negation";
-  if (/\b(book|booking|appointment|visit|site visit|ghar aao|aa jao|bulao|milna|demo|consultation|schedule|free visit|quotation bhejo|quote bhejo|estimate bhejo)\b/.test(t)) return "booking";
-  if (/\b(price|pricing|rate|cost|kitna|lagega|lagta|budget|estimate|paisa|rupee|rs\b|₹|cheap|costly|expensive|affordable|how much|kitne mein|kitne ka|total|charge|fee|sqft|per foot|per sq)\b/.test(t)) return "pricing";
-  if (/\b(better|best|vs|versus|compare|differ|difference|konsa|kaun sa|which one|zyada|kam|acha|bekar|suggest|recommend)\b/.test(t)) return "comparison";
-  if (/\b(gypsum|pvc|wpc|uv|marble|panel|ceiling|wall|floor|modular|tv unit|wardrobe|kitchen|false ceiling|design|texture|color|rang|finish|look|style|material|quality|thickness|durability|waterproof|fire)\b/.test(t)) return "material_info";
-  if (/\b(guarantee|warranty|how long|kitne din|kitne time|process|install|labor|worker|team|experience|kab se|kitne saal|review|feedback|trust|legit|real|fake|scam|safe)\b/.test(t)) return "faq";
-  if (/\b(catalog|catalogue|design\s*(?:dekho|dikhao|bhejo|send|share)|brochure|pdf|designs?\s*(?:list|collection|photos?)|kaunse\s*design|design\s*kaunse|latest\s*design|new\s*design)\b/.test(t)) return "view_catalog";
-  if (/\b(site\s*visit|ghar\s*(?:pe|par|aa|aao|bulao)|free\s*(?:visit|measurement|maap)|measurement|naaap|naap\s*lena|visit\s*book|book\s*(?:a\s*)?visit|aao\s*ghar)\b/.test(t)) return "book_visit";
-  if (/\b(cricket|ipl|football|movie|film|news|politics|election|weather|joke|meme|recipe|khana|game|song|music|gf|girlfriend|bf|love|date|shaadi|marriage|job|naukri|stock|share market|crypto|bitcoin)\b/.test(t)) return "off_topic";
-  return "unknown";
+const unansweredIntentStats = new Map<string, number>();
+
+function trackUnanswered(reason: string): void {
+  unansweredIntentStats.set(reason, (unansweredIntentStats.get(reason) ?? 0) + 1);
 }
+
+router.get("/chat/analytics", (_req, res) => {
+  const intents = Array.from(unansweredIntentStats.entries())
+    .map(([reason, count]) => ({ reason, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 20);
+  res.json({ ok: true, unanswered: intents });
+});
 
 function extractRoomDimensions(text: string): string | null {
   const t = text.toLowerCase();
@@ -126,6 +121,15 @@ function buildEngineContext(lead: ChatRequest["leadContext"], history: Array<{ r
     lastQuestionAsked: lead?.lastQuestionAsked ?? null,
     conversationStage: lead?.conversationStage ?? "discovery",
   };
+  const recentAssistant = history.slice().reverse().find((msg) => msg.role === "assistant");
+  if (recentAssistant && !ctx.lastTopic) {
+    const a = recentAssistant.content.toLowerCase();
+    if (a.includes("pvc")) ctx.lastTopic = "pvc";
+    else if (a.includes("gypsum")) ctx.lastTopic = "gypsum";
+    else if (a.includes("wpc")) ctx.lastTopic = "wpc";
+    else if (a.includes("uv")) ctx.lastTopic = "uv";
+  }
+
   for (const msg of history.slice(-6)) {
     if (msg.role !== "user") continue;
     const norm = enhancedNormalize(msg.content.toLowerCase());
@@ -147,7 +151,7 @@ function advanceStage(currentStage: ConversationContext["conversationStage"], in
 function smartFallback(lead: ChatRequest["leadContext"], message: string, intent: Intent, ctx: ConversationContext): string {
   const nm = lead?.name ? `${lead.name} ji, ` : "";
   const oh = isOffHours();
-  if (intent === "off_topic") return `${nm}Main JK Interior ki Riya hoon — interior design aur renovation mein help karti hoon. Kaunsa room design karna hai? 😊`;
+  if (intent === "off_topic") return `${nm}Main sirf JK Interior services mein help karti hoon — false ceiling, wall panels, aur interior estimate. Aapko kis kaam ka rate chahiye? 😊`;
   if (intent === "booking") {
     if (ctx.phone) return oh ? `${nm}Booking note kar li hai! 🙌 Team kal 9 AM pe call karegi. Urgent ho toh WhatsApp: +91 8651070831` : `${nm}Booking note kar li! 🙌 Hum 2-3 ghante mein call karenge. WhatsApp: +91 8651070831`;
     return `${nm}Bilkul! Free site visit arrange kar dete hain. 📞 Apna WhatsApp number share karein — team call karegi.`;
@@ -219,19 +223,6 @@ async function callGroq(systemPrompt: string, history: Array<{ role: "user" | "a
   }
 }
 
-function isRepetitive(newReply: string, history: Array<{ role: "user" | "assistant"; content: string }>): boolean {
-  const last3 = history.filter(m => m.role === "assistant").slice(-3).map(m => m.content.trim().toLowerCase());
-  const norm = newReply.trim().toLowerCase();
-  for (const prev of last3) {
-    const prevWords = new Set(prev.split(/\s+/).filter(w => w.length > 3));
-    const newWords = norm.split(/\s+/).filter(w => w.length > 3);
-    if (newWords.length === 0) continue;
-    const overlap = newWords.filter(w => prevWords.has(w)).length;
-    if (overlap / newWords.length > 0.7) return true;
-  }
-  return false;
-}
-
 router.post("/chat", async (req, res) => {
   const ip = String(req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown").split(",")[0].trim();
   if (!checkRate(ip)) {
@@ -240,10 +231,12 @@ router.post("/chat", async (req, res) => {
   }
 
   const parsed = ChatSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ ok: false, error: "Invalid request" }); return; }
+  if (!parsed.success) { res.status(400).json({ ok: false, error: "invalid_request", issues: parsed.error.flatten() }); return; }
 
+  const startedAt = Date.now();
   const { message, history, leadContext } = parsed.data;
-  const normMessage = enhancedNormalize(message?.trim() || "");
+  const assistantHistory = history.filter((m) => m.role === "assistant").map((m) => m.content);
+  const normMessage = normalizeHinglish(enhancedNormalize(message?.trim() || ""));
   const extractedRoomSize = extractRoomDimensions(normMessage) ?? leadContext?.roomSize ?? undefined;
 
   if (extractedRoomSize === "MULTI_ROOM_DETECTED") {
@@ -276,7 +269,7 @@ router.post("/chat", async (req, res) => {
   if (!ctx.roomSize && extractedRoomSize) ctx.roomSize = extractedRoomSize;
   if (!ctx.phone && leadContext?.phone) ctx.phone = leadContext.phone;
 
-  const intent = detectIntent(normMessage, ctx);
+  const intent = detectIntent(normMessage);
   ctx.conversationStage = advanceStage(ctx.conversationStage, intent, ctx);
 
   const extractedPhone = tryExtractPhone(normMessage) ?? ctx.phone ?? leadContext?.phone;
@@ -327,27 +320,31 @@ router.post("/chat", async (req, res) => {
   }
 
   const engineReply = consultantReply(normMessage, ctx);
-  if (engineReply && !isRepetitive(engineReply, history)) {
-    res.json({ ok: true, reply: engineReply, source: "local", updatedContext: buildUpdatedContext() });
+  if (engineReply && !isRepetitiveReply(engineReply, assistantHistory)) {
+    res.json({ ok: true, reply: engineReply, source: "local", latencyMs: Date.now() - startedAt, updatedContext: buildUpdatedContext() });
     return;
   }
 
   const apiKey = process.env.GROQ_API_KEY ?? "";
   if (!apiKey) {
-    res.json({ ok: true, reply: smartFallback(leadContext, message, intent, ctx), source: "local", updatedContext: buildUpdatedContext() });
+    trackUnanswered(`no_groq:${intent}`);
+    res.json({ ok: true, reply: smartFallback(leadContext, message, intent, ctx), source: "local", latencyMs: Date.now() - startedAt, updatedContext: buildUpdatedContext() });
     return;
   }
 
   try {
     const systemPrompt = buildGroqSystemPrompt(buildSystemPrompt(leadContext), leadContext, ctx, intent);
     const reply = await callGroq(systemPrompt, history, message, apiKey);
-    if (isRepetitive(reply, history)) {
-      res.json({ ok: true, reply: smartFallback(leadContext, message, intent, ctx), source: "local", updatedContext: buildUpdatedContext() });
+    if (isRepetitiveReply(reply, assistantHistory)) {
+      trackUnanswered(`no_groq:${intent}`);
+    res.json({ ok: true, reply: smartFallback(leadContext, message, intent, ctx), source: "local", latencyMs: Date.now() - startedAt, updatedContext: buildUpdatedContext() });
       return;
     }
-    res.json({ ok: true, reply, source: "groq", updatedContext: buildUpdatedContext() });
-  } catch {
-    res.json({ ok: true, reply: smartFallback(leadContext, message, intent, ctx), source: "local", updatedContext: buildUpdatedContext() });
+    res.json({ ok: true, reply, source: "groq", latencyMs: Date.now() - startedAt, updatedContext: buildUpdatedContext() });
+  } catch (error) {
+    req.log?.error({ err: error, route: "chat", source: "groq", message: message.slice(0, 120) }, "chat handler failed; using fallback");
+    trackUnanswered(`no_groq:${intent}`);
+    res.json({ ok: true, reply: smartFallback(leadContext, message, intent, ctx), source: "local", latencyMs: Date.now() - startedAt, updatedContext: buildUpdatedContext() });
   }
 });
 

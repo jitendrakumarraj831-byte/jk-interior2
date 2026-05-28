@@ -43,6 +43,11 @@ const CITY_MAP: Record<string, string> = {
   bhargama: "Bhargama", palasi: "Palasi",
 }
 
+const QUICK_ACTION_MAP: Record<string, string> = {
+  "📂 View See Designs": "Mujhe PVC ceiling ka design catalog dekhna hai",
+  "✨ Book Book Visit": "Mujhe free site visit book karni hai",
+}
+
 // ── EXACT FAQ ANSWERS — Fixed Questions ka Fixed Answer ───────────────────────
 const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
@@ -73,7 +78,7 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Site visit / free visit
     patterns: /\b(free\s*(?:site\s*)?visit|site\s*visit|free\s*consultation|ghar\s*(?:aa?o|aana)|visit\s*chahiye|measurement\s*(?:chahiye|karo|karna)|ghar\s*aake|aap\s*aao|koi\s*aaye|banda\s*bhejo|expert\s*bhejo)\b/i,
-    answer: `📅 **Free Site Visit – 100% Free!**\n\n✅ Hamare expert aapke ghar aayenge\n✅ Room measure karenge\n✅ Best design suggest karenge\n✅ Exact quote on-the-spot milega\n✅ Koi hidden charge nahi!\n\n📞 Book karo: **+91 8651070831**\nYa "Book Visit" button dabao niche 👇`,
+    answer: `📅 **Book Visit – 100% Free!**\n\n✅ Hamare expert aapke ghar aayenge\n✅ Room measure karenge\n✅ Best design suggest karenge\n✅ Exact quote on-the-spot milega\n✅ Koi hidden charge nahi!\n\n📞 Book karo: **+91 8651070831**\nYa "Book Visit" button dabao niche 👇`,
   },
   {
     // Waterproof / bathroom ceiling
@@ -531,9 +536,9 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   // ── Visit / booking ───────────────────────────────────────────────────────
   if (has(t, ["visit","book","site visit","measurement","quotation","bulao","aao","free visit","aana","aaye","bhejo"])) {
     if (lead?.phone) {
-      return `📅 **Free Site Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8651070831`
+      return `📅 **Book Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8651070831`
     }
-    return `📅 **Free Site Visit** – Koi hidden charge nahi!\n\nBook karne ke liye aapka naam batao 😊`
+    return `📅 **Book Visit** – Koi hidden charge nahi!\n\nBook karne ke liye aapka naam batao 😊`
   }
 
   // ── City mentioned ────────────────────────────────────────────────────────
@@ -866,9 +871,13 @@ export default function JKChat() {
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
-    requestAnimationFrame(() => el.scrollTo({ top: el.scrollHeight, behavior: "smooth" }))
+    requestAnimationFrame(() => el.scrollTo({ top: el.scrollHeight, behavior: messages.length > 3 ? "smooth" : "auto" }))
   }, [messages, typing, open])
-  useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 350) }, [open])
+  useEffect(() => {
+    if (!open) return
+    const timer = setTimeout(() => inputRef.current?.focus(), 350)
+    return () => clearTimeout(timer)
+  }, [open])
 
   const persist = (l: Partial<Lead> | null, tp: string | null) => {
     try { localStorage.setItem("jk_chat_v5", JSON.stringify({ lead: l, topic: tp })) } catch {}
@@ -878,10 +887,6 @@ export default function JKChat() {
   // Core send
   const send = useCallback(async (override?: string) => {
     // Map pinned quick-action chip labels → actual message text sent to the API
-    const QUICK_ACTION_MAP: Record<string, string> = {
-      "📂 View Design Catalog":  "Mujhe PVC ceiling ka design catalog dekhna hai",
-      "✨ Book Free Site Visit": "Mujhe free site visit book karni hai",
-    }
     const text = (QUICK_ACTION_MAP[override ?? ""] ?? (override ?? input)).trim()
     if (!text || typing || sendLock.current) return
 
@@ -1190,7 +1195,7 @@ const tLower = text.toLowerCase()
   const lastBotMsg = messages.filter(m => m.role === "bot").slice(-1)[0]?.text || ""
   const hasEstimate = lastBotMsg.includes("₹") || !!pendingEstimate
   const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg, lastTopic)
-  const statusText = offHours ? "🌙 Opens 9 AM • WhatsApp available" : "🟢 Online — Premium Consultant"
+  const statusText = offHours ? "Available 9:00 AM onwards" : "Online now • Replies in seconds"
 
   if (!mounted) return null
 
@@ -1216,11 +1221,11 @@ const tLower = text.toLowerCase()
         <motion.button
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.07 }}
-          whileTap={{ scale: 0.93 }}
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setOpen(true)}
-          className="fixed bottom-24 right-4 z-50 md:bottom-28 md:right-6"
-          style={{ width: 72, height: 72 }}
+          className="fixed bottom-20 right-4 z-50 md:bottom-24 md:right-6"
+          style={{ width: 64, height: 64 }}
           aria-label="Open chat"
         >
           {/* Pulsing glow ring */}
@@ -1269,7 +1274,7 @@ const tLower = text.toLowerCase()
           </span>
 
           {/* AI badge */}
-          <span className="absolute -top-1 -right-0.5 flex items-center gap-0.5 rounded-full bg-amber-400 px-1.5 py-0.5 text-[8px] font-black text-amber-900 shadow-md z-20">
+          <span className="absolute -top-1 -right-0.5 flex items-center gap-0.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[8px] font-black text-[#145246] shadow-md z-20">
             <ISparkle />AI
           </span>
         </motion.button>
@@ -1278,22 +1283,22 @@ const tLower = text.toLowerCase()
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ type: "spring", damping: 20 }}
-            className="fixed z-50 flex flex-col overflow-hidden shadow-2xl bottom-0 left-0 right-0 h-[92dvh] max-h-[680px] rounded-t-3xl md:bottom-6 md:left-auto md:right-6 md:h-[620px] md:w-[420px] md:rounded-2xl bg-white/98 backdrop-blur-md"
+            initial={{ opacity: 0, y: 26, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.985 }}
+            transition={{ type: "spring", damping: 26, stiffness: 240 }}
+            className="fixed z-50 flex flex-col overflow-hidden shadow-[0_24px_80px_rgba(15,23,42,0.25)] bottom-0 left-0 right-0 h-[94dvh] max-h-[720px] rounded-t-[28px] md:bottom-6 md:left-auto md:right-6 md:h-[640px] md:w-[420px] md:rounded-[28px] bg-white/85 backdrop-blur-2xl border border-white/50"
           >
             {/* Header */}
-            <div className="flex shrink-0 items-center justify-between px-4 py-3 md:px-5 md:py-3.5 bg-gradient-to-r from-emerald-800 to-emerald-600 text-white">
+            <div className="flex shrink-0 items-center justify-between px-4 py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-[#0f2f2a] via-[#11453d] to-[#1f6f61] text-white">
               <div className="flex items-center gap-2 md:gap-3 min-w-0">
                 <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 font-black text-[10px] md:text-sm ring-2 ring-white/30 shrink-0">
                   JK
                   <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-300 border-2 border-emerald-600" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs md:text-sm font-bold leading-tight truncate">Riya — AI Consultant</p>
-                  <p className="text-[9px] md:text-[10px] text-white/75">{statusText}</p>
+                  <p className="text-xs md:text-sm font-bold leading-tight truncate">Riya · Interior AI</p>
+                  <p className="text-[10px] text-white/70 font-medium">{statusText}</p>
                 </div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
@@ -1407,15 +1412,15 @@ const tLower = text.toLowerCase()
             {/* Messages */}
             <div
               ref={scrollRef}
-              className="flex-1 min-h-0 overflow-y-auto px-3 md:px-4 py-3 md:py-4 space-y-3 scrollbar-luxury"
-              style={{ background: "linear-gradient(145deg, #f8faf7 0%, #ffffff 100%)" }}
+              className="flex-1 min-h-0 overflow-y-auto px-3 md:px-4 py-3.5 md:py-5 space-y-3 scrollbar-luxury"
+              style={{ background: "linear-gradient(180deg, #f7faf9 0%, #ffffff 45%, #f6fbfa 100%)" }}
             >
               {messages.map((m, idx) => (
                 <motion.div
                   key={m.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.03 }}
+                  transition={{ delay: Math.min(idx * 0.018, 0.12), duration: 0.24 }}
                   className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   {m.role === "bot" && m.kind !== "card" && (
@@ -1431,8 +1436,8 @@ const tLower = text.toLowerCase()
                     <div
                       className={`max-w-[85%] sm:max-w-[80%] whitespace-pre-line rounded-2xl px-3 md:px-4 py-2 md:py-2.5 text-[12px] sm:text-[13px] md:text-[13.5px] leading-relaxed shadow-sm ${
                         m.role === "user"
-                          ? "bg-gradient-to-br from-emerald-700 to-emerald-500 text-white rounded-br-sm break-words"
-                          : "bg-white text-gray-800 rounded-bl-sm border border-gray-200 break-words"
+                          ? "bg-gradient-to-br from-[#1b5c52] to-[#2f8a7a] text-white rounded-br-md break-words shadow-[0_8px_24px_rgba(31,111,97,0.22)]"
+                          : "bg-white/95 text-slate-700 rounded-bl-md border border-slate-200/80 break-words shadow-[0_8px_20px_rgba(15,23,42,0.08)]"
                       }`}
                     >
                       <RichText text={m.text} />
@@ -1442,7 +1447,7 @@ const tLower = text.toLowerCase()
                             .filter(img => img.category === (m as any).galleryType)
                             .slice(0, 6)
                             .map((img, i) => (
-                              <img key={i} src={img.src} alt={img.alt} className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
+                              <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" fetchPriority="low" className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
                             ))}
                         </div>
                       )}
@@ -1450,37 +1455,37 @@ const tLower = text.toLowerCase()
                   )}
                 </motion.div>
               ))}
-              {typing && <TypingDots />}
+              {typing && <div className="px-1"><TypingDots /></div>}
             </div>
 
             {/* ── Quick Action Buttons (pinned) ── */}
-            <div className="shrink-0 flex gap-2 px-3 md:px-4 pt-2 pb-1 bg-white border-t border-gray-100">
+            <div className="shrink-0 flex gap-2 px-3 md:px-4 pt-2.5 pb-1.5 bg-white/80 backdrop-blur border-t border-slate-200/70 overflow-x-auto">
               <button
                 onClick={() => send("📂 View Design Catalog")}
                 disabled={typing}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-400 bg-gradient-to-r from-emerald-50 to-emerald-100 px-3 py-2 text-[11px] md:text-[12px] font-bold text-emerald-800 shadow-sm hover:from-emerald-100 hover:to-emerald-200 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-300 bg-gradient-to-r from-emerald-50 to-emerald-100 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-emerald-800 shadow-sm hover:from-emerald-100 hover:to-emerald-200 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
               >
                 <span className="text-base leading-none">📂</span>
-                <span>Design Catalog</span>
+                <span>See Designs</span>
               </button>
               <button
                 onClick={() => send("✨ Book Free Site Visit")}
                 disabled={typing}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-600 bg-gradient-to-r from-emerald-600 to-emerald-500 px-3 py-2 text-[11px] md:text-[12px] font-bold text-white shadow-sm hover:from-emerald-500 hover:to-emerald-400 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-600 bg-gradient-to-r from-emerald-600 to-emerald-500 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-white shadow-sm hover:from-emerald-500 hover:to-emerald-400 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
               >
                 <span className="text-base leading-none">✨</span>
-                <span>Free Site Visit</span>
+                <span>Book Visit</span>
               </button>
             </div>
 
             {/* ── Contextual Quick Reply Chips ── */}
-            <div className="shrink-0 flex gap-1.5 overflow-x-auto px-3 md:px-4 pb-2 bg-white scrollbar-luxury">
+            <div className="shrink-0 flex gap-2 overflow-x-auto px-3 md:px-4 pb-[max(10px,env(safe-area-inset-bottom))] bg-white/80 scrollbar-luxury">
               {qrSet.filter(q => !["📂 View Design Catalog", "✨ Book Free Site Visit"].includes(q)).map(q => (
                 <button
                   key={q}
                   onClick={() => send(q)}
                   disabled={typing}
-                  className="shrink-0 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[10px] md:text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all whitespace-nowrap disabled:opacity-40"
+                  className="shrink-0 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-[11px] font-medium text-slate-700 hover:bg-slate-50 active:scale-95 transition-all whitespace-nowrap disabled:opacity-40"
                 >
                   {q}
                 </button>
@@ -1490,7 +1495,7 @@ const tLower = text.toLowerCase()
 
 
             {/* Input Row — with Voice Mic Button */}
-            <div className="shrink-0 flex items-center gap-1.5 border-t border-gray-200 bg-white px-3 py-2 pb-[max(8px,env(safe-area-inset-bottom))]">
+            <div className="shrink-0 flex items-center gap-2 border-t border-slate-200/80 bg-white/90 backdrop-blur px-3 py-2.5 pb-[max(10px,env(safe-area-inset-bottom))]">
               {/* Voice Mic Button — always visible */}
               <motion.button
                 onClick={voiceSupported ? toggleVoice : undefined}
@@ -1515,14 +1520,14 @@ const tLower = text.toLowerCase()
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={onKey}
-                placeholder={isListening ? "Bol raha hoon... 🎙️" : "Type karo ya mic se bolo..."}
+                placeholder={isListening ? "Sun rahi hoon... बोलिए" : "Ask about design, price, or visit..."}
                 className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-colors"
                 autoComplete="off"
               />
               <button
                 onClick={() => send()}
                 disabled={!input.trim() || typing}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-white shadow hover:bg-emerald-600 active:scale-90 transition-all disabled:opacity-40"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#144a41] to-[#1f6f61] text-white shadow-lg hover:shadow-xl active:scale-90 transition-all disabled:opacity-40"
               >
                 <ISend />
               </button>
