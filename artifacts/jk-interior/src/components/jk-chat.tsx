@@ -188,15 +188,15 @@ function detectService(t: string): string | null {
   return null
 }
 
-// ─����� EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
+// ── EXACT FAQ MATCHER ─────────────────────────────────────────────────────────
 function matchExactFAQ(text: string): string | null {
   for (const faq of EXACT_FAQ_FIXED) {
     if (faq.patterns.test(text)) return faq.answer
   }
   return null
-    }
+}
 
-// ─── DIMENSIONS ENGINE ──────────────────────────��─��─��─────────────────────────
+// ── DIMENSIONS ENGINE ────────────────────────────────────────────────────────
 function extractDimensions(text: string): { length: number; width: number; rawMatch: string } | null {
   const t = text.toLowerCase()
 
@@ -249,7 +249,7 @@ function extractDimensions(text: string): { length: number; width: number; rawMa
     }
   }
   return null
-        }
+}
 
 function getPremiumAdvice(area: number, materialType: string): string {
   if (area > 250) return "Itne bade area ke liye cove lighting design best rahega — Gypsum ya WPC ke saath ekdum premium look aayega!"
@@ -289,8 +289,8 @@ function generateEstimateFromDimensions(
   const greeting = leadName ? `${leadName} ji, ` : ""
   const advice = getPremiumAdvice(area, materialName)
   
-  return `${greeting}aapke **${length}' × ${width}'** room (${area} sq.ft) ka estimate:\n\n💰 Rate: ${priceRange}\n📐 Total kharcha: **₹${estimatedTotalLow.toLocaleString()} – ₹${estimatedTotalHigh.toLocaleString()}**\n\n✨ ${advice}\n\n📅 Free site visit ke liye "Book Visit" bolein ya apna naam batao! 😊`  
-  }
+  return `${greeting}aapke **${length}' × ${width}'** room (${area} sq.ft) ka estimate:\n\n💰 Rate: ${priceRange}\n📐 Total kharcha: **₹${estimatedTotalLow.toLocaleString()} – ₹${estimatedTotalHigh.toLocaleString()}**\n\n✨ ${advice}\n\n📅 Free site visit ke liye "Book Visit" bolein ya apna naam batao! 😊`
+}
 // ── store admin lead ──────────────────────────────────────────────────────────
 function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string, chatHistory?: ConvMsg[]) {
   try {
@@ -525,7 +525,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
       if (svcL.includes("gypsum")) return `✨ **Gypsum Ceiling Rate: ₹80–140 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
       if (svcL.includes("wpc")) return `🪵 **WPC Panel Rate: ₹180–450 / sq.ft**\n\nWall size bataiye — exact estimate nikalte hain!`
     }
-    return `💰 **JK Interior – Rate List**\n\n✨ Gypsum Ceiling    ₹80–₹140 / sq.ft\n🏠 PVC Ceiling       ₹60–₹120 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹450 / sq.ft\n💎 UV Marble Sheets  ₹50–₹95 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n🍳 Modular Kitchen   ₹60,000+\n🚪 Custom Wardrobe   ₹800/sq.ft+\n\nKisi specific cheez ka rate chahiye? Ya room size batao — exact estimate nikalte hain!`
+    return `💰 **JK Interior – Rate List**\n\n✨ Gypsum Ceiling    ₹80–₹140 / sq.ft\n🏠 PVC Ceiling       ₹80–₹140 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹450 / sq.ft\n💎 UV Marble Sheets  ₹50–₹95 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n🍳 Modular Kitchen   ₹60,000+\n🚪 Custom Wardrobe   ₹800/sq.ft+\n\nKisi specific cheez ka rate chahiye? Ya room size batao — exact estimate nikalte hain!`
   }
 
   // ── Visit / booking ───────────────────────────────────────────────────────
@@ -591,7 +591,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
 
   // ── Last resort ───────────────────────────────────────────────────────────
   return `Aapka sawaal samajh nahi aaya — thoda aur clearly batao! 😊\n\nMain in topics mein help kar sakta hoon:\n✅ Ceiling rates (PVC / Gypsum)\n✅ Wall panels (WPC / Fluted / UV Marble)\n✅ TV unit / Kitchen / Wardrobe\n✅ Room size estimate\n\nKya jaanna hai? 🙏`
-        }    
+}
 
 function extractBudgetAmount(text: string): string | null {
   const t = text.toLowerCase().replace(/,/g, "")
@@ -883,17 +883,6 @@ export default function JKChat() {
     const text = (QUICK_ACTION_MAP[override ?? ""] ?? (override ?? input)).trim()
     if (!text || typing || sendLock.current) return
 
-    // ✅ Service हर message में detect करके तुरंत save करो
-    const detectedSvc = detectService(text.toLowerCase())
-    if (detectedSvc) {
-      setLead(prev => {
-        const updated = { ...(prev || {}), service: detectedSvc }
-        persist(updated, detectedSvc.toLowerCase().replace(/\s+/g, "-"))
-        return updated
-      })
-      setLastTopic(detectedSvc.toLowerCase().replace(/\s+/g, "-"))
-    }
-
     // Stop listening if voice was active
     if (isListening && recognitionRef.current) {
       recognitionRef.current.stop()
@@ -923,12 +912,13 @@ export default function JKChat() {
     const currentService = serviceFromMsg || lead?.service || null
 
     
-    // ✅ Service save
-if (serviceFromMsg && !lead?.service) {
-  const updLead = { ...(lead || {}), service: serviceFromMsg }
-  setLead(updLead)
-  persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
-}
+    // ✅ Service save (only if not already known)
+    if (serviceFromMsg && !lead?.service) {
+      const updLead = { ...(lead || {}), service: serviceFromMsg }
+      setLead(updLead)
+      persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
+      setLastTopic(serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
+    }
 
 // ✅ Dimensions मिले तो हमेशा estimate nikalo — collectStep ignore karo
 if (dims) {
@@ -951,7 +941,7 @@ if (dims) {
   return
     }
 
-// ✅ CollectStep block �� बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
+// ✅ CollectStep block — बिल्कुल अलग, ऊपर वाले से जुड़ा नहीं
 if (collectStep) {
   let collReply = ""
 const tLower = text.toLowerCase()
@@ -968,22 +958,22 @@ const tLower = text.toLowerCase()
     }
   } else if (collectStep === "phone") {
     const phone = tryExtractPhone(text)
-    if (!phone) collReply = `Valid 10-digit mobile number needed.`
+    if (!phone) collReply = `Kripya 10 digit ka valid mobile number likhein 📱`
     else {
       const city = detectCity(tLower) || lead?.city
       const updated = { ...(lead || {}), phone, city: city || undefined }
       setLead(updated); persist(updated, lastTopic)
-      if (city) { setCollectStep("time"); collReply = `Number saved! 📱 When should we schedule the visit?` }
-      else { setCollectStep("city"); collReply = `Thanks! Which city? (Araria, Forbesganj, Purnia, etc.)` }
+      if (city) { setCollectStep("time"); collReply = `Number save ho gaya! 📱 Site visit ke liye kaunsa din aur samay theek rahega?` }
+      else { setCollectStep("city"); collReply = `Shukriya! Aap kis city mein hain? (Araria, Forbesganj, Purnia, etc.)` }
     }
   } else if (collectStep === "city") {
     const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
-    if (!city) collReply = `Please tell your city name.`
+    if (!city) collReply = `Kripya apni city ka naam batayein.`
     else {
       const updated = { ...(lead || {}), city }
       setLead(updated); persist(updated, lastTopic)
       setCollectStep("time")
-      collReply = `${city} – perfect! 📍 When would you like a site visit? (day/time)`
+      collReply = `${city} – perfect! 📍 Site visit ke liye kaunsa din aur samay theek rahega?`
     }
   } else if (collectStep === "time") {
     const preferredTime = text.trim()
@@ -1025,8 +1015,19 @@ const tLower = text.toLowerCase()
       updatedLead = { ...(lead || {}), phone: extractedPhone, name: extractedName || lead?.name || "Friend", city: city || lead?.city, service: svc || lead?.service }
       setLead(updatedLead)
       storeAdminLead(updatedLead as Lead, pendingEstimate || undefined, undefined, historyRef.current)
-    } else if (city && !lead?.city) { updatedLead = { ...(lead || {}), city }; setLead(updatedLead) }
-    else if (svc && !lead?.service) { updatedLead = { ...(lead || {}), service: svc }; setLead(updatedLead) }
+    } else {
+      // Save city and/or service together — don't lose one when both are detected
+      const needsCity    = city && !lead?.city
+      const needsService = svc  && !lead?.service
+      if (needsCity || needsService) {
+        updatedLead = {
+          ...(lead || {}),
+          ...(needsCity    ? { city }        : {}),
+          ...(needsService ? { service: svc } : {}),
+        }
+        setLead(updatedLead)
+      }
+    }
 
     let reply: string | null = null
     let wasStreamed = false
@@ -1340,7 +1341,7 @@ const tLower = text.toLowerCase()
                       />
                     ))}
                   </div>
-                  <p className="text-[10px] text-red-600 font-semibold">Bol raha hoon... (Sun rahi hoon 👂)</p>
+                  <p className="text-[10px] text-red-600 font-semibold">Aap boliye... (Sun rahi hoon 👂)</p>
                   <button
                     onClick={toggleVoice}
                     className="ml-auto text-[9px] text-red-500 font-bold border border-red-300 rounded-full px-2 py-0.5 hover:bg-red-100"
@@ -1529,5 +1530,5 @@ const tLower = text.toLowerCase()
       </AnimatePresence>
     </>
   )
-          }
-       
+}
+
