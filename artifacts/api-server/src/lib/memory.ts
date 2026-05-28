@@ -396,7 +396,7 @@ export function getBudgetContext(memory: ConversationMemory, newRoom?: string): 
     return `${memory.budgetRaw} range mein ${room} ke liye PVC ya UV marble best affordable choice hai.`
   }
   if (budget < 60_000) {
-    return `${memory.budgetRaw} budget mein ${room} ke liye PVC ceiling (₹60-120/sqft) best fit hai.`
+    return `${memory.budgetRaw} budget mein ${room} ke liye PVC ceiling (₹80-140/sqft) best fit hai.`
   }
   if (budget < 150_000) {
     return `${memory.budgetRaw} budget mein ${room} ka ceiling aaram se ho sakta hai — Gypsum ya PVC dono option available hain.`
