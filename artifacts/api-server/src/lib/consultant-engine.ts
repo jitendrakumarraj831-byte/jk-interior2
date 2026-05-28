@@ -1029,6 +1029,12 @@ export function consultantReply(
             : `Room ka size batao (jaise 12×14) — exact estimate abhi! 📐`
           return `✅ **${resolvedCity}** mein ${topicName} available hai! 💪\n\n${sizePrompt}`
         }
+        if (ctx.service) {
+          const sizePrompt = ctx.roomSize
+            ? `Room size noted — estimate nikaalte hain!`
+            : `Room ka size batao (jaise 12×14) — exact estimate abhi! 📐`
+          return `✅ **${resolvedCity}** mein **${ctx.service}** available hai! 💪\n\n${sizePrompt}`
+        }
         return `✅ **${resolvedCity}** mein hum kaam karte hain! 💪\n\nKaunsa kaam karwana hai? Room size bataiye — estimate abhi!`
       }
     }
@@ -1177,6 +1183,14 @@ export function consultantReply(
 
   // ── 5. City mention alone
   if (city && t.length < 50 && !svcObj) {
+    const knownTopic = ctx.lastTopic
+    const knownService = ctx.service || (knownTopic ? SERVICE_NAME[knownTopic] : null)
+    if (knownService) {
+      const sizePrompt = ctx.roomSize
+        ? `Room size ${ctx.roomSize} already noted — estimate nikaalte hain!`
+        : `Room ka size batao (jaise 12×14) — exact estimate abhi! 📐`
+      return `✅ **${city}** mein **${knownService}** available hai! 💪\n\n${sizePrompt}`
+    }
     return `**${city}** mein hum kaam karte hain! 💪\n\nKaunsa kaam karwana hai? Room size bataiye — estimate abhi!`
   }
 
