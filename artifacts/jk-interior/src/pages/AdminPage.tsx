@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react"
-import * as XLSX from "xlsx"
 
 interface Lead {
   id: number
@@ -202,7 +201,8 @@ export default function AdminPage() {
     URL.revokeObjectURL(url)
   }
 
-  function exportExcel() {
+  async function exportExcel() {
+    const XLSX = await import("xlsx")
     const wb = XLSX.utils.book_new()
     const leadsData = [
       ["JK Interior — Leads Report", "", "", "", "", "", "", "", "", ""],

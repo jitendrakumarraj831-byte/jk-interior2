@@ -4,27 +4,24 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
-const rawPort = process.env.PORT;
+const DEFAULT_PORT = 5173;
 
-if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
+function resolvePort(rawPort: string | undefined): number {
+  if (!rawPort) return DEFAULT_PORT;
+  const parsedPort = Number(rawPort);
+  if (Number.isNaN(parsedPort) || parsedPort <= 0) return DEFAULT_PORT;
+  return parsedPort;
 }
 
-const port = Number(rawPort);
-
-if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
+function resolveBasePath(rawBasePath: string | undefined): string {
+  if (!rawBasePath) return "/";
+  if (rawBasePath === "/") return "/";
+  const withLeadingSlash = rawBasePath.startsWith("/") ? rawBasePath : `/${rawBasePath}`;
+  return withLeadingSlash.endsWith("/") ? withLeadingSlash : `${withLeadingSlash}/`;
 }
 
-const basePath = process.env.BASE_PATH;
-
-if (!basePath) {
-  throw new Error(
-    "BASE_PATH environment variable is required but was not provided.",
-  );
-}
+const port = resolvePort(process.env.PORT);
+const basePath = resolveBasePath(process.env.BASE_PATH);
 
 export default defineConfig({
   base: basePath,
@@ -57,6 +54,20 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    cssCodeSplit: true,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (id.includes("xlsx")) return "xlsx";
+          if (id.includes("react") || id.includes("scheduler")) return "react-vendor";
+          if (id.includes("@radix-ui") || id.includes("lucide-react")) return "ui-vendor";
+          if (id.includes("framer-motion")) return "motion-vendor";
+          return "vendor";
+        },
+      },
+    },
   },
   server: {
     port,
