@@ -63,9 +63,9 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
     if (lead.is_read || marking) return
     setMarking(true)
     try {
-      await fetch(`/api/leads?key=${adminKey}`, {
+      await fetch(`/api/leads`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
         body: JSON.stringify({ id: lead.id }),
       })
       onRead(lead.id)
@@ -142,7 +142,7 @@ export default function AdminPage() {
     setLoading(true)
     setError("")
     try {
-      const res = await fetch(`/api/leads?key=${encodeURIComponent(k)}`)
+      const res = await fetch(`/api/leads`, { headers: { "x-admin-key": k } })
       if (res.status === 401) { setError("Wrong password."); setKey(""); sessionStorage.removeItem(ADMIN_KEY_LS); return }
       const data = await res.json()
       if (!data.ok) { setError("Failed to load leads."); return }
@@ -174,9 +174,9 @@ export default function AdminPage() {
     if (unread.length === 0) return
     await Promise.all(
       unread.map(l =>
-        fetch(`/api/leads?key=${key}`, {
+        fetch(`/api/leads`, {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "x-admin-key": key },
           body: JSON.stringify({ id: l.id }),
         })
       )

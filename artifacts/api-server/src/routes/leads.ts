@@ -4,7 +4,17 @@ import { sendLeadNotification } from "../lib/email.js";
 
 const router = Router();
 
-const ADMIN_KEY = process.env.ADMIN_KEY || "jkadmin2024";
+function getAdminKey(): string | null {
+  return process.env.ADMIN_KEY ?? null;
+}
+
+function checkAdmin(req: { headers: Record<string, string | string[] | undefined> }): boolean {
+  const key = getAdminKey();
+  if (!key) return false;
+  const provided = req.headers["x-admin-key"];
+  if (!provided) return false;
+  return String(provided) === key;
+}
 
 function escape(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -19,17 +29,6 @@ const LeadSchema = z.object({
   preferred_time: z.string().max(100).optional(),
   chat_summary: z.string().max(1000).optional(),
 });
-
-// Lazy-load db to avoid crashing if DATABASE_URL is missing
-async function getDb() {
-  try {
-    const { Pool } = await import("pg");
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-    return pool;
-  } catch {
-    return null;
-  }
-}
 
 let pool: any = null;
 async function getPool() {
@@ -68,7 +67,7 @@ router.post("/leads", async (req, res) => {
 });
 
 router.get("/leads", async (req, res) => {
-  if (req.query.key !== ADMIN_KEY) { res.status(401).json({ ok: false }); return; }
+  if (!checkAdmin(req as any)) { res.status(401).json({ ok: false }); return; }
   try {
     const db = await getPool();
     if (!db) { res.json({ ok: true, leads: [] }); return; }
@@ -84,7 +83,7 @@ router.get("/leads", async (req, res) => {
 });
 
 router.patch("/leads", async (req, res) => {
-  if (req.query.key !== ADMIN_KEY) { res.status(401).json({ ok: false }); return; }
+  if (!checkAdmin(req as any)) { res.status(401).json({ ok: false }); return; }
   try {
     const { id } = req.body;
     const db = await getPool();
