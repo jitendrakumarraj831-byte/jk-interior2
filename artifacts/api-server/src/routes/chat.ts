@@ -148,6 +148,32 @@ function advanceStage(currentStage: ConversationContext["conversationStage"], in
   return currentStage ?? "discovery";
 }
 
+
+function scoreIntentConfidence(message: string, intent: Intent, ctx: ConversationContext): number {
+  const t = message.toLowerCase();
+  let score = 0.35;
+  if (intent !== "unknown") score += 0.25;
+  if (/[?]/.test(message)) score += 0.05;
+  if (/(price|rate|booking|visit|gypsum|pvc|wpc|uv|ceiling|interior|room|city|patna|araria|forbesganj)/i.test(t)) score += 0.2;
+  if (message.trim().split(/\s+/).length >= 3) score += 0.08;
+  if (ctx.lastTopic && /(kitna|price|uska|same|wohi|aur|phir|haan|nahi|isme)/i.test(t)) score += 0.12;
+  return Math.max(0, Math.min(1, score));
+}
+
+function buildClarifyingQuestion(message: string, ctx: ConversationContext): string {
+  const nm = ctx.name ? `${ctx.name} ji, ` : "";
+  if (!ctx.service && /(price|rate|kitna|cost|estimate)/i.test(message)) {
+    return `${nm}exact rate batane ke liye service confirm kar doon? (PVC, Gypsum, WPC, UV marble, ya modular TV unit)`;
+  }
+  if (ctx.service && !ctx.roomSize && /(price|estimate|kitna)/i.test(message)) {
+    return `${nm}${ctx.service} ka accurate estimate dene ke liye room size bata dijiye (jaise 12x14 ft).`;
+  }
+  if (!ctx.city && /(available|service|aoge|visit|book)/i.test(message)) {
+    return `${nm}aapka city/town bata dijiye, phir main exact service availability aur next step clear kar dungi.`;
+  }
+  return `${nm}main sahi answer dena chahti hoon — aap pricing, design, ya booking mein se kis cheez ke baare mein pooch rahe hain?`;
+}
+
 function smartFallback(lead: ChatRequest["leadContext"], message: string, intent: Intent, ctx: ConversationContext): string {
   const nm = lead?.name ? `${lead.name} ji, ` : "";
   const oh = isOffHours();
@@ -237,6 +263,7 @@ router.post("/chat", async (req, res) => {
   const { message, history, leadContext } = parsed.data;
   const assistantHistory = history.filter((m) => m.role === "assistant").map((m) => m.content);
   const normMessage = normalizeHinglish(enhancedNormalize(message?.trim() || ""));
+  const directIntent = detectIntent(normMessage);
   const extractedRoomSize = extractRoomDimensions(normMessage) ?? leadContext?.roomSize ?? undefined;
 
   if (extractedRoomSize === "MULTI_ROOM_DETECTED") {
@@ -262,6 +289,12 @@ router.post("/chat", async (req, res) => {
   }
 
   const ctx = buildEngineContext(leadContext, history);
+  const intentConfidence = scoreIntentConfidence(normMessage, directIntent, ctx);
+  if (intentConfidence < 0.52) {
+    const reply = buildClarifyingQuestion(normMessage, ctx);
+    res.json({ ok: true, reply, source: "clarify", confidence: intentConfidence, updatedContext: { ...ctx, lastIntent: "unknown" } });
+    return;
+  }
   if (!ctx.city && leadContext?.city) ctx.city = leadContext.city;
   if (!ctx.service && leadContext?.service) ctx.service = leadContext.service;
   if (!ctx.roomType && leadContext?.roomType) ctx.roomType = leadContext.roomType;
