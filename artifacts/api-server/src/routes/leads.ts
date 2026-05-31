@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import { sendLeadNotification } from "../lib/email.js";
+import { logger } from "../lib/logger.js";
 
 const router = Router();
 
@@ -45,7 +46,7 @@ router.post("/leads", async (req, res) => {
     const d = LeadSchema.parse(req.body);
     const db = await getPool();
     if (!db) {
-      console.log("[leads] no db — lead logged:", JSON.stringify(d));
+      logger.warn({ lead: d }, "leads - no db, lead logged");
       res.json({ ok: true });
       return;
     }
@@ -57,12 +58,12 @@ router.post("/leads", async (req, res) => {
     );
     const id = insertResult.rows[0]?.id;
     sendLeadNotification({ id, ...d }).catch((err: unknown) => {
-      console.error("[email] notification failed:", err);
+      logger.error({ err }, "email notification failed");
     });
     res.json({ ok: true });
   } catch (err) {
     if (err instanceof z.ZodError) { res.status(400).json({ ok: false, issues: err.issues }); return; }
-    console.error("lead save error", err);
+    logger.error({ err }, "lead save error");
     res.status(502).json({ ok: false, error: "save_failed" });
   }
 });

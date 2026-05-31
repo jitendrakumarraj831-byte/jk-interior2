@@ -11,7 +11,7 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(PRECACHE_URLS).catch(() => {
         // Fail silently if precache fails
-        console.log('[SW] Precache failed, app will work with partial offline support')
+            // Precache failed; app will work with partial offline support
       })
     })
   )

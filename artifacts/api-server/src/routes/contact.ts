@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { z } from "zod";
+import { logger } from "../lib/logger.js";
 
 const router = Router();
 
@@ -27,8 +28,8 @@ router.post("/contact", async (req, res) => {
 
   const { name, phone, service, message } = parsed.data;
 
-  console.log(`[/api/contact] New enquiry: ${name} (${phone}) — ${service}`);
-  console.log(`[/api/contact] Message: ${message}`);
+  logger.info({ name, phone, service }, "/api/contact - new enquiry");
+  logger.debug({ message: message.slice(0, 120) }, "/api/contact - message");
 
   res.json({ ok: true });
 });

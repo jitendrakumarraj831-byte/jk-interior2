@@ -1,1 +1,2 @@
-console.log("Hello from @workspace/scripts");
+// startup helper for scripts package
+export function hello(): string { return "hello" }
