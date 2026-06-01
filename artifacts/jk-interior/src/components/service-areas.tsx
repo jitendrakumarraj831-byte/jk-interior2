@@ -64,21 +64,6 @@ export default function ServiceAreas() {
 
   return (
     <section id="areas" className="relative overflow-hidden py-20 md:py-28 scroll-mt-28">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            name: "JK Interior",
-            areaServed: areas.map((area) => ({
-              "@type": "City",
-              name: area.name,
-              addressRegion: "Bihar",
-            })),
-          }),
-        }}
-      />
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>

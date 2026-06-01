@@ -2,11 +2,17 @@ import { Link } from "wouter"
 import Navbar from "@/components/navbar"
 import Services from "@/components/services"
 import Footer from "@/components/footer"
+import SeoHead from "@/components/seo-head"
 import { Phone, MessageCircle } from "lucide-react"
 
 export default function ServicesPage() {
   return (
     <>
+      <SeoHead
+        title="False Ceiling & Interior Design Services in Forbesganj, Araria Bihar"
+        description="JK Interior offers PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, modular TV unit, bedroom interior and office interior services in Forbesganj, Araria, Bihar. Starting ₹70/sq.ft. Free site visit."
+        canonical="/services"
+      />
       <Navbar />
       <h1 className="sr-only">
         False Ceiling Contractor &amp; Interior Design Services in Forbesganj, Araria Bihar – Gypsum, PVC, WPC, TV Unit by JK Interior

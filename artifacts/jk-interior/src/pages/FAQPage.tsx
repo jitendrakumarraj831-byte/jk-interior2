@@ -3,10 +3,16 @@ import Navbar from "@/components/navbar"
 import FAQSection from "@/components/faq-section"
 import Footer from "@/components/footer"
 import { Phone, MessageCircle } from "lucide-react"
+import SeoHead from "@/components/seo-head"
 
 export default function FAQPage() {
   return (
     <>
+      <SeoHead
+        title="FAQs – False Ceiling & Interior Design Services in Forbesganj, Araria Bihar"
+        description="Frequently asked questions about PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet and interior design services by JK Interior in Forbesganj, Araria, Bihar. Cost, warranty, installation time and more."
+        canonical="/faq"
+      />
       <Navbar />
       <h1 className="sr-only">
         Frequently Asked Questions – JK Interior False Ceiling &amp; Interior Design Services in Forbesganj, Araria Bihar
@@ -29,78 +35,55 @@ export default function FAQPage() {
                 a: 'Gypsum ceiling in Bihar (Araria, Forbesganj) typically costs ₹80–₹150 per sq.ft depending on design complexity, cove lighting, and pop work. Contact JK Interior on +91 8651070831 for a free detailed quote.',
               },
               {
-                q: 'What is WPC wall panel and why should I choose it?',
-                a: "WPC (Wood Plastic Composite) wall panels are 100% waterproof, termite-proof, and fire-resistant wall cladding panels that give a premium wood-like finish. They are low-maintenance, durable, and perfect for living rooms, bedrooms, and TV walls in Bihar's climate.",
+                q: 'How long does PVC ceiling installation take?',
+                a: 'A standard room PVC ceiling installation takes 1–2 days. Larger projects with multiple rooms are scheduled room-by-room to minimize disruption to your daily life.',
               },
               {
-                q: 'Do you provide interior services for offices and shops?',
-                a: 'Yes, JK Interior provides complete office interior, shop interior, false ceiling, wall paneling, and ACP exterior cladding for commercial establishments across Forbesganj, Araria, Purnia, and all of Bihar.',
+                q: 'Do you provide services outside Forbesganj?',
+                a: 'Yes! JK Interior serves all of Araria district (Forbesganj, Narpatganj, Raniganj, Kursakanta, Jogbani) and beyond — Purnia, Supaul, Tribeniganj, Chhatapur and more. Call +91 8651070831.',
               },
               {
-                q: 'How can I contact JK Interior for a free quote?',
-                a: 'You can call or WhatsApp JK Interior at +91 8651070831 or +91 8541849118. You can also fill the contact form on our website. We offer free site visits and detailed quotations without any obligation.',
+                q: 'What warranty do you provide on your work?',
+                a: 'JK Interior provides a 1-year written warranty on all installations. Any defect or issue is fixed free of cost within the warranty period. We use ISI-certified branded materials for lasting quality.',
               },
               {
-                q: 'What is the difference between PVC ceiling and gypsum ceiling?',
-                a: 'PVC ceiling is 100% waterproof, lightweight, and best for kitchens, bathrooms, and humid areas. Gypsum ceiling allows intricate pop designs, cove lighting, and a smoother finish — ideal for living rooms and bedrooms. JK Interior provides both types across Bihar.',
+                q: 'Can you design a complete bedroom interior?',
+                a: 'Absolutely! JK Interior provides complete bedroom interior design including false ceiling, wall paneling, TV unit, wardrobe design guidance, and lighting consultation — all under one roof.',
               },
-              {
-                q: 'Do you provide UV marble sheet services in Bihar?',
-                a: 'Yes, JK Interior provides UV marble sheet installation for wall cladding in Bihar. UV marble sheets give a luxurious marble-like appearance without the cost or weight of real marble. They are waterproof and easy to maintain.',
-              },
-            ].map((faq, i) => (
-              <div key={i} className="rounded-2xl border border-gray-200 bg-white p-6">
-                <h3 className="mb-3 text-base font-bold text-gray-900">{faq.q}</h3>
-                <p className="text-sm leading-relaxed text-gray-600">{faq.a}</p>
-              </div>
+            ].map(({ q, a }) => (
+              <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm open:border-emerald-300 open:shadow-emerald-50">
+                <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-emerald-700">{q}</summary>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
+              </details>
             ))}
           </div>
 
-          <div className="mt-12 rounded-2xl border border-blue-100 bg-blue-50 p-6">
-            <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-blue-800">
-              Explore More
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { href: '/services', label: 'All Services' },
-                { href: '/gallery', label: 'Project Gallery' },
-                { href: '/about', label: 'About JK Interior' },
-                { href: '/contact', label: 'Get Free Quote' },
-                { href: '/cities/forbesganj', label: 'Forbesganj' },
-                { href: '/cities/araria', label: 'Araria' },
-                { href: '/cities/purnia', label: 'Purnia' },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 transition-colors hover:border-blue-400 hover:bg-blue-100"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-10 text-center">
-            <p className="mb-5 text-gray-500 text-sm">Still have questions? Talk to us directly.</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href="tel:+918651070831"
-                className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_16px_rgba(37,99,235,0.3)] transition-all hover:bg-blue-500 active:scale-95"
-              >
-                <Phone className="h-4 w-4" />
-                Call: +91 8651070831
-              </a>
-              <a
-                href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20have%20a%20question."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_16px_rgba(37,205,102,0.25)] transition-all hover:shadow-[0_4px_24px_rgba(37,205,102,0.4)] active:scale-95"
-              >
-                <MessageCircle className="h-4 w-4" />
-                WhatsApp Us
-              </a>
-            </div>
+          <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-blue-800 mt-12">
+            Still have questions?
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="tel:+918651070831"
+              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              Call +91 8651070831
+            </a>
+            <a
+              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20have%20a%20question%20about%20your%20services."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#1ebe5d] transition-colors"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp Us
+            </a>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"
+            >
+              Send a Message
+            </Link>
           </div>
         </div>
       </section>

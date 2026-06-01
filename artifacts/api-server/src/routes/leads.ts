@@ -50,6 +50,14 @@ router.post("/leads", async (req, res) => {
       res.json({ ok: true });
       return;
     }
+    const dedup = await db.query(
+      `SELECT id FROM leads WHERE phone=$1 AND created_at > NOW() - INTERVAL '1 hour' LIMIT 1`,
+      [d.phone]
+    );
+    if (dedup.rows.length > 0) {
+      res.json({ ok: true });
+      return;
+    }
     const insertResult = await db.query(
       `INSERT INTO leads (name, phone, city, service, estimate, preferred_time, chat_summary)
        VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
@@ -79,7 +87,7 @@ router.get("/leads", async (req, res) => {
     );
     res.json({ ok: true, leads: rows });
   } catch (err) {
-    console.error("lead fetch error", err);
+    logger.error({ err }, "lead fetch error");
     res.status(502).json({ ok: false, error: "fetch_failed" });
   }
 });

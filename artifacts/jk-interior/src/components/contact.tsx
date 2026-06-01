@@ -57,27 +57,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative overflow-hidden py-20 sm:py-24 lg:py-32">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            name: "JK Interior",
-            telephone: "+91-8651070831",
-            email: "jkinteriorofficial@gmail.com",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Forbesganj Dumariya",
-              addressLocality: "Forbesganj",
-              addressRegion: "Bihar",
-              postalCode: "854318",
-              addressCountry: "IN",
-            },
-            url: "https://www.jkinterior.online",
-          }),
-        }}
-      />
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
