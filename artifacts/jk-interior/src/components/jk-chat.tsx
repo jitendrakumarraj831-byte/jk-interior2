@@ -779,13 +779,11 @@ export default function JKChat() {
 
   useEffect(() => { memoryRef.current = memory }, [memory])
 
-  // ── Handle chat opening with loading animation ──────────────────────────
+  // ── Handle chat opening — instant load, no waiting screen ──────────────
   useEffect(() => {
     if (open) {
-      setIsInitializing(true)
-      const timer = setTimeout(() => {
-        setIsInitializing(false)
-      }, 1200)
+      // Show content immediately; tiny frame delay just to let paint flush
+      const timer = setTimeout(() => setIsInitializing(false), 80)
       return () => clearTimeout(timer)
     }
     return undefined
@@ -1216,65 +1214,62 @@ const tLower = text.toLowerCase()
         .jk-soundbar:nth-child(5) { animation-delay: 0.05s; }
       `}</style>
 
-      {/* ── Floating Button — Glossy Green Mic ────────────────────────────── */}
+      {/* ── Floating Button — Modern AI Chat Bubble ────────────────────────── */}
       {!open && (
         <motion.button
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 340, damping: 22 }}
+          whileHover={{ scale: 1.08, y: -3 }}
+          whileTap={{ scale: 0.93 }}
           onClick={() => setOpen(true)}
           className="fixed bottom-20 right-4 z-50 md:bottom-24 md:right-6"
-          style={{ width: 64, height: 64 }}
-          aria-label="Open chat"
+          style={{ width: 62, height: 62 }}
+          aria-label="Open chat with Riya"
         >
-          {/* Pulsing glow ring */}
-          <span className="absolute inset-0 rounded-full bg-[#6fe86f] opacity-30" style={{ animation: "jk-ring 2.2s ease-out infinite" }} />
-
-          {/* Metallic outer ring — matches screenshot */}
-          <span className="absolute inset-0 rounded-full shadow-2xl"
+          {/* Soft ambient glow */}
+          <span
+            className="absolute -inset-2 rounded-full"
             style={{
-              background: "conic-gradient(from 135deg, #c0c0c0, #888, #d4d4d4, #666, #c0c0c0)",
-              padding: "5px",
+              background: "radial-gradient(circle, rgba(16,185,129,0.28) 0%, transparent 70%)",
+              animation: "jk-ring 2.8s ease-out infinite",
             }}
           />
 
-          {/* Inner green glossy button */}
-          <span className="absolute inset-[5px] rounded-full overflow-hidden flex items-center justify-center"
-            style={{ background: "linear-gradient(145deg, #7de87d 0%, #4cc94c 35%, #2e9e2e 70%, #1d6e1d 100%)" }}
-          >
-            {/* Glossy top-left highlight */}
-            <span className="absolute top-[4%] left-[8%] w-[60%] h-[45%] rounded-full bg-white/40"
-              style={{ filter: "blur(3px)" }}
-            />
-            {/* Classic broadcast mic SVG */}
-            <svg viewBox="0 0 56 56" fill="none" className="relative z-10" style={{ width: 38, height: 38 }} aria-hidden="true">
-              {/* Left sound waves */}
-              <path d="M9 20 Q3 28 9 36" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none"/>
-              <path d="M13 16 Q5 28 13 40" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.75"/>
-              {/* Right sound waves */}
-              <path d="M47 20 Q53 28 47 36" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none"/>
-              <path d="M43 16 Q51 28 43 40" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.75"/>
-              {/* Mic capsule (top rounded) */}
-              <rect x="20" y="8" width="16" height="22" rx="8" fill="white"/>
-              {/* Grille lines inside mic */}
-              <line x1="20" y1="16" x2="36" y2="16" stroke="#2e9e2e" strokeWidth="1.8"/>
-              <line x1="20" y1="20" x2="36" y2="20" stroke="#2e9e2e" strokeWidth="1.8"/>
-              <line x1="20" y1="24" x2="36" y2="24" stroke="#2e9e2e" strokeWidth="1.8"/>
-              {/* Mic yoke / arms */}
-              <line x1="22" y1="29" x2="22" y2="34" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-              <line x1="34" y1="29" x2="34" y2="34" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-              {/* Mic arc bottom */}
-              <path d="M17 30 Q17 40 28 40 Q39 40 39 30" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round"/>
-              {/* Stand pole */}
-              <line x1="28" y1="40" x2="28" y2="47" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-              {/* Base */}
-              <ellipse cx="28" cy="48" rx="8" ry="3" fill="white"/>
+          {/* Main pill — rich teal-to-emerald gradient */}
+          <span
+            className="absolute inset-0 rounded-[20px] shadow-[0_8px_28px_rgba(16,185,129,0.45)]"
+            style={{
+              background: "linear-gradient(140deg, #0d9f72 0%, #059669 45%, #047857 100%)",
+            }}
+          />
+
+          {/* Subtle inner shimmer */}
+          <span
+            className="absolute inset-0 rounded-[20px] opacity-40"
+            style={{
+              background: "linear-gradient(135deg, rgba(255,255,255,0.35) 0%, transparent 55%)",
+            }}
+          />
+
+          {/* Chat bubble icon */}
+          <span className="absolute inset-0 flex items-center justify-center">
+            <svg viewBox="0 0 40 40" fill="none" style={{ width: 36, height: 36 }} aria-hidden="true">
+              {/* Chat bubble body */}
+              <rect x="4" y="6" width="32" height="22" rx="8" fill="white" opacity="0.95"/>
+              {/* Bubble tail */}
+              <path d="M10 28 L7 34 L17 29" fill="white" opacity="0.95"/>
+              {/* Three dots inside */}
+              <circle cx="13" cy="17" r="2.4" fill="#059669"/>
+              <circle cx="20" cy="17" r="2.4" fill="#059669"/>
+              <circle cx="27" cy="17" r="2.4" fill="#059669"/>
+              {/* Sparkle top-right */}
+              <path d="M31 5 L32 8 L35 9 L32 10 L31 13 L30 10 L27 9 L30 8Z" fill="white" opacity="0.85"/>
             </svg>
           </span>
 
-          {/* AI badge */}
-          <span className="absolute -top-1 -right-0.5 flex items-center gap-0.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[8px] font-black text-[#145246] shadow-md z-20">
+          {/* "AI" label pill at top-right */}
+          <span className="absolute -top-1.5 -right-1 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 text-[8px] font-black text-emerald-700 shadow-lg z-20 leading-none">
             <ISparkle />AI
           </span>
         </motion.button>
