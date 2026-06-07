@@ -49,15 +49,18 @@ export default function CityPage() {
     },
   }
 
-  const faqJsonLd = city.faqs.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: city.faqs.map(({ q, a }) => ({
-      "@type": "Question",
-      name: q,
-      acceptedAnswer: { "@type": "Answer", text: a },
-    })),
-  } : undefined
+  const combinedJsonLd = city.faqs.length > 0 ? [
+    cityJsonLd,
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: city.faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    }
+  ] : cityJsonLd
 
   return (
     <>
@@ -65,14 +68,8 @@ export default function CityPage() {
         title={`Interior Designer in ${city.name} – JK Interior ${city.district} Bihar`}
         description={`JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior design services in ${city.name}, ${city.district} Bihar. Free site visit. Call +91 8651070831.`}
         canonical={`/cities/${city.slug}`}
-        jsonLd={cityJsonLd}
+        jsonLd={combinedJsonLd}
       />
-      {faqJsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-      )}
 
       <Navbar />
 
