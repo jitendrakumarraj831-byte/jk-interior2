@@ -12,6 +12,37 @@ export default function FAQPage() {
         title="FAQs – False Ceiling & Interior Design Services in Forbesganj, Araria Bihar"
         description="Frequently asked questions about PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet and interior design services by JK Interior in Forbesganj, Araria, Bihar. Cost, warranty, installation time and more."
         canonical="/faq"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "PVC false ceiling की cost क्या है?",
+              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC false ceiling ₹70–₹120 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8651070831।" }
+            },
+            {
+              "@type": "Question",
+              name: "Gypsum ceiling कितने दिन में ready होती है?",
+              acceptedAnswer: { "@type": "Answer", text: "एक standard room की gypsum ceiling 1–3 days में complete होती है। Larger projects के लिए detailed timeline पहले share की जाती है।" }
+            },
+            {
+              "@type": "Question",
+              name: "क्या JK Interior free site visit देती है?",
+              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior Forbesganj, Araria और surrounding areas में free expert site visit provide करती है। हमारी team आपके घर/दुकान आकर exact measurements और estimate देती है।" }
+            },
+            {
+              "@type": "Question",
+              name: "WPC wall panel क्या होता है?",
+              acceptedAnswer: { "@type": "Answer", text: "WPC (Wood Plastic Composite) wall panel एक waterproof और durable wall cladding material है। यह termite-proof, moisture-resistant और easy to install होता है। JK Interior ₹80/sq.ft से WPC panels लगाती है।" }
+            },
+            {
+              "@type": "Question",
+              name: "क्या JK Interior की कोई warranty है?",
+              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior सभी projects पर 1 साल की written warranty देती है। ISI-certified materials use होते हैं।" }
+            }
+          ]
+        }}
       />
       <Navbar />
       <h1 className="sr-only">

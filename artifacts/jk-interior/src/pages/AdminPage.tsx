@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
+import { Helmet } from "react-helmet-async"
 
 interface Lead {
   id: number
@@ -262,6 +263,11 @@ export default function AdminPage() {
   }
 
   return (
+    <>
+      <Helmet>
+        <title>Admin – JK Interior</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
     <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #f7f9f8 100%)" }}>
       <div className="max-w-2xl mx-auto">
         <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
@@ -313,5 +319,6 @@ export default function AdminPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }
