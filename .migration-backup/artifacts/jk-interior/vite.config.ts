@@ -56,6 +56,7 @@ export default defineConfig({
     emptyOutDir: true,
     cssCodeSplit: true,
     sourcemap: false,
+    reportCompressedSize: false,
     rollupOptions: {
       output: {
         manualChunks(id) {
