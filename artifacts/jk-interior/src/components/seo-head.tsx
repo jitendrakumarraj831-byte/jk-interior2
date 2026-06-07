@@ -11,7 +11,7 @@ interface SeoHeadProps {
   ogImage?: string
   ogType?: "website" | "article"
   noindex?: boolean
-  jsonLd?: Record<string, unknown>
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
 export default function SeoHead({
@@ -52,11 +52,17 @@ export default function SeoHead({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
 
-      {jsonLd && (
+      {jsonLd && Array.isArray(jsonLd) ? (
+        jsonLd.map((schema, idx) => (
+          <script key={idx} type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        ))
+      ) : jsonLd ? (
         <script type="application/ld+json">
           {JSON.stringify(jsonLd)}
         </script>
-      )}
+      ) : null}
     </Helmet>
   )
 }
