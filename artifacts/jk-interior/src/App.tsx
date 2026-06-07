@@ -11,6 +11,7 @@ const ContactPage = lazy(() => import("@/pages/ContactPage"))
 const FAQPage = lazy(() => import("@/pages/FAQPage"))
 const CityPage = lazy(() => import("@/pages/CityPage"))
 const AdminPage = lazy(() => import("@/pages/AdminPage"))
+const NotFound = lazy(() => import("@/pages/not-found"))
 const JKChat = lazy(() => import("@/components/jk-chat"))
 
 const queryClient = new QueryClient()
@@ -31,14 +32,7 @@ function Router() {
         <Route path="/faq" component={FAQPage} />
         <Route path="/cities/:city" component={CityPage} />
         <Route path="/admin" component={AdminPage} />
-        <Route>
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900">Page Not Found</h1>
-              <a href="/" className="text-blue-600 hover:underline mt-4 block">Go home</a>
-            </div>
-          </div>
-        </Route>
+        <Route component={NotFound} />
       </Switch>
     </Suspense>
   )
