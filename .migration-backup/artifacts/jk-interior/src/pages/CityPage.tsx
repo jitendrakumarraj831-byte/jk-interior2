@@ -49,8 +49,19 @@ export default function CityPage() {
     },
   }
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Cities", item: `${SITE_URL}/cities/` },
+      { "@type": "ListItem", position: 3, name: `Interior Designer in ${city.name}`, item: `${SITE_URL}/cities/${city.slug}` }
+    ]
+  }
+
   const combinedJsonLd = city.faqs.length > 0 ? [
     cityJsonLd,
+    breadcrumbJsonLd,
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -60,7 +71,7 @@ export default function CityPage() {
         acceptedAnswer: { "@type": "Answer", text: a },
       })),
     }
-  ] : cityJsonLd
+  ] : [cityJsonLd, breadcrumbJsonLd]
 
   return (
     <>
