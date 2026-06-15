@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async"
 
 const SITE_URL = "https://www.jkinterior.online"
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`
+const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`
 const SITE_NAME = "JK Interior"
 
 interface SeoHeadProps {
