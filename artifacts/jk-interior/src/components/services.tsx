@@ -253,7 +253,7 @@ export default function Services() {
                 {/* CTA */}
                 <div className="flex gap-2">
                   <a
-                    href="tel:+918651070831"
+                    href="tel:+918541849118"
                     className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
                     aria-label={`Call for ${service.title} quote`}
                   >
@@ -281,7 +281,7 @@ export default function Services() {
           <p className="text-base font-medium text-gray-600 sm:text-lg">अपने घर को बनाएं एक शाही महल</p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
-              href="tel:+918651070831"
+              href="tel:+918541849118"
               aria-label="Call for free site visit"
               className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.55)] active:scale-95 luxury-animated-shine touch-manipulation"
             >

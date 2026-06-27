@@ -104,7 +104,7 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
             className="flex items-center gap-2 px-5 py-2.5 bg-[#25D366] hover:bg-green-500 text-white text-sm font-bold rounded-full transition-all active:scale-95">
             <MessageCircle size={14}/> WhatsApp
           </a>
-          <a href="tel:+918651070831"
+          <a href="tel:+918541849118"
             className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-full transition-all active:scale-95">
             <Phone size={14}/> Call
           </a>
@@ -365,7 +365,7 @@ export default function Gallery() {
             Budget आपका, ज़िम्मेदारी हमारी! Premium interior और false ceiling — किफायती रेट पर।
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+918651070831" className="flex items-center justify-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-[0_4px_20px_rgba(5,150,105,0.35)] transition-all active:scale-95">
+            <a href="tel:+918541849118" className="flex items-center justify-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-[0_4px_20px_rgba(5,150,105,0.35)] transition-all active:scale-95">
               <Phone size={16}/> अभी कॉल करें
             </a>
             <a href="https://wa.me/918651070831" target="_blank" rel="noopener noreferrer"

@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "PVC false ceiling की cost क्या होती है Forbesganj में?",
-    a: "PVC ceiling cost Araria/Forbesganj में typically ₹70-₹120 per sq.ft होती है, जो panel quality, design और lighting के अनुसार vary करती है। Free site visit और detailed quotation के लिए +91 8651070831 पर call करें।",
+    a: "PVC ceiling cost Araria/Forbesganj में typically ₹70-₹120 per sq.ft होती है, जो panel quality, design और lighting के अनुसार vary करती है। Free site visit और detailed quotation के लिए +91 8541849118 पर call करें।",
   },
   {
     q: "क्या आप free site visit provide करते हैं?",
@@ -128,11 +128,11 @@ export default function FAQSection() {
           <p className="mb-5 text-gray-500 text-sm">और questions हैं? हमसे directly बात करें</p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="tel:+918651070831"
+              href="tel:+918541849118"
               className="flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-6 py-3.5 text-sm font-bold text-emerald-700 transition-all hover:border-emerald-400 hover:bg-emerald-100 active:scale-95"
             >
               <Phone className="h-4 w-4" />
-              Call: +91 8651070831
+              Call: +91 8541849118
             </a>
             <a
               href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20have%20a%20question."

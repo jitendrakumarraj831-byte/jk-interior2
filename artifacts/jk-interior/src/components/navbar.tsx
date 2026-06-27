@@ -82,11 +82,11 @@ export default function Navbar() {
             {/* Desktop CTAs */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
               <a
-                href="tel:+918651070831"
+                href="tel:+918541849118"
                 className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/8 px-3.5 py-2 text-[11px] font-bold text-emerald-700 hover:border-emerald-500/50 hover:bg-emerald-500/15 transition-all duration-200"
               >
                 <Phone className="h-3.5 w-3.5" />
-                <span className="hidden xl:inline">+91 8651070831</span>
+                <span className="hidden xl:inline">+91 8541849118</span>
                 <span className="xl:hidden">Call</span>
               </a>
               <a
@@ -164,11 +164,11 @@ export default function Navbar() {
 
                   <div className="mt-3 flex flex-col gap-2">
                     <a
-                      href="tel:+918651070831"
+                      href="tel:+918541849118"
                       className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/8 px-5 py-3 text-sm font-bold text-emerald-700"
                     >
                       <Phone className="h-4 w-4" />
-                      +91 8651070831
+                      +91 8541849118
                     </a>
                     <a
                       href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20interior%20design%20help."

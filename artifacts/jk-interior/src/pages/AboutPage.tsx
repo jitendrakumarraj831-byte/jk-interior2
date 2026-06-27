@@ -20,17 +20,21 @@ export default function AboutPage() {
           logo: "https://www.jkinterior.online/logo.png",
           foundingDate: "2016",
           description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel and complete interior design since 2016.",
-          telephone: ["+91-8651070831", "+91-8541849118"],
+          telephone: ["+91-8541849118", "+91-8651070831"],
           email: "jkinteriorofficial@gmail.com",
           address: {
             "@type": "PostalAddress",
-            streetAddress: "Forbesganj Dumariya",
+            streetAddress: "Dumariya",
             addressLocality: "Forbesganj",
             addressRegion: "Bihar",
             postalCode: "854318",
             addressCountry: "IN"
           },
-          sameAs: ["https://wa.me/918651070831"],
+          sameAs: [
+            "https://wa.me/918651070831",
+            "https://www.facebook.com/share/1GpAKHZZtb/",
+            "https://www.instagram.com/jk_interior_ceiling_designer"
+          ],
           numberOfEmployees: { "@type": "QuantitativeValue", value: 10 }
         }}
       />

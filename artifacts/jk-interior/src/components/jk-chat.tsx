@@ -32,7 +32,7 @@ type LeadCard = Lead & { timestamp: string; estimate?: string; preferredTime?: s
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 const WA_NUMBER   = "918651070831"
-const CALL_NUMBER = "+918651070831"
+const CALL_NUMBER = "+918541849118"
 const AREAS       = ["Forbesganj", "Araria", "Jogbani", "Raniganj", "Narpatganj", "Kursakanta", "Tribeniganj", "Chhatapur", "Supaul", "Purnia"]
 
 const CITY_MAP: Record<string, string> = {
@@ -58,27 +58,27 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Price list
     patterns: /\b(price\s*list|rate\s*list|sab\s*ka\s*rate|all\s*(?:material\s*)?rate|poori\s*list|full\s*list|sabhi\s*rate|saari\s*rate|complete\s*rate)\b/i,
-    answer: `📋 **JK Interior – Complete Rate List**\n\n✨ Gypsum False Ceiling   ₹80 – ₹140 / sq.ft\n🏠 PVC False Ceiling     ₹80 – ₹140 / sq.ft\n🪵 WPC Wall Panels       ₹180 – ₹450 / sq.ft\n💎 UV Marble Sheets      ₹50 – ₹95 / sq.ft\n📺 Modular TV Unit       ₹15,000 – ₹60,000\n🏛️ Fluted Panels         ₹200 – ₹500 / sq.ft\n🏢 Grid Ceiling          ₹45 – ₹90 / sq.ft\n🍳 Modular Kitchen       ₹60,000 – ₹2,00,000\n🚪 Custom Wardrobe       ₹800 – ₹2,000 / sq.ft\n\n📞 Free site visit & exact quote: **+91 8651070831**`,
+    answer: `📋 **JK Interior – Complete Rate List**\n\n✨ Gypsum False Ceiling   ₹80 – ₹140 / sq.ft\n🏠 PVC False Ceiling     ₹80 – ₹140 / sq.ft\n🪵 WPC Wall Panels       ₹180 – ₹450 / sq.ft\n💎 UV Marble Sheets      ₹50 – ₹95 / sq.ft\n📺 Modular TV Unit       ₹15,000 – ₹60,000\n🏛️ Fluted Panels         ₹200 – ₹500 / sq.ft\n🏢 Grid Ceiling          ₹45 – ₹90 / sq.ft\n🍳 Modular Kitchen       ₹60,000 – ₹2,00,000\n🚪 Custom Wardrobe       ₹800 – ₹2,000 / sq.ft\n\n📞 Free site visit & exact quote: **+91 8541849118**`,
   },
   {
     // Warranty / guarantee
     patterns: /\b(warranty|guarantee|kitne\s*saal\s*(?:ki\s*)?(?:warranty|guarantee)|how\s*many\s*years|kitni\s*guarantee|kitni\s*warranty|long\s*lasting|toot\s*(?:jayega|jaaye|gaya)|टूट|खराब\s*(?:ho|hoga)|kharab)\b/i,
-    answer: `🛡️ **JK Interior Warranty**\n\n✅ **JK Interior ki 1 saal ki written warranty** — sab installations pe\n\n📅 Material lifespan:\n• PVC Ceiling — 20+ saal\n• Gypsum Ceiling — 10–15 saal\n• WPC Wall Panels — 15–20 saal\n• UV Marble Sheets — 15+ saal\n• Modular TV Unit — 8–10 saal\n\n🔧 Koi bhi defect pe free repair milega warranty period mein\n📞 +91 8651070831`,
+    answer: `🛡️ **JK Interior Warranty**\n\n✅ **JK Interior ki 1 saal ki written warranty** — sab installations pe\n\n📅 Material lifespan:\n• PVC Ceiling — 20+ saal\n• Gypsum Ceiling — 10–15 saal\n• WPC Wall Panels — 15–20 saal\n• UV Marble Sheets — 15+ saal\n• Modular TV Unit — 8–10 saal\n\n🔧 Koi bhi defect pe free repair milega warranty period mein\n📞 +91 8541849118`,
   },
   {
     // Installation time
     patterns: /(?:installation|install|kaam|lagan[ae]|fit\s*karn[ae]|lagwane)\s*(?:mein\s*)?(?:kitna|kab|time|din|waqt|samay)|(?:kitne\s*din\s*(?:mein\s*)?(?:hoga|lagega|complete|ban|taiyar))|(?:kab\s*(?:tak|milega|taiyar|complete|hoga))/i,
-    answer: `⏱️ **Installation Time**\n\n✅ PVC Ceiling (1 room) – **1–2 दिन**\n✅ Gypsum Ceiling (1 room) – **2–4 दिन**\n✅ WPC Wall Panels – **2–3 दिन**\n✅ UV Marble Sheets – **1–2 दिन**\n✅ TV Unit (Modular) – **3–5 दिन**\n✅ Full Home Interior – **15–30 दिन**\n\n📞 Exact timeline ke liye: **+91 8651070831**`,
+    answer: `⏱️ **Installation Time**\n\n✅ PVC Ceiling (1 room) – **1–2 दिन**\n✅ Gypsum Ceiling (1 room) – **2–4 दिन**\n✅ WPC Wall Panels – **2–3 दिन**\n✅ UV Marble Sheets – **1–2 दिन**\n✅ TV Unit (Modular) – **3–5 दिन**\n✅ Full Home Interior – **15–30 दिन**\n\n📞 Exact timeline ke liye: **+91 8541849118**`,
   },
   {
     // Contact
     patterns: /\b(?:(?:aapka|JK\s*interior\s*ka|company\s*ka|tumhara|apka)\s*)?(?:contact|phone\s*number|number\s*do|number\s*kya|helpline|customer\s*care|number\s*batao|call\s*karo|kaise\s*contact|kahan\s*mile|address)\b/i,
-    answer: `📞 **JK Interior – Contact Us**\n\n📱 WhatsApp & Call: **+91 8651070831**\n🕐 Timing: **सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे**\n📍 Forbesganj, Araria, Bihar\n\n💬 WhatsApp pe message karo ya seedha call karo! 🙏`,
+    answer: `📞 **JK Interior – Contact Us**\n\n📱 WhatsApp & Call: **+91 8541849118**\n🕐 Timing: **सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे**\n📍 Forbesganj, Araria, Bihar\n\n💬 WhatsApp pe message karo ya seedha call karo! 🙏`,
   },
   {
     // Site visit / free visit
     patterns: /\b(free\s*(?:site\s*)?visit|site\s*visit|free\s*consultation|ghar\s*(?:aa?o|aana)|visit\s*chahiye|measurement\s*(?:chahiye|karo|karna)|ghar\s*aake|aap\s*aao|koi\s*aaye|banda\s*bhejo|expert\s*bhejo)\b/i,
-    answer: `📅 **Book Visit – 100% Free!**\n\n✅ Hamare expert aapke ghar aayenge\n✅ Room measure karenge\n✅ Best design suggest karenge\n✅ Exact quote on-the-spot milega\n✅ Koi hidden charge nahi!\n\n📞 Book karo: **+91 8651070831**\nYa "Book Visit" button dabao niche 👇`,
+    answer: `📅 **Book Visit – 100% Free!**\n\n✅ Hamare expert aapke ghar aayenge\n✅ Room measure karenge\n✅ Best design suggest karenge\n✅ Exact quote on-the-spot milega\n✅ Koi hidden charge nahi!\n\n📞 Book karo: **+91 8541849118**\nYa "Book Visit" button dabao niche 👇`,
   },
   {
     // Waterproof / bathroom ceiling
@@ -88,18 +88,18 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Gypsum vs PVC comparison
     patterns: /\b(gypsum\s*vs\s*pvc|pvc\s*vs\s*gypsum|kaunsa\s*(?:better|behtar|acha|sahi|lena\s*chahiye)|(?:gypsum|pvc)\s*(?:mein\s*)?(?:kya\s*)?(?:difference|antar|fark|alag)|dono\s*mein|konsa\s*(?:lu|loon|lu\s*main|better))\b/i,
-    answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹80–140 | ₹80–140 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8651070831**`,
+    answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹80–140 | ₹80–140 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8541849118**`,
   },
   {
   
     // Service areas
     patterns: /\b(?:konse|kahan[\s-]*kahan|kahan\s*(?:service|kaam|milega|tak|dete)|service\s*area|areas?\s*(?:cover|covered|mein)|kahan\s*kaam|which\s*cit(?:y|ies)|kahan\s*milega|kahan\s*tak|aate\s*ho|aate\s*hain|kaam\s*karte\s*ho|service\s*dete|kahan\s*dete)\b/i,
-    answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj ✅ Araria ✅ Jogbani\n✅ Raniganj ✅ Narpatganj ✅ Kursakanta\n✅ Tribeniganj ✅ Chhatapur ✅ Supaul ✅ Purnia\n\nAur bhi nearby areas cover karte hain!\n📞 **+91 8651070831**`,
+    answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj ✅ Araria ✅ Jogbani\n✅ Raniganj ✅ Narpatganj ✅ Kursakanta\n✅ Tribeniganj ✅ Chhatapur ✅ Supaul ✅ Purnia\n\nAur bhi nearby areas cover karte hain!\n📞 **+91 8541849118**`,
   },
   {
     // Payment
     patterns: /\b(?:payment|advance|payment\s*mode|upi|(?:cash|online)\s*payment|kitna\s*advance|deposit|paise\s*(?:kaise|kab)|bhaav|how\s*to\s*pay|pehle\s*paise|paisa\s*kab)\b/i,
-    answer: `💳 **Payment Details**\n\n✅ UPI / PhonePe / GPay accepted\n✅ Cash payment bhi chalega\n✅ Site visit ke baad 30–50% advance\n✅ Kaam complete hone pe remaining payment\n✅ No full advance required!\n\n📞 Details ke liye: **+91 8651070831**`,
+    answer: `💳 **Payment Details**\n\n✅ UPI / PhonePe / GPay accepted\n✅ Cash payment bhi chalega\n✅ Site visit ke baad 30–50% advance\n✅ Kaam complete hone pe remaining payment\n✅ No full advance required!\n\n📞 Details ke liye: **+91 8541849118**`,
   },
   {
     // LED / lighting
@@ -109,17 +109,17 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Quality / materials
     patterns: /\b(?:quality|acha\s*(?:material|maal)|genuine|original|local\s*nahi|brand(?:ed)?|trusted|reliable|jhooth\s*nahi|sach\s*mein|accha\s*kaam|guarantee\s*hai|bharosa)\b/i,
-    answer: `✅ **JK Interior – Quality Assurance**\n\nHum sirf branded aur ISI-certified materials use karte hain:\n\n🏆 **Trusted Brands:** Armstrong, Saint-Gobain, Hunter Douglas\n🔧 **Professional Installation** – 5+ saal experienced team\n⭐ **500+ Happy Customers** in Araria & surroundings\n🛡️ Material warranty – 2 se 10 saal tak\n\nKisi bhi doubt ke liye free site visit arrange kar sakte hain!\n📞 +91 8651070831`,
+    answer: `✅ **JK Interior – Quality Assurance**\n\nHum sirf branded aur ISI-certified materials use karte hain:\n\n🏆 **Trusted Brands:** Armstrong, Saint-Gobain, Hunter Douglas\n🔧 **Professional Installation** – 5+ saal experienced team\n⭐ **500+ Happy Customers** in Araria & surroundings\n🛡️ Material warranty – 2 se 10 saal tak\n\nKisi bhi doubt ke liye free site visit arrange kar sakte hain!\n📞 +91 8541849118`,
   },
   {
     // Maintenance / cleaning
     patterns: /\b(?:maintenance|clean(?:ing)?|saaf|safai|dhona|dust|dhool|kitna\s*kharcha\s*(?:maintenance|repair)|repair|thik\s*karna|toot\s*gaya)\b/i,
-    answer: `🧹 **Maintenance Guide**\n\n✅ **PVC Ceiling** – Sirf wet cloth se pocha lagao. Zero maintenance!\n✅ **Gypsum** – Dry soft cloth ya vacuum. Water se bachao.\n✅ **WPC Panels** – Damp cloth se saaf karo. Termite-proof!\n✅ **UV Marble** – Glass cleaner se shiny rakhna easy hai.\n\n💡 Sab materials long-lasting hain — agar professionally lagaaye jayein.\n📞 Koi problem ho toh call karo: **+91 8651070831**`,
+    answer: `🧹 **Maintenance Guide**\n\n✅ **PVC Ceiling** – Sirf wet cloth se pocha lagao. Zero maintenance!\n✅ **Gypsum** – Dry soft cloth ya vacuum. Water se bachao.\n✅ **WPC Panels** – Damp cloth se saaf karo. Termite-proof!\n✅ **UV Marble** – Glass cleaner se shiny rakhna easy hai.\n\n💡 Sab materials long-lasting hain — agar professionally lagaaye jayein.\n📞 Koi problem ho toh call karo: **+91 8541849118**`,
   },
   {
     // Thank you
     patterns: /^(?:thanks?|shukriya|dhanyawad|shukriya\s*ji|bahut\s*shukriya|thank\s*you|thx|ty|ji\s*shukriya|acha\s*hai|great|nice|perfect|bahut\s*acha|bilkul\s*sahi|theek\s*hai|ok\s*ji|okay\s*ji)$/i,
-    answer: `Khushi hui madad karke! 😊🙏\n\nKoi aur sawaal ho toh zaroor puchho — main hamesha yahan hoon.\n\n📞 Direct baat karni ho: **+91 8651070831**`,
+    answer: `Khushi hui madad karke! 😊🙏\n\nKoi aur sawaal ho toh zaroor puchho — main hamesha yahan hoon.\n\n📞 Direct baat karni ho: **+91 8541849118**`,
   },
   {
     // Who are you / intro
@@ -139,7 +139,7 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
 {
     // Office location / address
     patterns: /\b(?:office\s*(?:kahan|kaha|hai|address|location)|location\s*(?:kya|kahan|batao|hai)|aapka\s*(?:office|address|location|ghar|showroom)|showroom\s*(?:kahan|hai)|kahan\s*(?:ho|hain|hai)\s*aap|address\s*(?:kya|batao|do|chahiye))\b/i,
-    answer: `📍 **JK Interior – Office Location**\n\n🏢 Forbesganj, Araria District, Bihar\n\n✅ Hum ghar aake FREE site visit karte hain\n✅ Aapko office aane ki zaroorat nahi!\n\n📞 Call/WhatsApp: **+91 8651070831**\n🕐 Timing: Mon–Sat, 9 AM – 9 PM`,
+    answer: `📍 **JK Interior – Office Location**\n\n🏢 Forbesganj, Araria District, Bihar\n\n✅ Hum ghar aake FREE site visit karte hain\n✅ Aapko office aane ki zaroorat nahi!\n\n📞 Call/WhatsApp: **+91 8541849118**\n🕐 Timing: Mon–Sat, 9 AM – 9 PM`,
   },
 ]
 
@@ -429,7 +429,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
 
   // ── Thank you / positive reactions ────────────────────────────────────────
   if (has(t, ["thank","shukriya","dhanyawad","thanks","thx","great","perfect","bahut acha","bahut accha","wah","wow","zabardast","mast"])) {
-    return `Khushi hui madad karke${nm ? ", " + nm : ""}! 😊🙏\n\nKoi aur sawaal ho toh batao — main hamesha yahan hoon.\n📞 +91 8651070831`
+    return `Khushi hui madad karke${nm ? ", " + nm : ""}! 😊🙏\n\nKoi aur sawaal ho toh batao — main hamesha yahan hoon.\n📞 +91 8541849118`
   }
 
   // ── Material: Gypsum ──────────────────────────────────────────────────────
@@ -500,17 +500,17 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
 
   // ── Office / location query ───────────────────────────────────────────────
   if (has(t, ["office","location","address","showroom","kahan ho","kahan hain","ghar kahan","office kahan"])) {
-    return `📍 **JK Interior – Location**\n\nHumara office **Forbesganj, Araria, Bihar** mein hai.\n\n✅ Lekin hum aapke **ghar aake FREE site visit** karte hain — aapko aane ki zaroorat nahi!\n\n📞 **+91 8651070831**`
+    return `📍 **JK Interior – Location**\n\nHumara office **Forbesganj, Araria, Bihar** mein hai.\n\n✅ Lekin hum aapke **ghar aake FREE site visit** karte hain — aapko aane ki zaroorat nahi!\n\n📞 **+91 8541849118**`
   }
 
   // ── Services list query ───────────────────────────────────────────────────
   if (has(t, ["kya kya service","kya service","kaun kaun si service","services kya","kya kya kaam","kya kya milega","kaun si service","services list","aap kya kya","kya kya hai","kya kya karte"])) {
-    return `🏠 **JK Interior – Hamari Services**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n🏛️ Fluted Panels\n🏢 Grid Ceiling (Office)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Lighting\n\nKisi bhi service ka rate ya estimate chahiye? Bas batao! 😊\n📞 +91 8651070831`
+    return `🏠 **JK Interior – Hamari Services**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n🏛️ Fluted Panels\n🏢 Grid Ceiling (Office)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Lighting\n\nKisi bhi service ka rate ya estimate chahiye? Bas batao! 😊\n📞 +91 8541849118`
   }
 
   // ── Complete/full home interior ───────────────────────────────────────────
   if (has(t, ["complete interior","full interior","poora ghar","pura ghar","2bhk","3bhk","flat interior","ghar banana","ghar design","full home","complete home"])) {
-    return `🏠 **Complete Home Interior Package**\n\nHum full home interior karte hain:\n✅ All rooms ceiling (Gypsum/PVC)\n✅ TV wall + accent walls (WPC/Fluted)\n✅ Modular kitchen\n✅ Wardrobes\n✅ LED lighting throughout\n\n💰 **2BHK estimate:** ₹2,50,000 – ₹5,00,000\n💰 **3BHK estimate:** ₹4,00,000 – ₹8,00,000\n*(depends on materials & design)*\n\n📞 Free site visit ke liye: **+91 8651070831**`
+    return `🏠 **Complete Home Interior Package**\n\nHum full home interior karte hain:\n✅ All rooms ceiling (Gypsum/PVC)\n✅ TV wall + accent walls (WPC/Fluted)\n✅ Modular kitchen\n✅ Wardrobes\n✅ LED lighting throughout\n\n💰 **2BHK estimate:** ₹2,50,000 – ₹5,00,000\n💰 **3BHK estimate:** ₹4,00,000 – ₹8,00,000\n*(depends on materials & design)*\n\n📞 Free site visit ke liye: **+91 8541849118**`
   }
 
   // ── Budget queries ────────────────────────────────────────────────────────
@@ -521,7 +521,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
       if (num < 30000) return `${budgetAmt} budget mein 1 room ki PVC ceiling aaram se ho jaayegi (₹80–140/sq.ft).\n\nRoom ka size batao!`
       if (num < 80000) return `${budgetAmt} mein 1–2 rooms ka ceiling kaam ho jaayega.\n\nBest combo: Gypsum (hall) + PVC (kitchen/bathroom)\n\nRooms batao — estimate nikalte hain!`
       if (num < 150000) return `${budgetAmt} mein 2BHK ki full ceiling + 1 WPC accent wall ho sakti hai.\n\nRooms ki details share karo!`
-      return `${budgetAmt} budget ke saath premium 2BHK interior possible hai:\n✅ Gypsum cove lighting\n✅ WPC TV wall\n✅ UV marble bathroom\n\nFree site visit book karein: **+91 8651070831**`
+      return `${budgetAmt} budget ke saath premium 2BHK interior possible hai:\n✅ Gypsum cove lighting\n✅ WPC TV wall\n✅ UV marble bathroom\n\nFree site visit book karein: **+91 8541849118**`
     }
   }
 
@@ -539,7 +539,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   // ── Visit / booking ───────────────────────────────────────────────────────
   if (has(t, ["visit","book","site visit","measurement","quotation","bulao","aao","free visit","aana","aaye","bhejo"])) {
     if (lead?.phone) {
-      return `📅 **Book Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8651070831`
+      return `📅 **Book Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8541849118`
     }
     return `📅 **Book Visit** – Koi hidden charge nahi!\n\nBook karne ke liye aapka naam batao 😊`
   }
@@ -558,9 +558,9 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
       return `✅ ${cityMentioned} mein WPC wall panels available hain! 🪵\n\n💰 Rate: ₹180–450 / sq.ft | Waterproof ✅\n\nWall size bataiye — exact estimate nikalte hain 📐`
     }
     if (lead?.service) {
-      return `✅ ${cityMentioned} mein **${lead.service}** ka kaam hota hai! 💪\n\nRoom ka size bataiye — exact estimate nikalte hain! 📐\n📞 +91 8651070831`
+      return `✅ ${cityMentioned} mein **${lead.service}** ka kaam hota hai! 💪\n\nRoom ka size bataiye — exact estimate nikalte hain! 📐\n📞 +91 8541849118`
     }
-    return `✅ ${cityMentioned} mein JK Interior ki services available hain! 💪\n\n🏠 PVC | ✨ Gypsum | 🪵 WPC | 💎 UV Marble | 📺 TV Unit\n\n📞 Free site visit: **+91 8651070831**`
+    return `✅ ${cityMentioned} mein JK Interior ki services available hain! 💪\n\n🏠 PVC | ✨ Gypsum | 🪵 WPC | 💎 UV Marble | 📺 TV Unit\n\n📞 Free site visit: **+91 8541849118**`
   }
 
   // ── Short affirmative ─────────────────────────────────────────────────────
@@ -576,7 +576,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
 
   // ── Design / trends ───────────────────────────────────────────────────────
   if (has(t, ["design","idea","color","colour","rang","trend","2025","2026","latest","modern","style","look","beautiful","sundar","khubsurat"])) {
-    return `🎨 **2025–26 Interior Trends**\n\n✅ **Fluted/Louver panels** — TV wall pe most popular\n✅ **Cove lighting** (Gypsum ceiling + LED strip)\n✅ **WPC wooden finish** — bedroom accent walls\n✅ **UV marble** — bathroom statement walls\n✅ **Earth tones** — beige, terracotta, sage green\n\nKaunse room ke liye design chahiye? Hall, bedroom, bathroom?\n\n📞 Free consultation: **+91 8651070831**`
+    return `🎨 **2025–26 Interior Trends**\n\n✅ **Fluted/Louver panels** — TV wall pe most popular\n✅ **Cove lighting** (Gypsum ceiling + LED strip)\n✅ **WPC wooden finish** — bedroom accent walls\n✅ **UV marble** — bathroom statement walls\n✅ **Earth tones** — beige, terracotta, sage green\n\nKaunse room ke liye design chahiye? Hall, bedroom, bathroom?\n\n📞 Free consultation: **+91 8541849118**`
   }
 
   // ── Comparison ────────────────────────────────────────────────────────────

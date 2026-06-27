@@ -19,7 +19,7 @@ export default function FAQPage() {
             {
               "@type": "Question",
               name: "PVC false ceiling की cost क्या है?",
-              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC false ceiling ₹70–₹120 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8651070831।" }
+              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC false ceiling ₹70–₹120 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।" }
             },
             {
               "@type": "Question",
@@ -63,7 +63,7 @@ export default function FAQPage() {
             {[
               {
                 q: 'What is the cost of gypsum ceiling in Bihar?',
-                a: 'Gypsum ceiling in Bihar (Araria, Forbesganj) typically costs ₹80–₹150 per sq.ft depending on design complexity, cove lighting, and pop work. Contact JK Interior on +91 8651070831 for a free detailed quote.',
+                a: 'Gypsum ceiling in Bihar (Araria, Forbesganj) typically costs ₹80–₹150 per sq.ft depending on design complexity, cove lighting, and pop work. Contact JK Interior on +91 8541849118 for a free detailed quote.',
               },
               {
                 q: 'How long does PVC ceiling installation take?',
@@ -71,7 +71,7 @@ export default function FAQPage() {
               },
               {
                 q: 'Do you provide services outside Forbesganj?',
-                a: 'Yes! JK Interior serves all of Araria district (Forbesganj, Narpatganj, Raniganj, Kursakanta, Jogbani) and beyond — Purnia, Supaul, Tribeniganj, Chhatapur and more. Call +91 8651070831.',
+                a: 'Yes! JK Interior serves all of Araria district (Forbesganj, Narpatganj, Raniganj, Kursakanta, Jogbani) and beyond — Purnia, Supaul, Tribeniganj, Chhatapur and more. Call +91 8541849118.',
               },
               {
                 q: 'What warranty do you provide on your work?',
@@ -94,11 +94,11 @@ export default function FAQPage() {
           </h3>
           <div className="flex flex-wrap gap-3">
             <a
-              href="tel:+918651070831"
+              href="tel:+918541849118"
               className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
             >
               <Phone className="h-4 w-4" />
-              Call +91 8651070831
+              Call +91 8541849118
             </a>
             <a
               href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20have%20a%20question%20about%20your%20services."

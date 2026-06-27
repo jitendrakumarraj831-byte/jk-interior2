@@ -177,18 +177,6 @@ export default function Footer() {
             </h4>
             <div className="flex flex-col gap-4">
               <a
-                href="tel:+918651070831"
-                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
-              >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
-                  <Phone className="h-4 w-4" />
-                </div>
-                <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-emerald-600">Primary</span>
-                  +91 8651070831
-                </div>
-              </a>
-              <a
                 href="tel:+918541849118"
                 className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
               >
@@ -196,8 +184,20 @@ export default function Footer() {
                   <Phone className="h-4 w-4" />
                 </div>
                 <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-emerald-600">Secondary</span>
+                  <span className="block text-[9px] uppercase tracking-wider text-emerald-600">Primary</span>
                   +91 8541849118
+                </div>
+              </a>
+              <a
+                href="tel:+918651070831"
+                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
+              >
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
+                  <Phone className="h-4 w-4" />
+                </div>
+                <div>
+                  <span className="block text-[9px] uppercase tracking-wider text-emerald-600">WhatsApp</span>
+                  +91 8651070831
                 </div>
               </a>
               <a
@@ -213,7 +213,7 @@ export default function Footer() {
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600">
                   <MapPin className="h-4 w-4" />
                 </div>
-                <span className="pt-0.5 leading-snug">Forbesganj Dumariya,<br />Araria, Bihar – 854318</span>
+                <span className="pt-0.5 leading-snug">Dumariya, Forbesganj,<br />Araria, Bihar – 854318</span>
               </div>
 
               {/* WhatsApp CTA */}

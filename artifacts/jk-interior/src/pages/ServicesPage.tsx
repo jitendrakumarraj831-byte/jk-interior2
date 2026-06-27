@@ -55,7 +55,7 @@ export default function ServicesPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="tel:+918651070831"
+              href="tel:+918541849118"
               className="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white font-bold px-8 py-4 text-sm shadow-[0_4px_24px_rgba(37,99,235,0.4)] hover:bg-blue-500 transition-all active:scale-95 luxury-animated-shine"
             >
               <Phone className="h-4 w-4" />

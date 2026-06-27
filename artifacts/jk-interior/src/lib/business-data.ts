@@ -1,5 +1,5 @@
 export const WA_NUMBER = "918651070831"
-export const CALL_NUMBER = "+918651070831"
+export const CALL_NUMBER = "+918541849118"
 
 export interface LeadContext {
   name?: string
@@ -772,7 +772,7 @@ export const FAQ = [
   },
   {
     q: ["free site visit", "visit free hai", "kharcha nahi", "no charge", "free aana"],
-    a: "Haan, site visit bilkul FREE hai! Koi hidden charge nahi. Hamare expert aate hain, measurements lete hain, aur same day quotation dete hain. Abhi book karein — +91 8651070831 📞",
+    a: "Haan, site visit bilkul FREE hai! Koi hidden charge nahi. Hamare expert aate hain, measurements lete hain, aur same day quotation dete hain. Abhi book karein — +91 8541849118 📞",
   },
   {
     q: ["payment", "upi", "cash", "emi", "kaise pay", "payment options"],

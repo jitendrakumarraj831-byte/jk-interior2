@@ -90,8 +90,8 @@ export default function Contact() {
                 </div>
                 <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-700">Call Us</h4>
                 <div className="flex flex-col gap-1.5 text-sm font-bold">
-                  <a href="tel:+918651070831" className="text-gray-900 hover:text-emerald-700 transition-colors">+91 8651070831</a>
-                  <a href="tel:+918541849118" className="text-gray-500 hover:text-emerald-700 transition-colors">+91 8541849118</a>
+                  <a href="tel:+918541849118" className="text-gray-900 hover:text-emerald-700 transition-colors">+91 8541849118</a>
+                  <a href="tel:+918651070831" className="text-gray-500 hover:text-emerald-700 transition-colors">+91 8651070831</a>
                 </div>
               </motion.div>
 
@@ -123,8 +123,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-gray-900 mb-1">Our Location</h4>
-                  <p className="text-gray-600 font-semibold text-sm">Forbesganj Dumariya, Araria, Bihar - 854318</p>
-                  <p className="text-xs text-gray-400 mt-1">फारबिसगंज डुमरिया, अररिया, बिहार</p>
+                  <p className="text-gray-600 font-semibold text-sm">Dumariya, Forbesganj, Araria, Bihar - 854318</p>
+                  <p className="text-xs text-gray-400 mt-1">डुमरिया, फारबिसगंज, अररिया, बिहार</p>
                 </div>
               </div>
             </motion.div>

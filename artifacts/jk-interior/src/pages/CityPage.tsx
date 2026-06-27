@@ -28,10 +28,10 @@ export default function CityPage() {
     name: "JK Interior",
     description: city.description,
     url: `${SITE_URL}/cities/${city.slug}`,
-    telephone: "+91-8651070831",
+    telephone: ["+91-8541849118", "+91-8651070831"],
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Forbesganj Dumariya",
+      streetAddress: "Dumariya",
       addressLocality: "Forbesganj",
       addressRegion: "Bihar",
       postalCode: "854318",
@@ -77,7 +77,7 @@ export default function CityPage() {
     <>
       <SeoHead
         title={`Interior Designer in ${city.name} – JK Interior ${city.district} Bihar`}
-        description={`JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior design services in ${city.name}, ${city.district} Bihar. Free site visit. Call +91 8651070831.`}
+        description={`JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior design services in ${city.name}, ${city.district} Bihar. Free site visit. Call +91 8541849118.`}
         canonical={`/cities/${city.slug}`}
         jsonLd={combinedJsonLd}
       />
@@ -111,12 +111,12 @@ export default function CityPage() {
 
           <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior
-            design services in {city.name}, {city.district} Bihar. Free site visit. Call +91 8651070831.
+            design services in {city.name}, {city.district} Bihar. Free site visit. Call +91 8541849118.
           </p>
 
           <div className="flex flex-wrap gap-3">
             <a
-              href="tel:+918651070831"
+              href="tel:+918541849118"
               className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-emerald-700 active:scale-95 transition-all"
             >
               <Phone className="h-4 w-4" />
@@ -222,11 +222,11 @@ export default function CityPage() {
           <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • Same-week slots available</p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="tel:+918651070831"
+              href="tel:+918541849118"
               className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-emerald-700 shadow hover:bg-emerald-50 transition-colors"
             >
               <Phone className="h-4 w-4" />
-              Call +91 8651070831
+              Call +91 8541849118
             </a>
             <a
               href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20site%20visit%20in%20${encodeURIComponent(city.name)}.`}
