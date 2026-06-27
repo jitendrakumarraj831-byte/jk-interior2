@@ -16,10 +16,8 @@
     <meta name="theme-color" content="#0D9488" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Canonical & hreflang -->
+    <!-- Canonical & hreflang (single bilingual URL — only x-default needed) -->
     <link rel="canonical" href="https://www.jkinterior.online/" />
-    <link rel="alternate" hreflang="en-IN" href="https://www.jkinterior.online/" />
-    <link rel="alternate" hreflang="hi-IN" href="https://www.jkinterior.online/" />
     <link rel="alternate" hreflang="x-default" href="https://www.jkinterior.online/" />
 
     <!-- Google Fonts -->
@@ -30,9 +28,9 @@
     <!-- DNS prefetch -->
     <link rel="dns-prefetch" href="//www.googletagmanager.com" />
 
-    <!-- Critical resources -->
-    <link rel="prefetch" href="/images/A.jpg" as="image" />
-    <link rel="prefetch" href="/images/A1.jpg" as="image" />
+    <!-- Critical resources (preload for LCP performance) -->
+    <link rel="preload" href="/images/A.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/images/A1.jpg" as="image" fetchpriority="high" />
 
     <title>JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar</title>
     <meta name="description" content="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Narpatganj, Jogbani, Purnia and across Bihar. Call +91 8651070831 for free site visit." />
@@ -79,7 +77,7 @@
         "latitude": 26.3001,
         "longitude": 87.2533
       },
-      "openingHours": "Mo-Sa 09:00-19:00",
+      "openingHours": ["Mo-Sa 08:00-20:00", "Su 09:00-18:00"],
       "sameAs": [
         "https://wa.me/918651070831"
       ]

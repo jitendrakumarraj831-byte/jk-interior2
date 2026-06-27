@@ -155,7 +155,10 @@ const mkId  = (id: number, role: Role, text: string, kind?: MsgKind, cardData?: 
 const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 
 function isOffHours(): boolean {
-  const istH = new Date(Date.now() + 5.5 * 3600000).getUTCHours()
+  const istH = parseInt(
+    new Intl.DateTimeFormat("en-IN", { hour: "numeric", hour12: false, timeZone: "Asia/Kolkata" }).format(new Date()),
+    10
+  )
   return istH >= 21 || istH < 9
 }
 
@@ -927,22 +930,25 @@ export default function JKChat() {
 
 // ✅ Dimensions मिले तो हमेशा estimate nikalo — collectStep ignore karo
 if (dims) {
-  setCollectStep(null)
-  await delay(400)
-  const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
-  const estSummary = extractEstimateSummary(estimateReply)
-  if (estSummary) setPendingEstimate(estSummary)
-  historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
-  setMsgs(prev => [...prev, mk("bot", estimateReply)])
-  const newRoomSize = `${dims.length}x${dims.width}`
-  setRoomSize(newRoomSize)
-  const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
-  if (svcSlug) setLastTopic(svcSlug)
-  const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
-  setLead(newLead)
-  persist(newLead, svcSlug)
-  setTyping(false)
-  sendLock.current = false
+  try {
+    setCollectStep(null)
+    await delay(400)
+    const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
+    const estSummary = extractEstimateSummary(estimateReply)
+    if (estSummary) setPendingEstimate(estSummary)
+    historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
+    setMsgs(prev => [...prev, mk("bot", estimateReply)])
+    const newRoomSize = `${dims.length}x${dims.width}`
+    setRoomSize(newRoomSize)
+    const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
+    if (svcSlug) setLastTopic(svcSlug)
+    const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
+    setLead(newLead)
+    persist(newLead, svcSlug)
+  } finally {
+    setTyping(false)
+    sendLock.current = false
+  }
   return
     }
 

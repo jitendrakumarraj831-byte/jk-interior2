@@ -6,6 +6,12 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+const allowedOrigins = [
+  "https://www.jkinterior.online",
+  "https://jkinterior.online",
+  ...(process.env.NODE_ENV !== "production" ? ["http://localhost:5173", "http://localhost:3000"] : []),
+];
+
 app.use(
   pinoHttp({
     logger,
@@ -25,7 +31,14 @@ app.use(
     },
   }),
 );
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error("Not allowed by CORS"));
+  },
+  methods: ["GET", "POST", "PATCH"],
+  allowedHeaders: ["Content-Type", "x-admin-key"],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

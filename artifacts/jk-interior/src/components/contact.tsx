@@ -7,6 +7,7 @@ const easeLux = [0.22, 1, 0.36, 1] as const
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const [mounted, setMounted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
 
@@ -16,17 +17,10 @@ export default function Contact() {
 
     const form = e.currentTarget
     const data = new FormData(form)
-    const name = String(data.get("name") || "").trim()
-    const phone = String(data.get("phone") || "").trim()
-    const service = String(data.get("service") || "").trim()
-    const message = String(data.get("message") || "").trim()
-
-    fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, phone, service, message }),
-      keepalive: true,
-    }).catch(() => {})
+    const name = String(data.get("name") || "").trim().slice(0, 100)
+    const phone = String(data.get("phone") || "").trim().slice(0, 20)
+    const service = String(data.get("service") || "").trim().slice(0, 100)
+    const message = String(data.get("message") || "").trim().slice(0, 500)
 
     const text =
       `Hello JK Interior!\n\n` +
@@ -41,6 +35,7 @@ export default function Contact() {
     try {
       window.open(waUrl, "_blank", "noopener,noreferrer")
       form.reset()
+      setSubmitted(true)
     } finally {
       setIsSubmitting(false)
     }
@@ -208,12 +203,18 @@ export default function Contact() {
               </div>
             </div>
 
+            {submitted && (
+              <div className="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-700 text-center">
+                ✅ Message sent! We'll contact you within 2 hours.
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Your Name</label>
+                  <label htmlFor="contact-name" className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Your Name</label>
                   <input
                     required
+                    id="contact-name"
                     type="text"
                     name="name"
                     autoComplete="name"
@@ -222,9 +223,10 @@ export default function Contact() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Phone Number</label>
+                  <label htmlFor="contact-phone" className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Phone Number</label>
                   <input
                     required
+                    id="contact-phone"
                     type="tel"
                     name="phone"
                     autoComplete="tel"
@@ -237,8 +239,9 @@ export default function Contact() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Select Service</label>
+                <label htmlFor="contact-service" className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Select Service</label>
                 <select
+                  id="contact-service"
                   name="service"
                   defaultValue="False Ceiling (PVC/Gypsum)"
                   className="w-full rounded-xl glass-input px-4 py-3.5 text-sm transition-all outline-none appearance-none cursor-pointer text-gray-800"
@@ -255,8 +258,9 @@ export default function Contact() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Message</label>
+                <label htmlFor="contact-message" className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Message</label>
                 <textarea
+                  id="contact-message"
                   required
                   name="message"
                   rows={4}
@@ -279,7 +283,7 @@ export default function Contact() {
               </button>
 
               <p className="text-center text-[10px] font-medium text-gray-400">
-                Your message will open WhatsApp directly. Email backup also sent.
+                Your message will open WhatsApp directly. We respond within 2 hours.
               </p>
             </form>
           </motion.div>

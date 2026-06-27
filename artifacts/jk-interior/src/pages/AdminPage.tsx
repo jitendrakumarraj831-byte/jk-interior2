@@ -14,7 +14,13 @@ interface Lead {
   created_at: string
 }
 
-const ADMIN_KEY_LS = "jk_admin_key"
+const ADMIN_KEY_SESSION = "jk_admin_key"
+
+function normalizeIndianPhone(raw: string): string {
+  const digits = raw.replace(/\D/g, "")
+  const local = digits.replace(/^(?:91|0)/, "").slice(-10)
+  return `91${local}`
+}
 
 function waLink(lead: Lead) {
   const msg = [
@@ -25,7 +31,12 @@ function waLink(lead: Lead) {
     `Free site visit ke liye kab aana theek rahega?`,
     `📞 +91 8651070831`,
   ].filter(Boolean).join("\n")
-  return `https://wa.me/${lead.phone.replace(/\D/g, "").replace(/^0|^91/, "")}?text=${encodeURIComponent(msg)}`
+  return `https://wa.me/${normalizeIndianPhone(lead.phone)}?text=${encodeURIComponent(msg)}`
+}
+
+function csvEscape(val: unknown): string {
+  const s = String(val ?? "").replace(/^([=+\-@])/, "'$1").replace(/"/g, '""')
+  return `"${s}"`
 }
 
 function fmt(iso: string) {
@@ -133,7 +144,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem(ADMIN_KEY_LS)
+      const saved = sessionStorage.getItem(ADMIN_KEY_SESSION)
       if (saved) { setKey(saved) }
     } catch {}
   }, [])
@@ -143,7 +154,7 @@ export default function AdminPage() {
     setError("")
     try {
       const res = await fetch(`/api/leads`, { headers: { "x-admin-key": k } })
-      if (res.status === 401) { setError("Wrong password."); setKey(""); sessionStorage.removeItem(ADMIN_KEY_LS); return }
+      if (res.status === 401) { setError("Wrong password."); setKey(""); sessionStorage.removeItem(ADMIN_KEY_SESSION); return }
       const data = await res.json()
       if (!data.ok) { setError("Failed to load leads."); return }
       setLeads(data.leads)
@@ -161,7 +172,7 @@ export default function AdminPage() {
   function login() {
     const k = inputKey.trim()
     if (!k) return
-    sessionStorage.setItem(ADMIN_KEY_LS, k)
+    sessionStorage.setItem(ADMIN_KEY_SESSION, k)
     setKey(k)
   }
 
@@ -172,27 +183,34 @@ export default function AdminPage() {
   async function markAllRead() {
     const unread = leads.filter(l => !l.is_read)
     if (unread.length === 0) return
-    await Promise.all(
-      unread.map(l =>
-        fetch(`/api/leads`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json", "x-admin-key": key },
-          body: JSON.stringify({ id: l.id }),
-        })
+    try {
+      const results = await Promise.allSettled(
+        unread.map(l =>
+          fetch(`/api/leads`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", "x-admin-key": key },
+            body: JSON.stringify({ id: l.id }),
+          })
+        )
       )
-    )
-    setLeads(prev => prev.map(l => ({ ...l, is_read: true })))
+      const successIds = new Set(
+        unread.filter((_, i) => results[i].status === "fulfilled").map(l => l.id)
+      )
+      setLeads(prev => prev.map(l => successIds.has(l.id) ? { ...l, is_read: true } : l))
+    } catch {
+      setError("Failed to mark all as read. Please try again.")
+    }
   }
 
   function exportCSV() {
     const header = ["ID", "Name", "Phone", "City", "Service", "Estimate", "Visit Time", "Chat Summary", "Read", "Date"]
     const rows = leads.map(l => [
       l.id, l.name, l.phone, l.city ?? "", l.service ?? "", l.estimate ?? "",
-      l.preferred_time ?? "", (l.chat_summary ?? "").replace(/,/g, ";"),
+      l.preferred_time ?? "", l.chat_summary ?? "",
       l.is_read ? "Yes" : "No",
       new Date(l.created_at).toLocaleDateString("en-IN"),
     ])
-    const csv = [header, ...rows].map(r => r.join(",")).join("\n")
+    const csv = [header.map(csvEscape), ...rows.map(r => r.map(csvEscape))].map(r => r.join(",")).join("\n")
     const blob = new Blob([csv], { type: "text/csv" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -235,8 +253,17 @@ export default function AdminPage() {
 
   const newCount = leads.filter(l => !l.is_read).length
 
+  const noIndexHelmet = (
+    <Helmet>
+      <title>Admin – JK Interior</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Helmet>
+  )
+
   if (!key) {
     return (
+      <>
+        {noIndexHelmet}
       <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0e1f3d 0%, #152742 100%)" }}>
         <div className="w-full max-w-sm mx-4">
           <div className="text-center mb-8">
@@ -259,15 +286,13 @@ export default function AdminPage() {
           </form>
         </div>
       </div>
+      </>
     )
   }
 
   return (
     <>
-      <Helmet>
-        <title>Admin – JK Interior</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      {noIndexHelmet}
     <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #f7f9f8 100%)" }}>
       <div className="max-w-2xl mx-auto">
         <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
@@ -289,7 +314,7 @@ export default function AdminPage() {
               {newCount > 0 && <button onClick={markAllRead} className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all">✓ All Read</button>}
               <button onClick={exportExcel} className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all">↓ Excel</button>
               <button onClick={exportCSV} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">↓ CSV</button>
-              <button onClick={() => { setKey(""); sessionStorage.removeItem(ADMIN_KEY_LS) }} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">Logout</button>
+              <button onClick={() => { setKey(""); sessionStorage.removeItem(ADMIN_KEY_SESSION) }} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">Logout</button>
             </div>
           </div>
           <div className="px-4 pb-3 space-y-2">

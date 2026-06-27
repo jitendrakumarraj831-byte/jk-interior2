@@ -53,7 +53,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav Links */}
-            <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+            <div className="hidden md:flex items-center gap-0.5 flex-1 justify-center">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href
                 return (
@@ -104,7 +104,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileOpen((o) => !o)}
-              className="lg:hidden p-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/8 text-emerald-700 hover:border-emerald-500/40 hover:bg-emerald-500/15 transition-all"
+              className="md:hidden p-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/8 text-emerald-700 hover:border-emerald-500/40 hover:bg-emerald-500/15 transition-all"
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
             >
@@ -130,7 +130,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="lg:hidden overflow-hidden border-t border-emerald-500/15 mt-3 pt-4"
+                className="md:hidden overflow-hidden border-t border-emerald-500/15 mt-3 pt-4"
               >
                 <div className="flex flex-col gap-1 pb-3">
                   {navLinks.map((link, i) => {
