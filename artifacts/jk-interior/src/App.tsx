@@ -18,7 +18,7 @@ const JKChat = lazy(() => import("@/components/jk-chat"))
 const queryClient = new QueryClient()
 
 function PageFallback() {
-  return <div className="min-h-screen bg-white" aria-hidden="true" />
+  return <div className="min-h-screen bg-white" role="status" aria-live="polite" aria-label="Loading page" />
 }
 
 function Router() {

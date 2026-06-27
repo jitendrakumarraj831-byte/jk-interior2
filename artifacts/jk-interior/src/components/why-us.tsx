@@ -73,7 +73,7 @@ const jsonLd = {
   name: "JK Interior",
   description: "Best interior designer in Forbesganj, Araria, Bihar. Specializing in PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit installation.",
   url: "https://www.jkinterior.online",
-  telephone: "+918651070831",
+  telephone: "+918541849118",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Forbesganj",

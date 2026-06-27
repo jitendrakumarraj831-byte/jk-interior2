@@ -173,7 +173,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <motion.div {...anim(0.4)} className="mb-6 flex flex-wrap gap-3">
               <a
-                href="tel:+918651070831"
+                href="tel:+918541849118"
                 aria-label="Call JK Interior for free quotation"
                 className="group relative flex items-center gap-2 overflow-hidden rounded-xl bg-emerald-600 px-7 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.6)] active:scale-95 sm:px-8 sm:py-4 sm:text-base luxury-animated-shine"
               >

@@ -73,8 +73,8 @@ export const COMPANY = {
     serviceAreaRadius: "80 km",
   },
   contact: {
-    primary: "+91 8651070831",
-    secondary: "+91 8541849118",
+    primary: "+91 8541849118",
+    secondary: "+91 8651070831",
     whatsapp: "+91 8651070831",
     email: "contact@jkinterior.online",
     website: "https://jkinterior.online",
@@ -546,8 +546,8 @@ export const FAQS: FAQ[] = [
   {
     question: "Do you provide free site visit?",
     questionHi: "क्या आप मुफ्त साइट विजिट प्रदान करते हैं?",
-    answer: "Yes! Site visit is completely FREE. Our expert will visit, take measurements, show design options, and provide a written quotation. No obligation to book. Call +91 8651070831 to schedule.",
-    answerHi: "हाँ! साइट विजिट पूरी तरह से मुफ्त है। हमारा विशेषज्ञ आएगा, माप लेगा, डिज़ाइन विकल्प दिखाएगा और एक लिखित कोटेशन देगा। बुक करने की कोई बाध्यता नहीं। शेड्यूल करने के लिए +91 8651070831 पर कॉल करें।",
+    answer: "Yes! Site visit is completely FREE. Our expert will visit, take measurements, show design options, and provide a written quotation. No obligation to book. Call +91 8541849118 to schedule.",
+    answerHi: "हाँ! साइट विजिट पूरी तरह से मुफ्त है। हमारा विशेषज्ञ आएगा, माप लेगा, डिज़ाइन विकल्प दिखाएगा और एक लिखित कोटेशन देगा। बुक करने की कोई बाध्यता नहीं। शेड्यूल करने के लिए +91 8541849118 पर कॉल करें।",
     tags: ["booking", "free", "visit"],
   },
   {
@@ -718,7 +718,7 @@ export const BOOKING_INFO = {
     "Timeline commitment",
   ],
   contactMethods: [
-    { type: "Call", number: "+91 8651070831", timing: "9 AM - 7 PM, Mon-Sat" },
+    { type: "Call", number: "+91 8541849118", timing: "9 AM - 7 PM, Mon-Sat" },
     { type: "WhatsApp", number: "+91 8651070831", timing: "24/7" },
     { type: "Email", email: "contact@jkinterior.online", timing: "Response within 24 hours" },
   ],

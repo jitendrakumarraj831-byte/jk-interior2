@@ -174,7 +174,7 @@ export default function ServiceAreas() {
             <p className="mb-6 text-sm text-gray-500">कहीं भी हो आपका घर — हम पहुंचेंगे</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="tel:+918651070831"
+                href="tel:+918541849118"
                 className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_20px_rgba(5,150,105,0.3)] transition-all hover:bg-emerald-500 active:scale-95"
               >
                 <Phone className="h-4 w-4" />

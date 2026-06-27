@@ -52,7 +52,7 @@ export default function SeoHead({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
 
-      <meta name="format-detection" content="telephone=+918651070831" />
+      <meta name="format-detection" content="telephone=+918541849118" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 

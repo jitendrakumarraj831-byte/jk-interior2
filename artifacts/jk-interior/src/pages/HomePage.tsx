@@ -24,7 +24,7 @@ export default function HomePage() {
     <main className="min-h-screen overflow-x-hidden">
       <SeoHead
         title="JK Interior – Best False Ceiling & Interior Designer in Forbesganj, Araria Bihar"
-        description="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Narpatganj, Jogbani, Purnia and across Bihar. Call +91 8651070831 for free site visit."
+        description="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Narpatganj, Jogbani, Purnia and across Bihar. Call +91 8541849118 for free site visit."
         canonical="/"
         jsonLd={[
           {
@@ -36,13 +36,13 @@ export default function HomePage() {
             url: "https://www.jkinterior.online",
             logo: "https://www.jkinterior.online/logo.png",
             image: "https://www.jkinterior.online/og-image.png",
-            telephone: ["+91-8651070831", "+91-8541849118"],
+            telephone: ["+91-8541849118", "+91-8651070831"],
             email: "jkinteriorofficial@gmail.com",
             foundingDate: "2016",
             priceRange: "₹₹",
             address: {
               "@type": "PostalAddress",
-              streetAddress: "Forbesganj Dumariya",
+              streetAddress: "Dumariya",
               addressLocality: "Forbesganj",
               addressRegion: "Bihar",
               postalCode: "854318",
@@ -53,19 +53,29 @@ export default function HomePage() {
               latitude: 26.3001,
               longitude: 87.2533
             },
-            openingHoursSpecification: {
-              "@type": "OpeningHoursSpecification",
-              dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-              opens: "09:00",
-              closes: "19:00"
-            },
+            openingHoursSpecification: [
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                opens: "08:00",
+                closes: "20:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Sunday"],
+                opens: "09:00",
+                closes: "18:00"
+              }
+            ],
             areaServed: [
               { "@type": "City", name: "Forbesganj" },
               { "@type": "City", name: "Araria" },
               { "@type": "City", name: "Purnia" },
               { "@type": "City", name: "Jogbani" },
               { "@type": "City", name: "Supaul" },
-              { "@type": "City", name: "Narpatganj" }
+              { "@type": "City", name: "Narpatganj" },
+              { "@type": "City", name: "Raniganj" },
+              { "@type": "City", name: "Dumariya" }
             ],
             hasOfferCatalog: {
               "@type": "OfferCatalog",
@@ -85,7 +95,9 @@ export default function HomePage() {
               bestRating: "5"
             },
             sameAs: [
-              "https://wa.me/918651070831"
+              "https://wa.me/918651070831",
+              "https://www.facebook.com/share/1GpAKHZZtb/",
+              "https://www.instagram.com/jk_interior_ceiling_designer"
             ]
           },
           {
