@@ -14,8 +14,15 @@
     <meta name="copyright" content="JK Interior" />
     <meta name="keywords" content="false ceiling, gypsum ceiling, WPC wall panel, interior designer, forbesganj, araria, bihar, ceiling design, modular units" />
     <meta name="theme-color" content="#0D9488" />
-    <!-- Canonical & hreflang (single bilingual URL — only x-default needed) -->
-    <link rel="canonical" href="https://www.jkinterior.online/" />
+    <!-- Canonical injected dynamically so every page has the correct self-referencing URL -->
+    <script>
+      (function(){
+        var l=document.createElement('link');
+        l.rel='canonical';
+        l.href='https://www.jkinterior.online'+window.location.pathname.replace(/\/$/,'') || '/';
+        document.head.appendChild(l);
+      })();
+    </script>
     <link rel="alternate" hreflang="x-default" href="https://www.jkinterior.online/" />
 
     <!-- Google Fonts -->
@@ -31,11 +38,11 @@
     <link rel="preload" href="/images/A1.jpg" as="image" fetchpriority="high" />
 
     <title>JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar</title>
-    <meta name="description" content="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Narpatganj, Jogbani, Purnia and across Bihar. Call +91 8651070831 for free site visit." />
+    <meta name="description" content="JK Interior – expert false ceiling, WPC wall panels &amp; modular interiors in Forbesganj, Araria, Bihar. Call +91 8651070831 for a free site visit." />
 
     <!-- Open Graph (static fallback for crawlers) -->
     <meta property="og:title" content="JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar" />
-    <meta property="og:description" content="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Narpatganj, Jogbani, Purnia and across Bihar." />
+    <meta property="og:description" content="JK Interior – expert false ceiling, WPC wall panels &amp; modular interiors in Forbesganj, Araria, Bihar. Call +91 8651070831 for a free site visit." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.jkinterior.online/" />
     <meta property="og:image" content="https://www.jkinterior.online/opengraph.jpg" />
@@ -48,7 +55,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar" />
-    <meta name="twitter:description" content="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Bihar." />
+    <meta name="twitter:description" content="JK Interior – expert false ceiling, WPC wall panels &amp; modular interiors in Forbesganj, Araria, Bihar. Call +91 8651070831 for a free site visit." />
     <meta name="twitter:image" content="https://www.jkinterior.online/opengraph.jpg" />
 
     <!-- Static JSON-LD for Google Bot (before JS loads) -->
