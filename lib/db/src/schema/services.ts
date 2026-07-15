@@ -20,6 +20,7 @@ export const servicesTable = pgTable("services", {
   priceUnit: text("price_unit").notNull().default("sq.ft"),
   heroImage: text("hero_image"),
   icon: text("icon"),
+  materialTag: text("material_tag"),
   displayOrder: integer("display_order").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });

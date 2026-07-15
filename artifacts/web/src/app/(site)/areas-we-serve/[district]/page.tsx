@@ -17,7 +17,7 @@ import {
   getServices,
   getProjects,
   getReviewsByDistrict,
-  getFaqsByCategory,
+  getFaqsForDistrict,
 } from "@/lib/queries";
 
 export async function generateStaticParams() {
@@ -46,7 +46,7 @@ export default async function DistrictPage({ params }: { params: Promise<{ distr
     getServices(),
     getProjects(),
     getReviewsByDistrict(district.id),
-    getFaqsByCategory("district"),
+    getFaqsForDistrict(district.slug),
   ]);
 
   const cityIds = new Set(cities.map((c) => c.id));

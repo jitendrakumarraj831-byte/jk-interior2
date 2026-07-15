@@ -17,7 +17,7 @@ import {
   getProjectsByService,
   getRelatedBlogPosts,
   getDistricts,
-  getFaqsByCategory,
+  getFaqsForService,
 } from "@/lib/queries";
 
 export async function generateStaticParams() {
@@ -46,7 +46,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     getProjectsByService(service.id, 3),
     getRelatedBlogPosts("", service.slug, 2),
     getDistricts(),
-    getFaqsByCategory("service"),
+    getFaqsForService(service.slug),
   ]);
 
   const faqs = serviceFaqs.length ? serviceFaqs : [
@@ -160,9 +160,11 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
-          <Link href={`/gallery?material=${service.slug}`} className="mt-6 inline-block font-bold text-primary hover:underline">
-            See full gallery for this service →
-          </Link>
+          {service.materialTag && (
+            <Link href={`/gallery?material=${service.materialTag}`} className="mt-6 inline-block font-bold text-primary hover:underline">
+              See full gallery for this service →
+            </Link>
+          )}
         </section>
       )}
 

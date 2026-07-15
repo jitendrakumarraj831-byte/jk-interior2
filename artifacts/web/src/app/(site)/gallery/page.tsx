@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description: "Browse JK Interior's project gallery filtered by material — gypsum, PVC, WPC, TV unit, partition — and space type.",
 };
 
-export default async function GalleryPage() {
-  const items = await getGalleryItems();
+export default async function GalleryPage({ searchParams }: { searchParams: Promise<{ material?: string; space?: string }> }) {
+  const [items, params] = await Promise.all([getGalleryItems(), searchParams]);
 
   return (
     <>
@@ -24,7 +24,7 @@ export default async function GalleryPage() {
           center={false}
         />
         <div className="mt-10">
-          <GalleryGrid items={items} />
+          <GalleryGrid items={items} initialMaterial={params.material} initialSpaceType={params.space} />
         </div>
       </section>
       <CtaSection />

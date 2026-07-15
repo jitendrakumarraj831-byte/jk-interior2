@@ -16,7 +16,7 @@ import {
   getServices,
   getProjectsByCity,
   getRelatedBlogPosts,
-  getFaqsByCategory,
+  getFaqsForDistrict,
 } from "@/lib/queries";
 
 export async function generateStaticParams() {
@@ -50,7 +50,7 @@ export default async function CityPage({ params }: { params: Promise<{ district:
     getProjectsByCity(city.id),
     getNearbyCities(city.districtId, city.slug),
     getRelatedBlogPosts("", undefined, 2),
-    getFaqsByCategory("district"),
+    getFaqsForDistrict(districtSlug),
   ]);
 
   const pageFaqs = faqs.length
