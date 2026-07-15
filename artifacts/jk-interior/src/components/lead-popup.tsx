@@ -22,6 +22,7 @@ export default function LeadPopup() {
     let shown = false
     const reveal = () => {
       if (shown) return
+      if (sessionStorage.getItem(SESSION_KEY)) return
       shown = true
       setOpen(true)
       sessionStorage.setItem(SESSION_KEY, "1")
