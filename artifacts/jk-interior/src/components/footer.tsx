@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/services", label: "Our Services" },
   { href: "/gallery", label: "Work Gallery" },
   { href: "/about", label: "About Us" },
+  { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact Us" },
 ]
@@ -32,6 +33,10 @@ const cityLinks = [
   { slug: "tribeniganj", name: "Tribeniganj" },
   { slug: "kursakanta", name: "Kursakanta" },
   { slug: "chhatapur", name: "Chhatapur" },
+  { slug: "kishanganj", name: "Kishanganj" },
+  { slug: "katihar", name: "Katihar" },
+  { slug: "bhargama", name: "Bhargama" },
+  { slug: "palasi", name: "Palasi" },
 ]
 
 export default function Footer() {

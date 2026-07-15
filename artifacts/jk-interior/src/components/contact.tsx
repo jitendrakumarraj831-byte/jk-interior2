@@ -171,19 +171,31 @@ export default function Contact() {
 
             {/* Map */}
             <motion.div
+              id="map"
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.2 } })}
-              className="overflow-hidden rounded-2xl border border-emerald-200 h-44 shadow-sm"
+              className="overflow-hidden rounded-2xl border border-emerald-200 shadow-sm scroll-mt-28"
             >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3584.238476840656!2d87.2514!3d26.29!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDE3JzI0LjAiTiA4N8KwMTUnMDUuMCJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="JK Interior Forbesganj Location"
-              />
+              <div className="h-44">
+                <iframe
+                  src="https://www.google.com/maps?q=26.3001,87.2533&z=15&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="JK Interior Forbesganj Location"
+                />
+              </div>
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=26.3001,87.2533"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-white py-2.5 text-xs font-bold text-emerald-700 border-t border-emerald-100 hover:bg-emerald-50 transition-colors"
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                Get Directions
+              </a>
             </motion.div>
           </div>
 

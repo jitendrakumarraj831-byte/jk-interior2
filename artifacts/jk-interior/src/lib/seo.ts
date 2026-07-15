@@ -420,6 +420,120 @@ export const CITIES: CityData[] = [
       },
     ],
   },
+  {
+    slug: 'kishanganj',
+    name: 'Kishanganj',
+    nameHi: 'किशनगंज',
+    district: 'Kishanganj',
+    state: 'Bihar',
+    distance: '45 km from Forbesganj',
+    description:
+      'JK Interior offers false ceiling, PVC ceiling, gypsum ceiling, WPC wall panel and complete interior design services in Kishanganj district, Bihar.',
+    uniqueContent:
+      'Kishanganj, a fast-developing district town bordering West Bengal, is regularly served by JK Interior for residential and commercial interior projects. We handle PVC false ceiling, gypsum ceiling design, WPC wall panels, UV marble sheet cladding, and complete home interiors for clients in Kishanganj with the same quality standards as our Forbesganj headquarters.',
+    keywords: [
+      'interior designer Kishanganj',
+      'false ceiling Kishanganj Bihar',
+      'PVC ceiling Kishanganj',
+      'gypsum ceiling Kishanganj',
+      'interior design Kishanganj',
+      'false ceiling contractor Kishanganj',
+      'WPC wall panel Kishanganj',
+    ],
+    faqs: [
+      {
+        q: 'Kishanganj में interior designer कौन है?',
+        a: 'JK Interior Kishanganj district में trusted interior contractor है। PVC ceiling, gypsum ceiling, WPC wall panel और complete interior design के लिए call करें: +91 8541849118।',
+      },
+      {
+        q: 'Kishanganj में false ceiling की cost क्या है?',
+        a: 'Kishanganj में JK Interior PVC ceiling ₹80/sq.ft और gypsum ceiling ₹85/sq.ft से offer करती है। Free site visit के लिए संपर्क करें।',
+      },
+      {
+        q: 'क्या JK Interior Kishanganj में service देती है?',
+        a: 'हाँ, JK Interior Kishanganj district में नियमित रूप से interior design और false ceiling services provide करती है।',
+      },
+    ],
+  },
+  {
+    slug: 'katihar',
+    name: 'Katihar',
+    nameHi: 'कटिहार',
+    district: 'Katihar',
+    state: 'Bihar',
+    distance: '80 km from Forbesganj',
+    description:
+      'JK Interior provides gypsum ceiling, PVC false ceiling, WPC wall paneling and interior design services in Katihar, Bihar at competitive prices.',
+    uniqueContent:
+      'Katihar is a major railway junction town and commercial centre in North Bihar. JK Interior extends its trusted interior design and false ceiling services to Katihar for homes, shops, and offices, bringing the same craftsmanship and ISI-certified materials used across our other service areas.',
+    keywords: [
+      'interior designer Katihar',
+      'false ceiling Katihar Bihar',
+      'PVC ceiling Katihar',
+      'gypsum ceiling Katihar',
+      'interior design Katihar',
+      'WPC wall panel Katihar',
+      'false ceiling contractor Katihar',
+    ],
+    faqs: [
+      {
+        q: 'Katihar में false ceiling contractor कौन है?',
+        a: 'JK Interior Katihar में PVC ceiling, gypsum ceiling, WPC wall panel और complete interior design services provide करती है। Call: +91 8541849118।',
+      },
+      {
+        q: 'Katihar में JK Interior कितनी दूर से आती है?',
+        a: 'JK Interior का office Forbesganj में है, जो Katihar से लगभग 80 km दूर है। हम Katihar में scheduled visits करते हैं — पहले call करके appointment book करें।',
+      },
+    ],
+  },
+  {
+    slug: 'bhargama',
+    name: 'Bhargama',
+    nameHi: 'भरगामा',
+    district: 'Araria',
+    state: 'Bihar',
+    distance: '25 km from Forbesganj',
+    description:
+      'JK Interior provides PVC false ceiling, gypsum ceiling and interior design services in Bhargama, Araria district, Bihar.',
+    uniqueContent:
+      'Bhargama block in Araria district falls within JK Interior\'s core service zone. We provide PVC false ceiling, gypsum ceiling, WPC wall panels and complete interior solutions to homes and shops in Bhargama with prompt response times from our Forbesganj base.',
+    keywords: [
+      'interior designer Bhargama',
+      'false ceiling Bhargama Araria',
+      'PVC ceiling Bhargama',
+      'gypsum ceiling Bhargama Bihar',
+    ],
+    faqs: [
+      {
+        q: 'Bhargama में false ceiling का काम JK Interior करती है?',
+        a: 'हाँ, JK Interior Bhargama में PVC false ceiling, gypsum ceiling और wall paneling services provide करती है। Free site visit उपलब्ध है — call करें +91 8541849118।',
+      },
+    ],
+  },
+  {
+    slug: 'palasi',
+    name: 'Palasi',
+    nameHi: 'पलासी',
+    district: 'Araria',
+    state: 'Bihar',
+    distance: '38 km from Forbesganj',
+    description:
+      'JK Interior serves Palasi, Araria district with false ceiling, PVC and gypsum ceiling, and wall paneling services at affordable rates.',
+    uniqueContent:
+      'Palasi is a growing block in Araria district where JK Interior provides interior design and ceiling installation services. Our team covers PVC false ceiling, gypsum ceiling, WPC wall panels and TV unit design for homes and commercial spaces in Palasi.',
+    keywords: [
+      'interior designer Palasi',
+      'false ceiling Palasi Araria',
+      'PVC ceiling Palasi Bihar',
+      'gypsum ceiling Palasi',
+    ],
+    faqs: [
+      {
+        q: 'Palasi में interior design services कौन देता है?',
+        a: 'JK Interior Palasi में PVC ceiling, gypsum ceiling, WPC wall panel और interior design services provide करती है। Call: +91 8541849118।',
+      },
+    ],
+  },
 ]
 
 export function getCityBySlug(slug: string): CityData | undefined {

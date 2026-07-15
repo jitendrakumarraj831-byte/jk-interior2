@@ -18,6 +18,15 @@ const Gallery = lazy(() => import("@/components/gallery"))
 const WhyUs = lazy(() => import("@/components/why-us"))
 const Testimonials = lazy(() => import("@/components/testimonials"))
 const FAQSection = lazy(() => import("@/components/faq-section"))
+const BeforeAfter = lazy(() => import("@/components/before-after"))
+const MaterialBrands = lazy(() => import("@/components/material-brands"))
+const PriceCalculator = lazy(() => import("@/components/price-calculator"))
+const VideoTestimonials = lazy(() => import("@/components/video-testimonials"))
+const EmiFinance = lazy(() => import("@/components/emi-finance"))
+
+function SectionFallback() {
+  return <div className="h-40 w-full" aria-hidden="true" />
+}
 
 export default function HomePage() {
   return (
@@ -127,13 +136,28 @@ export default function HomePage() {
       <Suspense fallback={<GallerySkeleton />}>
         <Gallery />
       </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <BeforeAfter />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <MaterialBrands />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <PriceCalculator />
+      </Suspense>
       <Suspense fallback={<WhyUsSkeleton />}>
         <WhyUs />
       </Suspense>
       <Suspense fallback={<TestimonialSkeleton />}>
         <Testimonials />
       </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <VideoTestimonials />
+      </Suspense>
       <ServiceAreas />
+      <Suspense fallback={<SectionFallback />}>
+        <EmiFinance />
+      </Suspense>
       <Suspense fallback={<FAQSkeleton />}>
         <FAQSection />
       </Suspense>
