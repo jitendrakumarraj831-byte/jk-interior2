@@ -18,6 +18,7 @@ import {
   getRelatedBlogPosts,
   getDistricts,
   getFaqsForService,
+  getGalleryItemsByMaterial,
 } from "@/lib/queries";
 
 export async function generateStaticParams() {
@@ -41,12 +42,13 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = await getServiceBySlug(slug);
   if (!service) notFound();
 
-  const [relatedServices, relatedProjects, relatedBlogs, districts, serviceFaqs] = await Promise.all([
+  const [relatedServices, relatedProjects, relatedBlogs, districts, serviceFaqs, galleryItems] = await Promise.all([
     getRelatedServices(service.slug, 3),
     getProjectsByService(service.id, 3),
     getRelatedBlogPosts("", service.slug, 2),
     getDistricts(),
     getFaqsForService(service.slug),
+    service.materialTag ? getGalleryItemsByMaterial(service.materialTag, 8) : Promise.resolve([]),
   ]);
 
   const faqs = serviceFaqs.length ? serviceFaqs : [
@@ -151,7 +153,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      {/* Gallery / recent projects for this service */}
+      {/* Recent projects for this service */}
       {relatedProjects.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
           <SectionHeading title={`${service.name} — Recent Projects`} center={false} />
@@ -160,11 +162,36 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
-          {service.materialTag && (
-            <Link href={`/gallery?material=${service.materialTag}`} className="mt-6 inline-block font-bold text-primary hover:underline">
-              See full gallery for this service →
-            </Link>
-          )}
+        </section>
+      )}
+
+      {/* Gallery photos for this service's material */}
+      {galleryItems.length > 0 && (
+        <section className="bg-secondary/40 py-12">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <SectionHeading title={`${service.name} — Photo Gallery`} center={false} />
+            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {galleryItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/projects/${item.project.slug}`}
+                  className="group relative aspect-square overflow-hidden rounded-2xl"
+                >
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.altText}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </Link>
+              ))}
+            </div>
+            {service.materialTag && (
+              <Link href={`/gallery?material=${service.materialTag}`} className="mt-6 inline-block font-bold text-primary hover:underline">
+                See full gallery for this service →
+              </Link>
+            )}
+          </div>
         </section>
       )}
 

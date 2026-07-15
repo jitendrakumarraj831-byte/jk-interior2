@@ -1,11 +1,14 @@
 export const SITE_URL = "https://www.jkinterior.online";
 export const SITE_NAME = "JK Interior";
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
+/** GA4 Measurement ID, e.g. "G-XXXXXXXXXX". Leave empty to disable analytics. */
+export const GA_MEASUREMENT_ID = "";
 
 export const BUSINESS = {
   name: "JK Interior",
   nameHi: "जेके इंटीरियर",
   tagline: "Bihar's Most Trusted False Ceiling & Interior Contractor",
+  taglineHi: "बिहार का सबसे भरोसेमंद फॉल्स सीलिंग और इंटीरियर कॉन्ट्रैक्टर",
   legalName: "JK Interior",
   phone1: "+91-8541849118",
   phone2: "+91-8651070831",

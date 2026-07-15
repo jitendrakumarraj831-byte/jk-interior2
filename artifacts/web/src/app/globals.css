@@ -134,3 +134,11 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+@media print {
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}
