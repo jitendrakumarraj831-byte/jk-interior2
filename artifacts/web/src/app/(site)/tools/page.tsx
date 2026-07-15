@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 const TOOLS = [
   { href: "/tools/price-calculator", icon: Calculator, title: "Price Calculator", description: "Instant price range for your room based on dimensions and service.", status: "Live" },
-  { href: "/tools/material-calculator", icon: Ruler, title: "Material Calculator", description: "Estimate the panels, boards and framework material needed for your room.", status: "Coming soon" },
-  { href: "/tools/quotation-generator", icon: FileText, title: "Quotation Generator", description: "Generate a shareable, itemized quotation PDF for your project.", status: "Coming soon" },
-  { href: "/tools/estimate-calculator", icon: Receipt, title: "Estimate Calculator", description: "Multi-room estimate across ceiling, wall panels, and TV unit in one go.", status: "Coming soon" },
+  { href: "/tools/material-calculator", icon: Ruler, title: "Material Calculator", description: "Estimate the panels, boards and framework material needed for your room.", status: "Live" },
+  { href: "/tools/quotation-generator", icon: FileText, title: "Quotation Generator", description: "Generate a shareable, itemized quotation you can print or share on WhatsApp.", status: "Live" },
+  { href: "/tools/estimate-calculator", icon: Receipt, title: "Estimate Calculator", description: "Multi-room estimate across ceiling, wall panels, and TV unit in one go.", status: "Live" },
 ];
 
 export default function ToolsPage() {

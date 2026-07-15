@@ -106,6 +106,15 @@ export function getGalleryItems() {
   });
 }
 
+export async function getGalleryItemsByMaterial(materialTag: string, limit = 8) {
+  return db.query.galleryItemsTable.findMany({
+    where: eq(galleryItemsTable.materialTag, materialTag),
+    orderBy: asc(galleryItemsTable.displayOrder),
+    with: { project: true },
+    limit,
+  });
+}
+
 export function getReviews() {
   return db.query.reviewsTable.findMany({ orderBy: desc(reviewsTable.createdAt) });
 }

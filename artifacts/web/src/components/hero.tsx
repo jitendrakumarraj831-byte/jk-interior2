@@ -18,6 +18,9 @@ export function Hero() {
             {BUSINESS.name} designs and installs PVC, gypsum &amp; WPC false ceilings, wall panels, and complete interiors — trusted across Araria, Purnia, Supaul and
             beyond since {BUSINESS.founded}.
           </p>
+          <p lang="hi" className="mt-2 max-w-xl text-base text-muted-foreground">
+            {BUSINESS.taglineHi} — मुफ़्त साइट विज़िट के लिए अभी कॉल करें।
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link href="/tools/price-calculator" className="rounded-xl gold-gradient px-6 py-3.5 text-sm font-bold text-white shadow-sm hover:opacity-90">
               Get Free Price Estimate

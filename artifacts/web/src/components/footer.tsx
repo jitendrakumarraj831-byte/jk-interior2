@@ -11,8 +11,11 @@ export async function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2">
-            <p className="font-serif text-lg font-bold">{BUSINESS.name}</p>
+            <p className="font-serif text-lg font-bold">
+              {BUSINESS.name} <span lang="hi" className="font-sans text-sm font-normal text-muted-foreground">({BUSINESS.nameHi})</span>
+            </p>
             <p className="mt-2 text-sm text-muted-foreground">{BUSINESS.tagline}</p>
+            <p lang="hi" className="text-sm text-muted-foreground">{BUSINESS.taglineHi}</p>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5" />
