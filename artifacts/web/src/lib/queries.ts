@@ -10,7 +10,7 @@ import {
   faqsTable,
   blogPostsTable,
 } from "@workspace/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 
 export function getDistricts() {
   return db.query.districtsTable.findMany({ orderBy: asc(districtsTable.displayOrder) });
@@ -120,6 +120,20 @@ export function getFaqs() {
 
 export async function getFaqsByCategory(category: (typeof faqsTable.$inferSelect)["category"]) {
   return db.query.faqsTable.findMany({ where: eq(faqsTable.category, category), orderBy: asc(faqsTable.displayOrder) });
+}
+
+export async function getFaqsForService(serviceSlug: string) {
+  return db.query.faqsTable.findMany({
+    where: and(eq(faqsTable.category, "service"), eq(faqsTable.serviceSlug, serviceSlug)),
+    orderBy: asc(faqsTable.displayOrder),
+  });
+}
+
+export async function getFaqsForDistrict(districtSlug: string) {
+  return db.query.faqsTable.findMany({
+    where: and(eq(faqsTable.category, "district"), eq(faqsTable.districtSlug, districtSlug)),
+    orderBy: asc(faqsTable.displayOrder),
+  });
 }
 
 export function getBlogPosts() {

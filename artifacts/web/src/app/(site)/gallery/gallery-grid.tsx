@@ -13,9 +13,9 @@ type GalleryItem = {
   project: { slug: string };
 };
 
-export function GalleryGrid({ items }: { items: GalleryItem[] }) {
-  const [material, setMaterial] = useState<string>("all");
-  const [spaceType, setSpaceType] = useState<string>("all");
+export function GalleryGrid({ items, initialMaterial, initialSpaceType }: { items: GalleryItem[]; initialMaterial?: string; initialSpaceType?: string }) {
+  const [material, setMaterial] = useState<string>(initialMaterial && initialMaterial.length ? initialMaterial : "all");
+  const [spaceType, setSpaceType] = useState<string>(initialSpaceType && initialSpaceType.length ? initialSpaceType : "all");
 
   const materials = useMemo(() => ["all", ...Array.from(new Set(items.map((i) => i.materialTag)))], [items]);
   const spaceTypes = useMemo(() => ["all", ...Array.from(new Set(items.map((i) => i.spaceType)))], [items]);
