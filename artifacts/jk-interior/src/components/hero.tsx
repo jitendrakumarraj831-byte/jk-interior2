@@ -34,8 +34,6 @@ const serviceCards = [
   { icon: Tv, title: "Modular Units", desc: "Luxury TV Units", color: "from-violet-500 to-violet-700" },
 ]
 
-const areaChips = ["Forbesganj", "Araria", "Purnia", "Supaul", "Jogbani", "Narpatganj"]
-
 export default function Hero() {
   const [index, setIndex] = useState(0)
   const shouldReduce = useReducedMotion()
@@ -222,6 +220,32 @@ export default function Hero() {
           {/* RIGHT CONTENT */}
           <div className="lg:col-span-5 flex flex-col gap-4">
 
+            {/* Featured Project Photo */}
+            <motion.div
+              {...anim(0.2)}
+              className="relative h-56 overflow-hidden rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:h-64 sm:rounded-3xl lg:h-72"
+            >
+              <motion.img
+                src="/images/hero-interior.jpg"
+                alt="Luxury false ceiling bedroom interior design by JK Interior in Forbesganj Bihar"
+                className="absolute inset-0 h-full w-full object-cover"
+                initial={shouldReduce ? {} : { scale: 1.08 }}
+                animate={shouldReduce ? {} : { scale: 1 }}
+                transition={{ duration: 9, ease: "easeOut" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 px-3 py-1.5 backdrop-blur-sm sm:left-4 sm:top-4">
+                <Sparkles className="h-3 w-3 text-amber-300" aria-hidden="true" />
+                <span className="text-[9px] font-bold uppercase tracking-widest text-white sm:text-[10px]">
+                  Featured Project
+                </span>
+              </div>
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
+                <p className="text-sm font-bold text-white drop-shadow sm:text-base">Luxury Bedroom False Ceiling</p>
+                <p className="text-xs font-medium text-white/70">Recent work · Forbesganj</p>
+              </div>
+            </motion.div>
+
             {/* Service Feature Cards */}
             <motion.div {...anim(0.3)} className="flex flex-col gap-3">
               {serviceCards.map((item, i) => (
@@ -243,19 +267,6 @@ export default function Hero() {
                   </div>
                   <CheckCircle2 className="ml-auto h-5 w-5 shrink-0 text-emerald-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
                 </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Area Chips */}
-            <motion.div {...anim(0.55)} className="flex flex-wrap gap-2" aria-label="Service areas">
-              {areaChips.map((area) => (
-                <span
-                  key={area}
-                  className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-600 shadow-sm"
-                >
-                  <MapPin className="h-2.5 w-2.5 text-emerald-600" aria-hidden="true" />
-                  {area}
-                </span>
               ))}
             </motion.div>
 
