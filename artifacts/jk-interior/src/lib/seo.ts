@@ -13,8 +13,8 @@ export const BUSINESS = {
   whatsapp: '918651070831',
   email: 'jkinteriorofficial@gmail.com',
   address: {
-    street: 'Dumariya',
-    city: 'Forbesganj',
+    street: 'Damaria',
+    city: 'Rewahi',
     district: 'Araria',
     state: 'Bihar',
     postalCode: '854318',

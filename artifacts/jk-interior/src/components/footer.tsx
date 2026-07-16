@@ -213,7 +213,7 @@ export default function Footer() {
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600">
                   <MapPin className="h-4 w-4" />
                 </div>
-                <span className="pt-0.5 leading-snug">Dumariya, Forbesganj,<br />Araria, Bihar – 854318</span>
+                <span className="pt-0.5 leading-snug">Damaria, Rewahi,<br />Araria, Bihar – 854318</span>
               </div>
 
               {/* WhatsApp CTA */}

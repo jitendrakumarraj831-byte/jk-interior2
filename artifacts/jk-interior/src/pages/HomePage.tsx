@@ -42,8 +42,8 @@ export default function HomePage() {
             priceRange: "₹₹",
             address: {
               "@type": "PostalAddress",
-              streetAddress: "Dumariya",
-              addressLocality: "Forbesganj",
+              streetAddress: "Damaria",
+              addressLocality: "Rewahi",
               addressRegion: "Bihar",
               postalCode: "854318",
               addressCountry: "IN"
@@ -75,7 +75,7 @@ export default function HomePage() {
               { "@type": "City", name: "Supaul" },
               { "@type": "City", name: "Narpatganj" },
               { "@type": "City", name: "Raniganj" },
-              { "@type": "City", name: "Dumariya" }
+              { "@type": "City", name: "Rewahi" }
             ],
             hasOfferCatalog: {
               "@type": "OfferCatalog",

@@ -76,7 +76,8 @@ const jsonLd = {
   telephone: "+918541849118",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Forbesganj",
+    streetAddress: "Damaria",
+    addressLocality: "Rewahi",
     addressRegion: "Bihar",
     addressCountry: "IN",
   },
