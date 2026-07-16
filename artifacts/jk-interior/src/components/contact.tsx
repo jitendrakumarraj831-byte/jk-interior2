@@ -175,14 +175,14 @@ export default function Contact() {
               className="overflow-hidden rounded-2xl border border-emerald-200 h-44 shadow-sm"
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3584.238476840656!2d87.2514!3d26.29!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDE3JzI0LjAiTiA4N8KwMTUnMDUuMCJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.064681149018!2d87.2034309!3d26.2920031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39efa3c3a605cc61%3A0xac1175566c0d0926!2sJk%20interior!5e0!3m2!1sen!2sin!4v1784167435421!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="JK Interior Forbesganj Location"
+                title="JK Interior Rewahi Location"
               />
             </motion.div>
           </div>
