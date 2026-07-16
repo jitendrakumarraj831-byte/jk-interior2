@@ -9,6 +9,33 @@ interface GalleryImage { src: string; alt: string; category?: string }
 
 const ALL = galleryImages as GalleryImage[]
 
+const CATEGORY_DESCRIPTIONS: Record<string, { en: string; hi: string }> = {
+  "Gypsum False Ceiling": {
+    en: "Elegant gypsum ceiling designs with smooth finish and creative lighting integration — ideal for luxury interiors.",
+    hi: "स्मूथ फिनिश और क्रिएटिव लाइटिंग के साथ एलिगेंट जिप्सम सीलिंग डिज़ाइन।",
+  },
+  "PVC Ceiling": {
+    en: "Waterproof PVC false ceiling panels with modern designs and a long-lasting, dust-free finish.",
+    hi: "वॉटरप्रूफ पैनल और मॉडर्न डिज़ाइन के साथ लंबे समय तक चलने वाली PVC फॉल्स सीलिंग।",
+  },
+  "Grid Ceiling": {
+    en: "Durable mineral-fiber grid ceilings for offices, shops, and hospitals — clean, acoustic, and easy to maintain.",
+    hi: "ऑफिस, दुकान और अस्पताल के लिए मजबूत ग्रिड सीलिंग — साफ, शांत और आसान मेंटेनेंस।",
+  },
+  "WPC fluted panels & uv marble Sheet": {
+    en: "Termite-proof WPC fluted wall panels and real-marble-look UV marble sheets for a premium wall finish.",
+    hi: "टर्माइट-प्रूफ WPC फ्लूटेड पैनल और रियल मार्बल जैसी UV मार्बल शीट — प्रीमियम वॉल फिनिश।",
+  },
+  "TV Unit Design": {
+    en: "Custom modular TV units with modern storage solutions, cable management, and premium finishes.",
+    hi: "मॉडर्न स्टोरेज और प्रीमियम फिनिश के साथ कस्टम मॉड्यूलर TV यूनिट डिज़ाइन।",
+  },
+  "Artificial Grass": {
+    en: "Premium artificial grass for balconies, terraces, and gardens — always green, zero maintenance.",
+    hi: "बालकनी, टैरेस और गार्डन के लिए प्रीमियम आर्टिफिशियल घास — हमेशा हरा-भरा, ज़ीरो मेंटेनेंस।",
+  },
+}
+
 function groupByCategory(images: GalleryImage[]) {
   const order: string[] = []
   const map = new Map<string, GalleryImage[]>()
@@ -153,6 +180,7 @@ function CategoryCard({ category, images, onOpen }: {
   }, [cur, playing, go, total])
 
   const id = `gallery-${slugify(category)}`
+  const description = CATEGORY_DESCRIPTIONS[category]
 
   return (
     <motion.div
@@ -235,6 +263,14 @@ function CategoryCard({ category, images, onOpen }: {
           )
         )}
       </div>
+
+      {/* Description */}
+      {description && (
+        <div className="px-3 pt-3 sm:px-4 sm:pt-4">
+          <p className="text-sm leading-relaxed text-gray-700 sm:text-base">{description.en}</p>
+          <p className="mt-1 text-xs leading-relaxed text-gray-500 sm:text-sm">{description.hi}</p>
+        </div>
+      )}
 
       {/* CTA */}
       <div className="flex gap-2 p-3 sm:p-4">
