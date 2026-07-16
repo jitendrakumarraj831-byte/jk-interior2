@@ -7,6 +7,7 @@ import ScrollProgress from "@/components/scroll-progress"
 const HomePage = lazy(() => import("@/pages/HomePage"))
 const AboutPage = lazy(() => import("@/pages/AboutPage"))
 const ServicesPage = lazy(() => import("@/pages/ServicesPage"))
+const ServiceCityPage = lazy(() => import("@/pages/ServiceCityPage"))
 const GalleryPage = lazy(() => import("@/pages/GalleryPage"))
 const ContactPage = lazy(() => import("@/pages/ContactPage"))
 const FAQPage = lazy(() => import("@/pages/FAQPage"))
@@ -28,6 +29,7 @@ function Router() {
         <Route path="/" component={HomePage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/services" component={ServicesPage} />
+        <Route path="/services/:service/:city" component={ServiceCityPage} />
         <Route path="/gallery" component={GalleryPage} />
         <Route path="/contact" component={ContactPage} />
         <Route path="/faq" component={FAQPage} />

@@ -3,6 +3,7 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { CITIES, SERVICES_LIST, getCityBySlug, SITE_URL } from "@/lib/seo"
+import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
 import { Phone, MessageCircle, MapPin, CheckCircle, ArrowRight, Star, Clock } from "lucide-react"
 
 export default function CityPage() {
@@ -178,15 +179,30 @@ export default function CityPage() {
           </h2>
           <p className="mb-8 text-sm text-gray-500">Everything you need for a beautiful interior — in one place.</p>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {SERVICES_LIST.map((service) => (
-              <div
-                key={service}
-                className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow-sm"
-              >
-                <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
-                {service}
-              </div>
-            ))}
+            {SERVICES_LIST.map((service) => {
+              const linked = SERVICE_CITY_SERVICES.find((s) => s.name === service)
+              if (linked) {
+                return (
+                  <Link
+                    key={service}
+                    href={`/services/${linked.slug}/${city.slug}`}
+                    className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow-sm hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                  >
+                    <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
+                    {service}
+                  </Link>
+                )
+              }
+              return (
+                <div
+                  key={service}
+                  className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow-sm"
+                >
+                  <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600" />
+                  {service}
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
