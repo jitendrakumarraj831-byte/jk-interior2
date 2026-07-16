@@ -3,7 +3,9 @@ import Navbar from "@/components/navbar"
 import Services from "@/components/services"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { Phone, MessageCircle } from "lucide-react"
+import { Phone, MessageCircle, MapPin } from "lucide-react"
+import { CITIES } from "@/lib/seo"
+import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
 
 export default function ServicesPage() {
   return (
@@ -34,6 +36,41 @@ export default function ServicesPage() {
       </h1>
       <div className="pt-28" />
       <Services />
+
+      {/* Service x City hub — internal links for every service/city landing page */}
+      <section className="py-16 bg-gray-50">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
+          <h2 className="mb-2 text-2xl font-black text-gray-900 sm:text-3xl">
+            Services by City
+          </h2>
+          <p className="mb-8 text-sm text-gray-500 max-w-2xl">
+            Explore detailed pricing, photos, and FAQs for each service in your city.
+          </p>
+          <div className="space-y-6">
+            {SERVICE_CITY_SERVICES.map((service) => (
+              <div key={service.slug}>
+                <div className="mb-2.5 flex items-center gap-2">
+                  <service.icon className="h-4 w-4 text-emerald-600" />
+                  <h3 className="text-sm font-bold text-gray-800">{service.name}</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {CITIES.map((city) => (
+                    <Link
+                      key={city.slug}
+                      href={`/services/${service.slug}/${city.slug}`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-gray-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                    >
+                      <MapPin className="h-3 w-3" />
+                      {city.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 text-center relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-b from-[#071126] to-[#0d1f3c]" />
