@@ -84,22 +84,22 @@ export default function ProcessTimeline() {
     <section id="process" className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] via-white to-[#f0fdf4]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(5,150,105,0.06),transparent)]" />
-        <div className="absolute inset-0 dot-pattern opacity-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1830] to-[#0d1f3c]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(16,185,129,0.12),transparent)]" />
+        <div className="absolute inset-0 dot-pattern opacity-[0.07]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
         <motion.div {...animProps} className="mb-14 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">Our Process</span>
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Our Process</span>
           </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
             How It <span className="hero-gradient-text">Works</span>
           </h2>
-          <p className="mx-auto max-w-xl text-base text-gray-500">
+          <p className="mx-auto max-w-xl text-base text-slate-400">
             Simple, transparent, and hassle-free — 4 easy steps to your dream interior
           </p>
           <motion.div
@@ -117,12 +117,12 @@ export default function ProcessTimeline() {
             <motion.div key={step.step} {...staggerItem} className="relative">
               {/* Connector line (desktop) */}
               {i < steps.length - 1 && (
-                <div className="absolute left-[calc(50%+3.5rem)] top-14 hidden h-0.5 w-[calc(100%-1rem)] bg-gradient-to-r from-emerald-200 to-transparent lg:block z-20" />
+                <div className="absolute left-[calc(50%+3.5rem)] top-14 hidden h-0.5 w-[calc(100%-1rem)] bg-gradient-to-r from-emerald-400/40 to-transparent lg:block z-20" />
               )}
 
-              <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 text-center transition-all duration-500 hover:-translate-y-2 hover:border-emerald-200 hover:shadow-[0_20px_60px_rgba(5,150,105,0.1)] sm:rounded-3xl shadow-sm">
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-emerald-400/30 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_rgba(16,185,129,0.15)] sm:rounded-3xl">
                 {/* Step number bg */}
-                <div className="absolute -top-4 -right-2 text-7xl font-black text-gray-100 select-none">
+                <div className="absolute -top-4 -right-2 text-7xl font-black text-white/5 select-none">
                   {step.step}
                 </div>
 
@@ -134,14 +134,14 @@ export default function ProcessTimeline() {
                 </div>
 
                 {/* Step badge */}
-                <div className="mb-3 inline-flex items-center justify-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1">
-                  <span className="text-[10px] font-black text-emerald-700 tracking-widest">STEP {step.step}</span>
+                <div className="mb-3 inline-flex items-center justify-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1">
+                  <span className="text-[10px] font-black text-emerald-300 tracking-widest">STEP {step.step}</span>
                 </div>
 
-                <h3 className="mb-1 text-lg font-bold text-gray-900">{step.title}</h3>
-                <p className="mb-3 text-xs font-semibold text-emerald-600/70">{step.titleHi}</p>
-                <p className="mb-2 text-sm leading-relaxed text-gray-600">{step.desc}</p>
-                <p className="text-xs leading-relaxed text-gray-400">{step.descHi}</p>
+                <h3 className="mb-1 text-lg font-bold text-white">{step.title}</h3>
+                <p className="mb-3 text-xs font-semibold text-emerald-300/70">{step.titleHi}</p>
+                <p className="mb-2 text-sm leading-relaxed text-slate-300">{step.desc}</p>
+                <p className="text-xs leading-relaxed text-slate-500">{step.descHi}</p>
               </div>
             </motion.div>
           ))}
