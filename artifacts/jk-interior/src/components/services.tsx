@@ -1,6 +1,8 @@
 
-import { Layers, PanelTop, Tv, Sparkles, Phone, MessageCircle, CircleCheck as CheckCircle2, ShieldCheck, Droplets, Clock, Gem, Zap } from "lucide-react"
+import { Layers, PanelTop, Tv, Sparkles, Phone, MessageCircle, CircleCheck as CheckCircle2, ShieldCheck, Droplets, Clock, Gem, Zap, ImageIcon } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
+import { useLocation } from "wouter"
+import { slugify } from "@/lib/utils"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -17,6 +19,7 @@ const services = [
     features: ["Waterproof", "Dust-Free", "Fast Install"],
     image: "/images/pvc.jpg",
     imageAlt: "PVC False Ceiling Installation in Forbesganj Bihar by JK Interior",
+    galleryCategory: "PVC Ceiling",
   },
   {
     icon: Layers,
@@ -30,6 +33,7 @@ const services = [
     features: ["Smooth Finish", "Light Ready", "Durable"],
     image: "/images/gypsum.jpg",
     imageAlt: "Gypsum Ceiling Design in Araria Bihar by JK Interior",
+    galleryCategory: "Gypsum False Ceiling",
   },
   {
     icon: PanelTop,
@@ -43,6 +47,7 @@ const services = [
     features: ["Termite-Proof", "Waterproof", "Zero Maintain"],
     image: "/images/wpc.jpg",
     imageAlt: "WPC Wall Paneling in Bihar by JK Interior Forbesganj",
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
   },
   {
     icon: PanelTop,
@@ -56,6 +61,7 @@ const services = [
     features: ["Marble Look", "Scratch-Free", "Easy Clean"],
     image: "/images/uv-marble.jpg",
     imageAlt: "UV Marble Sheet Wall Installation in Forbesganj Bihar",
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
   },
   {
     icon: Tv,
@@ -69,6 +75,7 @@ const services = [
     features: ["Custom Design", "Storage", "Cable Hide"],
     image: "/images/tv-unit.jpg",
     imageAlt: "Modular TV Unit Design in Forbesganj Araria Bihar",
+    galleryCategory: "TV Unit Design",
   },
   {
     icon: Sparkles,
@@ -82,6 +89,7 @@ const services = [
     features: ["Full Design", "Execution", "Warranty"],
     image: "/images/gypsum-ceiling.jpg",
     imageAlt: "Complete Interior Design Services in Bihar by JK Interior",
+    galleryCategory: null,
   },
 ]
 
@@ -96,6 +104,12 @@ const trustItems = [
 
 export default function Services() {
   const shouldReduce = useReducedMotion()
+  const [, navigate] = useLocation()
+
+  const goToGallery = (galleryCategory: string | null) => {
+    const target = galleryCategory ? `/gallery#gallery-${slugify(galleryCategory)}` : "/gallery"
+    navigate(target)
+  }
 
   const animProps = shouldReduce
     ? {}
@@ -202,7 +216,17 @@ export default function Services() {
             <motion.div
               key={service.title}
               {...staggerItem}
-              className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-500 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] hover:-translate-y-1 sm:rounded-3xl"
+              role="button"
+              tabIndex={0}
+              onClick={() => goToGallery(service.galleryCategory)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault()
+                  goToGallery(service.galleryCategory)
+                }
+              }}
+              aria-label={`View ${service.title} photos in gallery`}
+              className="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-500 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 sm:rounded-3xl"
             >
               {/* Image area */}
               <div className="relative h-44 overflow-hidden sm:h-52">
@@ -218,6 +242,12 @@ export default function Services() {
                 <div className={`absolute left-3 top-3 flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[10px] font-bold backdrop-blur-sm sm:rounded-xl sm:px-3 sm:text-xs ${service.badgeColor}`}>
                   <Sparkles className="h-3 w-3" aria-hidden="true" />
                   {service.badge}
+                </div>
+
+                {/* View gallery hint */}
+                <div className="absolute right-3 top-3 flex items-center gap-1 rounded-lg border border-white/30 bg-black/40 px-2 py-1 text-[9px] font-bold text-white opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 sm:rounded-xl sm:px-2.5 sm:text-[10px]">
+                  <ImageIcon className="h-3 w-3" aria-hidden="true" />
+                  View Gallery
                 </div>
 
                 {/* Icon overlay */}
@@ -254,6 +284,7 @@ export default function Services() {
                 <div className="flex gap-2">
                   <a
                     href="tel:+918541849118"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
                     aria-label={`Call for ${service.title} quote`}
                   >
@@ -264,6 +295,7 @@ export default function Services() {
                     href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20am%20interested%20in%20${encodeURIComponent(service.title)}%20service%20in%20Forbesganj.%20Please%20share%20details.`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-all hover:bg-[#25D366]/20 hover:border-[#25D366]/60 active:scale-95 sm:text-sm touch-manipulation"
                     aria-label={`WhatsApp for ${service.title}`}
                   >

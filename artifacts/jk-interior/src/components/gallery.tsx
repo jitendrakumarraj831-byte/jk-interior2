@@ -1,13 +1,27 @@
-import { useEffect, useState, useCallback, useRef } from "react"
+import { useEffect, useState, useCallback, useRef, useMemo } from "react"
 import { X, ChevronLeft, ChevronRight, Phone, MessageCircle, Sparkles, Play, Pause } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { galleryImages } from "@/lib/gallery-data"
+import { slugify } from "@/lib/utils"
 
 interface GalleryImage { src: string; alt: string; category?: string }
 
 const ALL = galleryImages as GalleryImage[]
-const CATS = ["सभी", ...Array.from(new Set(ALL.map(i => i.category || "Other")))]
+
+function groupByCategory(images: GalleryImage[]) {
+  const order: string[] = []
+  const map = new Map<string, GalleryImage[]>()
+  for (const img of images) {
+    const cat = img.category || "Other"
+    if (!map.has(cat)) {
+      map.set(cat, [])
+      order.push(cat)
+    }
+    map.get(cat)!.push(img)
+  }
+  return order.map((cat) => ({ category: cat, images: map.get(cat)! }))
+}
 
 /* ─── Lightbox (direction-aware) ─── */
 function Lightbox({ images, idx, onClose, onNext, onPrev }: {
@@ -115,14 +129,17 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   )
 }
 
-/* ─── Hero Auto Slider (direction-aware) ─── */
-function HeroSlider({ images, onOpen }: { images: GalleryImage[]; onOpen(i: GalleryImage): void }) {
+/* ─── Per-Service Category Card (own auto slider) ─── */
+function CategoryCard({ category, images, onOpen }: {
+  category: string; images: GalleryImage[]
+  onOpen(images: GalleryImage[], idx: number): void
+}) {
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState<1 | -1>(1)
   const [playing, setPlaying] = useState(true)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const total = Math.min(8, images.length)
-  const slides = images.slice(0, total)
+  const total = images.length
+  const showDots = total > 1 && total <= 10
 
   const go = useCallback((n: 1 | -1) => {
     setDir(n)
@@ -130,120 +147,115 @@ function HeroSlider({ images, onOpen }: { images: GalleryImage[]; onOpen(i: Gall
   }, [total])
 
   useEffect(() => {
-    if (!playing) return
-    timer.current = setTimeout(() => go(1), 3500)
+    if (!playing || total <= 1) return
+    timer.current = setTimeout(() => go(1), 4000)
     return () => { if (timer.current) clearTimeout(timer.current) }
-  }, [cur, playing, go])
+  }, [cur, playing, go, total])
 
-  return (
-    <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl mb-3 group"
-      style={{ height: "min(55vw, 500px)", minHeight: 220 }}>
-
-      <AnimatePresence mode="wait" custom={dir}>
-        <motion.div key={cur} custom={dir}
-          variants={{
-            enter: (d: number) => ({ opacity:0, x: d * 60 }),
-            center: { opacity:1, x:0 },
-            exit:  (d: number) => ({ opacity:0, x: d * -60 }),
-          }}
-          initial="enter" animate="center" exit="exit"
-          transition={{ duration:.55, ease:"easeInOut" }}
-          className="absolute inset-0 cursor-pointer"
-          onClick={() => onOpen(slides[cur])}>
-          <img src={slides[cur].src} alt={slides[cur].alt} className="w-full h-full object-cover"/>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent"/>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Prev / Next */}
-      <button onClick={e => { e.stopPropagation(); go(-1) }}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2.5 md:p-3 rounded-full bg-black/35 hover:bg-black/60 text-white border border-white/15 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-        <ChevronLeft size={20}/>
-      </button>
-      <button onClick={e => { e.stopPropagation(); go(1) }}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2.5 md:p-3 rounded-full bg-black/35 hover:bg-black/60 text-white border border-white/15 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-        <ChevronRight size={20}/>
-      </button>
-
-      {/* Play/Pause */}
-      <button onClick={e => { e.stopPropagation(); setPlaying(p => !p) }}
-        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/35 hover:bg-black/60 text-white border border-white/15 backdrop-blur-sm transition-all">
-        {playing ? <Pause size={13}/> : <Play size={13}/>}
-      </button>
-
-      {/* Bottom info */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-5 pt-12 bg-gradient-to-t from-black/65 to-transparent pointer-events-none">
-        <p className="text-white font-semibold text-sm md:text-base drop-shadow">{slides[cur].alt}</p>
-        {slides[cur].category && (
-          <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-widest text-emerald-300 bg-emerald-400/20 px-2.5 py-0.5 rounded-full">
-            {slides[cur].category}
-          </span>
-        )}
-      </div>
-
-      {/* Dots */}
-      <div className="absolute bottom-4 right-5 z-20 flex gap-1.5">
-        {slides.map((_, i) => (
-          <button key={i} onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
-            className={`rounded-full transition-all duration-300 h-1.5 ${i===cur ? "bg-emerald-400 w-6" : "bg-white/30 w-1.5 hover:bg-white/60"}`}/>
-        ))}
-      </div>
-
-      {/* Progress bar */}
-      {playing && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 z-20 bg-white/10 overflow-hidden">
-          <motion.div key={`${cur}-prog`}
-            className="h-full bg-emerald-400"
-            initial={{ width:"0%" }} animate={{ width:"100%" }}
-            transition={{ duration:3.5, ease:"linear" }}/>
-        </div>
-      )}
-    </div>
-  )
-}
-
-/* ─── Thumbnail strip ─── */
-function ThumbStrip({ images, active, onSet }: { images: GalleryImage[]; active: number; onSet(i:number): void }) {
-  return (
-    <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none mb-8">
-      {images.slice(0, Math.min(8, images.length)).map((img, i) => (
-        <button key={img.src} onClick={() => onSet(i)}
-          className={`shrink-0 w-14 h-14 rounded-xl overflow-hidden border-2 transition-all ${
-            i===active ? "border-emerald-500 scale-105 shadow-md" : "border-gray-200 hover:border-emerald-400"
-          }`}>
-          <img src={img.src} alt={img.alt} className="w-full h-full object-cover"/>
-        </button>
-      ))}
-    </div>
-  )
-}
-
-/* ─── Masonry card ─── */
-function Card({ img, i, onOpen }: { img: GalleryImage; i: number; onOpen(img: GalleryImage): void }) {
-  const pat = i % 10
-  const cls = pat===0 ? "col-span-2 row-span-2" : pat===4 ? "row-span-2" : pat===7 ? "col-span-2" : ""
-  const asp = pat===0 ? "aspect-[4/3]" : pat===4 ? "aspect-[2/3]" : pat===7 ? "aspect-[2/1]" : "aspect-square"
+  const id = `gallery-${slugify(category)}`
 
   return (
     <motion.div
-      initial={{ opacity:0, scale:.95 }} whileInView={{ opacity:1, scale:1 }}
-      viewport={{ once:true, margin:"-20px" }} transition={{ duration:.35, delay: Math.min(i*.03,.25) }}
-      onClick={() => onOpen(img)} role="button" tabIndex={0} onKeyDown={e => e.key==="Enter" && onOpen(img)}
-      aria-label={img.alt}
-      className={`group relative overflow-hidden rounded-2xl cursor-pointer bg-gray-100 border border-gray-200 hover:border-emerald-400 transition-all duration-300 hover:shadow-lg ${cls} ${asp}`}>
-      <img src={img.src} alt={img.alt} loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent"/>
-      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
-      <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-        <p className="text-white text-[11px] font-medium truncate drop-shadow">{img.alt}</p>
-      </div>
-      <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div className="bg-white/25 backdrop-blur-sm rounded-full p-1.5 border border-white/30">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/>
-          </svg>
+      id={id}
+      initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
+      viewport={{ once:true, margin:"-40px" }} transition={{ duration:.5 }}
+      className="group relative scroll-mt-28 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] sm:rounded-3xl"
+    >
+      {/* Slider area */}
+      <div className="relative h-56 overflow-hidden sm:h-64 md:h-72">
+        <AnimatePresence mode="wait" custom={dir}>
+          <motion.img
+            key={cur} src={images[cur].src} alt={images[cur].alt}
+            custom={dir}
+            variants={{
+              enter: (d: number) => ({ opacity:0, x: d * 60 }),
+              center: { opacity:1, x:0 },
+              exit:  (d: number) => ({ opacity:0, x: d * -60 }),
+            }}
+            initial="enter" animate="center" exit="exit"
+            transition={{ duration:.5, ease:"easeInOut" }}
+            className="absolute inset-0 h-full w-full cursor-pointer object-cover"
+            onClick={() => onOpen(images, cur)}
+          />
+        </AnimatePresence>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"/>
+
+        {/* Photo count badge */}
+        <div className="absolute left-3 top-3 z-20 rounded-lg border border-white/20 bg-black/40 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm sm:rounded-xl sm:text-xs">
+          {total} Photo{total !== 1 ? "s" : ""}
         </div>
+
+        {total > 1 && (
+          <>
+            {/* Prev / Next */}
+            <button onClick={e => { e.stopPropagation(); go(-1) }} aria-label="Previous photo"
+              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/15 bg-black/35 p-2 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/60 group-hover:opacity-100 md:p-2.5">
+              <ChevronLeft size={18}/>
+            </button>
+            <button onClick={e => { e.stopPropagation(); go(1) }} aria-label="Next photo"
+              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/15 bg-black/35 p-2 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/60 group-hover:opacity-100 md:p-2.5">
+              <ChevronRight size={18}/>
+            </button>
+
+            {/* Play/Pause */}
+            <button onClick={e => { e.stopPropagation(); setPlaying(p => !p) }} aria-label={playing ? "Pause slider" : "Play slider"}
+              className="absolute right-3 top-3 z-20 rounded-full border border-white/15 bg-black/35 p-1.5 text-white backdrop-blur-sm transition-all hover:bg-black/60">
+              {playing ? <Pause size={12}/> : <Play size={12}/>}
+            </button>
+
+            {/* Progress bar */}
+            {playing && (
+              <div className="absolute top-0 left-0 right-0 z-20 h-0.5 overflow-hidden bg-white/10">
+                <motion.div key={`${cur}-prog`} className="h-full bg-emerald-400"
+                  initial={{ width:"0%" }} animate={{ width:"100%" }} transition={{ duration:4, ease:"linear" }}/>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Category title */}
+        <div className="absolute bottom-3 left-3 right-3 z-20">
+          <h3 className="text-lg font-black text-white drop-shadow sm:text-xl">{category}</h3>
+        </div>
+
+        {/* Dots or fraction counter */}
+        {total > 1 && (
+          showDots ? (
+            <div className="absolute bottom-3 right-3 z-20 flex gap-1.5">
+              {images.map((_, i) => (
+                <button key={i} onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
+                  aria-label={`Go to photo ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i===cur ? "w-6 bg-emerald-400" : "w-1.5 bg-white/40 hover:bg-white/70"}`}/>
+              ))}
+            </div>
+          ) : (
+            <div className="absolute bottom-3 right-3 z-20 rounded-full border border-white/20 bg-black/40 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
+              {cur + 1} / {total}
+            </div>
+          )
+        )}
+      </div>
+
+      {/* CTA */}
+      <div className="flex gap-2 p-3 sm:p-4">
+        <a
+          href="tel:+918541849118"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
+          aria-label={`Call for ${category} quote`}
+        >
+          <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+          Get Quote
+        </a>
+        <a
+          href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20am%20interested%20in%20${encodeURIComponent(category)}%20service%20in%20Forbesganj.%20Please%20share%20details.`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-all hover:bg-[#25D366]/20 hover:border-[#25D366]/60 active:scale-95 sm:text-sm touch-manipulation"
+          aria-label={`WhatsApp for ${category}`}
+        >
+          <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+          WhatsApp
+        </a>
       </div>
     </motion.div>
   )
@@ -252,32 +264,48 @@ function Card({ img, i, onOpen }: { img: GalleryImage; i: number; onOpen(img: Ga
 /* ─── Main Gallery ─── */
 export default function Gallery() {
   const [mounted, setMounted] = useState(false)
-  const [cat, setCat] = useState("सभी")
   const [lbImgs, setLbImgs] = useState<GalleryImage[]>([])
   const [lbIdx, setLbIdx] = useState<number | null>(null)
-  const [sliderCur, setSliderCur] = useState(0)
 
   useEffect(() => setMounted(true), [])
 
-  const filtered = cat === "सभी" ? ALL : ALL.filter(i => i.category === cat)
+  const categories = useMemo(() => groupByCategory(ALL), [])
 
-  const open = useCallback((img: GalleryImage) => {
-    const i = filtered.findIndex(x => x.src === img.src)
-    setLbImgs(filtered); setLbIdx(i >= 0 ? i : 0)
-  }, [filtered])
+  const open = useCallback((images: GalleryImage[], idx: number) => {
+    setLbImgs(images); setLbIdx(idx)
+  }, [])
 
   const close = useCallback(() => { setLbIdx(null); setLbImgs([]) }, [])
   const next = useCallback(() => setLbIdx(p => p !== null ? (p+1) % lbImgs.length : null), [lbImgs.length])
   const prev = useCallback(() => setLbIdx(p => p !== null ? (p-1+lbImgs.length) % lbImgs.length : null), [lbImgs.length])
 
-  useEffect(() => { setSliderCur(0) }, [cat])
+  // Deep-link support: /gallery#gallery-<category-slug> scrolls to the matching service card
+  useEffect(() => {
+    if (!mounted) return
+    const hash = window.location.hash
+    if (!hash) return
+    let attempts = 0
+    let t: ReturnType<typeof setTimeout>
+    const tryScroll = () => {
+      const el = document.getElementById(hash.slice(1))
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" })
+      } else if (attempts < 10) {
+        attempts++
+        t = setTimeout(tryScroll, 150)
+      }
+    }
+    t = setTimeout(tryScroll, 100)
+    return () => clearTimeout(t)
+  }, [mounted])
 
   if (!mounted) return (
     <section className="min-h-screen bg-gradient-to-b from-[#f0fdf4] to-white pt-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="h-[45vw] max-h-[440px] rounded-3xl bg-emerald-50 animate-pulse mb-3"/>
-        <div className="flex gap-2 mb-8">{[1,2,3].map(i=><div key={i} className="h-14 w-14 rounded-xl bg-emerald-50 animate-pulse"/>)}</div>
-        <div className="grid grid-cols-3 gap-2 auto-rows-[110px]">{Array.from({length:9}).map((_,i)=><div key={i} className={`bg-emerald-50 rounded-2xl animate-pulse ${i===0?"col-span-2 row-span-2":""}`}/>)}</div>
+        <div className="h-10 w-64 mx-auto rounded-full bg-emerald-50 animate-pulse mb-10"/>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {Array.from({length:4}).map((_,i)=><div key={i} className="h-64 rounded-3xl bg-emerald-50 animate-pulse"/>)}
+        </div>
       </div>
     </section>
   )
@@ -306,53 +334,19 @@ export default function Gallery() {
           </p>
         </motion.div>
 
-        {/* ── Filter Tabs ── */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-none snap-x">
-          {CATS.map(c => {
-            const cnt = c === "सभी" ? ALL.length : ALL.filter(i => i.category === c).length
-            const on = cat === c
-            return (
-              <button key={c} onClick={() => setCat(c)}
-                className={`snap-start shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all border whitespace-nowrap ${
-                  on ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
-                     : "bg-white text-gray-600 border-gray-200 hover:border-emerald-400 hover:text-emerald-700"}`}>
-                {c}
-                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${on ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"}`}>{cnt}</span>
-              </button>
-            )
-          })}
-        </div>
-
-        {/* ── Hero Slider ── */}
-        <AnimatePresence mode="wait">
-          <motion.div key={cat}
-            initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0 }} transition={{ duration:.35 }}>
-            <HeroSlider images={filtered} onOpen={open}/>
-            <ThumbStrip images={filtered} active={sliderCur} onSet={setSliderCur}/>
-          </motion.div>
-        </AnimatePresence>
-
         {/* ── Section label ── */}
-        <div className="flex items-center gap-4 mb-5">
+        <div className="flex items-center gap-4 mb-6">
           <div className="w-1 h-8 bg-emerald-500 rounded-full"/>
-          <h3 className="text-gray-800 font-bold text-lg">सभी Projects</h3>
+          <h3 className="text-gray-800 font-bold text-lg">Service के हिसाब से Projects</h3>
           <div className="flex-1 h-px bg-emerald-200"/>
-          <span className="text-gray-400 text-xs">{filtered.length} photos</span>
+          <span className="text-gray-400 text-xs">{categories.length} services</span>
         </div>
 
-        {/* ── Masonry Grid ── */}
-        <AnimatePresence mode="wait">
-          <motion.div key={`grid-${cat}`}
-            initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0 }} transition={{ duration:.3 }}
-            className="grid grid-cols-3 md:grid-cols-4 gap-2 md:gap-3 auto-rows-[110px] md:auto-rows-[130px]">
-            {filtered.map((img, i) => <Card key={img.src} img={img} i={i} onOpen={open}/>)}
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="flex items-center gap-3 mt-5">
-          <div className="flex-1 h-px bg-emerald-100"/>
-          <p className="text-gray-400 text-xs whitespace-nowrap">{filtered.length} photos · {cat}</p>
-          <div className="flex-1 h-px bg-emerald-100"/>
+        {/* ── Category Slider Cards ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+          {categories.map(({ category, images }) => (
+            <CategoryCard key={category} category={category} images={images} onOpen={open}/>
+          ))}
         </div>
 
         {/* ── CTA ── */}
