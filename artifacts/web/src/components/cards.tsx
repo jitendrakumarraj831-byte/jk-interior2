@@ -1,22 +1,89 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Star, MapPin } from "lucide-react";
+import {
+  Star,
+  MapPin,
+  ArrowRight,
+  Waves,
+  Sparkles,
+  LayoutPanelLeft,
+  Gem,
+  Tv,
+  Home,
+  Bed,
+  ChefHat,
+  Briefcase,
+  Building2,
+  AlignJustify,
+  SquareStack,
+  type LucideIcon,
+} from "lucide-react";
 import type { Service, Project, District, City, Review } from "@workspace/db/schema";
 
+const SERVICE_ICONS: Record<string, LucideIcon> = {
+  waves: Waves,
+  sparkles: Sparkles,
+  "layout-panel-left": LayoutPanelLeft,
+  gem: Gem,
+  tv: Tv,
+  home: Home,
+  bed: Bed,
+  "chef-hat": ChefHat,
+  briefcase: Briefcase,
+  "building-2": Building2,
+  "align-justify": AlignJustify,
+  "square-stack": SquareStack,
+};
+
+const TAG_LABEL_OVERRIDES: Record<string, string> = {
+  pvc: "PVC",
+  wpc: "WPC",
+  acp: "ACP",
+  "uv-marble": "UV Marble",
+  "tv-unit": "TV Unit",
+};
+
+function formatMaterialTag(tag: string) {
+  return TAG_LABEL_OVERRIDES[tag] ?? tag.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export function ServiceCard({ service }: { service: Service }) {
+  const Icon = (service.icon && SERVICE_ICONS[service.icon]) || Sparkles;
+
   return (
     <Link href={`/services/${service.slug}`} className="glass-card card-hover group block overflow-hidden">
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-3xl bg-secondary">
         {service.heroImage && (
-          <Image src={service.heroImage} alt={service.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+          <Image src={service.heroImage} alt={service.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-black/0" />
+        <span className="gold-gradient absolute left-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl shadow-lg ring-2 ring-white/40">
+          <Icon className="h-5 w-5 text-white" />
+        </span>
+        {service.materialTag && (
+          <span className="absolute right-4 top-4 rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary shadow-sm backdrop-blur">
+            {formatMaterialTag(service.materialTag)}
+          </span>
         )}
       </div>
       <div className="p-5">
-        <h3 className="font-serif text-lg font-bold text-foreground">{service.name}</h3>
+        <h3 className="font-serif text-lg font-bold text-foreground transition-colors group-hover:text-primary">{service.name}</h3>
         <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">{service.shortDescription}</p>
-        <p className="mt-3 text-sm font-bold text-primary">
-          {service.priceRangeMin > 0 ? `₹${service.priceRangeMin}–₹${service.priceRangeMax}/${service.priceUnit}` : "Custom quote"}
-        </p>
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/70 pt-3.5">
+          <p className="text-sm font-bold text-primary">
+            {service.priceRangeMin > 0 ? (
+              <>
+                From <span className="font-serif text-base">₹{service.priceRangeMin}</span>
+                <span className="text-muted-foreground">/{service.priceUnit}</span>
+              </>
+            ) : (
+              "Get Custom Quote"
+            )}
+          </p>
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-foreground/70 transition-all group-hover:gap-1.5 group-hover:text-primary">
+            Explore <ArrowRight className="h-3.5 w-3.5" />
+          </span>
+        </div>
       </div>
     </Link>
   );

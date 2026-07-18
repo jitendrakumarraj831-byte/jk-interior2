@@ -19,8 +19,8 @@ export default async function ServicesPage() {
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <SectionHeading
           eyebrow="What We Do"
-          title="Interior & False Ceiling Services"
-          description="Every service below has its own detailed page covering benefits, materials, installation process, pricing and real project examples."
+          title="Interior & False Ceiling Services, Done Right"
+          description="12 specialised services, each with its own detailed page covering benefits, branded materials, step-by-step installation process, transparent pricing and real project examples."
           center={false}
         />
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
