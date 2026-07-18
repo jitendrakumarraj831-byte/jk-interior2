@@ -56,11 +56,11 @@ export default function Contact() {
   return (
     <section id="contact" className="relative overflow-hidden py-20 sm:py-24 lg:py-32">
 
-      {/* Background */}
+      {/* Background — a dark "invitation" panel; the form itself stays a bright card floating on it */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] via-white to-[#f0fdf4]" />
-        <div className="absolute inset-0 grid-texture opacity-20" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(5,150,105,0.05),transparent)]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#04211a] via-[#0a3328] to-[#04211a]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_80%_10%,rgba(245,158,11,0.1),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_90%,rgba(16,185,129,0.14),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -69,11 +69,12 @@ export default function Contact() {
           icon={MessageCircle}
           badge="संपर्क करें"
           headingSize="md"
+          dark
           title={<>Get In <span className="hero-gradient-text">Touch</span></>}
           subtitle={
             <>
               Call, WhatsApp, or fill the form below — a real person from our Forbesganj office replies, not a bot.{" "}
-              <span className="text-emerald-700 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
+              <span className="text-emerald-300 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
             </>
           }
         />
@@ -85,29 +86,29 @@ export default function Contact() {
             <div className="grid gap-4 sm:grid-cols-2">
               <motion.div
                 {...animProps}
-                className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
+                className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
                   <Phone className="h-5 w-5" />
                 </div>
-                <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-700">Call Us</h4>
+                <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Call Us</h4>
                 <div className="flex flex-col gap-1.5 text-sm font-bold">
-                  <a href={`tel:${CALL_NUMBER}`} className="text-gray-900 hover:text-emerald-700 transition-colors">+91 8541849118</a>
-                  <a href={`tel:+${WA_NUMBER}`} className="text-gray-500 hover:text-emerald-700 transition-colors">+91 8651070831</a>
+                  <a href={`tel:${CALL_NUMBER}`} className="text-white hover:text-emerald-300 transition-colors">+91 8541849118</a>
+                  <a href={`tel:+${WA_NUMBER}`} className="text-slate-400 hover:text-emerald-300 transition-colors">+91 8651070831</a>
                 </div>
               </motion.div>
 
               <motion.div
                 {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
-                className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
+                className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
                   <Mail className="h-5 w-5" />
                 </div>
-                <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-700">Email Us</h4>
+                <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Email Us</h4>
                 <a
                   href="mailto:jkinteriorofficial@gmail.com"
-                  className="text-sm font-bold text-gray-700 hover:text-emerald-700 break-all transition-colors"
+                  className="text-sm font-bold text-slate-200 hover:text-emerald-300 break-all transition-colors"
                 >
                   jkinteriorofficial@gmail.com
                 </a>
@@ -117,16 +118,16 @@ export default function Contact() {
             {/* Location */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
-              className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
+              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-300 border border-emerald-400/20">
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-gray-900 mb-1">Our Location</h4>
-                  <p className="text-gray-600 font-semibold text-sm">Damaria, Rewahi, Araria, Bihar - 854318</p>
-                  <p className="text-xs text-gray-400 mt-1">दमरिया, रेवाही, अररिया, बिहार</p>
+                  <h4 className="text-base font-bold text-white mb-1">Our Location</h4>
+                  <p className="text-slate-300 font-semibold text-sm">Damaria, Rewahi, Araria, Bihar - 854318</p>
+                  <p className="text-xs text-slate-500 mt-1">दमरिया, रेवाही, अररिया, बिहार</p>
                 </div>
               </div>
             </motion.div>
@@ -134,22 +135,22 @@ export default function Contact() {
             {/* Hours */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
-              className="glass-card p-5 transition-all duration-300 hover:border-emerald-300 card-hover"
+              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300 border border-amber-400/20">
                   <Clock className="h-6 w-6" />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-gray-900 mb-2">Working Hours</h4>
+                  <h4 className="text-base font-bold text-white mb-2">Working Hours</h4>
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between gap-8">
-                      <span className="text-gray-500">Mon – Sat</span>
-                      <span className="text-gray-900 font-semibold">8:00 AM – 8:00 PM</span>
+                      <span className="text-slate-400">Mon – Sat</span>
+                      <span className="text-white font-semibold">8:00 AM – 8:00 PM</span>
                     </div>
                     <div className="flex justify-between gap-8">
-                      <span className="text-gray-500">Sunday</span>
-                      <span className="text-gray-900 font-semibold">9:00 AM – 6:00 PM</span>
+                      <span className="text-slate-400">Sunday</span>
+                      <span className="text-white font-semibold">9:00 AM – 6:00 PM</span>
                     </div>
                   </div>
                 </div>
@@ -172,7 +173,7 @@ export default function Contact() {
             {/* Map */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.2 } })}
-              className="overflow-hidden rounded-2xl border border-emerald-200 h-44 shadow-sm"
+              className="overflow-hidden rounded-2xl border border-white/10 h-44 shadow-sm"
             >
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.064681149018!2d87.2034309!3d26.2920031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39efa3c3a605cc61%3A0xac1175566c0d0926!2sJk%20interior!5e0!3m2!1sen!2sin!4v1784167435421!5m2!1sen!2sin"
@@ -187,10 +188,10 @@ export default function Contact() {
             </motion.div>
           </div>
 
-          {/* RIGHT: Form */}
+          {/* RIGHT: Form — a bright invitation card set against the dark panel */}
           <motion.div
             {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.1 } })}
-            className="glass-card-bright rounded-3xl p-7 md:p-9"
+            className="rounded-3xl bg-white p-7 shadow-[0_30px_80px_rgba(0,0,0,0.35)] ring-1 ring-amber-300/40 md:p-9"
           >
             {/* Form Header */}
             <div className="mb-6 flex items-center gap-3">

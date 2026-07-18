@@ -57,66 +57,73 @@ export default function FAQSection() {
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i)
 
+  const mid = Math.ceil(faqs.length / 2)
+  const columns = [faqs.slice(0, mid), faqs.slice(mid)]
+
+  const renderEntry = (faq: (typeof faqs)[number], i: number) => (
+    <div key={i} className="border-b border-gray-200 py-5 first:pt-0 last:border-b-0">
+      <button
+        className="flex w-full items-start gap-3 text-left"
+        onClick={() => toggle(i)}
+        aria-expanded={openIndex === i}
+      >
+        <span className={`mt-0.5 shrink-0 rounded border px-1.5 py-0.5 font-mono text-[10px] font-bold ${
+          openIndex === i ? "border-emerald-400 bg-emerald-50 text-emerald-700" : "border-gray-300 text-gray-400"
+        }`}>
+          Q{String(i + 1).padStart(2, "0")}
+        </span>
+        <span className={`flex-1 font-serif text-sm font-bold leading-snug sm:text-base ${openIndex === i ? "text-emerald-800" : "text-gray-800"}`}>
+          {faq.q}
+        </span>
+        <ChevronDown
+          className={`mt-0.5 h-4 w-4 shrink-0 transition-transform duration-300 ${
+            openIndex === i ? "rotate-180 text-emerald-600" : "text-gray-400"
+          }`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {openIndex === i && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: easeLux }}
+            className="overflow-hidden"
+          >
+            <p className="pl-9 pt-3 text-sm leading-relaxed text-gray-600">{faq.a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+
   return (
-    <section id="faq" className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
-      {/* Background */}
+    <section id="faq" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
+      {/* Background — plain white "reference page", the one section without any tinted backdrop */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0fdf4] to-white" />
-        <div className="absolute inset-0 grid-texture opacity-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_0%,rgba(5,150,105,0.04),transparent)]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
+      <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
         <SectionHeader
           icon={HelpCircle}
-          badge="FAQ"
+          badge="Reference Index"
           headingSize="md"
           className="mb-12"
           title={<>Frequently Asked <span className="hero-gradient-text">Questions</span></>}
           subtitle="JK Interior के बारे में सबसे common questions के answers — अपना doubt clear करें"
         />
 
-        {/* FAQ List */}
-        <motion.div {...animProps} className="space-y-3">
-          {faqs.map((faq, i) => (
+        {/* Two-column glossary/index layout */}
+        <motion.div {...animProps} className="grid gap-x-12 sm:grid-cols-2">
+          {columns.map((col, colIdx) => (
             <div
-              key={i}
-              className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
-                openIndex === i
-                  ? "border-emerald-300 bg-emerald-50/60"
-                  : "border-gray-200 bg-white hover:border-emerald-200"
-              }`}
+              key={colIdx}
+              className={colIdx === 1 ? "sm:border-l sm:border-gray-200 sm:pl-12" : ""}
             >
-              <button
-                className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-                onClick={() => toggle(i)}
-                aria-expanded={openIndex === i}
-              >
-                <span className={`text-sm font-bold leading-snug sm:text-base ${openIndex === i ? "text-emerald-800" : "text-gray-800"}`}>
-                  {faq.q}
-                </span>
-                <ChevronDown
-                  className={`h-5 w-5 shrink-0 transition-transform duration-300 ${
-                    openIndex === i ? "rotate-180 text-emerald-600" : "text-gray-400"
-                  }`}
-                />
-              </button>
-
-              <AnimatePresence initial={false}>
-                {openIndex === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: easeLux }}
-                    className="overflow-hidden"
-                  >
-                    <div className="border-t border-emerald-200 px-6 pb-5 pt-4">
-                      <p className="text-sm leading-relaxed text-gray-600">{faq.a}</p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {col.map((faq) => renderEntry(faq, faqs.indexOf(faq)))}
             </div>
           ))}
         </motion.div>

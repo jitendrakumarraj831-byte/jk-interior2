@@ -163,9 +163,10 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 }
 
 /* ─── Per-Service Category Card (own auto slider) ─── */
-function CategoryCard({ category, images, onOpen }: {
+function CategoryCard({ category, images, onOpen, index }: {
   category: string; images: GalleryImage[]
   onOpen(images: GalleryImage[], idx: number): void
+  index: number
 }) {
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState<1 | -1>(1)
@@ -187,13 +188,15 @@ function CategoryCard({ category, images, onOpen }: {
 
   const id = `gallery-${slugify(category)}`
   const description = CATEGORY_DESCRIPTIONS[category]
+  // Alternating tilt gives the wall a hand-pinned, candid feel instead of a uniform grid.
+  const tilt = index % 3 === 0 ? "-rotate-1" : index % 3 === 1 ? "rotate-0" : "rotate-1"
 
   return (
     <motion.div
       id={id}
       initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
       viewport={{ once:true, margin:"-40px" }} transition={{ duration:.5 }}
-      className="group relative scroll-mt-28 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] sm:rounded-3xl"
+      className={`group relative mb-5 break-inside-avoid scroll-mt-28 overflow-hidden rounded-sm border-8 border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_16px_44px_rgba(0,0,0,0.18)] sm:mb-6 sm:border-[10px] ${tilt}`}
     >
       {/* Slider area */}
       <div className="relative h-56 overflow-hidden sm:h-64 md:h-72">
@@ -340,24 +343,26 @@ export default function Gallery() {
   }, [mounted])
 
   if (!mounted) return (
-    <section className="min-h-screen bg-gradient-to-b from-[#f0fdf4] to-white pt-24 px-4">
+    <section className="min-h-screen bg-[#efece3] pt-24 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="h-10 w-64 mx-auto rounded-full bg-emerald-50 animate-pulse mb-10"/>
+        <div className="h-10 w-64 mx-auto rounded-full bg-white/60 animate-pulse mb-10"/>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Array.from({length:4}).map((_,i)=><div key={i} className="h-64 rounded-3xl bg-emerald-50 animate-pulse"/>)}
+          {Array.from({length:4}).map((_,i)=><div key={i} className="h-64 bg-white/60 animate-pulse"/>)}
         </div>
       </div>
     </section>
   )
 
   return (
-    <section id="gallery" className="relative overflow-hidden">
-      {/* Same light background as rest of site */}
+    <section id="gallery" className="relative overflow-hidden bg-[#efece3]">
+      {/* A pinboard/wall backdrop — warm plaster tone with a faint cork-board dot grain,
+          deliberately distinct from the emerald gradients used in every other section. */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] to-white"/>
+        <div className="absolute inset-0 dot-pattern opacity-[0.18]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(0,0,0,0.05),transparent)]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-20 sm:pt-24 pb-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 pt-20 sm:pt-24 pb-16">
 
         {/* ── Header ── */}
         <SectionHeader
@@ -374,14 +379,14 @@ export default function Gallery() {
         <div className="flex items-center gap-4 mb-6">
           <div className="w-1 h-8 bg-emerald-500 rounded-full"/>
           <h3 className="text-gray-800 font-bold text-lg">Service के हिसाब से Projects</h3>
-          <div className="flex-1 h-px bg-emerald-200"/>
-          <span className="text-gray-400 text-xs">{categories.length} services</span>
+          <div className="flex-1 h-px bg-emerald-900/15"/>
+          <span className="text-gray-500 text-xs">{categories.length} services</span>
         </div>
 
-        {/* ── Category Slider Cards ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {categories.map(({ category, images }) => (
-            <CategoryCard key={category} category={category} images={images} onOpen={open}/>
+        {/* ── Portfolio wall — CSS-column masonry of "pinned photo" cards ── */}
+        <div className="columns-1 sm:columns-2 gap-5 sm:gap-6">
+          {categories.map(({ category, images }, index) => (
+            <CategoryCard key={category} category={category} images={images} onOpen={open} index={index} />
           ))}
         </div>
 
