@@ -9,8 +9,10 @@ import { slugify } from "@/lib/utils"
 import {
   MapPin, MapPinOff, CheckCircle2, XCircle, Wrench, Clock, ShieldCheck,
   Sparkles, ArrowRight, Phone, HelpCircle, ImageIcon, Layers as LayersIcon,
+  IndianRupee, Ruler, HardHat, BadgeCheck, AlertTriangle, Navigation,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { PRICE_DISCLAIMER, PRICE_DISCLAIMER_HI } from "@/lib/services-content"
 import NotFound from "@/pages/not-found"
 
 export default function ServiceDetailPage() {
@@ -153,6 +155,53 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
+      {/* ── Local Market Pricing ── */}
+      <section className="py-14 sm:py-16 bg-white">
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
+          <div className="mb-6 flex items-center gap-2">
+            <IndianRupee className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">Local Market Pricing — Forbesganj &amp; Araria District</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {service.priceTiers.map((tier) => (
+              <div
+                key={tier.tier}
+                className={`rounded-2xl border p-5 shadow-sm ${
+                  tier.tier === "Premium" ? "border-amber-300 bg-amber-50/60" : "border-gray-200 bg-gray-50"
+                }`}
+              >
+                <span className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest ${
+                  tier.tier === "Premium" ? "bg-amber-200 text-amber-800" : tier.tier === "Standard" ? "bg-emerald-200 text-emerald-800" : "bg-gray-200 text-gray-700"
+                }`}>
+                  {tier.tier}
+                </span>
+                <p className="mt-1 text-xs font-semibold text-gray-500">{tier.tierHi}</p>
+                <p className="mt-2 text-lg font-black text-gray-900">{tier.range}</p>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">{tier.desc}</p>
+                <p className="mt-1 text-xs leading-relaxed text-gray-400">{tier.descHi}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
+            <div>
+              <p className="text-xs leading-relaxed text-amber-900">{PRICE_DISCLAIMER}</p>
+              <p className="mt-1.5 text-xs leading-relaxed text-amber-700">{PRICE_DISCLAIMER_HI}</p>
+            </div>
+          </div>
+
+          <div className="mt-4 flex gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <HardHat className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Estimated Labour Cost</p>
+              <p className="text-xs leading-relaxed text-gray-600">{service.labourCost}</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-400">{service.labourCostHi}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Where used / not used ── */}
       <section className="py-14 sm:py-16 bg-gray-50">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
@@ -243,6 +292,24 @@ export default function ServiceDetailPage() {
               </div>
             ))}
           </div>
+
+          <div className="mt-5 flex gap-3 rounded-xl border border-gray-200 bg-white p-5">
+            <Ruler className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Available Sizes &amp; Thickness</p>
+              <p className="text-sm leading-relaxed text-gray-600">{service.sizesThickness}</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-400">{service.sizesThicknessHi}</p>
+            </div>
+          </div>
+
+          <div className="mt-4 flex gap-3 rounded-xl border border-emerald-200 bg-emerald-50/60 p-5">
+            <BadgeCheck className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-1">Brand &amp; Quality Assurance</p>
+              <p className="text-sm leading-relaxed text-gray-700">{service.brandNote}</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.brandNoteHi}</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -271,15 +338,15 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* ── Price / Time / Maintenance / Warranty strip ── */}
+      {/* ── Time / Maintenance / Warranty / Labour strip ── */}
       <section className="py-12 sm:py-14 bg-gradient-to-b from-emerald-50 to-white">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { label: "Price Range", value: service.price },
-              { label: "Premium Option", value: service.premiumPrice },
               { label: "Installation Time", value: service.installTime },
               { label: "Maintenance", value: service.maintenance },
+              { label: "Warranty", value: service.warranty },
+              { label: "Labour (approx.)", value: service.labourCostShort },
             ].map((item) => (
               <div key={item.label} className="rounded-xl border border-emerald-200 bg-white px-3 py-4 text-center shadow-sm">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">{item.label}</p>
@@ -287,10 +354,20 @@ export default function ServiceDetailPage() {
               </div>
             ))}
           </div>
-          <p className="mt-4 text-center text-xs font-semibold text-gray-500">
-            <ShieldCheck className="inline h-3.5 w-3.5 text-emerald-600 -mt-0.5 mr-1" aria-hidden="true" />
-            {service.warranty}
-          </p>
+        </div>
+      </section>
+
+      {/* ── Service area availability ── */}
+      <section className="py-12 sm:py-14 bg-white">
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
+          <div className="flex gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-6">
+            <Navigation className="h-5 w-5 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
+            <div>
+              <h2 className="mb-2 text-base font-black text-gray-900">Availability in Araria District &amp; Nearby</h2>
+              <p className="text-sm leading-relaxed text-gray-600">{service.availability}</p>
+              <p className="mt-1.5 text-xs leading-relaxed text-gray-400">{service.availabilityHi}</p>
+            </div>
+          </div>
         </div>
       </section>
 

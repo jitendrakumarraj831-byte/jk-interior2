@@ -28,6 +28,15 @@ export interface ServiceFaqItem {
   aHi: string
 }
 
+/** One quality tier's local-market price band for Forbesganj / Araria district. */
+export interface PriceTier {
+  tier: "Economy" | "Standard" | "Premium"
+  tierHi: string
+  range: string
+  desc: string
+  descHi: string
+}
+
 export interface ServiceContent {
   slug: string
   icon: LucideIcon
@@ -40,8 +49,24 @@ export interface ServiceContent {
   heroImage: string
   heroImageAlt: string
   galleryCategory: string
+  /** Overall headline range shown in hero chips/homepage — spans Economy low to Premium high. */
   price: string
-  premiumPrice: string
+  /** Economy / Standard / Premium local-market price bands with what changes at each tier. */
+  priceTiers: PriceTier[]
+  /** Standard panel/board sizes and thickness available in the local market. */
+  sizesThickness: string
+  sizesThicknessHi: string
+  /** Rough estimated labour-only component, already included within the price range above. */
+  labourCost: string
+  labourCostHi: string
+  /** Short version for the compact stat tile, e.g. "₹20–30/sq.ft". */
+  labourCostShort: string
+  /** What JK Interior sources/installs, described honestly without naming unconfirmed brands. */
+  brandNote: string
+  brandNoteHi: string
+  /** Coverage across the service area, with any material-specific caveat. */
+  availability: string
+  availabilityHi: string
   installTime: string
   maintenance: string
   warranty: string
@@ -62,6 +87,19 @@ export interface ServiceContent {
   relatedSlugs: string[]
 }
 
+/** Shown on every service page directly under the price tiers — the one non-negotiable disclaimer. */
+export const PRICE_DISCLAIMER =
+  "Every range above is a local Forbesganj / Araria district market estimate, not a fixed quote. The exact price for your job depends on the free site visit and measurement, your chosen design, the material quality tier, room access, and total project size — larger orders and combo bookings (ceiling + wall + TV unit together) usually work out cheaper per sq.ft than a single small job."
+
+export const PRICE_DISCLAIMER_HI =
+  "ऊपर दिए गए सभी रेट फारबिसगंज/अररिया ज़िले के लोकल मार्केट के अनुमानित रेट हैं, फिक्स्ड कोटेशन नहीं। आपके काम की असली कीमत फ्री साइट विज़िट और measurement, चुने गए डिज़ाइन, मटेरियल क्वालिटी टियर, कमरे तक पहुंच, और कुल प्रोजेक्ट साइज़ पर depend करती है — बड़ा ऑर्डर या कॉम्बो बुकिंग (सीलिंग + वॉल + TV यूनिट साथ में) आमतौर पर प्रति वर्ग फुट सस्ता पड़ता है।"
+
+export const SERVICE_AREA_NOTE =
+  "JK Interior's team is based in Forbesganj and travels for site visits and installation across Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Purnia, Supaul, Tribeniganj, Kursakanta, and Chhatapur — roughly an 80 km radius. Call or WhatsApp to confirm your exact village/mohalla is covered before booking."
+
+export const SERVICE_AREA_NOTE_HI =
+  "JK Interior की टीम फारबिसगंज में बेस्ड है और साइट विज़िट व इंस्टॉलेशन के लिए फारबिसगंज, अररिया, जोगबनी, रानीगंज, नरपतगंज, पूर्णिया, सुपौल, त्रिवेणीगंज, कुर्साकांटा और छातापुर — लगभग 80 किमी के दायरे में जाती है। बुकिंग से पहले अपने गांव/मोहल्ले का कवरेज कन्फर्म करने के लिए कॉल या WhatsApp करें।"
+
 export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
@@ -76,8 +114,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/gypsum5.jpg",
     heroImageAlt: "Gypsum false ceiling with cove lighting in a Forbesganj living room by JK Interior",
     galleryCategory: "Gypsum False Ceiling",
-    price: "₹80–₹140/sq.ft",
-    premiumPrice: "₹120–₹200/sq.ft with LED cove lighting and POP detailing",
+    price: "₹75–₹210/sq.ft (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "Flat, single-level ceiling with a plain matte paint finish — standard 12.5mm board, no cove.", descHi: "फ्लैट, सिंगल-लेवल सीलिंग, प्लेन मैट पेंट फिनिश — स्टैंडर्ड 12.5mm बोर्ड, कोई cove नहीं।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹130/sq.ft", desc: "One stepped border with a basic cove channel (LED strip billed separately) and a smoother finish coat.", descHi: "एक stepped बॉर्डर, बेसिक cove चैनल के साथ (LED स्ट्रिप अलग से) और ज़्यादा smooth फिनिश कोट।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹135–₹210/sq.ft", desc: "Multi-level or curved tray design with integrated LED cove lighting and a premium textured/metallic paint finish.", descHi: "मल्टी-लेवल या curved tray डिज़ाइन, integrated LED cove lighting और premium textured/मेटैलिक पेंट फिनिश।" },
+    ],
+    sizesThickness: "Gypsum boards are standard 12.5mm thick, in 1200×2400mm (4×8 ft) and 1200×1800mm (4×6 ft) sheets, cut to size on-site. Thinner 8mm board is used only for curved/false-drop sections.",
+    sizesThicknessHi: "जिप्सम बोर्ड स्टैंडर्ड 12.5mm मोटा होता है, 1200×2400mm (4×8 फुट) और 1200×1800mm (4×6 फुट) शीट में, साइट पर काटा जाता है। पतला 8mm बोर्ड सिर्फ curved/false-drop हिस्सों में इस्तेमाल होता है।",
+    labourCost: "Labour (framing, board fixing, taping, paint finish) is already included in the rates above and typically makes up roughly ₹30–45/sq.ft of the total — cove and multi-level designs sit at the higher end because of the extra framing and finishing work.",
+    labourCostHi: "लेबर (फ्रेमिंग, बोर्ड फिक्सिंग, टेपिंग, पेंट फिनिश) ऊपर दिए रेट में शामिल है, कुल का करीब ₹30–45/sq.ft हिस्सा लेबर का होता है — cove और मल्टी-लेवल डिज़ाइन में ज़्यादा फ्रेमिंग-फिनिशिंग की वजह से यह ज़्यादा रहता है।",
+    labourCostShort: "₹30–45/sq.ft",
+    brandNote: "We install ISI-marked, branded gypsum board and GI framing sourced from authorised dealers in Purnia and Forbesganj — never unbranded or duplicate stock. The exact board brand in stock at the time of your order is shown to you during the free site visit, matched to the quality tier you choose.",
+    brandNoteHi: "हम ISI-मार्क्ड, ब्रांडेड जिप्सम बोर्ड और GI फ्रेमिंग पूर्णिया और फारबिसगंज के अधिकृत डीलरों से लगाते हैं — कभी अनब्रांडेड या डुप्लीकेट स्टॉक नहीं। आपके ऑर्डर के समय उपलब्ध सही बोर्ड ब्रांड फ्री साइट विज़िट में दिखाया जाता है, आपके चुने गए क्वालिटी टियर के हिसाब से।",
+    availability: "Available across our full service area — Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Purnia, Supaul, Tribeniganj, Kursakanta, and Chhatapur. Cove-lighting and multi-level designs are our most-requested option in Forbesganj and Araria town; standard flat ceilings are the common choice further out.",
+    availabilityHi: "हमारे पूरे सर्विस एरिया में उपलब्ध — फारबिसगंज, अररिया, जोगबनी, रानीगंज, नरपतगंज, पूर्णिया, सुपौल, त्रिवेणीगंज, कुर्साकांटा और छातापुर। Cove-lighting और मल्टी-लेवल डिज़ाइन फारबिसगंज और अररिया टाउन में सबसे ज़्यादा मांगे जाते हैं; बाकी जगहों में स्टैंडर्ड फ्लैट सीलिंग ज़्यादा चलती है।",
     installTime: "2–3 days for one room, 3–5 days for a full hall",
     maintenance: "Dust occasionally with a dry cloth; repaint every 5–7 years",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -180,8 +231,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/pvc-ceiling.jpg",
     heroImageAlt: "Waterproof PVC false ceiling installation in a Bihar kitchen by JK Interior",
     galleryCategory: "PVC Ceiling",
-    price: "₹80–₹140/sq.ft",
-    premiumPrice: "₹90–₹150/sq.ft for designer wood/marble-print textures",
+    price: "₹75–₹150/sq.ft (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "Plain white or matte panels, 5mm gauge, basic batten grid.", descHi: "प्लेन सफेद या मैट पैनल, 5mm गेज, बेसिक बैटन ग्रिड।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹115/sq.ft", desc: "Wood-texture or marble-print panels, 6–7mm gauge for a sturdier feel.", descHi: "वुड-टेक्सचर या मार्बल-प्रिंट पैनल, ज़्यादा मज़बूती के लिए 6–7mm गेज।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹120–₹150/sq.ft", desc: "Designer 3D/embossed or high-gloss panels, 8mm gauge, heavier-duty grid for larger spans.", descHi: "डिज़ाइनर 3D/embossed या हाई-ग्लॉस पैनल, 8mm गेज, बड़े स्पैन के लिए मज़बूत ग्रिड।" },
+    ],
+    sizesThickness: "Panels come in standard 200mm and 250mm widths, cut to room length on-site (up to roughly 12 ft spans without a joint), thickness 5–8mm depending on tier — thicker panels sag less over a wide kitchen or hall span.",
+    sizesThicknessHi: "पैनल स्टैंडर्ड 200mm और 250mm चौड़ाई में आते हैं, कमरे की लंबाई पर साइट पर काटे जाते हैं (करीब 12 फुट तक बिना जोड़), मोटाई टियर के हिसाब से 5–8mm — मोटे पैनल बड़े किचन या हॉल स्पैन में कम झुकते हैं।",
+    labourCost: "Labour (batten grid, panel fixing, beading) is included in the rate above, roughly ₹20–30/sq.ft of the total — the fastest labour cost per sq.ft of anything we install.",
+    labourCostHi: "लेबर (बैटन ग्रिड, पैनल फिक्सिंग, बीडिंग) रेट में शामिल है, कुल का करीब ₹20–30/sq.ft — हमारे सभी काम में सबसे कम लेबर टाइम-कॉस्ट।",
+    labourCostShort: "₹20–30/sq.ft",
+    brandNote: "Panels are ISI-compliant branded PVC stock from authorised Forbesganj/Purnia suppliers, not the cheaper unbranded imports some smaller contractors use — we'll show you the panel sample and its batch marking on-site.",
+    brandNoteHi: "पैनल फारबिसगंज/पूर्णिया के अधिकृत सप्लायर से ISI-compliant ब्रांडेड PVC स्टॉक होते हैं, कुछ छोटे ठेकेदारों के इस्तेमाल किए सस्ते अनब्रांडेड इम्पोर्ट नहीं — हम साइट पर पैनल सैंपल और उसकी बैच मार्किंग दिखाते हैं।",
+    availability: "Available across Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Purnia, Supaul, Tribeniganj, Kursakanta, and Chhatapur. This is our highest-volume install — panel stock for common colours is normally in hand without an ordering delay.",
+    availabilityHi: "फारबिसगंज, अररिया, जोगबनी, रानीगंज, नरपतगंज, पूर्णिया, सुपौल, त्रिवेणीगंज, कुर्साकांटा और छातापुर में उपलब्ध। यह हमारा सबसे ज़्यादा लगाया जाने वाला काम है — आम रंगों का पैनल स्टॉक बिना देरी के तैयार रहता है।",
     installTime: "1 room in a day, full home in 3–4 days",
     maintenance: "Zero — wipe with a damp cloth, never needs repainting",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -277,8 +341,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/grid.jpg",
     heroImageAlt: "T-grid mineral fibre false ceiling installed in a commercial office by JK Interior",
     galleryCategory: "Grid Ceiling",
-    price: "₹45–₹90/sq.ft",
-    premiumPrice: "₹70–₹110/sq.ft with acoustic-rated or edge-lit tiles",
+    price: "₹45–₹115/sq.ft (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹45–₹55/sq.ft", desc: "Basic mineral-fibre tile on a standard powder-coated T-grid.", descHi: "स्टैंडर्ड पाउडर-कोटेड T-ग्रिड पर बेसिक मिनरल-फाइबर टाइल।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹56–₹75/sq.ft", desc: "Better mineral-fibre or PVC lay-in tile with some moisture resistance.", descHi: "थोड़ी नमी-रोधी बेहतर मिनरल-फाइबर या PVC lay-in टाइल।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹76–₹115/sq.ft", desc: "Acoustic-rated or edge-lit tiles on a heavier-gauge grid.", descHi: "भारी-गेज ग्रिड पर acoustic-rated या edge-lit टाइल।" },
+    ],
+    sizesThickness: "Tiles are the industry-standard 2×2 ft (600×600mm) lay-in size, 15–19mm thick depending on tier (acoustic tiles run thicker). Grid runners are the standard 24mm-face T-section.",
+    sizesThicknessHi: "टाइल इंडस्ट्री-स्टैंडर्ड 2×2 फुट (600×600mm) lay-in साइज़ में, मोटाई टियर के हिसाब से 15–19mm (acoustic टाइल ज़्यादा मोटी)। ग्रिड रनर स्टैंडर्ड 24mm-फेस T-सेक्शन के होते हैं।",
+    labourCost: "Labour (wall-angle, grid suspension, levelling, tile placement) is included above, typically ₹15–25/sq.ft — the quickest ceiling type to labour-price per sq.ft on a large open floor.",
+    labourCostHi: "लेबर (वॉल-एंगल, ग्रिड सस्पेंशन, लेवलिंग, टाइल प्लेसमेंट) रेट में शामिल है, आमतौर पर ₹15–25/sq.ft — बड़े खुले फ्लोर पर सबसे कम लेबर-कॉस्ट वाली सीलिंग।",
+    labourCostShort: "₹15–25/sq.ft",
+    brandNote: "Grid components and tiles are ISI/BIS-compliant branded stock from our regular Purnia-market suppliers — exact make shown and confirmed with you at the site visit before ordering.",
+    brandNoteHi: "ग्रिड कंपोनेंट और टाइल हमारे नियमित पूर्णिया-मार्केट सप्लायर से ISI/BIS-compliant ब्रांडेड स्टॉक होते हैं — ऑर्डर से पहले साइट विज़िट में सही मेक दिखाकर कन्फर्म किया जाता है।",
+    availability: "Common in offices and shops across Forbesganj, Araria, and Purnia; also installed in Jogbani, Raniganj, Narpatganj, Supaul, and nearby blocks. Acoustic/edge-lit tiles may need 2–3 days' lead time in outlying areas as they're sourced via Purnia.",
+    availabilityHi: "फारबिसगंज, अररिया और पूर्णिया के ऑफिस-दुकानों में सबसे ज़्यादा लगती है; जोगबनी, रानीगंज, नरपतगंज, सुपौल और आस-पास के ब्लॉक में भी। Acoustic/edge-lit टाइल दूर के इलाकों में 2–3 दिन ज़्यादा लग सकते हैं क्योंकि ये पूर्णिया से मंगाई जाती हैं।",
     installTime: "1–2 days for a standard room, 3–4 days for a larger office/shop floor",
     maintenance: "Very low — occasional dusting; a stained tile can be swapped individually",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -376,8 +453,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/partition-wall.jpg",
     heroImageAlt: "Gypsum board partition wall dividing an office cabin, installed by JK Interior",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
-    price: "₹110–₹180/sq.ft (gypsum board partition) · ₹380–₹650/sq.ft (framed glass partition)",
-    premiumPrice: "₹550–₹750/sq.ft for frosted/fluted-film glass partitions with a flush door",
+    price: "₹100–₹750/sq.ft (gypsum or glass, Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹100–₹130/sq.ft", desc: "Single-layer gypsum board partition, single stud row, plain paint finish.", descHi: "सिंगल-लेयर जिप्सम बोर्ड पार्टीशन, सिंगल स्टड रो, प्लेन पेंट फिनिश।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹135–₹200/sq.ft (gypsum) · ₹380–₹450/sq.ft (entry glass)", desc: "Double-layer gypsum with rockwool acoustic infill, or an entry-level plain toughened-glass screen.", descHi: "rockwool acoustic infill के साथ डबल-लेयर जिप्सम, या एंट्री-लेवल प्लेन toughened-glass स्क्रीन।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹460–₹750/sq.ft", desc: "Frosted or fluted-film glass partition with aluminium framing and a flush door, or a fully finished acoustic gypsum partition with premium paint.", descHi: "एल्युमिनियम फ्रेमिंग और flush door के साथ frosted/fluted-film glass partition, या premium पेंट वाली पूरी acoustic जिप्सम partition।" },
+    ],
+    sizesThickness: "Gypsum partition uses 12.5mm board (single or double layer) on 50mm/75mm metal stud framing. Glass partition uses 8–12mm toughened safety glass in aluminium channel framing.",
+    sizesThicknessHi: "जिप्सम partition में 50mm/75mm मेटल स्टड फ्रेमिंग पर 12.5mm बोर्ड (सिंगल या डबल लेयर) लगता है। Glass partition में एल्युमिनियम चैनल फ्रेमिंग में 8–12mm toughened safety glass लगता है।",
+    labourCost: "Labour (stud framing, board/glass fixing, finishing, door fitting if included) is roughly ₹25–40/sq.ft for gypsum and ₹60–100/sq.ft for glass, already included in the ranges above — glass costs more in labour due to handling and precise channel alignment.",
+    labourCostHi: "लेबर (स्टड फ्रेमिंग, बोर्ड/ग्लास फिक्सिंग, फिनिशिंग, दरवाज़ा फिटिंग अगर हो) gypsum में करीब ₹25–40/sq.ft और glass में ₹60–100/sq.ft, ऊपर के रेट में शामिल — glass में हैंडलिंग और सटीक चैनल अलाइनमेंट की वजह से लेबर ज़्यादा लगता है।",
+    labourCostShort: "₹25–40/sq.ft (gypsum) · ₹60–100/sq.ft (glass)",
+    brandNote: "Metal framing, gypsum board, and toughened glass are sourced from ISI/BIS-compliant authorised dealers in Purnia and Forbesganj — glass is toughened safety glass as standard, never plain annealed sheet.",
+    brandNoteHi: "मेटल फ्रेमिंग, जिप्सम बोर्ड और toughened glass पूर्णिया और फारबिसगंज के ISI/BIS-compliant अधिकृत डीलरों से लिए जाते हैं — ग्लास हमेशा toughened safety glass होता है, कभी plain annealed शीट नहीं।",
+    availability: "Gypsum partitions are installed across our full service area. Glass partitions are most requested in Forbesganj and Araria town offices; for other towns allow 2–4 extra days lead time as glass panels are cut to size and transported from Purnia.",
+    availabilityHi: "जिप्सम partition हमारे पूरे सर्विस एरिया में लगती है। Glass partition सबसे ज़्यादा फारबिसगंज और अररिया टाउन के ऑफिस में मांगी जाती है; बाकी शहरों में 2–4 दिन ज़्यादा लगेंगे क्योंकि ग्लास पूर्णिया से काटकर लाई जाती है।",
     installTime: "2–4 days depending on wall length and whether it's gypsum or glass",
     maintenance: "Gypsum side: repaint every 5–7 years. Glass side: wipe with glass cleaner.",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -476,8 +566,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/wpc.jpg",
     heroImageAlt: "WPC fluted wall panel TV wall installation in Bihar by JK Interior",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
-    price: "₹180–₹450/sq.ft",
-    premiumPrice: "₹350–₹600/sq.ft for premium fluted/louvre designs with LED backlight",
+    price: "₹180–₹650/sq.ft (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹180–₹250/sq.ft", desc: "Plain/solid-colour WPC panel, basic clip system, 8mm profile.", descHi: "प्लेन/सॉलिड-कलर WPC पैनल, बेसिक क्लिप सिस्टम, 8mm प्रोफाइल।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹260–₹380/sq.ft", desc: "Wood-grain or grooved texture, 12–15mm profile.", descHi: "वुड-ग्रेन या grooved टेक्सचर, 12–15mm प्रोफाइल।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹390–₹650/sq.ft", desc: "Fluted/louvre premium textures with an LED backlight channel, 18–25mm profile depth.", descHi: "LED बैकलाइट चैनल के साथ fluted/louvre प्रीमियम टेक्सचर, 18–25mm प्रोफाइल डेप्थ।" },
+    ],
+    sizesThickness: "Panels come in standard widths of 250mm–600mm and lengths of 8ft/10ft, cut to your wall size on-site. Panel thickness/profile depth runs 8mm (plain) up to 18–25mm for fluted/louvre designs.",
+    sizesThicknessHi: "पैनल स्टैंडर्ड 250mm–600mm चौड़ाई और 8ft/10ft लंबाई में आते हैं, आपकी दीवार के साइज़ पर साइट पर काटे जाते हैं। मोटाई/प्रोफाइल डेप्थ प्लेन में 8mm से fluted/louvre डिज़ाइन में 18–25mm तक।",
+    labourCost: "Labour (batten fixing, panel clipping, trims, LED wiring if included) is roughly ₹25–45/sq.ft, included in the rates above — fluted/louvre designs take longer per sq.ft than a plain panel.",
+    labourCostHi: "लेबर (बैटन फिक्सिंग, पैनल क्लिपिंग, ट्रिम्स, LED वायरिंग अगर हो) करीब ₹25–45/sq.ft, रेट में शामिल — fluted/louvre डिज़ाइन में प्लेन पैनल से ज़्यादा समय लगता है।",
+    labourCostShort: "₹25–45/sq.ft",
+    brandNote: "WPC boards are ISI-compliant branded composite stock from authorised dealers — not the thinner unbranded WPC sold loose in some local markets, which warps faster. Exact brand and texture sample shown at the site visit.",
+    brandNoteHi: "WPC बोर्ड अधिकृत डीलरों से ISI-compliant ब्रांडेड कम्पोजिट स्टॉक होते हैं — कुछ लोकल मार्केट में खुले बिकने वाले पतले अनब्रांडेड WPC नहीं, जो जल्दी मुड़ते हैं। साइट विज़िट में सही ब्रांड और टेक्सचर सैंपल दिखाया जाता है।",
+    availability: "Available across Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Purnia, Supaul, Tribeniganj, Kursakanta, and Chhatapur. TV-wall panelling is our most-requested WPC job in Forbesganj and Araria.",
+    availabilityHi: "फारबिसगंज, अररिया, जोगबनी, रानीगंज, नरपतगंज, पूर्णिया, सुपौल, त्रिवेणीगंज, कुर्साकांटा और छातापुर में उपलब्ध। TV-वॉल पैनलिंग फारबिसगंज और अररिया में सबसे ज़्यादा मांगा जाने वाला WPC काम है।",
     installTime: "1 day for a TV wall accent, 2–3 days for a full room",
     maintenance: "Wipe with a dry cloth — no polish or varnish, ever",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -572,8 +675,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/uv-marble.jpg",
     heroImageAlt: "UV marble sheet wall cladding in a Bihar bathroom by JK Interior",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
-    price: "₹50–₹95/sq.ft",
-    premiumPrice: "₹80–₹120/sq.ft for premium veining/granite-print designs",
+    price: "₹45–₹120/sq.ft (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹45–₹60/sq.ft", desc: "Basic marble-print sheet, standard gloss, 3mm thickness.", descHi: "बेसिक मार्बल-प्रिंट शीट, स्टैंडर्ड ग्लॉस, 3mm मोटाई।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹65–₹85/sq.ft", desc: "Better veining pattern, higher-gloss finish, 4mm thickness.", descHi: "बेहतर veining पैटर्न, ज़्यादा ग्लॉस फिनिश, 4mm मोटाई।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹90–₹120/sq.ft", desc: "Premium granite/exotic marble print, 5–6mm thickness, anti-fingerprint coating.", descHi: "प्रीमियम ग्रेनाइट/exotic मार्बल प्रिंट, 5–6mm मोटाई, anti-fingerprint कोटिंग।" },
+    ],
+    sizesThickness: "Sheets come in the standard 8×4 ft (2440×1220mm) size, thickness 3mm to 6mm depending on tier — thicker sheets resist scratching better and are worth the upgrade in a busy kitchen.",
+    sizesThicknessHi: "शीट स्टैंडर्ड 8×4 फुट (2440×1220mm) साइज़ में आती है, मोटाई टियर के हिसाब से 3mm से 6mm — मोटी शीट खरोंच से ज़्यादा बचाती है, व्यस्त किचन में यह अपग्रेड लेने लायक है।",
+    labourCost: "Labour (surface prep, adhesive/clip fixing, edge beading) is roughly ₹15–25/sq.ft, included above.",
+    labourCostHi: "लेबर (सतह तैयार करना, adhesive/क्लिप फिक्सिंग, एज बीडिंग) करीब ₹15–25/sq.ft, ऊपर के रेट में शामिल।",
+    labourCostShort: "₹15–25/sq.ft",
+    brandNote: "UV marble sheets are ISI-compliant branded PVC-based stock sourced from authorised Purnia/Forbesganj dealers — sample book shown on-site so you see the actual sheen and veining before ordering.",
+    brandNoteHi: "UV मार्बल शीट पूर्णिया/फारबिसगंज के अधिकृत डीलरों से ISI-compliant ब्रांडेड PVC-आधारित स्टॉक होती है — ऑर्डर से पहले साइट पर सैंपल बुक दिखाई जाती है ताकि असली शाइन और veining देख सकें।",
+    availability: "Available across our full service area. Bathroom and pooja-room UV marble is the most common request in Forbesganj, Araria, and Jogbani.",
+    availabilityHi: "हमारे पूरे सर्विस एरिया में उपलब्ध। बाथरूम और पूजा-घर की UV मार्बल फारबिसगंज, अररिया और जोगबनी में सबसे आम मांग है।",
     installTime: "1–2 days per room",
     maintenance: "Zero — wipe with a damp cloth, no polishing ever needed",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -668,8 +784,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/tv-unit.jpg",
     heroImageAlt: "Custom modular TV unit with LED backlight installed by JK Interior in Bihar",
     galleryCategory: "TV Unit Design",
-    price: "₹15,000 onwards (basic)",
-    premiumPrice: "₹30,000–₹60,000+ for premium designs with LED backlight and extended storage",
+    price: "₹15,000–₹75,000+ per unit (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹15,000–₹25,000", desc: "6–8 ft unit, laminate finish, basic hinges, no LED.", descHi: "6–8 फुट यूनिट, लैमिनेट फिनिश, बेसिक हिंज, कोई LED नहीं।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹26,000–₹45,000", desc: "8–10 ft unit, better laminate/veneer finish, soft-close hardware, optional LED strip.", descHi: "8–10 फुट यूनिट, बेहतर लैमिनेट/वीनियर फिनिश, सॉफ्ट-क्लोज़ हार्डवेयर, वैकल्पिक LED स्ट्रिप।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹46,000–₹75,000+", desc: "10–14 ft unit, premium veneer/high-gloss finish, integrated LED backlight, extended storage and floating shelves.", descHi: "10–14 फुट यूनिट, प्रीमियम वीनियर/हाई-ग्लॉस फिनिश, integrated LED बैकलाइट, बड़ा स्टोरेज और floating शेल्फ।" },
+    ],
+    sizesThickness: "Units are custom-built to your wall's exact width (typically 6–14 ft) rather than a fixed size. Carcass is 18mm plywood/MDF, back panel 6mm, laminate face sheet approx. 1mm — shutter and shelf thickness vary by design.",
+    sizesThicknessHi: "यूनिट फिक्स्ड साइज़ नहीं, आपकी दीवार की सही चौड़ाई (आमतौर पर 6–14 फुट) पर कस्टम बनती है। Carcass 18mm प्लाईवुड/MDF, बैक पैनल 6mm, लैमिनेट फेस शीट करीब 1mm — शटर और शेल्फ की मोटाई डिज़ाइन पर निर्भर।",
+    labourCost: "Fabrication and installation labour is bundled into the unit price above rather than billed separately — it typically makes up 25–35% of the total, more for units with extensive LED work or floating shelves.",
+    labourCostHi: "फैब्रिकेशन और इंस्टॉलेशन लेबर ऊपर की यूनिट कीमत में शामिल है, अलग से बिल नहीं होता — यह आमतौर पर कुल का 25–35% हिस्सा होता है, ज़्यादा LED वर्क या floating शेल्फ वाली यूनिट में थोड़ा ज़्यादा।",
+    labourCostShort: "25–35% of unit price",
+    brandNote: "Carcass material is BWP/BWR-grade plywood or MDF from ISI-compliant branded stock, with branded laminate/veneer sheets and soft-close hinge/channel hardware — exact brand options shown at the design stage so you can pick within your budget.",
+    brandNoteHi: "Carcass मटेरियल ISI-compliant ब्रांडेड स्टॉक का BWP/BWR-ग्रेड प्लाईवुड या MDF होता है, ब्रांडेड लैमिनेट/वीनियर शीट और सॉफ्ट-क्लोज़ हिंज/चैनल हार्डवेयर के साथ — डिज़ाइन स्टेज पर सही ब्रांड विकल्प दिखाए जाते हैं ताकि आप बजट में चुन सकें।",
+    availability: "Delivered and installed across our full service area. Large premium units (10ft+) may need 5–7 days for fabrication in addition to installation time, longer for outlying blocks beyond Araria district.",
+    availabilityHi: "हमारे पूरे सर्विस एरिया में डिलीवर और इंस्टॉल होती है। बड़ी प्रीमियम यूनिट (10 फुट+) के लिए इंस्टॉलेशन के अलावा 5–7 दिन फैब्रिकेशन में लग सकते हैं, अररिया ज़िले के बाहर के इलाकों में थोड़ा ज़्यादा।",
     installTime: "3–5 days depending on size and design complexity",
     maintenance: "Wipe with a dry cloth; avoid placing hot items directly on the surface",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -762,8 +891,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/artificial-grass.jpg",
     heroImageAlt: "Artificial grass balcony installation in Bihar by JK Interior",
     galleryCategory: "Artificial Grass",
-    price: "₹40–₹120/sq.ft",
-    premiumPrice: "₹90–₹150/sq.ft for higher pile-height, denser premium-grade turf",
+    price: "₹40–₹150/sq.ft (Forbesganj/Araria market rate)",
+    priceTiers: [
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹40–₹55/sq.ft", desc: "25–30mm pile height, standard density — fine for a small balcony corner.", descHi: "25–30mm पाइल हाइट, स्टैंडर्ड डेंसिटी — छोटी बालकनी के लिए ठीक।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹60–₹85/sq.ft", desc: "35–40mm pile height, denser turf, better UV treatment.", descHi: "35–40mm पाइल हाइट, ज़्यादा घनी टर्फ, बेहतर UV ट्रीटमेंट।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹90–₹150/sq.ft", desc: "40–50mm pile height, premium density, longest-lasting colour/UV warranty.", descHi: "40–50mm पाइल हाइट, प्रीमियम डेंसिटी, सबसे लंबे समय तक चलने वाला रंग/UV।" },
+    ],
+    sizesThickness: "Turf comes in standard roll widths of 2m and 4m, joined with seam tape for wider areas. Pile height ranges 25mm to 50mm depending on the tier you choose.",
+    sizesThicknessHi: "टर्फ स्टैंडर्ड 2m और 4m चौड़ाई के रोल में आती है, बड़ी जगह के लिए seam टेप से जोड़ी जाती है। पाइल हाइट चुने गए टियर के हिसाब से 25mm से 50mm तक।",
+    labourCost: "Labour (base/drainage prep, laying, seam joining, edge fixing) is roughly ₹8–15/sq.ft for floor use and ₹15–25/sq.ft for wall panels, included in the rates above.",
+    labourCostHi: "लेबर (बेस/ड्रेनेज तैयारी, बिछाना, seam जोड़ना, एज फिक्सिंग) फर्श के लिए करीब ₹8–15/sq.ft और दीवार पैनल के लिए ₹15–25/sq.ft, ऊपर के रेट में शामिल।",
+    labourCostShort: "₹8–15/sq.ft (floor) · ₹15–25/sq.ft (wall)",
+    brandNote: "Turf is UV-stabilised synthetic grass sourced through our regular Purnia-market suppliers — we check UV treatment and density before ordering rather than buying the cheapest roll available, since untreated turf fades within a season in North Bihar's sun.",
+    brandNoteHi: "टर्फ हमारे नियमित पूर्णिया-मार्केट सप्लायर से UV-स्टेबलाइज़्ड सिंथेटिक घास होती है — सबसे सस्ता रोल खरीदने की बजाय हम UV ट्रीटमेंट और डेंसिटी पहले जांचते हैं, क्योंकि untreated टर्फ उत्तर बिहार की धूप में एक ही सीज़न में फीकी पड़ जाती है।",
+    availability: "Available across our full service area. Balcony/terrace turf is most requested in Forbesganj, Araria, and Raniganj; allow a couple of extra days for premium-grade rolls in outlying blocks as they're ordered in via Purnia.",
+    availabilityHi: "हमारे पूरे सर्विस एरिया में उपलब्ध। बालकनी/टैरेस टर्फ फारबिसगंज, अररिया और रानीगंज में सबसे ज़्यादा मांगी जाती है; दूर के ब्लॉक में प्रीमियम-ग्रेड रोल के लिए कुछ दिन ज़्यादा लग सकते हैं क्योंकि यह पूर्णिया से मंगाई जाती है।",
     installTime: "Half a day to 1 day for a typical balcony or accent wall",
     maintenance: "Occasional rinse with water and a light brush of the fibres — no mowing, no watering, ever",
     warranty: "1 year written warranty (materials + workmanship)",

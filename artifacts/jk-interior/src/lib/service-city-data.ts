@@ -24,8 +24,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     nameHi: "PVC फॉल्स सीलिंग",
     icon: Layers,
     galleryCategory: "PVC Ceiling",
-    price: "₹80–₹140/sq.ft",
-    premiumPrice: "₹90–₹150/sq.ft with designer textures",
+    price: "₹75–₹150/sq.ft",
+    premiumPrice: "₹120–₹150/sq.ft with designer wood/marble-print textures",
     description:
       "PVC (Polyvinyl Chloride) ceiling panels are 100% waterproof, termite-proof, and low-maintenance — making them the most versatile false ceiling option for bathrooms, kitchens, shops, and every room of the home.",
     pros: [
@@ -49,8 +49,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     nameHi: "जिप्सम सीलिंग",
     icon: Layers,
     galleryCategory: "Gypsum False Ceiling",
-    price: "₹80–₹140/sq.ft",
-    premiumPrice: "₹120–₹200/sq.ft with cove lighting + LED",
+    price: "₹75–₹210/sq.ft",
+    premiumPrice: "₹135–₹210/sq.ft with cove lighting + LED and multi-level design",
     description:
       "Gypsum board ceiling is the most popular choice for living rooms and bedrooms — a smooth, plaster-like finish that can be shaped into elegant cove designs, POP borders, and artistic patterns with integrated LED lighting.",
     pros: [
@@ -74,8 +74,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     nameHi: "WPC वॉल पैनल",
     icon: PanelTop,
     galleryCategory: "WPC fluted panels & uv marble Sheet",
-    price: "₹180–₹450/sq.ft",
-    premiumPrice: "₹350–₹600/sq.ft for premium fluted designs",
+    price: "₹180–₹650/sq.ft",
+    premiumPrice: "₹390–₹650/sq.ft for premium fluted/louvre designs with LED backlight",
     description:
       "WPC (Wood Plastic Composite) panels give the luxury look of real wood without the maintenance headaches — termite-proof, moisture-resistant, and eco-friendly. Popular for TV walls, accent walls, and full room paneling.",
     pros: [
@@ -100,7 +100,7 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     icon: Tv,
     galleryCategory: "TV Unit Design",
     price: "₹15,000 से शुरू (basic)",
-    premiumPrice: "₹30,000–₹60,000+ (premium designs)",
+    premiumPrice: "₹46,000–₹75,000+ (premium designs)",
     description:
       "Custom-designed modular TV units built to fit your exact room dimensions — with built-in cable management, LED backlighting, and storage shelves, in wood laminate, matte, glossy, or combination finishes.",
     pros: [

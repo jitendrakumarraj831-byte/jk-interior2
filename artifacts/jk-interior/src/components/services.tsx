@@ -48,6 +48,10 @@ export default function Services() {
           subtitleSecondary="Tap any service below for the complete guide — what it's for, what it isn't, and exactly how we install it."
         />
 
+        <p className="mx-auto mb-10 max-w-2xl text-center text-xs font-semibold text-gray-500 sm:text-sm">
+          Rates below are local Forbesganj &amp; Araria district market ranges, in Economy / Standard / Premium tiers — not fixed quotes. Final pricing is confirmed only after a free site visit and measurement.
+        </p>
+
         <div className="divide-y divide-emerald-900/[0.07]">
           {SERVICES_CONTENT.map((service, i) => {
             const isReversed = i % 2 === 1
@@ -104,7 +108,7 @@ export default function Services() {
                   <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold text-gray-500 sm:text-sm">
                     <span className="inline-flex items-center gap-1.5">
                       <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                      {service.price}
+                      {service.price.split(" (")[0]}
                     </span>
                     <span className="text-gray-300">·</span>
                     <span className="inline-flex items-center gap-1.5">
