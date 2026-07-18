@@ -1,4 +1,4 @@
-import { buildSystemPrompt, type LeadContext } from "../artifacts/jk-interior/src/lib/business-data"
+import { buildSystemPrompt, type LeadContext } from "../artifacts/jk-interior/src/lib/business-data.js"
 import {
   type ConversationMemory,
   createMemory,
@@ -6,7 +6,7 @@ import {
   mergeMemory,
   updateStage,
   summarizeForPrompt,
-} from "../artifacts/jk-interior/src/lib/memory"
+} from "../artifacts/jk-interior/src/lib/memory.js"
 
 // Vercel Node.js serverless function — no framework, no extra deps (uses global fetch).
 // Talks to Groq's OpenAI-compatible chat completions API.
