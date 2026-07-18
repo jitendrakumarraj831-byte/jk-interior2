@@ -54,15 +54,22 @@ export default async function HomePage() {
 
       {/* Services Overview */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <SectionHeading eyebrow="What We Do" title="Services Built for Every Room" description="12 specialised interior services — each with its own detailed pricing, materials, and process page." />
+        <SectionHeading
+          eyebrow="What We Do"
+          title="Crafted Interiors, Tailored to Every Room"
+          description="From statement false ceilings to complete home makeovers — explore 12 specialised services, each backed by branded materials, transparent pricing, and a dedicated warranty."
+        />
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.slice(0, 6).map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}
         </div>
-        <div className="mt-8 text-center">
-          <Link href="/services" className="font-bold text-primary hover:underline">
-            View all 12 services →
+        <div className="mt-10 text-center">
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-white/60 px-6 py-3 text-sm font-bold text-primary shadow-sm transition-all hover:border-primary hover:bg-white hover:shadow-md"
+          >
+            Explore All 12 Services <span aria-hidden>→</span>
           </Link>
         </div>
       </section>
