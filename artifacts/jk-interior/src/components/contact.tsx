@@ -72,8 +72,8 @@ export default function Contact() {
           title={<>Get In <span className="hero-gradient-text">Touch</span></>}
           subtitle={
             <>
-              Ready to transform your space? Contact us today for a free consultation.{" "}
-              <span className="text-emerald-700 font-semibold">अपना स्पेस ट्रांसफॉर्म करने के लिए आज ही संपर्क करें।</span>
+              Call, WhatsApp, or fill the form below — a real person from our Forbesganj office replies, not a bot.{" "}
+              <span className="text-emerald-700 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
             </>
           }
         />

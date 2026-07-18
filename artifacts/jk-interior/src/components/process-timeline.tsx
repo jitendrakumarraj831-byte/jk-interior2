@@ -30,10 +30,10 @@ const steps = [
   {
     icon: Hammer,
     step: "03",
-    title: "Dust-Free Work",
-    titleHi: "साफ़ इंस्टॉलेशन",
-    desc: "Our skilled team starts installation with premium materials. Clean, fast, and professional work with zero mess.",
-    descHi: "हमारी skilled team premium materials के साथ installation शुरू करती है। साफ़, तेज़ और professional काम।",
+    title: "Panel-System Install",
+    titleHi: "पैनल-सिस्टम इंस्टॉलेशन",
+    desc: "Our crew works room by room on the schedule you were quoted — clip-and-panel wherever the design allows, so there's far less dust than a wet-plaster job.",
+    descHi: "जो शेड्यूल बताया गया, उसी पर टीम कमरा-दर-कमरा काम करती है — जहाँ मुमकिन हो, गीले प्लास्टर की जगह पैनल सिस्टम, यानी कम धूल।",
     color: "from-emerald-500 to-emerald-700",
     glow: "rgba(5,150,105,0.25)",
   },
@@ -99,7 +99,7 @@ export default function ProcessTimeline() {
           headingSize="md"
           dark
           title={<>How It <span className="hero-gradient-text">Works</span></>}
-          subtitle="Simple, transparent, and hassle-free — 4 easy steps to your dream interior"
+          subtitle="From your first WhatsApp message to a signed warranty in hand — four steps, nothing skipped"
         />
 
         {/* Steps */}

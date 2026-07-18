@@ -80,7 +80,7 @@ export default function ServiceAreas() {
           badge="Service Areas"
           headingSize="md"
           title={<>हमारी <span className="hero-gradient-text">पहुंच</span></>}
-          subtitle="बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा — Araria, Supaul और Purnia जिलों में"
+          subtitle="Forbesganj से लगभग 80 किमी के दायरे में — Araria, Supaul और Purnia तीनों ज़िलों में हमारी टीम खुद साइट पर आती है"
         />
 
         {/* Desktop Hub Map */}
