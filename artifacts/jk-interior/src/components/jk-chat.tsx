@@ -53,7 +53,7 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Greetings — broad match
     patterns: /^(hi+|hello+|hey+|namaste|namaskar|helo|good\s*(morning|evening|afternoon|night)|hy|hii+|salam|kaise\s*ho|kya\s*haal|kya\s*chal|wassup|sup|haan\s*ji|ha\s*ji|ji\s*haan|ji)$/i,
-    answer: `🌟 Namaste! JK Interior mein aapka swagat hai!\n\nMain Riya hoon — aapki interior design consultant 😊\n\nAap pooch sakte hain:\n✅ Kisi bhi material ki rate (PVC, Gypsum, WPC...)\n✅ Apne room ka estimate\n✅ Design ideas ya suggestions\n\nKya jaanna chahte hain? Batao!`,
+    answer: `🌟 Namaste! JK Interior mein aapka swagat hai!\n\nMain **JK Interior AI Assistant** hoon — aapki interior design consultant 😊\n\nAap pooch sakte hain:\n✅ Kisi bhi material ki rate (PVC, Gypsum, WPC...)\n✅ Apne room ka estimate\n✅ Design ideas ya suggestions\n\nKya jaanna chahte hain? Batao!`,
   },
   {
     // Price list
@@ -123,8 +123,8 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   },
   {
     // Who are you / intro
-    patterns: /^(?:kaun\s*ho|tum\s*kaun|aap\s*kaun|who\s*are\s*you|what\s*are\s*you|kya\s*ho\s*tum|bot\s*ho|ai\s*ho|real\s*ho|human\s*ho|riya\s*kaun)$/i,
-    answer: `Main **Riya** hoon — JK Interior ki AI consultant! 🤖✨\n\nMain aapki help kar sakti hoon:\n✅ Room estimate nikalna\n✅ Material suggestions (PVC, Gypsum, WPC...)\n✅ Design ideas\n✅ Free site visit book karna\n\nKya jaanna chahte ho? Bato! 😊`,
+    patterns: /^(?:kaun\s*ho|tum\s*kaun|aap\s*kaun|who\s*are\s*you|what\s*are\s*you|kya\s*ho\s*tum|bot\s*ho|ai\s*ho|real\s*ho|human\s*ho|assistant\s*kaun)$/i,
+    answer: `Main **JK Interior AI Assistant** hoon! 🤖✨\n\nMain aapki help kar sakti hoon:\n✅ Room estimate nikalna\n✅ Material suggestions (PVC, Gypsum, WPC...)\n✅ Design ideas\n✅ Free site visit book karna\n\nKya jaanna chahte ho? Bato! 😊`,
   },
   {
     // Fluted panels
@@ -658,6 +658,14 @@ const ICal = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const IPhone = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2.74h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.34a16 16 0 0 0 6.06 6.06l1.66-1.66a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>)
 const ISparkle = () => (<svg viewBox="0 0 24 24" className="h-3 w-3 fill-current"><path d="M12 2l1.8 5.4L19.2 6l-4.2 3.6L16.8 15 12 11.4 7.2 15l1.8-5.4L4.8 6l5.4 1.4z"/></svg>)
 
+// JK Interior AI Assistant logo — sparkle cluster used everywhere the bot avatar appears
+const IAssistantLogo = ({ className = "h-3.5 w-3.5" }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+    <path d="M12 3.2c.5 2.7 1.1 4.4 2 5.3.9.9 2.6 1.5 5.3 2-2.7.5-4.4 1.1-5.3 2-.9.9-1.5 2.6-2 5.3-.5-2.7-1.1-4.4-2-5.3-.9-.9-2.6-1.5-5.3-2 2.7-.5 4.4-1.1 5.3-2 .9-.9 1.5-2.6 2-5.3z"/>
+    <path d="M19 2.4c.24 1.13.53 1.86.9 2.24.38.37 1.11.66 2.24.9-1.13.24-1.86.53-2.24.9-.37.38-.66 1.11-.9 2.24-.24-1.13-.53-1.86-.9-2.24-.38-.37-1.11-.66-2.24-.9 1.13-.24 1.86-.53 2.24-.9.37-.38.66-1.11.9-2.24z" opacity="0.75"/>
+  </svg>
+)
+
 // ── Mic Icon ──────────────────────────────────────────────────────────────────
 const IMic = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -689,7 +697,7 @@ function RichText({ text }: { text: string }) {
 const TypingDots = () => (
   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }} className="flex items-end gap-2">
     <div className="h-6 w-6 shrink-0 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center shadow-sm">
-      <span className="text-[8px] font-black text-white tracking-tight">JK</span>
+      <IAssistantLogo className="h-3 w-3 text-white" />
     </div>
     <div className="rounded-2xl rounded-bl-sm px-4 py-3 shadow-md bg-white border border-gray-100">
       <div className="flex gap-[5px] items-center h-[14px]">
@@ -743,7 +751,7 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
 
 const WELCOME_MSG = mk(
   "bot",
-  "Namaste 😊\n\nMain Riya hoon — JK Interior ki AI consultant.\n\nAap gypsum ceiling, PVC, WPC wall panels, TV unit, lighting, ya room design ke baare me kuch bhi pooch sakte hain.\n\n📐 Room ka size bata dijiye (jaise 12×10) — main turant estimate aur best suggestion bata dungi ✨"
+  "Namaste 😊\n\nMain **JK Interior AI Assistant** hoon.\n\nAap gypsum ceiling, PVC, WPC wall panels, TV unit, lighting, ya room design ke baare me kuch bhi pooch sakte hain.\n\n📐 Room ka size bata dijiye (jaise 12×10) — main turant estimate aur best suggestion bata dungi ✨"
 )
 
 // ── Main Component ────────────────────────────────────────────────────────────
@@ -1231,7 +1239,7 @@ const tLower = text.toLowerCase()
           onClick={() => setOpen(true)}
           className="fixed bottom-20 right-4 z-50 md:bottom-24 md:right-6"
           style={{ width: 62, height: 62 }}
-          aria-label="Open chat with Riya"
+          aria-label="Open chat with JK Interior AI Assistant"
         >
           {/* Soft ambient glow */}
           <span
@@ -1293,12 +1301,12 @@ const tLower = text.toLowerCase()
             {/* Header */}
             <div className="flex shrink-0 items-center justify-between px-4 py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-[#0f2f2a] via-[#11453d] to-[#1f6f61] text-white">
               <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 font-black text-[10px] md:text-sm ring-2 ring-white/30 shrink-0">
-                  JK
+                <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 ring-2 ring-white/30 shrink-0">
+                  <IAssistantLogo className="h-4 w-4 md:h-[18px] md:w-[18px] text-white" />
                   <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-300 border-2 border-emerald-600" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs md:text-sm font-bold leading-tight truncate">Riya · Interior AI</p>
+                  <p className="text-xs md:text-sm font-bold leading-tight truncate">JK Interior AI Assistant</p>
                   <p className="text-[10px] text-white/70 font-medium">{statusText}</p>
                 </div>
               </div>
@@ -1380,7 +1388,7 @@ const tLower = text.toLowerCase()
                       transition={{ duration: 2, repeat: Infinity }}
                       className="relative flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-lg"
                     >
-                      <span className="text-2xl md:text-3xl font-black text-white">JK</span>
+                      <IAssistantLogo className="h-7 w-7 md:h-9 md:w-9 text-white" />
                     </motion.div>
 
                     {/* Loading text */}
@@ -1390,7 +1398,7 @@ const tLower = text.toLowerCase()
                       transition={{ delay: 0.3, duration: 0.5 }}
                       className="text-center"
                     >
-                      <h2 className="text-lg md:text-xl font-bold text-emerald-900">Riya loading...</h2>
+                      <h2 className="text-lg md:text-xl font-bold text-emerald-900">JK Interior AI Assistant</h2>
                       <p className="text-xs md:text-sm text-emerald-600 mt-1">Setting up your consultation</p>
                     </motion.div>
 
@@ -1426,7 +1434,7 @@ const tLower = text.toLowerCase()
                 >
                   {m.role === "bot" && m.kind !== "card" && (
                     <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
-                      <span className="text-[8px] font-black text-white">JK</span>
+                      <IAssistantLogo className="h-3 w-3 text-white" />
                     </div>
                   )}
                   {m.role === "bot" && m.kind === "card" && <div className="h-6 w-6 shrink-0" />}

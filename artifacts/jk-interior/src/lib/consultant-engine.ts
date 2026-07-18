@@ -477,9 +477,9 @@ export function recommendMaterial(
 function r_greeting(ctx: ConversationContext): string {
   const n = nm(ctx)
   const opts = [
-    `Namaste${n}! 😊 Main Riya hoon — JK Interior ki consultant.\n\nCeiling, wall panels, TV unit ya pricing — kuch bhi poochhein!`,
+    `Namaste${n}! 😊 Main JK Interior AI Assistant hoon.\n\nCeiling, wall panels, TV unit ya pricing — kuch bhi poochhein!`,
     `Hello${n}! 🏠 JK Interior mein aapka swagat hai.\n\nPVC, gypsum, WPC ya room estimate — sab pooch sakte hain!`,
-    `Namaste${n}! 👋 Main Riya hoon.\n\nKaunsa kaam karwana hai — ceiling, wall paneling ya kuch aur?`,
+    `Namaste${n}! 👋 Main JK Interior AI Assistant hoon.\n\nKaunsa kaam karwana hai — ceiling, wall paneling ya kuch aur?`,
   ]
   return pick(opts)
 }
