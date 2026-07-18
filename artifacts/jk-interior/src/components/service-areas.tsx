@@ -67,10 +67,10 @@ export default function ServiceAreas() {
   return (
     <section id="areas" className="relative overflow-hidden py-20 md:py-28 scroll-mt-28">
 
-      {/* Background */}
+      {/* Background — a cool slate "map room" tone, distinct from the warm paper sections around it */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0fdf4] to-white" />
-        <div className="absolute inset-0 dot-pattern opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f8fafc] via-[#eef2f6] to-[#f8fafc]" />
+        <div className="absolute inset-0 dot-pattern opacity-25" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(5,150,105,0.05),transparent)]" />
       </div>
 

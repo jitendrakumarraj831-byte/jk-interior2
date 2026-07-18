@@ -79,11 +79,11 @@ export default function Testimonials() {
 
   return (
     <section id="testimonials" className="relative overflow-hidden py-20 sm:py-24 lg:py-32">
-      {/* Background */}
+      {/* Background — a dark emerald "stage", distinct from the navy of Process and the cream of Why Us */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f0fdf4] to-white" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(5,150,105,0.05),transparent)]" />
-        <div className="absolute inset-0 dot-pattern opacity-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#052e22] via-[#064e3b] to-[#052e22]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_20%,rgba(16,185,129,0.16),transparent)]" />
+        <div className="absolute inset-0 dot-pattern opacity-[0.06]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -93,15 +93,16 @@ export default function Testimonials() {
           badge="Client Reviews"
           tone="amber"
           headingSize="md"
+          dark
           title={<>What Bihar Says <span className="hero-gradient-text">After We Leave</span></>}
           subtitle="साइट विज़िट से लेकर हैंडओवर तक — असली ग्राहकों की असली बातें"
           className="mb-12"
         />
 
-        {/* Featured pull-quote */}
+        {/* Featured pull-quote, spotlight-style */}
         <motion.div {...animProps} className="relative mx-auto mb-16 max-w-4xl">
           <Quote className="mx-auto mb-4 h-10 w-10 text-amber-300" aria-hidden="true" />
-          <blockquote className="mb-6 text-center font-serif text-xl font-bold leading-snug text-gray-900 sm:text-2xl md:text-3xl">
+          <blockquote className="mb-6 text-center font-serif text-xl font-bold leading-snug text-white sm:text-2xl md:text-3xl">
             "{featured.text}"
           </blockquote>
           <div className="flex items-center justify-center gap-3">
@@ -110,15 +111,15 @@ export default function Testimonials() {
             </div>
             <div className="text-left">
               <div className="flex items-center gap-1.5">
-                <span className="text-sm font-bold text-gray-900">{featured.name}</span>
+                <span className="text-sm font-bold text-white">{featured.name}</span>
                 <span className="flex gap-0.5" aria-label="5 out of 5 stars">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-3 w-3 text-amber-400 fill-amber-400" aria-hidden="true" />
                   ))}
                 </span>
               </div>
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                <MapPin className="h-3 w-3 text-emerald-600" aria-hidden="true" />
+              <div className="flex items-center gap-1 text-xs text-emerald-200/70">
+                <MapPin className="h-3 w-3 text-emerald-300" aria-hidden="true" />
                 {featured.location}, Bihar · {featured.service}
               </div>
             </div>
@@ -127,15 +128,15 @@ export default function Testimonials() {
 
         {/* Scrolling review strip */}
         <motion.div {...animProps} className="relative -mx-5 overflow-hidden sm:-mx-6 lg:-mx-12">
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent sm:w-24" aria-hidden />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent sm:w-24" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#052e22] to-transparent sm:w-24" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#052e22] to-transparent sm:w-24" aria-hidden />
 
           <div className="flex w-max gap-4 px-5 marquee-track sm:px-6 lg:px-12">
             {marqueeItems.map((t, i) => (
               <div
                 key={`${t.name}-${i}`}
                 aria-hidden={i >= testimonials.length}
-                className="flex w-72 shrink-0 flex-col gap-3 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:w-80"
+                className="flex w-72 shrink-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-5 backdrop-blur-sm sm:w-80"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex gap-0.5" aria-label={`${t.rating} out of 5 stars`}>
@@ -143,18 +144,18 @@ export default function Testimonials() {
                       <Star key={si} className="h-3.5 w-3.5 text-amber-400 fill-amber-400" aria-hidden="true" />
                     ))}
                   </div>
-                  <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                  <span className="rounded-md border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-300">
                     {t.service}
                   </span>
                 </div>
-                <p className="text-sm leading-relaxed text-gray-700">{t.text}</p>
-                <div className="mt-auto flex items-center gap-2.5 border-t border-gray-100 pt-3">
+                <p className="text-sm leading-relaxed text-slate-200">{t.text}</p>
+                <div className="mt-auto flex items-center gap-2.5 border-t border-white/10 pt-3">
                   <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${t.color} text-[10px] font-black text-white`} aria-hidden="true">
                     {t.initials}
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-gray-900">{t.name}</div>
-                    <div className="text-[10px] text-gray-500">{t.location}, Bihar</div>
+                    <div className="text-xs font-bold text-white">{t.name}</div>
+                    <div className="text-[10px] text-slate-400">{t.location}, Bihar</div>
                   </div>
                 </div>
               </div>
@@ -164,14 +165,14 @@ export default function Testimonials() {
 
         {/* Rating summary + CTA */}
         <motion.div {...animProps} className="mt-14 flex flex-col items-center gap-6 text-center">
-          <div className="flex items-center gap-5 text-sm text-gray-500 sm:gap-6">
-            <span className="flex items-center gap-1.5 font-bold text-gray-900">
+          <div className="flex items-center gap-5 text-sm text-slate-300 sm:gap-6">
+            <span className="flex items-center gap-1.5 font-bold text-white">
               5.0 <Star className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
             </span>
-            <span className="text-gray-300">|</span>
+            <span className="text-slate-500">|</span>
             <span>100+ reviews across Bihar</span>
           </div>
-          <p className="text-base text-gray-600">अपने घर को भी दें premium interior का look</p>
+          <p className="text-base text-slate-300">अपने घर को भी दें premium interior का look</p>
           <WhatsAppLink
             size="lg"
             icon={false}

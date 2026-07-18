@@ -101,14 +101,18 @@ export default function WhyUs() {
   return (
     <section
       id="why-us"
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-32"
+      className="relative overflow-hidden bg-[#f7f2e6] py-20 sm:py-24 lg:py-32"
       aria-labelledby="why-us-heading"
     >
-      {/* Background */}
+      {/* Background — a ruled "notebook page" instead of the emerald gradients used elsewhere */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] via-white to-[#f0fdf4]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_20%_30%,rgba(5,150,105,0.06),transparent)]" />
-        <div className="absolute inset-0 dot-pattern opacity-15" />
+        <div
+          className="absolute inset-0 opacity-70"
+          style={{
+            backgroundImage: "repeating-linear-gradient(to bottom, transparent, transparent 38px, rgba(5,150,105,0.07) 39px)",
+          }}
+        />
+        <div className="hidden lg:block absolute left-[9%] top-0 bottom-0 w-px bg-amber-400/25" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -122,11 +126,12 @@ export default function WhyUs() {
         />
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
-          {/* LEFT — brand narrative, sticky on desktop */}
+          {/* LEFT — brand narrative, sticky on desktop, styled like a pinned note card */}
           <motion.div {...animProps} className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
-            <div className="relative rounded-3xl border border-emerald-200 bg-white/70 p-7 shadow-sm sm:p-8">
+            <div className="relative -rotate-1 rounded-sm border border-black/5 bg-white p-7 shadow-[0_14px_36px_rgba(0,0,0,0.1)] sm:p-8">
+              <span className="absolute -top-3 left-8 h-6 w-16 -rotate-3 bg-amber-200/70 shadow-sm" aria-hidden="true" />
               <Quote className="mb-4 h-8 w-8 text-emerald-300" aria-hidden="true" />
-              <p className="mb-4 text-lg font-bold leading-snug text-gray-900 sm:text-xl">
+              <p className="mb-4 font-serif text-lg font-bold leading-snug text-gray-900 sm:text-xl">
                 We started JK Interior in Forbesganj in 2016 fitting PVC ceilings for a handful of
                 neighbours. Nine years and 100+ homes later, the job hasn't changed — we still
                 measure the room ourselves before we quote it.
@@ -137,7 +142,7 @@ export default function WhyUs() {
                 on the truck for wet rooms, and gypsum stays reserved for the dry ones — even
                 when a customer asks for the "prettier" option in the wrong place.
               </p>
-              <div className="flex items-center gap-3 border-t border-emerald-100 pt-5">
+              <div className="flex items-center gap-3 border-t border-dashed border-gray-200 pt-5">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-black text-white">
                   JK
                 </div>
@@ -149,24 +154,24 @@ export default function WhyUs() {
             </div>
           </motion.div>
 
-          {/* RIGHT — reasoning list */}
+          {/* RIGHT — reasoning list, set as marginalia rather than boxed cards */}
           <motion.div {...staggerContainer} className="lg:col-span-7">
-            <div className="divide-y divide-gray-100 rounded-3xl border border-gray-200 bg-white">
+            <div className="divide-y divide-dashed divide-emerald-900/10">
               {reasons.map((reason, i) => (
                 <motion.div
                   key={reason.title}
                   {...staggerItem}
-                  className="group flex gap-4 p-5 transition-colors duration-300 hover:bg-emerald-50/50 sm:gap-5 sm:p-6"
+                  className="group flex gap-5 py-5 pl-1 sm:py-6"
                 >
-                  <div className="flex shrink-0 flex-col items-center">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/10 text-emerald-700 transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white sm:h-12 sm:w-12">
-                      <reason.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-                    </span>
-                    <span className="mt-1 text-[10px] font-bold text-gray-300">0{i + 1}</span>
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="mb-0.5 text-base font-bold text-gray-900 sm:text-lg">{reason.title}</h3>
-                    <p className="mb-2 text-xs font-medium text-emerald-600/80 sm:text-sm">{reason.titleHi}</p>
+                  <span className="w-10 shrink-0 font-serif text-3xl font-black leading-none text-emerald-900/15 sm:w-12 sm:text-4xl">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0 border-l-2 border-transparent pl-5 transition-colors duration-300 group-hover:border-emerald-400">
+                    <div className="mb-1.5 flex items-center gap-2">
+                      <reason.icon className="h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
+                      <h3 className="text-base font-bold text-gray-900 sm:text-lg">{reason.title}</h3>
+                    </div>
+                    <p className="mb-2 text-xs font-medium text-emerald-700/80 sm:text-sm">{reason.titleHi}</p>
                     <p className="text-sm leading-relaxed text-gray-600">{reason.reasoning}</p>
                   </div>
                 </motion.div>
