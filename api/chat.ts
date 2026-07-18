@@ -10,6 +10,10 @@ import {
 
 // Vercel Node.js serverless function — no framework, no extra deps (uses global fetch).
 // Talks to Groq's OpenAI-compatible chat completions API.
+//
+// `process` is a Node.js runtime global; declared locally instead of pulling in
+// @types/node so this file has zero new dependencies to resolve at build time.
+declare const process: { env: Record<string, string | undefined> }
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile"
