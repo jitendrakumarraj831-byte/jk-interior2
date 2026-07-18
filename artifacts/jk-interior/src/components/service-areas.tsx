@@ -1,7 +1,9 @@
 
-import { MapPin, Navigation, Phone, ArrowRight } from "lucide-react"
+import { MapPin, Navigation, ArrowRight } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
+import SectionHeader from "@/components/ui/section-header"
+import { CallLink } from "@/components/ui/cta-links"
 
 const areas = [
   { name: "Forbesganj", desc: "Main Hub", highlight: true },
@@ -73,25 +75,13 @@ export default function ServiceAreas() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
-        <motion.div {...animProps} className="mb-14 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
-            <Navigation className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">Service Areas</span>
-          </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            हमारी <span className="hero-gradient-text">पहुंच</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base font-semibold text-gray-600">
-            बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा — Araria, Supaul और Purnia जिलों में
-          </p>
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="mx-auto mt-5 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
-          />
-        </motion.div>
+        <SectionHeader
+          icon={Navigation}
+          badge="Service Areas"
+          headingSize="md"
+          title={<>हमारी <span className="hero-gradient-text">पहुंच</span></>}
+          subtitle="बिहार में प्रीमियम इंटीरियर और फॉल्स सीलिंग सेवा — Araria, Supaul और Purnia जिलों में"
+        />
 
         {/* Desktop Hub Map */}
         <div className="hidden md:block relative mx-auto mb-16 aspect-[16/10] w-full max-w-4xl">
@@ -173,13 +163,9 @@ export default function ServiceAreas() {
             </p>
             <p className="mb-6 text-sm text-gray-500">कहीं भी हो आपका घर — हम पहुंचेंगे</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="tel:+918541849118"
-                className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_20px_rgba(5,150,105,0.3)] transition-all hover:bg-emerald-500 active:scale-95"
-              >
-                <Phone className="h-4 w-4" />
+              <CallLink className="shadow-[0_4px_20px_rgba(5,150,105,0.3)]" ariaLabel="Check service availability">
                 Check Availability
-              </a>
+              </CallLink>
               <Link
                 href="/contact"
                 className="flex items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-6 py-3.5 text-sm font-bold text-emerald-700 transition-all hover:border-emerald-400 hover:bg-emerald-100 active:scale-95"

@@ -1,7 +1,9 @@
 
 import { useState } from "react"
-import { ChevronDown, HelpCircle, Phone, MessageCircle } from "lucide-react"
+import { ChevronDown, HelpCircle } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import SectionHeader from "@/components/ui/section-header"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -65,18 +67,14 @@ export default function FAQSection() {
 
       <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
-        <motion.div {...animProps} className="mb-12 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
-            <HelpCircle className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">FAQ</span>
-          </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            Frequently Asked <span className="hero-gradient-text">Questions</span>
-          </h2>
-          <p className="text-gray-500 text-base max-w-xl mx-auto">
-            JK Interior के बारे में सबसे common questions के answers — अपना doubt clear करें
-          </p>
-        </motion.div>
+        <SectionHeader
+          icon={HelpCircle}
+          badge="FAQ"
+          headingSize="md"
+          className="mb-12"
+          title={<>Frequently Asked <span className="hero-gradient-text">Questions</span></>}
+          subtitle="JK Interior के बारे में सबसे common questions के answers — अपना doubt clear करें"
+        />
 
         {/* FAQ List */}
         <motion.div {...animProps} className="space-y-3">
@@ -127,22 +125,8 @@ export default function FAQSection() {
         <motion.div {...animProps} className="mt-12 text-center">
           <p className="mb-5 text-gray-500 text-sm">और questions हैं? हमसे directly बात करें</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href="tel:+918541849118"
-              className="flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-6 py-3.5 text-sm font-bold text-emerald-700 transition-all hover:border-emerald-400 hover:bg-emerald-100 active:scale-95"
-            >
-              <Phone className="h-4 w-4" />
-              Call: +91 8541849118
-            </a>
-            <a
-              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20have%20a%20question."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_16px_rgba(37,205,102,0.25)] transition-all hover:shadow-[0_4px_24px_rgba(37,205,102,0.4)] active:scale-95"
-            >
-              <MessageCircle className="h-4 w-4" />
-              WhatsApp Us
-            </a>
+            <CallLink variant="outline">Call: +91 8541849118</CallLink>
+            <WhatsAppLink message="Hi JK Interior, I have a question.">WhatsApp Us</WhatsAppLink>
           </div>
         </motion.div>
       </div>

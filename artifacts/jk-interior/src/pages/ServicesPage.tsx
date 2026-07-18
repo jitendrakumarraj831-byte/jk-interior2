@@ -3,9 +3,10 @@ import Navbar from "@/components/navbar"
 import Services from "@/components/services"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { Phone, MessageCircle, MapPin } from "lucide-react"
+import { MapPin } from "lucide-react"
 import { CITIES } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 export default function ServicesPage() {
   return (
@@ -74,7 +75,7 @@ export default function ServicesPage() {
       <section className="py-16 text-center relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-b from-[#071126] to-[#0d1f3c]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(37,99,235,0.08),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(16,185,129,0.1),transparent)]" />
         </div>
         <div className="relative z-10 mx-auto max-w-2xl px-6 space-y-6">
           <h2 className="text-2xl font-black text-white md:text-3xl">
@@ -82,31 +83,19 @@ export default function ServicesPage() {
           </h2>
           <p className="text-slate-400 text-base">
             Get a free quote for any of our services. We serve{" "}
-            <Link href="/#areas" className="underline decoration-blue-500 underline-offset-4 text-blue-400 hover:text-blue-300 transition-colors">
+            <Link href="/#areas" className="underline decoration-emerald-500 underline-offset-4 text-emerald-400 hover:text-emerald-300 transition-colors">
               Forbesganj, Araria, Narpatganj, Jogbani
             </Link>{" "}
             and all across Bihar. You can also{" "}
-            <Link href="/gallery" className="underline decoration-blue-500 underline-offset-4 text-blue-400 hover:text-blue-300 transition-colors">
+            <Link href="/gallery" className="underline decoration-emerald-500 underline-offset-4 text-emerald-400 hover:text-emerald-300 transition-colors">
               browse our recent false ceiling &amp; interior projects
             </Link>.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href="tel:+918541849118"
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white font-bold px-8 py-4 text-sm shadow-[0_4px_24px_rgba(37,99,235,0.4)] hover:bg-blue-500 transition-all active:scale-95 luxury-animated-shine"
-            >
-              <Phone className="h-4 w-4" />
-              Get Free Quote
-            </a>
-            <a
-              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] text-white font-bold px-8 py-4 text-sm shadow-[0_4px_24px_rgba(37,205,102,0.3)] hover:bg-green-500 transition-all active:scale-95"
-            >
-              <MessageCircle className="h-4 w-4" />
+            <CallLink shine className="px-8 py-4 text-sm">Get Free Quote</CallLink>
+            <WhatsAppLink message="Hi JK Interior, I need a free quotation" className="px-8 py-4 text-sm shadow-[0_4px_24px_rgba(37,205,102,0.3)]">
               WhatsApp Us
-            </a>
+            </WhatsAppLink>
           </div>
         </div>
       </section>

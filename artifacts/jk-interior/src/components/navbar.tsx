@@ -1,9 +1,10 @@
 
 import { useState, useEffect } from "react"
-import { Phone, Menu, X, MapPin, MessageCircle } from "lucide-react"
+import { Menu, X, MapPin } from "lucide-react"
 import { Link, useLocation } from "wouter"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 const navLinks = [
   { href: "/", label: "Home", labelHi: "होम" },
@@ -81,23 +82,18 @@ export default function Navbar() {
 
             {/* Desktop CTAs */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
-              <a
-                href="tel:+918541849118"
-                className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/8 px-3.5 py-2 text-[11px] font-bold text-emerald-700 hover:border-emerald-500/50 hover:bg-emerald-500/15 transition-all duration-200"
-              >
-                <Phone className="h-3.5 w-3.5" />
+              <CallLink size="sm" variant="outline" className="gap-2">
                 <span className="hidden xl:inline">+91 8541849118</span>
                 <span className="xl:hidden">Call</span>
-              </a>
-              <a
-                href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20interior%20design%20help."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-[11px] font-black uppercase tracking-wide text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)] hover:bg-emerald-500 hover:shadow-[0_4px_24px_rgba(5,150,105,0.5)] transition-all duration-200 luxury-animated-shine"
+              </CallLink>
+              <WhatsAppLink
+                size="sm"
+                shine
+                message="Hi JK Interior, I need interior design help."
+                className="gap-2 bg-emerald-600 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(5,150,105,0.35)] hover:bg-emerald-500 hover:shadow-[0_4px_24px_rgba(5,150,105,0.5)]"
               >
-                <MessageCircle className="h-3.5 w-3.5" />
                 WhatsApp
-              </a>
+              </WhatsAppLink>
             </div>
 
             {/* Mobile Menu Button */}
@@ -163,22 +159,16 @@ export default function Navbar() {
                   })}
 
                   <div className="mt-3 flex flex-col gap-2">
-                    <a
-                      href="tel:+918541849118"
-                      className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/8 px-5 py-3 text-sm font-bold text-emerald-700"
-                    >
-                      <Phone className="h-4 w-4" />
+                    <CallLink variant="outline" className="px-5 py-3">
                       +91 8541849118
-                    </a>
-                    <a
-                      href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20interior%20design%20help."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3.5 text-base font-black text-white shadow-[0_4px_20px_rgba(5,150,105,0.35)] luxury-animated-shine"
+                    </CallLink>
+                    <WhatsAppLink
+                      shine
+                      message="Hi JK Interior, I need interior design help."
+                      className="bg-emerald-600 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_20px_rgba(5,150,105,0.35)]"
                     >
-                      <MessageCircle className="h-5 w-5" />
                       Chat on WhatsApp
-                    </a>
+                    </WhatsAppLink>
                   </div>
 
                   <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2">

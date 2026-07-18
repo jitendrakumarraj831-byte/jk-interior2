@@ -4,7 +4,8 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { CITIES, SERVICES_LIST, getCityBySlug, SITE_URL } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
-import { Phone, MessageCircle, MapPin, CheckCircle, ArrowRight, Star, Clock } from "lucide-react"
+import { MapPin, CheckCircle, ArrowRight, Star, Clock, Phone } from "lucide-react"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 export default function CityPage() {
   const { city: citySlug } = useParams<{ city: string }>()
@@ -15,7 +16,7 @@ export default function CityPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">City not found</h1>
-          <Link href="/" className="text-blue-600 hover:underline mt-4 block">Go home</Link>
+          <Link href="/" className="text-emerald-700 hover:underline mt-4 block">Go home</Link>
         </div>
       </div>
     )
@@ -92,11 +93,12 @@ export default function CityPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-white pt-28 pb-16 sm:pb-20">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute inset-0 bg-gradient-to-br from-[#f0f7ff] via-white to-white" />
-          <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-blue-100/40 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#f0fdf4] via-white to-white" />
+          <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-emerald-100/40 blur-3xl" />
+          <div className="absolute inset-0 grid-texture opacity-20" />
         </div>
         <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-blue-600">
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-emerald-700">
             <MapPin className="h-4 w-4" />
             <Link href="/" className="hover:underline">Home</Link>
             <span className="text-gray-300">/</span>
@@ -107,7 +109,7 @@ export default function CityPage() {
 
           <h2 className="mb-4 text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
             Interior Designer in{" "}
-            <span className="gold-text">{city.name}</span>
+            <span className="hero-gradient-text">{city.name}</span>
           </h2>
 
           <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
@@ -116,31 +118,22 @@ export default function CityPage() {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <a
-              href="tel:+918541849118"
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-emerald-700 active:scale-95 transition-all"
+            <CallLink className="shadow-md hover:shadow-md">Call Now</CallLink>
+            <WhatsAppLink
+              className="shadow-md hover:shadow-md"
+              message={`Hi JK Interior, I need interior design work in ${city.name}. Please arrange a free site visit.`}
             >
-              <Phone className="h-4 w-4" />
-              Call Now
-            </a>
-            <a
-              href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20interior%20design%20work%20in%20${encodeURIComponent(city.name)}.%20Please%20arrange%20a%20free%20site%20visit.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-[#1ebe5d] active:scale-95 transition-all"
-            >
-              <MessageCircle className="h-4 w-4" />
               WhatsApp
-            </a>
-            <a
-              href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20site%20visit%20in%20${encodeURIComponent(city.name)}.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-5 py-3 text-sm font-bold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all"
+            </WhatsAppLink>
+            <WhatsAppLink
+              variant="outline"
+              icon={false}
+              message={`Hi JK Interior, I need a free site visit in ${city.name}.`}
+              className="border-emerald-300 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-100"
             >
-              <Clock className="h-4 w-4" />
+              <Clock className="h-4 w-4" aria-hidden="true" />
               Free Site Visit
-            </a>
+            </WhatsAppLink>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -237,22 +230,19 @@ export default function CityPage() {
           </h2>
           <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • Same-week slots available</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href="tel:+918541849118"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-emerald-700 shadow hover:bg-emerald-50 transition-colors"
+            <CallLink
+              icon={false}
+              className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow"
             >
-              <Phone className="h-4 w-4" />
+              <Phone className="h-4 w-4" aria-hidden="true" />
               Call +91 8541849118
-            </a>
-            <a
-              href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20site%20visit%20in%20${encodeURIComponent(city.name)}.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-white shadow hover:bg-[#1ebe5d] transition-colors"
+            </CallLink>
+            <WhatsAppLink
+              message={`Hi JK Interior, I need a free site visit in ${city.name}.`}
+              className="shadow hover:shadow"
             >
-              <MessageCircle className="h-4 w-4" />
               WhatsApp Us
-            </a>
+            </WhatsAppLink>
           </div>
         </div>
       </section>

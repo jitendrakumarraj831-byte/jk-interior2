@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from "react"
-import { X, ChevronLeft, ChevronRight, Phone, MessageCircle, Sparkles, Play, Pause } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, MessageCircle, Sparkles, Play, Pause, Phone } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import SectionHeader from "@/components/ui/section-header"
 
 interface GalleryImage { src: string; alt: string; category?: string }
 
@@ -140,15 +142,19 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
           <button onClick={() => { setDir(1); onNext() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10">Next <ChevronRight size={14}/></button>
         </div>
         <div className="flex gap-2">
-          <a href={`https://wa.me/918651070831?text=${encodeURIComponent(`Hello JK Interior! Is design ka quote chahiye: "${img.alt}"`)}`}
-            target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#25D366] hover:bg-green-500 text-white text-sm font-bold rounded-full transition-all active:scale-95">
-            <MessageCircle size={14}/> WhatsApp
-          </a>
-          <a href="tel:+918541849118"
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-full transition-all active:scale-95">
-            <Phone size={14}/> Call
-          </a>
+          <WhatsAppLink
+            message={`Hello JK Interior! Is design ka quote chahiye: "${img.alt}"`}
+            icon={false}
+            className="rounded-full px-5 py-2.5 text-sm shadow-none hover:bg-green-500 hover:shadow-none"
+          >
+            <MessageCircle size={14} aria-hidden="true" /> WhatsApp
+          </WhatsAppLink>
+          <CallLink
+            icon={false}
+            className="rounded-full bg-blue-600 px-5 py-2.5 text-sm shadow-none hover:bg-blue-500 hover:shadow-none"
+          >
+            <Phone size={14} aria-hidden="true" /> Call
+          </CallLink>
         </div>
       </div>
     </motion.div>,
@@ -274,24 +280,22 @@ function CategoryCard({ category, images, onOpen }: {
 
       {/* CTA */}
       <div className="flex gap-2 p-3 sm:p-4">
-        <a
-          href="tel:+918541849118"
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
-          aria-label={`Call for ${category} quote`}
+        <CallLink
+          size="sm"
+          ariaLabel={`Call for ${category} quote`}
+          className="flex-1 px-3 py-2.5 text-xs sm:text-sm"
         >
-          <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
           Get Quote
-        </a>
-        <a
-          href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20am%20interested%20in%20${encodeURIComponent(category)}%20service%20in%20Forbesganj.%20Please%20share%20details.`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-all hover:bg-[#25D366]/20 hover:border-[#25D366]/60 active:scale-95 sm:text-sm touch-manipulation"
-          aria-label={`WhatsApp for ${category}`}
+        </CallLink>
+        <WhatsAppLink
+          size="sm"
+          variant="outline"
+          message={`Hi JK Interior, I am interested in ${category} service in Forbesganj. Please share details.`}
+          ariaLabel={`WhatsApp for ${category}`}
+          className="flex-1 px-3 py-2.5 text-xs sm:text-sm"
         >
-          <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
           WhatsApp
-        </a>
+        </WhatsAppLink>
       </div>
     </motion.div>
   )
@@ -356,19 +360,15 @@ export default function Gallery() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-20 sm:pt-24 pb-16">
 
         {/* ── Header ── */}
-        <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:.6 }}
-          className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 mb-4">
-            <Sparkles className="h-3.5 w-3.5 text-amber-500"/>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700">Our Work Gallery</span>
-          </div>
-          <h2 className="text-gray-900 text-3xl md:text-5xl font-black mb-3">
-            हमारे काम, <span className="hero-gradient-text">आपका विश्वास</span>
-          </h2>
-          <p className="text-gray-500 max-w-lg mx-auto text-sm md:text-base">
-            {ALL.length}+ premium interior projects — Forbesganj, Araria, Bihar
-          </p>
-        </motion.div>
+        <SectionHeader
+          icon={Sparkles}
+          badge="Our Work Gallery"
+          tone="amber"
+          headingSize="md"
+          className="mb-10"
+          title={<>हमारे काम, <span className="hero-gradient-text">आपका विश्वास</span></>}
+          subtitle={`${ALL.length}+ premium interior projects — Forbesganj, Araria, Bihar`}
+        />
 
         {/* ── Section label ── */}
         <div className="flex items-center gap-4 mb-6">
@@ -395,13 +395,8 @@ export default function Gallery() {
             Budget आपका, ज़िम्मेदारी हमारी! Premium interior और false ceiling — किफायती रेट पर।
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+918541849118" className="flex items-center justify-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl shadow-[0_4px_20px_rgba(5,150,105,0.35)] transition-all active:scale-95">
-              <Phone size={16}/> अभी कॉल करें
-            </a>
-            <a href="https://wa.me/918651070831" target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-8 py-4 bg-[#25D366] hover:bg-green-500 text-white text-sm font-bold rounded-xl transition-all active:scale-95">
-              <MessageCircle size={16}/> WhatsApp करें
-            </a>
+            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(5,150,105,0.35)]">अभी कॉल करें</CallLink>
+            <WhatsAppLink className="px-8 py-4 shadow-none hover:bg-green-500 hover:shadow-none">WhatsApp करें</WhatsAppLink>
           </div>
         </motion.div>
       </div>

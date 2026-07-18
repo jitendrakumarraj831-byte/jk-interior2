@@ -1,6 +1,7 @@
 
 import { ShieldCheck, Droplets, Clock, Sparkles, Award, HeartHandshake, Gem, BadgeCheck } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
+import SectionHeader from "@/components/ui/section-header"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -137,35 +138,14 @@ export default function WhyUs() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Section Header */}
-        <motion.div {...animProps} className="mb-14 text-center sm:mb-16 lg:mb-20">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-1.5 backdrop-blur-sm">
-            <BadgeCheck className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">Why Choose Us</span>
-          </div>
-
-          <h2
-            id="why-us-heading"
-            className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl lg:text-6xl"
-          >
-            Why JK Interior is{" "}
-            <span className="hero-gradient-text">the Best Choice</span>
-          </h2>
-
-          <p className="mx-auto mb-3 max-w-2xl text-base font-medium text-gray-600 sm:text-lg">
-            फारबिसगंज और अररिया में इंटीरियर के लिए JK Interior सबसे भरोसेमंद
-          </p>
-          <p className="mx-auto max-w-xl text-sm text-gray-500 sm:text-base">
-            Premium materials, expert craftsmanship, and a commitment to excellence — that&apos;s what sets us apart.
-          </p>
-
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8, ease: easeLux }}
-            className="mx-auto mt-6 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
-          />
-        </motion.div>
+        <SectionHeader
+          icon={BadgeCheck}
+          badge="Why Choose Us"
+          headingId="why-us-heading"
+          title={<>Why JK Interior is <span className="hero-gradient-text">the Best Choice</span></>}
+          subtitle="फारबिसगंज और अररिया में इंटीरियर के लिए JK Interior सबसे भरोसेमंद"
+          subtitleSecondary="Premium materials, expert craftsmanship, and a commitment to excellence — that's what sets us apart."
+        />
 
         {/* Cards Grid */}
         <motion.div

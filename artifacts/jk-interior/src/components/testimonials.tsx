@@ -1,6 +1,8 @@
 
 import { Star, Quote, MapPin } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
+import SectionHeader from "@/components/ui/section-header"
+import { WhatsAppLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -107,25 +109,14 @@ export default function Testimonials() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
-        <motion.div {...animProps} className="mb-14 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5">
-            <Star className="h-3.5 w-3.5 text-amber-500" aria-hidden="true" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700">Client Reviews</span>
-          </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            100+ Satisfied <span className="hero-gradient-text">Customers</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-base text-gray-600">
-            हमारे customers की real reviews — Bihar भर में 100+ successful projects
-          </p>
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="mx-auto mt-6 h-px w-32 origin-center bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-          />
-        </motion.div>
+        <SectionHeader
+          icon={Star}
+          badge="Client Reviews"
+          tone="amber"
+          headingSize="md"
+          title={<>100+ Satisfied <span className="hero-gradient-text">Customers</span></>}
+          subtitle="हमारे customers की real reviews — Bihar भर में 100+ successful projects"
+        />
 
         {/* Rating Summary */}
         <motion.div {...animProps} className="mb-10 flex justify-center">
@@ -200,15 +191,15 @@ export default function Testimonials() {
         {/* CTA */}
         <motion.div {...animProps} className="mt-14 text-center">
           <p className="mb-5 text-base text-gray-600">अपने घर को भी दें premium interior का look</p>
-          <a
-            href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20want%20to%20get%20interior%20work%20done.%20Please%20share%20details."
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp JK Interior for free consultation"
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)] active:scale-95 touch-manipulation"
+          <WhatsAppLink
+            size="lg"
+            icon={false}
+            ariaLabel="WhatsApp JK Interior for free consultation"
+            message="Hi JK Interior, I want to get interior work done. Please share details."
+            className="bg-emerald-600 text-base shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)]"
           >
             Get Free Consultation
-          </a>
+          </WhatsAppLink>
         </motion.div>
       </div>
     </section>

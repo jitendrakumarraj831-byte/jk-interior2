@@ -1,8 +1,10 @@
 
-import { Layers, PanelTop, Tv, Sparkles, Phone, MessageCircle, CircleCheck as CheckCircle2, ShieldCheck, Droplets, Clock, Gem, Zap, ImageIcon } from "lucide-react"
+import { Layers, PanelTop, Tv, Sparkles, CircleCheck as CheckCircle2, ShieldCheck, Droplets, Clock, Gem, Zap, ImageIcon } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { useLocation } from "wouter"
 import { slugify } from "@/lib/utils"
+import SectionHeader from "@/components/ui/section-header"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -157,37 +159,14 @@ export default function Services() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Section Header */}
-        <motion.div {...animProps} className="mb-14 text-center sm:mb-16 lg:mb-20">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-1.5 backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">
-              Premium Services
-            </span>
-          </div>
-
-          <h2
-            id="services-heading"
-            className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl lg:text-6xl"
-          >
-            Premium Interior{" "}
-            <span className="hero-gradient-text">Solutions</span>
-          </h2>
-
-          <p className="mx-auto mb-2 max-w-2xl text-base font-medium text-gray-600 sm:text-lg">
-            हम लेकर आए हैं फारबिसगंज में इंटीरियर का बेस्ट कलेक्शन
-          </p>
-          <p className="mx-auto max-w-xl text-sm text-gray-500 sm:text-base">
-            From PVC ceilings to modular TV units — every service crafted with precision, waterproof materials, and premium finish.
-          </p>
-
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8, ease: easeLux }}
-            className="mx-auto mt-6 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
-          />
-        </motion.div>
+        <SectionHeader
+          icon={Sparkles}
+          badge="Premium Services"
+          headingId="services-heading"
+          title={<>Premium Interior <span className="hero-gradient-text">Solutions</span></>}
+          subtitle="हम लेकर आए हैं फारबिसगंज में इंटीरियर का बेस्ट कलेक्शन"
+          subtitleSecondary="From PVC ceilings to modular TV units — every service crafted with precision, waterproof materials, and premium finish."
+        />
 
         {/* Trust Strip */}
         <motion.div
@@ -282,26 +261,24 @@ export default function Services() {
 
                 {/* CTA */}
                 <div className="flex gap-2">
-                  <a
-                    href="tel:+918541849118"
+                  <CallLink
+                    size="sm"
                     onClick={(e) => e.stopPropagation()}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
-                    aria-label={`Call for ${service.title} quote`}
+                    ariaLabel={`Call for ${service.title} quote`}
+                    className="flex-1 px-3 py-2.5 text-xs sm:text-sm"
                   >
-                    <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
                     Get Quote
-                  </a>
-                  <a
-                    href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20am%20interested%20in%20${encodeURIComponent(service.title)}%20service%20in%20Forbesganj.%20Please%20share%20details.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  </CallLink>
+                  <WhatsAppLink
+                    size="sm"
+                    variant="outline"
+                    message={`Hi JK Interior, I am interested in ${service.title} service in Forbesganj. Please share details.`}
                     onClick={(e) => e.stopPropagation()}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-all hover:bg-[#25D366]/20 hover:border-[#25D366]/60 active:scale-95 sm:text-sm touch-manipulation"
-                    aria-label={`WhatsApp for ${service.title}`}
+                    ariaLabel={`WhatsApp for ${service.title}`}
+                    className="flex-1 px-3 py-2.5 text-xs sm:text-sm"
                   >
-                    <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
                     WhatsApp
-                  </a>
+                  </WhatsAppLink>
                 </div>
               </div>
             </motion.div>
@@ -312,24 +289,17 @@ export default function Services() {
         <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 text-center lg:mt-20">
           <p className="text-base font-medium text-gray-600 sm:text-lg">अपने घर को बनाएं एक शाही महल</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="tel:+918541849118"
-              aria-label="Call for free site visit"
-              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.55)] active:scale-95 luxury-animated-shine touch-manipulation"
-            >
-              <Phone className="h-5 w-5" aria-hidden="true" />
+            <CallLink size="lg" shine ariaLabel="Call for free site visit" className="text-base">
               Free Site Visit
-            </a>
-            <a
-              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation%20for%20interior%20work."
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp for free quotation"
-              className="flex items-center gap-2 rounded-xl bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(37,211,102,0.35)] transition-all hover:bg-[#20c05c] active:scale-95 touch-manipulation"
+            </CallLink>
+            <WhatsAppLink
+              size="lg"
+              ariaLabel="WhatsApp for free quotation"
+              message="Hi JK Interior, I need a free quotation for interior work."
+              className="text-base"
             >
-              <MessageCircle className="h-5 w-5" aria-hidden="true" />
               Get Free Quotation
-            </a>
+            </WhatsAppLink>
           </div>
         </motion.div>
 

@@ -1,7 +1,9 @@
 
-import { Phone, Mail, MapPin, MessageCircle, ArrowRight, Facebook, Instagram } from "lucide-react"
+import { Phone, Mail, MapPin, ArrowRight, Facebook, Instagram } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { CALL_NUMBER, WA_NUMBER } from "@/lib/business-data"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -177,7 +179,7 @@ export default function Footer() {
             </h4>
             <div className="flex flex-col gap-4">
               <a
-                href="tel:+918541849118"
+                href={`tel:${CALL_NUMBER}`}
                 className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
@@ -189,7 +191,7 @@ export default function Footer() {
                 </div>
               </a>
               <a
-                href="tel:+918651070831"
+                href={`tel:+${WA_NUMBER}`}
                 className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
@@ -217,15 +219,12 @@ export default function Footer() {
               </div>
 
               {/* WhatsApp CTA */}
-              <a
-                href="https://wa.me/918651070831?text=Hello%20JK%20Interior%2C%20I%20need%20help."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3 text-sm font-bold text-white shadow-[0_4px_16px_rgba(37,211,102,0.25)] transition-all hover:shadow-[0_4px_24px_rgba(37,211,102,0.4)] active:scale-95 mt-1"
+              <WhatsAppLink
+                message="Hello JK Interior, I need help."
+                className="mt-1 w-full shadow-[0_4px_16px_rgba(37,211,102,0.25)] hover:shadow-[0_4px_24px_rgba(37,211,102,0.4)]"
               >
-                <MessageCircle className="h-4 w-4" />
                 WhatsApp करें
-              </a>
+              </WhatsAppLink>
             </div>
           </motion.div>
         </div>

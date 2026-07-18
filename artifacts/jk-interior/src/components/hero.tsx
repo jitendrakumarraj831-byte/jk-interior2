@@ -1,8 +1,9 @@
 
 import { useState, useEffect } from "react"
-import { Phone, ArrowRight, MapPin, Star, Layers, PanelTop, Tv, ShieldCheck, Droplets, Sparkles, Clock, MessageCircle, Zap, CheckCircle2, Award, Users, TrendingUp } from "lucide-react"
+import { ArrowRight, MapPin, Star, Layers, PanelTop, Tv, ShieldCheck, Droplets, Sparkles, Clock, Zap, CheckCircle2, Award, Users, TrendingUp } from "lucide-react"
 import { Link } from "wouter"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -170,24 +171,16 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <motion.div {...anim(0.4)} className="mb-6 flex flex-wrap gap-3">
-              <a
-                href="tel:+918541849118"
-                aria-label="Call JK Interior for free quotation"
-                className="group relative flex items-center gap-2 overflow-hidden rounded-xl bg-emerald-600 px-7 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.6)] active:scale-95 sm:px-8 sm:py-4 sm:text-base luxury-animated-shine"
-              >
-                <Phone className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+              <CallLink size="lg" shine ariaLabel="Call JK Interior for free quotation">
                 फ्री कोटेशन लें
-              </a>
-              <a
-                href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation%20for%20interior%20work."
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp JK Interior now"
-                className="group flex items-center gap-2 rounded-xl bg-[#25D366] px-7 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(37,211,102,0.35)] transition-all hover:bg-[#20c05c] hover:shadow-[0_4px_32px_rgba(37,211,102,0.5)] active:scale-95 sm:px-8 sm:py-4 sm:text-base"
+              </CallLink>
+              <WhatsAppLink
+                size="lg"
+                ariaLabel="WhatsApp JK Interior now"
+                message="Hi JK Interior, I need a free quotation for interior work."
               >
-                <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 WhatsApp Now
-              </a>
+              </WhatsAppLink>
               <Link
                 href="/gallery"
                 aria-label="View our work gallery"
