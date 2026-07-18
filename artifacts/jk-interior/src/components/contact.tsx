@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react"
 import { Phone, Mail, MapPin, MessageCircle, Loader2, Clock, Star } from "lucide-react"
 import { motion } from "framer-motion"
+import SectionHeader from "@/components/ui/section-header"
+import { WhatsAppLink } from "@/components/ui/cta-links"
+import { CALL_NUMBER, WA_NUMBER } from "@/lib/business-data"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -30,7 +33,7 @@ export default function Contact() {
       `Message: ${message}\n\n` +
       `Mujhe is service ke baare me jaankari aur free quote chahiye.`
 
-    const waUrl = `https://wa.me/918651070831?text=${encodeURIComponent(text)}`
+    const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`
 
     try {
       window.open(waUrl, "_blank", "noopener,noreferrer")
@@ -62,19 +65,18 @@ export default function Contact() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
-        <motion.div {...animProps} className="mb-14 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
-            <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">संपर्क करें</span>
-          </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            Get In <span className="hero-gradient-text">Touch</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base font-medium text-gray-600">
-            Ready to transform your space? Contact us today for a free consultation.{" "}
-            <span className="text-emerald-700 font-semibold">अपना स्पेस ट्रांसफॉर्म करने के लिए आज ही संपर्क करें।</span>
-          </p>
-        </motion.div>
+        <SectionHeader
+          icon={MessageCircle}
+          badge="संपर्क करें"
+          headingSize="md"
+          title={<>Get In <span className="hero-gradient-text">Touch</span></>}
+          subtitle={
+            <>
+              Call, WhatsApp, or fill the form below — a real person from our Forbesganj office replies, not a bot.{" "}
+              <span className="text-emerald-700 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
+            </>
+          }
+        />
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-start">
           {/* LEFT: Info */}
@@ -90,8 +92,8 @@ export default function Contact() {
                 </div>
                 <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-700">Call Us</h4>
                 <div className="flex flex-col gap-1.5 text-sm font-bold">
-                  <a href="tel:+918541849118" className="text-gray-900 hover:text-emerald-700 transition-colors">+91 8541849118</a>
-                  <a href="tel:+918651070831" className="text-gray-500 hover:text-emerald-700 transition-colors">+91 8651070831</a>
+                  <a href={`tel:${CALL_NUMBER}`} className="text-gray-900 hover:text-emerald-700 transition-colors">+91 8541849118</a>
+                  <a href={`tel:+${WA_NUMBER}`} className="text-gray-500 hover:text-emerald-700 transition-colors">+91 8651070831</a>
                 </div>
               </motion.div>
 
@@ -158,15 +160,13 @@ export default function Contact() {
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.18 } })}
             >
-              <a
-                href="https://wa.me/918651070831?text=Hello%20JK%20Interior%2C%20I%20am%20interested%20in%20your%20services."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-8 py-4 text-base font-black text-white shadow-[0_4px_24px_rgba(37,211,102,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0_4px_32px_rgba(37,211,102,0.45)] active:scale-95"
+              <WhatsAppLink
+                size="lg"
+                message="Hello JK Interior, I am interested in your services."
+                className="w-full rounded-2xl px-8 py-4 text-base shadow-[0_4px_24px_rgba(37,211,102,0.3)] hover:scale-[1.02] hover:shadow-[0_4px_32px_rgba(37,211,102,0.45)]"
               >
-                <MessageCircle className="h-5 w-5" />
                 WhatsApp पर बात करें
-              </a>
+              </WhatsAppLink>
             </motion.div>
 
             {/* Map */}

@@ -2,8 +2,8 @@ import { Link } from "wouter"
 import Navbar from "@/components/navbar"
 import FAQSection from "@/components/faq-section"
 import Footer from "@/components/footer"
-import { Phone, MessageCircle } from "lucide-react"
 import SeoHead from "@/components/seo-head"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 export default function FAQPage() {
   return (
@@ -53,7 +53,8 @@ export default function FAQPage() {
 
       <section className="relative overflow-hidden py-16 sm:py-20">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f0f7ff] to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] to-white" />
+          <div className="absolute inset-0 grid-texture opacity-10" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
           <h2 className="mb-10 text-2xl font-black text-gray-900 sm:text-3xl">
@@ -89,26 +90,14 @@ export default function FAQPage() {
             ))}
           </div>
 
-          <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-blue-800 mt-12">
+          <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-emerald-700 mt-12">
             Still have questions?
           </h3>
           <div className="flex flex-wrap gap-3">
-            <a
-              href="tel:+918541849118"
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
-            >
-              <Phone className="h-4 w-4" />
-              Call +91 8541849118
-            </a>
-            <a
-              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20have%20a%20question%20about%20your%20services."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#1ebe5d] transition-colors"
-            >
-              <MessageCircle className="h-4 w-4" />
+            <CallLink className="shadow-sm hover:shadow-sm">Call +91 8541849118</CallLink>
+            <WhatsAppLink message="Hi JK Interior, I have a question about your services." className="shadow-sm hover:shadow-sm">
               WhatsApp Us
-            </a>
+            </WhatsAppLink>
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"

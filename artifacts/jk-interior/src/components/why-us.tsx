@@ -1,92 +1,48 @@
 
-import { ShieldCheck, Droplets, Clock, Sparkles, Award, HeartHandshake, Gem, BadgeCheck } from "lucide-react"
+import { ShieldCheck, Droplets, Clock, Sparkles, Award, HeartHandshake, BadgeCheck, Quote } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
+import SectionHeader from "@/components/ui/section-header"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
 const reasons = [
   {
     icon: ShieldCheck,
-    title: "Premium Quality Materials",
-    titleHi: "प्रीमियम क्वालिटी मटेरियल",
-    desc: "We use only ISI-certified, branded materials for every installation. No compromises on quality — your home deserves the best.",
-    descHi: "हर इंस्टॉलेशन में सिर्फ ISI-प्रमाणित, ब्रांडेड मटेरियल। क्वालिटी पर कोई समझौता नहीं।",
-    color: "from-emerald-500 to-emerald-700",
-    glow: "rgba(5,150,105,0.2)",
-    number: "01",
+    title: "ISI-certified materials, no substitutions",
+    titleHi: "ISI-प्रमाणित मटेरियल, कोई मिलावट नहीं",
+    reasoning: "Every panel and board carries ISI certification. We don't switch to cheaper unbranded stock to protect margin — customers can ask to see the material tag on-site.",
   },
   {
     icon: Droplets,
-    title: "100% Waterproof Solutions",
-    titleHi: "100% वॉटरप्रूफ समाधान",
-    desc: "Every product we install is fully waterproof — PVC panels, WPC boards, and UV marble sheets built to withstand Bihar's monsoon.",
-    descHi: "हमारा हर प्रोडक्ट पूरी तरह वॉटरप्रूफ है — बिहार की बारिश को सहने के लिए बना।",
-    color: "from-cyan-500 to-cyan-700",
-    glow: "rgba(6,182,212,0.2)",
-    number: "02",
+    title: "Built for a four-month monsoon",
+    titleHi: "चार महीने की बरसात के लिए बना",
+    reasoning: "PVC panels and UV marble sheets are fully waterproof by design, not adapted from a drier-climate product line — this is what Araria's rainfall actually demands.",
   },
   {
     icon: Clock,
-    title: "Fast & On-Time Delivery",
-    titleHi: "तेज़ और समय पर डिलीवरी",
-    desc: "We respect your time. Our team completes projects on schedule with zero delays — from site visit to final finish.",
-    descHi: "हम आपके समय का सम्मान करते हैं। साइट विज़िट से फाइनल फिनिश तक — शेड्यूल पर।",
-    color: "from-amber-500 to-amber-700",
-    glow: "rgba(245,158,11,0.2)",
-    number: "03",
+    title: "A day-by-day schedule, not 'a few days'",
+    titleHi: "दिन-वार शेड्यूल, सिर्फ अंदाज़ा नहीं",
+    reasoning: "Before we start, you get a written install timeline — which day the ceiling goes up, which day the finishing happens. No open-ended delays.",
   },
   {
     icon: Sparkles,
-    title: "Dust-Free Installation",
-    titleHi: "डस्ट-फ्री इंस्टॉलेशन",
-    desc: "Our clean installation process keeps your home spotless. No mess, no dust — just a beautiful new interior.",
-    descHi: "हमारी साफ़ प्रक्रिया आपके घर को साफ़ रखती है। कोई गंदगी नहीं, सिर्फ़ खूबसूरती।",
-    color: "from-violet-500 to-violet-700",
-    glow: "rgba(139,92,246,0.2)",
-    number: "04",
+    title: "Panel systems over wet plaster",
+    titleHi: "गीले प्लास्टर की जगह पैनल सिस्टम",
+    reasoning: "Where the design allows it, we use clip-and-panel installation instead of wet plaster work — meaningfully less dust in a home you're still living in.",
   },
   {
     icon: Award,
-    title: "1 Year Written Warranty",
-    titleHi: "1 साल की लिखित वारंटी",
-    desc: "Every project comes with a written 1-year warranty. We stand behind our work — that's the JK Interior guarantee.",
-    descHi: "हर प्रोजेक्ट के साथ 1 साल की लिखित वारंटी। हम अपने काम के पीछे खड़े हैं।",
-    color: "from-blue-500 to-blue-700",
-    glow: "rgba(59,130,246,0.2)",
-    number: "05",
+    title: "A signed warranty, not a verbal promise",
+    titleHi: "लिखित वारंटी, ज़ुबानी वादा नहीं",
+    reasoning: "Every project is handed over with a written 1-year warranty document — materials and workmanship both covered, in your hand at completion.",
   },
   {
     icon: HeartHandshake,
-    title: "Free Site Visit & Quote",
-    titleHi: "मुफ़्त साइट विज़िट और कोट",
-    desc: "Get a free expert site visit and detailed quotation — no obligation, no hidden charges. Transparent pricing always.",
-    descHi: "मुफ़्त एक्सपर्ट साइट विज़िट और विस्तृत कोटेशन — कोई छुपा हुआ खर्चा नहीं।",
-    color: "from-rose-500 to-rose-700",
-    glow: "rgba(244,63,94,0.2)",
-    number: "06",
+    title: "The site visit costs nothing either way",
+    titleHi: "साइट विज़िट का कोई शुल्क नहीं",
+    reasoning: "We measure, quote, and explain the options for free — whether you book us or use the quote to compare elsewhere.",
   },
 ]
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "JK Interior",
-  description: "Best interior designer in Forbesganj, Araria, Bihar. Specializing in PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit installation.",
-  url: "https://www.jkinterior.online",
-  telephone: "+918541849118",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Damaria",
-    addressLocality: "Rewahi",
-    addressRegion: "Bihar",
-    addressCountry: "IN",
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    reviewCount: "100",
-  },
-}
 
 export default function WhyUs() {
   const shouldReduce = useReducedMotion()
@@ -94,9 +50,9 @@ export default function WhyUs() {
   const animProps = shouldReduce
     ? {}
     : {
-        initial: { opacity: 0, y: 28 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: "-50px" },
+        initial: { opacity: 0, x: -24 },
+        whileInView: { opacity: 1, x: 0 },
+        viewport: { once: true, margin: "-80px" },
         transition: { duration: 0.7, ease: easeLux },
       }
 
@@ -108,7 +64,7 @@ export default function WhyUs() {
         viewport: { once: true, margin: "-50px" },
         variants: {
           hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+          visible: { opacity: 1, transition: { staggerChildren: 0.09, delayChildren: 0.15 } },
         },
       }
 
@@ -116,10 +72,31 @@ export default function WhyUs() {
     ? {}
     : {
         variants: {
-          hidden: { opacity: 0, y: 24 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easeLux } },
+          hidden: { opacity: 0, x: 20 },
+          visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: easeLux } },
         },
       }
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "JK Interior",
+    description: "Best interior designer in Forbesganj, Araria, Bihar. Specializing in PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit installation.",
+    url: "https://www.jkinterior.online",
+    telephone: "+918541849118",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Damaria",
+      addressLocality: "Rewahi",
+      addressRegion: "Bihar",
+      addressCountry: "IN",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      reviewCount: "100",
+    },
+  }
 
   return (
     <section
@@ -131,101 +108,72 @@ export default function WhyUs() {
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] via-white to-[#f0fdf4]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_20%_30%,rgba(5,150,105,0.06),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_80%_70%,rgba(5,150,105,0.04),transparent)]" />
-        <div className="absolute inset-0 grid-texture opacity-15" />
+        <div className="absolute inset-0 dot-pattern opacity-15" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
-        {/* Section Header */}
-        <motion.div {...animProps} className="mb-14 text-center sm:mb-16 lg:mb-20">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-1.5 backdrop-blur-sm">
-            <BadgeCheck className="h-3.5 w-3.5 text-emerald-600" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">Why Choose Us</span>
-          </div>
+        <SectionHeader
+          icon={BadgeCheck}
+          badge="How We Work"
+          headingId="why-us-heading"
+          title={<>Six Decisions Behind <span className="hero-gradient-text">Every Job</span></>}
+          subtitle="हर फैसले के पीछे एक वजह है"
+          className="mb-12 sm:mb-14 lg:mb-16"
+        />
 
-          <h2
-            id="why-us-heading"
-            className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl lg:text-6xl"
-          >
-            Why JK Interior is{" "}
-            <span className="hero-gradient-text">the Best Choice</span>
-          </h2>
-
-          <p className="mx-auto mb-3 max-w-2xl text-base font-medium text-gray-600 sm:text-lg">
-            फारबिसगंज और अररिया में इंटीरियर के लिए JK Interior सबसे भरोसेमंद
-          </p>
-          <p className="mx-auto max-w-xl text-sm text-gray-500 sm:text-base">
-            Premium materials, expert craftsmanship, and a commitment to excellence — that&apos;s what sets us apart.
-          </p>
-
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8, ease: easeLux }}
-            className="mx-auto mt-6 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
-          />
-        </motion.div>
-
-        {/* Cards Grid */}
-        <motion.div
-          {...staggerContainer}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6"
-        >
-          {reasons.map((reason) => (
-            <motion.div
-              key={reason.title}
-              {...staggerItem}
-              className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_60px_rgba(5,150,105,0.1)] sm:rounded-3xl sm:p-6 lg:p-7"
-            >
-              {/* Number */}
-              <span className="absolute right-4 top-4 text-4xl font-black text-gray-100 transition-colors duration-300 group-hover:text-gray-200 sm:right-5 sm:top-5 sm:text-5xl">
-                {reason.number}
-              </span>
-
-              {/* Icon */}
-              <div
-                className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${reason.color} shadow-lg transition-transform duration-300 group-hover:scale-110 sm:h-14 sm:w-14 sm:rounded-2xl`}
-                style={{ boxShadow: `0 4px 20px ${reason.glow}` }}
-              >
-                <reason.icon className="h-6 w-6 text-white sm:h-7 sm:w-7" />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+          {/* LEFT — brand narrative, sticky on desktop */}
+          <motion.div {...animProps} className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
+            <div className="relative rounded-3xl border border-emerald-200 bg-white/70 p-7 shadow-sm sm:p-8">
+              <Quote className="mb-4 h-8 w-8 text-emerald-300" aria-hidden="true" />
+              <p className="mb-4 text-lg font-bold leading-snug text-gray-900 sm:text-xl">
+                We started JK Interior in Forbesganj in 2016 fitting PVC ceilings for a handful of
+                neighbours. Nine years and 100+ homes later, the job hasn't changed — we still
+                measure the room ourselves before we quote it.
+              </p>
+              <p className="mb-5 text-sm leading-relaxed text-gray-600 sm:text-base">
+                What's changed is which materials we'll put our name behind. Araria's monsoon
+                wrecks anything that isn't genuinely waterproof, so PVC and UV marble stay
+                on the truck for wet rooms, and gypsum stays reserved for the dry ones — even
+                when a customer asks for the "prettier" option in the wrong place.
+              </p>
+              <div className="flex items-center gap-3 border-t border-emerald-100 pt-5">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-black text-white">
+                  JK
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-gray-900">JK Interior, since 2016</p>
+                  <p className="text-xs text-gray-500">Forbesganj, Araria district, Bihar</p>
+                </div>
               </div>
+            </div>
+          </motion.div>
 
-              {/* Content */}
-              <h3 className="mb-1 text-lg font-bold text-gray-900 sm:text-xl">{reason.title}</h3>
-              <p className="mb-3 text-xs font-medium text-emerald-600/80 sm:text-sm">{reason.titleHi}</p>
-              <p className="mb-2 text-sm leading-relaxed text-gray-600 sm:text-base">{reason.desc}</p>
-              <p className="text-xs leading-relaxed text-gray-400 sm:text-sm">{reason.descHi}</p>
-
-              {/* Hover glow border */}
-              <div
-                className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:rounded-3xl"
-                style={{ boxShadow: `inset 0 0 0 1px ${reason.glow}` }}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Bottom trust line */}
-        <motion.div
-          {...animProps}
-          className="mt-12 flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 sm:mt-14 sm:gap-6 sm:text-base lg:mt-16"
-        >
-          <div className="flex items-center gap-2">
-            <Gem className="h-4 w-4 text-amber-500" />
-            <span>Trusted by 100+ Homeowners</span>
-          </div>
-          <span className="hidden text-gray-300 sm:inline">|</span>
-          <div className="flex items-center gap-2">
-            <BadgeCheck className="h-4 w-4 text-emerald-600" />
-            <span>ISI-Certified Materials</span>
-          </div>
-          <span className="hidden text-gray-300 sm:inline">|</span>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-emerald-600" />
-            <span>1-Year Written Warranty</span>
-          </div>
-        </motion.div>
+          {/* RIGHT — reasoning list */}
+          <motion.div {...staggerContainer} className="lg:col-span-7">
+            <div className="divide-y divide-gray-100 rounded-3xl border border-gray-200 bg-white">
+              {reasons.map((reason, i) => (
+                <motion.div
+                  key={reason.title}
+                  {...staggerItem}
+                  className="group flex gap-4 p-5 transition-colors duration-300 hover:bg-emerald-50/50 sm:gap-5 sm:p-6"
+                >
+                  <div className="flex shrink-0 flex-col items-center">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/10 text-emerald-700 transition-colors duration-300 group-hover:bg-emerald-600 group-hover:text-white sm:h-12 sm:w-12">
+                      <reason.icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                    </span>
+                    <span className="mt-1 text-[10px] font-bold text-gray-300">0{i + 1}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="mb-0.5 text-base font-bold text-gray-900 sm:text-lg">{reason.title}</h3>
+                    <p className="mb-2 text-xs font-medium text-emerald-600/80 sm:text-sm">{reason.titleHi}</p>
+                    <p className="text-sm leading-relaxed text-gray-600">{reason.reasoning}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       {/* JSON-LD */}

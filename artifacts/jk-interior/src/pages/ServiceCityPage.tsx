@@ -6,7 +6,8 @@ import { CITIES, getCityBySlug, SITE_URL } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES, getServiceCityInfoBySlug } from "@/lib/service-city-data"
 import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
-import { Phone, MessageCircle, MapPin, CheckCircle, ArrowRight, Clock, ShieldCheck, Sparkles } from "lucide-react"
+import { MapPin, CheckCircle, ArrowRight, Clock, ShieldCheck, Sparkles, Phone } from "lucide-react"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 export default function ServiceCityPage() {
   const { service: serviceSlug, city: citySlug } = useParams<{ service: string; city: string }>()
@@ -18,7 +19,7 @@ export default function ServiceCityPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Page not found</h1>
-          <Link href="/services" className="text-blue-600 hover:underline mt-4 block">View all services</Link>
+          <Link href="/services" className="text-emerald-700 hover:underline mt-4 block">View all services</Link>
         </div>
       </div>
     )
@@ -112,22 +113,8 @@ export default function ServiceCityPage() {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <a
-              href="tel:+918541849118"
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-emerald-700 active:scale-95 transition-all"
-            >
-              <Phone className="h-4 w-4" />
-              Call Now
-            </a>
-            <a
-              href={`https://wa.me/918651070831?text=${encodeURIComponent(waText)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-[#1ebe5d] active:scale-95 transition-all"
-            >
-              <MessageCircle className="h-4 w-4" />
-              WhatsApp
-            </a>
+            <CallLink className="shadow-md hover:shadow-md">Call Now</CallLink>
+            <WhatsAppLink message={waText} className="shadow-md hover:shadow-md">WhatsApp</WhatsAppLink>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
@@ -240,22 +227,11 @@ export default function ServiceCityPage() {
           </h2>
           <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href="tel:+918541849118"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-bold text-emerald-700 shadow hover:bg-emerald-50 transition-colors"
-            >
-              <Phone className="h-4 w-4" />
+            <CallLink icon={false} className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
+              <Phone className="h-4 w-4" aria-hidden="true" />
               Call +91 8541849118
-            </a>
-            <a
-              href={`https://wa.me/918651070831?text=${encodeURIComponent(waText)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-white shadow hover:bg-[#1ebe5d] transition-colors"
-            >
-              <MessageCircle className="h-4 w-4" />
-              WhatsApp Us
-            </a>
+            </CallLink>
+            <WhatsAppLink message={waText} className="shadow hover:shadow">WhatsApp Us</WhatsAppLink>
           </div>
         </div>
       </section>

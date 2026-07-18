@@ -1,6 +1,8 @@
 
-import { Phone, ClipboardList, Hammer, CircleCheck as CheckCircle2, ArrowRight, Sparkles } from "lucide-react"
+import { ClipboardList, Hammer, CircleCheck as CheckCircle2, ArrowRight, Sparkles, Phone } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
+import SectionHeader from "@/components/ui/section-header"
+import { CallLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -28,10 +30,10 @@ const steps = [
   {
     icon: Hammer,
     step: "03",
-    title: "Dust-Free Work",
-    titleHi: "साफ़ इंस्टॉलेशन",
-    desc: "Our skilled team starts installation with premium materials. Clean, fast, and professional work with zero mess.",
-    descHi: "हमारी skilled team premium materials के साथ installation शुरू करती है। साफ़, तेज़ और professional काम।",
+    title: "Panel-System Install",
+    titleHi: "पैनल-सिस्टम इंस्टॉलेशन",
+    desc: "Our crew works room by room on the schedule you were quoted — clip-and-panel wherever the design allows, so there's far less dust than a wet-plaster job.",
+    descHi: "जो शेड्यूल बताया गया, उसी पर टीम कमरा-दर-कमरा काम करती है — जहाँ मुमकिन हो, गीले प्लास्टर की जगह पैनल सिस्टम, यानी कम धूल।",
     color: "from-emerald-500 to-emerald-700",
     glow: "rgba(5,150,105,0.25)",
   },
@@ -91,25 +93,14 @@ export default function ProcessTimeline() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Header */}
-        <motion.div {...animProps} className="mb-14 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">Our Process</span>
-          </div>
-          <h2 className="mb-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
-            How It <span className="hero-gradient-text">Works</span>
-          </h2>
-          <p className="mx-auto max-w-xl text-base text-slate-400">
-            Simple, transparent, and hassle-free — 4 easy steps to your dream interior
-          </p>
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="mx-auto mt-6 h-px w-24 origin-center bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
-          />
-        </motion.div>
+        <SectionHeader
+          icon={Sparkles}
+          badge="Our Process"
+          headingSize="md"
+          dark
+          title={<>How It <span className="hero-gradient-text">Works</span></>}
+          subtitle="From your first WhatsApp message to a signed warranty in hand — four steps, nothing skipped"
+        />
 
         {/* Steps */}
         <motion.div {...staggerContainer} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
@@ -149,14 +140,10 @@ export default function ProcessTimeline() {
 
         {/* CTA */}
         <motion.div {...animProps} className="mt-14 text-center">
-          <a
-            href="tel:+918541849118"
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)] active:scale-95 luxury-animated-shine"
-          >
-            <Phone className="h-5 w-5" />
+          <CallLink shine className="px-8 py-4 text-base font-bold">
             Start Your Project Today
-            <ArrowRight className="h-5 w-5" />
-          </a>
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
+          </CallLink>
         </motion.div>
       </div>
     </section>

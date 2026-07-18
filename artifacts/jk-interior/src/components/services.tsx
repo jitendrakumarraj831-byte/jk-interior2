@@ -1,105 +1,141 @@
 
-import { Layers, PanelTop, Tv, Sparkles, Phone, MessageCircle, CircleCheck as CheckCircle2, ShieldCheck, Droplets, Clock, Gem, Zap, ImageIcon } from "lucide-react"
+import { Layers, PanelTop, Tv, Sparkles, CircleCheck as CheckCircle2, ImageIcon, Ruler, Timer, ShieldCheck } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { useLocation } from "wouter"
 import { slugify } from "@/lib/utils"
+import SectionHeader from "@/components/ui/section-header"
+import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
-const services = [
+interface ServiceEntry {
+  icon: typeof Layers
+  title: string
+  titleHi: string
+  story: string
+  storyHi: string
+  color: string
+  badge: string
+  badgeColor: string
+  price: string
+  timeline: string
+  bestFor: string
+  image: string
+  imageAlt: string
+  galleryCategory: string | null
+  span: string
+  featured?: boolean
+  compact?: boolean
+  banner?: boolean
+}
+
+const services: ServiceEntry[] = [
   {
     icon: Layers,
     title: "PVC False Ceiling",
     titleHi: "PVC फॉल्स सीलिंग",
-    desc: "Premium PVC false ceiling installation with waterproof panels, modern designs, and long-lasting finish. Perfect for homes and offices in Forbesganj.",
-    descHi: "वॉटरप्रूफ पैनल, मॉडर्न डिज़ाइन और लंबे समय तक चलने वाली फिनिश के साथ प्रीमियम PVC फॉल्स सीलिंग।",
+    story: "The one we install most — 100% waterproof panels that go into more Forbesganj kitchens and bathrooms than anything else on this list. Wipe clean, termite-proof, and it doesn't need repainting.",
+    storyHi: "फारबिसगंज के सबसे ज़्यादा घरों में यही लगता है — 100% वॉटरप्रूफ, टर्माइट-प्रूफ। बस गीले कपड़े से पोंछो, कभी रंग-रोगन की ज़रूरत नहीं।",
     color: "from-emerald-500 to-emerald-700",
-    badge: "Most Popular",
+    badge: "Most Requested",
     badgeColor: "bg-emerald-100 text-emerald-700 border-emerald-300",
-    features: ["Waterproof", "Dust-Free", "Fast Install"],
+    price: "₹80–140/sq.ft",
+    timeline: "1 room in a day",
+    bestFor: "Kitchens, bathrooms, any room",
     image: "/images/pvc.jpg",
     imageAlt: "PVC False Ceiling Installation in Forbesganj Bihar by JK Interior",
     galleryCategory: "PVC Ceiling",
+    span: "lg:col-span-2",
+    featured: true,
   },
   {
     icon: Layers,
     title: "Gypsum Ceiling",
     titleHi: "जिप्सम सीलिंग",
-    desc: "Elegant gypsum ceiling designs with smooth finish and creative lighting integration. Ideal for luxury interiors in Araria and Forbesganj.",
-    descHi: "स्मूथ फिनिश और क्रिएटिव लाइटिंग के साथ एलिगेंट जिप्सम सीलिंग डिज़ाइन।",
+    story: "Cove lighting and POP detailing for the room your guests see first. It isn't waterproof, so we keep it out of kitchens — but for a hall or bedroom, nothing else finishes this clean.",
+    storyHi: "स्मूथ फिनिश और कोव लाइटिंग — मगर वॉटरप्रूफ नहीं, इसलिए किचन-बाथरूम में नहीं लगाते।",
     color: "from-slate-500 to-slate-700",
-    badge: "Premium",
-    badgeColor: "bg-gray-100 text-gray-700 border-gray-300",
-    features: ["Smooth Finish", "Light Ready", "Durable"],
+    badge: "Living Rooms",
+    badgeColor: "bg-slate-100 text-slate-700 border-slate-300",
+    price: "₹80–140/sq.ft",
+    timeline: "2–3 days/room",
+    bestFor: "Hall, bedroom, dry rooms",
     image: "/images/gypsum.jpg",
     imageAlt: "Gypsum Ceiling Design in Araria Bihar by JK Interior",
     galleryCategory: "Gypsum False Ceiling",
+    span: "lg:col-span-2",
   },
   {
     icon: PanelTop,
     title: "WPC Wall Paneling",
     titleHi: "WPC वॉल पैनलिंग",
-    desc: "High-quality WPC wall panels that are termite-proof, waterproof, and maintenance-free. Best wall paneling solution in Bihar.",
-    descHi: "टर्माइट-प्रूफ, वॉटरप्रूफ और मेंटेनेंस-फ्री हाई-क्वालिटी WPC वॉल पैनल।",
+    story: "Real-wood look for a TV wall at roughly 60% of what timber panelling costs — and it won't warp through a Bihar monsoon the way real wood does.",
+    storyHi: "असली लकड़ी जैसा लुक, कीमत लगभग 60% कम। नमी में मुड़ता या फूलता नहीं।",
     color: "from-amber-500 to-amber-700",
-    badge: "Best Seller",
+    badge: "TV Walls",
     badgeColor: "bg-amber-100 text-amber-700 border-amber-300",
-    features: ["Termite-Proof", "Waterproof", "Zero Maintain"],
+    price: "₹180–450/sq.ft",
+    timeline: "1 day for a TV wall",
+    bestFor: "Accent walls, headboards",
     image: "/images/wpc.jpg",
     imageAlt: "WPC Wall Paneling in Bihar by JK Interior Forbesganj",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
+    span: "lg:col-span-1",
+    compact: true,
   },
   {
     icon: PanelTop,
     title: "UV Marble Sheet",
     titleHi: "UV मार्बल शीट",
-    desc: "Luxurious UV marble sheets that give the look of real marble at a fraction of the cost. Premium finish for walls in Forbesganj.",
-    descHi: "रियल मार्बल जैसा लुक कम कीमत में - प्रीमियम UV मार्बल शीट।",
+    story: "Marble-effect sheets for walls and pooja rooms at a fraction of stone pricing — no grout lines to blacken, no cold slab to maintain, just a damp cloth.",
+    storyHi: "असली मार्बल का लुक, कीमत बहुत कम। कोई ग्राउट लाइन नहीं, बस कपड़े से पोंछो।",
     color: "from-teal-500 to-teal-700",
-    badge: "New",
+    badge: "Marble Look",
     badgeColor: "bg-teal-100 text-teal-700 border-teal-300",
-    features: ["Marble Look", "Scratch-Free", "Easy Clean"],
+    price: "₹50–95/sq.ft",
+    timeline: "1–2 days/room",
+    bestFor: "Bathroom & pooja walls",
     image: "/images/uv-marble.jpg",
     imageAlt: "UV Marble Sheet Wall Installation in Forbesganj Bihar",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
+    span: "lg:col-span-1",
+    compact: true,
   },
   {
     icon: Tv,
     title: "Modular TV Unit",
     titleHi: "मॉड्यूलर TV यूनिट",
-    desc: "Custom modular TV units with modern storage solutions and premium finishes. Expert TV unit design in Forbesganj.",
-    descHi: "मॉडर्न स्टोरेज और प्रीमियम फिनिश के साथ कस्टम मॉड्यूलर TV यूनिट।",
+    story: "Built to your wall's exact width, with the cable clutter routed behind the panel — not cut down from a catalogue template.",
+    storyHi: "आपकी दीवार की सही नाप पर बना, केबल छुपे रहते हैं — कैटलॉग डिज़ाइन नहीं।",
     color: "from-violet-500 to-violet-700",
-    badge: "Trending",
+    badge: "Custom Sized",
     badgeColor: "bg-violet-100 text-violet-700 border-violet-300",
-    features: ["Custom Design", "Storage", "Cable Hide"],
+    price: "₹15,000 onwards",
+    timeline: "Cable mgmt built-in",
+    bestFor: "Living rooms, bedrooms",
     image: "/images/tv-unit.jpg",
     imageAlt: "Modular TV Unit Design in Forbesganj Araria Bihar",
     galleryCategory: "TV Unit Design",
+    span: "lg:col-span-2",
   },
   {
     icon: Sparkles,
     title: "Complete Interior",
     titleHi: "पूर्ण इंटीरियर",
-    desc: "End-to-end interior design solutions from ceiling to flooring. The best interior designer in Bihar for your dream home.",
-    descHi: "सीलिंग से फ्लोरिंग तक पूर्ण इंटीरियर डिज़ाइन समाधान।",
+    story: "One team for ceiling, walls, TV unit, and flooring, quoted together — the combo works out cheaper than booking each piece as a separate job.",
+    storyHi: "सीलिंग, वॉल, TV यूनिट और फ्लोरिंग — एक ही टीम, एक ही टाइमलाइन, साथ में बुक करने पर सस्ता पड़ता है।",
     color: "from-cyan-500 to-cyan-700",
-    badge: "Complete",
+    badge: "Combo Pricing",
     badgeColor: "bg-cyan-100 text-cyan-700 border-cyan-300",
-    features: ["Full Design", "Execution", "Warranty"],
+    price: "Custom quote",
+    timeline: "One crew, one timeline",
+    bestFor: "New homes, full renovations",
     image: "/images/gypsum-ceiling.jpg",
     imageAlt: "Complete Interior Design Services in Bihar by JK Interior",
     galleryCategory: null,
+    span: "lg:col-span-4",
+    banner: true,
   },
-]
-
-const trustItems = [
-  { icon: ShieldCheck, label: "Premium Quality", sublabel: "Best Materials", color: "text-emerald-600", border: "border-emerald-200 bg-emerald-50" },
-  { icon: Droplets, label: "100% Waterproof", sublabel: "Water Resistant", color: "text-cyan-600", border: "border-cyan-200 bg-cyan-50" },
-  { icon: Clock, label: "Fast Installation", sublabel: "On-Time Delivery", color: "text-amber-600", border: "border-amber-200 bg-amber-50" },
-  { icon: Zap, label: "Dust-Free Work", sublabel: "Clean Process", color: "text-blue-600", border: "border-blue-200 bg-blue-50" },
-  { icon: Gem, label: "1 Year Warranty", sublabel: "Guaranteed", color: "text-violet-600", border: "border-violet-200 bg-violet-50" },
-  { icon: CheckCircle2, label: "Free Site Visit", sublabel: "No Cost", color: "text-emerald-600", border: "border-emerald-200 bg-emerald-50" },
 ]
 
 export default function Services() {
@@ -128,7 +164,7 @@ export default function Services() {
         viewport: { once: true, margin: "-50px" },
         variants: {
           hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
+          visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
         },
       }
 
@@ -157,60 +193,19 @@ export default function Services() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
         {/* Section Header */}
-        <motion.div {...animProps} className="mb-14 text-center sm:mb-16 lg:mb-20">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-1.5 backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">
-              Premium Services
-            </span>
-          </div>
+        <SectionHeader
+          icon={Ruler}
+          badge="What We Install"
+          headingId="services-heading"
+          title={<>Bare Ceiling to <span className="hero-gradient-text">Finished Room</span></>}
+          subtitle="हर सर्विस की अपनी कीमत और पूरा होने का समय — कोई छुपा हुआ चार्ज नहीं"
+          subtitleSecondary="Six services, each suited to a different room and budget. Tap one to see the actual photos from that work."
+        />
 
-          <h2
-            id="services-heading"
-            className="mb-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl md:text-5xl lg:text-6xl"
-          >
-            Premium Interior{" "}
-            <span className="hero-gradient-text">Solutions</span>
-          </h2>
-
-          <p className="mx-auto mb-2 max-w-2xl text-base font-medium text-gray-600 sm:text-lg">
-            हम लेकर आए हैं फारबिसगंज में इंटीरियर का बेस्ट कलेक्शन
-          </p>
-          <p className="mx-auto max-w-xl text-sm text-gray-500 sm:text-base">
-            From PVC ceilings to modular TV units — every service crafted with precision, waterproof materials, and premium finish.
-          </p>
-
-          <motion.div
-            initial={shouldReduce ? {} : { scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.8, ease: easeLux }}
-            className="mx-auto mt-6 h-px w-32 origin-center rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent"
-          />
-        </motion.div>
-
-        {/* Trust Strip */}
+        {/* Bento-style Service Grid */}
         <motion.div
           {...staggerContainer}
-          className="mb-14 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-6 md:gap-3 lg:mb-20"
-        >
-          {trustItems.map((item) => (
-            <motion.div
-              key={item.label}
-              {...staggerItem}
-              className={`group flex flex-col items-center gap-1.5 rounded-xl border ${item.border} p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-md sm:gap-2 sm:rounded-2xl sm:p-4`}
-            >
-              <item.icon className={`h-5 w-5 ${item.color} sm:h-6 sm:w-6`} aria-hidden="true" />
-              <span className="text-center text-[10px] font-bold text-gray-800 sm:text-xs">{item.label}</span>
-              <span className="text-[9px] text-gray-500 sm:text-[10px]">{item.sublabel}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Service Cards */}
-        <motion.div
-          {...staggerContainer}
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7"
+          className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
         >
           {services.map((service) => (
             <motion.div
@@ -226,82 +221,95 @@ export default function Services() {
                 }
               }}
               aria-label={`View ${service.title} photos in gallery`}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-500 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 sm:rounded-3xl"
+              className={`group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-500 hover:border-emerald-300 hover:shadow-[0_8px_40px_rgba(5,150,105,0.12)] hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 sm:rounded-3xl ${service.span}`}
             >
-              {/* Image area */}
-              <div className="relative h-44 overflow-hidden sm:h-52">
-                <img
-                  src={service.image}
-                  alt={service.imageAlt}
-                  className="object-cover transition-transform duration-700 group-hover:scale-110 w-full h-full"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              <div className={service.banner ? "sm:flex sm:items-stretch" : ""}>
+                {/* Image area */}
+                <div
+                  className={`relative overflow-hidden ${
+                    service.banner
+                      ? "h-48 sm:h-auto sm:w-2/5 sm:shrink-0"
+                      : service.featured
+                        ? "h-56 sm:h-64 lg:h-72"
+                        : "h-40 sm:h-44"
+                  }`}
+                >
+                  <img
+                    src={service.image}
+                    alt={service.imageAlt}
+                    className="object-cover transition-transform duration-700 group-hover:scale-110 w-full h-full"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
 
-                {/* Badge */}
-                <div className={`absolute left-3 top-3 flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[10px] font-bold backdrop-blur-sm sm:rounded-xl sm:px-3 sm:text-xs ${service.badgeColor}`}>
-                  <Sparkles className="h-3 w-3" aria-hidden="true" />
-                  {service.badge}
+                  <div className={`absolute left-3 top-3 flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[10px] font-bold backdrop-blur-sm sm:rounded-xl sm:px-3 sm:text-xs ${service.badgeColor}`}>
+                    <Sparkles className="h-3 w-3" aria-hidden="true" />
+                    {service.badge}
+                  </div>
+
+                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-lg border border-white/30 bg-black/40 px-2 py-1 text-[9px] font-bold text-white opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 sm:rounded-xl sm:px-2.5 sm:text-[10px]">
+                    <ImageIcon className="h-3 w-3" aria-hidden="true" />
+                    View Photos
+                  </div>
+
+                  <div className={`absolute bottom-3 right-3 flex items-center justify-center rounded-xl bg-gradient-to-br ${service.color} shadow-lg sm:rounded-2xl ${service.featured || service.banner ? "h-12 w-12 sm:h-14 sm:w-14" : "h-9 w-9 sm:h-10 sm:w-10"}`}>
+                    <service.icon className={service.featured || service.banner ? "h-6 w-6 text-white sm:h-7 sm:w-7" : "h-4 w-4 text-white sm:h-5 sm:w-5"} aria-hidden="true" />
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4">
+                    <h3 className={`font-black text-white ${service.featured || service.banner ? "text-xl sm:text-2xl" : "text-base sm:text-lg"}`}>{service.title}</h3>
+                    <p className="text-xs font-medium text-white/70">{service.titleHi}</p>
+                  </div>
                 </div>
 
-                {/* View gallery hint */}
-                <div className="absolute right-3 top-3 flex items-center gap-1 rounded-lg border border-white/30 bg-black/40 px-2 py-1 text-[9px] font-bold text-white opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 sm:rounded-xl sm:px-2.5 sm:text-[10px]">
-                  <ImageIcon className="h-3 w-3" aria-hidden="true" />
-                  View Gallery
-                </div>
+                {/* Content */}
+                <div className={`flex flex-col ${service.featured || service.banner ? "p-5 sm:p-6" : "p-4 sm:p-5"} ${service.banner ? "sm:flex-1 sm:justify-center" : ""}`}>
+                  <p className={`text-gray-700 leading-relaxed ${service.featured || service.banner ? "mb-1 text-sm sm:text-base" : "mb-3 text-xs sm:text-sm line-clamp-3"}`}>
+                    {service.story}
+                  </p>
+                  {(service.featured || service.banner) && (
+                    <p className="mb-4 text-xs leading-relaxed text-gray-500 sm:text-sm">{service.storyHi}</p>
+                  )}
 
-                {/* Icon overlay */}
-                <div className={`absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${service.color} shadow-lg sm:h-12 sm:w-12 sm:rounded-2xl`}>
-                  <service.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden="true" />
-                </div>
-
-                {/* Title on image */}
-                <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4">
-                  <h3 className="text-lg font-black text-white sm:text-xl">{service.title}</h3>
-                  <p className="text-xs font-medium text-white/70 sm:text-sm">{service.titleHi}</p>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-4 sm:p-5 lg:p-6">
-                <p className="mb-2 text-sm leading-relaxed text-gray-700 sm:text-base">{service.desc}</p>
-                <p className="mb-4 text-xs leading-relaxed text-gray-500 sm:text-sm">{service.descHi}</p>
-
-                {/* Feature tags */}
-                <div className="mb-4 flex flex-wrap gap-1.5 sm:gap-2">
-                  {service.features.map((feat) => (
-                    <span
-                      key={feat}
-                      className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 sm:rounded-lg sm:px-2.5 sm:text-xs"
-                    >
-                      <CheckCircle2 className="h-2.5 w-2.5 text-emerald-600 sm:h-3 sm:w-3" aria-hidden="true" />
-                      {feat}
+                  {/* Spec strip */}
+                  <div className={`flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-gray-100 pt-3 text-[10px] font-semibold text-gray-600 sm:text-xs ${service.featured || service.banner ? "mb-4" : "mb-3"}`}>
+                    <span className="inline-flex items-center gap-1">
+                      <ShieldCheck className="h-3 w-3 text-emerald-600" aria-hidden="true" />
+                      {service.price}
                     </span>
-                  ))}
-                </div>
+                    <span className="inline-flex items-center gap-1">
+                      <Timer className="h-3 w-3 text-emerald-600" aria-hidden="true" />
+                      {service.timeline}
+                    </span>
+                    {(service.featured || service.banner) && (
+                      <span className="inline-flex items-center gap-1 text-gray-500">
+                        <CheckCircle2 className="h-3 w-3 text-emerald-600" aria-hidden="true" />
+                        {service.bestFor}
+                      </span>
+                    )}
+                  </div>
 
-                {/* CTA */}
-                <div className="flex gap-2">
-                  <a
-                    href="tel:+918541849118"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2.5 text-xs font-bold text-white transition-all hover:bg-emerald-500 hover:shadow-[0_4px_16px_rgba(5,150,105,0.4)] active:scale-95 sm:text-sm touch-manipulation"
-                    aria-label={`Call for ${service.title} quote`}
-                  >
-                    <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-                    Get Quote
-                  </a>
-                  <a
-                    href={`https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20am%20interested%20in%20${encodeURIComponent(service.title)}%20service%20in%20Forbesganj.%20Please%20share%20details.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-all hover:bg-[#25D366]/20 hover:border-[#25D366]/60 active:scale-95 sm:text-sm touch-manipulation"
-                    aria-label={`WhatsApp for ${service.title}`}
-                  >
-                    <MessageCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-                    WhatsApp
-                  </a>
+                  {/* CTA */}
+                  <div className={service.compact ? "flex flex-col gap-2" : "flex gap-2"}>
+                    <CallLink
+                      size="sm"
+                      onClick={(e) => e.stopPropagation()}
+                      ariaLabel={`Call for ${service.title} quote`}
+                      className={service.compact ? "w-full px-3 py-2.5 text-xs sm:text-sm" : "flex-1 px-3 py-2.5 text-xs sm:text-sm"}
+                    >
+                      Get Quote
+                    </CallLink>
+                    <WhatsAppLink
+                      size="sm"
+                      variant="outline"
+                      message={`Hi JK Interior, I am interested in ${service.title} service in Forbesganj. Please share details.`}
+                      onClick={(e) => e.stopPropagation()}
+                      ariaLabel={`WhatsApp for ${service.title}`}
+                      className={service.compact ? "w-full px-3 py-2.5 text-xs sm:text-sm" : "flex-1 px-3 py-2.5 text-xs sm:text-sm"}
+                    >
+                      WhatsApp
+                    </WhatsAppLink>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -310,26 +318,21 @@ export default function Services() {
 
         {/* Bottom CTA */}
         <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 text-center lg:mt-20">
-          <p className="text-base font-medium text-gray-600 sm:text-lg">अपने घर को बनाएं एक शाही महल</p>
+          <p className="text-base font-medium text-gray-600 sm:text-lg">
+            Not sure which one your room needs? A free site visit settles it in ten minutes.
+          </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="tel:+918541849118"
-              aria-label="Call for free site visit"
-              className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] transition-all hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.55)] active:scale-95 luxury-animated-shine touch-manipulation"
-            >
-              <Phone className="h-5 w-5" aria-hidden="true" />
+            <CallLink size="lg" shine ariaLabel="Call for free site visit" className="text-base">
               Free Site Visit
-            </a>
-            <a
-              href="https://wa.me/918651070831?text=Hi%20JK%20Interior%2C%20I%20need%20a%20free%20quotation%20for%20interior%20work."
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp for free quotation"
-              className="flex items-center gap-2 rounded-xl bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-[0_4px_24px_rgba(37,211,102,0.35)] transition-all hover:bg-[#20c05c] active:scale-95 touch-manipulation"
+            </CallLink>
+            <WhatsAppLink
+              size="lg"
+              ariaLabel="WhatsApp for free quotation"
+              message="Hi JK Interior, I need a free quotation for interior work."
+              className="text-base"
             >
-              <MessageCircle className="h-5 w-5" aria-hidden="true" />
               Get Free Quotation
-            </a>
+            </WhatsAppLink>
           </div>
         </motion.div>
 

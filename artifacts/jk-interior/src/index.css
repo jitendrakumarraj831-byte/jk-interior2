@@ -206,6 +206,11 @@
   100% { background-position: calc(200px + 100%) 0; }
 }
 
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @layer utilities {
   .bg-dark-primary { background-color: #f0fdf4; }
   .bg-dark-secondary { background-color: #ecfdf5; }
@@ -390,6 +395,13 @@
 
   .animate-fade-up { animation: fade-up 0.8s ease-out forwards; }
   .animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
+
+  .marquee-track {
+    animation: marquee-scroll 32s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
   .break-inside-avoid { break-inside: avoid; }
   .shadow-xs { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
   .field-sizing-content { field-sizing: content; }
