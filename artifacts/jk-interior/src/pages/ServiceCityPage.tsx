@@ -161,6 +161,13 @@ export default function ServiceCityPage() {
               </div>
             ))}
           </div>
+          <p className="mt-4 text-xs leading-relaxed text-gray-500">
+            Rates shown are local {city.name}/Araria-district market estimates, not a fixed quote — final pricing depends on your free site visit, design, material quality tier, and project size. See the{" "}
+            <Link href={`/services/${service.slug}`} className="font-semibold text-emerald-700 hover:underline">
+              full {service.name} guide
+            </Link>{" "}
+            for Economy/Standard/Premium pricing and material specifications.
+          </p>
         </div>
       </section>
 
