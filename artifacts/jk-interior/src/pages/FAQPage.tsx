@@ -19,7 +19,7 @@ export default function FAQPage() {
             {
               "@type": "Question",
               name: "PVC false ceiling की cost क्या है?",
-              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC false ceiling ₹70–₹120 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।" }
+              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC false ceiling ₹75–₹150 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।" }
             },
             {
               "@type": "Question",
@@ -34,7 +34,7 @@ export default function FAQPage() {
             {
               "@type": "Question",
               name: "WPC wall panel क्या होता है?",
-              acceptedAnswer: { "@type": "Answer", text: "WPC (Wood Plastic Composite) wall panel एक waterproof और durable wall cladding material है। यह termite-proof, moisture-resistant और easy to install होता है। JK Interior ₹80/sq.ft से WPC panels लगाती है।" }
+              acceptedAnswer: { "@type": "Answer", text: "WPC (Wood Plastic Composite) wall panel एक waterproof और durable wall cladding material है। यह termite-proof, moisture-resistant और easy to install होता है। JK Interior ₹180/sq.ft से WPC panels लगाती है।" }
             },
             {
               "@type": "Question",
@@ -64,7 +64,7 @@ export default function FAQPage() {
             {[
               {
                 q: 'What is the cost of gypsum ceiling in Bihar?',
-                a: 'Gypsum ceiling in Bihar (Araria, Forbesganj) typically costs ₹80–₹150 per sq.ft depending on design complexity, cove lighting, and pop work. Contact JK Interior on +91 8541849118 for a free detailed quote.',
+                a: 'Gypsum ceiling in Bihar (Araria, Forbesganj) typically costs ₹75–₹210 per sq.ft depending on design complexity, cove lighting, and pop work. Contact JK Interior on +91 8541849118 for a free detailed quote.',
               },
               {
                 q: 'How long does PVC ceiling installation take?',
