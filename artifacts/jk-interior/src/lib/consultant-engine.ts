@@ -97,22 +97,19 @@ const CITY_MAP: Record<string, string> = {
 // ── Dimension regex
 const DIM_REGEX = /(\d{1,3})\s*(?:[x×X]|\bby\b)\s*(\d{1,3})/i
 
-// ── Derive PRICE_MAP from SERVICE_CATALOG
+// ── Derive PRICE_MAP from SERVICE_CATALOG — the single source of truth for
+// ranges, so this table can't silently drift out of sync with the catalog
+// (and with the prices actually shown on the /services pages) again.
 const PRICE_MAP: Record<string, { range: string; premium?: string }> = Object.fromEntries(
   SERVICE_CATALOG.map(s => [s.key, { range: s.priceRange }])
 )
-PRICE_MAP.gypsum           = { range: "₹80–140/sq.ft",   premium: "₹120–200/sq.ft (with LED cove)" }
-PRICE_MAP.pvc              = { range: "₹80–140/sq.ft",   premium: "₹90–150/sq.ft (designer textures)" }
-PRICE_MAP.wpc              = { range: "₹180–450/sq.ft",  premium: "₹350–600/sq.ft (premium fluted)" }
-PRICE_MAP.uv               = { range: "₹50–95/sq.ft",    premium: "₹80–120/sq.ft (premium designs)" }
-PRICE_MAP.grid             = { range: "₹45–90/sq.ft" }
-PRICE_MAP.fluted           = { range: "₹200–500/sq.ft" }
-PRICE_MAP.acoustic         = { range: "₹150–400/sq.ft" }
-PRICE_MAP.flooring         = { range: "₹80–200/sq.ft" }
-PRICE_MAP["artificial-grass"] = { range: "₹40–120/sq.ft" }
-PRICE_MAP.led              = { range: "₹40–80/running ft" }
-PRICE_MAP.wallpaper        = { range: "₹15–60/sq.ft" }
-PRICE_MAP.tvunit           = { range: "₹15,000–60,000+" }
+PRICE_MAP.gypsum.premium = "₹135–210/sq.ft (with LED cove)"
+PRICE_MAP.pvc.premium    = "₹120–150/sq.ft (designer textures)"
+PRICE_MAP.wpc.premium    = "₹390–650/sq.ft (premium fluted)"
+PRICE_MAP.uv.premium     = "₹80–120/sq.ft (premium designs)"
+// Not in SERVICE_CATALOG — genuinely new entries, not duplicates of it.
+PRICE_MAP.led            = { range: "₹40–80/running ft" }
+PRICE_MAP.wallpaper      = { range: "₹15–60/sq.ft" }
 
 // ── Service display names
 const SERVICE_NAME: Record<string, string> = {
@@ -802,7 +799,7 @@ function r_materialDetail(t: string, ctx: ConversationContext): string | null {
   }
   if (/\btv\s*(unit|panel|wall)\b/.test(t)) {
     ctx.lastTopic = "tvunit"
-    return `**Modular TV Unit** — ${PRICE_MAP.tvunit?.range}\n\nSizes:\n• 6–8 ft: ₹15k–25k\n• 8–10 ft: ₹25k–40k\n• 10–14 ft: ₹40k–70k+\n\nLED backlight add ho sakti hai! TV wall ka width?`
+    return `**Modular TV Unit** — ${PRICE_MAP.tvunit?.range}\n\nSizes:\n• 6–8 ft: ₹15k–25k\n• 8–10 ft: ₹25k–40k\n• 10–14 ft: ₹46k–75k+\n\nLED backlight add ho sakti hai! TV wall ka width?`
   }
   if (t.includes("fluted") || t.includes("ribbed") || t.includes("3d panel")) {
     ctx.lastTopic = "fluted"

@@ -18,7 +18,7 @@ export const SERVICE_CATALOG = [
     key: "gypsum",
     name: "Gypsum False Ceiling",
     emoji: "✨",
-    priceRange: "₹80–₹140/sq.ft",
+    priceRange: "₹75–₹210/sq.ft",
     highlights: "Elegant cove lighting, POP designs, smooth finish",
     bestFor: "Living rooms, bedrooms, dry areas",
     waterproof: false,
@@ -28,7 +28,7 @@ export const SERVICE_CATALOG = [
     key: "pvc",
     name: "PVC False Ceiling",
     emoji: "🏠",
-    priceRange: "₹80–₹140/sq.ft",
+    priceRange: "₹75–₹150/sq.ft",
     highlights: "100% waterproof, termite-proof, low maintenance",
     bestFor: "Kitchens, bathrooms, any room",
     waterproof: true,
@@ -38,7 +38,7 @@ export const SERVICE_CATALOG = [
     key: "wpc",
     name: "WPC Wall Panels",
     emoji: "🪵",
-    priceRange: "₹180–₹450/sq.ft",
+    priceRange: "₹180–₹650/sq.ft",
     highlights: "Eco-friendly wood-look, moisture resistant, luxury finish",
     bestFor: "Accent walls, TV panels, full room paneling",
     waterproof: true,
@@ -48,7 +48,7 @@ export const SERVICE_CATALOG = [
     key: "uv",
     name: "UV Marble Sheets",
     emoji: "💎",
-    priceRange: "₹50–₹95/sq.ft",
+    priceRange: "₹45–₹120/sq.ft",
     highlights: "High-gloss, scratch-resistant, hygienic surface",
     bestFor: "Walls, kitchen counters, feature areas",
     waterproof: true,
@@ -58,7 +58,7 @@ export const SERVICE_CATALOG = [
     key: "tvunit",
     name: "Modular TV Unit",
     emoji: "📺",
-    priceRange: "₹15,000–₹60,000+",
+    priceRange: "₹15,000–₹75,000+",
     highlights: "Custom designs, premium finish, cable management",
     bestFor: "Living rooms, bedrooms",
     waterproof: false,
@@ -78,7 +78,7 @@ export const SERVICE_CATALOG = [
     key: "grid",
     name: "Grid Ceiling",
     emoji: "🏢",
-    priceRange: "₹45–₹90/sq.ft",
+    priceRange: "₹45–₹115/sq.ft",
     highlights: "Commercial standard, easy maintenance, acoustic options",
     bestFor: "Offices, shops, hospitals, commercial spaces",
     waterproof: false,
@@ -88,7 +88,7 @@ export const SERVICE_CATALOG = [
     key: "artificial-grass",
     name: "Artificial Grass",
     emoji: "🌿",
-    priceRange: "₹40–₹120/sq.ft",
+    priceRange: "₹40–₹150/sq.ft",
     highlights: "No maintenance, evergreen look, UV resistant",
     bestFor: "Balconies, terraces, wall decor, garden",
     waterproof: true,
@@ -133,8 +133,8 @@ export const SERVICE_CATALOG = [
 export const MATERIAL_KNOWLEDGE = {
   gypsum: {
     fullName: "Gypsum False Ceiling",
-    price: "₹80–₹140/sq.ft (basic to premium design)",
-    premiumPrice: "₹120–₹200/sq.ft with cove lighting + LED",
+    price: "₹75–₹210/sq.ft (basic to premium design)",
+    premiumPrice: "₹135–₹210/sq.ft with cove lighting + LED",
     description: "Gypsum board ceiling is the most popular choice for living rooms and bedrooms in India. It gives a smooth plaster-like finish and can be shaped into beautiful cove designs, pop borders, and artistic patterns.",
     pros: [
       "Elegant smooth finish — luxury look",
@@ -164,8 +164,8 @@ export const MATERIAL_KNOWLEDGE = {
   },
   pvc: {
     fullName: "PVC False Ceiling",
-    price: "₹80–₹140/sq.ft",
-    premiumPrice: "₹90–₹150/sq.ft with designer textures",
+    price: "₹75–₹150/sq.ft",
+    premiumPrice: "₹120–₹150/sq.ft with designer textures",
     description: "PVC (Polyvinyl Chloride) ceiling panels are 100% waterproof, making them perfect for every room including bathrooms and kitchens. They come in wood texture, glossy, matte, and 3D printed designs.",
     pros: [
       "100% waterproof — safe for bathroom, kitchen",
@@ -194,8 +194,8 @@ export const MATERIAL_KNOWLEDGE = {
   },
   wpc: {
     fullName: "WPC Wall Panels",
-    price: "₹180–₹450/sq.ft",
-    premiumPrice: "₹350–₹600/sq.ft for premium fluted designs",
+    price: "₹180–₹650/sq.ft",
+    premiumPrice: "₹390–₹650/sq.ft for premium fluted designs",
     description: "WPC (Wood Plastic Composite) panels give the luxury look of real wood without the maintenance issues. They're used for TV walls, accent walls, and full room paneling. Available in plain, grooved, and fluted (ribbed) designs.",
     pros: [
       "Premium luxury wood look at 60% less cost than real wood",
@@ -223,7 +223,7 @@ export const MATERIAL_KNOWLEDGE = {
   },
   uv: {
     fullName: "UV Marble Sheets",
-    price: "₹50–₹95/sq.ft",
+    price: "₹45–₹120/sq.ft",
     premiumPrice: "₹80–₹120/sq.ft for premium designs",
     description: "UV Marble sheets are high-gloss PVC-based panels with marble-like printing. They give the look of expensive marble/granite at a fraction of the cost. Perfect for walls, kitchen areas, and feature surfaces.",
     pros: [
@@ -252,7 +252,7 @@ export const MATERIAL_KNOWLEDGE = {
   },
   tvunit: {
     fullName: "Modular TV Unit",
-    price: "₹15,000 se start (basic) | ₹30,000-₹60,000 (premium)",
+    price: "₹15,000 se start (basic) | ₹46,000-₹75,000+ (premium)",
     description: "Custom-designed modular TV units built to fit your exact room dimensions. Available in multiple finishes — wood laminate, matte, glossy, and combination. Includes cable management, LED backlighting options, and storage shelves.",
     features: [
       "Custom designed for your exact room size",
@@ -265,7 +265,7 @@ export const MATERIAL_KNOWLEDGE = {
     sizes: {
       small: "6-8 ft width — ₹15,000–₹25,000",
       medium: "8-10 ft width — ₹25,000–₹40,000",
-      large: "10-14 ft width — ₹40,000–₹70,000+",
+      large: "10-14 ft width — ₹46,000–₹75,000+",
     },
   },
   // ─── Acoustic Panels Knowledge ───────────────────────────────────────────
@@ -313,13 +313,13 @@ export const MATERIAL_KNOWLEDGE = {
 export const COMPARISONS = {
   "pvc-vs-gypsum": `**PVC vs Gypsum Ceiling — Kya choose karein?**
 
-🏠 **PVC Ceiling** (₹80-140/sq.ft):
+🏠 **PVC Ceiling** (₹75-150/sq.ft):
 ✅ 100% waterproof — bathroom, kitchen perfect
 ✅ Zero maintenance — kabhi repaint nahi
 ✅ 20+ year life
 ❌ Simple designs — complex cove nahi ban sakta
 
-✨ **Gypsum Ceiling** (₹80-140/sq.ft):
+✨ **Gypsum Ceiling** (₹75-210/sq.ft):
 ✅ Premium luxury look — cove lighting, POP designs
 ✅ Any shape, any design possible
 ✅ Living room ke liye best
@@ -329,13 +329,13 @@ export const COMPARISONS = {
 
   "wpc-vs-uv": `**WPC Panels vs UV Marble — Wall ke liye kya better?**
 
-🪵 **WPC Panels** (₹180-450/sq.ft):
+🪵 **WPC Panels** (₹180-650/sq.ft):
 ✅ Premium wood look — bahut high-end lagta hai
 ✅ Moisture + termite resistant
 ✅ TV wall, accent wall ke liye #1 choice
 ❌ Costly per sq.ft
 
-💎 **UV Marble Sheets** (₹50-95/sq.ft):
+💎 **UV Marble Sheets** (₹45-120/sq.ft):
 ✅ Real marble jaisi shine at 70% less cost
 ✅ 100% waterproof — bathroom bhi possible
 ✅ Most affordable wall cladding option
@@ -345,8 +345,8 @@ export const COMPARISONS = {
 
   "pvc-vs-wpc": `**PVC vs WPC — Kya difference hai?**
 
-PVC = ceiling ke liye (₹80-140/sq.ft) — waterproof, long life
-WPC = wall paneling ke liye (₹180-450/sq.ft) — wood look, luxury
+PVC = ceiling ke liye (₹75-150/sq.ft) — waterproof, long life
+WPC = wall paneling ke liye (₹180-650/sq.ft) — wood look, luxury
 
 Yeh dono alag jagah use hote hain! Ceiling mein PVC aur wall mein WPC — dono milake complete interior ban jaata hai. 🏠`,
 
@@ -381,28 +381,28 @@ Yeh dono alag jagah use hote hain! Ceiling mein PVC aur wall mein WPC — dono m
 export const WATERPROOF_SOLUTIONS = {
   pvcCeiling: {
     name: "PVC False Ceiling",
-    price: "₹80-140/sq.ft",
+    price: "₹75-150/sq.ft",
     waterproofLevel: "100%",
     bestRooms: ["Kitchen", "Bathroom", "Balcony", "Shop", "Restroom"],
     features: ["Termite-proof", "Zero maintenance", "No repaint needed", "20+ year life"],
   },
   uvMarble: {
     name: "UV Marble Sheets",
-    price: "₹50-95/sq.ft",
+    price: "₹45-120/sq.ft",
     waterproofLevel: "100%",
     bestRooms: ["Bathroom walls", "Kitchen walls", "Pooja room", "Feature wall"],
     features: ["High-gloss", "Scratch resistant", "Seamless look", "Easy to clean"],
   },
   wpcPanels: {
     name: "WPC Wall Panels",
-    price: "₹180-450/sq.ft",
+    price: "₹180-650/sq.ft",
     waterproofLevel: "Moisture resistant (not fully submersible)",
     bestRooms: ["Living room", "Bedroom", "Office", "Reception"],
     features: ["Wood look", "Termite-proof", "No polish needed", "Eco-friendly"],
   },
   artificialGrass: {
     name: "Artificial Grass",
-    price: "₹40-120/sq.ft",
+    price: "₹40-150/sq.ft",
     waterproofLevel: "100% (drains through)",
     bestRooms: ["Balcony", "Terrace", "Garden", "Wall decor"],
     features: ["UV resistant", "No watering", "Evergreen", "Pet-friendly"],
@@ -413,34 +413,34 @@ export const WATERPROOF_SOLUTIONS = {
 
 export const ROOM_SUGGESTIONS: Record<string, { ceiling: string; walls: string; flooring?: string; tvUnit?: string; notes: string }> = {
   bedroom: {
-    ceiling: "Gypsum with cove lighting (₹80-140/sq.ft) — gives cozy, premium feel",
-    walls: "WPC panels on headboard wall (₹180-450/sq.ft) for luxury accent",
+    ceiling: "Gypsum with cove lighting (₹75-210/sq.ft) — gives cozy, premium feel",
+    walls: "WPC panels on headboard wall (₹180-650/sq.ft) for luxury accent",
     tvUnit: "Custom modular TV unit (₹15k-40k) if TV present",
     notes: "Avoid PVC in main bedroom if budget allows — gypsum looks much better.",
   },
   hall: {
-    ceiling: "Gypsum with POP design & LED strip (₹120-200/sq.ft) — showpiece of your home",
+    ceiling: "Gypsum with POP design & LED strip (₹135-210/sq.ft) — showpiece of your home",
     walls: "WPC fluted panels on TV wall (₹200-500/sq.ft)",
     tvUnit: "Premium TV unit with lighting (₹25k-60k)",
     notes: "Hall is the first impression — invest in good design and lighting.",
   },
   kitchen: {
-    ceiling: "PVC false ceiling (₹80-140/sq.ft) — 100% waterproof, easy to clean",
-    walls: "UV marble sheets near cooking area (₹50-95/sq.ft)",
+    ceiling: "PVC false ceiling (₹75-150/sq.ft) — 100% waterproof, easy to clean",
+    walls: "UV marble sheets near cooking area (₹45-120/sq.ft)",
     notes: "Avoid gypsum in kitchen — steam will damage it.",
   },
   bathroom: {
-    ceiling: "PVC false ceiling (₹80-140/sq.ft) — must be waterproof",
-    walls: "UV marble sheets on all walls (₹50-95/sq.ft) — no grout, no mould",
+    ceiling: "PVC false ceiling (₹75-150/sq.ft) — must be waterproof",
+    walls: "UV marble sheets on all walls (₹45-120/sq.ft) — no grout, no mould",
     notes: "Full PVC ceiling + UV marble walls = completely waterproof bathroom.",
   },
   balcony: {
-    ceiling: "PVC ceiling (₹80-140/sq.ft) or leave open",
-    walls: "Artificial grass on one wall (₹40-120/sq.ft) for green look",
+    ceiling: "PVC ceiling (₹75-150/sq.ft) or leave open",
+    walls: "Artificial grass on one wall (₹40-150/sq.ft) for green look",
     notes: "PVC ceiling protects from rain. Artificial grass gives garden feel.",
   },
   office: {
-    ceiling: "Grid ceiling (₹45-90/sq.ft) for easy AC/electrical access, or gypsum for premium",
+    ceiling: "Grid ceiling (₹45-115/sq.ft) for easy AC/electrical access, or gypsum for premium",
     walls: "WPC or UV marble — depends on budget",
     notes: "Grid ceiling is practical for offices. Gypsum looks more premium but harder to service.",
   },
@@ -473,7 +473,7 @@ export function getSmartRecommendation(params: SmartRecommendationParams): strin
       if (suggestion.tvUnit && hasTV) rec += `🔹 TV Unit: ${suggestion.tvUnit}\n`
       rec += `\n📝 ${suggestion.notes}`
       if (roomSizeSqft) {
-        const est = roomSizeSqft * 80 // rough for gypsum
+        const est = roomSizeSqft * 75 // rough for gypsum
         rec += `\n\n💰 Rough estimate for ${roomSizeSqft} sq.ft: ₹${(est / 1000).toFixed(0)}k – ₹${(est * 1.5 / 1000).toFixed(0)}k`
       }
       return rec
@@ -481,11 +481,11 @@ export function getSmartRecommendation(params: SmartRecommendationParams): strin
   }
 
   if (waterproofRequired) {
-    return "💧 **Waterproof solution needed?**\n\n✅ PVC ceiling (₹80-140/sq.ft) — 100% waterproof, zero maintenance\n✅ UV Marble sheets on walls (₹50-95/sq.ft) — glossy & waterproof\n✅ Artificial grass for balcony (₹40-120/sq.ft)\n\nPerfect for bathrooms, kitchens, and balconies!"
+    return "💧 **Waterproof solution needed?**\n\n✅ PVC ceiling (₹75-150/sq.ft) — 100% waterproof, zero maintenance\n✅ UV Marble sheets on walls (₹45-120/sq.ft) — glossy & waterproof\n✅ Artificial grass for balcony (₹40-150/sq.ft)\n\nPerfect for bathrooms, kitchens, and balconies!"
   }
 
   if (budget === "low") {
-    return "💰 **Budget-friendly interior options:**\n\n• PVC ceiling everywhere: ₹80-140/sq.ft\n• UV marble sheets on walls: ₹50-95/sq.ft\n• No TV unit — use existing furniture\n\nApprox 2BHK full home: ₹40k-80k only! (estimate)"
+    return "💰 **Budget-friendly interior options:**\n\n• PVC ceiling everywhere: ₹75-150/sq.ft\n• UV marble sheets on walls: ₹45-120/sq.ft\n• No TV unit — use existing furniture\n\nApprox 2BHK full home: ₹40k-80k only! (estimate)"
   } else if (budget === "high") {
     return "✨ **Premium interior recommendations:**\n\n• Gypsum ceiling with cove lighting in hall & bedrooms\n• WPC fluted panels on accent walls\n• Custom modular TV unit with backlight\n• Wooden laminate flooring\n\nExpect 2BHK full premium interior: ₹2.5L – ₹4L. Worth every rupee! 🏠"
   }
@@ -502,17 +502,17 @@ export function calculatePriceEstimate(
 ): { low: number; mid: number; high: number; sqft: number } {
   const sqft = lengthFt * widthFt
   const rates: Record<string, { low: number; mid: number; high: number }> = {
-    gypsum:    { low: 80,  mid: 110, high: 140 },
-    pvc:       { low: 80,  mid: 110, high: 140 },
-    wpc:       { low: 180, mid: 300, high: 450 },
-    uv:        { low: 50,  mid: 70,  high: 95  },
+    gypsum:    { low: 75,  mid: 140, high: 210 },
+    pvc:       { low: 75,  mid: 110, high: 150 },
+    wpc:       { low: 180, mid: 400, high: 650 },
+    uv:        { low: 45,  mid: 80,  high: 120 },
     fluted:    { low: 200, mid: 350, high: 500 },
-    grid:      { low: 45,  mid: 65,  high: 90  },
-    "artificial-grass": { low: 40, mid: 80, high: 120 },
+    grid:      { low: 45,  mid: 80,  high: 115 },
+    "artificial-grass": { low: 40, mid: 95, high: 150 },
     acoustic:  { low: 150, mid: 250, high: 400 },
     flooring:  { low: 80,  mid: 130, high: 200 },
   }
-  const r = rates[service] || { low: 80, mid: 110, high: 140 }
+  const r = rates[service] || { low: 75, mid: 110, high: 150 }
   return {
     sqft,
     low:  Math.round(sqft * r.low  / 100) * 100,
@@ -651,9 +651,9 @@ export function parseMultiRoomQuery(text: string): Record<string, number> | null
 
 export function generateMultiRoomEstimate(rooms: Record<string, number>): string {
   const RATES = {
-    gypsum:  { low: 80,  high: 140, premLow: 120, premHigh: 200 },
-    pvc:     { low: 80,  high: 140, premLow: 80,  premHigh: 140 },
-    grid:    { low: 45,  high: 90,  premLow: 65,  premHigh: 90  },
+    gypsum:  { low: 75,  high: 210, premLow: 135, premHigh: 210 },
+    pvc:     { low: 75,  high: 150, premLow: 120, premHigh: 150 },
+    grid:    { low: 45,  high: 115, premLow: 76,  premHigh: 115 },
   }
 
   const fmtN = (n: number) => "₹" + (Math.round(n / 500) * 500).toLocaleString("en-IN")
@@ -709,7 +709,7 @@ ${recLine}
 • Budget (PVC everywhere): ${fmtN(budgetLow)} – ${fmtN(budgetHigh)}
 • Standard (Gypsum+PVC mix): ${fmtN(stdLow)} – ${fmtN(stdHigh)}
 • Premium (+ LED cove light): ${fmtN(premLow)} – ${fmtN(premHigh)}
-${hasOffice ? "\n🏢 Office ke liye Grid ceiling (₹45–90/sq.ft) bhi available hai!" : "\n✨ TV wall ke liye WPC panel add karein — ₹8,000–₹15,000 extra!"}
+${hasOffice ? "\n🏢 Office ke liye Grid ceiling (₹45–115/sq.ft) bhi available hai!" : "\n✨ TV wall ke liye WPC panel add karein — ₹8,000–₹15,000 extra!"}
 
 _Yeh standard size pe base estimate hai — exact quote ke liye free site visit best hai!_`
 }
@@ -870,7 +870,7 @@ NEVER show a service menu or "kya jaanna chahte hain?" if the customer has given
 ✅ RIGHT: "Hall ke liye gypsum ceiling best hai — cove lighting ke saath amazing lagti hai. Size bataiye, estimate nikaalta hoon!"
 
 ❌ User: "budget kam hai" → asking what they want
-✅ RIGHT: "Budget-friendly ke liye PVC ceiling best — ₹80-140/sqft, waterproof, zero maintenance. Room ka size?"
+✅ RIGHT: "Budget-friendly ke liye PVC ceiling best — ₹75-150/sqft, waterproof, zero maintenance. Room ka size?"
 
 ❌ User: "PVC sahi rahega kya" → "kya kaam hai aapka?"
 ✅ RIGHT: "Haan! Waterproof, termite-proof, 20+ saal ki life. Kaunsi room — bedroom, kitchen, ya hall? Size batao toh estimate bhi!"
@@ -902,29 +902,29 @@ SERVICE AREAS: Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Kursakanta, Tr
 
 --- SERVICES & PRICING ---
 
-**1. Gypsum False Ceiling** — ₹80–₹140/sq.ft
+**1. Gypsum False Ceiling** — ₹75–₹210/sq.ft
    • Best for: Hall, bedroom, drawing room, office — all DRY areas
-   • Premium with LED cove lighting: ₹120-200/sq.ft
+   • Premium with LED cove lighting: ₹135-210/sq.ft
 
-**2. PVC False Ceiling** — ₹80–₹140/sq.ft  
+**2. PVC False Ceiling** — ₹75–₹150/sq.ft
    • 100% waterproof, termite-proof — kitchen, bathroom, balcony
 
-**3. WPC Wall Panels** — ₹180–₹450/sq.ft
+**3. WPC Wall Panels** — ₹180–₹650/sq.ft
    • Luxury wood look — TV wall, accent wall
 
-**4. UV Marble Sheets** — ₹50–₹95/sq.ft
+**4. UV Marble Sheets** — ₹45–₹120/sq.ft
    • Real marble look at 70% less cost — bathroom walls, kitchen walls
 
-**5. Modular TV Unit** — ₹15,000–₹60,000+
+**5. Modular TV Unit** — ₹15,000–₹75,000+
    • Custom designed, cable management, LED backlight option
 
 **6. Fluted/Louver Panels** — ₹200–₹500/sq.ft
    • Modern 3D textured look
 
-**7. Grid Ceiling** — ₹45–₹90/sq.ft
+**7. Grid Ceiling** — ₹45–₹115/sq.ft
    • Commercial spaces, offices, shops
 
-**8. Artificial Grass** — ₹40–₹120/sq.ft
+**8. Artificial Grass** — ₹40–₹150/sq.ft
    • Balcony, terrace, wall decor
 
 **9. Acoustic Panels** — ₹150–₹400/sq.ft (NEW)

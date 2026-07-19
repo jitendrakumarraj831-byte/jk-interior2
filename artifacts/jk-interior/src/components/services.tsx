@@ -1,5 +1,5 @@
 
-import { ArrowUpRight, Ruler, ShieldCheck, Timer, MapPin } from "lucide-react"
+import { ArrowUpRight, Ruler, ShieldCheck, Timer, MapPin, BadgeCheck, Sparkles } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
@@ -47,6 +47,18 @@ export default function Services() {
           subtitle="हर सर्विस की पूरी जानकारी — कीमत, टाइमलाइन, मटेरियल, सब कुछ एक क्लिक में"
           subtitleSecondary="Tap any service below for the complete guide — what it's for, what it isn't, and exactly how we install it."
         />
+
+        <div className="mx-auto mb-6 flex max-w-2xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-center text-xs font-bold text-emerald-700 sm:text-sm">
+          <span className="inline-flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> 500+ Happy Customers
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" /> ISI-Certified Materials
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> 1-Year Written Warranty
+          </span>
+        </div>
 
         <p className="mx-auto mb-10 max-w-2xl text-center text-xs font-semibold text-gray-500 sm:text-sm">
           Rates below are local Forbesganj &amp; Araria district market ranges, in Economy / Standard / Premium tiers — not fixed quotes. Final pricing is confirmed only after a free site visit and measurement.

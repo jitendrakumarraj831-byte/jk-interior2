@@ -85,7 +85,7 @@ export const CITIES: CityData[] = [
     faqs: [
       {
         q: 'Forbesganj में PVC false ceiling का क्या रेट है?',
-        a: 'Forbesganj में PVC false ceiling की cost ₹70–₹120 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।',
+        a: 'Forbesganj में PVC false ceiling की cost ₹75–₹150 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।',
       },
       {
         q: 'क्या JK Interior Forbesganj में free site visit देती है?',
@@ -126,7 +126,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Araria में gypsum ceiling की cost क्या है?',
-        a: 'Araria में gypsum false ceiling ₹80–₹150 per sq.ft से शुरू होती है। Cove lighting और pop design extra charge के साथ available हैं। Free site visit के लिए: +91 8541849118।',
+        a: 'Araria में gypsum false ceiling ₹75–₹210 per sq.ft से शुरू होती है। Cove lighting और multi-level design premium tier में शामिल हैं। Free site visit के लिए: +91 8541849118।',
       },
       {
         q: 'क्या JK Interior Araria city में काम करती है?',
@@ -199,7 +199,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Jogbani में interior design की cost क्या है?',
-        a: 'Jogbani में JK Interior affordable pricing offer करती है — PVC ceiling ₹70 से, Gypsum ceiling ₹80 से per sq.ft। Exact quotation के लिए free site visit available है।',
+        a: 'Jogbani में JK Interior affordable pricing offer करती है — PVC ceiling ₹75 से, Gypsum ceiling ₹75 से per sq.ft। Exact quotation के लिए free site visit available है।',
       },
       {
         q: 'क्या JK Interior Jogbani में home interior services देती है?',
@@ -235,7 +235,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Supaul में PVC ceiling की cost क्या है?',
-        a: 'Supaul में PVC false ceiling ₹70–₹120 per sq.ft से शुरू होती है। Free site visit और quotation के लिए +91 8541849118 पर संपर्क करें।',
+        a: 'Supaul में PVC false ceiling ₹75–₹150 per sq.ft से शुरू होती है। Free site visit और quotation के लिए +91 8541849118 पर संपर्क करें।',
       },
       {
         q: 'क्या JK Interior Supaul में आती है?',
@@ -271,7 +271,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Narpatganj में false ceiling की cost क्या है?',
-        a: 'JK Interior Narpatganj में ₹70 per sq.ft से PVC ceiling और ₹80 से gypsum ceiling offer करती है। Free estimate के लिए site visit available है।',
+        a: 'JK Interior Narpatganj में ₹75 per sq.ft से PVC ceiling और ₹75 से gypsum ceiling offer करती है। Free estimate के लिए site visit available है।',
       },
       {
         q: 'JK Interior का office Narpatganj से कितने दूर है?',
@@ -307,7 +307,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Raniganj में ceiling work का rate क्या है?',
-        a: 'Raniganj में JK Interior PVC ceiling ₹70/sq.ft और gypsum ceiling ₹80/sq.ft से start करती है। Exact estimate के लिए call करें: +91 8541849118।',
+        a: 'Raniganj में JK Interior PVC ceiling ₹75/sq.ft और gypsum ceiling ₹75/sq.ft से start करती है। Exact estimate के लिए call करें: +91 8541849118।',
       },
       {
         q: 'JK Interior Raniganj में कितने समय में आ सकती है?',
@@ -342,7 +342,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Tribeniganj में false ceiling कितने में होगी?',
-        a: 'Tribeniganj में JK Interior PVC false ceiling ₹70/sq.ft से और gypsum ceiling ₹85/sq.ft से offer करती है। Free estimate के लिए site visit available है।',
+        a: 'Tribeniganj में JK Interior PVC false ceiling ₹75/sq.ft से और gypsum ceiling ₹75/sq.ft से offer करती है। Free estimate के लिए site visit available है।',
       },
       {
         q: 'क्या JK Interior Tribeniganj में service देती है?',
@@ -381,7 +381,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Kursakanta में PVC ceiling की कीमत क्या है?',
-        a: 'Kursakanta में JK Interior PVC false ceiling ₹70/sq.ft से start करती है। Free measurement और estimate के लिए +91 8541849118 पर call करें।',
+        a: 'Kursakanta में JK Interior PVC false ceiling ₹75/sq.ft से start करती है। Free measurement और estimate के लिए +91 8541849118 पर call करें।',
       },
     ],
   },
@@ -412,7 +412,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Chhatapur में false ceiling की cost क्या है?',
-        a: 'Chhatapur में JK Interior PVC ceiling ₹70/sq.ft और gypsum ceiling ₹85/sq.ft से offer करती है। Free site visit के लिए आज ही संपर्क करें।',
+        a: 'Chhatapur में JK Interior PVC ceiling ₹75/sq.ft और gypsum ceiling ₹75/sq.ft से offer करती है। Free site visit के लिए आज ही संपर्क करें।',
       },
       {
         q: 'क्या JK Interior Chhatapur में service देती है?',

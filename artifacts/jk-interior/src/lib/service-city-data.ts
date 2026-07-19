@@ -114,7 +114,7 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Wipe with a dry cloth — no special care needed",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "TV unit का price कितना है?", a: "Basic TV unit ₹15,000 से शुरू होता है। Premium design (LED lighting, बड़ा storage) के साथ ₹30,000–₹60,000+ तक जा सकता है, size पर depend करता है।" },
+      { q: "TV unit का price कितना है?", a: "Basic TV unit ₹15,000 से शुरू होता है। Premium design (LED lighting, बड़ा storage) के साथ ₹46,000–₹75,000+ तक जा सकता है, size पर depend करता है।" },
       { q: "TV unit बनाने में कितने दिन लगते हैं?", a: "Size और design के अनुसार 3–5 दिन में तैयार हो जाता है। Custom measurement के बाद exact timeline बताई जाती है।" },
     ],
   },
