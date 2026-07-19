@@ -10,6 +10,7 @@ import {
   MapPin, MapPinOff, CheckCircle2, XCircle, Wrench, Clock, ShieldCheck,
   Sparkles, ArrowRight, Phone, HelpCircle, ImageIcon, Layers as LayersIcon,
   IndianRupee, Ruler, HardHat, BadgeCheck, AlertTriangle, Navigation,
+  PackageCheck, PackageX, Lightbulb,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { PRICE_DISCLAIMER, PRICE_DISCLAIMER_HI } from "@/lib/services-content"
@@ -202,6 +203,49 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
+      {/* ── What's included / not included ── */}
+      <section className="py-14 sm:py-16 bg-white">
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="rounded-2xl border border-emerald-200 bg-white p-6 shadow-sm">
+              <div className="mb-4 flex items-center gap-2">
+                <PackageCheck className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                <h2 className="text-lg font-black text-gray-900">What's Included</h2>
+              </div>
+              <ul className="space-y-3">
+                {service.whatsIncluded.map((item, i) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
+                    <span>
+                      {item}
+                      <span className="block text-xs text-gray-500 mt-0.5">{service.whatsIncludedHi[i]}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
+              <div className="mb-4 flex items-center gap-2">
+                <PackageX className="h-5 w-5 text-red-500" aria-hidden="true" />
+                <h2 className="text-lg font-black text-gray-900">What's NOT Included</h2>
+              </div>
+              <ul className="space-y-3">
+                {service.whatsNotIncluded.map((item, i) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
+                    <XCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-400" aria-hidden="true" />
+                    <span>
+                      {item}
+                      <span className="block text-xs text-gray-500 mt-0.5">{service.whatsNotIncludedHi[i]}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Where used / not used ── */}
       <section className="py-14 sm:py-16 bg-gray-50">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
@@ -270,6 +314,22 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Expert recommendation ── */}
+      <section className="py-12 sm:py-14 bg-white">
+        <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
+          <div className="flex gap-4 rounded-2xl border border-amber-200 bg-amber-50/60 p-6 shadow-sm">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-400/90">
+              <Lightbulb className="h-5 w-5 text-amber-900" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 className="mb-2 text-base font-black text-gray-900">Our Recommendation</h2>
+              <p className="text-sm leading-relaxed text-gray-700">{service.expertTip}</p>
+              <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{service.expertTipHi}</p>
             </div>
           </div>
         </div>

@@ -80,8 +80,17 @@ export interface ServiceContent {
   benefitsHi: string[]
   limitations: string[]
   limitationsHi: string[]
+  /** What JK Interior's quoted price actually covers — shown as a clear checklist next to what's not. */
+  whatsIncluded: string[]
+  whatsIncludedHi: string[]
+  /** Work/material explicitly outside JK Interior's scope for this service (e.g. paint — we don't offer painting at all). */
+  whatsNotIncluded: string[]
+  whatsNotIncludedHi: string[]
   materials: ServiceMaterial[]
   installSteps: InstallStep[]
+  /** One practical, contractor's-eye recommendation — the kind of advice given on-site, not marketing copy. */
+  expertTip: string
+  expertTipHi: string
   realProject: { title: string; titleHi: string; desc: string; descHi: string; photos: number }
   faqs: ServiceFaqItem[]
   relatedSlugs: string[]
@@ -109,28 +118,28 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     nameHi: "जिप्सम फॉल्स सीलिंग",
     category: "Ceiling",
     categoryHi: "सीलिंग",
-    tagline: "The dry-room finish that turns a hall into a showpiece",
-    taglineHi: "सूखे कमरों की वो फिनिश जो पूरे हॉल को शोपीस जैसा लुक दे देती है",
+    tagline: "The dry-room finish that turns a hall into a showpiece — built exactly to the design you bring us",
+    taglineHi: "सूखे कमरों की वो फिनिश जो पूरे हॉल को शोपीस जैसा लुक दे देती है — आप जो भी डिज़ाइन दें, हम बिल्कुल वैसा ही बनाकर देते हैं",
     heroImage: "/images/gypsum5.webp",
     heroImageAlt: "Gypsum false ceiling with cove lighting in a Forbesganj living room by JK Interior",
     galleryCategory: "Gypsum False Ceiling",
     price: "₹75–₹210/sq.ft (Forbesganj/Araria market rate)",
     priceTiers: [
-      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "Flat, single-level ceiling with a plain matte paint finish — standard 12.5mm board, no cove.", descHi: "सीधी-सादी फ्लैट सीलिंग, एक ही लेवल में, प्लेन मैट पेंट फिनिश — स्टैंडर्ड 12.5mm Gypsum Board लगता है, इसमें Cove नहीं होता।" },
-      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹130/sq.ft", desc: "One stepped border with a basic cove channel (LED strip billed separately) and a smoother finish coat.", descHi: "एक सीढ़ीदार बॉर्डर के साथ बेसिक Cove चैनल बनता है (LED Strip का खर्च अलग से लगेगा), और फिनिश भी थोड़ी ज़्यादा स्मूथ रहती है।" },
-      { tier: "Premium", tierHi: "प्रीमियम", range: "₹135–₹210/sq.ft", desc: "Multi-level or curved tray design with integrated LED cove lighting and a premium textured/metallic paint finish.", descHi: "मल्टी-लेवल या घुमावदार ट्रे डिज़ाइन, अंदर बिल्ट-इन LED Cove Light लगती है, और पेंट भी प्रीमियम टेक्सचर्ड/मेटैलिक फिनिश में होता है।" },
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "Flat, single-level ceiling built to a simple design — standard 12.5mm board, no cove. Colour/paint finish is not included; that's arranged separately with your own painter.", descHi: "सीधी-सादी फ्लैट सीलिंग, एक ही लेवल में — स्टैंडर्ड 12.5mm Gypsum Board लगता है, इसमें Cove नहीं होता। रंग/पेंट फिनिश इसमें शामिल नहीं है, वो आप अपने पेंटर से अलग से करवा सकते हैं।" },
+      { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹130/sq.ft", desc: "One stepped border with a basic cove channel (LED strip billed separately), built exactly to the design you bring us.", descHi: "एक सीढ़ीदार बॉर्डर के साथ बेसिक Cove चैनल बनता है (LED Strip का खर्च अलग से लगेगा) — जो डिज़ाइन आप बताएं, ठीक वैसा ही बना देते हैं।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹135–₹210/sq.ft", desc: "Multi-level or curved tray design with integrated LED cove lighting — built to any custom shape or reference photo you bring, no fixed template.", descHi: "मल्टी-लेवल या घुमावदार ट्रे डिज़ाइन, अंदर बिल्ट-इन LED Cove Light लगती है — आप जो भी शेप या रेफरेंस फोटो दिखाएं, हम बिल्कुल वैसा ही बना देते हैं, कोई फिक्स टेम्पलेट नहीं।" },
     ],
     sizesThickness: "Gypsum boards are standard 12.5mm thick, in 1200×2400mm (4×8 ft) and 1200×1800mm (4×6 ft) sheets, cut to size on-site. Thinner 8mm board is used only for curved/false-drop sections.",
     sizesThicknessHi: "Gypsum Board आमतौर पर 12.5mm मोटा आता है, 1200×2400mm (4×8 फुट) और 1200×1800mm (4×6 फुट) शीट में — साइट पर ही सही नाप में काटा जाता है। सिर्फ घुमावदार या फॉल्स-ड्रॉप वाले हिस्सों में हल्का 8mm बोर्ड लगाते हैं।",
-    labourCost: "Labour (framing, board fixing, taping, paint finish) is already included in the rates above and typically makes up roughly ₹30–45/sq.ft of the total — cove and multi-level designs sit at the higher end because of the extra framing and finishing work.",
-    labourCostHi: "फ्रेमिंग, बोर्ड फिक्सिंग, टेपिंग और पेंट फिनिश की पूरी लेबर ऊपर के रेट में ही शामिल है — कुल रेट का करीब ₹30–45/sq.ft हिस्सा लेबर पर जाता है। Cove और मल्टी-लेवल डिज़ाइन में ज़्यादा फ्रेमिंग-फिनिशिंग करनी पड़ती है, इसलिए वहां यह हिस्सा थोड़ा ज़्यादा हो जाता है।",
+    labourCost: "Labour (framing, board fixing, taping) is already included in the rates above and typically makes up roughly ₹30–45/sq.ft of the total — cove and multi-level designs sit at the higher end because of the extra framing and finishing work. Paint/colour is not part of this rate — once taping is done, the ceiling is ready for any painter you choose to finish it in whatever colour or design you like.",
+    labourCostHi: "फ्रेमिंग, बोर्ड फिक्सिंग और टेपिंग की पूरी लेबर ऊपर के रेट में ही शामिल है — कुल रेट का करीब ₹30–45/sq.ft हिस्सा लेबर पर जाता है। Cove और मल्टी-लेवल डिज़ाइन में ज़्यादा फ्रेमिंग-फिनिशिंग करनी पड़ती है, इसलिए वहां यह हिस्सा थोड़ा ज़्यादा हो जाता है। पेंट/रंग इस रेट में शामिल नहीं है — टेपिंग होते ही सीलिंग आपके किसी भी पेंटर से, आपकी पसंद के रंग या डिज़ाइन में फिनिश कराने के लिए तैयार हो जाती है।",
     labourCostShort: "₹30–45/sq.ft",
     brandNote: "We install ISI-marked, branded gypsum board and GI framing sourced from authorised dealers in Purnia and Forbesganj — never unbranded or duplicate stock. The exact board brand in stock at the time of your order is shown to you during the free site visit, matched to the quality tier you choose.",
     brandNoteHi: "भाई, हम हमेशा ISI-मार्क्ड, ब्रांडेड Gypsum Board और GI फ्रेमिंग ही लगाते हैं — पूर्णिया और फारबिसगंज के अधिकृत डीलरों से मंगाते हैं, अनब्रांडेड या डुप्लीकेट स्टॉक हम कभी इस्तेमाल नहीं करते। इससे भरोसा रहता है कि लगा हुआ बोर्ड सालों चलेगा। ऑर्डर के वक़्त जो ब्रांड स्टॉक में मिलेगा, वो फ्री Site Visit में आपको दिखा दिया जाता है, आपके चुने गए क्वालिटी टियर के हिसाब से।",
     availability: "Available across our full service area — Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Purnia, Supaul, Tribeniganj, Kursakanta, and Chhatapur. Cove-lighting and multi-level designs are our most-requested option in Forbesganj and Araria town; standard flat ceilings are the common choice further out.",
     availabilityHi: "यह हम अपने पूरे सर्विस एरिया में लगाते हैं — फारबिसगंज, अररिया, जोगबनी, रानीगंज, नरपतगंज, पूर्णिया, सुपौल, त्रिवेणीगंज, कुर्साकांटा और छातापुर, सब जगह। फारबिसगंज और अररिया टाउन में लोग सबसे ज़्यादा Cove Lighting और मल्टी-लेवल डिज़ाइन मांगते हैं; बाकी इलाकों में ज़्यादातर स्टैंडर्ड फ्लैट सीलिंग ही पसंद की जाती है।",
     installTime: "2–3 days for one room, 3–5 days for a full hall",
-    maintenance: "Dust occasionally with a dry cloth; repaint every 5–7 years",
+    maintenance: "Dust occasionally with a dry cloth; repaint whenever you like, in any colour your painter suggests",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
       "Gypsum false ceiling is a suspended ceiling built from 12.5mm gypsum boards screwed onto a GI metal frame fixed a few inches below your actual slab. Once the joints are taped and finished, it looks like one continuous smooth plaster surface — not a panel with visible seams. That smooth surface is what lets us cut cove channels, stepped borders, and curved profiles into it, and hide LED strip lighting inside those recesses.",
@@ -161,30 +170,60 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "ऊपर के फ्लोर से लीकेज वाले कमरे में — भाई, पहले लीकेज ठीक कराइए, सीलिंग बाद में",
     ],
     benefits: [
+      "Every design is custom — bring a sketch, a photo, or just an idea, and we build exactly that, not a fixed catalogue model",
       "Perfectly smooth, seamless finish — the most premium look among all ceiling options",
       "Any shape or profile possible: cove, step, curved, tray ceiling",
       "Takes cove/LED strip lighting better than any other material",
-      "Can be painted any colour, and repainted later without replacing the ceiling",
+      "Ready for any colour your painter chooses, now or years later, without replacing the ceiling",
       "Fire-resistant board, and it dampens sound between floors better than PVC",
     ],
     benefitsHi: [
+      "हर डिज़ाइन कस्टम बनता है — आप स्केच, फोटो या सिर्फ आइडिया दें, हम बिल्कुल वैसा ही बनाते हैं, कोई फिक्स कैटलॉग मॉडल नहीं",
       "बिल्कुल स्मूथ, बिना जोड़ वाली फिनिश — सबसे प्रीमियम लुक इसी में मिलता है",
       "जो शेप चाहें बन जाता है: Cove, Step, घुमावदार या Tray Ceiling",
       "Cove Light और LED Strip के लिए सबसे बढ़िया मटेरियल",
-      "जब मन करे रंग बदल सकते हैं, दोबारा पेंट होने में कोई दिक्कत नहीं",
+      "अपने पेंटर से जब चाहें, जो भी रंग चाहें, करवा सकते हैं — सीलिंग बदलने की ज़रूरत नहीं",
       "आग से बचाव करता है, और PVC से ज़्यादा अच्छी आवाज़ रोकता है",
     ],
     limitations: [
       "Not waterproof — the one hard rule we don't bend, even when a customer insists",
-      "Takes longer to finish than PVC because of taping, sanding, and two coats of putty/paint",
+      "Takes longer to finish than PVC because of the taping and sanding needed for a seamless base",
       "A ceiling leak (from a slab crack above) will show as a stain that needs board replacement, not just a wipe",
       "Slightly higher skilled-labour cost than PVC for the same complexity of design",
     ],
     limitationsHi: [
       "इस पर पानी का असर होता है — यह एक नियम है जो हम किसी की भी ज़िद पर नहीं तोड़ते",
-      "टेपिंग, सैंडिंग और Putty-पेंट की वजह से PVC से थोड़ा ज़्यादा समय लगता है",
+      "टेपिंग और सैंडिंग की वजह से PVC से थोड़ा ज़्यादा समय लगता है, ताकि सतह एकदम स्मूथ बने",
       "अगर ऊपर से लीकेज हुआ तो सिर्फ पोंछने से काम नहीं चलेगा, बोर्ड ही बदलना पड़ेगा",
       "समान डिज़ाइन में PVC से थोड़ा ज़्यादा लेबर खर्च बैठता है",
+    ],
+    whatsIncluded: [
+      "GI metal frame fixed to your slab, at the drop height you choose",
+      "Gypsum board fixing with staggered, screw-fixed joints",
+      "Cove/step framing if it's part of your agreed design",
+      "Taping, jointing compound, and sanding to a smooth, paint-ready surface",
+      "Cutouts for downlights, AC vents, and cove wiring position",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "आपकी तय ड्रॉप-हाइट पर स्लैब में GI मेटल फ्रेम फिक्स करना",
+      "स्टैगर्ड, स्क्रू-फिक्स्ड जोड़ों के साथ Gypsum Board लगाना",
+      "अगर डिज़ाइन में तय हो तो Cove/Step फ्रेमिंग",
+      "टेपिंग, जॉइंटिंग कंपाउंड और सैंडिंग — सतह को स्मूथ, पेंट के लिए तैयार बनाना",
+      "डाउनलाइट, AC वेंट और Cove वायरिंग के लिए कटआउट",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint or colour finish — JK Interior does not offer painting; the ceiling is handed over ready for your own painter",
+      "LED cove strip and driver — billed separately per running foot, not part of the board rate",
+      "Main electrical wiring, switches, or the light fixtures themselves — an electrician's separate scope",
+      "Fixing a leaking slab or existing dampness above the ceiling — this must be resolved before we start",
+    ],
+    whatsNotIncludedHi: [
+      "पेंट या रंग फिनिश — JK Interior पेंटिंग सर्विस नहीं देता; सीलिंग आपके अपने पेंटर के लिए तैयार करके सौंपते हैं",
+      "LED Cove Strip और ड्राइवर — यह रनिंग फुट पर अलग से बिल होता है, बोर्ड के रेट में शामिल नहीं",
+      "मुख्य इलेक्ट्रिकल वायरिंग, स्विच या लाइट फिक्स्चर खुद — यह इलेक्ट्रीशियन का अलग काम है",
+      "स्लैब की लीकेज या ऊपर की मौजूदा नमी ठीक करना — काम शुरू करने से पहले यह ठीक होना ज़रूरी है",
     ],
     materials: [
       { name: "Gypsum board (12.5mm)", nameHi: "जिप्सम बोर्ड (12.5mm)", detail: "Branded boards (Saint-Gobain / USG / India Gypsum grade) — never unbranded stock", detailHi: "ब्रांडेड बोर्ड लगाते हैं (Saint-Gobain / USG / India Gypsum ग्रेड) — अनब्रांडेड स्टॉक हम कभी नहीं लगाते" },
@@ -198,10 +237,13 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Board fixing", titleHi: "बोर्ड फिक्सिंग", desc: "Gypsum boards are screwed onto the frame with staggered joints so no seam lines run continuously.", descHi: "Gypsum Board को स्टैगर्ड जॉइंट में स्क्रू से फ्रेम पर लगाते हैं, ताकि कोई सीधी सीम लाइन दिखे ही न।" },
       { title: "Cove framing (if in design)", titleHi: "कोव फ्रेमिंग (अगर डिज़ाइन में है)", desc: "A recessed step is framed at the border for the LED strip before the boards on that section close.", descHi: "उस हिस्से का बोर्ड बंद होने से पहले, बॉर्डर पर LED Strip के लिए एक रिसेस्ड स्टेप बना देते हैं।" },
       { title: "Taping & jointing", titleHi: "टेपिंग और जॉइंटिंग", desc: "Paper tape and jointing compound cover every screw head and board joint, then get sanded flat.", descHi: "हर स्क्रू और जोड़ पर पेपर टेप और Joint Compound लगाते हैं, फिर सैंड करके पूरी तरह स्मूथ कर देते हैं।" },
-      { title: "Electrical cutouts", titleHi: "इलेक्ट्रिकल कटआउट", desc: "Openings for downlights, AC vents, and the cove wiring are cut and wired before the final coat.", descHi: "फाइनल कोट से पहले डाउनलाइट, AC वेंट और Cove वायरिंग के कटआउट काटकर वायरिंग कर देते हैं।" },
-      { title: "Primer & finish coat", titleHi: "प्राइमर और फिनिश कोट", desc: "Two coats of putty and paint in your chosen colour complete the seamless surface.", descHi: "आपकी पसंद के रंग में Putty और पेंट के दो कोट लगाकर सीलिंग तैयार कर देते हैं।" },
-      { title: "Handover", titleHi: "हैंडओवर", desc: "Final walk-through, lights switched on to check the cove line, written warranty handed over.", descHi: "आखिर में फाइनल चेक करते हैं, Cove की लाइन देखने के लिए लाइट ऑन करते हैं, और आपको लिखित Warranty दे देते हैं।" },
+      { title: "Electrical cutouts", titleHi: "इलेक्ट्रिकल कटआउट", desc: "Openings for downlights, AC vents, and the cove wiring are cut and wired before handover.", descHi: "हैंडओवर से पहले डाउनलाइट, AC वेंट और Cove वायरिंग के कटआउट काटकर वायरिंग कर देते हैं।" },
+      { title: "Handover", titleHi: "हैंडओवर", desc: "Final walk-through, lights switched on to check the cove line, ceiling handed over smooth and ready for your painter to finish in whatever colour or design you choose, written warranty handed over.", descHi: "आखिर में फाइनल चेक करते हैं, Cove की लाइन देखने के लिए लाइट ऑन करते हैं, सीलिंग को स्मूथ करके सौंप देते हैं ताकि आपका पेंटर अपनी पसंद के रंग या डिज़ाइन में उसे फिनिश कर सके, और आपको लिखित Warranty दे देते हैं।" },
     ],
+    expertTip:
+      "If you already have a painter lined up, tell us before we start — we'll hand the ceiling over freshly taped and sanded so your painter can move in the same week, no gap between our work and yours. And if cove lighting is even a maybe, decide it at the design stage — adding it after the boards are closed means opening up part of the ceiling again.",
+    expertTipHi:
+      "अगर आपका पेंटर पहले से तय है, तो हमें पहले ही बता दें — हम सीलिंग को टेप-सैंड करके इतना तैयार सौंप देंगे कि पेंटर उसी हफ्ते काम शुरू कर सके, बीच में कोई गैप नहीं आएगा। और Cove Lighting का थोड़ा भी मन हो, तो डिज़ाइन के वक़्त ही बता दें — बोर्ड बंद होने के बाद जोड़ने पर सीलिंग का हिस्सा दोबारा खोलना पड़ता है।",
     realProject: {
       title: "Cove-lit hall ceiling, Forbesganj",
       titleHi: "कोव-लिट हॉल सीलिंग, फारबिसगंज",
@@ -299,6 +341,32 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "टूटा हुआ पैनल सिर्फ पैच नहीं होता, बदलना पड़ता है — हालांकि मिलता-जुलता पैनल आसानी से मिल जाता है",
       "फॉर्मल ड्रॉइंग रूम में Gypsum जितना प्रीमियम लुक नहीं दे पाती",
     ],
+    whatsIncluded: [
+      "Wooden or GI batten grid fixed to the slab and perimeter wall",
+      "Panels cut to length and clipped in, tongue-and-groove interlocked",
+      "Corner beading and edge trims for a clean finish",
+      "Cutouts for downlights or exhaust fans",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "स्लैब और पेरीमीटर दीवार में लकड़ी या GI बैटन ग्रिड फिक्स करना",
+      "पैनल को नाप में काटकर टंग-एंड-ग्रूव से क्लिप करना",
+      "साफ फिनिश के लिए कॉर्नर बीडिंग और एज ट्रिम्स",
+      "डाउनलाइट या एग्ज़ॉस्ट फैन के लिए कटआउट",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint or recolouring — panels come pre-finished in the colour/texture you pick, and JK Interior doesn't offer painting; PVC also can't be repainted later, so choose the finish carefully upfront",
+      "Main electrical wiring, switches, or the light/exhaust fixtures themselves — an electrician's separate scope",
+      "AC ducting or plumbing work routed above the ceiling",
+      "Replacing a cracked panel after the warranty period — billed separately if it's ever needed",
+    ],
+    whatsNotIncludedHi: [
+      "पेंट या रंग बदलना — पैनल आपकी चुनी रंग/टेक्सचर में पहले से फिनिश आते हैं, और JK Interior पेंटिंग सर्विस नहीं देता; PVC बाद में दोबारा पेंट भी नहीं हो सकता, इसलिए फिनिश शुरू में ही ध्यान से चुनें",
+      "मुख्य इलेक्ट्रिकल वायरिंग, स्विच या लाइट/एग्ज़ॉस्ट फिक्स्चर खुद — यह इलेक्ट्रीशियन का अलग काम है",
+      "सीलिंग के ऊपर से जाने वाली AC डक्टिंग या प्लंबिंग का काम",
+      "Warranty खत्म होने के बाद टूटा पैनल बदलना — अगर कभी ज़रूरत पड़े तो अलग से बिल होगा",
+    ],
     materials: [
       { name: "PVC ceiling panels", nameHi: "PVC सीलिंग पैनल", detail: "Tongue-and-groove interlocking panels, available in plain white, wood-grain, marble-print and glossy finishes", detailHi: "आपस में इंटरलॉक होने वाले Panel, सफेद, वुड-ग्रेन, मार्बल-प्रिंट और ग्लॉसी फिनिश में मिलते हैं" },
       { name: "GI/wooden batten frame", nameHi: "GI/लकड़ी की बैटन फ्रेम", detail: "Perimeter and support battens the panels clip or screw onto", detailHi: "पेरीमीटर और सपोर्ट बैटन, जिनमें पैनल क्लिप या स्क्रू हो जाते हैं" },
@@ -313,6 +381,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Light cutouts", titleHi: "लाइट कटआउट", desc: "Openings for downlights or exhaust fans are cut and fittings wired in.", descHi: "डाउनलाइट या एग्जॉस्ट फैन के लिए कटआउट काटकर फिटिंग वायर कर देते हैं।" },
       { title: "Final wipe & handover", titleHi: "फाइनल सफाई और हैंडओवर", desc: "No paint stage needed — the panels are wiped clean and the ceiling is ready to use immediately.", descHi: "पेंट का कोई स्टेज इसमें नहीं होता — पैनल पोंछते ही सीलिंग तुरंत इस्तेमाल के लिए तैयार हो जाती है।" },
     ],
+    expertTip:
+      "Since the panel colour is fixed for life once it's up, bring a photo of your kitchen or bathroom tiles to the site visit — we'll match the panel shade against what's already there instead of you guessing from a small sample chip.",
+    expertTipHi:
+      "एक बार पैनल लग जाए तो उसका रंग जीवनभर वही रहता है, तो Site Visit के वक़्त अपने किचन या बाथरूम की टाइल की फोटो साथ ले आएं — हम पैनल का शेड आपकी मौजूदा टाइल से मिलाकर दिखा देंगे, सिर्फ छोटे सैंपल चिप से अंदाज़ा नहीं लगाना पड़ेगा।",
     realProject: {
       title: "Wood-texture PVC ceiling, Araria kitchen",
       titleHi: "वुड-टेक्सचर PVC सीलिंग, अररिया किचन",
@@ -411,6 +483,32 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "PVC से थोड़ी ज़्यादा ड्रॉप-हाइट चाहिए, जो पहले से कम ऊंचाई वाले कमरों में समस्या बन सकती है",
       "डिज़ाइन के विकल्प कम हैं — Cove Light या घुमावदार शेप इसमें संभव नहीं",
     ],
+    whatsIncluded: [
+      "Perimeter wall-angle fixing all around the room or floor",
+      "GI T-grid (main runners + cross-tees) hung on hanger wires and fully levelled",
+      "Tile placement — mineral fibre, PVC, or gypsum lay-in, as agreed",
+      "Positioning cutouts for light fixtures, AC diffusers, and sprinkler heads within grid modules",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "पूरे कमरे या फ्लोर के चारों ओर पेरीमीटर वॉल-एंगल फिक्स करना",
+      "हैंगर वायर पर GI T-Grid (मेन रनर + क्रॉस-टी) लटकाना और पूरी तरह लेवल करना",
+      "तय की गई टाइल लगाना — मिनरल फाइबर, PVC या Gypsum ले-इन",
+      "ग्रिड के खानों में लाइट फिक्स्चर, AC डिफ्यूज़र और स्प्रिंकलर हेड की जगह तय करना",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint or colour work — tiles come pre-finished from the factory and JK Interior doesn't offer painting on any ceiling type",
+      "The electrical wiring, AC ductwork, or sprinkler piping itself — those are the respective trades' work; grid ceiling only makes future access to them easy",
+      "Replacing a tile damaged after handover (a stained mineral-fibre tile from a later leak, for instance) — billed separately",
+      "Upgrading to acoustic or edge-lit tiles after the order is placed — priced separately if you add it later",
+    ],
+    whatsNotIncludedHi: [
+      "पेंट या रंग का काम — टाइल फैक्ट्री से पहले ही फिनिश होकर आती है, और JK Interior किसी भी सीलिंग पर पेंटिंग सर्विस नहीं देता",
+      "इलेक्ट्रिकल वायरिंग, AC डक्टिंग या स्प्रिंकलर पाइपिंग खुद — यह संबंधित ट्रेड का काम है; Grid Ceiling सिर्फ भविष्य में उन तक पहुंचना आसान बनाती है",
+      "हैंडओवर के बाद खराब हुई टाइल बदलना (जैसे बाद में लीकेज से दागी हुई मिनरल-फाइबर टाइल) — अलग से बिल होगा",
+      "ऑर्डर देने के बाद एकॉस्टिक या एज-लिट टाइल में अपग्रेड करना — बाद में जोड़ने पर अलग से चार्ज लगेगा",
+    ],
     materials: [
       { name: "GI T-grid runners & cross-tees", nameHi: "GI T-ग्रिड रनर और क्रॉस-टी", detail: "Galvanised steel grid, suspended from the slab on adjustable GI hanger wires", detailHi: "गैल्वनाइज़्ड स्टील ग्रिड, जिसे स्लैब से एडजस्टेबल GI हैंगर वायर पर लटकाया जाता है" },
       { name: "Mineral fibre / PVC / gypsum tiles", nameHi: "मिनरल फाइबर / PVC / जिप्सम टाइल", detail: "Standard 2x2 ft lay-in tiles — mineral fibre for offices/clinics, PVC where some moisture resistance is needed", detailHi: "स्टैंडर्ड 2x2 फुट टाइल — ऑफिस/क्लिनिक के लिए मिनरल फाइबर, थोड़ी नमी वाली जगह के लिए PVC लगाते हैं" },
@@ -425,6 +523,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Fixtures & diffusers", titleHi: "फिक्स्चर और डिफ्यूज़र", desc: "Light fittings, AC diffusers, and sprinkler heads are positioned within grid modules — this is the step grid ceiling makes easiest of all ceiling types.", descHi: "लाइट फिटिंग, AC डिफ्यूज़र और स्प्रिंकलर हेड ग्रिड के खानों में लगा देते हैं — यह काम Grid Ceiling में सबसे आसान होता है।" },
       { title: "Final check & handover", titleHi: "फाइनल जांच और हैंडओवर", desc: "Every tile checked for a snug, level fit before handover.", descHi: "हैंडओवर से पहले हर टाइल को अच्छे से फिट और लेवल चेक कर लेते हैं।" },
     ],
+    expertTip:
+      "Get your electrician and AC contractor to finalise fixture and diffuser positions before we hang the grid, not after — moving a light point once the grid is levelled means shifting cross-tees and redoing part of the layout.",
+    expertTipHi:
+      "ग्रिड लटकाने से पहले ही अपने इलेक्ट्रीशियन और AC वाले से लाइट और डिफ्यूज़र की जगह तय करवा लें, बाद में नहीं — ग्रिड लेवल होने के बाद लाइट पॉइंट खिसकाना मतलब क्रॉस-टी हटाकर लेआउट का हिस्सा दोबारा करना।",
     realProject: {
       title: "Clinic waiting-area ceiling, Araria",
       titleHi: "क्लिनिक वेटिंग-एरिया सीलिंग, अररिया",
@@ -455,9 +557,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     galleryCategory: "WPC fluted panels & uv marble Sheet",
     price: "₹100–₹750/sq.ft (gypsum or glass, Forbesganj/Araria market rate)",
     priceTiers: [
-      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹100–₹130/sq.ft", desc: "Single-layer gypsum board partition, single stud row, plain paint finish.", descHi: "सिंगल-लेयर Gypsum Board पार्टीशन लगती है, एक ही स्टड रो में, प्लेन पेंट फिनिश के साथ।" },
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹100–₹130/sq.ft", desc: "Single-layer gypsum board partition, single stud row, taped and sanded paint-ready.", descHi: "सिंगल-लेयर Gypsum Board पार्टीशन लगती है, एक ही स्टड रो में — टेप-सैंड करके पेंट के लिए तैयार सौंपते हैं।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹135–₹200/sq.ft (gypsum) · ₹380–₹450/sq.ft (entry glass)", desc: "Double-layer gypsum with rockwool acoustic infill, or an entry-level plain toughened-glass screen.", descHi: "रॉकवूल एकॉस्टिक इनफिल वाली डबल-लेयर Gypsum, या एंट्री-लेवल प्लेन टफन्ड ग्लास स्क्रीन लगा सकते हैं।" },
-      { tier: "Premium", tierHi: "प्रीमियम", range: "₹460–₹750/sq.ft", desc: "Frosted or fluted-film glass partition with aluminium framing and a flush door, or a fully finished acoustic gypsum partition with premium paint.", descHi: "एल्युमिनियम फ्रेमिंग और फ्लश दरवाज़े के साथ फ्रॉस्टेड/फ्लूटेड-फिल्म ग्लास पार्टीशन, या प्रीमियम पेंट वाली पूरी एकॉस्टिक Gypsum पार्टीशन बनवा सकते हैं।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹460–₹750/sq.ft", desc: "Frosted or fluted-film glass partition with aluminium framing and a flush door, or a fully finished acoustic gypsum partition, taped and sanded to a seamless paint-ready surface.", descHi: "एल्युमिनियम फ्रेमिंग और फ्लश दरवाज़े के साथ फ्रॉस्टेड/फ्लूटेड-फिल्म ग्लास पार्टीशन, या टेप-सैंड करके बिल्कुल स्मूथ, पेंट के लिए तैयार पूरी एकॉस्टिक Gypsum पार्टीशन बनवा सकते हैं।" },
     ],
     sizesThickness: "Gypsum partition uses 12.5mm board (single or double layer) on 50mm/75mm metal stud framing. Glass partition uses 8–12mm toughened safety glass in aluminium channel framing.",
     sizesThicknessHi: "Gypsum पार्टीशन में 50mm/75mm मेटल स्टड फ्रेमिंग पर 12.5mm बोर्ड लगता है (सिंगल या डबल लेयर)। ग्लास पार्टीशन में एल्युमिनियम चैनल फ्रेमिंग के अंदर 8mm से 12mm टफन्ड सेफ्टी ग्लास लगता है।",
@@ -469,7 +571,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     availability: "Gypsum partitions are installed across our full service area. Glass partitions are most requested in Forbesganj and Araria town offices; for other towns allow 2–4 extra days lead time as glass panels are cut to size and transported from Purnia.",
     availabilityHi: "Gypsum पार्टीशन हम पूरे सर्विस एरिया में लगाते हैं। ग्लास पार्टीशन सबसे ज़्यादा फारबिसगंज और अररिया टाउन के ऑफिस में मांगी जाती है; बाकी शहरों में 2–4 दिन ज़्यादा लग सकते हैं, क्योंकि ग्लास पूर्णिया से काटकर लाई जाती है।",
     installTime: "2–4 days depending on wall length and whether it's gypsum or glass",
-    maintenance: "Gypsum side: repaint every 5–7 years. Glass side: wipe with glass cleaner.",
+    maintenance: "Gypsum side: repaint whenever you like — your painter's choice of colour and timing. Glass side: wipe with glass cleaner.",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
       "A partition wall creates a new dividing wall inside an existing room without any masonry work on the floor or slab. We build it one of two ways: a gypsum board partition — metal stud framing floor-to-ceiling with gypsum board fixed on both faces, finished like a normal wall — or a glass partition, an aluminium-framed toughened-glass screen that divides space while keeping light and sightlines open.",
@@ -523,6 +625,34 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "समान दीवार क्षेत्र के लिए ग्लास पार्टीशन, Gypsum से काफी महंगा पड़ता है",
       "साधारण (गैर-एकॉस्टिक) Gypsum पार्टीशन में साउंड आइसोलेशन मध्यम रहती है, पूरी तरह साउंडप्रूफ नहीं",
     ],
+    whatsIncluded: [
+      "Metal stud framing floor-to-ceiling (gypsum) or aluminium channel framing (glass)",
+      "Board fixing on both faces, or glass panel fitting into the channel",
+      "Rockwool acoustic infill, if specified in your design",
+      "Door frame and hardware fitting, if included in the quote",
+      "Joint taping, puttying, and sanding to a paint-ready finish (gypsum) / silicone sealing (glass)",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "फर्श से छत तक मेटल स्टड फ्रेमिंग (Gypsum) या एल्युमिनियम चैनल फ्रेमिंग (ग्लास)",
+      "दोनों तरफ बोर्ड फिक्सिंग, या चैनल में ग्लास पैनल फिटिंग",
+      "अगर डिज़ाइन में तय हो तो रॉकवूल एकॉस्टिक इनफिल",
+      "अगर कोटेशन में शामिल हो तो दरवाज़े का फ्रेम और हार्डवेयर फिटिंग",
+      "जोड़ों की टेपिंग, पुट्टी और सैंडिंग — पेंट के लिए तैयार फिनिश (Gypsum) / सिलिकॉन सीलिंग (ग्लास)",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint, wallpaper, or any wall finish — JK Interior doesn't offer painting; the gypsum side is handed over sanded and ready for your own painter",
+      "Electrical wiring, switches, or socket points on the new wall — an electrician's separate scope",
+      "Any structural or load-bearing modification — this is non-structural partition work only",
+      "Safety-laminated film for glass partitions, unless specifically requested and quoted upfront",
+    ],
+    whatsNotIncludedHi: [
+      "पेंट, वॉलपेपर या कोई भी दीवार फिनिश — JK Interior पेंटिंग सर्विस नहीं देता; Gypsum साइड को सैंड करके आपके अपने पेंटर के लिए तैयार सौंप देते हैं",
+      "नई दीवार पर इलेक्ट्रिकल वायरिंग, स्विच या सॉकेट पॉइंट — यह इलेक्ट्रीशियन का अलग काम है",
+      "कोई भी स्ट्रक्चरल या लोड-बेयरिंग बदलाव — यह सिर्फ नॉन-स्ट्रक्चरल पार्टीशन का काम है",
+      "ग्लास पार्टीशन के लिए सेफ्टी-लैमिनेटेड फिल्म, जब तक शुरू में खासतौर पर मांगकर कोट न करवाई गई हो",
+    ],
     materials: [
       { name: "Metal stud framing", nameHi: "मेटल स्टड फ्रेमिंग", detail: "Floor and ceiling track with vertical studs at standard spacing — the skeleton of a gypsum partition", detailHi: "फर्श और छत की ट्रैक के साथ तय दूरी पर वर्टिकल स्टड लगते हैं — यही Gypsum पार्टीशन का ढांचा बनता है" },
       { name: "Gypsum board (both faces)", nameHi: "जिप्सम बोर्ड (दोनों तरफ)", detail: "12.5mm boards fixed on each side of the frame, taped and finished like a wall", detailHi: "Frame के दोनों तरफ 12.5mm बोर्ड लगाकर टेप और फिनिश करते हैं, बिल्कुल सामान्य दीवार की तरह" },
@@ -535,9 +665,13 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Acoustic infill (if specified)", titleHi: "एकॉस्टिक इनफिल (अगर तय हो)", desc: "Rockwool is packed into the stud cavity before the second face closes, for real sound reduction between cabins.", descHi: "दूसरा फेस बंद होने से पहले स्टड के बीच रॉकवूल भर देते हैं, ताकि केबिनों के बीच सच में शोर कम हो जाए।" },
       { title: "Board fixing / glass fitting", titleHi: "बोर्ड फिक्सिंग / ग्लास फिटिंग", desc: "Gypsum boards are screwed onto both faces of the frame, or glass panels are lowered into the aluminium channel.", descHi: "Frame के दोनों तरफ Gypsum Board स्क्रू करते हैं, या ग्लास Panel को एल्युमिनियम चैनल में नीचे उतार देते हैं।" },
       { title: "Door frame fitting (if included)", titleHi: "दरवाज़े का फ्रेम फिटिंग (अगर शामिल हो)", desc: "A door frame and hardware are fitted into the marked opening.", descHi: "मार्क की गई जगह पर दरवाज़े का Frame और हार्डवेयर फिट कर देते हैं।" },
-      { title: "Jointing/sealing & finishing", titleHi: "जॉइंटिंग/सीलिंग और फिनिशिंग", desc: "Gypsum: joints taped and puttied, then painted. Glass: joints silicone-sealed for a clean edge.", descHi: "Gypsum में जोड़ों पर टेप-Putty लगाकर पेंट करते हैं। ग्लास में साफ किनारे के लिए जोड़ों पर सिलिकॉन सील लगाते हैं।" },
+      { title: "Jointing/sealing & finishing", titleHi: "जॉइंटिंग/सीलिंग और फिनिशिंग", desc: "Gypsum: joints taped, puttied, and sanded to a smooth, paint-ready surface. Glass: joints silicone-sealed for a clean edge.", descHi: "Gypsum में जोड़ों पर टेप-Putty लगाकर सैंड करते हैं, ताकि सतह स्मूथ और पेंट के लिए तैयार हो जाए। ग्लास में साफ किनारे के लिए जोड़ों पर सिलिकॉन सील लगाते हैं।" },
       { title: "Final clean & handover", titleHi: "फाइनल सफाई और हैंडओवर", desc: "Surface cleaned, door checked for smooth operation, warranty document handed over.", descHi: "सतह साफ करते हैं, दरवाज़ा ठीक से खुल-बंद हो रहा है यह जांचते हैं, और आपको Warranty दे देते हैं।" },
     ],
+    expertTip:
+      "If you know you'll hang a TV, shelf, or wall unit on the new partition, tell us at the site visit — we'll add solid backing inside the frame at that exact height. And if kids will be around a glass partition, ask for safety-laminated film upfront; it's easier to specify now than to add later.",
+    expertTipHi:
+      "अगर नई पार्टीशन पर बाद में TV, शेल्फ या वॉल यूनिट लगानी हो, तो Site Visit के वक़्त ही बता दें — हम उसी ऊंचाई पर Frame के अंदर ठोस बैकिंग लगा देंगे। और अगर ग्लास पार्टीशन के आस-पास बच्चे रहेंगे, तो शुरू में ही सेफ्टी-लैमिनेटेड फिल्म मांग लें — बाद में जोड़ने से पहले ही तय करना आसान रहता है।",
     realProject: {
       title: "Two-cabin office split, Forbesganj",
       titleHi: "दो-केबिन ऑफिस विभाजन, फारबिसगंज",
@@ -634,6 +768,32 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Gypsum के मुकाबले कस्टम शेपिंग सीमित है — यह फ्लैट/Fluted पैनल सिस्टम है, ढलने वाली सतह नहीं",
       "गहरा खरोंच या चोट लगे पैनल को टच-अप से ठीक नहीं किया जा सकता, उस हिस्से को बदलना ही पड़ता है",
     ],
+    whatsIncluded: [
+      "Vertical or horizontal batten fixing to the wall",
+      "Panel cutting and clip-fixing, tongue-and-groove aligned",
+      "Edge and corner trims for a factory-finished look",
+      "LED backlight wiring routed behind the panel, if it's part of your agreed design",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "दीवार पर वर्टिकल या हॉरिज़ॉन्टल बैटन फिक्सिंग",
+      "पैनल कटिंग और क्लिप-फिक्सिंग, टंग-एंड-ग्रूव से मिलान",
+      "फैक्ट्री-फिनिश जैसे लुक के लिए एज और कॉर्नर ट्रिम्स",
+      "अगर डिज़ाइन में तय हो तो पैनल के पीछे LED बैकलाइट वायरिंग",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint or refinishing — panels come factory-finished in the texture you choose; JK Interior doesn't offer painting, and WPC isn't meant to be painted over anyway",
+      "LED driver point wiring back to the main switchboard — an electrician's separate scope",
+      "Plastering or repairing a badly damaged wall before panelling — that's masonry work, done separately first",
+      "Replacing a deeply gouged panel after the warranty period — billed separately if it's ever needed",
+    ],
+    whatsNotIncludedHi: [
+      "पेंट या रीफिनिशिंग — पैनल आपकी चुनी टेक्सचर में फैक्ट्री से फिनिश होकर आते हैं; JK Interior पेंटिंग सर्विस नहीं देता, और वैसे भी WPC पर दोबारा पेंट करने का मतलब नहीं",
+      "LED ड्राइवर की मुख्य स्विचबोर्ड तक वायरिंग — यह इलेक्ट्रीशियन का अलग काम है",
+      "पैनलिंग से पहले बुरी तरह खराब दीवार का प्लास्टर या मरम्मत — यह मेसनरी का काम है, पहले अलग से होता है",
+      "Warranty खत्म होने के बाद गहरा खरोंच लगा पैनल बदलना — अगर कभी ज़रूरत पड़े तो अलग से बिल होगा",
+    ],
     materials: [
       { name: "WPC panel board", nameHi: "WPC पैनल बोर्ड", detail: "Wood-fibre + polymer composite core, in plain, wood-grain, fluted, or 3D-textured surface finishes", detailHi: "वुड-फाइबर और पॉलिमर कम्पोजिट कोर, प्लेन, वुड-ग्रेन, Fluted या 3D टेक्सचर सतह फिनिश में मिलता है" },
       { name: "Vertical batten/clip system", nameHi: "वर्टिकल बैटन/क्लिप सिस्टम", detail: "Battens fixed to the wall at set spacing; panels clip in without face-fixing", detailHi: "दीवार पर तय दूरी पर लगी बैटन; पैनल बिना सामने से फिक्स किए सीधे क्लिप हो जाते हैं" },
@@ -647,6 +807,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Corner & edge trims", titleHi: "कॉर्नर और एज ट्रिम्स", desc: "Matching trims close off every exposed edge for a factory-finished look.", descHi: "हर खुले किनारे पर मैचिंग ट्रिम लगाकर फैक्ट्री-फिनिश जैसा लुक दे देते हैं।" },
       { title: "Final wipe & handover", titleHi: "फाइनल सफाई और हैंडओवर", desc: "Panels wiped clean; no drying or curing time needed before the wall is ready to use.", descHi: "पैनल पोंछकर साफ कर देते हैं; इस्तेमाल से पहले सूखने या क्योरिंग का कोई इंतज़ार नहीं करना पड़ता।" },
     ],
+    expertTip:
+      "Decide on LED backlighting before we start, not after — the wiring runs behind the panel, so adding it once the wall is closed means unclipping panels back off. Bring your TV's size and wall-mount bracket to the site visit too, so the panel layout and any TV backing are planned around it from day one.",
+    expertTipHi:
+      "LED बैकलाइट लगवानी है या नहीं, यह काम शुरू होने से पहले ही तय कर लें — वायरिंग पैनल के पीछे से जाती है, बाद में जोड़ने के लिए पैनल फिर से खोलने पड़ेंगे। Site Visit पर अपने TV का साइज़ और वॉल-माउंट ब्रैकेट भी साथ ले आएं, ताकि पैनल लेआउट और TV की बैकिंग शुरू से ही उसी हिसाब से प्लान हो जाए।",
     realProject: {
       title: "Fluted TV wall with LED backlight, Jogbani",
       titleHi: "LED बैकलाइट के साथ फ्लूटेड TV वॉल, जोगबनी",
@@ -743,6 +907,32 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "किसी नुकीली चीज़ से गहरी खरोंच लग जाए तो दिखती है, जबकि पॉलिश्ड पत्थर को दोबारा घिसकर ठीक किया जा सकता है",
       "अगर रीसेल में असली पत्थर वाला प्रीमियम टैग खास मायने रखता हो, तो यह उतना प्रीमियम महसूस नहीं देता",
     ],
+    whatsIncluded: [
+      "Wall preparation — cleaning, crack filling, and levelling before the sheet goes up",
+      "Sheet cutting and layout planning so veining aligns cleanly at joints",
+      "Bonding or clip-fixing onto the prepared wall, as suited to the surface",
+      "Edge and corner beading for a seamless finish",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "दीवार की तैयारी — शीट लगने से पहले सफाई, दरार भरना और लेवलिंग",
+      "शीट कटिंग और लेआउट प्लानिंग, ताकि जोड़ों पर नसें साफ-साफ मिलें",
+      "सतह के अनुसार तैयार दीवार पर बॉन्डिंग या क्लिप-फिक्सिंग",
+      "सीमलेस फिनिश के लिए एज और कॉर्नर बीडिंग",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint or any surface treatment — sheets arrive pre-printed and UV-sealed; no paint is needed or even possible on this surface, and JK Interior doesn't offer painting in any case",
+      "Heavy plaster repair or waterproofing of the wall base before installation — that's masonry/waterproofing work, done separately first",
+      "Plumbing or electrical fixture relocation behind the wall",
+      "Replacing a sheet cracked or scratched after handover — billed separately if it's ever needed",
+    ],
+    whatsNotIncludedHi: [
+      "पेंट या कोई सतह उपचार — शीट पहले से प्रिंटेड और UV-सील्ड आती है; इस सतह पर पेंट की ज़रूरत ही नहीं, और वैसे भी संभव नहीं — JK Interior पेंटिंग सर्विस देता भी नहीं",
+      "इंस्टॉलेशन से पहले दीवार के बेस का भारी प्लास्टर रिपेयर या वॉटरप्रूफिंग — यह मेसनरी/वॉटरप्रूफिंग का काम है, पहले अलग से होता है",
+      "दीवार के पीछे प्लंबिंग या इलेक्ट्रिकल फिक्स्चर शिफ्ट करना",
+      "हैंडओवर के बाद टूटी या खरोंची शीट बदलना — अगर कभी ज़रूरत पड़े तो अलग से बिल होगा",
+    ],
     materials: [
       { name: "UV-printed PVC marble sheet", nameHi: "UV-प्रिंटेड PVC मार्बल शीट", detail: "High-gloss sheet with marble/granite pattern UV-cured onto the surface and sealed", detailHi: "हाई-ग्लॉस शीट, जिसकी सतह पर मार्बल या ग्रेनाइट का पैटर्न UV-क्योर करके सील किया गया होता है" },
       { name: "Marine-grade adhesive / clip channel", nameHi: "मरीन-ग्रेड चिपकाने वाला / क्लिप चैनल", detail: "Bonds or clip-fixes the sheet to a prepared wall depending on the surface", detailHi: "सतह के हिसाब से शीट को तैयार दीवार पर चिपका देते हैं, या क्लिप-फिक्स कर देते हैं" },
@@ -756,6 +946,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Edge beading", titleHi: "एज बीडिंग", desc: "Corners and exposed edges get a finishing bead so nothing looks unfinished.", descHi: "कोनों और खुले किनारों पर फिनिशिंग बीड लगा देते हैं, ताकि कहीं अधूरा न लगे।" },
       { title: "Final polish & handover", titleHi: "फाइनल पॉलिश और हैंडओवर", desc: "A final wipe-down brings up the gloss; the wall is ready to use immediately, no curing wait.", descHi: "आखिरी बार पोंछते हैं तो ग्लॉस और निखर आता है; दीवार तुरंत इस्तेमाल के लिए तैयार हो जाती है, क्योरिंग का इंतज़ार नहीं करना पड़ता।" },
     ],
+    expertTip:
+      "Ask to see the veining pattern on a full physical sheet at the site visit, not just a small sample chip — the pattern reads very differently across a whole wall. And measure the wall as one continuous run where possible, so we can plan joints where they'll be least noticeable.",
+    expertTipHi:
+      "Site Visit पर सिर्फ छोटा सैंपल चिप नहीं, पूरी शीट पर नसों का पैटर्न देखकर तय करें — पूरी दीवार पर पैटर्न बिल्कुल अलग दिखता है। और जहां संभव हो, दीवार को एक ही लगातार हिस्से में नापें, ताकि जोड़ सबसे कम दिखने वाली जगह पर प्लान हो सकें।",
     realProject: {
       title: "Pooja room marble-finish wall, Purnia",
       titleHi: "पूजा घर मार्बल-फिनिश दीवार, पूर्णिया",
@@ -848,6 +1042,34 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "ऑर्डर पर बनने की वजह से रेडीमेड यूनिट के मुकाबले डिलीवरी में थोड़ा ज़्यादा समय लगता है",
       "कस्टमाइज़ेशन और केबल मैनेजमेंट की वजह से समान साइज़ की बेसिक शोरूम यूनिट से कीमत थोड़ी ज़्यादा पड़ती है",
     ],
+    whatsIncluded: [
+      "Site measurement and custom design finalisation with you before fabrication",
+      "Carcass fabrication (plywood/MDF) with your chosen laminate or veneer finish",
+      "Soft-close hinge and drawer hardware",
+      "Cable-management channel built into the panel",
+      "LED backlight wiring, if it's part of your agreed design",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "फैब्रिकेशन शुरू होने से पहले साइट माप और आपके साथ कस्टम डिज़ाइन फाइनल करना",
+      "आपकी चुनी लैमिनेट या वीनियर फिनिश में कारकास फैब्रिकेशन",
+      "सॉफ्ट-क्लोज़ हिंज और दराज़ हार्डवेयर",
+      "पैनल में बिल्ट-इन केबल-मैनेजमेंट चैनल",
+      "अगर डिज़ाइन में तय हो तो LED बैकलाइट वायरिंग",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Paint or spray finishing of any kind — units are finished in laminate/veneer only, and JK Interior doesn't offer painting",
+      "The TV wall-mount bracket or the TV itself — supplied and fitted separately unless specifically added to your quote",
+      "A new electrical point/socket for the unit's LED — an electrician's separate scope if one doesn't already exist",
+      "Relocating the finished unit to a different wall later — it's custom-built to your original wall's exact width",
+    ],
+    whatsNotIncludedHi: [
+      "किसी भी तरह की पेंट या स्प्रे फिनिशिंग — यूनिट सिर्फ लैमिनेट/वीनियर में फिनिश होती है, और JK Interior पेंटिंग सर्विस नहीं देता",
+      "TV का वॉल-माउंट ब्रैकेट या TV खुद — जब तक कोटेशन में खासतौर पर शामिल न हो, यह अलग से लगता है",
+      "यूनिट की LED के लिए नया इलेक्ट्रिकल पॉइंट/सॉकेट — अगर पहले से न हो तो यह इलेक्ट्रीशियन का अलग काम है",
+      "बनी हुई यूनिट को बाद में दूसरी दीवार पर शिफ्ट करना — यह आपकी असली दीवार की सही चौड़ाई पर ही कस्टम बनती है",
+    ],
     materials: [
       { name: "Plywood/MDF carcass", nameHi: "प्लाईवुड/MDF कारकास", detail: "The structural box of the unit — plywood for higher load areas, MDF where a smoother laminate finish is wanted", detailHi: "यूनिट का ढांचा — ज़्यादा वज़न वाली जगह के लिए प्लाईवुड लगाते हैं, स्मूथ लैमिनेट फिनिश के लिए MDF" },
       { name: "Laminate / veneer finish", nameHi: "लैमिनेट / वीनियर फिनिश", detail: "Surface finish in matte, glossy, or wood-veneer options across dozens of colours", detailHi: "मैट, ग्लॉसी या वुड-वीनियर फिनिश में, दर्जनों रंगों में मिलता है" },
@@ -863,6 +1085,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Hardware & LED fitting", titleHi: "हार्डवेयर और LED फिटिंग", desc: "Hinges, drawer channels, and any LED backlight wiring are fitted and tested.", descHi: "टिका, दराज़ चैनल और कोई भी LED बैकलाइट वायरिंग फिट करके टेस्ट कर लेते हैं।" },
       { title: "Final polish & handover", titleHi: "फाइनल पॉलिश और हैंडओवर", desc: "Surfaces polished, shutters checked for smooth operation, warranty document handed over.", descHi: "सतहें पॉलिश करते हैं, शटर ठीक से खुल-बंद हो रहे हैं यह जांचते हैं, और आपको Warranty दे देते हैं।" },
     ],
+    expertTip:
+      "Bring your TV's exact size and count every box you want hidden inside — set-top box, router, gaming console — before we finalise the design. The cable-management channel and compartment sizes are built around that list, and it's much harder to fit in an extra box after fabrication starts.",
+    expertTipHi:
+      "डिज़ाइन फाइनल करने से पहले अपने TV का सही साइज़ बताएं और यह भी गिन लें कि अंदर कितने बॉक्स छुपाने हैं — सेट-टॉप बॉक्स, राउटर, गेमिंग कंसोल। केबल-मैनेजमेंट चैनल और कम्पार्टमेंट का साइज़ इसी लिस्ट के हिसाब से बनता है, फैब्रिकेशन शुरू होने के बाद कोई नया बॉक्स फिट करना काफी मुश्किल हो जाता है।",
     realProject: {
       title: "10 ft floating LED TV unit, Forbesganj",
       titleHi: "10 फुट फ्लोटिंग LED TV यूनिट, फारबिसगंज",
@@ -959,6 +1185,32 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "गर्मी की दोपहर की सीधी धूप में यह असली घास से ज़्यादा गर्म हो सकती है, पैर रखते ही महसूस हो जाता है",
       "असली, पानी दी गई घास जैसा बिल्कुल एहसास नहीं देती — ज़ीरो मेंटेनेंस के बदले यह एक उचित समझौता है, पर यह बात पहले से जान लें",
     ],
+    whatsIncluded: [
+      "Surface and drainage check, plus base or batten preparation",
+      "Turf rolling or panel fixing, cut to your exact boundary",
+      "Seam joining and edge fixing so nothing lifts over time",
+      "Final grooming for a full, fresh-lawn look",
+      "1-year written warranty on material and workmanship",
+    ],
+    whatsIncludedHi: [
+      "सतह और ड्रेनेज जांचना, बेस या बैटन तैयार करना",
+      "टर्फ रोलिंग या पैनल फिक्सिंग, आपकी सही बाउंड्री पर काटकर",
+      "सीम जोड़ना और एज फिक्सिंग, ताकि समय के साथ न उठे",
+      "भरे-भरे, ताज़े लॉन जैसे लुक के लिए फाइनल ग्रूमिंग",
+      "1 साल की लिखित मटेरियल + वर्कमैनशिप Warranty",
+    ],
+    whatsNotIncluded: [
+      "Any painting or coating work — not applicable to this product, and not something JK Interior offers in any case",
+      "Fixing pre-existing poor drainage or waterproofing the floor/terrace — that's civil work, done (and quoted) separately before the turf goes down",
+      "Potted plants, planters, or any landscaping element beyond the turf itself",
+      "Replacing turf damaged by fire, sharp objects, or pet chewing after handover",
+    ],
+    whatsNotIncludedHi: [
+      "किसी भी तरह की पेंट या कोटिंग — यह इस प्रोडक्ट पर लागू ही नहीं होती, और JK Interior पेंटिंग सर्विस देता भी नहीं",
+      "पहले से खराब ड्रेनेज ठीक करना या फ्लोर/टैरेस की वॉटरप्रूफिंग — यह सिविल काम है, टर्फ बिछाने से पहले अलग से (और अलग कोटेशन में) होता है",
+      "गमले, पौधे या टर्फ के अलावा कोई भी लैंडस्केपिंग एलिमेंट",
+      "हैंडओवर के बाद आग, नुकीली चीज़ या पालतू जानवर के काटने से खराब हुई टर्फ बदलना",
+    ],
     materials: [
       { name: "UV-stabilised synthetic turf", nameHi: "UV-स्टेबलाइज़्ड सिंथेटिक टर्फ", detail: "Polyethylene/polypropylene grass fibres tufted onto a permeable backing, in multiple pile heights", detailHi: "पॉलीएथिलीन/पॉलीप्रोपाइलीन घास के रेशे एक पारगम्य बैकिंग में बुने होते हैं, कई पाइल-हाइट में मिलते हैं" },
       { name: "Drainage underlay", nameHi: "ड्रेनेज अंडरले", detail: "A sand/gravel or perforated base layer laid beneath floor turf so rainwater passes through instead of pooling", detailHi: "फर्श वाली टर्फ के नीचे रेत/बजरी या छिद्रित बेस लेयर बिछा देते हैं, ताकि बारिश का पानी जमा होने की बजाय निकल जाए" },
@@ -972,6 +1224,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Edge fixing", titleHi: "एज फिक्सिंग", desc: "Edges are secured with U-pins, adhesive, or a border beading so they don't lift over time.", descHi: "किनारों को U-पिन, एडहेसिव या बॉर्डर बीडिंग से फिक्स कर देते हैं, ताकि समय के साथ न उठें।" },
       { title: "Final grooming & handover", titleHi: "फाइनल ग्रूमिंग और हैंडओवर", desc: "Fibres are brushed upright for a full, fresh-lawn look before handover.", descHi: "हैंडओवर से पहले रेशों को ब्रश करके सीधा खड़ा कर देते हैं, ताकि ताज़े लॉन जैसा भरा-भरा लुक मिले।" },
     ],
+    expertTip:
+      "Tell us honestly how the space will actually be used — a balcony corner for sitting is very different from a play area with daily foot traffic. We'll size the drainage prep and recommend the pile density accordingly, rather than you finding out the base wasn't strong enough after the fact.",
+    expertTipHi:
+      "हमें साफ-साफ बता दें कि जगह असल में किस लिए इस्तेमाल होगी — बैठने की छोटी बालकनी और रोज़ाना चलने-फिरने वाला खेलने का एरिया, दोनों अलग बात है। इसी हिसाब से हम ड्रेनेज तैयारी और पाइल डेंसिटी तय करेंगे, ताकि बाद में यह पता न चले कि बेस उतना मज़बूत नहीं था।",
     realProject: {
       title: "Balcony lawn corner, Raniganj",
       titleHi: "बालकनी लॉन कॉर्नर, रानीगंज",
