@@ -12,7 +12,7 @@ const featured = {
   service: "Complete Interior",
   color: "from-cyan-700 to-cyan-900",
   initials: "DG",
-  text: "Complete home interior का काम JK Interior को दिया। Ceiling से lekr TV unit तक सब कुछ perfect। On-time delivery और zero hidden charges। Bihar का best interior designer!",
+  text: "पूर्ण होम इंटीरियर का काम JK Interior को दिया। सीलिंग से लेकर TV यूनिट तक सब कुछ परफेक्ट। समय पर डिलीवरी और ज़ीरो छुपे हुए शुल्क। बिहार का सबसे अच्छा इंटीरियर डिज़ाइनर!",
 }
 
 const testimonials = [
@@ -20,7 +20,7 @@ const testimonials = [
     name: "Rahul Kumar",
     location: "Forbesganj",
     rating: 5,
-    text: "JK Interior ने हमारे घर का PVC false ceiling बेहद खूबसूरती से लगाया। काम की quality और speed दोनों exceptional थी।",
+    text: "JK Interior ने हमारे घर का PVC फॉल्स सीलिंग बेहद खूबसूरती से लगाया। काम की क्वालिटी और स्पीड दोनों बेहतरीन थी।",
     service: "PVC False Ceiling",
     initials: "RK",
     color: "from-emerald-700 to-emerald-900",
@@ -29,7 +29,7 @@ const testimonials = [
     name: "Priya Sharma",
     location: "Araria",
     rating: 5,
-    text: "Gypsum ceiling के लिए JK Interior को hire किया। Professional team, clean work, और 1 साल की warranty।",
+    text: "जिप्सम सीलिंग के लिए JK Interior को हायर किया। प्रोफेशनल टीम, साफ काम, और 1 साल की वारंटी।",
     service: "Gypsum Ceiling",
     initials: "PS",
     color: "from-violet-700 to-violet-900",
@@ -38,7 +38,7 @@ const testimonials = [
     name: "Amit Singh",
     location: "Jogbani",
     rating: 5,
-    text: "WPC wall paneling का काम बहुत अच्छा किया। Termite-proof और waterproof panels लगाए। TV unit design भी बहुत stylish आया।",
+    text: "WPC वॉल पैनलिंग का काम बहुत अच्छा किया। टर्माइट-प्रूफ और वॉटरप्रूफ पैनल लगाए। TV यूनिट डिज़ाइन भी बहुत स्टाइलिश आया।",
     service: "WPC Wall Panel",
     initials: "AS",
     color: "from-amber-700 to-amber-900",
@@ -47,7 +47,7 @@ const testimonials = [
     name: "Sunita Devi",
     location: "Narpatganj",
     rating: 5,
-    text: "UV marble sheet लगवाई पूरे bedroom में। Marble जैसा ही look आया but cost बहुत कम था।",
+    text: "UV मार्बल शीट लगवाई पूरे बेडरूम में। मार्बल जैसा ही लुक आया पर कीमत बहुत कम थी।",
     service: "UV Marble Sheet",
     initials: "SD",
     color: "from-teal-700 to-teal-900",
@@ -56,7 +56,7 @@ const testimonials = [
     name: "Meena Yadav",
     location: "Raniganj",
     rating: 5,
-    text: "Free site visit के लिए आए, detailed quotation दिया, और काम शुरू किया। हर step professional था।",
+    text: "फ्री साइट विज़िट के लिए आए, विस्तृत कोटेशन दिया, और काम शुरू किया। हर स्टेप प्रोफेशनल था।",
     service: "PVC False Ceiling",
     initials: "MY",
     color: "from-blue-700 to-blue-900",
@@ -172,7 +172,7 @@ export default function Testimonials() {
             <span className="text-slate-500">|</span>
             <span>100+ reviews across Bihar</span>
           </div>
-          <p className="text-base text-slate-300">अपने घर को भी दें premium interior का look</p>
+          <p className="text-base text-slate-300">अपने घर को भी दें प्रीमियम इंटीरियर का लुक</p>
           <WhatsAppLink
             size="lg"
             icon={false}

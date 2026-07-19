@@ -18,28 +18,28 @@ export default function FAQPage() {
           mainEntity: [
             {
               "@type": "Question",
-              name: "PVC false ceiling की cost क्या है?",
-              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC false ceiling ₹75–₹150 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।" }
+              name: "PVC फॉल्स सीलिंग की कीमत क्या है?",
+              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC फॉल्स सीलिंग ₹75–₹150 प्रति sq.ft से शुरू होती है। डिज़ाइन और लाइटिंग के अनुसार रेट अलग-अलग होता है। फ्री कोटेशन के लिए कॉल करें: +91 8541849118।" }
             },
             {
               "@type": "Question",
-              name: "Gypsum ceiling कितने दिन में ready होती है?",
-              acceptedAnswer: { "@type": "Answer", text: "एक standard room की gypsum ceiling 1–3 days में complete होती है। Larger projects के लिए detailed timeline पहले share की जाती है।" }
+              name: "जिप्सम सीलिंग कितने दिन में तैयार होती है?",
+              acceptedAnswer: { "@type": "Answer", text: "एक स्टैंडर्ड कमरे की जिप्सम सीलिंग 1–3 दिन में पूरी होती है। बड़े प्रोजेक्ट के लिए विस्तृत टाइमलाइन पहले साझा की जाती है।" }
             },
             {
               "@type": "Question",
-              name: "क्या JK Interior free site visit देती है?",
-              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior Forbesganj, Araria और surrounding areas में free expert site visit provide करती है। हमारी team आपके घर/दुकान आकर exact measurements और estimate देती है।" }
+              name: "क्या JK Interior फ्री साइट विज़िट देती है?",
+              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior फोर्बेसगंज, अरारिया और आसपास के एरिया में फ्री एक्सपर्ट साइट विज़िट देती है। हमारी टीम आपके घर/दुकान आकर सटीक माप और अनुमान देती है।" }
             },
             {
               "@type": "Question",
-              name: "WPC wall panel क्या होता है?",
-              acceptedAnswer: { "@type": "Answer", text: "WPC (Wood Plastic Composite) wall panel एक waterproof और durable wall cladding material है। यह termite-proof, moisture-resistant और easy to install होता है। JK Interior ₹180/sq.ft से WPC panels लगाती है।" }
+              name: "WPC वॉल पैनल क्या होता है?",
+              acceptedAnswer: { "@type": "Answer", text: "WPC (वुड प्लास्टिक कम्पोजिट) वॉल पैनल एक वॉटरप्रूफ और टिकाऊ वॉल क्लैडिंग मटेरियल है। यह टर्माइट-प्रूफ, नमी-रोधी और आसानी से इंस्टॉल होता है। JK Interior ₹180/sq.ft से WPC पैनल लगाती है।" }
             },
             {
               "@type": "Question",
-              name: "क्या JK Interior की कोई warranty है?",
-              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior सभी projects पर 1 साल की written warranty देती है। ISI-certified materials use होते हैं।" }
+              name: "क्या JK Interior की कोई वारंटी है?",
+              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior सभी प्रोजेक्ट पर 1 साल की लिखित वारंटी देती है। ISI-प्रमाणित मटेरियल इस्तेमाल होते हैं।" }
             }
           ]
         }}

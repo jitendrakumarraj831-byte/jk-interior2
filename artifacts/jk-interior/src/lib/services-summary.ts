@@ -54,7 +54,7 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
     nameHi: "ग्रिड सीलिंग",
     category: "Ceiling",
     tagline: "The commercial standard for offices, shops, and clinics that need serviceable ceilings",
-    taglineHi: "ऑफिस, दुकान और क्लिनिक के लिए commercial standard सीलिंग",
+    taglineHi: "ऑफिस, दुकान और क्लिनिक के लिए कमर्शियल स्टैंडर्ड सीलिंग",
     heroImage: "/images/grid.webp",
     heroImageAlt: "T-grid mineral fibre false ceiling installed in a commercial office by JK Interior",
     price: "₹45–₹115/sq.ft (Forbesganj/Araria market rate)",

@@ -84,16 +84,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Forbesganj में PVC false ceiling का क्या रेट है?',
-        a: 'Forbesganj में PVC false ceiling की cost ₹75–₹150 per sq.ft से शुरू होती है। Design और lighting के अनुसार rate vary करता है। Free quotation के लिए call करें: +91 8541849118।',
+        q: 'फोर्बेसगंज में PVC फॉल्स सीलिंग का क्या रेट है?',
+        a: 'फोर्बेसगंज में PVC फॉल्स सीलिंग की कीमत ₹75–₹150 प्रति sq.ft से शुरू होती है। डिज़ाइन और लाइटिंग के अनुसार रेट अलग-अलग होता है। फ्री कोटेशन के लिए कॉल करें: +91 8541849118।',
       },
       {
-        q: 'क्या JK Interior Forbesganj में free site visit देती है?',
-        a: 'हाँ, JK Interior Forbesganj में free expert site visit provide करती है। हमारी team आपके घर/दुकान आकर exact measurements और estimate देती है।',
+        q: 'क्या JK Interior फोर्बेसगंज में फ्री साइट विज़िट देती है?',
+        a: 'हाँ, JK Interior फोर्बेसगंज में फ्री एक्सपर्ट साइट विज़िट देती है। हमारी टीम आपके घर/दुकान आकर सटीक माप और अनुमान देती है।',
       },
       {
-        q: 'Forbesganj में gypsum ceiling कितने दिन में ready होती है?',
-        a: 'एक standard room की gypsum ceiling Forbesganj में 1–3 days में complete होती है। Larger projects के लिए detailed timeline पहले share की जाती है।',
+        q: 'फोर्बेसगंज में जिप्सम सीलिंग कितने दिन में तैयार होती है?',
+        a: 'एक स्टैंडर्ड कमरे की जिप्सम सीलिंग फोर्बेसगंज में 1–3 दिन में पूरी होती है। बड़े प्रोजेक्ट के लिए विस्तृत टाइमलाइन पहले साझा की जाती है।',
       },
     ],
   },
@@ -121,16 +121,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Araria में best interior designer कौन है?',
-        a: 'JK Interior, Araria district का सबसे trusted interior contractor है। 500+ completed projects और 1 साल की written warranty के साथ हम Araria में premium interior design और false ceiling services provide करते हैं।',
+        q: 'अरारिया में सबसे अच्छा इंटीरियर डिज़ाइनर कौन है?',
+        a: 'JK Interior, अरारिया ज़िला का सबसे भरोसेमंद इंटीरियर ठेकेदार है। 500+ पूरे हो चुके प्रोजेक्ट और 1 साल की लिखित वारंटी के साथ हम अरारिया में प्रीमियम इंटीरियर डिज़ाइन और फॉल्स सीलिंग सेवाएं देते हैं।',
       },
       {
-        q: 'Araria में gypsum ceiling की cost क्या है?',
-        a: 'Araria में gypsum false ceiling ₹75–₹210 per sq.ft से शुरू होती है। Cove lighting और multi-level design premium tier में शामिल हैं। Free site visit के लिए: +91 8541849118।',
+        q: 'अरारिया में जिप्सम सीलिंग की कीमत क्या है?',
+        a: 'अरारिया में जिप्सम फॉल्स सीलिंग ₹75–₹210 प्रति sq.ft से शुरू होती है। कोव लाइटिंग और मल्टी-लेवल डिज़ाइन प्रीमियम टियर में शामिल हैं। फ्री साइट विज़िट के लिए: +91 8541849118।',
       },
       {
-        q: 'क्या JK Interior Araria city में काम करती है?',
-        a: 'हाँ, JK Interior Araria city और district के सभी areas में service provide करती है। हमारी team Araria में नियमित रूप से काम करती है।',
+        q: 'क्या JK Interior अरारिया शहर में काम करती है?',
+        a: 'हाँ, JK Interior अरारिया शहर और ज़िला के सभी एरिया में सेवा देती है। हमारी टीम अरारिया में नियमित रूप से काम करती है।',
       },
     ],
   },
@@ -158,16 +158,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Purnia में interior designer कैसे contact करें?',
-        a: 'JK Interior को +91 8541849118 पर call या WhatsApp +91 8651070831 करें। हम Purnia में free site visit provide करते हैं और detailed quotation देते हैं।',
+        q: 'पूर्णिया में इंटीरियर डिज़ाइनर कैसे संपर्क करें?',
+        a: 'JK Interior को +91 8541849118 पर कॉल या WhatsApp +91 8651070831 करें। हम पूर्णिया में फ्री साइट विज़िट देते हैं और विस्तृत कोटेशन देते हैं।',
       },
       {
-        q: 'Purnia में PVC ceiling का काम कितने दिन में होता है?',
-        a: 'Purnia में एक standard room का PVC ceiling work 1–2 days में complete होता है। हम Purnia में regular visit करते हैं और on-time delivery guarantee करते हैं।',
+        q: 'पूर्णिया में PVC सीलिंग का काम कितने दिन में होता है?',
+        a: 'पूर्णिया में एक स्टैंडर्ड कमरे का PVC सीलिंग काम 1–2 दिन में पूरा होता है। हम पूर्णिया में नियमित विज़िट करते हैं और समय पर डिलीवरी गारंटी करते हैं।',
       },
       {
-        q: 'Purnia में JK Interior के services क्या हैं?',
-        a: 'JK Interior Purnia में PVC False Ceiling, Gypsum Ceiling, WPC Wall Panel, UV Marble Sheet, TV Unit Design, Bedroom Interior, Office Interior और Complete Interior Design services provide करती है।',
+        q: 'पूर्णिया में JK Interior के सेवाएं क्या हैं?',
+        a: 'JK Interior पूर्णिया में PVC फॉल्स सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल, UV मार्बल शीट, TV यूनिट डिज़ाइन, बेडरूम इंटीरियर, ऑफिस इंटीरियर और पूर्ण इंटीरियर डिज़ाइन सेवाएं देती है।',
       },
     ],
   },
@@ -194,16 +194,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Jogbani में false ceiling का काम कौन करता है?',
-        a: 'JK Interior Jogbani और Araria district में best false ceiling contractor है। PVC ceiling, gypsum ceiling और WPC wall panel के लिए +91 8541849118 पर call करें।',
+        q: 'जोगबनी में फॉल्स सीलिंग का काम कौन करता है?',
+        a: 'JK Interior जोगबनी और अरारिया ज़िला में सबसे अच्छा फॉल्स सीलिंग ठेकेदार है। PVC सीलिंग, जिप्सम सीलिंग और WPC वॉल पैनल के लिए +91 8541849118 पर कॉल करें।',
       },
       {
-        q: 'Jogbani में interior design की cost क्या है?',
-        a: 'Jogbani में JK Interior affordable pricing offer करती है — PVC ceiling ₹75 से, Gypsum ceiling ₹75 से per sq.ft। Exact quotation के लिए free site visit available है।',
+        q: 'जोगबनी में इंटीरियर डिज़ाइन की कीमत क्या है?',
+        a: 'जोगबनी में JK Interior किफायती कीमत ऑफर करती है — PVC सीलिंग ₹75 से, जिप्सम सीलिंग ₹75 से प्रति sq.ft। सटीक कोटेशन के लिए फ्री साइट विज़िट उपलब्ध है।',
       },
       {
-        q: 'क्या JK Interior Jogbani में home interior services देती है?',
-        a: 'हाँ, JK Interior Jogbani में complete home interior, bedroom interior, kitchen interior, false ceiling और wall paneling services provide करती है।',
+        q: 'क्या JK Interior जोगबनी में होम इंटीरियर सेवाएं देती है?',
+        a: 'हाँ, JK Interior जोगबनी में पूरा होम इंटीरियर, बेडरूम इंटीरियर, किचन इंटीरियर, फॉल्स सीलिंग और वॉल पैनलिंग सेवाएं देती है।',
       },
     ],
   },
@@ -230,16 +230,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Supaul में false ceiling के लिए best contractor कौन है?',
-        a: 'JK Interior Supaul district में trusted false ceiling और interior design contractor है। 500+ completed projects के साथ हम PVC, gypsum और WPC services provide करते हैं।',
+        q: 'सुपौल में फॉल्स सीलिंग के लिए सबसे अच्छा ठेकेदार कौन है?',
+        a: 'JK Interior सुपौल ज़िला में भरोसेमंद फॉल्स सीलिंग और इंटीरियर डिज़ाइन ठेकेदार है। 500+ पूरे हो चुके प्रोजेक्ट के साथ हम PVC, जिप्सम और WPC सेवाएं देते हैं।',
       },
       {
-        q: 'Supaul में PVC ceiling की cost क्या है?',
-        a: 'Supaul में PVC false ceiling ₹75–₹150 per sq.ft से शुरू होती है। Free site visit और quotation के लिए +91 8541849118 पर संपर्क करें।',
+        q: 'सुपौल में PVC सीलिंग की कीमत क्या है?',
+        a: 'सुपौल में PVC फॉल्स सीलिंग ₹75–₹150 प्रति sq.ft से शुरू होती है। फ्री साइट विज़िट और कोटेशन के लिए +91 8541849118 पर संपर्क करें।',
       },
       {
-        q: 'क्या JK Interior Supaul में आती है?',
-        a: 'हाँ, JK Interior Supaul city और district के सभी blocks में service provide करती है — Tribeniganj, Chhatapur समेत। Free site visit available है।',
+        q: 'क्या JK Interior सुपौल में आती है?',
+        a: 'हाँ, JK Interior सुपौल शहर और ज़िला के सभी ब्लॉक में सेवा देती है — त्रिवेणीगंज, छतापुर समेत। फ्री साइट विज़िट उपलब्ध है।',
       },
     ],
   },
@@ -266,16 +266,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Narpatganj में interior design services कौन देता है?',
-        a: 'JK Interior Narpatganj में PVC ceiling, gypsum ceiling, WPC wall panel, UV marble sheet और complete interior design services provide करती है। Call: +91 8541849118।',
+        q: 'नरपतगंज में इंटीरियर डिज़ाइन सेवाएं कौन देता है?',
+        a: 'JK Interior नरपतगंज में PVC सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल, UV मार्बल शीट और पूरा इंटीरियर डिज़ाइन सेवाएं देती है। कॉल: +91 8541849118।',
       },
       {
-        q: 'Narpatganj में false ceiling की cost क्या है?',
-        a: 'JK Interior Narpatganj में ₹75 per sq.ft से PVC ceiling और ₹75 से gypsum ceiling offer करती है। Free estimate के लिए site visit available है।',
+        q: 'नरपतगंज में फॉल्स सीलिंग की कीमत क्या है?',
+        a: 'JK Interior नरपतगंज में ₹75 प्रति sq.ft से PVC सीलिंग और ₹75 से जिप्सम सीलिंग ऑफर करती है। फ्री अनुमान के लिए साइट विज़िट उपलब्ध है।',
       },
       {
-        q: 'JK Interior का office Narpatganj से कितने दूर है?',
-        a: 'JK Interior का main office Forbesganj में है, जो Narpatganj से approximately 28 km दूर है। हम Narpatganj में regular service trips करते हैं।',
+        q: 'JK Interior का ऑफिस नरपतगंज से कितने दूर है?',
+        a: 'JK Interior का मुख्य ऑफिस फोर्बेसगंज में है, जो नरपतगंज से लगभग 28 km दूर है। हम नरपतगंज में नियमित सेवा विज़िट करते हैं।',
       },
     ],
   },
@@ -302,16 +302,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Raniganj में false ceiling का काम JK Interior करती है?',
-        a: 'हाँ, JK Interior Raniganj में PVC false ceiling, gypsum ceiling, WPC wall panel और interior design services provide करती है। Free site visit उपलब्ध है।',
+        q: 'रानीगंज में फॉल्स सीलिंग का काम JK Interior करती है?',
+        a: 'हाँ, JK Interior रानीगंज में PVC फॉल्स सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल और इंटीरियर डिज़ाइन सेवाएं देती है। फ्री साइट विज़िट उपलब्ध है।',
       },
       {
-        q: 'Raniganj में ceiling work का rate क्या है?',
-        a: 'Raniganj में JK Interior PVC ceiling ₹75/sq.ft और gypsum ceiling ₹75/sq.ft से start करती है। Exact estimate के लिए call करें: +91 8541849118।',
+        q: 'रानीगंज में सीलिंग काम का रेट क्या है?',
+        a: 'रानीगंज में JK Interior PVC सीलिंग ₹75/sq.ft और जिप्सम सीलिंग ₹75/sq.ft से शुरू करती है। सटीक अनुमान के लिए कॉल करें: +91 8541849118।',
       },
       {
-        q: 'JK Interior Raniganj में कितने समय में आ सकती है?',
-        a: 'Raniganj, Forbesganj से सिर्फ 18 km दूर है। JK Interior की team usually 24 hours के अंदर Raniganj में site visit दे सकती है।',
+        q: 'JK Interior रानीगंज में कितने समय में आ सकती है?',
+        a: 'रानीगंज, फोर्बेसगंज से सिर्फ 18 km दूर है। JK Interior की टीम आमतौर पर 24 घंटे के अंदर रानीगंज में साइट विज़िट दे सकती है।',
       },
     ],
   },
@@ -337,16 +337,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Tribeniganj में interior designer कहाँ मिलेगा?',
-        a: 'JK Interior Tribeniganj में trusted interior designer है। PVC ceiling, gypsum ceiling, WPC wall panel और complete interior के लिए +91 8541849118 पर call करें।',
+        q: 'त्रिवेणीगंज में इंटीरियर डिज़ाइनर कहाँ मिलेगा?',
+        a: 'JK Interior त्रिवेणीगंज में भरोसेमंद इंटीरियर डिज़ाइनर है। PVC सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल और पूरा इंटीरियर के लिए +91 8541849118 पर कॉल करें।',
       },
       {
-        q: 'Tribeniganj में false ceiling कितने में होगी?',
-        a: 'Tribeniganj में JK Interior PVC false ceiling ₹75/sq.ft से और gypsum ceiling ₹75/sq.ft से offer करती है। Free estimate के लिए site visit available है।',
+        q: 'त्रिवेणीगंज में फॉल्स सीलिंग कितने में होगी?',
+        a: 'त्रिवेणीगंज में JK Interior PVC फॉल्स सीलिंग ₹75/sq.ft से और जिप्सम सीलिंग ₹75/sq.ft से ऑफर करती है। फ्री अनुमान के लिए साइट विज़िट उपलब्ध है।',
       },
       {
-        q: 'क्या JK Interior Tribeniganj में service देती है?',
-        a: 'हाँ, JK Interior Supaul district के Tribeniganj में regular interior design और false ceiling services provide करती है। Free site visit के लिए आज ही call करें।',
+        q: 'क्या JK Interior त्रिवेणीगंज में सेवा देती है?',
+        a: 'हाँ, JK Interior सुपौल ज़िला के त्रिवेणीगंज में नियमित इंटीरियर डिज़ाइन और फॉल्स सीलिंग सेवाएं देती है। फ्री साइट विज़िट के लिए आज ही कॉल करें।',
       },
     ],
   },
@@ -372,16 +372,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Kursakanta में false ceiling contractor कौन है?',
-        a: 'JK Interior Kursakanta में best false ceiling contractor है। PVC ceiling, gypsum ceiling, WPC panel और interior design services के लिए call करें: +91 8541849118।',
+        q: 'कुर्साकाँटा में फॉल्स सीलिंग ठेकेदार कौन है?',
+        a: 'JK Interior कुर्साकाँटा में सबसे अच्छा फॉल्स सीलिंग ठेकेदार है। PVC सीलिंग, जिप्सम सीलिंग, WPC पैनल और इंटीरियर डिज़ाइन सेवाओं के लिए कॉल करें: +91 8541849118।',
       },
       {
-        q: 'Kursakanta में interior design का काम JK Interior करती है?',
-        a: 'हाँ, JK Interior Kursakanta में PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet और TV unit design services provide करती है।',
+        q: 'कुर्साकाँटा में इंटीरियर डिज़ाइन का काम JK Interior करती है?',
+        a: 'हाँ, JK Interior कुर्साकाँटा में PVC फॉल्स सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल, UV मार्बल शीट और TV यूनिट डिज़ाइन सेवाएं देती है।',
       },
       {
-        q: 'Kursakanta में PVC ceiling की कीमत क्या है?',
-        a: 'Kursakanta में JK Interior PVC false ceiling ₹75/sq.ft से start करती है। Free measurement और estimate के लिए +91 8541849118 पर call करें।',
+        q: 'कुर्साकाँटा में PVC सीलिंग की कीमत क्या है?',
+        a: 'कुर्साकाँटा में JK Interior PVC फॉल्स सीलिंग ₹75/sq.ft से शुरू करती है। फ्री माप और अनुमान के लिए +91 8541849118 पर कॉल करें।',
       },
     ],
   },
@@ -407,16 +407,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'Chhatapur में interior designer कौन है?',
-        a: 'JK Interior Chhatapur और Supaul district में trusted interior contractor है। PVC ceiling, gypsum ceiling और wall panel के लिए call करें: +91 8541849118।',
+        q: 'छतापुर में इंटीरियर डिज़ाइनर कौन है?',
+        a: 'JK Interior छतापुर और सुपौल ज़िला में भरोसेमंद इंटीरियर ठेकेदार है। PVC सीलिंग, जिप्सम सीलिंग और वॉल पैनल के लिए कॉल करें: +91 8541849118।',
       },
       {
-        q: 'Chhatapur में false ceiling की cost क्या है?',
-        a: 'Chhatapur में JK Interior PVC ceiling ₹75/sq.ft और gypsum ceiling ₹75/sq.ft से offer करती है। Free site visit के लिए आज ही संपर्क करें।',
+        q: 'छतापुर में फॉल्स सीलिंग की कीमत क्या है?',
+        a: 'छतापुर में JK Interior PVC सीलिंग ₹75/sq.ft और जिप्सम सीलिंग ₹75/sq.ft से ऑफर करती है। फ्री साइट विज़िट के लिए आज ही संपर्क करें।',
       },
       {
-        q: 'क्या JK Interior Chhatapur में service देती है?',
-        a: 'हाँ, JK Interior Supaul district के Chhatapur में false ceiling, wall paneling और interior design services provide करती है।',
+        q: 'क्या JK Interior छतापुर में सेवा देती है?',
+        a: 'हाँ, JK Interior सुपौल ज़िला के छतापुर में फॉल्स सीलिंग, वॉल पैनलिंग और इंटीरियर डिज़ाइन सेवाएं देती है।',
       },
     ],
   },
