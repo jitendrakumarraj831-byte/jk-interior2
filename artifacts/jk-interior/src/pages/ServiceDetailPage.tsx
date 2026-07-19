@@ -9,18 +9,13 @@ import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import {
   Clock, ShieldCheck, Sparkles, ArrowRight, Phone, HelpCircle, ImageIcon,
-  IndianRupee, MapPin, type LucideIcon,
+  IndianRupee, MapPin, BadgeCheck, Users, CheckCircle2,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import NotFound from "@/pages/not-found"
 
-/** Icon for each of the four fixed highlight slots. */
-const HIGHLIGHT_ICON: Record<ServiceHighlight["kind"], LucideIcon> = {
-  special: Sparkles,
-  pricing: IndianRupee,
-  warranty: ShieldCheck,
-  suited: MapPin,
-}
+const byKind = (list: ServiceHighlight[], kind: ServiceHighlight["kind"]) =>
+  list.find((h) => h.kind === kind)
 
 export default function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -30,6 +25,19 @@ export default function ServiceDetailPage() {
 
   const summary = SERVICES_SUMMARY.find((s) => s.slug === service.slug)
   const highlights = summary?.highlights ?? []
+  const special = byKind(highlights, "special")
+  const pricing = byKind(highlights, "pricing")
+  const warranty = byKind(highlights, "warranty")
+  const suited = byKind(highlights, "suited")
+  // The pricing copy is "<rate> — <what's included>"; pull the rate out to feature it big.
+  const [priceRate, priceNote] = (pricing?.en ?? "").split(" — ")
+  const priceNoteHi = (pricing?.hi ?? "").split(" — ")[1] ?? pricing?.hi ?? ""
+  // "Best suited for" reads as a comma list — turn it into scannable chips.
+  const suitedChips = (suited?.en ?? "")
+    .replace(/\.$/, "")
+    .split(", ")
+    .map((c) => c.replace(/^and /, "").trim())
+    .filter(Boolean)
   const photos = galleryImages.filter((img) => img.category === service.galleryCategory).slice(0, 8)
   const related = service.relatedSlugs
     .map((s) => getServiceContentBySlug(s))
@@ -155,35 +163,130 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
+      {/* ── Trust bar ── */}
+      <section className="border-y border-emerald-900/[0.06] bg-emerald-50/50 py-5">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-5 text-center text-xs font-bold text-emerald-800 sm:text-sm">
+          <span className="inline-flex items-center gap-1.5">
+            <Users className="h-4 w-4 text-emerald-600" aria-hidden="true" /> 500+ Happy Customers
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <BadgeCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" /> ISI-Certified Materials
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <ShieldCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" /> 1-Year Written Warranty
+          </span>
+          <span className="hidden items-center gap-1.5 sm:inline-flex">
+            <MapPin className="h-4 w-4 text-emerald-600" aria-hidden="true" /> Forbesganj &amp; Araria
+          </span>
+        </div>
+      </section>
+
       {/* ── The four scannable selling points — the whole pitch ── */}
       {highlights.length > 0 && (
-        <section className="py-14 sm:py-16 bg-white">
-          <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
-            <h2 className="mb-8 text-2xl font-black text-gray-900 sm:text-3xl">
-              Why JK Interior for {service.name}?
-            </h2>
-            <div className="space-y-4">
-              {highlights.map((h) => {
-                const Icon = HIGHLIGHT_ICON[h.kind]
-                return (
-                  <div
-                    key={h.kind}
-                    className="flex gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6"
-                  >
-                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700">
-                      <Icon className="h-5 w-5" aria-hidden="true" />
+        <section className="relative overflow-hidden py-14 sm:py-16">
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-[#fbfaf5] to-white" />
+            <div className="absolute left-1/2 top-10 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-100/40 blur-3xl" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
+            <div className="mb-9 text-center">
+              <span className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-white px-3 py-1 text-[11px] font-black uppercase tracking-widest text-emerald-700">
+                <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Why Choose Us
+              </span>
+              <h2 className="text-2xl font-black text-gray-900 sm:text-3xl lg:text-4xl">
+                Why JK Interior for <span className="hero-gradient-text">{service.name}</span>?
+              </h2>
+              <p className="mt-1.5 text-sm font-semibold text-emerald-700">{service.nameHi}</p>
+            </div>
+
+            {/* Feature banner — the hook */}
+            {special && (
+              <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-emerald-800 via-emerald-700 to-emerald-900 p-6 text-white shadow-[0_24px_60px_rgba(6,78,59,0.35)] sm:p-9">
+                <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl" aria-hidden />
+                <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-emerald-400/20 blur-2xl" aria-hidden />
+                <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start">
+                  <span className="flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur">
+                    <Sparkles className="h-7 w-7 text-white" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-200">
+                      {special.label} <span className="text-emerald-100/80">· {special.labelHi}</span>
+                    </p>
+                    <p className="mt-2.5 text-base font-bold leading-relaxed sm:text-lg">{special.en}</p>
+                    <p className="mt-2.5 text-sm leading-relaxed text-emerald-100/90">{special.hi}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Pricing + Warranty */}
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              {pricing && (
+                <div className="relative overflow-hidden rounded-[28px] border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50/70 p-6 shadow-sm sm:p-7">
+                  <div className="mb-4 flex items-center gap-2.5">
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-amber-400 text-amber-950 shadow-sm">
+                      <IndianRupee className="h-5 w-5" aria-hidden="true" />
                     </span>
-                    <div className="min-w-0">
-                      <p className="text-sm font-black uppercase tracking-wide text-emerald-800 sm:text-base">
-                        {h.label}
-                        <span className="ml-2 font-bold normal-case tracking-normal text-emerald-600">/ {h.labelHi}</span>
-                      </p>
-                      <p className="mt-1.5 text-sm font-semibold leading-relaxed text-gray-800 sm:text-base">{h.en}</p>
-                      <p className="mt-1 text-sm leading-relaxed text-gray-500">{h.hi}</p>
+                    <div>
+                      <p className="text-[11px] font-black uppercase tracking-widest text-amber-800">{pricing.label}</p>
+                      <p className="text-xs font-bold text-amber-700/90">{pricing.labelHi}</p>
                     </div>
                   </div>
-                )
-              })}
+                  <p className="text-2xl font-black leading-tight text-gray-900 sm:text-[28px]">{priceRate}</p>
+                  {priceNote && <p className="mt-2.5 text-sm font-medium leading-relaxed text-gray-700">{priceNote}</p>}
+                  <p className="mt-1 text-xs leading-relaxed text-gray-500">{priceNoteHi}</p>
+                </div>
+              )}
+
+              {warranty && (
+                <div className="relative overflow-hidden rounded-[28px] border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50/60 p-6 shadow-sm sm:p-7">
+                  <div className="mb-4 flex items-center gap-2.5">
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-sm">
+                      <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <p className="text-[11px] font-black uppercase tracking-widest text-emerald-800">{warranty.label}</p>
+                      <p className="text-xs font-bold text-emerald-600">{warranty.labelHi}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm font-bold leading-relaxed text-gray-800 sm:text-base">{warranty.en}</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{warranty.hi}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Best suited for — chips */}
+            {suited && (
+              <div className="mt-5 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
+                <div className="mb-4 flex items-center gap-2.5">
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-700">
+                    <MapPin className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-widest text-emerald-800">{suited.label}</p>
+                    <p className="text-xs font-bold text-emerald-600">{suited.labelHi}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {suitedChips.map((chip) => (
+                    <span
+                      key={chip}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 sm:text-sm"
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-gray-500">{suited.hi}</p>
+              </div>
+            )}
+
+            {/* Inline CTA so the pitch always ends on an action */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <CallLink shine ariaLabel={`Call for ${service.name} quote`}>Get Free Quote</CallLink>
+              <WhatsAppLink message={waText} variant="outline" ariaLabel={`WhatsApp for ${service.name}`}>WhatsApp Us</WhatsAppLink>
             </div>
           </div>
         </section>
