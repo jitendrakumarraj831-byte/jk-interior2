@@ -147,10 +147,10 @@ export default function Hero() {
               </WhatsAppLink>
               <Link
                 href="/gallery"
-                aria-label="देखें काम – View our work gallery"
+                aria-label="काम देखें – View our work gallery"
                 className="flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-4 text-sm font-bold text-white backdrop-blur-sm transition-all hover:border-white/40 hover:bg-white/20 active:scale-95 sm:px-7 sm:py-4 sm:text-base"
               >
-                देखें काम
+                काम देखें
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </motion.div>
