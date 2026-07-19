@@ -5,7 +5,7 @@ import SeoHead from "@/components/seo-head"
 
 export default function GalleryPage() {
   return (
-    <>
+    <main>
       <SeoHead
         title="Interior Design Gallery – PVC Ceiling, WPC Panel, TV Unit Projects in Bihar"
         description="Browse JK Interior's gallery of 500+ completed interior design projects in Bihar. PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit work in Forbesganj and across Bihar."
@@ -41,6 +41,6 @@ export default function GalleryPage() {
       <div className="pt-28" />
       <Gallery />
       <Footer />
-    </>
+    </main>
   )
 }

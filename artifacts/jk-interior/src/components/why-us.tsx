@@ -77,27 +77,6 @@ export default function WhyUs() {
         },
       }
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: "JK Interior",
-    description: "Best interior designer in Forbesganj, Araria, Bihar. Specializing in PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit installation.",
-    url: "https://www.jkinterior.online",
-    telephone: "+918541849118",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Damaria",
-      addressLocality: "Rewahi",
-      addressRegion: "Bihar",
-      addressCountry: "IN",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5",
-      reviewCount: "100",
-    },
-  }
-
   return (
     <section
       id="why-us"
@@ -133,7 +112,7 @@ export default function WhyUs() {
               <Quote className="mb-4 h-8 w-8 text-emerald-300" aria-hidden="true" />
               <p className="mb-4 font-serif text-lg font-bold leading-snug text-gray-900 sm:text-xl">
                 We started JK Interior in Forbesganj in 2016 fitting PVC ceilings for a handful of
-                neighbours. Nine years and 100+ homes later, the job hasn't changed — we still
+                neighbours. Eight years and 100+ homes later, the job hasn't changed — we still
                 measure the room ourselves before we quote it.
               </p>
               <p className="mb-5 text-sm leading-relaxed text-gray-600 sm:text-base">
@@ -143,7 +122,7 @@ export default function WhyUs() {
                 when a customer asks for the "prettier" option in the wrong place.
               </p>
               <div className="flex items-center gap-3 border-t border-dashed border-gray-200 pt-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-black text-white">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-sm font-black text-white">
                   JK
                 </div>
                 <div>
@@ -180,9 +159,6 @@ export default function WhyUs() {
           </motion.div>
         </div>
       </div>
-
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="sr-only" aria-hidden="true">
         <h2>Why Choose JK Interior - Best Interior Designer in Forbesganj, Bihar</h2>

@@ -14,28 +14,23 @@
     <meta name="copyright" content="JK Interior" />
     <meta name="keywords" content="false ceiling, gypsum ceiling, WPC wall panel, interior designer, forbesganj, araria, bihar, ceiling design, modular units" />
     <meta name="theme-color" content="#0D9488" />
-    <!-- Canonical injected dynamically so every page has the correct self-referencing URL -->
-    <script>
-      (function(){
-        var l=document.createElement('link');
-        l.rel='canonical';
-        l.href='https://www.jkinterior.online'+window.location.pathname.replace(/\/$/,'') || '/';
-        document.head.appendChild(l);
-      })();
-    </script>
+    <!-- Canonical link is set per-route by react-helmet-async (see SeoHead component on every page) -->
     <link rel="alternate" hreflang="x-default" href="https://www.jkinterior.online/" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet" />
+    <!-- Self-hosted fonts (see public/fonts/fonts.css) — avoids a render-blocking
+         round trip to fonts.googleapis.com/fonts.gstatic.com on every first visit.
+         Both families are preloaded: Playfair Display is used for every h1-h4 (see
+         index.css), so loading it late causes a late font swap and a large CLS hit. -->
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
+    <link rel="preload" href="/fonts/playfair-display-normal-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
 
     <!-- DNS prefetch -->
     <link rel="dns-prefetch" href="//www.googletagmanager.com" />
 
     <!-- Critical resources (preload for LCP performance) -->
-    <link rel="preload" href="/images/A.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/images/A1.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/images/A.webp" as="image" fetchpriority="high" />
+    <link rel="preload" href="/images/A1.webp" as="image" fetchpriority="high" />
 
     <title>JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar</title>
     <meta name="description" content="JK Interior – expert false ceiling, WPC wall panels &amp; modular interiors in Forbesganj, Araria, Bihar. Call +91 8541849118 for a free site visit." />

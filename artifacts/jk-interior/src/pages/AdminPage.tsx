@@ -61,7 +61,7 @@ function Row({ icon, label, value, highlight }: { icon: string; label: string; v
   return (
     <div className="flex items-start gap-2 text-xs">
       <span className="w-4 shrink-0">{icon}</span>
-      <span className="text-gray-400 w-14 shrink-0 text-[11px]">{label}</span>
+      <span className="text-gray-500 w-14 shrink-0 text-[11px]">{label}</span>
       <span className={`font-semibold break-all text-[12px] ${highlight ? "text-emerald-700" : "text-gray-800"}`}>{value}</span>
     </div>
   )
@@ -94,7 +94,7 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
           </div>
           <div>
             <p className={`text-[13px] font-bold leading-tight ${lead.is_read ? "text-gray-700" : "text-white"}`}>{lead.name}</p>
-            <p className={`text-[11px] leading-none mt-0.5 ${lead.is_read ? "text-gray-400" : "text-white/70"}`}>{fmt(lead.created_at)}</p>
+            <p className={`text-[11px] leading-none mt-0.5 ${lead.is_read ? "text-gray-500" : "text-white/70"}`}>{fmt(lead.created_at)}</p>
           </div>
         </div>
         {!lead.is_read && <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0 animate-pulse" />}
@@ -108,7 +108,7 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
         {lead.chat_summary && (
           <div className="flex items-start gap-2 text-xs mt-1.5 pt-1.5 border-t border-gray-100">
             <span className="w-4 shrink-0">💬</span>
-            <span className="text-gray-400 w-14 shrink-0 text-[11px]">Chat</span>
+            <span className="text-gray-500 w-14 shrink-0 text-[11px]">Chat</span>
             <span className="text-gray-600 text-[11px] italic leading-relaxed">{lead.chat_summary}</span>
           </div>
         )}
@@ -267,7 +267,7 @@ export default function AdminPage() {
       <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0e1f3d 0%, #152742 100%)" }}>
         <div className="w-full max-w-sm mx-4">
           <div className="text-center mb-8">
-            <div className="h-16 w-16 rounded-2xl bg-emerald-500 flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="h-16 w-16 rounded-2xl bg-emerald-700 flex items-center justify-center mx-auto mb-4 shadow-lg">
               <span className="text-2xl font-black text-white">JK</span>
             </div>
             <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
@@ -277,10 +277,10 @@ export default function AdminPage() {
             <p className="text-sm text-white/70 mb-4 text-center">Enter admin password to continue</p>
             {error && <p className="text-red-400 text-sm text-center mb-3">{error}</p>}
             <input type="password" value={inputKey} onChange={e => setInputKey(e.target.value)}
-              placeholder="Password" autoComplete="current-password"
+              placeholder="Password" aria-label="Admin password" autoComplete="current-password"
               className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-emerald-400 mb-4"
               autoFocus />
-            <button type="submit" className="w-full rounded-xl bg-emerald-500 py-3 text-sm font-bold text-white hover:bg-emerald-400 active:scale-95 transition-all">
+            <button type="submit" className="w-full rounded-xl bg-emerald-700 py-3 text-sm font-bold text-white hover:bg-emerald-600 active:scale-95 transition-all">
               Login
             </button>
           </form>
@@ -298,12 +298,12 @@ export default function AdminPage() {
         <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
           <div className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-emerald-600 flex items-center justify-center shrink-0">
+              <div className="h-9 w-9 rounded-xl bg-emerald-700 flex items-center justify-center shrink-0">
                 <span className="text-xs font-black text-white">JK</span>
               </div>
               <div>
                 <p className="text-[13px] font-bold text-gray-800 leading-tight">Leads Dashboard</p>
-                <p className="text-[11px] text-gray-400">JK Interior</p>
+                <p className="text-[11px] text-gray-500">JK Interior</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -318,12 +318,12 @@ export default function AdminPage() {
             </div>
           </div>
           <div className="px-4 pb-3 space-y-2">
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, phone, city…"
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, phone, city…" aria-label="Search leads"
               className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-[13px] text-gray-700 placeholder:text-gray-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:bg-white transition-all" />
             <div className="flex gap-2">
               {(["all", "new", "read"] as const).map(f => (
                 <button key={f} onClick={() => setFilter(f)}
-                  className={`flex-1 rounded-xl py-2 text-[11px] font-bold capitalize transition-all active:scale-95 ${filter === f ? "bg-emerald-600 text-white" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>
+                  className={`flex-1 rounded-xl py-2 text-[11px] font-bold capitalize transition-all active:scale-95 ${filter === f ? "bg-emerald-700 text-white" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>
                   {f === "all" ? `All (${leads.length})` : f === "new" ? `New (${newCount})` : `Read (${leads.length - newCount})`}
                 </button>
               ))}
@@ -337,7 +337,7 @@ export default function AdminPage() {
             <div className="rounded-2xl bg-white border border-gray-100 px-4 py-12 text-center">
               <p className="text-4xl mb-3">📭</p>
               <p className="text-gray-500 font-medium">{search ? "No leads match your search." : "No leads yet."}</p>
-              <p className="text-gray-400 text-sm mt-1">Leads from the chatbot will appear here.</p>
+              <p className="text-gray-500 text-sm mt-1">Leads from the chatbot will appear here.</p>
             </div>
           )}
           {!loading && filtered.map(lead => <LeadCard key={lead.id} lead={lead} onRead={markRead} adminKey={key} />)}

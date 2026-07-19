@@ -117,10 +117,10 @@ export default function Footer() {
             })}
             className="lg:col-span-2"
           >
-            <h4 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
+            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
               <span className="h-0.5 w-5 bg-emerald-500 rounded-full" />
               Quick Links
-            </h4>
+            </h3>
             <nav className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
@@ -145,10 +145,10 @@ export default function Footer() {
             })}
             className="lg:col-span-3"
           >
-            <h4 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
+            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
               <span className="h-0.5 w-5 bg-emerald-500 rounded-full" />
               Our Services
-            </h4>
+            </h3>
             <div className="flex flex-col gap-3">
               {serviceLinks.map((s) => (
                 <Link
@@ -173,10 +173,10 @@ export default function Footer() {
             })}
             className="lg:col-span-3"
           >
-            <h4 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
+            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
               <span className="h-0.5 w-5 bg-emerald-500 rounded-full" />
               Get in Touch
-            </h4>
+            </h3>
             <div className="flex flex-col gap-4">
               <a
                 href={`tel:${CALL_NUMBER}`}
@@ -239,9 +239,9 @@ export default function Footer() {
           })}
           className="mt-14"
         >
-          <h4 className="mb-4 text-[10px] font-black uppercase tracking-widest text-emerald-700">
+          <h3 className="mb-4 text-[10px] font-black uppercase tracking-widest text-emerald-700">
             Service Areas:
-          </h4>
+          </h3>
           <div className="flex flex-wrap gap-2">
             {cityLinks.map((city) => (
               <Link
@@ -284,8 +284,6 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-500">
-            <Link href="/contact" className="hover:text-emerald-600 transition-colors">Privacy Policy</Link>
-            <span>•</span>
             <Link href="/services" className="hover:text-emerald-600 transition-colors">All Services</Link>
             <span>•</span>
             <Link href="/faq" className="hover:text-emerald-600 transition-colors">FAQ</Link>

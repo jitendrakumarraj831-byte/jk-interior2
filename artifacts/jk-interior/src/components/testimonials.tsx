@@ -10,7 +10,7 @@ const featured = {
   name: "Deepak Gupta",
   location: "Purnia",
   service: "Complete Interior",
-  color: "from-cyan-500 to-cyan-700",
+  color: "from-cyan-700 to-cyan-900",
   initials: "DG",
   text: "Complete home interior का काम JK Interior को दिया। Ceiling से lekr TV unit तक सब कुछ perfect। On-time delivery और zero hidden charges। Bihar का best interior designer!",
 }
@@ -23,7 +23,7 @@ const testimonials = [
     text: "JK Interior ने हमारे घर का PVC false ceiling बेहद खूबसूरती से लगाया। काम की quality और speed दोनों exceptional थी।",
     service: "PVC False Ceiling",
     initials: "RK",
-    color: "from-emerald-500 to-emerald-700",
+    color: "from-emerald-700 to-emerald-900",
   },
   {
     name: "Priya Sharma",
@@ -32,7 +32,7 @@ const testimonials = [
     text: "Gypsum ceiling के लिए JK Interior को hire किया। Professional team, clean work, और 1 साल की warranty।",
     service: "Gypsum Ceiling",
     initials: "PS",
-    color: "from-violet-500 to-violet-700",
+    color: "from-violet-700 to-violet-900",
   },
   {
     name: "Amit Singh",
@@ -41,7 +41,7 @@ const testimonials = [
     text: "WPC wall paneling का काम बहुत अच्छा किया। Termite-proof और waterproof panels लगाए। TV unit design भी बहुत stylish आया।",
     service: "WPC Wall Panel",
     initials: "AS",
-    color: "from-amber-500 to-amber-700",
+    color: "from-amber-700 to-amber-900",
   },
   {
     name: "Sunita Devi",
@@ -50,7 +50,7 @@ const testimonials = [
     text: "UV marble sheet लगवाई पूरे bedroom में। Marble जैसा ही look आया but cost बहुत कम था।",
     service: "UV Marble Sheet",
     initials: "SD",
-    color: "from-teal-500 to-teal-700",
+    color: "from-teal-700 to-teal-900",
   },
   {
     name: "Meena Yadav",
@@ -59,7 +59,7 @@ const testimonials = [
     text: "Free site visit के लिए आए, detailed quotation दिया, और काम शुरू किया। हर step professional था।",
     service: "PVC False Ceiling",
     initials: "MY",
-    color: "from-blue-500 to-blue-700",
+    color: "from-blue-700 to-blue-900",
   },
 ]
 
@@ -112,7 +112,7 @@ export default function Testimonials() {
             <div className="text-left">
               <div className="flex items-center gap-1.5">
                 <span className="text-sm font-bold text-white">{featured.name}</span>
-                <span className="flex gap-0.5" aria-label="5 out of 5 stars">
+                <span className="flex gap-0.5" role="img" aria-label="5 out of 5 stars">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-3 w-3 text-amber-400 fill-amber-400" aria-hidden="true" />
                   ))}
@@ -139,7 +139,7 @@ export default function Testimonials() {
                 className="flex w-72 shrink-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-5 backdrop-blur-sm sm:w-80"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex gap-0.5" aria-label={`${t.rating} out of 5 stars`}>
+                  <div className="flex gap-0.5" role="img" aria-label={`${t.rating} out of 5 stars`}>
                     {[...Array(t.rating)].map((_, si) => (
                       <Star key={si} className="h-3.5 w-3.5 text-amber-400 fill-amber-400" aria-hidden="true" />
                     ))}
@@ -178,7 +178,7 @@ export default function Testimonials() {
             icon={false}
             ariaLabel="WhatsApp JK Interior for free consultation"
             message="Hi JK Interior, I want to get interior work done. Please share details."
-            className="bg-emerald-600 text-base shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)]"
+            className="bg-emerald-700 text-base shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)]"
           >
             Get Free Consultation
           </WhatsAppLink>

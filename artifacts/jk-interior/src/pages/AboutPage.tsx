@@ -6,7 +6,7 @@ import SeoHead from "@/components/seo-head"
 
 export default function AboutPage() {
   return (
-    <>
+    <main>
       <SeoHead
         title="About JK Interior – Best False Ceiling Contractor in Forbesganj, Araria Bihar"
         description="Learn about JK Interior – Bihar's most trusted interior contractor since 2016. 500+ projects, ISI-certified materials, 1-year written warranty. Serving Forbesganj, Araria, Purnia, Supaul and all of Bihar."
@@ -46,6 +46,6 @@ export default function AboutPage() {
       <WhyUs />
       <Testimonials />
       <Footer />
-    </>
+    </main>
   )
 }

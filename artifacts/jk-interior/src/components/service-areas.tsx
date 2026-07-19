@@ -125,7 +125,7 @@ export default function ServiceAreas() {
                     </span>
                     <div>
                       <span className={`block text-sm font-bold ${area.highlight ? "text-emerald-700" : "text-gray-800"}`}>{area.name}</span>
-                      <span className="block text-[9px] font-medium text-gray-400">{area.desc}</span>
+                      <span className="block text-[9px] font-medium text-gray-500">{area.desc}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -149,7 +149,7 @@ export default function ServiceAreas() {
               <MapPin className={`h-4 w-4 shrink-0 ${area.highlight ? "text-emerald-600" : "text-gray-400"}`} />
               <div>
                 <span className="block text-sm font-bold text-gray-900">{area.name}</span>
-                <span className="block text-[9px] text-gray-400">{area.desc}</span>
+                <span className="block text-[9px] text-gray-500">{area.desc}</span>
               </div>
             </motion.div>
           ))}

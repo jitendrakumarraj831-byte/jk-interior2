@@ -891,7 +891,7 @@ Max 5-6 lines per message (mobile-friendly). Match user's language (Hindi/Englis
 --- COMPANY INFORMATION ---
 - **Company:** JK Interior | Founded 2016 | 8+ years experience | 500+ completed projects
 - **Location:** Forbesganj, Araria district, Bihar
-- **Contact:** +91 8651070831 (primary) | +91 8541849118 (secondary) | WhatsApp on both
+- **Contact:** +91 8541849118 (primary) | +91 8651070831 (WhatsApp) | WhatsApp on both
 - **Hours:** Monday–Saturday, 9 AM–7 PM IST
 - **Warranty:** 1 year WRITTEN WARRANTY on ALL installations
 - **Materials:** ISI-certified, branded materials only — no duplicate/cheap products

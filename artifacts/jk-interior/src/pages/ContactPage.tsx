@@ -5,7 +5,7 @@ import SeoHead from "@/components/seo-head"
 
 export default function ContactPage() {
   return (
-    <>
+    <main>
       <SeoHead
         title="Contact JK Interior – Free Quote for Interior Design in Forbesganj Bihar"
         description="Contact JK Interior for a free site visit and quote. Call +91 8541849118 or WhatsApp +91 8651070831 for PVC ceiling, gypsum ceiling, WPC wall panel and interior design in Forbesganj, Araria, Bihar."
@@ -54,6 +54,6 @@ export default function ContactPage() {
       <div className="pt-28" />
       <Contact />
       <Footer />
-    </>
+    </main>
   )
 }

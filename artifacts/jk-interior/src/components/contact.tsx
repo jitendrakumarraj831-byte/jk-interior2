@@ -91,7 +91,7 @@ export default function Contact() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
                   <Phone className="h-5 w-5" />
                 </div>
-                <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Call Us</h4>
+                <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Call Us</h3>
                 <div className="flex flex-col gap-1.5 text-sm font-bold">
                   <a href={`tel:${CALL_NUMBER}`} className="text-white hover:text-emerald-300 transition-colors">+91 8541849118</a>
                   <a href={`tel:+${WA_NUMBER}`} className="text-slate-400 hover:text-emerald-300 transition-colors">+91 8651070831</a>
@@ -105,7 +105,7 @@ export default function Contact() {
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
                   <Mail className="h-5 w-5" />
                 </div>
-                <h4 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Email Us</h4>
+                <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Email Us</h3>
                 <a
                   href="mailto:jkinteriorofficial@gmail.com"
                   className="text-sm font-bold text-slate-200 hover:text-emerald-300 break-all transition-colors"
@@ -125,7 +125,7 @@ export default function Contact() {
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white mb-1">Our Location</h4>
+                  <h3 className="text-base font-bold text-white mb-1">Our Location</h3>
                   <p className="text-slate-300 font-semibold text-sm">Damaria, Rewahi, Araria, Bihar - 854318</p>
                   <p className="text-xs text-slate-500 mt-1">दमरिया, रेवाही, अररिया, बिहार</p>
                 </div>
@@ -142,7 +142,7 @@ export default function Contact() {
                   <Clock className="h-6 w-6" />
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white mb-2">Working Hours</h4>
+                  <h3 className="text-base font-bold text-white mb-2">Working Hours</h3>
                   <div className="space-y-1 text-sm">
                     <div className="flex justify-between gap-8">
                       <span className="text-slate-400">Mon – Sat</span>
@@ -199,14 +199,14 @@ export default function Contact() {
                 <Star className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-xl font-black text-gray-900">Send Us a Message</h4>
+                <h3 className="text-xl font-black text-gray-900">Send Us a Message</h3>
                 <p className="text-xs text-gray-500">Free consultation, no obligation</p>
               </div>
             </div>
 
             {submitted && (
               <div className="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-700 text-center">
-                ✅ Message sent! We'll contact you within 2 hours.
+                ✅ WhatsApp opened in a new tab — tap Send there to reach us. We'll reply within 2 hours.
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -273,7 +273,7 @@ export default function Contact() {
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-700 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -283,7 +283,7 @@ export default function Contact() {
                 WhatsApp पर भेजें / Send via WhatsApp
               </button>
 
-              <p className="text-center text-[10px] font-medium text-gray-400">
+              <p className="text-center text-[10px] font-medium text-gray-500">
                 Your message will open WhatsApp directly. We respond within 2 hours.
               </p>
             </form>

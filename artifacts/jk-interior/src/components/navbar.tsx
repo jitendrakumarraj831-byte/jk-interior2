@@ -50,7 +50,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="relative group shrink-0">
               <div className="absolute -inset-2 rounded-xl bg-emerald-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img src="/logo.png" alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar" className="relative h-9 w-auto sm:h-10 object-contain" />
+              <img src="/logo.png" alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar" width={100} height={40} className="relative h-9 w-auto sm:h-10 object-contain" />
             </Link>
 
             {/* Desktop Nav Links */}
@@ -82,7 +82,7 @@ export default function Navbar() {
 
             {/* Desktop CTAs */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
-              <CallLink size="sm" variant="outline" className="gap-2">
+              <CallLink size="sm" variant="outline" className="gap-2" ariaLabel="Call JK Interior +91 8541849118">
                 <span className="hidden xl:inline">+91 8541849118</span>
                 <span className="xl:hidden">Call</span>
               </CallLink>
@@ -90,7 +90,7 @@ export default function Navbar() {
                 size="sm"
                 shine
                 message="Hi JK Interior, I need interior design help."
-                className="gap-2 bg-emerald-600 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(5,150,105,0.35)] hover:bg-emerald-500 hover:shadow-[0_4px_24px_rgba(5,150,105,0.5)]"
+                className="gap-2 bg-emerald-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_24px_rgba(5,150,105,0.5)]"
               >
                 WhatsApp
               </WhatsAppLink>
@@ -165,7 +165,7 @@ export default function Navbar() {
                     <WhatsAppLink
                       shine
                       message="Hi JK Interior, I need interior design help."
-                      className="bg-emerald-600 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_20px_rgba(5,150,105,0.35)]"
+                      className="bg-emerald-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_20px_rgba(5,150,105,0.35)]"
                     >
                       Chat on WhatsApp
                     </WhatsAppLink>

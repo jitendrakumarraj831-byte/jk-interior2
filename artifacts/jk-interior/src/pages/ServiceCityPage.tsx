@@ -76,7 +76,7 @@ export default function ServiceCityPage() {
   ]
 
   return (
-    <>
+    <main>
       <SeoHead
         title={`${service.name} in ${city.name} – JK Interior ${city.district} Bihar`}
         description={`${service.name} in ${city.name}, ${city.district} Bihar — ${service.price}. ${service.bestFor}. Free site visit, 1 year warranty. Call +91 8541849118.`}
@@ -234,7 +234,7 @@ export default function ServiceCityPage() {
           </h2>
           <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <CallLink icon={false} className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
+            <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
               <Phone className="h-4 w-4" aria-hidden="true" />
               Call +91 8541849118
             </CallLink>
@@ -296,6 +296,6 @@ export default function ServiceCityPage() {
       </section>
 
       <Footer />
-    </>
+    </main>
   )
 }
