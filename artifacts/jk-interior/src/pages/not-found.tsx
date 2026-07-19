@@ -31,8 +31,7 @@ export default function NotFound() {
             यह पेज नहीं मिला — <span className="hero-gradient-text">Page Not Found</span>
           </h1>
           <p className="mx-auto mb-8 max-w-md text-sm leading-relaxed text-gray-600 sm:text-base">
-            The page you're looking for may have moved or doesn't exist. Explore our services and
-            gallery, or reach out for a free quotation.
+            जो पेज आप ढूंढ रहे हैं वो हट गया है या मिल नहीं रहा। हमारी सर्विस और गैलरी देखिए, या फ्री कोटेशन के लिए संपर्क कीजिए।
           </p>
 
           <div className="mb-10 flex flex-wrap justify-center gap-3">
@@ -50,8 +49,8 @@ export default function NotFound() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-3">
-            <CallLink shine>Call for Free Quote</CallLink>
-            <WhatsAppLink message="Hi JK Interior, I landed on a broken page and need help.">WhatsApp Us</WhatsAppLink>
+            <CallLink shine>Free Quote के लिए कॉल करें</CallLink>
+            <WhatsAppLink message="नमस्ते JK Interior, मैं एक खराब पेज पर पहुंच गया — मदद चाहिए।">WhatsApp करें</WhatsAppLink>
           </div>
         </div>
       </main>

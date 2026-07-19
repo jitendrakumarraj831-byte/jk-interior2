@@ -44,8 +44,8 @@ const CITY_MAP: Record<string, string> = {
 }
 
 const QUICK_ACTION_MAP: Record<string, string> = {
-  "📂 View See Designs": "Mujhe PVC ceiling ka design catalog dekhna hai",
-  "✨ Book Book Visit": "Mujhe free site visit book karni hai",
+  "📂 डिज़ाइन देखें": "Mujhe PVC ceiling ka design catalog dekhna hai",
+  "✨ Free Site Visit बुक करें": "Mujhe free site visit book karni hai",
 }
 
 // ── EXACT FAQ ANSWERS — Fixed Questions ka Fixed Answer ───────────────────────
@@ -53,93 +53,93 @@ const EXACT_FAQ_FIXED: Array<{ patterns: RegExp; answer: string }> = [
   {
     // Greetings — broad match
     patterns: /^(hi+|hello+|hey+|namaste|namaskar|helo|good\s*(morning|evening|afternoon|night)|hy|hii+|salam|kaise\s*ho|kya\s*haal|kya\s*chal|wassup|sup|haan\s*ji|ha\s*ji|ji\s*haan|ji)$/i,
-    answer: `🌟 Namaste! JK Interior mein aapka swagat hai!\n\nMain **JK Interior AI Assistant** hoon — aapki interior design consultant 😊\n\nAap pooch sakte hain:\n✅ Kisi bhi material ki rate (PVC, Gypsum, WPC...)\n✅ Apne room ka estimate\n✅ Design ideas ya suggestions\n\nKya jaanna chahte hain? Batao!`,
+    answer: `🌟 नमस्ते! JK Interior में आपका स्वागत है!\n\nमैं **JK Interior AI Assistant** हूं — आपका इंटीरियर डिज़ाइन कंसल्टेंट 😊\n\nआप पूछ सकते हैं:\n✅ किसी भी मटेरियल का रेट (PVC, Gypsum, WPC...)\n✅ अपने रूम का estimate\n✅ डिज़ाइन आइडिया या सुझाव\n\nक्या जानना चाहते हैं? बताइए!`,
   },
   {
     // Price list
     patterns: /\b(price\s*list|rate\s*list|sab\s*ka\s*rate|all\s*(?:material\s*)?rate|poori\s*list|full\s*list|sabhi\s*rate|saari\s*rate|complete\s*rate)\b/i,
-    answer: `📋 **JK Interior – Complete Rate List**\n\n✨ Gypsum False Ceiling   ₹75 – ₹210 / sq.ft\n🏠 PVC False Ceiling     ₹75 – ₹150 / sq.ft\n🪵 WPC Wall Panels       ₹180 – ₹650 / sq.ft\n💎 UV Marble Sheets      ₹45 – ₹120 / sq.ft\n📺 Modular TV Unit       ₹15,000 – ₹75,000+\n🏛️ Fluted Panels         ₹200 – ₹500 / sq.ft\n🏢 Grid Ceiling          ₹45 – ₹115 / sq.ft\n🍳 Modular Kitchen       ₹60,000 – ₹2,00,000\n🚪 Custom Wardrobe       ₹800 – ₹2,000 / sq.ft\n\n📞 Free site visit & exact quote: **+91 8541849118**`,
+    answer: `📋 **JK Interior – पूरी रेट लिस्ट**\n\n✨ Gypsum False Ceiling   ₹75 – ₹210 / sq.ft\n🏠 PVC False Ceiling     ₹75 – ₹150 / sq.ft\n🪵 WPC Wall Panel       ₹180 – ₹650 / sq.ft\n💎 UV Marble Sheet      ₹45 – ₹120 / sq.ft\n📺 Modular TV Unit       ₹15,000 – ₹75,000+\n🏛️ Fluted Panel         ₹200 – ₹500 / sq.ft\n🏢 Grid Ceiling          ₹45 – ₹115 / sq.ft\n🍳 Modular Kitchen       ₹60,000 – ₹2,00,000\n🚪 Custom Wardrobe       ₹800 – ₹2,000 / sq.ft\n\n📞 Free Site Visit और exact कोटेशन: **+91 8541849118**`,
   },
   {
     // Warranty / guarantee
     patterns: /\b(warranty|guarantee|kitne\s*saal\s*(?:ki\s*)?(?:warranty|guarantee)|how\s*many\s*years|kitni\s*guarantee|kitni\s*warranty|long\s*lasting|toot\s*(?:jayega|jaaye|gaya)|टूट|खराब\s*(?:ho|hoga)|kharab)\b/i,
-    answer: `🛡️ **JK Interior Warranty**\n\n✅ **JK Interior ki 1 saal ki written warranty** — sab installations pe\n\n📅 Material lifespan:\n• PVC Ceiling — 20+ saal\n• Gypsum Ceiling — 10–15 saal\n• WPC Wall Panels — 15–20 saal\n• UV Marble Sheets — 15+ saal\n• Modular TV Unit — 8–10 saal\n\n🔧 Koi bhi defect pe free repair milega warranty period mein\n📞 +91 8541849118`,
+    answer: `🛡️ **JK Interior की Warranty**\n\n✅ **1 साल की लिखित Warranty** — हर installation पर\n\n📅 मटेरियल की उम्र:\n• PVC Ceiling — 20+ साल\n• Gypsum Ceiling — 10–15 साल\n• WPC Wall Panel — 15–20 साल\n• UV Marble Sheet — 15+ साल\n• Modular TV Unit — 8–10 साल\n\n🔧 Warranty के दौरान कोई भी खराबी हो तो फ्री रिपेयर मिलेगी\n📞 +91 8541849118`,
   },
   {
     // Installation time
     patterns: /(?:installation|install|kaam|lagan[ae]|fit\s*karn[ae]|lagwane)\s*(?:mein\s*)?(?:kitna|kab|time|din|waqt|samay)|(?:kitne\s*din\s*(?:mein\s*)?(?:hoga|lagega|complete|ban|taiyar))|(?:kab\s*(?:tak|milega|taiyar|complete|hoga))/i,
-    answer: `⏱️ **Installation Time**\n\n✅ PVC Ceiling (1 room) – **1–2 दिन**\n✅ Gypsum Ceiling (1 room) – **2–4 दिन**\n✅ WPC Wall Panels – **2–3 दिन**\n✅ UV Marble Sheets – **1–2 दिन**\n✅ TV Unit (Modular) – **3–5 दिन**\n✅ Full Home Interior – **15–30 दिन**\n\n📞 Exact timeline ke liye: **+91 8541849118**`,
+    answer: `⏱️ **कितने दिन में हो जाएगा**\n\n✅ PVC Ceiling (1 कमरा) – **1–2 दिन**\n✅ Gypsum Ceiling (1 कमरा) – **2–4 दिन**\n✅ WPC Wall Panel – **2–3 दिन**\n✅ UV Marble Sheet – **1–2 दिन**\n✅ TV Unit (Modular) – **3–5 दिन**\n✅ पूरे घर का इंटीरियर – **15–30 दिन**\n\n📞 सही-सही टाइमलाइन के लिए: **+91 8541849118**`,
   },
   {
     // Contact
     patterns: /\b(?:(?:aapka|JK\s*interior\s*ka|company\s*ka|tumhara|apka)\s*)?(?:contact|phone\s*number|number\s*do|number\s*kya|helpline|customer\s*care|number\s*batao|call\s*karo|kaise\s*contact|kahan\s*mile|address)\b/i,
-    answer: `📞 **JK Interior – Contact Us**\n\n📱 WhatsApp & Call: **+91 8541849118**\n🕐 Timing: **सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे**\n📍 Forbesganj, Araria, Bihar\n\n💬 WhatsApp pe message karo ya seedha call karo! 🙏`,
+    answer: `📞 **JK Interior से संपर्क करें**\n\n📱 WhatsApp और Call: **+91 8541849118**\n🕐 समय: **सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे**\n📍 फोर्बेसगंज, अररिया, बिहार\n\n💬 WhatsApp पर मैसेज कर दीजिए या सीधे कॉल कर लीजिए! 🙏`,
   },
   {
     // Site visit / free visit
     patterns: /\b(free\s*(?:site\s*)?visit|site\s*visit|free\s*consultation|ghar\s*(?:aa?o|aana)|visit\s*chahiye|measurement\s*(?:chahiye|karo|karna)|ghar\s*aake|aap\s*aao|koi\s*aaye|banda\s*bhejo|expert\s*bhejo)\b/i,
-    answer: `📅 **Book Visit – 100% Free!**\n\n✅ Hamare expert aapke ghar aayenge\n✅ Room measure karenge\n✅ Best design suggest karenge\n✅ Exact quote on-the-spot milega\n✅ Koi hidden charge nahi!\n\n📞 Book karo: **+91 8541849118**\nYa "Book Visit" button dabao niche 👇`,
+    answer: `📅 **Site Visit बुक करें – 100% Free!**\n\n✅ हमारा एक्सपर्ट आपके घर आएगा\n✅ रूम की माप लेगा\n✅ सबसे सही डिज़ाइन सुझाएगा\n✅ वहीं मौके पर exact कोटेशन मिल जाएगी\n✅ कोई छुपा हुआ खर्च नहीं!\n\n📞 बुक करें: **+91 8541849118**\nया नीचे "Book Visit" बटन दबाइए 👇`,
   },
   {
     // Waterproof / bathroom ceiling
     patterns: /\b(waterproof|(?:bathroom|kitchen|toilet|balcony)\s*(?:ke\s*liye\s*)?(?:ceiling|chhat|panel)|wet\s*area|(?:paani|baarish|nami|moisture|seepage|selan)\s*(?:se\s*)?(?:safe|resist|bachao|problem))\b/i,
-    answer: `💧 **Waterproof Options**\n\n✅ **PVC Ceiling** – 100% waterproof, bathroom/kitchen ke liye best\n   Rate: ₹75–150 / sq.ft\n\n❌ Gypsum – waterproof NAHI hai, wet areas me avoid karo\n\n✅ **UV Marble Sheets** – bathroom walls ke liye perfect\n   Rate: ₹45–120 / sq.ft\n\nRoom ka size bata dijiye — turant estimate nikaalta hoon! 📐`,
+    answer: `💧 **Waterproof ऑप्शन**\n\n✅ **PVC Ceiling** – 100% पानी का असर नहीं, बाथरूम-किचन के लिए बेस्ट\n   रेट: ₹75–150 / sq.ft\n\n❌ Gypsum – पानी से नहीं बचती, गीली जगह में मत लगाइए\n\n✅ **UV Marble Sheet** – बाथरूम की दीवार के लिए एकदम सही\n   रेट: ₹45–120 / sq.ft\n\nरूम का साइज़ बता दीजिए — तुरंत estimate निकाल देता हूं! 📐`,
   },
   {
     // Gypsum vs PVC comparison
     patterns: /\b(gypsum\s*vs\s*pvc|pvc\s*vs\s*gypsum|kaunsa\s*(?:better|behtar|acha|sahi|lena\s*chahiye)|(?:gypsum|pvc)\s*(?:mein\s*)?(?:kya\s*)?(?:difference|antar|fark|alag)|dono\s*mein|konsa\s*(?:lu|loon|lu\s*main|better))\b/i,
-    answer: `⚖️ **Gypsum vs PVC – Full Comparison**\n\n| Feature | Gypsum | PVC |\n|---------|--------|-----|\n| Rate | ₹75–210 | ₹75–150 |\n| Look | Premium | Clean |\n| Waterproof | ❌ No | ✅ Yes |\n| Durability | 5 yr | 10 yr |\n| Best For | Hall/Bedroom | Kitchen/Bath |\n\n🏆 **Suggestion:** Hall me Gypsum + Kitchen/Bathroom me PVC — best combo!\n\n📞 Free consultation: **+91 8541849118**`,
+    answer: `⚖️ **Gypsum vs PVC – पूरी तुलना**\n\n| बात | Gypsum | PVC |\n|---------|--------|-----|\n| रेट | ₹75–210 | ₹75–150 |\n| लुक | प्रीमियम | क्लीन |\n| पानी से बचाव | ❌ नहीं | ✅ हां |\n| टिकाऊपन | 5 साल | 10 साल |\n| सबसे सही | हॉल/बेडरूम | किचन/बाथरूम |\n\n🏆 **सुझाव:** हॉल में Gypsum + किचन-बाथरूम में PVC — यही सबसे बढ़िया कॉम्बो है!\n\n📞 Free Consultation: **+91 8541849118**`,
   },
   {
   
     // Service areas
     patterns: /\b(?:konse|kahan[\s-]*kahan|kahan\s*(?:service|kaam|milega|tak|dete)|service\s*area|areas?\s*(?:cover|covered|mein)|kahan\s*kaam|which\s*cit(?:y|ies)|kahan\s*milega|kahan\s*tak|aate\s*ho|aate\s*hain|kaam\s*karte\s*ho|service\s*dete|kahan\s*dete)\b/i,
-    answer: `📍 **JK Interior – Service Areas**\n\n✅ Forbesganj ✅ Araria ✅ Jogbani\n✅ Raniganj ✅ Narpatganj ✅ Kursakanta\n✅ Tribeniganj ✅ Chhatapur ✅ Supaul ✅ Purnia\n\nAur bhi nearby areas cover karte hain!\n📞 **+91 8541849118**`,
+    answer: `📍 **JK Interior – सर्विस एरिया**\n\n✅ फोर्बेसगंज ✅ अररिया ✅ जोगबनी\n✅ रानीगंज ✅ नरपतगंज ✅ कुर्साकाँटा\n✅ त्रिवेणीगंज ✅ छतापुर ✅ सुपौल ✅ पूर्णिया\n\nइसके आसपास की जगहों पर भी हम पहुंच जाते हैं!\n📞 **+91 8541849118**`,
   },
   {
     // Payment
     patterns: /\b(?:payment|advance|payment\s*mode|upi|(?:cash|online)\s*payment|kitna\s*advance|deposit|paise\s*(?:kaise|kab)|bhaav|how\s*to\s*pay|pehle\s*paise|paisa\s*kab)\b/i,
-    answer: `💳 **Payment Details**\n\n✅ UPI / PhonePe / GPay accepted\n✅ Cash payment bhi chalega\n✅ Site visit ke baad 30–50% advance\n✅ Kaam complete hone pe remaining payment\n✅ No full advance required!\n\n📞 Details ke liye: **+91 8541849118**`,
+    answer: `💳 **पेमेंट की जानकारी**\n\n✅ UPI / PhonePe / GPay चलता है\n✅ Cash भी दे सकते हैं\n✅ Site Visit के बाद 30–50% एडवांस\n✅ बाकी पैसा काम पूरा होने पर\n✅ पूरा एडवांस देने की ज़रूरत नहीं!\n\n📞 पूरी जानकारी के लिए: **+91 8541849118**`,
   },
   {
     // LED / lighting
     patterns: /\b(?:led|cove\s*light(?:ing)?|indirect\s*light(?:ing)?|led\s*strip|light\s*design|rgb\s*light|celing\s*light|ceiling\s*light|light\s*(?:chahiye|lagani|lagwana|rate|cost|kitna))\b/i,
-    answer: `💡 **LED Lighting Options**\n\n✅ Cove Lighting (Gypsum ke saath) – ₹40–80 / running ft\n✅ LED Strip (RGB/White) – ₹30–60 / running ft\n✅ Spot Lights – ₹200–500 / piece\n✅ Backlit TV Panel – ₹800–2000\n\n✨ LED lighting se room ka look 3x premium ho jaata hai!\n\nRoom size bata dijiye — LED estimate bhi saath mein dunga 🙏`,
+    answer: `💡 **LED लाइटिंग के ऑप्शन**\n\n✅ Cove Light (Gypsum के साथ) – ₹40–80 / running ft\n✅ LED Strip (RGB/White) – ₹30–60 / running ft\n✅ Spot Light – ₹200–500 / पीस\n✅ Backlit TV Panel – ₹800–2000\n\n✨ LED लाइटिंग से रूम का लुक 3 गुना प्रीमियम हो जाता है!\n\nरूम का साइज़ बता दीजिए — साथ में LED का estimate भी दे दूंगा 🙏`,
   },
   {
     // Quality / materials
     patterns: /\b(?:quality|acha\s*(?:material|maal)|genuine|original|local\s*nahi|brand(?:ed)?|trusted|reliable|jhooth\s*nahi|sach\s*mein|accha\s*kaam|guarantee\s*hai|bharosa)\b/i,
-    answer: `✅ **JK Interior – Quality Assurance**\n\nHum sirf branded aur ISI-certified materials use karte hain:\n\n🏆 **Trusted Brands:** Armstrong, Saint-Gobain, Hunter Douglas\n🔧 **Professional Installation** – 5+ saal experienced team\n⭐ **500+ Happy Customers** in Araria & surroundings\n🛡️ Material warranty – 2 se 10 saal tak\n\nKisi bhi doubt ke liye free site visit arrange kar sakte hain!\n📞 +91 8541849118`,
+    answer: `✅ **JK Interior – मटेरियल की क्वालिटी**\n\nहम सिर्फ ब्रांडेड और ISI-Certified मटेरियल इस्तेमाल करते हैं:\n\n🏆 **भरोसेमंद ब्रांड:** Armstrong, Saint-Gobain, Hunter Douglas\n🔧 **प्रोफेशनल इंस्टॉलेशन** – 5+ साल के अनुभवी टीम से\n⭐ **500+ खुश ग्राहक** अररिया और आसपास\n🛡️ मटेरियल की वारंटी – 2 से 10 साल तक\n\nकोई शक हो तो Free Site Visit करवा सकते हैं!\n📞 +91 8541849118`,
   },
   {
     // Maintenance / cleaning
     patterns: /\b(?:maintenance|clean(?:ing)?|saaf|safai|dhona|dust|dhool|kitna\s*kharcha\s*(?:maintenance|repair)|repair|thik\s*karna|toot\s*gaya)\b/i,
-    answer: `🧹 **Maintenance Guide**\n\n✅ **PVC Ceiling** – Sirf wet cloth se pocha lagao. Zero maintenance!\n✅ **Gypsum** – Dry soft cloth ya vacuum. Water se bachao.\n✅ **WPC Panels** – Damp cloth se saaf karo. Termite-proof!\n✅ **UV Marble** – Glass cleaner se shiny rakhna easy hai.\n\n💡 Sab materials long-lasting hain — agar professionally lagaaye jayein.\n📞 Koi problem ho toh call karo: **+91 8541849118**`,
+    answer: `🧹 **साफ-सफाई कैसे करें**\n\n✅ **PVC Ceiling** – सिर्फ गीले कपड़े से पोंछ दें। कुछ और करना ही नहीं!\n✅ **Gypsum** – सूखे कपड़े या वैक्यूम से। पानी से बचाइए।\n✅ **WPC Panel** – हल्के गीले कपड़े से साफ करें। कीड़े का डर नहीं!\n✅ **UV Marble** – Glass Cleaner से चमकदार बनी रहती है, आसान है।\n\n💡 सही तरीके से लगाया गया मटेरियल सालों-साल चलता है।\n📞 कोई परेशानी हो तो कॉल करें: **+91 8541849118**`,
   },
   {
     // Thank you
     patterns: /^(?:thanks?|shukriya|dhanyawad|shukriya\s*ji|bahut\s*shukriya|thank\s*you|thx|ty|ji\s*shukriya|acha\s*hai|great|nice|perfect|bahut\s*acha|bilkul\s*sahi|theek\s*hai|ok\s*ji|okay\s*ji)$/i,
-    answer: `Khushi hui madad karke! 😊🙏\n\nKoi aur sawaal ho toh zaroor puchho — main hamesha yahan hoon.\n\n📞 Direct baat karni ho: **+91 8541849118**`,
+    answer: `खुशी हुई मदद करके! 😊🙏\n\nकोई और सवाल हो तो ज़रूर पूछिए — मैं हमेशा यहां हूं।\n\n📞 सीधे बात करनी हो: **+91 8541849118**`,
   },
   {
     // Who are you / intro
     patterns: /^(?:kaun\s*ho|tum\s*kaun|aap\s*kaun|who\s*are\s*you|what\s*are\s*you|kya\s*ho\s*tum|bot\s*ho|ai\s*ho|real\s*ho|human\s*ho|assistant\s*kaun)$/i,
-    answer: `Main **JK Interior AI Assistant** hoon! 🤖✨\n\nMain aapki help kar sakti hoon:\n✅ Room estimate nikalna\n✅ Material suggestions (PVC, Gypsum, WPC...)\n✅ Design ideas\n✅ Free site visit book karna\n\nKya jaanna chahte ho? Bato! 😊`,
+    answer: `मैं **JK Interior AI Assistant** हूं! 🤖✨\n\nमैं आपकी इन चीज़ों में मदद कर सकता हूं:\n✅ रूम का estimate निकालना\n✅ मटेरियल के सुझाव (PVC, Gypsum, WPC...)\n✅ डिज़ाइन आइडिया\n✅ Free Site Visit बुक करना\n\nक्या जानना चाहते हैं? बताइए! 😊`,
   },
   {
     // Fluted panels
     patterns: /\b(?:fluted\s*panel|fluted\s*wall|fluted\s*design|fluted\s*rate|fluted\s*ceiling)\b/i,
-    answer: `🏛️ **Fluted Panels**\n\nFluted panels ek premium decorative wall treatment hai!\n\n💰 Rate: ₹200 – ₹500 / sq.ft\n✅ Perfect for TV walls, living room accent walls\n✅ Modern & luxury look\n✅ Available in multiple wood finishes\n⏱️ Installation: 2–3 din\n\nWall size bataiye — exact estimate nikaalte hain! 📐`,
+    answer: `🏛️ **Fluted Panel**\n\nFluted Panel एक प्रीमियम डेकोरेटिव वॉल ट्रीटमेंट है!\n\n💰 रेट: ₹200 – ₹500 / sq.ft\n✅ TV वॉल, लिविंग रूम की Accent Wall के लिए एकदम सही\n✅ मॉडर्न और लग्ज़री लुक\n✅ कई लकड़ी वाले फिनिश में मिल जाता है\n⏱️ Installation: 2–3 दिन\n\nवॉल का साइज़ बताइए — exact estimate निकालते हैं! 📐`,
   },
   {
     // Grid ceiling
     patterns: /\b(?:grid\s*ceiling|grid\s*tile|office\s*ceiling|false\s*grid|mineral\s*fiber|grid\s*ka\s*rate)\b/i,
-    answer: `🏢 **Grid Ceiling (Office/Commercial)**\n\n💰 Rate: ₹45 – ₹115 / sq.ft\n✅ Best for offices, shops, showrooms\n✅ Easy maintenance — tiles replace karna easy\n✅ Fire resistant options available\n⏱️ Installation: 1–2 din per room\n\nArea size batao — estimate nikaalta hoon! 📐`,
+    answer: `🏢 **Grid Ceiling (ऑफिस/कमर्शियल)**\n\n💰 रेट: ₹45 – ₹115 / sq.ft\n✅ ऑफिस, दुकान, शोरूम के लिए बेस्ट\n✅ मेंटेनेंस आसान — टाइल बदलना आसान है\n✅ आग से सुरक्षित ऑप्शन भी मिलता है\n⏱️ Installation: 1–2 दिन प्रति कमरा\n\nएरिया का साइज़ बता दीजिए — estimate निकाल देता हूं! 📐`,
   },
 {
     // Office location / address
     patterns: /\b(?:office\s*(?:kahan|kaha|hai|address|location)|location\s*(?:kya|kahan|batao|hai)|aapka\s*(?:office|address|location|ghar|showroom)|showroom\s*(?:kahan|hai)|kahan\s*(?:ho|hain|hai)\s*aap|address\s*(?:kya|batao|do|chahiye))\b/i,
-    answer: `📍 **JK Interior – Office Location**\n\n🏢 Forbesganj, Araria District, Bihar\n\n✅ Hum ghar aake FREE site visit karte hain\n✅ Aapko office aane ki zaroorat nahi!\n\n📞 Call/WhatsApp: **+91 8541849118**\n🕐 Timing: Mon–Sat, 9 AM – 9 PM`,
+    answer: `📍 **JK Interior – ऑफिस लोकेशन**\n\n🏢 फोर्बेसगंज, अररिया ज़िला, बिहार\n\n✅ हम घर आकर FREE Site Visit करते हैं\n✅ आपको ऑफिस आने की ज़रूरत ही नहीं!\n\n📞 Call/WhatsApp: **+91 8541849118**\n🕐 समय: सोमवार–शनिवार, सुबह 9 बजे – रात 9 बजे`,
   },
 ]
 
@@ -260,11 +260,11 @@ function extractDimensions(text: string): { length: number; width: number; rawMa
 }
 
 function getPremiumAdvice(area: number, materialType: string): string {
-  if (area > 250) return "Itne bade area ke liye cove lighting design best rahega — Gypsum ya WPC ke saath ekdum premium look aayega!"
-  if (area > 150) return "Achha size hai! Perimeter pe LED strip lagane se modern aur high-end look milega."
-  if (materialType.includes("WPC")) return "WPC panels TV wall ya bedroom ke liye perfect — rich wooden texture deta hai."
-  if (materialType.includes("PVC")) return "PVC waterproof hai — kitchen ya balcony ke liye ideal, zero maintenance."
-  return "Subtle indirect lighting se room ka look aur bhi premium ho jaayega!"
+  if (area > 250) return "इतने बड़े एरिया के लिए Cove Light वाला डिज़ाइन सबसे बेहतर रहेगा — Gypsum या WPC के साथ लुक एकदम प्रीमियम आएगा!"
+  if (area > 150) return "साइज़ अच्छा है! किनारे पर LED Strip लगाने से मॉडर्न और हाई-एंड लुक मिलेगा।"
+  if (materialType.includes("WPC")) return "WPC Panel TV वॉल या बेडरूम के लिए एकदम सही — लकड़ी जैसा भरा-पूरा टेक्सचर देता है।"
+  if (materialType.includes("PVC")) return "PVC पानी से नहीं डरती — किचन या बालकनी के लिए एकदम सही, कुछ करना भी नहीं पड़ता।"
+  return "हल्की इनडायरेक्ट लाइटिंग से कमरे का लुक और भी प्रीमियम हो जाएगा!"
         }
 
 function generateEstimateFromDimensions(
@@ -279,8 +279,8 @@ function generateEstimateFromDimensions(
                       service?.toLowerCase().includes("wpc") ? "wpc" :
                       service?.toLowerCase().includes("uv") ? "uv" : "gypsum"
   const materialName = materialKey === "pvc" ? "PVC Ceiling" :
-                       materialKey === "wpc" ? "WPC Wall Panels" :
-                       materialKey === "uv" ? "UV Marble Sheets" : "Gypsum Ceiling"
+                       materialKey === "wpc" ? "WPC Wall Panel" :
+                       materialKey === "uv" ? "UV Marble Sheet" : "Gypsum Ceiling"
   
   let priceRange = ""
   let priceLow = 0, priceHigh = 0
@@ -294,10 +294,10 @@ function generateEstimateFromDimensions(
   const estimatedTotalHigh = Math.round(area * priceHigh)
   priceRange = `₹${priceLow} – ₹${priceHigh} / sq.ft`
   
-  const greeting = leadName ? `${leadName} ji, ` : ""
+  const greeting = leadName ? `${leadName} जी, ` : ""
   const advice = getPremiumAdvice(area, materialName)
-  
-  return `${greeting}aapke **${length}' × ${width}'** room (${area} sq.ft) ka estimate:\n\n💰 Rate: ${priceRange}\n📐 Total kharcha: **₹${estimatedTotalLow.toLocaleString()} – ₹${estimatedTotalHigh.toLocaleString()}**\n\n✨ ${advice}\n\n📅 Free site visit ke liye "Book Visit" bolein ya apna naam batao! 😊`
+
+  return `${greeting}आपके **${length}' × ${width}'** रूम (${area} sq.ft) का estimate:\n\n💰 रेट: ${priceRange}\n📐 कुल खर्च: **₹${estimatedTotalLow.toLocaleString()} – ₹${estimatedTotalHigh.toLocaleString()}**\n\n✨ ${advice}\n\n📅 Free Site Visit के लिए "Book Visit" बोलिए या अपना नाम बता दीजिए! 😊`
 }
 // ── store admin lead ──────────────────────────────────────────────────────────
 function storeAdminLead(lead: Lead, estimate?: string, preferredTime?: string, chatHistory?: ConvMsg[]) {
@@ -429,88 +429,88 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
 
   // ── Thank you / positive reactions ────────────────────────────────────────
   if (has(t, ["thank","shukriya","dhanyawad","thanks","thx","great","perfect","bahut acha","bahut accha","wah","wow","zabardast","mast"])) {
-    return `Khushi hui madad karke${nm ? ", " + nm : ""}! 😊🙏\n\nKoi aur sawaal ho toh batao — main hamesha yahan hoon.\n📞 +91 8541849118`
+    return `खुशी हुई मदद करके${nm ? ", " + nm : ""}! 😊🙏\n\nकोई और सवाल हो तो बताइए — मैं यहीं हूं।\n📞 +91 8541849118`
   }
 
   // ── Material: Gypsum ──────────────────────────────────────────────────────
   if (t.includes("gypsum") || (t.includes("pop ") && !t.includes("popular")) || t.includes("plaster of paris")) {
     const m = MATERIAL_KNOWLEDGE.gypsum
     const isWaterQ = has(t, ["paani","water","bathroom","nami","moisture","geela","baarish","toilet"])
-    if (isWaterQ) return `Gypsum ceiling bathroom/kitchen ke liye suitable **nahi** hai — paani se kharab ho jaati hai.\n\nBathroom ke liye **PVC Ceiling** best hai:\n✅ 100% waterproof\n💰 ₹75–150 / sq.ft\n⏱️ 1–2 din installation\n\nRoom size bataiye — estimate nikaalta hoon! 📐`
+    if (isWaterQ) return `Gypsum Ceiling बाथरूम-किचन के लिए **सही नहीं** है — पानी से खराब हो जाती है।\n\nबाथरूम के लिए **PVC Ceiling** सबसे बेहतर रहेगी:\n✅ 100% पानी का असर नहीं\n💰 ₹75–150 / sq.ft\n⏱️ 1–2 दिन में इंस्टॉलेशन\n\nरूम का साइज़ बताइए — estimate निकालता हूं! 📐`
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `✨ **Gypsum False Ceiling Rate**\n\n💰 Standard: ₹75–130 / sq.ft\n💎 Premium (cove design): ₹135–210 / sq.ft\n\n✅ Best for hall, bedroom, drawing room\n✅ LED cove lighting ke saath bahut sundar lagta hai\n🛡️ 1 saal written warranty\n\nRoom ka size batao — exact total cost nikaalta hoon! 📐`
+    if (rateQ) return `✨ **Gypsum False Ceiling का रेट**\n\n💰 स्टैंडर्ड: ₹75–130 / sq.ft\n💎 प्रीमियम (Cove डिज़ाइन): ₹135–210 / sq.ft\n\n✅ हॉल, बेडरूम, ड्रॉइंग रूम के लिए बढ़िया\n✅ LED Cove Light के साथ बहुत सुंदर लगती है\n🛡️ 1 साल की लिखित Warranty\n\nरूम का साइज़ बता दीजिए — exact टोटल निकाल देता हूं! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "Gypsum Ceiling", lead?.name || undefined)
     }
-    return `✨ **Gypsum False Ceiling** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n❌ Avoid in: ${m.avoidIn}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nRoom size bhejo (jaise 12×14) — estimate turant nikalti hoon!`
+    return `✨ **Gypsum False Ceiling** – ${m.price}\n\n${m.description}\n\n✅ सबसे सही: ${m.bestFor}\n❌ मत लगाइए: ${m.avoidIn}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nरूम का साइज़ भेज दीजिए (जैसे 12×14) — estimate तुरंत निकाल देता हूं!`
   }
 
   // ── Material: PVC ─────────────────────────────────────────────────────────
   if (t.includes("pvc")) {
     const m = MATERIAL_KNOWLEDGE.pvc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `🏠 **PVC Ceiling Rate**\n\n💰 Standard: ₹75–115 / sq.ft\n💎 Premium: ₹120–150 / sq.ft\n\n✅ 100% waterproof — bathroom & kitchen ke liye best\n✅ Low maintenance\n🛡️ 1 saal written warranty\n\nRoom ka size batao — exact total nikaalta hoon! 📐`
+    if (rateQ) return `🏠 **PVC Ceiling का रेट**\n\n💰 स्टैंडर्ड: ₹75–115 / sq.ft\n💎 प्रीमियम: ₹120–150 / sq.ft\n\n✅ 100% पानी का असर नहीं — बाथरूम-किचन के लिए बेस्ट\n✅ मेंटेनेंस लगभग ज़ीरो\n🛡️ 1 साल की लिखित Warranty\n\nरूम का साइज़ बता दीजिए — exact टोटल निकाल देता हूं! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "PVC Ceiling", lead?.name || undefined)
     }
-    return `🏠 **PVC False Ceiling** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nDimensions bhejo jaise 12×10 — total cost instantly nikalega!`
+    return `🏠 **PVC False Ceiling** – ${m.price}\n\n${m.description}\n\n✅ सबसे सही: ${m.bestFor}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nसाइज़ भेज दीजिए जैसे 12×10 — टोटल कॉस्ट तुरंत निकल जाएगी!`
   }
 
   // ── Material: WPC ─────────────────────────────────────────────────────────
   if (t.includes("wpc") || t.includes("wood panel") || t.includes("wooden panel") || t.includes("louver")) {
     const m = MATERIAL_KNOWLEDGE.wpc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `🪵 **WPC Wall Panel Rate**\n\n💰 Standard: ₹180–390 / sq.ft\n💎 Premium: ₹390–650 / sq.ft\n\n✅ Waterproof & termite-proof\n✅ TV wall, bedroom accent wall ke liye best\n🛡️ 1 saal written warranty\n\nWall size batao — exact quote nikaalta hoon! 📐`
+    if (rateQ) return `🪵 **WPC Wall Panel का रेट**\n\n💰 स्टैंडर्ड: ₹180–390 / sq.ft\n💎 प्रीमियम: ₹390–650 / sq.ft\n\n✅ पानी और कीड़े का असर नहीं\n✅ TV वॉल, बेडरूम एक्सेंट वॉल के लिए बेस्ट\n🛡️ 1 साल की लिखित Warranty\n\nवॉल का साइज़ बता दीजिए — exact कोटेशन निकाल देता हूं! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "WPC Wall Panels", lead?.name || undefined)
     }
-    return `🪵 **WPC Wall Panels** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nAccent wall ya TV background ke liye perfect! Dimensions chahiye?`
+    return `🪵 **WPC Wall Panel** – ${m.price}\n\n${m.description}\n\n✅ सबसे सही: ${m.bestFor}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}\n\nAccent Wall या TV बैकग्राउंड के लिए एकदम सही! साइज़ बता दें?`
   }
 
   // ── Material: UV Marble ───────────────────────────────────────────────────
   if (t.includes("uv ") || t.includes("uv marble") || (t.includes("marble") && !t.includes("natural marble"))) {
     const m = MATERIAL_KNOWLEDGE.uv
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `💎 **UV Marble Sheet Rate**\n\n💰 Standard: ₹45–80 / sq.ft\n💎 Premium: ₹80–120 / sq.ft\n\n✅ Bathroom walls, kitchen backsplash ke liye best\n✅ Glossy finish, easy cleaning\n🛡️ 1 saal written warranty\n\nArea size batao — estimate nikalte hain! 📐`
+    if (rateQ) return `💎 **UV Marble Sheet का रेट**\n\n💰 स्टैंडर्ड: ₹45–80 / sq.ft\n💎 प्रीमियम: ₹80–120 / sq.ft\n\n✅ बाथरूम की दीवार, किचन बैकस्प्लैश के लिए बेस्ट\n✅ चमकदार फिनिश, साफ करना आसान\n🛡️ 1 साल की लिखित Warranty\n\nएरिया का साइज़ बताइए — estimate निकालते हैं! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "UV Marble Sheets", lead?.name || undefined)
     }
-    return `💎 **UV Marble Sheets** – ${m.price}\n\n${m.description}\n\n✅ Best for: ${m.bestFor}\n❌ Avoid: ${m.avoidIn}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}`
+    return `💎 **UV Marble Sheet** – ${m.price}\n\n${m.description}\n\n✅ सबसे सही: ${m.bestFor}\n❌ मत लगाइए: ${m.avoidIn}\n⏱️ Install: ${m.installTime}\n🛡️ ${m.warranty}`
   }
 
   // ── TV Unit ───────────────────────────────────────────────────────────────
   if (t.includes("tv unit") || t.includes("tv panel") || t.includes("tv wall") || t.includes("tv cabinet") || /\btv\b/.test(t)) {
     const m = MATERIAL_KNOWLEDGE.tvunit
-    return `📺 **Modular TV Unit** – ${m.price}\n\nCustom designs available!\n📐 Size ke hisaab se price:\n• 6–8 ft: ${m.sizes.small}\n• 8–10 ft: ${m.sizes.medium}\n• 10–14 ft: ${m.sizes.large}\n\n✅ LED backlight, WPC ya laminate finish\n✅ Storage with shutters bhi available\n\nTV unit ka size batao — exact quote nikaalta hoon!`
+    return `📺 **Modular TV Unit** – ${m.price}\n\nकस्टम डिज़ाइन भी बनते हैं!\n📐 साइज़ के हिसाब से कीमत:\n• 6–8 फुट: ${m.sizes.small}\n• 8–10 फुट: ${m.sizes.medium}\n• 10–14 फुट: ${m.sizes.large}\n\n✅ LED Backlight, WPC या Laminate फिनिश\n✅ शटर वाला स्टोरेज भी मिल जाता है\n\nTV Unit का साइज़ बता दीजिए — exact कोटेशन निकाल देता हूं!`
   }
 
-  // ── Modular Kitchen ─���─────────────────────────────────────────────────────
+  // ── Modular Kitchen ─────────────────────────────────────────────────────
   if (/\bmodular\s*kitchen\b|\bkitchen\s*(?:cabinet|design|renovation|banana|banwana|rate|cost)\b/.test(t)) {
-    return `🍳 **Modular Kitchen** – ₹60,000 – ₹2,00,000\n\nFully custom — L-shape, U-shape, straight layouts available.\n✅ Soft-close hinges, pull-out shelves\n✅ Laminates, acrylic, glass shutters\n✅ Chimney & hob fitting bhi karein\n\nKitchen ka size share karo — detailed quote nikalte hain!`
+    return `🍳 **Modular Kitchen** – ₹60,000 – ₹2,00,000\n\nपूरी तरह कस्टम — L-shape, U-shape, स्ट्रेट लेआउट सब बनते हैं।\n✅ Soft-close hinges, pull-out शेल्फ़\n✅ Laminate, acrylic, glass शटर\n✅ चिमनी और हॉब की फिटिंग भी कर देते हैं\n\nKitchen का साइज़ बता दीजिए — डिटेल कोटेशन निकाल देता हूं!`
   }
 
   // ── Wardrobe ──────────────────────────────────────────────────────────────
   if (/\bwardrobe\b|\bwardrop\b|\balmirah\b|\bcupboard\b|\balmari\b|\bkapdon\s*ki\s*cabinet\b/.test(t)) {
-    return `🚪 **Custom Wardrobe** – ₹800–₹2,000/sq.ft\n\nFloor-to-ceiling storage — sliding ya hinged doors.\n✅ LED inside option\n✅ Custom shelves & drawers\n✅ Mirror shutters available\n\nBedroom size aur wardrobe dimensions share karo!`
+    return `🚪 **Custom Wardrobe** – ₹800–₹2,000/sq.ft\n\nफर्श से छत तक स्टोरेज — Sliding या Hinged दोनों डोर मिल जाते हैं।\n✅ अंदर LED का ऑप्शन\n✅ कस्टम शेल्फ़ और ड्रॉअर\n✅ मिरर शटर भी लगा सकते हैं\n\nबेडरूम का साइज़ और वॉर्डरोब की नाप बता दीजिए!`
   }
 
   // ── Office / location query ───────────────────────────────────────────────
   if (has(t, ["office","location","address","showroom","kahan ho","kahan hain","ghar kahan","office kahan"])) {
-    return `📍 **JK Interior – Location**\n\nHumara office **Forbesganj, Araria, Bihar** mein hai.\n\n✅ Lekin hum aapke **ghar aake FREE site visit** karte hain — aapko aane ki zaroorat nahi!\n\n📞 **+91 8541849118**`
+    return `📍 **JK Interior – ऑफिस**\n\nहमारा ऑफिस **फोर्बेसगंज, अररिया, बिहार** में है।\n\n✅ लेकिन हम आपके **घर आकर FREE Site Visit** करते हैं — आपको आने की ज़रूरत ही नहीं!\n\n📞 **+91 8541849118**`
   }
 
   // ── Services list query ───────────────────────────────────────────────────
   if (has(t, ["kya kya service","kya service","kaun kaun si service","services kya","kya kya kaam","kya kya milega","kaun si service","services list","aap kya kya","kya kya hai","kya kya karte"])) {
-    return `🏠 **JK Interior – Hamari Services**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panels\n💎 UV Marble Sheets\n📺 Modular TV Unit\n🏛️ Fluted Panels\n🏢 Grid Ceiling (Office)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Lighting\n\nKisi bhi service ka rate ya estimate chahiye? Bas batao! 😊\n📞 +91 8541849118`
+    return `🏠 **JK Interior – हमारी सर्विस**\n\n✨ Gypsum False Ceiling\n🏠 PVC False Ceiling\n🪵 WPC Wall Panel\n💎 UV Marble Sheet\n📺 Modular TV Unit\n🏛️ Fluted Panel\n🏢 Grid Ceiling (ऑफिस के लिए)\n🍳 Modular Kitchen\n🚪 Custom Wardrobe\n💡 LED Cove Light\n\nकिसी भी सर्विस का रेट या estimate चाहिए? बस बताइए! 😊\n📞 +91 8541849118`
   }
 
   // ── Complete/full home interior ───────────────────────────────────────────
   if (has(t, ["complete interior","full interior","poora ghar","pura ghar","2bhk","3bhk","flat interior","ghar banana","ghar design","full home","complete home"])) {
-    return `🏠 **Complete Home Interior Package**\n\nHum full home interior karte hain:\n✅ All rooms ceiling (Gypsum/PVC)\n✅ TV wall + accent walls (WPC/Fluted)\n✅ Modular kitchen\n✅ Wardrobes\n✅ LED lighting throughout\n\n💰 **2BHK estimate:** ₹2,50,000 – ₹5,00,000\n💰 **3BHK estimate:** ₹4,00,000 – ₹8,00,000\n*(depends on materials & design)*\n\n📞 Free site visit ke liye: **+91 8541849118**`
+    return `🏠 **Complete Home Interior Package**\n\nहम पूरे घर का इंटीरियर करते हैं:\n✅ हर कमरे की Ceiling (Gypsum/PVC)\n✅ TV वॉल + Accent Wall (WPC/Fluted)\n✅ Modular Kitchen\n✅ Wardrobe\n✅ पूरे घर में LED लाइटिंग\n\n💰 **2BHK का अंदाज़न खर्च:** ₹2,50,000 – ₹5,00,000\n💰 **3BHK का अंदाज़न खर्च:** ₹4,00,000 – ₹8,00,000\n*(मटेरियल और डिज़ाइन पर निर्भर करता है)*\n\n📞 Free Site Visit के लिए: **+91 8541849118**`
   }
 
   // ── Budget queries ────────────────────────────────────────────────────────
@@ -518,10 +518,10 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
     const budgetAmt = extractBudgetAmount(t)
     if (budgetAmt) {
       const num = parseFloat(budgetAmt.replace(/[₹k,]/g, "")) * (budgetAmt.includes("k") ? 1000 : 1)
-      if (num < 30000) return `${budgetAmt} budget mein 1 room ki PVC ceiling aaram se ho jaayegi (₹75–150/sq.ft).\n\nRoom ka size batao!`
-      if (num < 80000) return `${budgetAmt} mein 1–2 rooms ka ceiling kaam ho jaayega.\n\nBest combo: Gypsum (hall) + PVC (kitchen/bathroom)\n\nRooms batao — estimate nikalte hain!`
-      if (num < 150000) return `${budgetAmt} mein 2BHK ki full ceiling + 1 WPC accent wall ho sakti hai.\n\nRooms ki details share karo!`
-      return `${budgetAmt} budget ke saath premium 2BHK interior possible hai:\n✅ Gypsum cove lighting\n✅ WPC TV wall\n✅ UV marble bathroom\n\nFree site visit book karein: **+91 8541849118**`
+      if (num < 30000) return `${budgetAmt} के बजट में 1 कमरे की PVC Ceiling आराम से लग जाएगी (₹75–150/sq.ft)।\n\nरूम का साइज़ बताइए!`
+      if (num < 80000) return `${budgetAmt} में 1-2 कमरों का Ceiling का काम हो जाएगा।\n\nसबसे अच्छा कॉम्बो: हॉल में Gypsum + किचन-बाथरूम में PVC\n\nकमरे बताइए — estimate निकालते हैं!`
+      if (num < 150000) return `${budgetAmt} में 2BHK की पूरी Ceiling + 1 WPC Accent Wall हो सकती है।\n\nकमरों की डिटेल बता दीजिए!`
+      return `${budgetAmt} के बजट में प्रीमियम 2BHK इंटीरियर बन सकता है:\n✅ Cove Light के साथ Gypsum\n✅ WPC TV वॉल\n✅ UV Marble बाथरूम\n\nFree Site Visit बुक करें: **+91 8541849118**`
     }
   }
 
@@ -529,19 +529,19 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (has(t, ["price","cost","rate","kimat","daam","kitna","kharcha","budget","quote","paisa","rupaye","rupees"])) {
     if (lead?.service) {
       const svcL = lead.service.toLowerCase()
-      if (svcL.includes("pvc")) return `🏠 **PVC Ceiling Rate: ₹75–150 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
-      if (svcL.includes("gypsum")) return `✨ **Gypsum Ceiling Rate: ₹75–210 / sq.ft**\n\nRoom ka size bataiye — exact total nikalte hain! (jaise 12×14)`
-      if (svcL.includes("wpc")) return `🪵 **WPC Panel Rate: ₹180–650 / sq.ft**\n\nWall size bataiye — exact estimate nikalte hain!`
+      if (svcL.includes("pvc")) return `🏠 **PVC Ceiling का रेट: ₹75–150 / sq.ft**\n\nरूम का साइज़ बताइए — exact टोटल निकाल देता हूं! (जैसे 12×14)`
+      if (svcL.includes("gypsum")) return `✨ **Gypsum Ceiling का रेट: ₹75–210 / sq.ft**\n\nरूम का साइज़ बताइए — exact टोटल निकाल देता हूं! (जैसे 12×14)`
+      if (svcL.includes("wpc")) return `🪵 **WPC Panel का रेट: ₹180–650 / sq.ft**\n\nवॉल का साइज़ बताइए — exact estimate निकाल देता हूं!`
     }
-    return `💰 **JK Interior – Rate List**\n\n✨ Gypsum Ceiling    ₹75–₹210 / sq.ft\n🏠 PVC Ceiling       ₹75–₹150 / sq.ft\n🪵 WPC Wall Panels   ₹180–₹650 / sq.ft\n💎 UV Marble Sheets  ₹45–₹120 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panels     ₹200–₹500 / sq.ft\n🍳 Modular Kitchen   ₹60,000+\n🚪 Custom Wardrobe   ₹800/sq.ft+\n\nKisi specific cheez ka rate chahiye? Ya room size batao — exact estimate nikalte hain!`
+    return `💰 **JK Interior – रेट लिस्ट**\n\n✨ Gypsum Ceiling    ₹75–₹210 / sq.ft\n🏠 PVC Ceiling       ₹75–₹150 / sq.ft\n🪵 WPC Wall Panel   ₹180–₹650 / sq.ft\n💎 UV Marble Sheet  ₹45–₹120 / sq.ft\n📺 Modular TV Unit   ₹15,000+\n🏛️ Fluted Panel     ₹200–₹500 / sq.ft\n🍳 Modular Kitchen   ₹60,000+\n🚪 Custom Wardrobe   ₹800/sq.ft+\n\nकिसी खास चीज़ का रेट चाहिए? या रूम का साइज़ बताइए — exact estimate निकाल देता हूं!`
   }
 
   // ── Visit / booking ───────────────────────────────────────────────────────
   if (has(t, ["visit","book","site visit","measurement","quotation","bulao","aao","free visit","aana","aaye","bhejo"])) {
     if (lead?.phone) {
-      return `📅 **Book Visit booked!**\n\n✅ Hamare expert jald aapke ghar aayenge.\n📞 +91 8541849118`
+      return `📅 **Site Visit बुक हो गई!**\n\n✅ हमारा एक्सपर्ट जल्दी ही आपके घर आएगा।\n📞 +91 8541849118`
     }
-    return `📅 **Book Visit** – Koi hidden charge nahi!\n\nBook karne ke liye aapka naam batao 😊`
+    return `📅 **Site Visit बुक करें** – कोई छुपा हुआ खर्च नहीं!\n\nबुक करने के लिए अपना नाम बता दीजिए 😊`
   }
 
   // ── City mentioned ────────────────────────────────────────────────────────
@@ -549,56 +549,56 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (cityMentioned) {
     const svc = lead?.service?.toLowerCase() || ""
     if (has(t, ["pvc"]) || svc.includes("pvc")) {
-      return `✅ ${cityMentioned} mein PVC ceiling ka kaam hota hai! 💪\n\n💰 Rate: ₹75–150 / sq.ft | Waterproof ✅\n\nRoom size bataiye — exact estimate nikalte hain 📐`
+      return `✅ ${cityMentioned} में PVC Ceiling का काम होता है! 💪\n\n💰 रेट: ₹75–150 / sq.ft | पानी का असर नहीं ✅\n\nरूम का साइज़ बताइए — exact estimate निकालते हैं 📐`
     }
     if (has(t, ["gypsum","false ceiling"]) || svc.includes("gypsum")) {
-      return `✅ ${cityMentioned} mein Gypsum false ceiling available hai! ✨\n\n💰 Rate: ₹75–210 / sq.ft | Premium look ✅\n\nRoom size bataiye — exact estimate nikalte hain 📐`
+      return `✅ ${cityMentioned} में Gypsum False Ceiling बनाते हैं! ✨\n\n💰 रेट: ₹75–210 / sq.ft | प्रीमियम लुक ✅\n\nरूम का साइज़ बताइए — exact estimate निकालते हैं 📐`
     }
     if (has(t, ["wpc","wall panel"]) || svc.includes("wpc")) {
-      return `✅ ${cityMentioned} mein WPC wall panels available hain! 🪵\n\n💰 Rate: ₹180–650 / sq.ft | Waterproof ✅\n\nWall size bataiye — exact estimate nikalte hain 📐`
+      return `✅ ${cityMentioned} में WPC Wall Panel भी लगाते हैं! 🪵\n\n💰 रेट: ₹180–650 / sq.ft | पानी का असर नहीं ✅\n\nवॉल का साइज़ बताइए — exact estimate निकालते हैं 📐`
     }
     if (lead?.service) {
-      return `✅ ${cityMentioned} mein **${lead.service}** ka kaam hota hai! 💪\n\nRoom ka size bataiye — exact estimate nikalte hain! 📐\n📞 +91 8541849118`
+      return `✅ ${cityMentioned} में **${lead.service}** का काम होता है! 💪\n\nरूम का साइज़ बताइए — exact estimate निकालते हैं! 📐\n📞 +91 8541849118`
     }
-    return `✅ ${cityMentioned} mein JK Interior ki services available hain! 💪\n\n🏠 PVC | ✨ Gypsum | 🪵 WPC | 💎 UV Marble | 📺 TV Unit\n\n📞 Free site visit: **+91 8541849118**`
+    return `✅ ${cityMentioned} में JK Interior की सर्विस उपलब्ध है! 💪\n\n🏠 PVC | ✨ Gypsum | 🪵 WPC | 💎 UV Marble | 📺 TV Unit\n\n📞 Free Site Visit: **+91 8541849118**`
   }
 
   // ── Short affirmative ─────────────────────────────────────────────────────
   if (/^(haan|ha|ok|okay|theek|theek\s*hai|bilkul|zaroor|sure|yes|yep|hmm|accha|acha)$/i.test(t)) {
-    if (lead?.service) return `Bilkul! ${lead.service} ke baare mein kya jaanna chahte hain?\n\n✅ Rate chahiye?\n✅ Room size estimate?\n✅ Free site visit book karni hai?`
-    return `Batao — main aapki help ke liye yahan hoon! 😊\n\nKya jaanna chahte hain:\n✅ Kisi material ka rate\n✅ Room estimate\n✅ Design ideas`
+    if (lead?.service) return `हां भाई! ${lead.service} के बारे में क्या जानना चाहते हैं?\n\n✅ रेट चाहिए?\n✅ रूम का estimate?\n✅ Free Site Visit बुक करनी है?`
+    return `बताइए — मैं आपकी मदद के लिए यहीं हूं! 😊\n\nक्या जानना चाहते हैं:\n✅ किसी मटेरियल का रेट\n✅ रूम का estimate\n✅ डिज़ाइन आइडिया`
   }
 
   // ── Short rejection ───────────────────────────────────────────────────────
   if (/^(nahi|nahi\s*ji|nope|no|na|nahin)$/i.test(t)) {
-    return `Koi baat nahi! 😊 Kuch aur poochna ho toh batao.\n\nMain yahan hoon — gypsum, PVC, WPC, pricing, ya koi bhi sawaal! 🙏`
+    return `कोई बात नहीं! 😊 कुछ और पूछना हो तो बताइए।\n\nमैं यहीं हूं — Gypsum, PVC, WPC, रेट, या कोई भी सवाल! 🙏`
   }
 
   // ── Design / trends ───────────────────────────────────────────────────────
   if (has(t, ["design","idea","color","colour","rang","trend","2025","2026","latest","modern","style","look","beautiful","sundar","khubsurat"])) {
-    return `🎨 **2025–26 Interior Trends**\n\n✅ **Fluted/Louver panels** — TV wall pe most popular\n✅ **Cove lighting** (Gypsum ceiling + LED strip)\n✅ **WPC wooden finish** — bedroom accent walls\n✅ **UV marble** — bathroom statement walls\n✅ **Earth tones** — beige, terracotta, sage green\n\nKaunse room ke liye design chahiye? Hall, bedroom, bathroom?\n\n📞 Free consultation: **+91 8541849118**`
+    return `🎨 **2025–26 के इंटीरियर ट्रेंड**\n\n✅ **Fluted/Louver Panel** — TV वॉल पर सबसे ज़्यादा पसंद किया जा रहा है\n✅ **Cove Light** (Gypsum Ceiling + LED Strip)\n✅ **WPC वुडन फिनिश** — बेडरूम की Accent Wall के लिए\n✅ **UV Marble** — बाथरूम की स्टेटमेंट वॉल के लिए\n✅ **हल्के मिट्टी वाले रंग** — बेज, टेराकोटा, सेज ग्रीन\n\nकिस कमरे के लिए डिज़ाइन चाहिए? हॉल, बेडरूम, बाथरूम?\n\n📞 Free Consultation: **+91 8541849118**`
   }
 
   // ── Comparison ────────────────────────────────────────────────────────────
   if (/(?:better|behtar|acha|sahi|difference|fark|antar|vs|versus|ya)/.test(t) && /(?:gypsum|pvc|wpc|uv|marble|ceiling|panel)/.test(t)) {
-    return `⚖️ Quick comparison:\n\n🏆 **Hall/Drawing Room** → Gypsum (premium look, LED cove)\n🏆 **Kitchen/Bathroom** → PVC (100% waterproof)\n🏆 **TV Wall/Bedroom** → WPC panels (woody luxury feel)\n🏆 **Bathroom walls** → UV Marble sheets\n\nKaunse room ke liye soch rahe hain? Main exact suggestion dunga! 😊`
+    return `⚖️ जल्दी में तुलना:\n\n🏆 **हॉल/ड्रॉइंग रूम** → Gypsum (प्रीमियम लुक, LED Cove)\n🏆 **किचन/बाथरूम** → PVC (100% पानी का असर नहीं)\n🏆 **TV वॉल/बेडरूम** → WPC Panel (लकड़ी जैसा लग्ज़री फील)\n🏆 **बाथरूम की दीवार** → UV Marble Sheet\n\nकिस कमरे के लिए सोच रहे हैं? मैं एक्ज़ैक्ट सुझाव दे दूंगा! 😊`
   }
 
   // ── Estimate without dimensions ───────────────────────────────────────────
   if (has(t, ["estimate","quotation","quote","total","kitna aayega","kitna lagega","total cost","kitne ka","kitna hoga"])) {
     const svcName = lead?.service || "ceiling/interior"
-    return `📐 **${nm ? nm + " ji, aapke " : "Aapke "}${svcName} ka estimate nikaalte hain!**\n\nBas room ka size batao:\n\nJaise: **12×14** ya **15 feet by 12 feet**\n\nMain turant calculate kar dunga! ✨`
+    return `📐 **${nm ? nm + " जी, आपके " : "आपके "}${svcName} का estimate निकालते हैं!**\n\nबस रूम का साइज़ बता दीजिए:\n\nजैसे: **12×14** या **15 फुट by 12 फुट**\n\nमैं तुरंत निकाल कर बता देता हूं! ✨`
   }
 
   // ── Smart contextual fallback ─────────────────────────────────────────────
   const prevTopic = lead?.service
   const isGeneralQuery = has(t, ["service","kya","kaun","kya kya","batao","bolo","list","sab","poori"])
   if (prevTopic && !isGeneralQuery) {
-    return `${nm ? nm + " ji, " : ""}**${prevTopic}** ke baare mein aur kuch jaanna chahte hain?\n\n✅ Rate chahiye?\n✅ Room ka estimate?\n✅ Free site visit book karni hai?\n\nBas batao! 😊`
+    return `${nm ? nm + " जी, " : ""}**${prevTopic}** के बारे में और कुछ जानना चाहते हैं?\n\n✅ रेट चाहिए?\n✅ रूम का estimate?\n✅ Free Site Visit बुक करनी है?\n\nबस बताइए! 😊`
   }
 
   // ── Last resort ───────────────────────────────────────────────────────────
-  return `Aapka sawaal samajh nahi aaya — thoda aur clearly batao! 😊\n\nMain in topics mein help kar sakta hoon:\n✅ Ceiling rates (PVC / Gypsum)\n✅ Wall panels (WPC / Fluted / UV Marble)\n✅ TV unit / Kitchen / Wardrobe\n✅ Room size estimate\n\nKya jaanna hai? 🙏`
+  return `आपका सवाल पूरी तरह समझ नहीं आया — थोड़ा और साफ़ बता दीजिए! 😊\n\nमैं इन चीज़ों में मदद कर सकता हूं:\n✅ Ceiling का रेट (PVC / Gypsum)\n✅ Wall Panel (WPC / Fluted / UV Marble)\n✅ TV Unit / Kitchen / Wardrobe\n✅ रूम का estimate\n\nक्या जानना है? 🙏`
 }
 
 function extractBudgetAmount(text: string): string | null {
@@ -622,7 +622,7 @@ function extractBudgetAmount(text: string): string | null {
 }
 
 // These two are always pinned as the first chips in the strip
-const PINNED_QUICK_ACTIONS = ["📂 View Design Catalog", "✨ Book Free Site Visit"] as const
+const PINNED_QUICK_ACTIONS = ["📂 डिज़ाइन देखें", "✨ Free Site Visit बुक करें"] as const
 
 function getContextualQuickReplies(
   hasLead: boolean,
@@ -631,20 +631,20 @@ function getContextualQuickReplies(
   lastTopic: string | null,
 ): string[] {
   let contextual: string[]
-  if (hasEstimate) contextual = ["Add LED Lighting", "Color Ideas", "Call Expert"]
+  if (hasEstimate) contextual = ["LED लाइटिंग जोड़ें", "रंग के आइडिया", "एक्सपर्ट को कॉल करें"]
   else if (hasLead) {
-    if (lastTopic?.includes("pvc"))      contextual = ["Get Quote", "PVC vs Gypsum", "WPC Panels"]
-    else if (lastTopic?.includes("gypsum"))   contextual = ["Add Cove Lighting", "PVC vs Gypsum", "Maintenance Tips"]
-    else if (lastTopic?.includes("wpc"))      contextual = ["Get Quote", "WPC vs UV Marble", "Color Ideas"]
-    else if (lastTopic?.includes("uv"))       contextual = ["Get Quote", "UV Marble Care", "Bathroom Design"]
-    else if (lastTopic?.includes("tv"))       contextual = ["Add LED Backlight", "Get Quote", "WPC Panels"]
-    else if (lastTopic?.includes("color"))    contextual = ["Hall Colors", "Bedroom Colors", "WPC Panels"]
-    else if (lastTopic?.includes("trend"))    contextual = ["Fluted Panels", "Gypsum Ceiling", "WPC TV Wall"]
-    else if (lastTopic?.includes("acoustic")) contextual = ["Home Theatre", "Get Quote", "Flooring"]
-    else if (lastTopic?.includes("floor"))    contextual = ["Laminate Rate", "Vinyl Rate", "Complete Package"]
-    else                                      contextual = ["Get Estimate", "Color Ideas", "Latest Trends"]
+    if (lastTopic?.includes("pvc"))      contextual = ["कोटेशन चाहिए", "PVC vs Gypsum", "WPC Panel"]
+    else if (lastTopic?.includes("gypsum"))   contextual = ["Cove Light जोड़ें", "PVC vs Gypsum", "मेंटेनेंस टिप्स"]
+    else if (lastTopic?.includes("wpc"))      contextual = ["कोटेशन चाहिए", "WPC vs UV Marble", "रंग के आइडिया"]
+    else if (lastTopic?.includes("uv"))       contextual = ["कोटेशन चाहिए", "UV Marble की देखभाल", "बाथरूम डिज़ाइन"]
+    else if (lastTopic?.includes("tv"))       contextual = ["LED Backlight जोड़ें", "कोटेशन चाहिए", "WPC Panel"]
+    else if (lastTopic?.includes("color"))    contextual = ["हॉल के रंग", "बेडरूम के रंग", "WPC Panel"]
+    else if (lastTopic?.includes("trend"))    contextual = ["Fluted Panel", "Gypsum Ceiling", "WPC TV वॉल"]
+    else if (lastTopic?.includes("acoustic")) contextual = ["Home Theatre", "कोटेशन चाहिए", "Flooring"]
+    else if (lastTopic?.includes("floor"))    contextual = ["Laminate का रेट", "Vinyl का रेट", "Complete Package"]
+    else                                      contextual = ["Estimate चाहिए", "रंग के आइडिया", "नए ट्रेंड"]
   } else {
-    contextual = [...INITIAL_QUICK_REPLIES.slice(0, 3), "2026 Trends"]
+    contextual = [...INITIAL_QUICK_REPLIES.slice(0, 3), "2026 के ट्रेंड"]
   }
   return [...PINNED_QUICK_ACTIONS, ...contextual]
 }
@@ -717,32 +717,32 @@ const TypingDots = () => (
 // Lead confirmation card
 function LeadConfirmCard({ data }: { data: LeadCard }) {
   const rows = [
-    { label: "👤 Name",    value: data.name },
-    { label: "📱 Phone",   value: data.phone },
-    { label: "📍 City",    value: data.city       || "—" },
-    { label: "🔧 Service", value: data.service    || "—" },
+    { label: "👤 नाम",     value: data.name },
+    { label: "📱 फोन",     value: data.phone },
+    { label: "📍 शहर",     value: data.city       || "—" },
+    { label: "🔧 सर्विस",  value: data.service    || "—" },
     ...(data.estimate     ? [{ label: "💰 Estimate",  value: data.estimate }]     : []),
     ...(data.preferredTime ? [{ label: "📅 Visit",     value: data.preferredTime }] : []),
   ]
   const d  = new Date(data.timestamp)
   const ts = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`
-  const waMsg = [`🏠 JK Interior Inquiry`,`👤 ${data.name}`,`📱 ${data.phone}`,data.city && `📍 ${data.city}`,data.service && `🔧 ${data.service}`,data.estimate && `💰 Estimate: ${data.estimate}`,data.preferredTime && `📅 Visit: ${data.preferredTime}`,"\nFree site visit confirm kar dijiye! 🙏"].filter(Boolean).join("\n")
+  const waMsg = [`🏠 JK Interior Inquiry`,`👤 ${data.name}`,`📱 ${data.phone}`,data.city && `📍 ${data.city}`,data.service && `🔧 ${data.service}`,data.estimate && `💰 Estimate: ${data.estimate}`,data.preferredTime && `📅 Visit: ${data.preferredTime}`,"\nFree Site Visit confirm kar dijiye! 🙏"].filter(Boolean).join("\n")
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`
-  const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hi JK Interior! Main ${data.name} hoon${data.city ? ` (${data.city})` : ""}. Free site visit book karna chahta/chahti hoon${data.preferredTime ? ` — ${data.preferredTime}` : ""}. Please confirm! 🙏`)}`
+  const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`नमस्ते JK Interior! मैं ${data.name} हूं${data.city ? ` (${data.city})` : ""}। Free Site Visit बुक करना चाहता/चाहती हूं${data.preferredTime ? ` — ${data.preferredTime}` : ""}। कृपया कन्फर्म करें! 🙏`)}`
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-[90%] sm:max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-emerald-200 shadow-lg bg-white">
       <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2">
         <span className="text-lg shrink-0">🎉</span>
-        <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">Booking Confirmed!</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
+        <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">बुकिंग कन्फर्म हो गई!</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
       </div>
       <div className="px-3 md:px-4 py-2 md:py-2.5 space-y-1.5">
         {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-[11px] md:text-xs"><span className="text-gray-500 shrink-0 w-16 md:w-20 text-[10px] md:text-[11px] font-medium">{r.label}</span><span className="font-semibold break-all text-[11px] md:text-[12px] text-gray-800 flex-1">{r.value}</span></div>))}
       </div>
       <div className="px-3 md:px-4 pb-3 md:pb-3.5 pt-1 md:pt-1.5 space-y-2">
-        <p className="text-[10px] md:text-[11px] text-emerald-700 font-semibold text-center bg-emerald-50 rounded-lg py-1.5">✅ Our team will contact you shortly!</p>
+        <p className="text-[10px] md:text-[11px] text-emerald-700 font-semibold text-center bg-emerald-50 rounded-lg py-1.5">✅ हमारी टीम जल्दी ही आपसे बात करेगी!</p>
         <div className="flex flex-col sm:flex-row gap-2">
           <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp</a>
-          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-700 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-emerald-600 transition-all"><ICal /> Book Visit</a>
+          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-700 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-emerald-600 transition-all"><ICal /> Visit बुक करें</a>
         </div>
       </div>
     </motion.div>
@@ -751,7 +751,7 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
 
 const WELCOME_MSG = mk(
   "bot",
-  "Namaste 😊\n\nMain **JK Interior AI Assistant** hoon.\n\nAap gypsum ceiling, PVC, WPC wall panels, TV unit, lighting, ya room design ke baare me kuch bhi pooch sakte hain.\n\n📐 Room ka size bata dijiye (jaise 12×10) — main turant estimate aur best suggestion bata dungi ✨"
+  "नमस्ते 😊\n\nमैं **JK Interior AI Assistant** हूं।\n\nGypsum Ceiling, PVC, WPC Wall Panel, TV Unit, लाइटिंग या रूम डिज़ाइन के बारे में कुछ भी पूछ सकते हैं।\n\n📐 रूम का साइज़ बता दीजिए (जैसे 12×10) — मैं तुरंत estimate और सबसे सही सुझाव बता देता हूं ✨"
 )
 
 // ── Main Component ────────────────────────────────────────────────────────────
@@ -972,31 +972,31 @@ const tLower = text.toLowerCase()
     const extractedName = tryExtractName(text)
     const name = extractedName || text.trim()
     if (!name || name.length < 2) {
-      collReply = `Aapka naam sahi se nahi mila. Kripya sirf apna naam likho (jaise: Rahul, Priya) 😊`
+      collReply = `आपका नाम ठीक से नहीं मिला। कृपया सिर्फ अपना नाम लिखिए (जैसे: राहुल, प्रिया) 😊`
     } else {
       const updated = { ...(lead || {}), name }
       setLead(updated); persist(updated, lastTopic)
       setCollectStep("phone")
-      collReply = `${name} ji, aapka WhatsApp number share karein please 📱`
+      collReply = `${name} जी, अपना WhatsApp नंबर बता दीजिए 📱`
     }
   } else if (collectStep === "phone") {
     const phone = tryExtractPhone(text)
-    if (!phone) collReply = `Kripya 10 digit ka valid mobile number likhein 📱`
+    if (!phone) collReply = `कृपया 10 डिजिट का सही मोबाइल नंबर लिखिए 📱`
     else {
       const city = detectCity(tLower) || lead?.city
       const updated = { ...(lead || {}), phone, city: city || undefined }
       setLead(updated); persist(updated, lastTopic)
-      if (city) { setCollectStep("time"); collReply = `Number save ho gaya! 📱 Site visit ke liye kaunsa din aur samay theek rahega?` }
-      else { setCollectStep("city"); collReply = `Shukriya! Aap kis city mein hain? (Araria, Forbesganj, Purnia, etc.)` }
+      if (city) { setCollectStep("time"); collReply = `नंबर सेव हो गया! 📱 Site Visit के लिए कौन सा दिन और समय ठीक रहेगा?` }
+      else { setCollectStep("city"); collReply = `शुक्रिया! आप किस शहर में हैं? (अररिया, फोर्बेसगंज, पूर्णिया, आदि)` }
     }
   } else if (collectStep === "city") {
     const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
-    if (!city) collReply = `Kripya apni city ka naam batayein.`
+    if (!city) collReply = `कृपया अपने शहर का नाम बता दीजिए।`
     else {
       const updated = { ...(lead || {}), city }
       setLead(updated); persist(updated, lastTopic)
       setCollectStep("time")
-      collReply = `${city} – perfect! 📍 Site visit ke liye kaunsa din aur samay theek rahega?`
+      collReply = `${city} – बढ़िया! 📍 Site Visit के लिए कौन सा दिन और समय ठीक रहेगा?`
     }
   } else if (collectStep === "time") {
     const preferredTime = text.trim()
@@ -1014,7 +1014,7 @@ const tLower = text.toLowerCase()
       preferredTime,
       timestamp:     new Date().toISOString(),
     }
-    historyRef.current = [...historyRef.current, { role: "assistant", content: "Booking confirmed! Team will contact you shortly." }]
+    historyRef.current = [...historyRef.current, { role: "assistant", content: "बुकिंग कन्फर्म हो गई! हमारी टीम जल्दी ही आपसे बात करेगी।" }]
     setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
     setTyping(false)
     sendLock.current = false
@@ -1186,13 +1186,13 @@ const tLower = text.toLowerCase()
       setTyping(false); await delay(1100); setTyping(true); await delay(700)
       let startMsg: string
       if (updatedLead?.name && updatedLead?.phone) {
-        startMsg = `${updatedLead.name} ji, kab aana chahenge? (din aur samay batao) 📅`
+        startMsg = `${updatedLead.name} जी, कब आना चाहेंगे? (दिन और समय बता दीजिए) 📅`
         setCollectStep("time")
       } else if (updatedLead?.name) {
-        startMsg = `${updatedLead.name} ji! Free site visit ke liye aapka WhatsApp number chahiye 📱`
+        startMsg = `${updatedLead.name} जी! Free Site Visit के लिए आपका WhatsApp नंबर चाहिए 📱`
         setCollectStep("phone")
       } else {
-        startMsg = `Free site visit book karne ke liye, pehle aapka naam batao 😊`
+        startMsg = `Free Site Visit बुक करने के लिए, पहले अपना नाम बता दीजिए 😊`
         setCollectStep("name")
       }
       historyRef.current = [...historyRef.current, { role: "assistant", content: startMsg }]
@@ -1211,7 +1211,7 @@ const tLower = text.toLowerCase()
   const lastBotMsg = messages.filter(m => m.role === "bot").slice(-1)[0]?.text || ""
   const hasEstimate = lastBotMsg.includes("₹") || !!pendingEstimate
   const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg, lastTopic)
-  const statusText = offHours ? "Available 9:00 AM onwards" : "Online now • Replies in seconds"
+  const statusText = offHours ? "सुबह 9 बजे से उपलब्ध" : "अभी ऑनलाइन • कुछ ही सेकंड में जवाब"
 
   if (!mounted) return null
 
@@ -1329,7 +1329,7 @@ const tLower = text.toLowerCase()
                     setMemory(freshMem)
                     try { localStorage.removeItem("jk_chat_v5"); localStorage.removeItem("jk_chat_memory_v2") } catch {}
                   }}
-                  title="Clear chat"
+                  title="चैट साफ़ करें"
                   className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 text-white/70 hover:text-white text-[11px] font-bold transition-colors"
                 >↺</button>
                 <button onClick={() => setOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 transition-colors"><IClose /></button>
@@ -1339,7 +1339,7 @@ const tLower = text.toLowerCase()
             {aiMode && (
               <div className="shrink-0 flex items-center gap-2 px-3 md:px-4 py-1.5 bg-emerald-50 border-b border-emerald-100">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <p className="text-[9px] md:text-[10px] text-emerald-700 font-medium">Powered by AI + Luxury Estimator</p>
+                <p className="text-[9px] md:text-[10px] text-emerald-700 font-medium">AI से चलता है + तुरंत Estimate</p>
               </div>
             )}
 
@@ -1361,11 +1361,11 @@ const tLower = text.toLowerCase()
                       />
                     ))}
                   </div>
-                  <p className="text-[10px] text-red-600 font-semibold">Aap boliye... (Sun rahi hoon 👂)</p>
+                  <p className="text-[10px] text-red-600 font-semibold">आप बोलिए... (सुन रहा हूं 👂)</p>
                   <button
                     onClick={toggleVoice}
                     className="ml-auto text-[9px] text-red-500 font-bold border border-red-300 rounded-full px-2 py-0.5 hover:bg-red-100"
-                  >Rok do</button>
+                  >रोक दें</button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1403,7 +1403,7 @@ const tLower = text.toLowerCase()
                       className="text-center"
                     >
                       <h2 className="text-lg md:text-xl font-bold text-emerald-900">JK Interior AI Assistant</h2>
-                      <p className="text-xs md:text-sm text-emerald-600 mt-1">Setting up your consultation</p>
+                      <p className="text-xs md:text-sm text-emerald-600 mt-1">आपकी बात शुरू करने की तैयारी हो रही है</p>
                     </motion.div>
 
                     {/* Animated dots */}
@@ -1474,26 +1474,26 @@ const tLower = text.toLowerCase()
             {/* ── Quick Action Buttons (pinned) ── */}
             <div className="shrink-0 flex gap-2 px-3 md:px-4 pt-2.5 pb-1.5 bg-white/80 backdrop-blur border-t border-slate-200/70 overflow-x-auto">
               <button
-                onClick={() => send("📂 View Design Catalog")}
+                onClick={() => send("📂 डिज़ाइन देखें")}
                 disabled={typing}
                 className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-300 bg-gradient-to-r from-emerald-50 to-emerald-100 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-emerald-800 shadow-sm hover:from-emerald-100 hover:to-emerald-200 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
               >
                 <span className="text-base leading-none">📂</span>
-                <span>See Designs</span>
+                <span>डिज़ाइन देखें</span>
               </button>
               <button
-                onClick={() => send("✨ Book Free Site Visit")}
+                onClick={() => send("✨ Free Site Visit बुक करें")}
                 disabled={typing}
                 className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-600 bg-gradient-to-r from-emerald-600 to-emerald-500 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-white shadow-sm hover:from-emerald-500 hover:to-emerald-400 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
               >
                 <span className="text-base leading-none">✨</span>
-                <span>Book Visit</span>
+                <span>Site Visit बुक करें</span>
               </button>
             </div>
 
             {/* ── Contextual Quick Reply Chips ── */}
             <div className="shrink-0 flex gap-2 overflow-x-auto px-3 md:px-4 pb-[max(10px,env(safe-area-inset-bottom))] bg-white/80 scrollbar-luxury">
-              {qrSet.filter(q => !["📂 View Design Catalog", "✨ Book Free Site Visit"].includes(q)).map(q => (
+              {qrSet.filter(q => !["📂 डिज़ाइन देखें", "✨ Free Site Visit बुक करें"].includes(q)).map(q => (
                 <button
                   key={q}
                   onClick={() => send(q)}
@@ -1520,7 +1520,7 @@ const tLower = text.toLowerCase()
                     ? "bg-emerald-100 border border-emerald-400 text-emerald-800 hover:bg-emerald-200"
                     : "bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed"
                 }`}
-                title={isListening ? "Recording... tap to stop" : voiceSupported ? "Bolkar type karo" : "Voice not supported"}
+                title={isListening ? "रिकॉर्ड हो रहा है... रोकने के लिए दबाएं" : voiceSupported ? "बोल कर टाइप करें" : "Voice यहां सपोर्ट नहीं करता"}
               >
                 {isListening && (
                   <span className="absolute inset-0 rounded-full bg-red-400 opacity-40 animate-ping" />
@@ -1533,7 +1533,7 @@ const tLower = text.toLowerCase()
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={onKey}
-                placeholder={isListening ? "Sun rahi hoon... बोलिए" : "Ask about design, price, or visit..."}
+                placeholder={isListening ? "सुन रहा हूं... बोलिए" : "डिज़ाइन, रेट या Site Visit के बारे में पूछें..."}
                 className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-colors"
                 autoComplete="off"
               />

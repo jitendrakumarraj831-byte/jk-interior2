@@ -14,27 +14,27 @@ const ALL = galleryImages as GalleryImage[]
 const CATEGORY_DESCRIPTIONS: Record<string, { en: string; hi: string }> = {
   "Gypsum False Ceiling": {
     en: "Elegant gypsum ceiling designs with smooth finish and creative lighting integration — ideal for luxury interiors.",
-    hi: "स्मूथ फिनिश और क्रिएटिव लाइटिंग के साथ एलिगेंट जिप्सम सीलिंग डिज़ाइन।",
+    hi: "स्मूथ फिनिश और सुंदर लाइटिंग के साथ बनी Gypsum Ceiling — हॉल-बेडरूम को प्रीमियम लुक देती है।",
   },
   "PVC Ceiling": {
     en: "Waterproof PVC false ceiling panels with modern designs and a long-lasting, dust-free finish.",
-    hi: "वॉटरप्रूफ पैनल और मॉडर्न डिज़ाइन के साथ लंबे समय तक चलने वाली PVC फॉल्स सीलिंग।",
+    hi: "पानी का असर न होने वाली PVC Ceiling — मॉडर्न डिज़ाइन में, बरसों तक बिना खराब हुए चलती है।",
   },
   "Grid Ceiling": {
     en: "Durable mineral-fiber grid ceilings for offices, shops, and hospitals — clean, acoustic, and easy to maintain.",
-    hi: "ऑफिस, दुकान और अस्पताल के लिए मजबूत ग्रिड सीलिंग — साफ, शांत और आसान मेंटेनेंस।",
+    hi: "ऑफिस, दुकान और हॉस्पिटल के लिए मज़बूत Grid Ceiling — साफ-सुथरी और मेंटेनेंस भी आसान।",
   },
   "WPC fluted panels & uv marble Sheet": {
     en: "Termite-proof WPC fluted wall panels and real-marble-look UV marble sheets for a premium wall finish.",
-    hi: "टर्माइट-प्रूफ WPC फ्लूटेड पैनल और रियल मार्बल जैसी UV मार्बल शीट — प्रीमियम वॉल फिनिश।",
+    hi: "कीड़े का असर न होने वाला WPC Fluted Panel और असली मार्बल जैसी UV Marble Sheet — दीवार को प्रीमियम लुक देते हैं।",
   },
   "TV Unit Design": {
     en: "Custom modular TV units with modern storage solutions, cable management, and premium finishes.",
-    hi: "मॉडर्न स्टोरेज और प्रीमियम फिनिश के साथ कस्टम मॉड्यूलर TV यूनिट डिज़ाइन।",
+    hi: "आपके कमरे की नाप पर बना Modular TV Unit — स्टोरेज, वायर छुपाने का इंतज़ाम, सब शामिल।",
   },
   "Artificial Grass": {
     en: "Premium artificial grass for balconies, terraces, and gardens — always green, zero maintenance.",
-    hi: "बालकनी, टैरेस और गार्डन के लिए प्रीमियम आर्टिफिशियल घास — हमेशा हरा-भरा, ज़ीरो मेंटेनेंस।",
+    hi: "बालकनी, टैरेस और गार्डन के लिए Artificial Grass — हमेशा हरी-भरी, कुछ करना भी नहीं पड़ता।",
   },
 }
 
@@ -143,7 +143,7 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
         </div>
         <div className="flex gap-2">
           <WhatsAppLink
-            message={`Hello JK Interior! Is design ka quote chahiye: "${img.alt}"`}
+            message={`नमस्ते JK Interior! इस डिज़ाइन का कोटेशन चाहिए: "${img.alt}"`}
             icon={false}
             className="rounded-full px-5 py-2.5 text-sm shadow-none hover:bg-green-500 hover:shadow-none"
           >

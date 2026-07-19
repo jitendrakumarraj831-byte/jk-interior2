@@ -135,245 +135,244 @@ export const MATERIAL_KNOWLEDGE = {
     fullName: "Gypsum False Ceiling",
     price: "₹75–₹210/sq.ft (basic to premium design)",
     premiumPrice: "₹135–₹210/sq.ft with cove lighting + LED",
-    description: "Gypsum board ceiling is the most popular choice for living rooms and bedrooms in India. It gives a smooth plaster-like finish and can be shaped into beautiful cove designs, pop borders, and artistic patterns.",
+    description: "Gypsum Board की Ceiling हॉल और बेडरूम के लिए सबसे पसंदीदा है। यह प्लास्टर जैसी बिल्कुल स्मूथ फिनिश देती है, और इसमें Cove Design, POP बॉर्डर और मन-पसंद पैटर्न आसानी से बन जाते हैं।",
     pros: [
-      "Elegant smooth finish — luxury look",
-      "Excellent for cove lighting and LED strips",
-      "Can be painted any color",
-      "Fire resistant — safe for home",
-      "Sound insulation properties",
-      "Easy to get any design / shape",
-      "10+ year lifespan in dry areas",
+      "स्मूथ फिनिश — देखने में बिल्कुल प्रीमियम लगती है",
+      "Cove Light और LED Strip के लिए सबसे बेहतरीन",
+      "किसी भी रंग में पेंट करा सकते हैं",
+      "आग से सुरक्षित — घर के लिए सेफ है",
+      "आवाज़ भी थोड़ी कम करती है",
+      "जो डिज़ाइन मन में हो, वो बन जाता है",
+      "ड्राई कमरे में 10+ साल आराम से चलती है",
     ],
     cons: [
-      "Not waterproof — avoid in bathrooms/kitchens",
-      "Susceptible to moisture damage",
-      "Repairs can be slightly visible",
-      "Takes 3-5 days to complete with finishing",
+      "पानी से बचानी पड़ती है — बाथरूम-किचन में मत लगाइए",
+      "नमी लगने पर खराब हो सकती है",
+      "मरम्मत करने पर थोड़ा निशान दिख सकता है",
+      "फिनिशिंग के साथ 3-5 दिन लग जाते हैं",
     ],
-    bestFor: "Hall, bedroom, drawing room, dining area, office cabin — any DRY area",
-    avoidIn: "Bathroom, kitchen, outdoor areas",
-    installTime: "1 bedroom: 2-3 days | Full hall: 3-5 days",
-    maintenance: "Minimal — just dust occasionally. Repaint every 5-7 years.",
-    warranty: "1 year (JK Interior written warranty)",
+    bestFor: "हॉल, बेडरूम, ड्रॉइंग रूम, डाइनिंग एरिया, ऑफिस केबिन — जहां पानी नहीं आता",
+    avoidIn: "बाथरूम, किचन, बाहर की जगह",
+    installTime: "1 बेडरूम: 2-3 दिन | पूरा हॉल: 3-5 दिन",
+    maintenance: "ज़्यादा कुछ नहीं करना — बस कभी-कभी झाड़ पोंछ लीजिए। हर 5-7 साल में एक बार पेंट करा लें।",
+    warranty: "1 साल की लिखित Warranty (JK Interior की तरफ से)",
     hinglishFAQ: {
-      "paani me kharab hoga": "Haan, gypsum waterproof nahi hota. Bathroom/kitchen ke liye PVC better option hai. Hall aur bedroom ke liye gypsum perfect hai!",
-      "kitna time lagega": "Ek room mein 2-3 din lagenge. Poore ghar mein 5-7 din.",
-      "pop se kya difference": "Gypsum board panels hote hain, POP (Plaster of Paris) direct plaster hota hai. Gypsum zyada smooth, uniform, aur modern hota hai. JK Interior dono karta hai.",
+      "paani me kharab hoga": "हां भाई, Gypsum पानी नहीं झेल पाता। बाथरूम-किचन के लिए PVC ज़्यादा सही रहेगा। हॉल और बेडरूम के लिए Gypsum एकदम परफेक्ट है!",
+      "kitna time lagega": "एक कमरे में 2-3 दिन लग जाएंगे। पूरे घर में 5-7 दिन।",
+      "pop se kya difference": "Gypsum Board में पैनल लगते हैं, जबकि POP (Plaster of Paris) सीधे प्लास्टर से बनता है। Gypsum ज़्यादा स्मूथ, एक-सा और मॉडर्न दिखता है। हम दोनों तरह का काम करते हैं।",
     },
   },
   pvc: {
     fullName: "PVC False Ceiling",
     price: "₹75–₹150/sq.ft",
     premiumPrice: "₹120–₹150/sq.ft with designer textures",
-    description: "PVC (Polyvinyl Chloride) ceiling panels are 100% waterproof, making them perfect for every room including bathrooms and kitchens. They come in wood texture, glossy, matte, and 3D printed designs.",
+    description: "PVC Panel की Ceiling 100% पानी रोकती है, इसलिए बाथरूम-किचन समेत हर कमरे के लिए एकदम सही रहती है। लकड़ी वाली, चमकदार, मैट और 3D डिज़ाइन में मिल जाती है।",
     pros: [
-      "100% waterproof — safe for bathroom, kitchen",
-      "Termite-proof and insect-resistant",
-      "Zero maintenance — just wipe clean",
-      "Never needs repainting",
-      "Very long life — 20+ years",
-      "Most affordable false ceiling option",
-      "Available in wood, marble, plain textures",
+      "100% पानी का असर नहीं होता — बाथरूम, किचन में भी सेफ",
+      "कीड़ा-मकोड़ा और घुन नहीं लगते",
+      "कुछ करना नहीं पड़ता — बस पोंछ दीजिए",
+      "कभी दोबारा पेंट नहीं करानी पड़ती",
+      "उम्र बहुत लंबी — 20+ साल",
+      "सबसे किफायती False Ceiling ऑप्शन",
+      "लकड़ी, मार्बल और प्लेन टेक्सचर में मिल जाती है",
     ],
     cons: [
-      "Less premium look vs gypsum for living rooms",
-      "Cannot be painted or customized like gypsum",
-      "Basic designs — no complex cove shapes",
+      "हॉल के लिए Gypsum जितना प्रीमियम लुक नहीं देती",
+      "Gypsum जैसा कस्टम डिज़ाइन इसमें नहीं बनता",
+      "सादा डिज़ाइन — बड़े Cove वाले शेप नहीं बन पाते",
     ],
-    bestFor: "Bathroom, kitchen, balcony, shop, office, ANY room — most versatile option",
-    avoidIn: "Nothing — works everywhere but living rooms may prefer gypsum for looks",
-    installTime: "1 room: 1 day | Full home: 3-4 days",
-    maintenance: "Zero — just wipe with damp cloth. Never needs paint.",
-    warranty: "1 year (JK Interior written warranty)",
+    bestFor: "बाथरूम, किचन, बालकनी, दुकान, ऑफिस — कहीं भी लगा दीजिए, हर जगह चलेगी",
+    avoidIn: "कहीं मना नहीं है — बस हॉल में लुक के लिए लोग Gypsum ज़्यादा पसंद करते हैं",
+    installTime: "1 कमरा: 1 दिन | पूरा घर: 3-4 दिन",
+    maintenance: "कुछ नहीं करना — बस गीले कपड़े से पोंछ दीजिए। पेंट की ज़रूरत ही नहीं पड़ती।",
+    warranty: "1 साल की लिखित Warranty (JK Interior की तरफ से)",
     hinglishFAQ: {
-      "waterproof hai kya": "Haan, 100% waterproof hai! Bathroom, kitchen sab jagah perfect.",
-      "gypsum se sasta hai kya": "Haan, PVC gypsum se thoda sasta hota hai aur maintenance zero hai. Long term mein best value!",
-      "kitne saal chalega": "20+ saal aasani se. Kabhi repaint nahi karna, kabhi kharabi nahi.",
+      "waterproof hai kya": "हां भाई, 100% पानी का असर नहीं होता! बाथरूम, किचन — हर जगह बेफिक्र होकर लगवाइए।",
+      "gypsum se sasta hai kya": "हां, PVC Gypsum से थोड़ा सस्ता पड़ता है और मेंटेनेंस का खर्च भी ज़ीरो है। लंबे समय में सबसे फायदे का सौदा है!",
+      "kitne saal chalega": "20+ साल आराम से चल जाएगी। कभी दोबारा पेंट नहीं करानी, कभी खराब भी नहीं होती।",
     },
   },
   wpc: {
     fullName: "WPC Wall Panels",
     price: "₹180–₹650/sq.ft",
     premiumPrice: "₹390–₹650/sq.ft for premium fluted designs",
-    description: "WPC (Wood Plastic Composite) panels give the luxury look of real wood without the maintenance issues. They're used for TV walls, accent walls, and full room paneling. Available in plain, grooved, and fluted (ribbed) designs.",
+    description: "WPC (Wood Plastic Composite) Panel असली लकड़ी जैसा लुक देते हैं, लेकिन लकड़ी वाली झंझट नहीं। TV Wall, Accent Wall और पूरे कमरे की Paneling के लिए इस्तेमाल होते हैं — प्लेन, ग्रूव्ड और Fluted डिज़ाइन में मिल जाते हैं।",
     pros: [
-      "Premium luxury wood look at 60% less cost than real wood",
-      "Moisture and termite resistant — outlasts real wood",
-      "Eco-friendly — uses recycled wood + plastic composite",
-      "Easy installation — no nails, clips system",
-      "Zero maintenance — no polish, no varnish needed",
-      "Available in 50+ colors and textures",
-      "Fire retardant properties",
+      "असली लकड़ी से करीब 60% कम कीमत में वही प्रीमियम लुक",
+      "नमी और कीड़े का असर नहीं — असली लकड़ी से ज़्यादा टिकते हैं",
+      "रीसाइकल्ड मटेरियल से बनते हैं, पर्यावरण के लिए ठीक",
+      "लगाना आसान है — कील नहीं, क्लिप से लग जाते हैं",
+      "कभी पॉलिश-वार्निश नहीं कराना पड़ता",
+      "50+ रंग और टेक्सचर में मिल जाते हैं",
+      "आग भी जल्दी नहीं पकड़ती",
     ],
     cons: [
-      "More expensive than UV marble for walls",
-      "Limited custom shaping compared to gypsum",
+      "दीवार के लिए UV Marble से थोड़े महंगे पड़ते हैं",
+      "Gypsum जैसा हर शेप में नहीं ढलते",
     ],
-    bestFor: "TV wall, bedroom headboard wall, accent wall, lobby, office reception",
-    avoidIn: "Ceiling (use PVC/gypsum for ceiling)",
-    installTime: "TV wall accent: 1 day | Full room: 2-3 days",
-    maintenance: "Wipe with dry cloth. No polish or treatment needed. Lifetime maintenance-free.",
-    warranty: "1 year (JK Interior written warranty)",
+    bestFor: "TV Wall, बेडरूम की हेडबोर्ड वॉल, Accent Wall, लॉबी, ऑफिस रिसेप्शन",
+    avoidIn: "Ceiling में नहीं — छत के लिए PVC या Gypsum ही सही रहेगा",
+    installTime: "TV वॉल: 1 दिन | पूरा कमरा: 2-3 दिन",
+    maintenance: "सूखे कपड़े से पोंछ दीजिए। पॉलिश-वार्निश की ज़रूरत ही नहीं, हमेशा के लिए बेफिक्र।",
+    warranty: "1 साल की लिखित Warranty (JK Interior की तरफ से)",
     hinglishFAQ: {
-      "asli lakdi se kya difference": "WPC asli lakdi jaisi dikhti hai lekin termite, moisture, aur warping issues nahi hote. Plus 60% sasta hai. Long-term mein bahut better!",
-      "tv wall ke liye": "TV wall ke liye WPC best hai! Beautiful wood texture, cable management easy ho jaati hai, aur look bahut premium aata hai.",
-      "kitna mahnga hai": "WPC ₹180 se start hoti hai per sq.ft. Ek TV wall (roughly 40-50 sq.ft) mein ₹8,000-₹15,000 lag sakta hai depending on design.",
+      "asli lakdi se kya difference": "WPC असली लकड़ी जैसा ही दिखता है, लेकिन कीड़ा, नमी और मुड़ने-टेढ़े होने की टेंशन नहीं होती। ऊपर से 60% सस्ता भी है। लंबे समय में बहुत बेहतर सौदा है!",
+      "tv wall ke liye": "TV Wall के लिए WPC सबसे अच्छा रहेगा! लकड़ी जैसा सुंदर टेक्सचर, वायर छुपाना भी आसान, और लुक एकदम प्रीमियम आता है।",
+      "kitna mahnga hai": "WPC ₹180/sq.ft से शुरू होता है। एक TV वॉल (लगभग 40-50 sq.ft) पर डिज़ाइन के हिसाब से ₹8,000-₹15,000 तक लग सकता है।",
     },
   },
   uv: {
     fullName: "UV Marble Sheets",
     price: "₹45–₹120/sq.ft",
     premiumPrice: "₹80–₹120/sq.ft for premium designs",
-    description: "UV Marble sheets are high-gloss PVC-based panels with marble-like printing. They give the look of expensive marble/granite at a fraction of the cost. Perfect for walls, kitchen areas, and feature surfaces.",
+    description: "UV Marble Sheet चमकदार PVC पैनल हैं जिन पर मार्बल जैसी प्रिंटिंग होती है। असली मार्बल-ग्रेनाइट जैसा लुक बहुत कम कीमत में मिल जाता है। दीवार, किचन एरिया और फीचर वॉल के लिए एकदम सही।",
     pros: [
-      "Real marble look at 70-80% less cost",
-      "High-gloss finish — looks very premium",
-      "100% waterproof and moisture resistant",
-      "Scratch resistant surface",
-      "Easy to clean — hygienic, anti-bacterial properties",
-      "No grout lines — seamless appearance",
-      "Lightweight — no structural load",
+      "असली मार्बल जैसा लुक, कीमत 70-80% तक कम",
+      "ज़्यादा चमक — देखने में बहुत प्रीमियम लगता है",
+      "100% पानी और नमी का असर नहीं होता",
+      "जल्दी खरोंच नहीं आती",
+      "साफ करना आसान — हाइजीनिक भी रहता है",
+      "कोई जोड़ नहीं दिखता — बिल्कुल एक-सा फिनिश",
+      "वज़न बहुत कम — छत-दीवार पर लोड नहीं पड़ता",
     ],
     cons: [
-      "Cannot withstand very high heat (not for near stove)",
-      "Less premium than actual marble or granite",
-      "May scratch with sharp objects",
+      "बहुत तेज़ गर्मी नहीं झेल पाता (गैस चूल्हे के पास मत लगाइए)",
+      "असली मार्बल-ग्रेनाइट जितना प्रीमियम नहीं",
+      "नुकीली चीज़ से खरोंच आ सकती है",
     ],
-    bestFor: "Bathroom walls, kitchen walls (not near flame), living room feature wall, pooja room",
-    avoidIn: "Near gas stove / high heat areas",
-    installTime: "1 room: 1-2 days",
-    maintenance: "Zero — just wipe with damp cloth. No polishing needed.",
-    warranty: "1 year (JK Interior written warranty)",
+    bestFor: "बाथरूम की दीवार, किचन की दीवार (चूल्हे से दूर), लिविंग रूम की फीचर वॉल, पूजा घर",
+    avoidIn: "गैस चूल्हे के पास / ज़्यादा गर्मी वाली जगह",
+    installTime: "1 कमरा: 1-2 दिन",
+    maintenance: "कुछ नहीं करना — बस गीले कपड़े से पोंछ दीजिए। पॉलिश की ज़रूरत नहीं।",
+    warranty: "1 साल की लिखित Warranty (JK Interior की तरफ से)",
     hinglishFAQ: {
-      "asli marble se kya fark": "UV marble sheet bilkul asli marble jaisi dikhti hai, lekin weight zero, koi jointing line nahi, aur price 70-80% less. Kitchen aur bathroom ke liye best choice!",
-      "waterproof hai": "Haan bilkul! 100% waterproof. Bathroom mein perfect use hoti hai.",
+      "asli marble se kya fark": "UV Marble Sheet बिल्कुल असली मार्बल जैसी दिखती है, लेकिन वज़न ज़ीरो, कोई जोड़ नहीं दिखता, और कीमत 70-80% कम। किचन और बाथरूम के लिए सबसे अच्छा ऑप्शन है!",
+      "waterproof hai": "हां भाई, बिल्कुल! 100% पानी का असर नहीं होता। बाथरूम में बेफिक्र होकर लगवाइए।",
     },
   },
   tvunit: {
     fullName: "Modular TV Unit",
     price: "₹15,000 se start (basic) | ₹46,000-₹75,000+ (premium)",
-    description: "Custom-designed modular TV units built to fit your exact room dimensions. Available in multiple finishes — wood laminate, matte, glossy, and combination. Includes cable management, LED backlighting options, and storage shelves.",
+    description: "आपके कमरे की सही नाप पर बनी Custom Modular TV Unit। Wood Laminate, Matte, Glossy और मिक्स फिनिश में मिलती है — केबल छुपाने का इंतज़ाम, LED Backlight और स्टोरेज शेल्फ़ सब शामिल।",
     features: [
-      "Custom designed for your exact room size",
-      "Cable management system built-in",
-      "LED strip lighting option",
-      "Storage cabinets and open shelves",
-      "Premium laminate / veneer finish",
-      "Multiple color and texture options",
+      "आपके कमरे की एक्ज़ैक्ट साइज़ पर बनती है",
+      "वायर छुपाने का सिस्टम पहले से बना होता है",
+      "LED Strip Light लगाने का ऑप्शन",
+      "स्टोरेज कैबिनेट और खुली शेल्फ़ दोनों",
+      "प्रीमियम Laminate / Veneer फिनिश",
+      "कई रंग और टेक्सचर में चुन सकते हैं",
     ],
     sizes: {
-      small: "6-8 ft width — ₹15,000–₹25,000",
-      medium: "8-10 ft width — ₹25,000–₹40,000",
-      large: "10-14 ft width — ₹46,000–₹75,000+",
+      small: "6-8 फुट चौड़ी — ₹15,000–₹25,000",
+      medium: "8-10 फुट चौड़ी — ₹25,000–₹40,000",
+      large: "10-14 फुट चौड़ी — ₹46,000–₹75,000+",
     },
   },
   // ─── Acoustic Panels Knowledge ───────────────────────────────────────────
   acoustic: {
     fullName: "Acoustic Panels",
     price: "₹150–₹400/sq.ft",
-    description: "Special fabric-wrapped panels that absorb sound and reduce echo. Ideal for home theatres, recording studios, and noisy offices. Improves speech clarity and music quality.",
+    description: "फैब्रिक से ढके खास पैनल जो आवाज़ सोख लेते हैं और गूंज (echo) कम कर देते हैं। Home Theatre, रेकॉर्डिंग स्टूडियो और शोर वाले ऑफिस के लिए बढ़िया रहते हैं — बोलना और गाना दोनों साफ सुनाई देता है।",
     pros: [
-      "Reduces echo and background noise",
-      "Improves sound quality for music and movies",
-      "Modern fabric finishes",
-      "Easy to install on walls or ceiling",
-      "Fire-rated materials available",
+      "गूंज और शोर काफी कम हो जाता है",
+      "गाना-फिल्म सुनने का मज़ा बढ़ जाता है",
+      "मॉडर्न फैब्रिक फिनिश",
+      "दीवार या छत पर लगाना आसान",
+      "आग से सुरक्षित मटेरियल भी मिलता है",
     ],
-    cons: ["Premium pricing", "Not waterproof"],
-    bestFor: "Home theatre, studio, conference room, restaurant, office cabin",
-    avoidIn: "Bathroom, kitchen, outdoor areas",
-    installTime: "1-2 days per room",
-    maintenance: "Vacuum or dry cloth wipe",
-    warranty: "1 year",
+    cons: ["थोड़े महंगे पड़ते हैं", "पानी से बचाकर रखना पड़ता है"],
+    bestFor: "Home Theatre, स्टूडियो, कॉन्फ्रेंस रूम, रेस्टोरेंट, ऑफिस केबिन",
+    avoidIn: "बाथरूम, किचन, बाहर की जगह",
+    installTime: "1 कमरे में 1-2 दिन",
+    maintenance: "वैक्यूम या सूखे कपड़े से पोंछ दीजिए",
+    warranty: "1 साल",
   },
   // ─── Flooring Knowledge ──────────────────────────────────────────────────
   flooring: {
     fullName: "Wooden Laminate Flooring",
     price: "₹80–₹200/sq.ft",
-    description: "High-density fibreboard with real wood texture lamination. Scratch resistant, easy to install, and gives a warm wooden feel at fraction of real wood cost.",
+    description: "हाई-डेंसिटी बोर्ड पर असली लकड़ी जैसी लेमिनेशन। खरोंच नहीं आती, लगाना आसान है, और असली लकड़ी से बहुत कम कीमत में वैसा ही गर्म-सुंदर फील देता है।",
     pros: [
-      "Looks like real wood",
-      "Scratch and stain resistant",
-      "Easy to clean",
-      "Floating installation — no glue needed",
-      "Wide variety of textures",
+      "असली लकड़ी जैसा दिखता है",
+      "खरोंच और दाग़ का असर नहीं होता",
+      "साफ करना आसान है",
+      "सीधे बिछ जाता है — गोंद लगाने की ज़रूरत नहीं",
+      "कई तरह के टेक्सचर मिल जाते हैं",
     ],
-    cons: ["Not waterproof (spills should be wiped quickly)", "Can get noisy without underlayment"],
-    bestFor: "Bedrooms, living rooms, offices, commercial spaces",
-    avoidIn: "Bathrooms, kitchen (splash zones)",
-    installTime: "1 room: 1 day | Full home: 3-5 days",
-    maintenance: "Dry mop or vacuum, occasional damp cloth",
-    warranty: "5-10 years depending on brand",
+    cons: ["पानी से बचाना पड़ता है (गिरे तो जल्दी पोंछ लें)", "नीचे अंडरलेयर न हो तो चलने में आवाज़ आ सकती है"],
+    bestFor: "बेडरूम, लिविंग रूम, ऑफिस, कमर्शियल जगह",
+    avoidIn: "बाथरूम, किचन (जहां पानी छलकता है)",
+    installTime: "1 कमरा: 1 दिन | पूरा घर: 3-5 दिन",
+    maintenance: "सूखे मॉप या वैक्यूम से, कभी-कभी गीले कपड़े से पोंछ लें",
+    warranty: "ब्रांड के हिसाब से 5-10 साल",
   },
 }
 
 // ─── Expanded Material Comparisons ─────────────────────────────────────────
 
 export const COMPARISONS = {
-  "pvc-vs-gypsum": `**PVC vs Gypsum Ceiling — Kya choose karein?**
+  "pvc-vs-gypsum": `**PVC या Gypsum Ceiling — कौन सी लगवाएं?**
 
 🏠 **PVC Ceiling** (₹75-150/sq.ft):
-✅ 100% waterproof — bathroom, kitchen perfect
-✅ Zero maintenance — kabhi repaint nahi
-✅ 20+ year life
-❌ Simple designs — complex cove nahi ban sakta
+✅ 100% पानी का असर नहीं — बाथरूम, किचन के लिए एकदम सही
+✅ कुछ करना नहीं पड़ता — कभी पेंट नहीं करानी
+✅ 20+ साल चलती है
+❌ डिज़ाइन सादा रहता है — बड़ा Cove नहीं बन पाता
 
 ✨ **Gypsum Ceiling** (₹75-210/sq.ft):
-✅ Premium luxury look — cove lighting, POP designs
-✅ Any shape, any design possible
-✅ Living room ke liye best
-❌ Waterproof nahi — bathroom avoid karein
+✅ प्रीमियम लुक — Cove Light, POP डिज़ाइन सब बन जाता है
+✅ जो शेप मन में हो, वो बना दें
+✅ हॉल-लिविंग रूम के लिए सबसे बढ़िया
+❌ पानी नहीं झेल पाती — बाथरूम में मत लगाइए
 
-**Recommendation:** Hall/bedroom → Gypsum | Kitchen/bathroom → PVC | Budget tight → PVC everywhere`,
+**हमारी सलाह:** हॉल-बेडरूम → Gypsum | किचन-बाथरूम → PVC | बजट टाइट है तो → हर जगह PVC`,
 
-  "wpc-vs-uv": `**WPC Panels vs UV Marble — Wall ke liye kya better?**
+  "wpc-vs-uv": `**WPC Panel या UV Marble — दीवार के लिए कौन सा बेहतर?**
 
-🪵 **WPC Panels** (₹180-650/sq.ft):
-✅ Premium wood look — bahut high-end lagta hai
-✅ Moisture + termite resistant
-✅ TV wall, accent wall ke liye #1 choice
-❌ Costly per sq.ft
+🪵 **WPC Panel** (₹180-650/sq.ft):
+✅ लकड़ी जैसा प्रीमियम लुक — देखने में बहुत हाई-एंड
+✅ नमी और कीड़े का असर नहीं
+✅ TV Wall, Accent Wall के लिए नंबर 1 चॉइस
+❌ प्रति sq.ft थोड़ा महंगा
 
-💎 **UV Marble Sheets** (₹45-120/sq.ft):
-✅ Real marble jaisi shine at 70% less cost
-✅ 100% waterproof — bathroom bhi possible
-✅ Most affordable wall cladding option
-❌ Wood texture nahi milegi
+💎 **UV Marble Sheet** (₹45-120/sq.ft):
+✅ असली मार्बल जैसी चमक, कीमत 70% कम
+✅ 100% पानी का असर नहीं — बाथरूम में भी लगा सकते हैं
+✅ दीवार के लिए सबसे किफायती ऑप्शन
+❌ लकड़ी वाला टेक्सचर नहीं मिलेगा
 
-**Recommendation:** Luxury feel chahiye → WPC | Budget-friendly marble look → UV Marble`,
+**हमारी सलाह:** लग्ज़री फील चाहिए → WPC | बजट में मार्बल लुक → UV Marble`,
 
-  "pvc-vs-wpc": `**PVC vs WPC — Kya difference hai?**
+  "pvc-vs-wpc": `**PVC और WPC में क्या फर्क है?**
 
-PVC = ceiling ke liye (₹75-150/sq.ft) — waterproof, long life
-WPC = wall paneling ke liye (₹180-650/sq.ft) — wood look, luxury
+PVC = छत (Ceiling) के लिए (₹75-150/sq.ft) — पानी का असर नहीं, लंबी उम्र
+WPC = दीवार (Wall Paneling) के लिए (₹180-650/sq.ft) — लकड़ी जैसा लुक, प्रीमियम
 
-Yeh dono alag jagah use hote hain! Ceiling mein PVC aur wall mein WPC — dono milake complete interior ban jaata hai. 🏠`,
+दोनों अलग-अलग जगह काम आते हैं! छत में PVC और दीवार में WPC — दोनों साथ लगें तो पूरा इंटीरियर निखर जाता है। 🏠`,
 
-  // New comparisons
-  "gypsum-vs-pvc-detailed": `**Gypsum ya PVC — Long term mein kaunsa better?**
+  "gypsum-vs-pvc-detailed": `**Gypsum या PVC — लंबे समय में कौन सी ज़्यादा फायदे की?**
 
-✅ **Gypsum** — premium look, cove lighting, resale value badhata hai. Par 7-8 saal baad repaint chahiye aur bathroom mein nahi laga sakte.
+✅ **Gypsum** — प्रीमियम लुक, Cove Light, घर की कीमत भी बढ़ाती है। पर 7-8 साल बाद पेंट करानी पड़ती है और बाथरूम में नहीं लगती।
 
-✅ **PVC** — sasta, zero maintenance, 20+ saal chalega, har jagah lagao. Par utna premium nahi lagta.
+✅ **PVC** — सस्ती, कुछ करना नहीं पड़ता, 20+ साल चलती है, कहीं भी लगा दो। पर Gypsum जितनी प्रीमियम नहीं लगती।
 
-💡 **Hamari advice:** Hall+bedroom = Gypsum, baaki jagah PVC. Best of both worlds!`,
+💡 **हमारी सलाह:** हॉल और बेडरूम में Gypsum, बाकी जगह PVC लगा लीजिए। दोनों का फायदा मिल जाएगा!`,
 
-  "wpc-vs-realwood": `**WPC vs Real Wood — Paisa vasool kaunsa?**
+  "wpc-vs-realwood": `**WPC या असली लकड़ी — पैसा किसमें वसूल है?**
 
-🌳 **Real Wood** — bahut sundar but ₹600-1500/sq.ft, termite risk, har 2 saal mein polish chahiye.
+🌳 **असली लकड़ी** — बहुत सुंदर लगती है, पर ₹600-1500/sq.ft तक जाती है, कीड़ा लगने का डर रहता है, हर 2 साल में पॉलिश करानी पड़ती है।
 
-🪵 **WPC** — 60% sasta, zero maintenance, termite-proof, moisture resistant. Dekhne mein 90% real jaisa.
+🪵 **WPC** — 60% सस्ता, कुछ करना नहीं पड़ता, कीड़ा-नमी का कोई असर नहीं। देखने में 90% असली लकड़ी जैसा ही लगता है।
 
-💡 **Hamari advice:** Real wood sirf luxury budget ho tab. WPC best value for money hai.`,
+💡 **हमारी सलाह:** बजट खुला है तभी असली लकड़ी लगवाइए। बाकी WPC में पैसा पूरा वसूल होगा।`,
 
-  "acoustic-regular-panels": `**Acoustic Panels vs Regular Wall Panels — Kya fark?**
+  "acoustic-regular-panels": `**Acoustic Panel और सादे वॉल पैनल में क्या फर्क है?**
 
-🎧 **Acoustic Panels** — sound absorb karte hain, echo kam karte hain. Theatre/studio ke liye best.
+🎧 **Acoustic Panel** — आवाज़ सोख लेते हैं, गूंज कम करते हैं। Home Theatre या स्टूडियो के लिए सबसे सही।
 
-🪵 **Regular Panels (WPC/UV)** — sirf dekhne mein achhe, sound nahi rok sakte.
+🪵 **सादे पैनल (WPC/UV Marble)** — देखने में सुंदर लगते हैं, पर आवाज़ नहीं रोक पाते।
 
-💡 **Recommendation:** Home theatre ya office conference room → Acoustic. Baaki sab jagah regular panels theek hain.`,
+💡 **हमारी सलाह:** Home Theatre या ऑफिस कॉन्फ्रेंस रूम में → Acoustic Panel। बाकी हर जगह सादे पैनल से भी काम चल जाएगा।`,
 }
 
 // ─── Waterproof Solutions Data (new export) ────────────────────────────────
@@ -413,41 +412,41 @@ export const WATERPROOF_SOLUTIONS = {
 
 export const ROOM_SUGGESTIONS: Record<string, { ceiling: string; walls: string; flooring?: string; tvUnit?: string; notes: string }> = {
   bedroom: {
-    ceiling: "Gypsum with cove lighting (₹75-210/sq.ft) — gives cozy, premium feel",
-    walls: "WPC panels on headboard wall (₹180-650/sq.ft) for luxury accent",
-    tvUnit: "Custom modular TV unit (₹15k-40k) if TV present",
-    notes: "Avoid PVC in main bedroom if budget allows — gypsum looks much better.",
+    ceiling: "Cove Light के साथ Gypsum (₹75-210/sq.ft) — कमरा आराम और प्रीमियम दोनों फील देता है",
+    walls: "हेडबोर्ड वॉल पर WPC Panel (₹180-650/sq.ft) — लग्ज़री एक्सेंट के लिए",
+    tvUnit: "TV है तो Custom Modular TV Unit (₹15k-40k) लगवा लीजिए",
+    notes: "बजट है तो मेन बेडरूम में PVC मत लगाइए — Gypsum कहीं ज़्यादा सुंदर लगता है।",
   },
   hall: {
-    ceiling: "Gypsum with POP design & LED strip (₹135-210/sq.ft) — showpiece of your home",
-    walls: "WPC fluted panels on TV wall (₹200-500/sq.ft)",
-    tvUnit: "Premium TV unit with lighting (₹25k-60k)",
-    notes: "Hall is the first impression — invest in good design and lighting.",
+    ceiling: "POP डिज़ाइन और LED Strip के साथ Gypsum (₹135-210/sq.ft) — यही घर का शोपीस बनता है",
+    walls: "TV वॉल पर WPC Fluted Panel (₹200-500/sq.ft)",
+    tvUnit: "लाइटिंग के साथ प्रीमियम TV Unit (₹25k-60k)",
+    notes: "हॉल ही सबसे पहले नज़र आता है — डिज़ाइन और लाइटिंग में पैसा लगाना फायदे का सौदा है।",
   },
   kitchen: {
-    ceiling: "PVC false ceiling (₹75-150/sq.ft) — 100% waterproof, easy to clean",
-    walls: "UV marble sheets near cooking area (₹45-120/sq.ft)",
-    notes: "Avoid gypsum in kitchen — steam will damage it.",
+    ceiling: "PVC False Ceiling (₹75-150/sq.ft) — 100% पानी का असर नहीं, साफ करना भी आसान",
+    walls: "चूल्हे वाली जगह पर UV Marble Sheet (₹45-120/sq.ft)",
+    notes: "किचन में Gypsum मत लगाइए — भाप से खराब हो जाती है।",
   },
   bathroom: {
-    ceiling: "PVC false ceiling (₹75-150/sq.ft) — must be waterproof",
-    walls: "UV marble sheets on all walls (₹45-120/sq.ft) — no grout, no mould",
-    notes: "Full PVC ceiling + UV marble walls = completely waterproof bathroom.",
+    ceiling: "PVC False Ceiling (₹75-150/sq.ft) — यहां पानी रोकना ज़रूरी है",
+    walls: "सभी दीवारों पर UV Marble Sheet (₹45-120/sq.ft) — कोई जोड़ नहीं, फंगस भी नहीं लगेगी",
+    notes: "पूरा PVC Ceiling + UV Marble वॉल = पूरी तरह वॉटरप्रूफ बाथरूम।",
   },
   balcony: {
-    ceiling: "PVC ceiling (₹75-150/sq.ft) or leave open",
-    walls: "Artificial grass on one wall (₹40-150/sq.ft) for green look",
-    notes: "PVC ceiling protects from rain. Artificial grass gives garden feel.",
+    ceiling: "PVC Ceiling (₹75-150/sq.ft) लगवा लें या खुला रहने दें",
+    walls: "एक दीवार पर Artificial Grass (₹40-150/sq.ft) — हरा-भरा लुक मिलेगा",
+    notes: "PVC Ceiling बारिश से बचाती है। Artificial Grass से गार्डन जैसा फील आता है।",
   },
   office: {
-    ceiling: "Grid ceiling (₹45-115/sq.ft) for easy AC/electrical access, or gypsum for premium",
-    walls: "WPC or UV marble — depends on budget",
-    notes: "Grid ceiling is practical for offices. Gypsum looks more premium but harder to service.",
+    ceiling: "AC-वायरिंग तक आसान पहुंच के लिए Grid Ceiling (₹45-115/sq.ft), प्रीमियम लुक के लिए Gypsum",
+    walls: "WPC या UV Marble — बजट के हिसाब से चुन लें",
+    notes: "ऑफिस के लिए Grid Ceiling सबसे प्रैक्टिकल है। Gypsum प्रीमियम दिखता है पर सर्विस करना थोड़ा मुश्किल।",
   },
   pooja: {
-    ceiling: "PVC or gypsum? PVC is waterproof and cheaper, gypsum looks more traditional",
-    walls: "UV marble sheets with marble print — looks like real stone",
-    notes: "Add LED strip behind idol for divine look ✨",
+    ceiling: "PVC या Gypsum? PVC पानी से नहीं डरती और सस्ती भी है, Gypsum ज़्यादा पारंपरिक लुक देती है",
+    walls: "मार्बल प्रिंट वाली UV Marble Sheet — असली पत्थर जैसी दिखती है",
+    notes: "मूर्ति के पीछे LED Strip लगा दें, बहुत दिव्य लुक आता है ✨",
   },
 }
 
@@ -467,30 +466,30 @@ export function getSmartRecommendation(params: SmartRecommendationParams): strin
   if (roomType) {
     const suggestion = ROOM_SUGGESTIONS[roomType.toLowerCase()]
     if (suggestion) {
-      let rec = `🎯 **Best for ${roomType}:**\n\n`
+      let rec = `🎯 **${roomType} के लिए सबसे सही:**\n\n`
       rec += `🔹 Ceiling: ${suggestion.ceiling}\n`
       rec += `🔹 Walls: ${suggestion.walls}\n`
       if (suggestion.tvUnit && hasTV) rec += `🔹 TV Unit: ${suggestion.tvUnit}\n`
       rec += `\n📝 ${suggestion.notes}`
       if (roomSizeSqft) {
         const est = roomSizeSqft * 75 // rough for gypsum
-        rec += `\n\n💰 Rough estimate for ${roomSizeSqft} sq.ft: ₹${(est / 1000).toFixed(0)}k – ₹${(est * 1.5 / 1000).toFixed(0)}k`
+        rec += `\n\n💰 ${roomSizeSqft} sq.ft का अंदाज़न खर्च: ₹${(est / 1000).toFixed(0)}k – ₹${(est * 1.5 / 1000).toFixed(0)}k`
       }
       return rec
     }
   }
 
   if (waterproofRequired) {
-    return "💧 **Waterproof solution needed?**\n\n✅ PVC ceiling (₹75-150/sq.ft) — 100% waterproof, zero maintenance\n✅ UV Marble sheets on walls (₹45-120/sq.ft) — glossy & waterproof\n✅ Artificial grass for balcony (₹40-150/sq.ft)\n\nPerfect for bathrooms, kitchens, and balconies!"
+    return "💧 **पानी से बचाव वाला सलूशन चाहिए?**\n\n✅ PVC Ceiling (₹75-150/sq.ft) — 100% वॉटरप्रूफ, कुछ करना नहीं पड़ता\n✅ UV Marble Sheet दीवार पर (₹45-120/sq.ft) — चमकदार और वॉटरप्रूफ दोनों\n✅ बालकनी के लिए Artificial Grass (₹40-150/sq.ft)\n\nबाथरूम, किचन और बालकनी के लिए एकदम सही!"
   }
 
   if (budget === "low") {
-    return "💰 **Budget-friendly interior options:**\n\n• PVC ceiling everywhere: ₹75-150/sq.ft\n• UV marble sheets on walls: ₹45-120/sq.ft\n• No TV unit — use existing furniture\n\nApprox 2BHK full home: ₹40k-80k only! (estimate)"
+    return "💰 **बजट-फ्रेंडली इंटीरियर ऑप्शन:**\n\n• हर जगह PVC Ceiling: ₹75-150/sq.ft\n• दीवार पर UV Marble Sheet: ₹45-120/sq.ft\n• TV Unit नहीं — जो फर्नीचर है वही चलेगा\n\n2BHK पूरे घर का अंदाज़न खर्च: सिर्फ ₹40k-80k! (अनुमानित)"
   } else if (budget === "high") {
-    return "✨ **Premium interior recommendations:**\n\n• Gypsum ceiling with cove lighting in hall & bedrooms\n• WPC fluted panels on accent walls\n• Custom modular TV unit with backlight\n• Wooden laminate flooring\n\nExpect 2BHK full premium interior: ₹2.5L – ₹4L. Worth every rupee! 🏠"
+    return "✨ **प्रीमियम इंटीरियर की सलाह:**\n\n• हॉल और बेडरूम में Cove Light के साथ Gypsum Ceiling\n• Accent Wall पर WPC Fluted Panel\n• Backlight वाला Custom Modular TV Unit\n• Wooden Laminate Flooring\n\n2BHK का पूरा प्रीमियम इंटीरियर: ₹2.5L – ₹4L के बीच। पैसा पूरा वसूल होगा! 🏠"
   }
 
-  return "Need help deciding? Tell me your room type (bedroom, hall, kitchen), budget (low/medium/high), and if you need waterproofing. I'll suggest the best options! 😊"
+  return "तय नहीं कर पा रहे? कमरे का टाइप (बेडरूम, हॉल, किचन), बजट (कम/मीडियम/ज़्यादा), और वॉटरप्रूफिंग चाहिए या नहीं — बता दीजिए, मैं सबसे सही ऑप्शन बता दूंगा! 😊"
 }
 
 // ─── Expand Price Calculator with More Services ───────────────────────────
@@ -523,14 +522,14 @@ export function calculatePriceEstimate(
 
 export function formatPriceEstimate(l: number, w: number, service: string, serviceName: string): string {
   const est = calculatePriceEstimate(l, w, service)
-  return `📐 **${l}×${w} ft room = ${est.sqft} sq.ft**
+  return `📐 **${l}×${w} फुट का कमरा = ${est.sqft} sq.ft**
 
-💰 **${serviceName} Estimate:**
-• Basic design: ₹${est.low.toLocaleString("en-IN")}
-• Standard: ₹${est.mid.toLocaleString("en-IN")}
-• Premium: ₹${est.high.toLocaleString("en-IN")}
+💰 **${serviceName} का Estimate:**
+• बेसिक डिज़ाइन: ₹${est.low.toLocaleString("en-IN")}
+• स्टैंडर्ड: ₹${est.mid.toLocaleString("en-IN")}
+• प्रीमियम: ₹${est.high.toLocaleString("en-IN")}
 
-_Exact rate lighting, design aur materials pe depend karti hai. Free site visit mein accurate quotation milegi!_`
+_असली रेट लाइटिंग, डिज़ाइन और मटेरियल पर निर्भर करता है। Free Site Visit में सही-सही कोटेशन मिल जाएगी!_`
 }
 
 // ─── Multi-Room Parser & Estimator (unchanged functions, but improved keyword coverage) ─────────
@@ -543,20 +542,20 @@ export interface RoomDef {
 }
 
 const ROOM_DEFAULTS: Record<string, RoomDef> = {
-  bedroom:   { label: "Bedroom",    sqft: 120, material: "gypsum", isWet: false },
-  hall:      { label: "Hall",       sqft: 180, material: "gypsum", isWet: false },
-  kitchen:   { label: "Kitchen",    sqft: 80,  material: "pvc",    isWet: true  },
-  bathroom:  { label: "Bathroom",   sqft: 50,  material: "pvc",    isWet: true  },
-  office:    { label: "Office",     sqft: 150, material: "grid",   isWet: false },
-  reception: { label: "Reception",  sqft: 200, material: "gypsum", isWet: false },
-  balcony:   { label: "Balcony",    sqft: 60,  material: "pvc",    isWet: true  },
-  lobby:     { label: "Lobby",      sqft: 120, material: "gypsum", isWet: false },
-  dining:    { label: "Dining",     sqft: 100, material: "gypsum", isWet: false },
-  pooja:     { label: "Pooja Room", sqft: 40,  material: "pvc",    isWet: false },
-  storeroom: { label: "Store Room", sqft: 50,  material: "pvc",    isWet: false },
+  bedroom:   { label: "बेडरूम",     sqft: 120, material: "gypsum", isWet: false },
+  hall:      { label: "हॉल",        sqft: 180, material: "gypsum", isWet: false },
+  kitchen:   { label: "किचन",       sqft: 80,  material: "pvc",    isWet: true  },
+  bathroom:  { label: "बाथरूम",     sqft: 50,  material: "pvc",    isWet: true  },
+  office:    { label: "ऑफिस",       sqft: 150, material: "grid",   isWet: false },
+  reception: { label: "रिसेप्शन",   sqft: 200, material: "gypsum", isWet: false },
+  balcony:   { label: "बालकनी",     sqft: 60,  material: "pvc",    isWet: true  },
+  lobby:     { label: "लॉबी",       sqft: 120, material: "gypsum", isWet: false },
+  dining:    { label: "डाइनिंग",    sqft: 100, material: "gypsum", isWet: false },
+  pooja:     { label: "पूजा घर",    sqft: 40,  material: "pvc",    isWet: false },
+  storeroom: { label: "स्टोर रूम",  sqft: 50,  material: "pvc",    isWet: false },
   // added missing types from ROOM_SUGGESTIONS
-  "pooja-room": { label: "Pooja Room", sqft: 40, material: "pvc", isWet: false },
-  "tv-wall":   { label: "TV Wall", sqft: 40, material: "pvc", isWet: false },
+  "pooja-room": { label: "पूजा घर", sqft: 40, material: "pvc", isWet: false },
+  "tv-wall":   { label: "TV वॉल", sqft: 40, material: "pvc", isWet: false },
 }
 
 const PRESET_HOMES: Record<string, Record<string, number>> = {
@@ -688,30 +687,30 @@ export function generateMultiRoomEstimate(rooms: Record<string, number>): string
 
   let recLine = ""
   if (dryRooms.length > 0 && wetRooms.length > 0) {
-    recLine = `• ${dryRooms.join(" + ")} → Gypsum ceiling ✨\n• ${wetRooms.join(" + ")} → PVC waterproof ceiling 💧`
+    recLine = `• ${dryRooms.join(" + ")} → Gypsum Ceiling ✨\n• ${wetRooms.join(" + ")} → PVC Waterproof Ceiling 💧`
   } else if (dryRooms.length > 0) {
-    recLine = `Gypsum ceiling — cove lighting ke saath stunning lagega! ✨`
+    recLine = `Gypsum Ceiling — Cove Light के साथ बहुत सुंदर लगेगा! ✨`
   } else {
-    recLine = `PVC ceiling — 100% waterproof, zero maintenance! 💧`
+    recLine = `PVC Ceiling — 100% पानी का असर नहीं, कुछ करना भी नहीं पड़ता! 💧`
   }
 
   const hasOffice = !!rooms["office"] || !!rooms["reception"]
 
-  return `📐 **Approximate estimate — ${totalSqft} sq.ft total**
+  return `📐 **अंदाज़न Estimate — कुल ${totalSqft} sq.ft**
 
-**Room breakdown** (standard sizes):
+**कमरों का हिसाब** (स्टैंडर्ड साइज़ के अनुसार):
 ${lines.join("\n")}
 
-🎯 **Recommended plan:**
+🎯 **हमारी सलाह:**
 ${recLine}
 
-💰 **3 options:**
-• Budget (PVC everywhere): ${fmtN(budgetLow)} – ${fmtN(budgetHigh)}
-• Standard (Gypsum+PVC mix): ${fmtN(stdLow)} – ${fmtN(stdHigh)}
-• Premium (+ LED cove light): ${fmtN(premLow)} – ${fmtN(premHigh)}
-${hasOffice ? "\n🏢 Office ke liye Grid ceiling (₹45–115/sq.ft) bhi available hai!" : "\n✨ TV wall ke liye WPC panel add karein — ₹8,000–₹15,000 extra!"}
+💰 **3 ऑप्शन:**
+• बजट (हर जगह PVC): ${fmtN(budgetLow)} – ${fmtN(budgetHigh)}
+• स्टैंडर्ड (Gypsum+PVC मिक्स): ${fmtN(stdLow)} – ${fmtN(stdHigh)}
+• प्रीमियम (+ LED Cove Light): ${fmtN(premLow)} – ${fmtN(premHigh)}
+${hasOffice ? "\n🏢 ऑफिस के लिए Grid Ceiling (₹45–115/sq.ft) भी मिल जाती है!" : "\n✨ TV वॉल के लिए WPC Panel भी लगवा लीजिए — ₹8,000–₹15,000 extra!"}
 
-_Yeh standard size pe base estimate hai — exact quote ke liye free site visit best hai!_`
+_यह स्टैंडर्ड साइज़ पर बना अंदाज़न estimate है — सही-सही रेट के लिए Free Site Visit सबसे बेहतर तरीका है!_`
 }
 
 // ─── Intent Detection (improved with more Hinglish keywords) ────────────────
@@ -760,85 +759,85 @@ export function detectIntent(text: string): Intent {
 export const FAQ = [
   {
     q: ["paani me kharab hoga", "water", "waterproof", "bathroom", "kitchen", "nami", "moisture", "barish", "damp"],
-    a: "PVC ceiling aur UV marble sheets 100% waterproof hote hain — bathroom aur kitchen ke liye perfect! Gypsum ceiling sirf dry areas ke liye hai — hall aur bedroom mein lagayein. WPC wall panels bhi moisture resistant hain. 💧",
+    a: "PVC Ceiling और UV Marble Sheet पर पानी का कोई असर नहीं होता — बाथरूम-किचन के लिए एकदम सही! Gypsum Ceiling सिर्फ सूखी जगह के लिए है — हॉल-बेडरूम में लगाइए। WPC Wall Panel भी नमी से नहीं डरता। 💧",
   },
   {
     q: ["kitne saal chalega", "life", "durable", "warranty", "guarantee", "tikau", "long lasting"],
-    a: "JK Interior ki 1 saal ki written warranty hoti hai sab installations pe! Material life: PVC = 20+ saal, Gypsum = 10-15 saal, WPC = 15-20 saal, UV Marble = 15+ saal, Laminate flooring = 5-10 saal. ISI certified materials use hote hain. ✅",
+    a: "JK Interior हर काम पर 1 साल की लिखित Warranty देता है! उम्र की बात करें तो — PVC = 20+ साल, Gypsum = 10-15 साल, WPC = 15-20 साल, UV Marble = 15+ साल, Laminate Flooring = 5-10 साल। सब ISI Certified मटेरियल इस्तेमाल होता है। ✅",
   },
   {
     q: ["installation time", "kitne din", "kab tak", "jaldi", "time", "kitna samay"],
-    a: "Ek room mein: PVC = 1 din, Gypsum = 2-3 din, WPC wall = 1-2 din, Flooring = 1 din, Acoustic panels = 1-2 din. Poore ghar mein 5-10 din. Hum timeline pehle bata dete hain — koi surprise nahi! 📅",
+    a: "एक कमरे में: PVC = 1 दिन, Gypsum = 2-3 दिन, WPC Wall = 1-2 दिन, Flooring = 1 दिन, Acoustic Panel = 1-2 दिन। पूरे घर में 5-10 दिन लग जाते हैं। हम टाइमलाइन पहले ही बता देते हैं — कोई सरप्राइज़ नहीं! 📅",
   },
   {
     q: ["free site visit", "visit free hai", "kharcha nahi", "no charge", "free aana"],
-    a: "Haan, site visit bilkul FREE hai! Koi hidden charge nahi. Hamare expert aate hain, measurements lete hain, aur same day quotation dete hain. Abhi book karein — +91 8541849118 📞",
+    a: "हां, Site Visit पूरी तरह FREE है! कोई छुपा हुआ खर्च नहीं। हमारा एक्सपर्ट आता है, माप लेता है, और उसी दिन कोटेशन दे देता है। अभी बुक कीजिए — +91 8541849118 📞",
   },
   {
     q: ["payment", "upi", "cash", "emi", "kaise pay", "payment options"],
-    a: "Sab payment modes accepted: Cash, UPI (GPay/PhonePe/Paytm), bank transfer. Koi hidden charges nahi. 50% advance, baaki kaam complete hone pe. EMI bhi available hai (T&C apply). 💳",
+    a: "Cash, UPI (GPay/PhonePe/Paytm), बैंक ट्रांसफर — सब चलता है। कोई छुपा हुआ खर्च नहीं। 50% एडवांस, बाकी काम पूरा होने पर। EMI भी मिल जाती है (शर्तें लागू)। 💳",
   },
   {
     q: ["led", "lighting", "cove light", "strip light", "back light", "led strip"],
-    a: "Haan! LED cove lighting gypsum ceiling ke saath ₹40-80/running ft mein add kar sakte hain. WPC TV wall ke saath LED backlight ₹2,000-₹5,000 mein lagta hai. Bahut premium look aata hai! ✨",
+    a: "हां भाई! Gypsum Ceiling के साथ LED Cove Light ₹40-80/running ft में लगा देते हैं। WPC TV Wall के साथ LED Backlight ₹2,000-₹5,000 में लग जाता है। लुक बहुत प्रीमियम आ जाता है! ✨",
   },
   {
     q: ["design", "custom design", "apna design", "unique", "special shape"],
-    a: "Bilkul! Hum custom designs banate hain. Chahe gypsum mein koi bhi shape, ya WPC mein particular texture — aapki marzi. Free site visit par design options dikha denge. 🎨",
+    a: "बिल्कुल! हम कस्टम डिज़ाइन बनाते हैं। Gypsum में जो शेप मन में हो, या WPC में कोई खास टेक्सचर — आपकी पसंद से बनेगा। Free Site Visit में डिज़ाइन ऑप्शन दिखा देंगे। 🎨",
   },
   {
     q: ["flooring", "floor", "laminate", "wooden floor", "floor ka rate"],
-    a: "Wooden laminate flooring ₹80-200/sq.ft mein milta hai. Bedroom aur living room ke liye bahut achha option hai. Real wood jaisa look, scratch resistant, easy to clean. Free site visit mein sample dikha sakte hain! 🪵",
+    a: "Wooden Laminate Flooring ₹80-200/sq.ft में लग जाती है। बेडरूम और लिविंग रूम के लिए बहुत बढ़िया ऑप्शन है। असली लकड़ी जैसा लुक, खरोंच का डर नहीं, साफ करना भी आसान। Free Site Visit में सैंपल दिखा सकते हैं! 🪵",
   },
   {
     q: ["soundproof", "acoustic", "echo", "noise", "sound", "theatre"],
-    a: "Acoustic panels ₹150-400/sq.ft — home theatre, studio, ya conference room ke liye best. Echo kam karte hain, sound quality improve hoti hai. Free consultation ke liye contact karein! 🎧",
+    a: "Acoustic Panel ₹150-400/sq.ft में मिल जाता है — Home Theatre, स्टूडियो या कॉन्फ्रेंस रूम के लिए सबसे सही। गूंज कम करता है, आवाज़ साफ सुनाई देती है। Free Consultation के लिए संपर्क कीजिए! 🎧",
   },
   {
     q: ["color options", "colour", "shade", "texture", "finish"],
-    a: "Har service mein multiple options: Gypsum — any paint color; PVC — wood, marble, plain, 3D; WPC — 50+ wood textures and solid colors; UV Marble — marble, granite, stone prints. Sample book hai — aap dekh ke choose kar sakte hain! 🎨",
+    a: "हर सर्विस में कई ऑप्शन मिल जाते हैं: Gypsum — किसी भी रंग में पेंट; PVC — लकड़ी, मार्बल, प्लेन, 3D; WPC — 50+ लकड़ी टेक्सचर और सॉलिड रंग; UV Marble — मार्बल, ग्रेनाइट, स्टोन प्रिंट। सैंपल बुक है — देख कर पसंद कर सकते हैं! 🎨",
   },
   {
     q: ["service area", "aap kahan karte ho", "kis city mein", "forbesganj", "araria", "purnia", "supaul"],
-    a: "Hum Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Kursakanta, Tribeniganj, Chhatapur, Supaul, Purnia aur aas-paas 80 km radius mein service dete hain. Aapki city? 😊",
+    a: "हम फोर्बेसगंज, अररिया, जोगबनी, रानीगंज, नरपतगंज, कुर्साकाँटा, त्रिवेणीगंज, छतापुर, सुपौल, पूर्णिया और आसपास 80 km के दायरे में सेवा देते हैं। आपकी सिटी कौन सी है? 😊",
   },
   {
     q: ["discount", "offer", "sasta", "combo", "package", "deals"],
-    a: "Haan! Complete interior package (ceiling + walls + TV unit + flooring) par combo discount milta hai. Free site visit mein detailed quote with discount dedenge. Offer limited time — jaldi contact karein! 🎉",
+    a: "हां भाई! Complete Interior Package (Ceiling + Wall + TV Unit + Flooring) पर कॉम्बो डिस्काउंट मिलता है। Free Site Visit में डिस्काउंट के साथ पूरा कोटेशन दे देंगे। ऑफर लिमिटेड टाइम के लिए है — जल्दी संपर्क कीजिए! 🎉",
   },
 ]
 
 // ─── Smarter Quick Replies ─────────────────────────────────────────────────
 
 export const INITIAL_QUICK_REPLIES = [
-  "PVC Ceiling Rate",
+  "PVC Ceiling का रेट",
   "Gypsum Ceiling",
-  "WPC Wall Panels",
-  "Price List",
+  "WPC Wall Panel",
+  "पूरी Price List",
   "Free Site Visit",
-  "Waterproof Solutions",
+  "Waterproof सलूशन",
   "Complete Interior",
 ]
 
 export const GENERAL_QUICK_REPLIES = [
   "PVC Ceiling",
   "Gypsum Ceiling",
-  "WPC Panels",
-  "Price / Rate",
-  "Book Site Visit",
-  "Quality & Warranty",
-  "Waterproof Solutions",
-  "Compare PVC vs Gypsum",
+  "WPC Panel",
+  "रेट / कीमत",
+  "Site Visit बुक करें",
+  "Quality और Warranty",
+  "Waterproof सलूशन",
+  "PVC vs Gypsum",
 ]
 
 export const SERVICE_QUICK_REPLIES = [
   "PVC Ceiling",
   "Gypsum Ceiling",
-  "WPC Panels",
+  "WPC Panel",
   "UV Marble",
   "Complete Interior",
   "Modular TV Unit",
-  "Acoustic Panels",
+  "Acoustic Panel",
   "Laminate Flooring",
 ]
 
@@ -867,13 +866,13 @@ NEVER show a service menu or "kya jaanna chahte hain?" if the customer has given
 
 --- WRONG vs RIGHT ---
 ❌ User: "hall banana hai" → listing generic prices
-✅ RIGHT: "Hall ke liye gypsum ceiling best hai — cove lighting ke saath amazing lagti hai. Size bataiye, estimate nikaalta hoon!"
+✅ RIGHT: "हॉल के लिए Gypsum Ceiling सबसे अच्छा रहेगा — Cove Light के साथ बहुत सुंदर लगती है। साइज़ बताइए, अभी estimate निकालता हूं!"
 
 ❌ User: "budget kam hai" → asking what they want
-✅ RIGHT: "Budget-friendly ke liye PVC ceiling best — ₹75-150/sqft, waterproof, zero maintenance. Room ka size?"
+✅ RIGHT: "बजट कम है तो PVC Ceiling सही रहेगा — ₹75-150/sq.ft में लग जाती है, पानी का असर नहीं होता, सफाई भी आसान है। कमरे का साइज़ बताइए?"
 
 ❌ User: "PVC sahi rahega kya" → "kya kaam hai aapka?"
-✅ RIGHT: "Haan! Waterproof, termite-proof, 20+ saal ki life. Kaunsi room — bedroom, kitchen, ya hall? Size batao toh estimate bhi!"
+✅ RIGHT: "हां भाई, बिल्कुल सही रहेगा! पानी से खराब नहीं होती, कीड़ा-मकोड़ा भी नहीं लगता, 20+ साल आराम से चल जाती है। कौन सा कमरा है — बेडरूम, किचन या हॉल? साइज़ बता दीजिए तो estimate भी बता दूंगा!"
 
 --- CONSULTANT FLOW ---
 1. Understand need (ceiling/wall/TV unit/flooring/acoustic)
@@ -883,10 +882,14 @@ NEVER show a service menu or "kya jaanna chahte hain?" if the customer has given
 5. After estimate → invite free site visit or collect name/phone
 RULES: ONE question per message. Never re-ask city/room count already mentioned.
 
---- PERSONALITY ---
-Speak naturally in Hinglish (Hindi + English mix). Warm, knowledgeable, trusted expert friend tone.
-1-2 emojis per message. Vary openers — never start with "Bilkul!" or "Zaroor!" every time.
-Max 5-6 lines per message (mobile-friendly). Match user's language (Hindi/English/Hinglish).
+--- PERSONALITY & LANGUAGE (must follow) ---
+You are not a corporate chatbot — you talk like an experienced false ceiling contractor from Forbesganj, Bihar personally chatting with a customer on WhatsApp. Write in natural, conversational Hindi using Devanagari script (हिंदी में, अंग्रेज़ी अक्षरों में Hinglish नहीं) — this must match the rest of the JK Interior website, which is written in Hindi, not Romanized Hinglish.
+- Keep technical/material terms in plain English inside the Hindi sentence: Gypsum Board, PVC Panel, GI Channel, Ceiling, LED Strip, Cove Light, Frame, Profile, WPC, UV Marble, TV Unit, Grid Ceiling, Site Visit, Warranty, sq.ft — don't force-translate these into Sanskrit-ish Hindi.
+- Never use stiff/textbook/bureaucratic Hindi words (e.g. don't say "जलरोधक", say "पानी का असर नहीं होता"; don't say "आर्द्रता", say "नमी"). Keep sentences short and simple — every word a customer in Forbesganj or Araria would actually use in speech.
+- Warm, knowledgeable, trusted "bhai/ji" tone — like a contractor who's done hundreds of homes and is genuinely helping, not selling. Vary openers — never start every message with "बिल्कुल!" or "ज़रूर!".
+- 1-2 emojis per message max. Max 5-6 lines per message (mobile-friendly).
+- If the customer writes in English or Romanized Hinglish, still reply in Devanagari Hindi with English technical terms mixed in (as above) — that's the site's voice. Only switch to plain English if the customer explicitly asks you to reply in English.
+- When quoting a fresh price range in your own words (not copying a line that already has the disclaimer), you can naturally add that this is Forbesganj/Araria ke local market ka andaza and the final rate is confirmed only after a free site visit — say it briefly, don't repeat it every single message.
 
 --- COMPANY INFORMATION ---
 - **Company:** JK Interior | Founded 2016 | 8+ years experience | 500+ completed projects
@@ -959,14 +962,14 @@ ALWAYS add: "Yeh sirf estimate hai — exact quote ke liye free site visit best 
 --- LEAD COLLECTION ---
 
 When user shows serious interest (asks for quote, site visit, detailed pricing):
-1. First get their NAME: "Aapka naam kya hai?"
-2. Then get their CITY: "Aap kis city mein hain?"
-3. Then get their PHONE: "Ek WhatsApp number share karein — hamare expert same din contact karenge!"
+1. First get their NAME: "आपका नाम क्या है?"
+2. Then get their CITY: "आप किस शहर में हैं?"
+3. Then get their PHONE: "एक WhatsApp नंबर दे दीजिए — हमारी टीम आज ही आपसे बात करेगी!"
 
 NEVER ask all three at once. ONE question at a time.
 Once you have phone number → confirm → say team will contact within 24 hours.
 
-If hesitant → mention: "Free site visit mein koi obligation nahi — dekh ke decide kar sakte hain!"
+If hesitant → mention: "Free Site Visit में कोई बंधन नहीं है — देख कर, समझ कर फिर तय कर लीजिए!"
 
 --- CRITICAL RULES ---
 1. NEVER say you don't know about JK Interior's services — you are the expert
@@ -1041,11 +1044,11 @@ WHEN TO USE LAYER 2 (your own knowledge):
 RULES FOR LAYER 2:
 - NEVER invent prices outside the given ranges for JK Interior's services
 - NEVER claim JK Interior has projects or branches it doesn't have
-- Design trend/color/maintenance advice can freely use your training knowledge
+- Design trend/color/maintenance advice can freely use your training knowledge, but write it out in the same Devanagari Hindi contractor voice described above — not as an English design-magazine paragraph
 - Keep Layer 2 additions brief: 2-3 lines max per response, don't overwhelm
-- If customer asks specifically about trends, colors, or maintenance → give a more detailed Layer 2 answer
+- If customer asks specifically about trends, colors, or maintenance → give a more detailed Layer 2 answer, still in Hindi
 
-Remember: You are the JK Interior AI Assistant — a warm, knowledgeable expert who genuinely cares about making customers' homes beautiful. Combine JK Interior's real business expertise with your design knowledge to give advice that feels personal and trustworthy. 🏠
+Remember: You are the JK Interior AI Assistant — but you talk like a real Forbesganj contractor, not a corporate bot. Warm, knowledgeable, genuinely trying to help the customer's home look good and stay within budget. Combine JK Interior's real business facts with your own design knowledge, always delivered in natural Hindi. 🏠
 
 --- IDENTITY RULE ---
 If asked your name, always say "JK Interior AI Assistant" — never invent or use any other name.`
