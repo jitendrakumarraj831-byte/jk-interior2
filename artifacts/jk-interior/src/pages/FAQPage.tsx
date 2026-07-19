@@ -7,7 +7,7 @@ import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 export default function FAQPage() {
   return (
-    <>
+    <main>
       <SeoHead
         title="FAQs – False Ceiling & Interior Design Services in Forbesganj, Araria Bihar"
         description="Frequently asked questions about PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet and interior design services by JK Interior in Forbesganj, Araria, Bihar. Cost, warranty, installation time and more."
@@ -109,6 +109,6 @@ export default function FAQPage() {
       </section>
 
       <Footer />
-    </>
+    </main>
   )
 }

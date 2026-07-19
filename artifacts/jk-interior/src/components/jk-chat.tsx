@@ -438,7 +438,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
     const isWaterQ = has(t, ["paani","water","bathroom","nami","moisture","geela","baarish","toilet"])
     if (isWaterQ) return `Gypsum ceiling bathroom/kitchen ke liye suitable **nahi** hai — paani se kharab ho jaati hai.\n\nBathroom ke liye **PVC Ceiling** best hai:\n✅ 100% waterproof\n💰 ₹80–140 / sq.ft\n⏱️ 1–2 din installation\n\nRoom size bataiye — estimate nikaalta hoon! 📐`
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `✨ **Gypsum False Ceiling Rate**\n\n💰 Standard: ₹80–100 / sq.ft\n💎 Premium (cove design): ₹100–140 / sq.ft\n\n✅ Best for hall, bedroom, drawing room\n✅ LED cove lighting ke saath bahut sundar lagta hai\n🛡️ 5 saal warranty\n\nRoom ka size batao — exact total cost nikaalta hoon! 📐`
+    if (rateQ) return `✨ **Gypsum False Ceiling Rate**\n\n💰 Standard: ₹80–100 / sq.ft\n💎 Premium (cove design): ₹100–140 / sq.ft\n\n✅ Best for hall, bedroom, drawing room\n✅ LED cove lighting ke saath bahut sundar lagta hai\n🛡️ 1 saal written warranty\n\nRoom ka size batao — exact total cost nikaalta hoon! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "Gypsum Ceiling", lead?.name || undefined)
@@ -450,7 +450,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (t.includes("pvc")) {
     const m = MATERIAL_KNOWLEDGE.pvc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `🏠 **PVC Ceiling Rate**\n\n💰 Standard: ₹80–110 / sq.ft\n💎 Premium: ₹110–140 / sq.ft\n\n✅ 100% waterproof — bathroom & kitchen ke liye best\n✅ Low maintenance\n🛡️ 10 saal warranty\n\nRoom ka size batao — exact total nikaalta hoon! 📐`
+    if (rateQ) return `🏠 **PVC Ceiling Rate**\n\n💰 Standard: ₹80–110 / sq.ft\n💎 Premium: ₹110–140 / sq.ft\n\n✅ 100% waterproof — bathroom & kitchen ke liye best\n✅ Low maintenance\n🛡️ 1 saal written warranty\n\nRoom ka size batao — exact total nikaalta hoon! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "PVC Ceiling", lead?.name || undefined)
@@ -462,7 +462,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (t.includes("wpc") || t.includes("wood panel") || t.includes("wooden panel") || t.includes("louver")) {
     const m = MATERIAL_KNOWLEDGE.wpc
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `🪵 **WPC Wall Panel Rate**\n\n💰 Standard: ₹180–300 / sq.ft\n💎 Premium: ₹300–450 / sq.ft\n\n✅ Waterproof & termite-proof\n✅ TV wall, bedroom accent wall ke liye best\n🛡️ 7 saal warranty\n\nWall size batao — exact quote nikaalta hoon! 📐`
+    if (rateQ) return `🪵 **WPC Wall Panel Rate**\n\n💰 Standard: ₹180–300 / sq.ft\n💎 Premium: ₹300–450 / sq.ft\n\n✅ Waterproof & termite-proof\n✅ TV wall, bedroom accent wall ke liye best\n🛡️ 1 saal written warranty\n\nWall size batao — exact quote nikaalta hoon! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "WPC Wall Panels", lead?.name || undefined)
@@ -474,7 +474,7 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
   if (t.includes("uv ") || t.includes("uv marble") || (t.includes("marble") && !t.includes("natural marble"))) {
     const m = MATERIAL_KNOWLEDGE.uv
     const rateQ = has(t, ["rate","price","cost","kitna","daam","kimat","kharcha"])
-    if (rateQ) return `💎 **UV Marble Sheet Rate**\n\n💰 Standard: ₹50–70 / sq.ft\n💎 Premium: ₹70–95 / sq.ft\n\n✅ Bathroom walls, kitchen backsplash ke liye best\n✅ Glossy finish, easy cleaning\n🛡️ 5 saal warranty\n\nArea size batao — estimate nikalte hain! 📐`
+    if (rateQ) return `💎 **UV Marble Sheet Rate**\n\n💰 Standard: ₹50–70 / sq.ft\n💎 Premium: ₹70–95 / sq.ft\n\n✅ Bathroom walls, kitchen backsplash ke liye best\n✅ Glossy finish, easy cleaning\n🛡️ 1 saal written warranty\n\nArea size batao — estimate nikalte hain! 📐`
     if (roomSize) {
       const [l, w] = roomSize.split("x").map(Number)
       return generateEstimateFromDimensions(l, w, "UV Marble Sheets", lead?.name || undefined)
@@ -736,13 +736,13 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
         <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">Booking Confirmed!</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
       </div>
       <div className="px-3 md:px-4 py-2 md:py-2.5 space-y-1.5">
-        {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-[11px] md:text-xs"><span className="text-gray-400 shrink-0 w-16 md:w-20 text-[10px] md:text-[11px] font-medium">{r.label}</span><span className="font-semibold break-all text-[11px] md:text-[12px] text-gray-800 flex-1">{r.value}</span></div>))}
+        {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-[11px] md:text-xs"><span className="text-gray-500 shrink-0 w-16 md:w-20 text-[10px] md:text-[11px] font-medium">{r.label}</span><span className="font-semibold break-all text-[11px] md:text-[12px] text-gray-800 flex-1">{r.value}</span></div>))}
       </div>
       <div className="px-3 md:px-4 pb-3 md:pb-3.5 pt-1 md:pt-1.5 space-y-2">
         <p className="text-[10px] md:text-[11px] text-emerald-700 font-semibold text-center bg-emerald-50 rounded-lg py-1.5">✅ Our team will contact you shortly!</p>
         <div className="flex flex-col sm:flex-row gap-2">
           <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp</a>
-          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-emerald-500 transition-all"><ICal /> Book Visit</a>
+          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-700 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-emerald-600 transition-all"><ICal /> Book Visit</a>
         </div>
       </div>
     </motion.div>
@@ -825,6 +825,10 @@ export default function JKChat() {
         setIsListening(false)
       }
       recognitionRef.current = recognition
+    }
+    return () => {
+      recognitionRef.current?.abort?.()
+      recognitionRef.current = null
     }
   }, [])
 

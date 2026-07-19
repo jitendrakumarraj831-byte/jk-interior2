@@ -140,7 +140,7 @@ export default function ProcessTimeline() {
 
         {/* CTA */}
         <motion.div {...animProps} className="mt-14 text-center">
-          <CallLink shine className="px-8 py-4 text-base font-bold">
+          <CallLink shine ariaLabel="Start Your Project Today – Call JK Interior" className="px-8 py-4 text-base font-bold">
             Start Your Project Today
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </CallLink>

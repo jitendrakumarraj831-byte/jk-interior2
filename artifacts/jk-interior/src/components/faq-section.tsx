@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     q: "Warranty कितनी मिलती है?",
-    a: "JK Interior हर project पर 5 साल की written warranty provide करती है। यह warranty materials और workmanship दोनों को cover करती है। Written document दिया जाता है।",
+    a: "JK Interior हर project पर 1 साल की written warranty provide करती है। यह warranty materials और workmanship दोनों को cover करती है। Written document दिया जाता है।",
   },
   {
     q: "आप कौन-कौन से areas में service करते हैं?",

@@ -71,7 +71,7 @@ export default function ServiceDetailPage() {
   ]
 
   return (
-    <>
+    <main>
       <SeoHead
         title={`${service.name} – Full Guide, Price & Installation | JK Interior`}
         description={`${service.whatItIs.slice(0, 140)} Price: ${service.price}. ${service.installTime}. Free site visit, ${service.warranty}. Call +91 8541849118.`}
@@ -178,7 +178,7 @@ export default function ServiceDetailPage() {
                 <p className="mt-1 text-xs font-semibold text-gray-500">{tier.tierHi}</p>
                 <p className="mt-2 text-lg font-black text-gray-900">{tier.range}</p>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">{tier.desc}</p>
-                <p className="mt-1 text-xs leading-relaxed text-gray-400">{tier.descHi}</p>
+                <p className="mt-1 text-xs leading-relaxed text-gray-500">{tier.descHi}</p>
               </div>
             ))}
           </div>
@@ -196,7 +196,7 @@ export default function ServiceDetailPage() {
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Estimated Labour Cost</p>
               <p className="text-xs leading-relaxed text-gray-600">{service.labourCost}</p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-400">{service.labourCostHi}</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.labourCostHi}</p>
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@ export default function ServiceDetailPage() {
                     <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
                     <span>
                       {item}
-                      <span className="block text-xs text-gray-400 mt-0.5">{service.whereUsedHi[i]}</span>
+                      <span className="block text-xs text-gray-500 mt-0.5">{service.whereUsedHi[i]}</span>
                     </span>
                   </li>
                 ))}
@@ -235,7 +235,7 @@ export default function ServiceDetailPage() {
                     <XCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-400" aria-hidden="true" />
                     <span>
                       {item}
-                      <span className="block text-xs text-gray-400 mt-0.5">{service.whereNotUsedHi[i]}</span>
+                      <span className="block text-xs text-gray-500 mt-0.5">{service.whereNotUsedHi[i]}</span>
                     </span>
                   </li>
                 ))}
@@ -286,9 +286,9 @@ export default function ServiceDetailPage() {
             {service.materials.map((m) => (
               <div key={m.name} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
                 <h3 className="mb-1 text-sm font-bold text-gray-900">{m.name}</h3>
-                <p className="mb-2 text-xs font-semibold text-emerald-600">{m.nameHi}</p>
+                <p className="mb-2 text-xs font-semibold text-emerald-700">{m.nameHi}</p>
                 <p className="text-sm text-gray-600 leading-relaxed">{m.detail}</p>
-                <p className="mt-1 text-xs text-gray-400 leading-relaxed">{m.detailHi}</p>
+                <p className="mt-1 text-xs text-gray-500 leading-relaxed">{m.detailHi}</p>
               </div>
             ))}
           </div>
@@ -298,7 +298,7 @@ export default function ServiceDetailPage() {
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Available Sizes &amp; Thickness</p>
               <p className="text-sm leading-relaxed text-gray-600">{service.sizesThickness}</p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-400">{service.sizesThicknessHi}</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.sizesThicknessHi}</p>
             </div>
           </div>
 
@@ -323,14 +323,14 @@ export default function ServiceDetailPage() {
           <ol className="space-y-5">
             {service.installSteps.map((step, i) => (
               <li key={step.title} className="flex gap-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-black text-white">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-sm font-black text-white">
                   {i + 1}
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900">{step.title}</h3>
-                  <p className="text-xs font-semibold text-emerald-600/80 mb-1">{step.titleHi}</p>
+                  <p className="text-xs font-semibold text-emerald-700 mb-1">{step.titleHi}</p>
                   <p className="text-sm text-gray-600 leading-relaxed">{step.desc}</p>
-                  <p className="text-xs text-gray-400 leading-relaxed mt-0.5">{step.descHi}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed mt-0.5">{step.descHi}</p>
                 </div>
               </li>
             ))}
@@ -365,7 +365,7 @@ export default function ServiceDetailPage() {
             <div>
               <h2 className="mb-2 text-base font-black text-gray-900">Availability in Araria District &amp; Nearby</h2>
               <p className="text-sm leading-relaxed text-gray-600">{service.availability}</p>
-              <p className="mt-1.5 text-xs leading-relaxed text-gray-400">{service.availabilityHi}</p>
+              <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{service.availabilityHi}</p>
             </div>
           </div>
         </div>
@@ -379,7 +379,7 @@ export default function ServiceDetailPage() {
               <h2 className="mb-2 text-lg font-black text-gray-900">Real Project: {service.realProject.title}</h2>
               <p className="mb-1 text-sm font-semibold text-emerald-700">{service.realProject.titleHi}</p>
               <p className="text-sm leading-relaxed text-gray-600">{service.realProject.desc}</p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-400">{service.realProject.descHi}</p>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.realProject.descHi}</p>
             </div>
 
             <div className="mb-4 flex items-center justify-between gap-4">
@@ -415,10 +415,10 @@ export default function ServiceDetailPage() {
               <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 open:border-emerald-300 open:shadow-sm">
                 <summary className="cursor-pointer list-none">
                   <h3 className="text-base font-bold text-gray-900 group-open:text-emerald-700 inline">{q}</h3>
-                  <span className="block text-xs font-semibold text-emerald-600/70 mt-1">{qHi}</span>
+                  <span className="block text-xs font-semibold text-emerald-700 mt-1">{qHi}</span>
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
-                <p className="mt-1 text-xs leading-relaxed text-gray-400">{aHi}</p>
+                <p className="mt-1 text-xs leading-relaxed text-gray-500">{aHi}</p>
               </details>
             ))}
           </div>
@@ -431,7 +431,7 @@ export default function ServiceDetailPage() {
           <h2 className="mb-2 text-xl font-black sm:text-2xl">Ready for {service.name}?</h2>
           <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <CallLink icon={false} className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
+            <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
               <Phone className="h-4 w-4" aria-hidden="true" />
               Call +91 8541849118
             </CallLink>
@@ -475,6 +475,6 @@ export default function ServiceDetailPage() {
       )}
 
       <Footer />
-    </>
+    </main>
   )
 }

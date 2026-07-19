@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import Navbar from "@/components/navbar"
 import Hero from "@/components/hero"
 import Services from "@/components/services"
@@ -20,6 +20,25 @@ const Testimonials = lazy(() => import("@/components/testimonials"))
 const FAQSection = lazy(() => import("@/components/faq-section"))
 
 export default function HomePage() {
+  // Deep-link support: /#areas (and similar in-page anchors) scroll to the matching section
+  useEffect(() => {
+    const hash = window.location.hash
+    if (!hash) return
+    let attempts = 0
+    let t: ReturnType<typeof setTimeout>
+    const tryScroll = () => {
+      const el = document.getElementById(hash.slice(1))
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" })
+      } else if (attempts < 10) {
+        attempts++
+        t = setTimeout(tryScroll, 150)
+      }
+    }
+    t = setTimeout(tryScroll, 100)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <main className="min-h-screen overflow-x-hidden">
       <SeoHead

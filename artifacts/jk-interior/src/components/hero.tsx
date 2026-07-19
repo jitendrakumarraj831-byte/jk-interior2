@@ -18,7 +18,7 @@ const words = [
 const stats = [
   { value: "5000+", label: "Sqft Installed", icon: TrendingUp },
   { value: "100+", label: "Happy Clients", icon: Users },
-  { value: "5+", label: "Years Exp.", icon: Award },
+  { value: "8+", label: "Years Exp.", icon: Award },
   { value: "100%", label: "Satisfaction", icon: Star },
 ]
 
@@ -64,7 +64,7 @@ export default function Hero() {
       {/* Full-bleed cover photo */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <motion.img
-          src="/images/hero-interior.jpg"
+          src="/images/hero-interior.webp"
           alt="Luxury false ceiling bedroom interior design by JK Interior in Forbesganj Bihar"
           className="absolute inset-0 h-full w-full object-cover"
           initial={shouldReduce ? {} : { scale: 1.08 }}
@@ -147,7 +147,7 @@ export default function Hero() {
               </WhatsAppLink>
               <Link
                 href="/gallery"
-                aria-label="View our work gallery"
+                aria-label="देखें काम – View our work gallery"
                 className="flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-4 text-sm font-bold text-white backdrop-blur-sm transition-all hover:border-white/40 hover:bg-white/20 active:scale-95 sm:px-7 sm:py-4 sm:text-base"
               >
                 देखें काम

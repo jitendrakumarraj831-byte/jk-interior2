@@ -56,7 +56,7 @@ export default function CityPage() {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-      { "@type": "ListItem", position: 2, name: "Cities", item: `${SITE_URL}/cities/` },
+      { "@type": "ListItem", position: 2, name: "Cities", item: `${SITE_URL}/` },
       { "@type": "ListItem", position: 3, name: `Interior Designer in ${city.name}`, item: `${SITE_URL}/cities/${city.slug}` }
     ]
   }
@@ -76,7 +76,7 @@ export default function CityPage() {
   ] : [cityJsonLd, breadcrumbJsonLd]
 
   return (
-    <>
+    <main>
       <SeoHead
         title={`Interior Designer in ${city.name} – JK Interior ${city.district} Bihar`}
         description={`JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior design services in ${city.name}, ${city.district} Bihar. Free site visit. Call +91 8541849118.`}
@@ -128,6 +128,7 @@ export default function CityPage() {
             <WhatsAppLink
               variant="outline"
               icon={false}
+              ariaLabel="Free Site Visit – WhatsApp JK Interior"
               message={`Hi JK Interior, I need a free site visit in ${city.name}.`}
               className="border-emerald-300 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-100"
             >
@@ -232,6 +233,7 @@ export default function CityPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink
               icon={false}
+              ariaLabel="Call +91 8541849118"
               className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
@@ -293,6 +295,6 @@ export default function CityPage() {
       </section>
 
       <Footer />
-    </>
+    </main>
   )
 }

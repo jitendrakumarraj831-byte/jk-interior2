@@ -51,14 +51,23 @@ export function CallLink({
   onClick,
 }: CallLinkProps) {
   const variantClasses =
+    // emerald-600 only contrasts 3.77:1 against white text (fails WCAG AA's 4.5:1);
+    // emerald-700 clears it while staying the same brand hue.
     variant === "solid"
-      ? "bg-emerald-600 text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] hover:bg-emerald-500 hover:shadow-[0_4px_32px_rgba(5,150,105,0.55)]"
+      ? "bg-emerald-700 text-white shadow-[0_4px_24px_rgba(5,150,105,0.4)] hover:bg-emerald-600 hover:shadow-[0_4px_32px_rgba(5,150,105,0.55)]"
       : "border border-emerald-500/30 bg-emerald-500/8 text-emerald-700 hover:border-emerald-500/50 hover:bg-emerald-500/15"
+
+  // WCAG 2.5.3 "Label in Name": the accessible name must contain the visible
+  // text. When the visible label is a plain string, fold it into the aria-label
+  // instead of letting a differently-worded (or differently-languaged) label
+  // silently replace it for screen reader / voice-control users.
+  const visibleText = typeof children === "string" ? children : undefined
+  const accessibleName = visibleText && !ariaLabel.includes(visibleText) ? `${visibleText} – ${ariaLabel}` : ariaLabel
 
   return (
     <a
       href={`tel:${CALL_NUMBER}`}
-      aria-label={ariaLabel}
+      aria-label={accessibleName}
       onClick={onClick}
       className={cn(BASE, SIZE_CLASSES[size], variantClasses, shine && "luxury-animated-shine", className)}
     >
@@ -88,16 +97,22 @@ export function WhatsAppLink({
 }: WhatsAppLinkProps) {
   const href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`
   const variantClasses =
+    // WhatsApp's brand green (#25D366) only contrasts ~2:1 against white text (fails WCAG AA);
+    // #0F7A3D is a darker shade of the same hue that clears 4.5:1 while still reading as "WhatsApp green".
     variant === "solid"
-      ? "bg-[#25D366] text-white shadow-[0_4px_24px_rgba(37,211,102,0.35)] hover:bg-[#20c05c] hover:shadow-[0_4px_32px_rgba(37,211,102,0.5)]"
-      : "border border-[#25D366]/40 bg-[#25D366]/10 text-[#128C7E] hover:border-[#25D366]/60 hover:bg-[#25D366]/20"
+      ? "bg-[#0F7A3D] text-white shadow-[0_4px_24px_rgba(15,122,61,0.35)] hover:bg-[#0c6b35] hover:shadow-[0_4px_32px_rgba(15,122,61,0.5)]"
+      // #128C7E only contrasts 3.84:1 against this light mint background; #0e6b60 clears 4.5:1.
+      : "border border-[#25D366]/40 bg-[#25D366]/10 text-[#0e6b60] hover:border-[#25D366]/60 hover:bg-[#25D366]/20"
+
+  const visibleText = typeof children === "string" ? children : undefined
+  const accessibleName = visibleText && !ariaLabel.includes(visibleText) ? `${visibleText} – ${ariaLabel}` : ariaLabel
 
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={ariaLabel}
+      aria-label={accessibleName}
       onClick={onClick}
       className={cn(BASE, SIZE_CLASSES[size], variantClasses, shine && "luxury-animated-shine", className)}
     >

@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react"
 import { Switch, Route, Router as WouterRouter } from "wouter"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { SpeedInsights } from "@vercel/speed-insights/react"
 import ScrollProgress from "@/components/scroll-progress"
 
 const HomePage = lazy(() => import("@/pages/HomePage"))
@@ -52,7 +51,6 @@ function App() {
         <Suspense fallback={null}>
           <JKChat />
         </Suspense>
-        <SpeedInsights />
       </WouterRouter>
     </QueryClientProvider>
   )

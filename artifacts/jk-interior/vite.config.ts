@@ -66,9 +66,13 @@ export default defineConfig({
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
           if (id.includes("xlsx")) return "xlsx";
-          if (id.includes("react") || id.includes("scheduler")) return "react-vendor";
           if (id.includes("@radix-ui") || id.includes("lucide-react")) return "ui-vendor";
           if (id.includes("framer-motion")) return "motion-vendor";
+          // Match only the actual react/react-dom/scheduler packages (by their real
+          // node_modules folder name), not every dependency whose name merely contains
+          // "react" (react-hook-form, react-day-picker, @radix-ui/react-*, etc.) — the
+          // broad substring match previously produced a vendor <-> react-vendor cycle.
+          if (/[/\\]node_modules[/\\](react|react-dom|scheduler)[/\\]/.test(id)) return "react-vendor";
           return "vendor";
         },
       },

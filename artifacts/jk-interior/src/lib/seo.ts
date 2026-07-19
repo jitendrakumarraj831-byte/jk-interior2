@@ -122,7 +122,7 @@ export const CITIES: CityData[] = [
     faqs: [
       {
         q: 'Araria में best interior designer कौन है?',
-        a: 'JK Interior, Araria district का सबसे trusted interior contractor है। 500+ completed projects और 5 साल की warranty के साथ हम Araria में premium interior design और false ceiling services provide करते हैं।',
+        a: 'JK Interior, Araria district का सबसे trusted interior contractor है। 500+ completed projects और 1 साल की written warranty के साथ हम Araria में premium interior design और false ceiling services provide करते हैं।',
       },
       {
         q: 'Araria में gypsum ceiling की cost क्या है?',

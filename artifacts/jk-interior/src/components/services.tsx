@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { SERVICES_CONTENT } from "@/lib/services-content"
+import { SERVICES_SUMMARY } from "@/lib/services-summary"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -53,7 +53,7 @@ export default function Services() {
         </p>
 
         <div className="divide-y divide-emerald-900/[0.07]">
-          {SERVICES_CONTENT.map((service, i) => {
+          {SERVICES_SUMMARY.map((service, i) => {
             const isReversed = i % 2 === 1
             return (
               <motion.article
@@ -79,7 +79,7 @@ export default function Services() {
                       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                     </span>
                   </Link>
-                  <p className="mt-2.5 pl-1 text-[11px] font-semibold uppercase tracking-widest text-gray-400">
+                  <p className="mt-2.5 pl-1 text-[11px] font-semibold uppercase tracking-widest text-gray-500">
                     Fig. {String(i + 1).padStart(2, "0")} — {service.category}
                   </p>
                 </div>
@@ -118,7 +118,7 @@ export default function Services() {
                     <span className="hidden text-gray-300 sm:inline">·</span>
                     <span className="hidden items-center gap-1.5 sm:inline-flex">
                       <MapPin className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                      {service.whereUsed[0]}
+                      {service.whereUsedFirst}
                     </span>
                   </div>
 
