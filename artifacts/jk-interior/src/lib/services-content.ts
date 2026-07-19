@@ -898,21 +898,21 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { tier: "Premium", tierHi: "प्रीमियम", range: "₹90–₹150/sq.ft", desc: "40–50mm pile height, premium density, longest-lasting colour/UV warranty.", descHi: "40mm से 50mm पाइल हाइट, प्रीमियम डेंसिटी — रंग और UV सबसे लंबे समय तक टिकते हैं।" },
     ],
     sizesThickness: "Turf comes in standard roll widths of 2m and 4m, joined with seam tape for wider areas. Pile height ranges 25mm to 50mm depending on the tier you choose.",
-    sizesThicknessHi: "टर्फ स्टैंडर्ड 2m और 4m चौड़ाई के रोल में आती है, बड़ी जगह के लिए सीम टेप से जोड़ी जाती है। पाइल हाइट चुने गए टियर के हिसाब से 25mm से 50mm तक।",
+    sizesThicknessHi: "टर्फ आमतौर पर 2m और 4m चौड़ाई के रोल में आती है, बड़ी जगह के लिए सीम टेप से जोड़ देते हैं। पाइल हाइट आपके चुने गए टियर के हिसाब से 25mm से 50mm तक होती है।",
     labourCost: "Labour (base/drainage prep, laying, seam joining, edge fixing) is roughly ₹8–15/sq.ft for floor use and ₹15–25/sq.ft for wall panels, included in the rates above.",
-    labourCostHi: "लेबर (बेस/ड्रेनेज तैयारी, बिछाना, सीम जोड़ना, एज फिक्सिंग) फर्श के लिए करीब ₹8–15/sq.ft और दीवार पैनल के लिए ₹15–25/sq.ft, ऊपर के रेट में शामिल।",
+    labourCostHi: "बेस/ड्रेनेज तैयारी, बिछाना, सीम जोड़ना और एज फिक्सिंग की लेबर फर्श के लिए करीब ₹8–15/sq.ft और दीवार पैनल के लिए ₹15–25/sq.ft है, ऊपर के रेट में शामिल है।",
     labourCostShort: "₹8–15/sq.ft (floor) · ₹15–25/sq.ft (wall)",
     brandNote: "Turf is UV-stabilised synthetic grass sourced through our regular Purnia-market suppliers — we check UV treatment and density before ordering rather than buying the cheapest roll available, since untreated turf fades within a season in North Bihar's sun.",
-    brandNoteHi: "टर्फ हमारे नियमित पूर्णिया-मार्केट सप्लायर से UV-स्टेबलाइज़्ड सिंथेटिक घास होती है — सबसे सस्ता रोल खरीदने की बजाय हम UV ट्रीटमेंट और डेंसिटी पहले जांचते हैं, क्योंकि अनट्रीटेड टर्फ उत्तर बिहार की धूप में एक ही सीज़न में फीकी पड़ जाती है।",
+    brandNoteHi: "हमारी टर्फ पूर्णिया-मार्केट के नियमित सप्लायर से UV-स्टेबलाइज़्ड सिंथेटिक घास होती है — सबसे सस्ता रोल उठाने की बजाय हम पहले UV ट्रीटमेंट और डेंसिटी जांचते हैं, क्योंकि अनट्रीटेड टर्फ उत्तर बिहार की धूप में एक ही सीज़न में फीकी पड़ जाती है।",
     availability: "Available across our full service area. Balcony/terrace turf is most requested in Forbesganj, Araria, and Raniganj; allow a couple of extra days for premium-grade rolls in outlying blocks as they're ordered in via Purnia.",
-    availabilityHi: "हमारे पूरे सर्विस एरिया में उपलब्ध। बालकनी/टैरेस टर्फ फारबिसगंज, अररिया और रानीगंज में सबसे ज़्यादा मांगी जाती है; दूर के ब्लॉक में प्रीमियम-ग्रेड रोल के लिए कुछ दिन ज़्यादा लग सकते हैं क्योंकि यह पूर्णिया से मंगाई जाती है।",
+    availabilityHi: "यह हम पूरे सर्विस एरिया में लगाते हैं। बालकनी या टैरेस की टर्फ फारबिसगंज, अररिया और रानीगंज में हमारी सबसे ज़्यादा मांगी जाने वाली चीज़ है; दूर के ब्लॉक में प्रीमियम-ग्रेड रोल के लिए कुछ दिन ज़्यादा लग सकते हैं, क्योंकि यह पूर्णिया से मंगानी पड़ती है।",
     installTime: "Half a day to 1 day for a typical balcony or accent wall",
     maintenance: "Occasional rinse with water and a light brush of the fibres — no mowing, no watering, ever",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
       "Artificial grass here is UV-stabilised synthetic turf, rolled out over a prepared, well-drained base for floor use, or mounted as pre-cut panels onto a batten frame for a green feature wall. The fibres are woven into a permeable backing so rainwater drains straight through rather than pooling, and the colour is UV-treated so it doesn't bleach out in direct North Bihar sun the way cheaper turf does within a season.",
     whatItIsHi:
-      "यहां इस्तेमाल होने वाली आर्टिफिशियल घास UV-स्टेबलाइज़्ड सिंथेटिक टर्फ होती है, जिसे फर्श के लिए एक तैयार, अच्छी ड्रेनेज वाली बेस पर बिछाया जाता है, या ग्रीन फीचर वॉल के लिए पहले से कटे पैनल के रूप में बैटन फ्रेम पर लगाया जाता है। रेशे एक पारगम्य बैकिंग में बुने जाते हैं ताकि बारिश का पानी जमा होने की बजाय सीधे निकल जाए, और रंग UV-ट्रीटेड होता है ताकि सस्ती टर्फ की तरह एक ही सीज़न में उत्तर बिहार की सीधी धूप में फीका न पड़े।",
+      "देखिए, यहां हम जो आर्टिफिशियल घास लगाते हैं वो UV-स्टेबलाइज़्ड सिंथेटिक टर्फ होती है, जिसे फर्श के लिए एक तैयार, अच्छी ड्रेनेज वाली बेस पर बिछाते हैं, या ग्रीन फीचर वॉल के लिए पहले से कटे पैनल के रूप में बैटन फ्रेम पर लगाते हैं। रेशे एक पारगम्य बैकिंग में बुने होते हैं, ताकि बारिश का पानी जमा होने की बजाय सीधे निकल जाए। रंग भी UV-ट्रीटेड रहता है, ताकि सस्ती टर्फ की तरह उत्तर बिहार की सीधी धूप में एक ही सीज़न में फीका न पड़े।",
     whereUsed: [
       "Balconies and terraces — an evergreen look with zero watering or mowing",
       "Feature walls in a living room or office reception for a green accent",
@@ -920,10 +920,10 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Pet-friendly outdoor spaces where a real lawn is hard to maintain",
     ],
     whereUsedHi: [
-      "बालकनी और टैरेस — बिना पानी दिए या काटे हमेशा हरा-भरा लुक",
-      "लिविंग रूम या ऑफिस रिसेप्शन में ग्रीन एक्सेंट के लिए फीचर वॉल",
-      "छोटे घर के गार्डन या छत पर बैठने की जगह",
-      "पालतू जानवरों वाली आउटडोर जगह जहां असली लॉन बनाए रखना मुश्किल हो",
+      "बालकनी और टैरेस पर — बिना पानी दिए या काटे हमेशा हरा-भरा लुक मिलता है",
+      "लिविंग रूम या ऑफिस रिसेप्शन में ग्रीन एक्सेंट के लिए फीचर वॉल पर",
+      "छोटे घर के गार्डन या छत पर बैठने की जगह में",
+      "पालतू जानवरों वाली आउटडोर जगह में, जहां असली लॉन बनाए रखना मुश्किल हो",
     ],
     whereNotUsed: [
       "Areas with poor or no drainage underneath — water will pool below the turf and smell over time; we fix drainage first or don't install there",
@@ -931,9 +931,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Indoor carpeted-floor replacement expecting a soft, cushioned feel — turf reads and feels different from carpet underfoot",
     ],
     whereNotUsedHi: [
-      "जहां नीचे ड्रेनेज ठीक न हो या हो ही न — पानी टर्फ के नीचे जमा होकर समय के साथ बदबू कर सकता है; हम पहले ड्रेनेज ठीक करते हैं, वरना वहां नहीं लगाते",
-      "सीधे तेज़ रिफ्लेक्टेड गर्मी में (जहां ग्लास-फेसाड की धूप एक ही जगह केंद्रित होती हो) — सामान्य धूप से ज़्यादा तेज़ी से बैकिंग को नरम कर सकता है",
-      "इनडोर कारपेट की जगह नरम, गद्देदार एहसास की उम्मीद में — टर्फ पैरों के नीचे कारपेट से अलग महसूस होता है",
+      "जहां नीचे ड्रेनेज ठीक न हो या हो ही न — वहां पानी टर्फ के नीचे जमा होकर समय के साथ बदबू कर सकता है; हम पहले ड्रेनेज ठीक करते हैं, वरना वहां लगाते ही नहीं",
+      "सीधे तेज़ रिफ्लेक्टेड गर्मी में नहीं (जहां ग्लास-फेसाड की धूप एक ही जगह केंद्रित होती हो) — यह सामान्य धूप से ज़्यादा तेज़ी से बैकिंग को नरम कर सकता है",
+      "इनडोर कारपेट की जगह नरम, गद्देदार एहसास की उम्मीद में इसे न लगवाएं — टर्फ पैरों के नीचे कारपेट से अलग महसूस होता है",
     ],
     benefits: [
       "Always green — no seasonal browning, no dependence on watering schedules",
@@ -943,11 +943,11 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Pet-friendly and comfortable underfoot compared to bare tile or concrete",
     ],
     benefitsHi: [
-      "हमेशा हरा — मौसम के साथ पीला नहीं पड़ता, पानी देने के शेड्यूल पर निर्भर नहीं",
+      "हमेशा हरा रहता है — मौसम के साथ पीला नहीं पड़ता, पानी देने के शेड्यूल पर निर्भर नहीं",
       "पानी जमा होने की बजाय सीधे निकल जाता है, इसलिए बिहार की मानसून बारिश में भी कीचड़ नहीं बनता",
-      "UV-रेजिस्टेंट रंग अनट्रीटेड टर्फ से कहीं ज़्यादा देर तक सीधी धूप में टिकता है",
-      "कोई कटाई नहीं, कोई खाद नहीं, कोई कीट स्प्रे नहीं",
-      "पालतू जानवरों के लिए अनुकूल, नंगे टाइल या कंक्रीट से पैरों में ज़्यादा आरामदायक",
+      "UV-रेजिस्टेंट रंग अनट्रीटेड टर्फ से कहीं ज़्यादा देर तक सीधी धूप में टिका रहता है",
+      "कोई कटाई नहीं, कोई खाद नहीं, कोई कीट स्प्रे नहीं — कुछ भी नहीं करना पड़ता",
+      "पालतू जानवरों के लिए अनुकूल है, नंगे टाइल या कंक्रीट से पैरों में ज़्यादा आरामदायक लगता है",
     ],
     limitations: [
       "Needs a properly drained base underneath — installing over poor drainage causes odour over time",
@@ -955,9 +955,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Doesn't feel identical to a real, watered lawn — a fair trade for zero maintenance, but worth knowing upfront",
     ],
     limitationsHi: [
-      "नीचे सही ड्रेनेज ज़रूरी है — खराब ड्रेनेज पर लगाने से समय के साथ बदबू आ सकती है",
-      "गर्मी की दोपहर की सीधी धूप में यह असली घास से ज़्यादा गर्म हो सकती है",
-      "असली, पानी दी गई घास जैसा बिल्कुल एहसास नहीं देती — ज़ीरो मेंटेनेंस के बदले एक उचित समझौता, पर पहले से जान लेना ठीक रहेगा",
+      "नीचे सही ड्रेनेज ज़रूरी है — खराब ड्रेनेज पर लगाएंगे तो समय के साथ बदबू आ सकती है",
+      "गर्मी की दोपहर की सीधी धूप में यह असली घास से ज़्यादा गर्म हो सकती है, पैर रखते ही महसूस हो जाता है",
+      "असली, पानी दी गई घास जैसा बिल्कुल एहसास नहीं देती — ज़ीरो मेंटेनेंस के बदले यह एक उचित समझौता है, पर यह बात पहले से जान लें",
     ],
     materials: [
       { name: "UV-stabilised synthetic turf", nameHi: "UV-स्टेबलाइज़्ड सिंथेटिक टर्फ", detail: "Polyethylene/polypropylene grass fibres tufted onto a permeable backing, in multiple pile heights", detailHi: "पॉलीएथिलीन/पॉलीप्रोपाइलीन घास के रेशे एक पारगम्य बैकिंग में बुने गए, कई पाइल-हाइट में उपलब्ध" },
