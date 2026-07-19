@@ -114,8 +114,8 @@ export const SERVICES: Service[] = [
     name: "Gypsum False Ceiling",
     nameHi: "जिप्सम फॉल्स सीलिंग",
     category: "ceiling",
-    priceMin: 80,
-    priceMax: 140,
+    priceMin: 75,
+    priceMax: 210,
     unit: "sqft",
     waterproof: false,
     installationDays: 3,
@@ -134,8 +134,8 @@ export const SERVICES: Service[] = [
     name: "PVC False Ceiling",
     nameHi: "पीवीसी फॉल्स सीलिंग",
     category: "ceiling",
-    priceMin: 60,
-    priceMax: 120,
+    priceMin: 75,
+    priceMax: 150,
     unit: "sqft",
     waterproof: true,
     installationDays: 1,
@@ -155,7 +155,7 @@ export const SERVICES: Service[] = [
     nameHi: "डब्ल्यूपीसी वॉल पैनल",
     category: "wall",
     priceMin: 180,
-    priceMax: 450,
+    priceMax: 650,
     unit: "sqft",
     waterproof: true,
     installationDays: 2,
@@ -174,8 +174,8 @@ export const SERVICES: Service[] = [
     name: "UV Marble Sheets",
     nameHi: "यूवी मार्बल शीट्स",
     category: "wall",
-    priceMin: 50,
-    priceMax: 95,
+    priceMin: 45,
+    priceMax: 120,
     unit: "sqft",
     waterproof: true,
     installationDays: 2,
@@ -215,7 +215,7 @@ export const SERVICES: Service[] = [
     nameHi: "मॉड्यूलर टीवी यूनिट",
     category: "furniture",
     priceMin: 15000,
-    priceMax: 60000,
+    priceMax: 75000,
     unit: "item",
     waterproof: false,
     installationDays: 2,
@@ -425,13 +425,13 @@ export const WATERPROOF_SOLUTIONS = {
   ceiling: {
     best: "PVC Ceiling",
     alternative: "None - only PVC is 100% waterproof for ceilings",
-    price: "₹80-140/sq.ft",
+    price: "₹75-150/sq.ft",
     features: ["Termite-proof", "Zero maintenance", "20+ year life", "Never repaint"],
   },
   walls: {
     best: "UV Marble Sheets",
     alternative: "WPC Panels (also waterproof but more expensive)",
-    price: "₹50-95/sq.ft (UV), ₹180-450/sq.ft (WPC)",
+    price: "₹45-120/sq.ft (UV), ₹180-650/sq.ft (WPC)",
     features: ["100% waterproof", "Easy to clean", "Mold/mildew resistant", "Scratch resistant"],
   },
   kitchens: {
@@ -525,22 +525,22 @@ export const FAQS: FAQ[] = [
   {
     question: "What is the price of gypsum false ceiling?",
     questionHi: "जिप्सम फॉल्स सीलिंग की कीमत क्या है?",
-    answer: "Gypsum false ceiling costs ₹80-140 per sq.ft. Basic design starts at ₹80/sq.ft, premium with cove lighting goes up to ₹140-200/sq.ft. A standard 12x12 ft room (144 sq.ft) costs ₹11,500-20,000.",
-    answerHi: "जिप्सम फॉल्स सीलिंग ₹80-140 प्रति वर्ग फुट है। बेसिक डिज़ाइन ₹80/वर्ग फुट से शुरू होता है, कोव लाइटिंग के साथ प्रीमियम ₹140-200/वर्ग फुट तक जाता है। एक मानक 12x12 फुट कमरे (144 वर्ग फुट) की कीमत ₹11,500-20,000 है।",
+    answer: "Gypsum false ceiling costs ₹75-210 per sq.ft. Basic design starts at ₹75/sq.ft, premium with cove lighting goes up to ₹135-210/sq.ft. A standard 12x12 ft room (144 sq.ft) costs ₹10,800-30,200.",
+    answerHi: "जिप्सम फॉल्स सीलिंग ₹75-210 प्रति वर्ग फुट है। बेसिक डिज़ाइन ₹75/वर्ग फुट से शुरू होता है, कोव लाइटिंग के साथ प्रीमियम ₹135-210/वर्ग फुट तक जाता है। एक मानक 12x12 फुट कमरे (144 वर्ग फुट) की कीमत ₹10,800-30,200 है।",
     tags: ["pricing", "gypsum", "ceiling"],
   },
   {
     question: "Is PVC ceiling waterproof?",
     questionHi: "क्या पीवीसी सीलिंग वाटरप्रूफ है?",
-    answer: "Yes! PVC ceiling is 100% waterproof, termite-proof, and maintenance-free. It's perfect for bathrooms, kitchens, and balconies. Price: ₹80-140 per sq.ft.",
-    answerHi: "हाँ! पीवीसी सीलिंग 100% वाटरप्रूफ, दीमक प्रूफ और मेंटेनेंस-फ्री है। यह बाथरूम, किचन और बालकनी के लिए परफेक्ट है। कीमत: ₹80-140 प्रति वर्ग फुट।",
+    answer: "Yes! PVC ceiling is 100% waterproof, termite-proof, and maintenance-free. It's perfect for bathrooms, kitchens, and balconies. Price: ₹75-150 per sq.ft.",
+    answerHi: "हाँ! पीवीसी सीलिंग 100% वाटरप्रूफ, दीमक प्रूफ और मेंटेनेंस-फ्री है। यह बाथरूम, किचन और बालकनी के लिए परफेक्ट है। कीमत: ₹75-150 प्रति वर्ग फुट।",
     tags: ["waterproof", "pvc", "bathroom"],
   },
   {
     question: "What is the difference between PVC and Gypsum ceiling?",
     questionHi: "पीवीसी और जिप्सम सीलिंग में क्या अंतर है?",
-    answer: "PVC: 100% waterproof, zero maintenance, 20+ year life, ₹80-140/sq.ft - best for bathrooms/kitchens. Gypsum: premium look with cove lighting, not waterproof, ₹80-140/sq.ft - best for halls/bedrooms.",
-    answerHi: "पीवीसी: 100% वाटरप्रूफ, जीरो मेंटेनेंस, 20+ साल लाइफ, ₹80-140/वर्ग फुट - बाथरूम/किचन के लिए सबसे अच्छा। जिप्सम: कोव लाइटिंग के साथ प्रीमियम लुक, वाटरप्रूफ नहीं, ₹80-140/वर्ग फुट - हॉल/बेडरूम के लिए सबसे अच्छा।",
+    answer: "PVC: 100% waterproof, zero maintenance, 20+ year life, ₹75-150/sq.ft - best for bathrooms/kitchens. Gypsum: premium look with cove lighting, not waterproof, ₹75-210/sq.ft - best for halls/bedrooms.",
+    answerHi: "पीवीसी: 100% वाटरप्रूफ, जीरो मेंटेनेंस, 20+ साल लाइफ, ₹75-150/वर्ग फुट - बाथरूम/किचन के लिए सबसे अच्छा। जिप्सम: कोव लाइटिंग के साथ प्रीमियम लुक, वाटरप्रूफ नहीं, ₹75-210/वर्ग फुट - हॉल/बेडरूम के लिए सबसे अच्छा।",
     tags: ["comparison", "gypsum", "pvc"],
   },
   {
@@ -574,8 +574,8 @@ export const FAQS: FAQ[] = [
   {
     question: "What is the cost of WPC wall panels?",
     questionHi: "डब्ल्यूपीसी वॉल पैनल की कीमत क्या है?",
-    answer: "WPC panels cost ₹180-450 per sq.ft. A standard TV wall (8 ft x 7 ft = 56 sq.ft) costs ₹10,000-25,000 depending on design. Fluted/ribbed designs cost more.",
-    answerHi: "डब्ल्यूपीसी पैनल की कीमत ₹180-450 प्रति वर्ग फुट है। एक मानक टीवी वॉल (8 फुट x 7 फुट = 56 वर्ग फुट) की कीमत डिज़ाइन के अनुसार ₹10,000-25,000 है। फ्लूटेड/रिब्ड डिज़ाइन अधिक महंगे हैं।",
+    answer: "WPC panels cost ₹180-650 per sq.ft. A standard TV wall (8 ft x 7 ft = 56 sq.ft) costs ₹10,000-36,000 depending on design. Fluted/ribbed designs cost more.",
+    answerHi: "डब्ल्यूपीसी पैनल की कीमत ₹180-650 प्रति वर्ग फुट है। एक मानक टीवी वॉल (8 फुट x 7 फुट = 56 वर्ग फुट) की कीमत डिज़ाइन के अनुसार ₹10,000-36,000 है। फ्लूटेड/रिब्ड डिज़ाइन अधिक महंगे हैं।",
     tags: ["pricing", "wpc", "wall"],
   },
   {
@@ -632,14 +632,15 @@ export function getRecommendation(
   wantWaterproof?: boolean
 ): RecommendationResult | null {
   // Waterproof required
+  const priceOf = (s: Service) => `₹${s.priceMin}-${s.priceMax} per sq.ft`;
+
   if (wantWaterproof || isWetArea) {
     const pvc = SERVICES.find(s => s.id === "pvc-ceiling")!;
-    const uv = SERVICES.find(s => s.id === "uv-marble")!;
     return {
       service: pvc,
       reason: "100% waterproof, zero maintenance, perfect for bathrooms and kitchens",
       reasonHi: "100% वाटरप्रूफ, जीरो मेंटेनेंस, बाथरूम और किचन के लिए परफेक्ट",
-      estimatedPrice: "₹80-140 per sq.ft",
+      estimatedPrice: priceOf(pvc),
     };
   }
 
@@ -651,7 +652,7 @@ export function getRecommendation(
         service: pvc,
         reason: "Budget-friendly, waterproof, zero maintenance",
         reasonHi: "बजट-फ्रेंडली, वाटरप्रूफ, जीरो मेंटेनेंस",
-        estimatedPrice: "₹80-140 per sq.ft",
+        estimatedPrice: priceOf(pvc),
       };
     }
     const gypsum = SERVICES.find(s => s.id === "gypsum-ceiling")!;
@@ -659,7 +660,7 @@ export function getRecommendation(
       service: gypsum,
       reason: "Premium cove lighting and POP designs - best for living room",
       reasonHi: "प्रीमियम कोव लाइटिंग और POP डिज़ाइन - लिविंग रूम के लिए सबसे अच्छा",
-      estimatedPrice: "₹80-140 per sq.ft",
+      estimatedPrice: priceOf(gypsum),
     };
   }
 
@@ -669,7 +670,7 @@ export function getRecommendation(
       service: gypsum,
       reason: "Smooth finish with soft cove lighting - creates cozy ambiance",
       reasonHi: "सॉफ्ट कोव लाइटिंग के साथ स्मूथ फिनिश - आरामदायक माहौल बनाता है",
-      estimatedPrice: "₹80-140 per sq.ft",
+      estimatedPrice: priceOf(gypsum),
     };
   }
 
@@ -679,19 +680,19 @@ export function getRecommendation(
       service: pvc,
       reason: "100% waterproof - essential for wet areas",
       reasonHi: "100% वाटरप्रूफ - गीले क्षेत्रों के लिए आवश्यक",
-      estimatedPrice: "₹80-140 per sq.ft",
+      estimatedPrice: priceOf(pvc),
     };
   }
 
   // Default
-  const defaultService = budget === "low" 
+  const defaultService = budget === "low"
     ? SERVICES.find(s => s.id === "pvc-ceiling")!
     : SERVICES.find(s => s.id === "gypsum-ceiling")!;
   return {
     service: defaultService,
     reason: "Versatile and popular choice for most rooms",
     reasonHi: "अधिकांश कमरों के लिए बहुमुखी और लोकप्रिय विकल्प",
-    estimatedPrice: defaultService.priceMin === 60 ? "₹80-140 per sq.ft" : "₹80-140 per sq.ft",
+    estimatedPrice: priceOf(defaultService),
   };
 }
 
