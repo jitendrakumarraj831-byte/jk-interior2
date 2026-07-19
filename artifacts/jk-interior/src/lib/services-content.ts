@@ -123,7 +123,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/gypsum5.webp",
     heroImageAlt: "Gypsum false ceiling with cove lighting in a Forbesganj living room by JK Interior",
     galleryCategory: "Gypsum False Ceiling",
-    price: "₹75–₹210/sq.ft (Forbesganj/Araria market rate)",
+    price: "₹70–₹150/sq.ft (Forbesganj/Araria market rate)",
     priceTiers: [
       { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "Flat single-level ceiling, simple design, 12.5mm board, no cove.", descHi: "फ्लैट सिंगल-लेवल सीलिंग, सादा डिज़ाइन, 12.5mm बोर्ड, बिना Cove।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹130/sq.ft", desc: "One stepped border with a cove channel (LED billed separately).", descHi: "एक स्टेप बॉर्डर और Cove चैनल (LED का खर्च अलग)।" },
@@ -685,7 +685,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/wpc.webp",
     heroImageAlt: "WPC fluted wall panel TV wall installation in Bihar by JK Interior",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
-    price: "₹180–₹650/sq.ft (Forbesganj/Araria market rate)",
+    price: "₹100–₹650/sq.ft (Forbesganj/Araria market rate)",
     priceTiers: [
       { tier: "Economy", tierHi: "इकोनॉमी", range: "₹180–₹250/sq.ft", desc: "Plain/solid-colour panel, basic clip system, 8mm profile.", descHi: "प्लेन/सॉलिड-कलर पैनल, बेसिक क्लिप सिस्टम, 8mm प्रोफाइल।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹260–₹380/sq.ft", desc: "Wood-grain or grooved texture, 12–15mm profile.", descHi: "वुड-ग्रेन या ग्रूव्ड टेक्सचर, 12–15mm प्रोफाइल।" },
@@ -822,7 +822,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/uv-marble.webp",
     heroImageAlt: "UV marble sheet wall cladding in a Bihar bathroom by JK Interior",
     galleryCategory: "WPC fluted panels & uv marble Sheet",
-    price: "₹45–₹120/sq.ft (Forbesganj/Araria market rate)",
+    price: "₹110–₹180/sq.ft (Forbesganj/Araria market rate)",
     priceTiers: [
       { tier: "Economy", tierHi: "इकोनॉमी", range: "₹45–₹60/sq.ft", desc: "Basic marble-print sheet, standard gloss, 3mm thickness.", descHi: "बेसिक मार्बल-प्रिंट शीट, स्टैंडर्ड ग्लॉस, 3mm मोटाई।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹65–₹85/sq.ft", desc: "Better veining, higher-gloss finish, 4mm thickness.", descHi: "बेहतर वेनिंग, ज़्यादा ग्लॉस फिनिश, 4mm मोटाई।" },

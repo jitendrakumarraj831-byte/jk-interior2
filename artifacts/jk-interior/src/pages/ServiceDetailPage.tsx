@@ -4,17 +4,23 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { SITE_URL } from "@/lib/seo"
 import { getServiceContentBySlug } from "@/lib/services-content"
+import { SERVICES_SUMMARY, type ServiceHighlight } from "@/lib/services-summary"
 import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import {
-  MapPin, MapPinOff, CheckCircle2, XCircle, Wrench, Clock, ShieldCheck,
-  Sparkles, ArrowRight, Phone, HelpCircle, ImageIcon, Layers as LayersIcon,
-  IndianRupee, Ruler, HardHat, BadgeCheck, AlertTriangle, Navigation,
-  PackageCheck, PackageX, Lightbulb,
+  Clock, ShieldCheck, Sparkles, ArrowRight, Phone, HelpCircle, ImageIcon,
+  IndianRupee, MapPin, type LucideIcon,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { PRICE_DISCLAIMER, PRICE_DISCLAIMER_HI } from "@/lib/services-content"
 import NotFound from "@/pages/not-found"
+
+/** Icon for each of the four fixed highlight slots. */
+const HIGHLIGHT_ICON: Record<ServiceHighlight["kind"], LucideIcon> = {
+  special: Sparkles,
+  pricing: IndianRupee,
+  warranty: ShieldCheck,
+  suited: MapPin,
+}
 
 export default function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -22,6 +28,8 @@ export default function ServiceDetailPage() {
 
   if (!service) return <NotFound />
 
+  const summary = SERVICES_SUMMARY.find((s) => s.slug === service.slug)
+  const highlights = summary?.highlights ?? []
   const photos = galleryImages.filter((img) => img.category === service.galleryCategory).slice(0, 8)
   const related = service.relatedSlugs
     .map((s) => getServiceContentBySlug(s))
@@ -74,8 +82,8 @@ export default function ServiceDetailPage() {
   return (
     <main>
       <SeoHead
-        title={`${service.name} – Full Guide, Price & Installation | JK Interior`}
-        description={`${service.whatItIs.slice(0, 140)} Price: ${service.price}. ${service.installTime}. Free site visit, ${service.warranty}. Call +91 8541849118.`}
+        title={`${service.name} – Price, Warranty & Details | JK Interior`}
+        description={`${service.name} (${service.nameHi}) by JK Interior. Price: ${service.price}. ${service.installTime}. Free site visit, ${service.warranty}. Call +91 8541849118.`}
         canonical={`/services/${service.slug}`}
         jsonLd={jsonLd}
       />
@@ -147,295 +155,45 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* ── What it is ── */}
-      <section className="py-14 sm:py-16 bg-white">
-        <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-5 text-2xl font-black text-gray-900 sm:text-3xl">What is {service.name}?</h2>
-          <p className="mb-4 text-base leading-relaxed text-gray-700 sm:text-lg">{service.whatItIs}</p>
-          <p className="text-base leading-relaxed text-gray-500">{service.whatItIsHi}</p>
-        </div>
-      </section>
-
-      {/* ── Local Market Pricing ── */}
-      <section className="py-14 sm:py-16 bg-white">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex items-center gap-2">
-            <IndianRupee className="h-5 w-5 text-emerald-600" aria-hidden="true" />
-            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">Local Market Pricing — Forbesganj &amp; Araria District</h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {service.priceTiers.map((tier) => (
-              <div
-                key={tier.tier}
-                className={`rounded-2xl border p-5 shadow-sm ${
-                  tier.tier === "Premium" ? "border-amber-300 bg-amber-50/60" : "border-gray-200 bg-gray-50"
-                }`}
-              >
-                <span className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest ${
-                  tier.tier === "Premium" ? "bg-amber-200 text-amber-800" : tier.tier === "Standard" ? "bg-emerald-200 text-emerald-800" : "bg-gray-200 text-gray-700"
-                }`}>
-                  {tier.tier}
-                </span>
-                <p className="mt-1 text-xs font-semibold text-gray-500">{tier.tierHi}</p>
-                <p className="mt-2 text-lg font-black text-gray-900">{tier.range}</p>
-                <p className="mt-2 text-sm leading-relaxed text-gray-600">{tier.desc}</p>
-                <p className="mt-1 text-xs leading-relaxed text-gray-500">{tier.descHi}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-5 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
-            <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
-            <div>
-              <p className="text-xs leading-relaxed text-amber-900">{PRICE_DISCLAIMER}</p>
-              <p className="mt-1.5 text-xs leading-relaxed text-amber-700">{PRICE_DISCLAIMER_HI}</p>
-            </div>
-          </div>
-
-          <div className="mt-4 flex gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
-            <HardHat className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Estimated Labour Cost</p>
-              <p className="text-xs leading-relaxed text-gray-600">{service.labourCost}</p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.labourCostHi}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── What's included / not included ── */}
-      <section className="py-14 sm:py-16 bg-white">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="rounded-2xl border border-emerald-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <PackageCheck className="h-5 w-5 text-emerald-600" aria-hidden="true" />
-                <h2 className="text-lg font-black text-gray-900">What's Included</h2>
-              </div>
-              <ul className="space-y-3">
-                {service.whatsIncluded.map((item, i) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
-                    <span>
-                      {item}
-                      <span className="block text-xs text-gray-500 mt-0.5">{service.whatsIncludedHi[i]}</span>
+      {/* ── The four scannable selling points — the whole pitch ── */}
+      {highlights.length > 0 && (
+        <section className="py-14 sm:py-16 bg-white">
+          <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
+            <h2 className="mb-8 text-2xl font-black text-gray-900 sm:text-3xl">
+              Why JK Interior for {service.name}?
+            </h2>
+            <div className="space-y-4">
+              {highlights.map((h) => {
+                const Icon = HIGHLIGHT_ICON[h.kind]
+                return (
+                  <div
+                    key={h.kind}
+                    className="flex gap-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6"
+                  >
+                    <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700">
+                      <Icon className="h-5 w-5" aria-hidden="true" />
                     </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <PackageX className="h-5 w-5 text-red-500" aria-hidden="true" />
-                <h2 className="text-lg font-black text-gray-900">What's NOT Included</h2>
-              </div>
-              <ul className="space-y-3">
-                {service.whatsNotIncluded.map((item, i) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <XCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-400" aria-hidden="true" />
-                    <span>
-                      {item}
-                      <span className="block text-xs text-gray-500 mt-0.5">{service.whatsNotIncludedHi[i]}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                    <div className="min-w-0">
+                      <p className="text-sm font-black uppercase tracking-wide text-emerald-800 sm:text-base">
+                        {h.label}
+                        <span className="ml-2 font-bold normal-case tracking-normal text-emerald-600">/ {h.labelHi}</span>
+                      </p>
+                      <p className="mt-1.5 text-sm font-semibold leading-relaxed text-gray-800 sm:text-base">{h.en}</p>
+                      <p className="mt-1 text-sm leading-relaxed text-gray-500">{h.hi}</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── Where used / not used ── */}
-      <section className="py-14 sm:py-16 bg-gray-50">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="rounded-2xl border border-emerald-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-emerald-600" aria-hidden="true" />
-                <h2 className="text-lg font-black text-gray-900">Where It's Used</h2>
-              </div>
-              <ul className="space-y-3">
-                {service.whereUsed.map((item, i) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
-                    <span>
-                      {item}
-                      <span className="block text-xs text-gray-500 mt-0.5">{service.whereUsedHi[i]}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <MapPinOff className="h-5 w-5 text-red-500" aria-hidden="true" />
-                <h2 className="text-lg font-black text-gray-900">Where It Should NOT Be Used</h2>
-              </div>
-              <ul className="space-y-3">
-                {service.whereNotUsed.map((item, i) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
-                    <XCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-400" aria-hidden="true" />
-                    <span>
-                      {item}
-                      <span className="block text-xs text-gray-500 mt-0.5">{service.whereNotUsedHi[i]}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Benefits / Limitations ── */}
-      <section className="py-14 sm:py-16 bg-white">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div>
-              <h2 className="mb-4 text-lg font-black text-gray-900">Benefits</h2>
-              <ul className="space-y-3">
-                {service.benefits.map((item, i) => (
-                  <li key={item} className="rounded-xl border border-emerald-200 bg-emerald-50/60 px-4 py-3 text-sm font-medium text-gray-800">
-                    {item}
-                    <span className="block text-xs font-normal text-gray-500 mt-1">{service.benefitsHi[i]}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="mb-4 text-lg font-black text-gray-900">Limitations</h2>
-              <ul className="space-y-3">
-                {service.limitations.map((item, i) => (
-                  <li key={item} className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-700">
-                    {item}
-                    <span className="block text-xs font-normal text-gray-500 mt-1">{service.limitationsHi[i]}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Expert recommendation ── */}
-      <section className="py-12 sm:py-14 bg-white">
-        <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
-          <div className="flex gap-4 rounded-2xl border border-amber-200 bg-amber-50/60 p-6 shadow-sm">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-400/90">
-              <Lightbulb className="h-5 w-5 text-amber-900" aria-hidden="true" />
-            </div>
-            <div>
-              <h2 className="mb-2 text-base font-black text-gray-900">Our Recommendation</h2>
-              <p className="text-sm leading-relaxed text-gray-700">{service.expertTip}</p>
-              <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{service.expertTipHi}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Materials ── */}
-      <section className="py-14 sm:py-16 bg-gray-50">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex items-center gap-2">
-            <LayersIcon className="h-5 w-5 text-emerald-600" aria-hidden="true" />
-            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">Materials Used</h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {service.materials.map((m) => (
-              <div key={m.name} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h3 className="mb-1 text-sm font-bold text-gray-900">{m.name}</h3>
-                <p className="mb-2 text-xs font-semibold text-emerald-700">{m.nameHi}</p>
-                <p className="text-sm text-gray-600 leading-relaxed">{m.detail}</p>
-                <p className="mt-1 text-xs text-gray-500 leading-relaxed">{m.detailHi}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-5 flex gap-3 rounded-xl border border-gray-200 bg-white p-5">
-            <Ruler className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Available Sizes &amp; Thickness</p>
-              <p className="text-sm leading-relaxed text-gray-600">{service.sizesThickness}</p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.sizesThicknessHi}</p>
-            </div>
-          </div>
-
-          <div className="mt-4 flex gap-3 rounded-xl border border-emerald-200 bg-emerald-50/60 p-5">
-            <BadgeCheck className="h-4 w-4 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-1">Brand &amp; Quality Assurance</p>
-              <p className="text-sm leading-relaxed text-gray-700">{service.brandNote}</p>
-              <p className="mt-1 text-xs leading-relaxed text-gray-500">{service.brandNoteHi}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Installation Process ── */}
-      <section className="py-14 sm:py-16 bg-white">
-        <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-8 flex items-center gap-2">
-            <Wrench className="h-5 w-5 text-emerald-600" aria-hidden="true" />
-            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">Installation Process, Step by Step</h2>
-          </div>
-          <ol className="space-y-5">
-            {service.installSteps.map((step, i) => (
-              <li key={step.title} className="flex gap-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-sm font-black text-white">
-                  {i + 1}
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900">{step.title}</h3>
-                  <p className="text-xs font-semibold text-emerald-700 mb-1">{step.titleHi}</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{step.desc}</p>
-                  <p className="text-xs text-gray-500 leading-relaxed mt-0.5">{step.descHi}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ── Time / Maintenance / Warranty / Labour strip ── */}
-      <section className="py-12 sm:py-14 bg-gradient-to-b from-emerald-50 to-white">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[
-              { label: "Installation Time", value: service.installTime },
-              { label: "Maintenance", value: service.maintenance },
-              { label: "Warranty", value: service.warranty },
-              { label: "Labour (approx.)", value: service.labourCostShort },
-            ].map((item) => (
-              <div key={item.label} className="rounded-xl border border-emerald-200 bg-white px-3 py-4 text-center shadow-sm">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">{item.label}</p>
-                <p className="mt-1.5 text-xs font-semibold text-gray-800 leading-snug">{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Service area availability ── */}
-      <section className="py-12 sm:py-14 bg-white">
-        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="flex gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-6">
-            <Navigation className="h-5 w-5 shrink-0 mt-0.5 text-emerald-600" aria-hidden="true" />
-            <div>
-              <h2 className="mb-2 text-base font-black text-gray-900">Availability in Araria District &amp; Nearby</h2>
-              <p className="text-sm leading-relaxed text-gray-600">{service.availability}</p>
-              <p className="mt-1.5 text-xs leading-relaxed text-gray-500">{service.availabilityHi}</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── Real project example + photos ── */}
       {photos.length > 0 && (
-        <section className="py-14 sm:py-16 bg-white">
+        <section className="py-14 sm:py-16 bg-gray-50">
           <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-            <div className="mb-6 rounded-2xl border border-gray-200 bg-gray-50 p-6">
+            <div className="mb-6 rounded-2xl border border-gray-200 bg-white p-6">
               <h2 className="mb-2 text-lg font-black text-gray-900">Real Project: {service.realProject.title}</h2>
               <p className="mb-1 text-sm font-semibold text-emerald-700">{service.realProject.titleHi}</p>
               <p className="text-sm leading-relaxed text-gray-600">{service.realProject.desc}</p>
@@ -464,7 +222,7 @@ export default function ServiceDetailPage() {
       )}
 
       {/* ── FAQs ── */}
-      <section className="py-14 sm:py-16 bg-gray-50">
+      <section className="py-14 sm:py-16 bg-white">
         <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
           <div className="mb-6 flex items-center gap-2">
             <HelpCircle className="h-5 w-5 text-emerald-600" aria-hidden="true" />
