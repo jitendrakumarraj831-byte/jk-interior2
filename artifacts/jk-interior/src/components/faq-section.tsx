@@ -9,36 +9,36 @@ const easeLux = [0.22, 1, 0.36, 1] as const
 
 const faqs = [
   {
-    q: "JK Interior कौन-कौन सी services provide करती है?",
+    q: "JK Interior कौन-कौन सी सेवाएं देती है?",
     a: "JK Interior provides PVC False Ceiling, Gypsum Ceiling, WPC Wall Paneling, UV Marble Sheet, Modular TV Unit, Charcoal Panel, Louvers Panel, ACP Exterior, Complete Interior Design, Bedroom Interior, Office Interior, and Kitchen Interior services across Forbesganj, Araria, Purnia and surrounding Bihar areas.",
   },
   {
-    q: "PVC false ceiling की cost क्या होती है Forbesganj में?",
-    a: "PVC ceiling cost Araria/Forbesganj में typically ₹70-₹120 per sq.ft होती है, जो panel quality, design और lighting के अनुसार vary करती है। Free site visit और detailed quotation के लिए +91 8541849118 पर call करें।",
+    q: "PVC फॉल्स सीलिंग की कीमत क्या होती है फोर्बेसगंज में?",
+    a: "PVC सीलिंग कीमत अरारिया/फोर्बेसगंज में आमतौर पर ₹75-₹150 प्रति sq.ft होती है, जो पैनल क्वालिटी, डिज़ाइन और लाइटिंग के अनुसार अलग-अलग होती है। फ्री साइट विज़िट और विस्तृत कोटेशन के लिए +91 8541849118 पर कॉल करें।",
   },
   {
-    q: "क्या आप free site visit provide करते हैं?",
-    a: "हां, JK Interior free expert site visit और detailed quotation provide करती है — बिना किसी obligation के। हम Forbesganj, Araria और surrounding Bihar areas में free site visit देते हैं।",
+    q: "क्या आप फ्री साइट विज़िट देते हैं?",
+    a: "हां, JK Interior फ्री एक्सपर्ट साइट विज़िट और विस्तृत कोटेशन देती है — बिना किसी बाध्यता के। हम फोर्बेसगंज, अरारिया और आसपास के बिहार एरिया में फ्री साइट विज़िट देते हैं।",
   },
   {
-    q: "Installation कितने दिनों में complete होती है?",
-    a: "Room size और service के according, एक standard room की installation 1-3 days में complete होती है। हम on-time delivery guarantee करते हैं और project timeline पहले ही share करते हैं।",
+    q: "इंस्टॉलेशन कितने दिनों में पूरी होती है?",
+    a: "कमरा साइज़ और सेवा के अनुसार, एक स्टैंडर्ड कमरे की इंस्टॉलेशन 1-3 दिन में पूरी होती है। हम समय पर डिलीवरी गारंटी करते हैं और प्रोजेक्ट टाइमलाइन पहले ही साझा करते हैं।",
   },
   {
-    q: "क्या materials waterproof हैं?",
-    a: "हां, हमारे सभी products — PVC panels, WPC boards, और UV marble sheets — 100% waterproof हैं। ये Bihar के monsoon season को आसानी से withstand करते हैं। ISI-certified और branded materials use होते हैं।",
+    q: "क्या मटेरियल वॉटरप्रूफ हैं?",
+    a: "हां, हमारे सभी प्रोडक्ट — PVC पैनल, WPC बोर्ड, और UV मार्बल शीट — 100% वॉटरप्रूफ हैं। ये बिहार के मानसून मौसम को आसानी से झेल लेते हैं। ISI-प्रमाणित और ब्रांडेड मटेरियल इस्तेमाल होते हैं।",
   },
   {
-    q: "Warranty कितनी मिलती है?",
-    a: "JK Interior हर project पर 1 साल की written warranty provide करती है। यह warranty materials और workmanship दोनों को cover करती है। Written document दिया जाता है।",
+    q: "वारंटी कितनी मिलती है?",
+    a: "JK Interior हर प्रोजेक्ट पर 1 साल की लिखित वारंटी देती है। यह वारंटी मटेरियल और कारीगरी दोनों को कवर करती है। लिखित दस्तावेज़ दिया जाता है।",
   },
   {
-    q: "आप कौन-कौन से areas में service करते हैं?",
-    a: "हम Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Kursakanta, Tribeniganj, Chhatapur, Supaul और Purnia में service provide करते हैं — Araria, Supaul और Purnia districts को cover करते हैं।",
+    q: "आप कौन-कौन से एरिया में सेवा करते हैं?",
+    a: "हम फोर्बेसगंज, अरारिया, जोगबनी, रानीगंज, नरपतगंज, कुर्साकाँटा, त्रिवेणीगंज, छतापुर, सुपौल और पूर्णिया में सेवा देते हैं — अरारिया, सुपौल और पूर्णिया ज़िले को कवर करते हैं।",
   },
   {
-    q: "Payment के कौन-से options available हैं?",
-    a: "हम Cash, UPI (GPay, PhonePe, Paytm), और Bank Transfer accept करते हैं। कोई hidden charges नहीं — transparent pricing हमेशा। Payment schedule project start से पहले discuss होता है।",
+    q: "पेमेंट के कौन-से विकल्प उपलब्ध हैं?",
+    a: "हम कैश, UPI (GPay, PhonePe, Paytm), और बैंक ट्रांसफर एक्सेप्ट करते हैं। कोई छुपे हुए शुल्क नहीं — पारदर्शी कीमत हमेशा। पेमेंट शेड्यूल प्रोजेक्ट शुरू से पहले डिस्कस होता है।",
   },
 ]
 
@@ -113,7 +113,7 @@ export default function FAQSection() {
           headingSize="md"
           className="mb-12"
           title={<>Frequently Asked <span className="hero-gradient-text">Questions</span></>}
-          subtitle="JK Interior के बारे में सबसे common questions के answers — अपना doubt clear करें"
+          subtitle="JK Interior के बारे में सबसे आम सवाल के जवाब — अपनी शंका दूर करें"
         />
 
         {/* Two-column glossary/index layout */}
@@ -130,7 +130,7 @@ export default function FAQSection() {
 
         {/* Bottom CTA */}
         <motion.div {...animProps} className="mt-12 text-center">
-          <p className="mb-5 text-gray-500 text-sm">और questions हैं? हमसे directly बात करें</p>
+          <p className="mb-5 text-gray-500 text-sm">और सवाल हैं? हमसे सीधे बात करें</p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink variant="outline">Call: +91 8541849118</CallLink>
             <WhatsAppLink message="Hi JK Interior, I have a question.">WhatsApp Us</WhatsAppLink>

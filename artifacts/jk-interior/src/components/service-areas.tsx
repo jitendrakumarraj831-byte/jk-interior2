@@ -80,7 +80,7 @@ export default function ServiceAreas() {
           badge="Service Areas"
           headingSize="md"
           title={<>हमारी <span className="hero-gradient-text">पहुंच</span></>}
-          subtitle="Forbesganj से लगभग 80 किमी के दायरे में — Araria, Supaul और Purnia तीनों ज़िलों में हमारी टीम खुद साइट पर आती है"
+          subtitle="फोर्बेसगंज से लगभग 80 किमी के दायरे में — अरारिया, सुपौल और पूर्णिया तीनों ज़िलों में हमारी टीम खुद साइट पर आती है"
         />
 
         {/* Desktop Hub Map */}
@@ -159,7 +159,7 @@ export default function ServiceAreas() {
         <motion.div {...animProps} className="text-center">
           <div className="mx-auto inline-block max-w-2xl w-full rounded-2xl border border-emerald-200 bg-white p-8 shadow-sm">
             <p className="mb-2 text-base font-bold text-gray-900 md:text-lg">
-              Araria, Supaul और Purnia के सभी प्रमुख क्षेत्रों में उपलब्ध
+              अरारिया, सुपौल और पूर्णिया के सभी प्रमुख क्षेत्रों में उपलब्ध
             </p>
             <p className="mb-6 text-sm text-gray-500">कहीं भी हो आपका घर — हम पहुंचेंगे</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

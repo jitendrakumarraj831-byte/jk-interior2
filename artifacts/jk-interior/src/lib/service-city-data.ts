@@ -39,8 +39,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Zero — just wipe with a damp cloth",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "क्या PVC ceiling waterproof है?", a: "हाँ, 100% waterproof है। Bathroom, kitchen — हर जगह safe रहता है, कभी फूलता या खराब नहीं होता।" },
-      { q: "PVC ceiling कितने दिन में लग जाती है?", a: "एक कमरे की PVC false ceiling 1 दिन में लग जाती है। पूरे घर के लिए 3–4 दिन लगते हैं।" },
+      { q: "क्या PVC सीलिंग वॉटरप्रूफ है?", a: "हाँ, 100% वॉटरप्रूफ है। बाथरूम, किचन — हर जगह सुरक्षित रहता है, कभी फूलता या खराब नहीं होता।" },
+      { q: "PVC सीलिंग कितने दिन में लग जाती है?", a: "एक कमरे की PVC फॉल्स सीलिंग 1 दिन में लग जाती है। पूरे घर के लिए 3–4 दिन लगते हैं।" },
     ],
   },
   {
@@ -64,8 +64,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Minimal — occasional dusting, repaint every 5–7 years",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "Gypsum ceiling पानी में खराब होगी?", a: "गीले area (bathroom/kitchen) में gypsum की जगह PVC लगवाना बेहतर है। Hall और bedroom जैसे dry area में gypsum perfect है।" },
-      { q: "Gypsum ceiling में कितना time लगता है?", a: "एक room में 2–3 दिन, पूरे घर में 5–7 दिन लगते हैं — design की complexity पर depend करता है।" },
+      { q: "जिप्सम सीलिंग पानी में खराब होगी?", a: "गीले एरिया (बाथरूम/किचन) में जिप्सम की जगह PVC लगवाना बेहतर है। हॉल और बेडरूम जैसे ड्राई एरिया में जिप्सम परफेक्ट है।" },
+      { q: "जिप्सम सीलिंग में कितना समय लगता है?", a: "एक कमरे में 2–3 दिन, पूरे घर में 5–7 दिन लगते हैं — डिज़ाइन की जटिलता पर निर्भर करता है।" },
     ],
   },
   {
@@ -89,8 +89,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Wipe with a dry cloth — lifetime maintenance-free",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "WPC पैनल असली लकड़ी जैसा दिखता है?", a: "बिल्कुल! WPC असली लकड़ी जैसा look देता है लेकिन termite, moisture और warping की problem नहीं होती — 60% सस्ता भी है।" },
-      { q: "TV wall के लिए WPC कैसा रहेगा?", a: "TV wall के लिए WPC सबसे best choice है — beautiful wood texture, easy cable management, और बहुत premium look आता है।" },
+      { q: "WPC पैनल असली लकड़ी जैसा दिखता है?", a: "बिल्कुल! WPC असली लकड़ी जैसा लुक देता है लेकिन टर्माइट, नमी और वार्पिंग की समस्या नहीं होती — 60% सस्ता भी है।" },
+      { q: "TV वॉल के लिए WPC कैसा रहेगा?", a: "TV वॉल के लिए WPC सबसे अच्छा विकल्प है — खूबसूरत लकड़ी टेक्सचर, आसान केबल मैनेजमेंट, और बहुत प्रीमियम लुक आता है।" },
     ],
   },
   {
@@ -99,7 +99,7 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     nameHi: "मॉड्यूलर TV यूनिट",
     icon: Tv,
     galleryCategory: "TV Unit Design",
-    price: "₹15,000 से शुरू (basic)",
+    price: "₹15,000 से शुरू (बेसिक)",
     premiumPrice: "₹46,000–₹75,000+ (premium designs)",
     description:
       "Custom-designed modular TV units built to fit your exact room dimensions — with built-in cable management, LED backlighting, and storage shelves, in wood laminate, matte, glossy, or combination finishes.",
@@ -114,8 +114,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Wipe with a dry cloth — no special care needed",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "TV unit का price कितना है?", a: "Basic TV unit ₹15,000 से शुरू होता है। Premium design (LED lighting, बड़ा storage) के साथ ₹46,000–₹75,000+ तक जा सकता है, size पर depend करता है।" },
-      { q: "TV unit बनाने में कितने दिन लगते हैं?", a: "Size और design के अनुसार 3–5 दिन में तैयार हो जाता है। Custom measurement के बाद exact timeline बताई जाती है।" },
+      { q: "TV यूनिट का कीमत कितना है?", a: "बेसिक TV यूनिट ₹15,000 से शुरू होता है। प्रीमियम डिज़ाइन (LED लाइटिंग, बड़ा स्टोरेज) के साथ ₹46,000–₹75,000+ तक जा सकता है, साइज़ पर निर्भर करता है।" },
+      { q: "TV यूनिट बनाने में कितने दिन लगते हैं?", a: "साइज़ और डिज़ाइन के अनुसार 3–5 दिन में तैयार हो जाता है। कस्टम माप के बाद सटीक टाइमलाइन बताई जाती है।" },
     ],
   },
 ]

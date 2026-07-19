@@ -378,7 +378,7 @@ export default function Gallery() {
         {/* ── Section label ── */}
         <div className="flex items-center gap-4 mb-6">
           <div className="w-1 h-8 bg-emerald-500 rounded-full"/>
-          <h3 className="text-gray-800 font-bold text-lg">Service के हिसाब से Projects</h3>
+          <h3 className="text-gray-800 font-bold text-lg">सर्विस के हिसाब से प्रोजेक्ट्स</h3>
           <div className="flex-1 h-px bg-emerald-900/15"/>
           <span className="text-gray-500 text-xs">{categories.length} services</span>
         </div>
@@ -397,7 +397,7 @@ export default function Gallery() {
             आपका घर, <span className="hero-gradient-text">हमारी पहचान</span>
           </h3>
           <p className="text-gray-500 max-w-lg mx-auto text-sm mb-8">
-            Budget आपका, ज़िम्मेदारी हमारी! Premium interior और false ceiling — किफायती रेट पर।
+            बजट आपका, ज़िम्मेदारी हमारी! प्रीमियम इंटीरियर और फॉल्स सीलिंग — किफायती रेट पर।
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(5,150,105,0.35)]">अभी कॉल करें</CallLink>
