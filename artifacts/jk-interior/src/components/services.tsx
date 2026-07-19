@@ -1,12 +1,20 @@
 
-import { ArrowUpRight, Ruler, ShieldCheck, Timer, MapPin, BadgeCheck, Sparkles } from "lucide-react"
+import { ArrowUpRight, Ruler, ShieldCheck, IndianRupee, MapPin, BadgeCheck, Sparkles, type LucideIcon } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { SERVICES_SUMMARY } from "@/lib/services-summary"
+import { SERVICES_SUMMARY, type ServiceHighlight } from "@/lib/services-summary"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
+
+/** Icon + accent tint for each of the four fixed highlight slots. */
+const HIGHLIGHT_STYLES: Record<ServiceHighlight["kind"], { icon: LucideIcon }> = {
+  special: { icon: Sparkles },
+  pricing: { icon: IndianRupee },
+  warranty: { icon: ShieldCheck },
+  suited: { icon: MapPin },
+}
 
 /**
  * The homepage "catalogue" spread — an editorial, alternating-side layout rather
@@ -107,32 +115,29 @@ export default function Services() {
                       {service.name}
                     </Link>
                   </h3>
-                  <p className="mb-3 text-sm font-bold text-emerald-700">{service.nameHi}</p>
+                  <p className="mb-5 text-sm font-bold text-emerald-700">{service.nameHi}</p>
 
-                  <p className="mb-2 text-base font-semibold leading-snug text-gray-800 sm:text-lg">
-                    {service.tagline}
-                  </p>
-                  <p className="mb-5 max-w-xl text-sm leading-relaxed text-gray-500 sm:text-base">
-                    {service.taglineHi}
-                  </p>
-
-                  {/* Caption-style spec line, not badge pills — reads like a photo credit line */}
-                  <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-semibold text-gray-500 sm:text-sm">
-                    <span className="inline-flex items-center gap-1.5">
-                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                      {service.price.split(" (")[0]}
-                    </span>
-                    <span className="text-gray-300">·</span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Timer className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                      {service.installTime}
-                    </span>
-                    <span className="hidden text-gray-300 sm:inline">·</span>
-                    <span className="hidden items-center gap-1.5 sm:inline-flex">
-                      <MapPin className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                      {service.whereUsedFirst}
-                    </span>
-                  </div>
+                  {/* The four scannable selling points — the whole pitch, nothing else */}
+                  <ul className="mb-6 space-y-3.5">
+                    {service.highlights.map((h) => {
+                      const Icon = HIGHLIGHT_STYLES[h.kind].icon
+                      return (
+                        <li key={h.kind} className="flex gap-3">
+                          <span className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700">
+                            <Icon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-[13px] font-black uppercase tracking-wide text-emerald-800 sm:text-sm">
+                              {h.label}
+                              <span className="ml-1.5 font-bold normal-case tracking-normal text-emerald-600">/ {h.labelHi}</span>
+                            </p>
+                            <p className="mt-0.5 text-sm font-semibold leading-snug text-gray-800">{h.en}</p>
+                            <p className="mt-0.5 text-[13px] leading-relaxed text-gray-500 sm:text-sm">{h.hi}</p>
+                          </div>
+                        </li>
+                      )
+                    })}
+                  </ul>
 
                   <div className="flex flex-wrap items-center gap-3">
                     <Link
