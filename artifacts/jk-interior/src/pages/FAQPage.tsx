@@ -58,29 +58,29 @@ export default function FAQPage() {
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
           <h2 className="mb-10 text-2xl font-black text-gray-900 sm:text-3xl">
-            More Questions About Our Services
+            हमारी सर्विस से जुड़े और सवाल
           </h2>
           <div className="space-y-6">
             {[
               {
-                q: 'What is the cost of gypsum ceiling in Bihar?',
-                a: 'Gypsum ceiling in Bihar (Araria, Forbesganj) typically costs ₹75–₹210 per sq.ft depending on design complexity, cove lighting, and pop work. Contact JK Interior on +91 8541849118 for a free detailed quote.',
+                q: 'बिहार में Gypsum Ceiling की कीमत कितनी है?',
+                a: 'अररिया-फोर्बेसगंज में Gypsum Ceiling आमतौर पर ₹75–₹210 प्रति sq.ft में लग जाती है — डिज़ाइन, Cove Light और POP वर्क के हिसाब से रेट बदलता है। फ्री और सही-सही कोटेशन के लिए +91 8541849118 पर संपर्क करें।',
               },
               {
-                q: 'How long does PVC ceiling installation take?',
-                a: 'A standard room PVC ceiling installation takes 1–2 days. Larger projects with multiple rooms are scheduled room-by-room to minimize disruption to your daily life.',
+                q: 'PVC Ceiling लगने में कितना समय लगता है?',
+                a: 'एक स्टैंडर्ड कमरे की PVC Ceiling 1–2 दिन में लग जाती है। कई कमरों वाले बड़े प्रोजेक्ट में हम कमरा-दर-कमरा शेड्यूल बनाते हैं, जिससे आपकी रोज़मर्रा की ज़िंदगी में ज़्यादा दखल न हो।',
               },
               {
-                q: 'Do you provide services outside Forbesganj?',
-                a: 'Yes! JK Interior serves all of Araria district (Forbesganj, Narpatganj, Raniganj, Kursakanta, Jogbani) and beyond — Purnia, Supaul, Tribeniganj, Chhatapur and more. Call +91 8541849118.',
+                q: 'फोर्बेसगंज के बाहर भी काम करते हैं?',
+                a: 'हां! हम पूरे अररिया ज़िले में (फोर्बेसगंज, नरपतगंज, रानीगंज, कुर्साकाँटा, जोगबनी) और उससे आगे — पूर्णिया, सुपौल, त्रिवेणीगंज, छतापुर तक जाते हैं। कॉल करें: +91 8541849118।',
               },
               {
-                q: 'What warranty do you provide on your work?',
-                a: 'JK Interior provides a 1-year written warranty on all installations. Any defect or issue is fixed free of cost within the warranty period. We use ISI-certified branded materials for lasting quality.',
+                q: 'काम पर वारंटी मिलती है क्या?',
+                a: 'हां, हर installation पर 1 साल की लिखित Warranty मिलती है। Warranty के दौरान कोई भी खराबी हो तो बिना पैसे लिए ठीक करते हैं। लंबे समय तक चले, इसलिए ISI-Certified ब्रांडेड मटेरियल ही लगाते हैं।',
               },
               {
-                q: 'Can you design a complete bedroom interior?',
-                a: 'Absolutely! JK Interior provides complete bedroom interior design including false ceiling, wall paneling, TV unit, wardrobe design guidance, and lighting consultation — all under one roof.',
+                q: 'पूरे बेडरूम का इंटीरियर बना सकते हैं?',
+                a: 'बिल्कुल! False Ceiling, Wall Panel, TV Unit, वॉर्डरोब का सुझाव और लाइटिंग — पूरे बेडरूम का इंटीरियर हम एक ही टीम से करा देते हैं।',
               },
             ].map(({ q, a }) => (
               <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm open:border-emerald-300 open:shadow-emerald-50">
@@ -91,18 +91,18 @@ export default function FAQPage() {
           </div>
 
           <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-emerald-700 mt-12">
-            Still have questions?
+            अभी भी सवाल हैं?
           </h3>
           <div className="flex flex-wrap gap-3">
-            <CallLink className="shadow-sm hover:shadow-sm">Call +91 8541849118</CallLink>
-            <WhatsAppLink message="Hi JK Interior, I have a question about your services." className="shadow-sm hover:shadow-sm">
-              WhatsApp Us
+            <CallLink className="shadow-sm hover:shadow-sm">कॉल करें +91 8541849118</CallLink>
+            <WhatsAppLink message="नमस्ते JK Interior, मुझे आपकी सर्विस के बारे में एक सवाल पूछना है।" className="shadow-sm hover:shadow-sm">
+              WhatsApp करें
             </WhatsAppLink>
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"
             >
-              Send a Message
+              मैसेज भेजें
             </Link>
           </div>
         </div>

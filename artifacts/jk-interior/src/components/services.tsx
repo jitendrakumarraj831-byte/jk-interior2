@@ -149,7 +149,7 @@ export default function Services() {
                     <WhatsAppLink
                       size="sm"
                       variant="outline"
-                      message={`Hi JK Interior, I am interested in ${service.name}. Please share details.`}
+                      message={`नमस्ते JK Interior, मुझे ${service.name} में दिलचस्पी है। कृपया जानकारी भेजें।`}
                       ariaLabel={`WhatsApp for ${service.name}`}
                     >
                       WhatsApp

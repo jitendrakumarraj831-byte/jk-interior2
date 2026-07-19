@@ -10,7 +10,7 @@ const easeLux = [0.22, 1, 0.36, 1] as const
 const faqs = [
   {
     q: "JK Interior कौन-कौन सी सेवाएं देती है?",
-    a: "JK Interior provides PVC False Ceiling, Gypsum Ceiling, WPC Wall Paneling, UV Marble Sheet, Modular TV Unit, Charcoal Panel, Louvers Panel, ACP Exterior, Complete Interior Design, Bedroom Interior, Office Interior, and Kitchen Interior services across Forbesganj, Araria, Purnia and surrounding Bihar areas.",
+    a: "हम PVC False Ceiling, Gypsum Ceiling, WPC Wall Panel, UV Marble Sheet, Modular TV Unit, Charcoal Panel, Louvers Panel, ACP Exterior — और पूरे घर, बेडरूम, ऑफिस या किचन के इंटीरियर का भी काम करते हैं। फोर्बेसगंज, अररिया, पूर्णिया और आसपास के बिहार के इलाकों में सेवा देते हैं।",
   },
   {
     q: "फोर्बेसगंज में PVC फॉल्स सीलिंग की कीमत क्या होती है?",

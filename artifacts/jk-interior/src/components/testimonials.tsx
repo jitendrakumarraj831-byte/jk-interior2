@@ -177,7 +177,7 @@ export default function Testimonials() {
             size="lg"
             icon={false}
             ariaLabel="WhatsApp JK Interior for free consultation"
-            message="Hi JK Interior, I want to get interior work done. Please share details."
+            message="नमस्ते JK Interior, मुझे इंटीरियर का काम करवाना है। कृपया जानकारी भेजें।"
             className="bg-emerald-700 text-base shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)]"
           >
             Get Free Consultation

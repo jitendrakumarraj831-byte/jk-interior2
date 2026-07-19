@@ -89,7 +89,7 @@ export default function Navbar() {
               <WhatsAppLink
                 size="sm"
                 shine
-                message="Hi JK Interior, I need interior design help."
+                message="नमस्ते JK Interior, मुझे इंटीरियर डिज़ाइन में मदद चाहिए।"
                 className="gap-2 bg-emerald-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_24px_rgba(5,150,105,0.5)]"
               >
                 WhatsApp
@@ -164,7 +164,7 @@ export default function Navbar() {
                     </CallLink>
                     <WhatsAppLink
                       shine
-                      message="Hi JK Interior, I need interior design help."
+                      message="नमस्ते JK Interior, मुझे इंटीरियर डिज़ाइन में मदद चाहिए।"
                       className="bg-emerald-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_20px_rgba(5,150,105,0.35)]"
                     >
                       Chat on WhatsApp
