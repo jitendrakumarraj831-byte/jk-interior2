@@ -20,7 +20,7 @@ const testimonials = [
     name: "Rahul Kumar",
     location: "Forbesganj",
     rating: 5,
-    text: "JK Interior ने हमारे घर का PVC फॉल्स सीलिंग बेहद खूबसूरती से लगाया। काम की क्वालिटी और स्पीड दोनों बेहतरीन थी।",
+    text: "JK Interior ने हमारे घर की PVC फॉल्स सीलिंग बेहद खूबसूरती से लगाई। काम की क्वालिटी और स्पीड दोनों बेहतरीन थी।",
     service: "PVC False Ceiling",
     initials: "RK",
     color: "from-emerald-700 to-emerald-900",

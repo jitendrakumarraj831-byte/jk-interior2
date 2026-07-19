@@ -227,7 +227,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     category: "Ceiling",
     categoryHi: "सीलिंग",
     tagline: "The one we install in more Forbesganj kitchens and bathrooms than anything else",
-    taglineHi: "फारबिसगंज के सबसे ज़्यादा किचन-बाथरूम में यही लगती है",
+    taglineHi: "फारबिसगंज के ज़्यादातर किचन-बाथरूम में यही लगती है",
     heroImage: "/images/pvc-ceiling.webp",
     heroImageAlt: "Waterproof PVC false ceiling installation in a Bihar kitchen by JK Interior",
     galleryCategory: "PVC Ceiling",
@@ -729,8 +729,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     benefitsHi: [
       "असली मार्बल/ग्रेनाइट से करीब 70–80% कम कीमत में वही लुक",
       "100% वॉटरप्रूफ और नमी प्रतिरोधी — बाथरूम और किचन की दीवार के लिए आदर्श",
-      "कोई ग्राउट लाइन नहीं — टाइल से कहीं ज़्यादा देर तक साफ-सुथरा दिखने वाला बिना जोड़ वाली लुक",
-      "हल्का वज़न — पत्थर की स्लैब जैसे दीवार पर कोई स्ट्रक्चरल भार नहीं",
+      "कोई ग्राउट लाइन नहीं — टाइल से कहीं ज़्यादा देर तक साफ-सुथरा दिखने वाला बिना जोड़ वाला लुक",
+      "हल्का वज़न — पत्थर की स्लैब के उलट, दीवार पर कोई स्ट्रक्चरल भार नहीं",
       "स्क्रैच-रेजिस्टेंट, स्वच्छ, आसानी से साफ होने वाली सतह",
     ],
     limitations: [
@@ -780,7 +780,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     category: "Furniture",
     categoryHi: "फर्नीचर",
     tagline: "Built to your wall's exact width — not cut down from a catalogue template",
-    taglineHi: "आपकी दीवार की सही नाप पर बना — कैटलॉग टेम्पलेट से काटकर नहीं",
+    taglineHi: "आपकी दीवार की सही नाप पर बनी — कैटलॉग टेम्पलेट से काटकर नहीं",
     heroImage: "/images/tv-unit.webp",
     heroImageAlt: "Custom modular TV unit with LED backlight installed by JK Interior in Bihar",
     galleryCategory: "TV Unit Design",
@@ -980,7 +980,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       photos: 7,
     },
     faqs: [
-      { q: "Will artificial grass smell or grow mould in Bihar's monsoon?", qHi: "क्या बिहार के मानसून में आर्टिफिशियल घास से बदबू या फफूंद आएगी?", a: "Not if the base drains properly — that's the one thing we insist on checking before installation. Water needs a clear path to run off underneath; if your balcony floor doesn't already drain well, we fix or add drainage before laying the turf, not after.", aHi: "अगर बेस सही से अच्छी तरह निकलता हो तो नहीं — इंस्टॉलेशन से पहले हम यही एक चीज़ ज़रूर जांचते हैं। पानी को नीचे से निकलने का साफ रास्ता चाहिए; अगर आपकी बालकनी का फर्श पहले से अच्छी तरह नहीं निकलता, तो हम टर्फ बिछाने से पहले ड्रेनेज ठीक करते हैं, बाद में नहीं।" },
+      { q: "Will artificial grass smell or grow mould in Bihar's monsoon?", qHi: "क्या बिहार के मानसून में आर्टिफिशियल घास से बदबू या फफूंद आएगी?", a: "Not if the base drains properly — that's the one thing we insist on checking before installation. Water needs a clear path to run off underneath; if your balcony floor doesn't already drain well, we fix or add drainage before laying the turf, not after.", aHi: "अगर बेस अच्छी तरह निकलता हो तो नहीं — इंस्टॉलेशन से पहले हम यही एक चीज़ ज़रूर जांचते हैं। पानी को नीचे से निकलने का साफ रास्ता चाहिए; अगर आपकी बालकनी का फर्श पहले से अच्छी तरह नहीं निकलता, तो हम टर्फ बिछाने से पहले ड्रेनेज ठीक करते हैं, बाद में नहीं।" },
       { q: "How long does artificial grass actually last outdoors?", qHi: "आर्टिफिशियल घास बाहर असल में कितने साल चलती है?", a: "Good UV-stabilised turf typically holds its colour and pile for 5–8 years under regular sun exposure before it noticeably flattens or fades, depending on foot traffic. It's covered by our 1-year installation warranty; the material's own life runs well beyond that.", aHi: "अच्छी UV-स्टेबलाइज़्ड टर्फ सामान्य धूप में आमतौर पर 5–8 साल तक अपना रंग और उभार बनाए रखती है, इसके बाद चलने-फिरने की मात्रा के हिसाब से हल्की चपटी या फीकी पड़ सकती है। हमारी 1 साल की इंस्टॉलेशन वारंटी इसे कवर करती है; मटेरियल की अपनी उम्र उससे कहीं ज़्यादा होती है।" },
       { q: "Can artificial grass be used on a wall, not just the floor?", qHi: "क्या आर्टिफिशियल घास सिर्फ फर्श पर नहीं, दीवार पर भी लगाई जा सकती है?", a: "Yes — for a green feature wall we fix pre-cut turf panels onto a batten frame the same way we'd fix a WPC panel, so there's no drainage concern at all since it's vertical and dry.", aHi: "हां — ग्रीन फीचर वॉल के लिए हम पहले से कटे टर्फ पैनल को बैटन फ्रेम पर उसी तरह फिक्स करते हैं जैसे WPC पैनल लगाते हैं, इसमें ड्रेनेज की कोई चिंता ही नहीं होती क्योंकि यह वर्टिकल और सूखी जगह है।" },
     ],
