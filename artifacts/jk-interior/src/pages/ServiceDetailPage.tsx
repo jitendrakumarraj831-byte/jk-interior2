@@ -18,10 +18,40 @@ export default function ServiceDetailPage() {
 
   if (!service) return <NotFound />
 
-  // Keep it short: only the top few benefits and FAQs.
-  const benefits = service.benefits.slice(0, 4)
-  const benefitsHi = service.benefitsHi.slice(0, 4)
-  const faqs = service.faqs.slice(0, 3)
+  const benefits = service.benefits
+  const benefitsHi = service.benefitsHi
+
+  // Trim "Label — extra detail" phrasing down to just the label for the facts list.
+  const head = (s: string) => s.split("—")[0].trim()
+  const usedFor = service.whereUsed.slice(0, 2).map(head).join(", ")
+  const usedForHi = service.whereUsedHi.slice(0, 2).map(head).join(", ")
+  const notFor = service.whereNotUsed.length ? head(service.whereNotUsed[0]) : ""
+  const notForHi = service.whereNotUsedHi.length ? head(service.whereNotUsedHi[0]) : ""
+
+  // Basic, service-specific facts shown under the overview.
+  const facts = [
+    { label: "Best used in", labelHi: "कहाँ लगवाएं", value: usedFor, valueHi: usedForHi },
+    { label: "Not suitable for", labelHi: "कहाँ न लगवाएं", value: notFor, valueHi: notForHi },
+    { label: "Sizes & thickness", labelHi: "साइज़ व मोटाई", value: service.sizesThickness, valueHi: service.sizesThicknessHi },
+    { label: "Maintenance", labelHi: "देखभाल", value: service.maintenance, valueHi: "" },
+  ].filter((f) => f.value)
+
+  // The 3 written FAQs plus 2 basic, service-filled ones (price + coverage/booking).
+  const faqs = [
+    ...service.faqs,
+    {
+      q: `How much does ${service.name} cost?`,
+      qHi: `${service.name} की कीमत कितनी है?`,
+      a: `${service.name} runs about ${service.price}. Your final price depends on the design, material grade and total area — and the site visit plus quotation are completely free.`,
+      aHi: `${service.name} की कीमत करीब ${service.price} होती है। असली कीमत डिज़ाइन, मटेरियल ग्रेड और कुल एरिया पर तय होती है — और Site Visit व Quotation बिल्कुल फ्री है।`,
+    },
+    {
+      q: "Do you cover my area, and how soon can you start?",
+      qHi: "क्या आप मेरे इलाके में आते हैं, और कब शुरू कर सकते हैं?",
+      a: `We cover Forbesganj, Araria, Jogbani, Purnia and nearby towns (about an 80 km radius). The work itself usually takes ${service.installTime}. Call or WhatsApp +91 8541849118 to confirm your area and book a free site visit.`,
+      aHi: `हम फारबिसगंज, अररिया, जोगबनी, पूर्णिया और आसपास के इलाकों (करीब 80 किमी) में आते हैं। काम में आमतौर पर ${service.installTime} लगता है। अपने इलाके की पुष्टि और फ्री Site Visit के लिए +91 8541849118 पर कॉल या WhatsApp करें।`,
+    },
+  ]
 
   // Real photos of this service, pulled from the gallery by category.
   const photos = galleryImages.filter((img) => img.category === service.galleryCategory).slice(0, 6)
@@ -161,6 +191,23 @@ export default function ServiceDetailPage() {
               </h2>
               <p className="text-sm leading-relaxed text-gray-700">{service.whatItIs}</p>
               <p className="mt-2 text-sm leading-relaxed text-gray-500">{service.whatItIsHi}</p>
+
+              {facts.length > 0 && (
+                <dl className="mt-4 space-y-3 border-t border-gray-100 pt-4">
+                  {facts.map((f) => (
+                    <div key={f.label} className="grid grid-cols-[7.5rem_1fr] gap-3">
+                      <dt className="text-xs font-bold text-emerald-700">
+                        {f.label}
+                        <span className="block font-semibold text-emerald-600/80">{f.labelHi}</span>
+                      </dt>
+                      <dd className="text-sm text-gray-700">
+                        {f.value}
+                        {f.valueHi && <span className="mt-0.5 block text-xs text-gray-500">{f.valueHi}</span>}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
 
             {/* Key benefits */}
