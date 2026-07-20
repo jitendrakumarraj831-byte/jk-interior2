@@ -4,8 +4,10 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { SITE_URL } from "@/lib/seo"
 import { getServiceContentBySlug } from "@/lib/services-content"
+import { galleryImages } from "@/lib/gallery-data"
+import { slugify } from "@/lib/utils"
 import {
-  Clock, ShieldCheck, Phone, HelpCircle, CheckCircle2, ArrowRight, IndianRupee,
+  Clock, ShieldCheck, Phone, HelpCircle, CheckCircle2, ArrowRight, IndianRupee, ImageIcon,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import NotFound from "@/pages/not-found"
@@ -20,6 +22,9 @@ export default function ServiceDetailPage() {
   const benefits = service.benefits.slice(0, 4)
   const benefitsHi = service.benefitsHi.slice(0, 4)
   const faqs = service.faqs.slice(0, 3)
+
+  // Real photos of this service, pulled from the gallery by category.
+  const photos = galleryImages.filter((img) => img.category === service.galleryCategory).slice(0, 6)
 
   const related = service.relatedSlugs
     .map((s) => getServiceContentBySlug(s))
@@ -86,7 +91,7 @@ export default function ServiceDetailPage() {
           <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-emerald-100/40 blur-3xl" />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
+        <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
           <div className="mb-6 flex flex-wrap items-center gap-2 text-sm font-semibold text-emerald-700">
             <Link href="/" className="hover:underline">Home</Link>
             <span className="text-gray-300">/</span>
@@ -95,36 +100,52 @@ export default function ServiceDetailPage() {
             <span className="text-gray-700">{service.name}</span>
           </div>
 
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
-            <service.icon className="h-3.5 w-3.5 text-emerald-700" aria-hidden="true" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">{service.category}</span>
-          </div>
-
-          <h1 className="mb-2 text-3xl font-black leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
-            {service.name}
-          </h1>
-          <p className="mb-3 text-base font-bold text-emerald-700 sm:text-lg">{service.nameHi}</p>
-          <p className="mb-6 max-w-2xl text-base font-medium leading-relaxed text-gray-600">
-            {service.tagline}
-            <span className="mt-1 block text-gray-500">{service.taglineHi}</span>
-          </p>
-
-          <div className="mb-6 flex flex-wrap gap-3">
-            <CallLink shine ariaLabel={`Call for ${service.name} quote`}>Get Free Quote</CallLink>
-            <WhatsAppLink message={waText} ariaLabel={`WhatsApp for ${service.name}`}>WhatsApp Us</WhatsAppLink>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            {[
-              { icon: IndianRupee, label: service.price },
-              { icon: ShieldCheck, label: service.warranty },
-              { icon: Clock, label: service.installTime },
-            ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm">
-                <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-600" aria-hidden="true" />
-                <span>{label}</span>
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            {/* Text */}
+            <div>
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5">
+                <service.icon className="h-3.5 w-3.5 text-emerald-700" aria-hidden="true" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 sm:text-xs">{service.category}</span>
               </div>
-            ))}
+
+              <h1 className="mb-2 text-3xl font-black leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                {service.name}
+              </h1>
+              <p className="mb-3 text-base font-bold text-emerald-700 sm:text-lg">{service.nameHi}</p>
+              <p className="mb-6 max-w-2xl text-base font-medium leading-relaxed text-gray-600">
+                {service.tagline}
+                <span className="mt-1 block text-gray-500">{service.taglineHi}</span>
+              </p>
+
+              <div className="mb-6 flex flex-wrap gap-3">
+                <CallLink shine ariaLabel={`Call for ${service.name} quote`}>Get Free Quote</CallLink>
+                <WhatsAppLink message={waText} ariaLabel={`WhatsApp for ${service.name}`}>WhatsApp Us</WhatsAppLink>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { icon: IndianRupee, label: service.price },
+                  { icon: ShieldCheck, label: service.warranty },
+                  { icon: Clock, label: service.installTime },
+                ].map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm">
+                    <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-600" aria-hidden="true" />
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Hero image */}
+            <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+              <img
+                src={service.heroImage}
+                alt={service.heroImageAlt}
+                className="h-72 w-full object-cover sm:h-96"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            </div>
           </div>
         </div>
       </section>
@@ -162,6 +183,34 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Service photos ── */}
+      {photos.length > 0 && (
+        <section className="bg-gray-50 py-12 sm:py-14">
+          <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <ImageIcon className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">{service.name} Photos</h2>
+              </div>
+              <Link
+                href={`/gallery#gallery-${slugify(service.galleryCategory)}`}
+                className="shrink-0 inline-flex items-center gap-1 text-sm font-bold text-emerald-700 hover:underline"
+              >
+                View All
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {photos.map((img) => (
+                <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
+                  <img src={img.src} alt={img.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── FAQs ── */}
       <section className="py-12 sm:py-14">
