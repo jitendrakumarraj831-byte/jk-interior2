@@ -171,9 +171,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "An occasional wipe with a dry cloth is all it ever needs",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A brand-new ceiling hung a few inches below your concrete slab. We screw 12.5mm gypsum boards onto a galvanised metal grid, then tape and sand every joint until the whole thing reads as one unbroken sheet. Because it starts as flat panels on a frame, we can shape steps, coves, curves and hidden LED channels into it that a plain plastered roof can never carry.",
+      "A new ceiling of gypsum boards on a metal frame below your slab, taped smooth into one seamless surface — perfect for cove lighting, steps and curved designs in dry rooms.",
     whatItIsHi:
-      "यह एक नई छत है, जो आपकी असली स्लैब से कुछ इंच नीचे बनती है। हम गैल्वनाइज़्ड मेटल ग्रिड पर 12.5mm Gypsum Board कसते हैं, फिर हर जोड़ पर टेप-सैंडिंग करते हैं ताकि पूरी छत एक ही बिना-जोड़ शीट जैसी दिखे। फ्रेम पर फ्लैट पैनल से शुरू होने के कारण इसमें Step, Cove, घुमाव और छुपी LED चैनल बनाई जा सकती हैं, जो सादी प्लास्टर वाली छत में कभी संभव नहीं।",
+      "स्लैब के नीचे मेटल फ्रेम पर लगे जिप्सम बोर्ड की नई छत, जिसे टेप कर एक बिना-जोड़ सतह बनाया जाता है — सूखे कमरों में Cove लाइट, स्टेप और घुमावदार डिज़ाइन के लिए बेस्ट।",
     whereUsed: [
       "Drawing room and main hall — the first ceiling every guest looks up at",
       "Master and children's bedrooms for soft, glare-free cove light",
@@ -331,9 +331,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "Practically none — a damp cloth wipes it clean",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A ceiling made from hollow, tongue-and-groove plastic planks that snap into a light batten grid beneath your slab. Each plank is solid, sealed PVC — there is no absorbent core for water to soak into — so steam, splashes and damp simply run off. That single fact is why it's our default answer for wet rooms in Bihar's climate.",
+      "Hollow, sealed PVC planks that clip into a batten grid below your slab. Fully waterproof, so it's our go-to ceiling for kitchens and bathrooms.",
     whatItIsHi:
-      "यह छत खोखले, टंग-एंड-ग्रूव प्लास्टिक तख्तों से बनती है, जो आपकी स्लैब के नीचे एक हल्के बैटन ग्रिड में क्लिक होते हैं। हर तख्ता ठोस, सील्ड PVC है — पानी सोखने वाला कोई कोर नहीं — तो भाप, छींटे और नमी बस बह जाती है। बिहार की जलवायु में गीले कमरों के लिए हमारा डिफ़ॉल्ट जवाब यही एक बात है।",
+      "खोखले, सील्ड PVC तख्ते, जो स्लैब के नीचे बैटन ग्रिड में क्लिप होते हैं। पूरी तरह वॉटरप्रूफ, इसलिए किचन-बाथरूम के लिए हमारी पहली पसंद।",
     whereUsed: [
       "Kitchens and bathrooms — our first and firmest recommendation",
       "Balconies and semi-open spots that catch the rain",
@@ -482,9 +482,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "Very low — dust now and then; a stained tile is swapped on its own",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A metal grid of main runners and cross-tees is hung from the slab on adjustable wires, dividing the ceiling into open squares. Lightweight tiles then simply rest into those squares from below — nothing is glued down. Lift any one tile and an electrician reaches the wiring, ducting or plumbing above without breaking a thing.",
+      "A metal grid hung from the slab with lift-out tiles resting in it, so wiring, ducts and plumbing above stay accessible any time. Ideal for offices, shops and clinics.",
     whatItIsHi:
-      "मेन रनर और क्रॉस-टी का मेटल ग्रिड, एडजस्टेबल वायर से स्लैब से लटकाया जाता है, जो छत को खुले चौकोर खानों में बाँट देता है। हल्की टाइल फिर नीचे से बस इन खानों में रख दी जाती हैं — कुछ चिपकाया नहीं जाता। कोई भी एक टाइल उठाएं और इलेक्ट्रीशियन ऊपर की वायरिंग, डक्टिंग या प्लंबिंग तक बिना कुछ तोड़े पहुँच जाता है।",
+      "स्लैब से लटका मेटल ग्रिड, जिसमें उठाकर निकलने वाली टाइल रखी होती हैं, ताकि ऊपर की वायरिंग, डक्ट और प्लंबिंग कभी भी एक्सेस रहे। ऑफिस, दुकान और क्लिनिक के लिए आदर्श।",
     whereUsed: [
       "Offices, cabins and coworking floors",
       "Shops, showrooms and retail counters",
@@ -635,9 +635,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "Gypsum face: an occasional dust. Glass face: a wipe with glass cleaner.",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A new dividing wall built inside an existing room without any floor or slab masonry. You get two routes: a gypsum partition — metal studs skinned with board on both faces and finished like a normal painted wall — or a glass partition — toughened glass in an aluminium frame that splits the space while daylight keeps flowing through. Both bolt to the existing floor and ceiling, so nothing structural is disturbed.",
+      "A new dividing wall inside a room without any brickwork — either a gypsum wall on metal studs or a toughened-glass panel in an aluminium frame. Splits a space in days, and comes down again if your layout changes.",
     whatItIsHi:
-      "मौजूदा कमरे के अंदर, बिना किसी फर्श या स्लैब मेसनरी के, एक नई विभाजक दीवार। दो रास्ते हैं: Gypsum पार्टीशन — मेटल स्टड पर दोनों तरफ बोर्ड, सामान्य पेंटेड दीवार जैसी फिनिश — या ग्लास पार्टीशन — एल्युमिनियम फ्रेम में टफन्ड ग्लास, जो जगह बाँटे पर रोशनी आर-पार आती रहे। दोनों मौजूदा फर्श-छत में कसते हैं, तो कोई स्ट्रक्चरल चीज़ नहीं छिड़ती।",
+      "बिना ईंट-गारे के कमरे के अंदर नई विभाजक दीवार — या तो मेटल स्टड पर जिप्सम दीवार, या एल्युमिनियम फ्रेम में टफन्ड ग्लास पैनल। दिनों में जगह बाँटे, और लेआउट बदले तो हटाई भी जा सके।",
     whereUsed: [
       "Cabins carved out of one open office floor",
       "A glass-walled reception kept separate yet open to the working area",
@@ -791,9 +791,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "A dry-cloth wipe — never any polish or varnish",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "WPC — Wood Plastic Composite — is recycled wood fibre bonded with polymer and finished in wood-grain, fluted or grooved faces. The panels clip onto slim wall battens with no nail heads on show, and because the core is part plastic they don't swell, warp or feed termites the way solid timber does in Bihar's humidity. The result is a rich wooden feature wall that actually survives the monsoon.",
+      "Wood-look composite panels that clip onto wall battens with no visible nails. Moisture- and termite-proof — a rich TV or accent wall that survives Bihar's monsoon.",
     whatItIsHi:
-      "WPC — वुड प्लास्टिक कम्पोज़िट — रीसाइकल्ड लकड़ी के रेशों को पॉलिमर से जोड़कर, वुड-ग्रेन, Fluted या ग्रूव्ड फेस में बनता है। पैनल पतली दीवार-बैटन में क्लिप होते हैं, कोई कील सिर नहीं दिखता, और कोर आधा प्लास्टिक होने से बिहार की नमी में न फूलते, न मुड़ते, न दीमक को खुराक देते हैं। नतीजा — एक रिच लकड़ी वाली फीचर वॉल, जो सच में मानसून झेलती है।",
+      "लकड़ी जैसे कम्पोज़िट पैनल, जो दीवार की बैटन में बिना कील दिखे क्लिप होते हैं। नमी और दीमक-रोधी — बिहार का मानसून झेलने वाली रिच TV या एक्सेंट वॉल।",
     whereUsed: [
       "The TV wall or accent wall in the living room",
       "The headboard wall behind a bed",
@@ -942,9 +942,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "None to speak of — a damp cloth keeps it shining, no polishing",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A high-gloss PVC-based panel with a marble or granite pattern UV-cured onto its face and sealed under a scratch-resistant coat. We bond or clip it onto a prepared wall so it reads as one continuous slab of stone — with no grout lines to blacken and no soak-in for water — at a fraction of what real marble would cost to buy, carry and polish.",
+      "A high-gloss marble-look sheet bonded to the wall as one seamless, waterproof surface with no grout lines — at a fraction of real stone's cost. Great for bathrooms and pooja rooms.",
     whatItIsHi:
-      "एक हाई-ग्लॉस PVC-आधारित पैनल, जिसके फेस पर मार्बल या ग्रेनाइट पैटर्न UV-क्योर करके स्क्रैच-रोधी कोट से सील किया जाता है। हम इसे तैयार दीवार पर बॉन्ड या क्लिप करते हैं ताकि यह एक ही लगातार पत्थर के स्लैब जैसा दिखे — न काली पड़ने वाली ग्राउट लाइन, न पानी सोखना — असली मार्बल के खरीद, ढुलाई और पॉलिश खर्च के एक हिस्से में।",
+      "हाई-ग्लॉस मार्बल जैसी शीट, दीवार पर एक बिना-जोड़, वॉटरप्रूफ सतह की तरह चिपकती है, कोई ग्राउट लाइन नहीं — असली पत्थर से बहुत कम कीमत में। बाथरूम और पूजा घर के लिए बढ़िया।",
     whereUsed: [
       "Bathroom walls — no grout lines to blacken like tiles do",
       "Kitchen walls away from the direct flame (backsplash, side runs)",
@@ -1093,9 +1093,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "Wipe with a dry cloth; keep hot vessels off the surface",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A cabinet system made entirely to your measurements — carcass, shutters, open shelves and a laminate or veneer finish sized to your exact wall width and TV, not a fixed showroom piece trimmed to fit. Cable routing is designed in from the start, so the TV, set-top box and speaker wires all disappear behind the unit instead of dangling down the wall.",
+      "A TV cabinet built to your wall's exact width, with cable routing designed in so wires and boxes stay hidden — not a fixed showroom piece trimmed to fit.",
     whatItIsHi:
-      "एक कैबिनेट सिस्टम, पूरी तरह आपकी नाप पर बना — कारकास, शटर, खुली शेल्फ और लैमिनेट या वीनियर फिनिश, आपकी दीवार की सही चौड़ाई और TV के साइज़ पर, फिट करने को छाँटा गया शोरूम पीस नहीं। केबल रूटिंग शुरू से डिज़ाइन में, तो TV, सेट-टॉप बॉक्स और स्पीकर के तार दीवार पर लटकने की जगह यूनिट के पीछे गायब हो जाते हैं।",
+      "आपकी दीवार की सही चौड़ाई पर बनी TV कैबिनेट, जिसमें केबल रूटिंग शामिल है ताकि तार और बॉक्स छुपे रहें — फिट करने को छाँटा गया शोरूम पीस नहीं।",
     whereUsed: [
       "Living rooms — the focal wall facing the seating",
       "Bedrooms — a compact unit across from the bed",
@@ -1243,9 +1243,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "An occasional rinse and a light brush — never any mowing or watering",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "UV-stabilised synthetic turf, either rolled over a properly drained base as a floor lawn or mounted as pre-cut panels on a batten frame as a green feature wall. The backing is permeable, so monsoon rain drains straight through instead of pooling, and the UV-treated fibres hold their colour under direct North Bihar sun where cheap turf would bleach out in months.",
+      "UV-treated synthetic turf laid on a drained base or mounted as a green wall — always green, drains the monsoon, and never needs watering or mowing.",
     whatItIsHi:
-      "UV-स्टेबलाइज़्ड सिंथेटिक टर्फ, या तो ठीक से ड्रेन होती बेस पर फर्श लॉन की तरह बिछाई जाती है, या ग्रीन फीचर वॉल की तरह बैटन फ्रेम पर पहले से कटे पैनल के रूप में लगती है। बैकिंग पारगम्य है, तो मानसून की बारिश जमा होने की जगह सीधे निकल जाती है, और UV-ट्रीटेड रेशे उत्तर बिहार की सीधी धूप में रंग बनाए रखते हैं, जहाँ सस्ती टर्फ महीनों में फीकी पड़ जाती।",
+      "UV-ट्रीटेड सिंथेटिक टर्फ, ड्रेन बेस पर बिछाई या ग्रीन वॉल की तरह लगाई — हमेशा हरी, मानसून का पानी निकाले, और कभी पानी या कटाई नहीं।",
     whereUsed: [
       "Balconies and terraces — evergreen with no watering or mowing",
       "A green feature wall in a living room or office",
