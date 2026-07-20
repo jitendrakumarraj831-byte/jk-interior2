@@ -15,6 +15,7 @@ import {
   Clock, ShieldCheck, Sparkles, ArrowRight, Phone, HelpCircle, ImageIcon,
   IndianRupee, MapPin, BadgeCheck, Users, CheckCircle2, Info, ThumbsUp,
   AlertTriangle, XCircle, ListChecks, Package, Hammer, Lightbulb, Wrench,
+  Palette, Scale,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import NotFound from "@/pages/not-found"
@@ -373,6 +374,34 @@ export default function ServiceDetailPage() {
             </div>
           </div>
 
+          {/* ── Design options ── */}
+          {service.designOptions.length > 0 && (
+            <div className="mb-6 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+              <div className="mb-5 flex items-center gap-2.5">
+                <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700">
+                  <Palette className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-black text-gray-900 sm:text-xl">Design Options You Can Choose</h3>
+                  <p className="text-xs font-bold text-emerald-700">आप कौन-कौन से डिज़ाइन चुन सकते हैं</p>
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {service.designOptions.map((d) => (
+                  <div key={d.name} className="rounded-2xl border border-gray-200 bg-gray-50/70 p-5">
+                    <div className="mb-1.5 flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 flex-none text-emerald-600" aria-hidden="true" />
+                      <p className="text-sm font-bold text-gray-900">{d.name}</p>
+                    </div>
+                    <p className="text-xs font-semibold text-emerald-700">{d.nameHi}</p>
+                    <p className="mt-1.5 text-xs leading-relaxed text-gray-600">{d.desc}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-gray-500">{d.descHi}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ── Benefits vs Limitations ── */}
           <div className="mb-6 grid gap-5 md:grid-cols-2">
             <div className="rounded-[28px] border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 shadow-sm sm:p-7">
@@ -556,6 +585,61 @@ export default function ServiceDetailPage() {
               ))}
             </ol>
           </div>
+
+          {/* ── Comparison vs the main alternative ── */}
+          {service.comparison.length > 0 && (
+            <div className="mb-6 rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+              <div className="mb-5 flex items-center gap-2.5">
+                <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700">
+                  <Scale className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-black text-gray-900 sm:text-xl">
+                    {service.name} vs {service.comparisonWith}
+                  </h3>
+                  <p className="text-xs font-bold text-emerald-700">
+                    {service.nameHi} बनाम {service.comparisonWithHi} — सीधी तुलना
+                  </p>
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px] border-collapse text-left">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="py-3 pr-3 text-[11px] font-black uppercase tracking-widest text-gray-500">Point</th>
+                      <th className="py-3 px-3 text-[11px] font-black uppercase tracking-widest text-emerald-700">{service.name}</th>
+                      <th className="py-3 pl-3 text-[11px] font-black uppercase tracking-widest text-gray-500">{service.comparisonWith}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {service.comparison.map((row) => (
+                      <tr key={row.point} className="border-b border-gray-100 last:border-0 align-top">
+                        <td className="py-3 pr-3">
+                          <p className="text-sm font-bold text-gray-900">{row.point}</p>
+                          <p className="mt-0.5 text-xs text-gray-500">{row.pointHi}</p>
+                        </td>
+                        <td className="py-3 px-3">
+                          <p className="flex items-start gap-1.5 text-sm font-semibold text-gray-800">
+                            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-none text-emerald-600" aria-hidden="true" />
+                            <span>{row.self}</span>
+                          </p>
+                          <p className="mt-0.5 pl-5 text-xs text-gray-500">{row.selfHi}</p>
+                        </td>
+                        <td className="py-3 pl-3">
+                          <p className="text-sm font-medium text-gray-600">{row.other}</p>
+                          <p className="mt-0.5 text-xs text-gray-400">{row.otherHi}</p>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-4 text-xs leading-relaxed text-gray-500">
+                Not sure which fits your room and budget? Our free site visit gives you a straight answer.
+                <span className="block text-gray-400">किसमें आपके कमरे और बजट का फायदा है, फ्री Site Visit पर साफ़ बता देते हैं।</span>
+              </p>
+            </div>
+          )}
 
           {/* ── Quick facts ── */}
           <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
