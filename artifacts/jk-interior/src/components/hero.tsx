@@ -96,27 +96,27 @@ export default function Hero() {
         <div className="mt-auto pt-6">
           <div className="max-w-3xl pb-6 sm:pb-8">
             
-            {/* Dynamic Rotating Specialty */}
-            <motion.div {...anim(0.2)} className="mb-3 h-8 sm:h-9">
-              <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-zinc-300 sm:text-lg">
-                <span className="text-amber-400">Specialist in</span>
-                
-                <span className="relative inline-block h-8 min-w-[240px] overflow-hidden align-bottom">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={words[index]}
-                      initial={shouldReduce ? {} : { y: "100%", opacity: 0 }}
-                      animate={{ y: "0%", opacity: 1 }}
-                      exit={shouldReduce ? {} : { y: "-100%", opacity: 0 }}
-                      transition={{ duration: 0.45, ease: easeLux }}
-                      className="hero-gradient-text absolute inset-0 block font-black"
-                    >
-                      {words[index]}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-              </div>
-            </motion.div>
+            {/* Dynamic Rotating Specialty - Perfectly Aligned for Mobile & Desktop */}
+<motion.div {...anim(0.2)} className="mb-3">
+  <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-zinc-300 sm:text-base md:text-lg">
+    <span className="shrink-0 text-amber-400">Specialist in:</span>
+    <span className="relative inline-flex h-7 items-center overflow-hidden sm:h-8">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={words[index]}
+          initial={shouldReduce ? {} : { y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={shouldReduce ? {} : { y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.45, ease: easeLux }}
+          className="hero-gradient-text block font-black leading-none"
+        >
+          {words[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  </div>
+</motion.div>
+            
 
             /* Main Headline Option 2 */
 <motion.div {...anim(0.3)} className="mb-5">
