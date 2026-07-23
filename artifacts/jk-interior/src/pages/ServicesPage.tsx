@@ -38,7 +38,7 @@ export default function ServicesPage() {
       <div className="pt-28" />
       <Services />
 
-      {/* Service x City hub — internal links for every service/city landing page */}
+          
       <section className="py-16 bg-gray-50">
         <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
           <h2 className="mb-2 text-2xl font-black text-gray-900 sm:text-3xl">
@@ -71,6 +71,7 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+      
 
       <section className="py-16 text-center relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
