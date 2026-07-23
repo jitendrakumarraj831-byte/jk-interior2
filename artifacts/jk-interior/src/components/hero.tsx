@@ -118,7 +118,7 @@ export default function Hero() {
 </motion.div>
             
 
-            /* Main Headline Option 2 */
+            
 <motion.div {...anim(0.3)} className="mb-5">
   <h1 className="mb-3 font-serif text-3xl font-black leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl">
     फारबिसगंज और अररिया का
