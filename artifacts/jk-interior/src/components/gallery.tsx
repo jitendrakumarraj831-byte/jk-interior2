@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef, useMemo } from "react"
+ import { useEffect, useState, useCallback, useRef, useMemo } from "react"
 import { X, ChevronLeft, ChevronRight, MessageCircle, Sparkles, Play, Pause, Phone } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
@@ -59,12 +59,11 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 }) {
   const tx = useRef<number | null>(null)
   const btn = useRef<HTMLButtonElement>(null)
-  const [dir, setDir] = useState<1 | -1>(1)   // 1=right→left  -1=left→right
+  const [dir, setDir] = useState<1 | -1>(1)
   const prevIdx = useRef(idx)
 
   useEffect(() => {
     if (idx !== prevIdx.current) {
-      // detect wrap-around
       const n = images.length
       const forward =
         (idx === (prevIdx.current + 1) % n) ||
@@ -162,7 +161,7 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   )
 }
 
-/* ─── Modern Ultra-Clean Category Card ─── */
+/* ─── Modern Ultra-Clean Category Card (Auto-Fit Aspect Ratio) ─── */
 function CategoryCard({ category, images, onOpen }: {
   category: string; images: GalleryImage[]
   onOpen(images: GalleryImage[], idx: number): void
@@ -198,8 +197,8 @@ function CategoryCard({ category, images, onOpen }: {
       transition={{ duration: 0.4 }}
       className="group relative mb-6 break-inside-avoid scroll-mt-28 overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-xl"
     >
-      {/* Slider Area with Image */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
+      {/* Slider Area with Auto Aspect-Fit */}
+      <div className="relative w-full overflow-hidden bg-slate-900 flex items-center justify-center">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.img
             key={cur}
@@ -215,7 +214,7 @@ function CategoryCard({ category, images, onOpen }: {
             animate="center"
             exit="exit"
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-auto max-h-[500px] min-h-[220px] cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
             onClick={() => onOpen(images, cur)}
           />
         </AnimatePresence>
@@ -293,7 +292,7 @@ function CategoryCard({ category, images, onOpen }: {
 
       {/* Description & Rate */}
       {description && (
-        <div className="p-4 space-y-2 bg-white">
+        <div className="p-4 space-y-1 bg-white">
           <p className="text-xs text-gray-600 leading-relaxed font-medium">
             {description.en}
           </p>
@@ -324,8 +323,7 @@ function CategoryCard({ category, images, onOpen }: {
       </div>
     </motion.div>
   )
-            }
-
+}
 
 /* ─── Main Gallery ─── */
 export default function Gallery() {
@@ -345,7 +343,6 @@ export default function Gallery() {
   const next = useCallback(() => setLbIdx(p => p !== null ? (p+1) % lbImgs.length : null), [lbImgs.length])
   const prev = useCallback(() => setLbIdx(p => p !== null ? (p-1+lbImgs.length) % lbImgs.length : null), [lbImgs.length])
 
-  // Deep-link support: /gallery#gallery-<category-slug> scrolls to the matching service card
   useEffect(() => {
     if (!mounted) return
     const hash = window.location.hash
@@ -378,14 +375,12 @@ export default function Gallery() {
 
   return (
     <section id="gallery" className="relative overflow-hidden bg-[#efece3]">
-      {/* A pinboard/wall backdrop — warm plaster tone with a faint cork-board dot grain,
-          deliberately distinct from the emerald gradients used in every other section. */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 dot-pattern opacity-[0.18]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(0,0,0,0.05),transparent)]" />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-12 pt-20 sm:pt-24 pb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-16">
 
         {/* ── Header ── */}
         <SectionHeader
@@ -406,8 +401,8 @@ export default function Gallery() {
           <span className="text-gray-500 text-xs">{categories.length} services</span>
         </div>
 
-        {/* ── Portfolio wall — CSS-column masonry of "pinned photo" cards ── */}
-        <div className="columns-1 sm:columns-2 gap-5 sm:gap-6">
+        {/* ── Portfolio Wall Layout ── */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 sm:gap-6">
           {categories.map(({ category, images }, index) => (
             <CategoryCard key={category} category={category} images={images} onOpen={open} index={index} />
           ))}
@@ -436,4 +431,4 @@ export default function Gallery() {
       </AnimatePresence>
     </section>
   )
-}
+    }
