@@ -99,7 +99,8 @@ export default function Hero() {
             {/* Dynamic Rotating Specialty */}
             <motion.div {...anim(0.2)} className="mb-3 h-8 sm:h-9">
               <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-zinc-300 sm:text-lg">
-                <span className="text-amber-400">#1 Choice for</span>
+                <span className="text-amber-400">Specialist in</span>
+                
                 <span className="relative inline-block h-8 min-w-[240px] overflow-hidden align-bottom">
                   <AnimatePresence mode="wait">
                     <motion.span
