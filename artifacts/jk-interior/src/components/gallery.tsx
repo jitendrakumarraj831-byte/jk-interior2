@@ -162,8 +162,8 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   )
 }
 
-/* ─── Per-Service Category Card (own auto slider) ─── */
-function CategoryCard({ category, images, onOpen, index }: {
+/* ─── Modern Ultra-Clean Category Card ─── */
+function CategoryCard({ category, images, onOpen }: {
   category: string; images: GalleryImage[]
   onOpen(images: GalleryImage[], idx: number): void
   index: number
@@ -188,105 +188,127 @@ function CategoryCard({ category, images, onOpen, index }: {
 
   const id = `gallery-${slugify(category)}`
   const description = CATEGORY_DESCRIPTIONS[category]
-  // Alternating tilt gives the wall a hand-pinned, candid feel instead of a uniform grid.
-  const tilt = index % 3 === 0 ? "-rotate-1" : index % 3 === 1 ? "rotate-0" : "rotate-1"
 
   return (
     <motion.div
       id={id}
-      initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
-      viewport={{ once:true, margin:"-40px" }} transition={{ duration:.5 }}
-      className={`group relative mb-5 break-inside-avoid scroll-mt-28 overflow-hidden rounded-sm border-8 border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_16px_44px_rgba(0,0,0,0.18)] sm:mb-6 sm:border-[10px] ${tilt}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4 }}
+      className="group relative mb-6 break-inside-avoid scroll-mt-28 overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-xl"
     >
-      {/* Slider area */}
-      <div className="relative h-56 overflow-hidden sm:h-64 md:h-72">
+      {/* Slider Area with Image */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.img
-            key={cur} src={images[cur].src} alt={images[cur].alt}
+            key={cur}
+            src={images[cur].src}
+            alt={images[cur].alt}
             custom={dir}
             variants={{
-              enter: (d: number) => ({ opacity:0, x: d * 60 }),
-              center: { opacity:1, x:0 },
-              exit:  (d: number) => ({ opacity:0, x: d * -60 }),
+              enter: (d: number) => ({ opacity: 0, x: d * 50 }),
+              center: { opacity: 1, x: 0 },
+              exit: (d: number) => ({ opacity: 0, x: d * -50 }),
             }}
-            initial="enter" animate="center" exit="exit"
-            transition={{ duration:.5, ease:"easeInOut" }}
-            className="absolute inset-0 h-full w-full cursor-pointer object-cover"
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
             onClick={() => onOpen(images, cur)}
           />
         </AnimatePresence>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"/>
 
-        {/* Photo count badge */}
-        <div className="absolute left-3 top-3 z-20 rounded-lg border border-white/20 bg-black/40 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm sm:rounded-xl sm:text-xs">
-          {total} Photo{total !== 1 ? "s" : ""}
+        {/* Gradient Overlay for Text Visibility */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+        {/* Photo Count Glass Badge */}
+        <div className="absolute left-3 top-3 z-20 rounded-full border border-white/20 bg-black/50 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-md shadow-sm">
+          📷 {total} Photo{total !== 1 ? "s" : ""}
         </div>
 
         {total > 1 && (
           <>
-            {/* Prev / Next */}
-            <button onClick={e => { e.stopPropagation(); go(-1) }} aria-label="Previous photo"
-              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/15 bg-black/35 p-2 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/60 group-hover:opacity-100 md:p-2.5">
-              <ChevronLeft size={18}/>
+            {/* Prev / Next Buttons */}
+            <button
+              onClick={e => { e.stopPropagation(); go(-1) }}
+              aria-label="Previous photo"
+              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white opacity-0 backdrop-blur-md transition-all hover:bg-black/70 group-hover:opacity-100"
+            >
+              <ChevronLeft size={16} />
             </button>
-            <button onClick={e => { e.stopPropagation(); go(1) }} aria-label="Next photo"
-              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/15 bg-black/35 p-2 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/60 group-hover:opacity-100 md:p-2.5">
-              <ChevronRight size={18}/>
+            <button
+              onClick={e => { e.stopPropagation(); go(1) }}
+              aria-label="Next photo"
+              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white opacity-0 backdrop-blur-md transition-all hover:bg-black/70 group-hover:opacity-100"
+            >
+              <ChevronRight size={16} />
             </button>
 
-            {/* Play/Pause */}
-            <button onClick={e => { e.stopPropagation(); setPlaying(p => !p) }} aria-label={playing ? "Pause slider" : "Play slider"}
-              className="absolute right-3 top-3 z-20 rounded-full border border-white/15 bg-black/35 p-1.5 text-white backdrop-blur-sm transition-all hover:bg-black/60">
-              {playing ? <Pause size={12}/> : <Play size={12}/>}
+            {/* Play/Pause Button */}
+            <button
+              onClick={e => { e.stopPropagation(); setPlaying(p => !p) }}
+              aria-label={playing ? "Pause slider" : "Play slider"}
+              className="absolute right-3 top-3 z-20 rounded-full border border-white/20 bg-black/50 p-1.5 text-white backdrop-blur-md transition-all hover:bg-black/70"
+            >
+              {playing ? <Pause size={12} /> : <Play size={12} />}
             </button>
 
-            {/* Progress bar */}
+            {/* Top Progress Line */}
             {playing && (
-              <div className="absolute top-0 left-0 right-0 z-20 h-0.5 overflow-hidden bg-white/10">
-                <motion.div key={`${cur}-prog`} className="h-full bg-emerald-400"
-                  initial={{ width:"0%" }} animate={{ width:"100%" }} transition={{ duration:4, ease:"linear" }}/>
+              <div className="absolute top-0 left-0 right-0 z-20 h-1 overflow-hidden bg-white/20">
+                <motion.div
+                  key={`${cur}-prog`}
+                  className="h-full bg-emerald-400"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 4, ease: "linear" }}
+                />
               </div>
             )}
           </>
         )}
 
-        {/* Category title */}
+        {/* Category Title on Image */}
         <div className="absolute bottom-3 left-3 right-3 z-20">
-          <h3 className="text-lg font-black text-white drop-shadow sm:text-xl">{category}</h3>
+          <h3 className="text-lg font-extrabold text-white tracking-tight drop-shadow-md sm:text-xl">
+            {category}
+          </h3>
         </div>
 
-        {/* Dots or fraction counter */}
-        {total > 1 && (
-          showDots ? (
-            <div className="absolute bottom-3 right-3 z-20 flex gap-1.5">
-              {images.map((_, i) => (
-                <button key={i} onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
-                  aria-label={`Go to photo ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${i===cur ? "w-6 bg-emerald-400" : "w-1.5 bg-white/40 hover:bg-white/70"}`}/>
-              ))}
-            </div>
-          ) : (
-            <div className="absolute bottom-3 right-3 z-20 rounded-full border border-white/20 bg-black/40 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
-              {cur + 1} / {total}
-            </div>
-          )
+        {/* Slider Dots */}
+        {total > 1 && showDots && (
+          <div className="absolute bottom-3 right-3 z-20 flex gap-1">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === cur ? "w-5 bg-emerald-400" : "w-1.5 bg-white/50"}`}
+              />
+            ))}
+          </div>
         )}
       </div>
 
-      {/* Description */}
+      {/* Description & Rate */}
       {description && (
-        <div className="px-3 pt-3 sm:px-4 sm:pt-4">
-          <p className="text-sm leading-relaxed text-gray-700 sm:text-base">{description.en}</p>
-          <p className="mt-1 text-xs leading-relaxed text-gray-500 sm:text-sm">{description.hi}</p>
+        <div className="p-4 space-y-2 bg-white">
+          <p className="text-xs text-gray-600 leading-relaxed font-medium">
+            {description.en}
+          </p>
+          <p className="text-[11px] text-gray-400 leading-relaxed">
+            {description.hi}
+          </p>
         </div>
       )}
 
-      {/* CTA */}
-      <div className="flex gap-2 p-3 sm:p-4">
+      {/* Action Buttons */}
+      <div className="flex gap-2 p-3 pt-0 bg-white">
         <CallLink
           size="sm"
           ariaLabel={`Call for ${category} quote`}
-          className="flex-1 px-3 py-2.5 text-xs sm:text-sm"
+          className="flex-1 py-2 text-xs font-semibold rounded-xl"
         >
           Get Quote
         </CallLink>
@@ -295,14 +317,15 @@ function CategoryCard({ category, images, onOpen, index }: {
           variant="outline"
           message={`Hi JK Interior, I am interested in ${category} service in Forbesganj. Please share details.`}
           ariaLabel={`WhatsApp for ${category}`}
-          className="flex-1 px-3 py-2.5 text-xs sm:text-sm"
+          className="flex-1 py-2 text-xs font-semibold rounded-xl border-emerald-500/30 text-emerald-700 hover:bg-emerald-50"
         >
           WhatsApp
         </WhatsAppLink>
       </div>
     </motion.div>
   )
-}
+            }
+
 
 /* ─── Main Gallery ─── */
 export default function Gallery() {
