@@ -197,8 +197,8 @@ function CategoryCard({ category, images, onOpen }: {
       transition={{ duration: 0.4 }}
       className="group relative mb-6 break-inside-avoid scroll-mt-28 overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-xl"
     >
-      {/* Slider Area with Auto Aspect-Fit */}
-      <div className="relative w-full overflow-hidden bg-slate-900 flex items-center justify-center">
+            {/* Slider Area with Fixed Aspect-Ratio (नो लेआउट जम्प) */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.img
             key={cur}
@@ -214,11 +214,11 @@ function CategoryCard({ category, images, onOpen }: {
             animate="center"
             exit="exit"
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="w-full h-auto max-h-[500px] min-h-[220px] cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
+            className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
             onClick={() => onOpen(images, cur)}
           />
         </AnimatePresence>
-
+       
         {/* Gradient Overlay for Text Visibility */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
