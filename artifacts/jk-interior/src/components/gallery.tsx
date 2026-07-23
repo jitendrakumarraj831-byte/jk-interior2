@@ -179,11 +179,14 @@ function CategoryCard({ category, images, onOpen }: {
     setCur(p => (p + n + total) % total)
   }, [total])
 
-  useEffect(() => {
+    useEffect(() => {
     if (!playing || total <= 1) return
-    timer.current = setTimeout(() => go(1), 4000)
+    // हर कार्ड अलग-अलग समय पर फोटो बदलेगा, जिससे एक साथ फ्लिकर (ब्लैक होना) नहीं दिखेगा
+    const randomTime = Math.floor(Math.random() * 2000) + 3500
+    timer.current = setTimeout(() => go(1), randomTime)
     return () => { if (timer.current) clearTimeout(timer.current) }
   }, [cur, playing, go, total])
+ 
 
   const id = `gallery-${slugify(category)}`
   const description = CATEGORY_DESCRIPTIONS[category]
