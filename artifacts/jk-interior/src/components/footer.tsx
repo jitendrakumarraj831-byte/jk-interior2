@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { CALL_NUMBER, WA_NUMBER } from "@/lib/business-data"
+import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -229,7 +230,7 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Service Areas — linked city pages */}
+                {/* Service Areas by City & Service — Full SEO Matrix */}
         <motion.div
           {...(shouldReduce ? {} : {
             initial: { opacity: 0, y: 16 },
@@ -237,24 +238,37 @@ export default function Footer() {
             viewport: { once: true },
             transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
           })}
-          className="mt-14"
+          className="mt-12 rounded-2xl border border-emerald-200/80 bg-white/60 p-5 backdrop-blur-xs"
         >
-          <h3 className="mb-4 text-[10px] font-black uppercase tracking-widest text-emerald-700">
-            Service Areas:
+          <h3 className="mb-3 text-[11px] font-black uppercase tracking-wider text-emerald-800">
+            Service Areas by Category &amp; City:
           </h3>
-          <div className="flex flex-wrap gap-2">
-            {cityLinks.map((city) => (
-              <Link
-                key={city.slug}
-                href={`/cities/${city.slug}`}
-                className="text-[10px] font-bold text-emerald-700 rounded-full border border-emerald-300 bg-white/60 px-3 py-1 hover:border-emerald-500 hover:bg-emerald-50 transition-all"
-                title={`Interior design and false ceiling in ${city.name}, Bihar`}
-              >
-                {city.name}
-              </Link>
+          
+          <div className="space-y-2.5 text-xs text-gray-600">
+            {SERVICE_CITY_SERVICES.map((service) => (
+              <div key={service.slug} className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="font-bold text-emerald-900 shrink-0">
+                  {service.name}:
+                </span>
+                {cityLinks.map((city, index) => (
+                  <span key={city.slug} className="inline-flex items-center gap-1.5">
+                    <Link
+                      href={`/services/${service.slug}/${city.slug}`}
+                      className="text-[11px] font-medium text-gray-600 hover:text-emerald-700 hover:underline transition-colors"
+                      title={`${service.name} in ${city.name}, Bihar`}
+                    >
+                      {city.name}
+                    </Link>
+                    {index < cityLinks.length - 1 && (
+                      <span className="text-emerald-300 text-[10px]">•</span>
+                    )}
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
         </motion.div>
+        
 
         {/* SEO text */}
         <div className="mt-6 mb-12 rounded-xl border border-emerald-200 bg-white/50 p-4">
