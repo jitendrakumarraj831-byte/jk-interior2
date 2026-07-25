@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import React, { lazy, Suspense } from "react"
 import { Switch, Route, Router as WouterRouter } from "wouter"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import ScrollProgress from "@/components/scroll-progress"
@@ -43,14 +43,29 @@ function Router() {
 }
 
 function App() {
+  const [showChat, setShowChat] = React.useState(false)
+
+  React.useEffect(() => {
+    // Defer chat initialization until after page is interactive
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => setShowChat(true), { timeout: 3000 })
+    } else {
+      // Fallback for browsers that don't support requestIdleCallback
+      const timer = setTimeout(() => setShowChat(true), 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <ScrollProgress />
         <Router />
-        <Suspense fallback={null}>
-          <JKChat />
-        </Suspense>
+        {showChat && (
+          <Suspense fallback={null}>
+            <JKChat />
+          </Suspense>
+        )}
       </WouterRouter>
     </QueryClientProvider>
   )

@@ -61,6 +61,7 @@ export default defineConfig({
     cssCodeSplit: true,
     sourcemap: false,
     reportCompressedSize: false,
+    minify: "esbuild",
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -75,6 +76,10 @@ export default defineConfig({
           if (/[/\\]node_modules[/\\](react|react-dom|scheduler)[/\\]/.test(id)) return "react-vendor";
           return "vendor";
         },
+        // Optimize chunk filenames for better caching
+        chunkFileNames: "chunks/[name]-[hash].js",
+        entryFileNames: "[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash][extname]",
       },
     },
   },

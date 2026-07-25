@@ -1,4 +1,4 @@
- import { useEffect, useState, useCallback, useRef, useMemo } from "react"
+ import { useEffect, useState, useCallback, useRef, useMemo, memo } from "react"
 import { X, ChevronLeft, ChevronRight, MessageCircle, Sparkles, Play, Pause, Phone } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
@@ -112,19 +112,28 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
         </button>
 
         <AnimatePresence mode="wait" custom={dir}>
-          <motion.img
-            key={idx} src={img.src} alt={img.alt}
-            custom={dir}
-            variants={{
-              enter: (d: number) => ({ opacity:0, x: d * 80, scale:.97 }),
-              center: { opacity:1, x:0, scale:1 },
-              exit:  (d: number) => ({ opacity:0, x: d * -80, scale:.97 }),
-            }}
-            initial="enter" animate="center" exit="exit"
-            transition={{ duration:.25, ease:"easeOut" }}
-            className="max-w-full object-contain px-2 md:px-24"
-            style={{ maxHeight:"calc(100vh - 180px)" }}
-          />
+          <motion.picture key={idx}>
+            {/* AVIF format (best compression) */}
+            <source srcSet={img.src.replace(/\.webp$/, '.avif')} type="image/avif" />
+            {/* WebP format (fallback) */}
+            <source srcSet={img.src} type="image/webp" />
+            {/* Fallback img tag */}
+            <motion.img
+              src={img.src} alt={img.alt}
+              custom={dir}
+              variants={{
+                enter: (d: number) => ({ opacity:0, x: d * 80, scale:.97 }),
+                center: { opacity:1, x:0, scale:1 },
+                exit:  (d: number) => ({ opacity:0, x: d * -80, scale:.97 }),
+              }}
+              initial="enter" animate="center" exit="exit"
+              transition={{ duration:.25, ease:"easeOut" }}
+              className="max-w-full object-contain px-2 md:px-24"
+              style={{ maxHeight:"calc(100vh - 180px)" }}
+              loading="eager"
+              decoding="sync"
+            />
+          </motion.picture>
         </AnimatePresence>
 
         <button onClick={() => { setDir(1); onNext() }}
@@ -162,7 +171,7 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 }
 
 /* ─── Modern Ultra-Clean Category Card (Auto-Fit Aspect Ratio) ─── */
-function CategoryCard({ category, images, onOpen }: {
+const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
   category: string; images: GalleryImage[]
   onOpen(images: GalleryImage[], idx: number): void
   index: number
@@ -203,23 +212,31 @@ function CategoryCard({ category, images, onOpen }: {
             {/* Slider Area with Fixed Aspect-Ratio (नो लेआउट जम्प) */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
-          <motion.img
-            key={cur}
-            src={images[cur].src}
-            alt={images[cur].alt}
-            custom={dir}
-            variants={{
-              enter: (d: number) => ({ opacity: 0, x: d * 50 }),
-              center: { opacity: 1, x: 0 },
-              exit: (d: number) => ({ opacity: 0, x: d * -50 }),
-            }}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
-            onClick={() => onOpen(images, cur)}
-          />
+          <motion.picture key={cur}>
+            {/* AVIF format (best compression) */}
+            <source srcSet={images[cur].src.replace(/\.webp$/, '.avif')} type="image/avif" />
+            {/* WebP format (fallback) */}
+            <source srcSet={images[cur].src} type="image/webp" />
+            {/* Fallback img tag */}
+            <motion.img
+              src={images[cur].src}
+              alt={images[cur].alt}
+              custom={dir}
+              variants={{
+                enter: (d: number) => ({ opacity: 0, x: d * 50 }),
+                center: { opacity: 1, x: 0 },
+                exit: (d: number) => ({ opacity: 0, x: d * -50 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="absolute inset-0 h-full w-full cursor-pointer object-cover transition-transform duration-500 group-hover:scale-105"
+              onClick={() => onOpen(images, cur)}
+              loading="lazy"
+              decoding="async"
+            />
+          </motion.picture>
         </AnimatePresence>
        
         {/* Gradient Overlay for Text Visibility */}
@@ -326,7 +343,7 @@ function CategoryCard({ category, images, onOpen }: {
       </div>
     </motion.div>
   )
-}
+})
 
 /* ─── Main Gallery ─── */
 export default function Gallery() {

@@ -25,12 +25,22 @@
     <link rel="preload" href="/fonts/playfair-display-normal-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
     <link rel="stylesheet" href="/fonts/fonts.css" />
 
-    <!-- DNS prefetch -->
+    <!-- DNS prefetch & connection hints -->
     <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    
+    <!-- Defer non-critical scripts -->
+    <link rel="prefetch" href="/fonts/fonts.css" />
 
     <!-- Critical resources (preload for LCP performance) -->
-    <link rel="preload" href="/images/A.webp" as="image" fetchpriority="high" />
-    <link rel="preload" href="/images/A1.webp" as="image" fetchpriority="high" />
+    <!-- Hero image with AVIF priority -->
+    <link rel="preload" href="/images/hero-interior.avif" as="image" type="image/avif" fetchpriority="high" />
+    <link rel="preload" href="/images/hero-interior.webp" as="image" type="image/webp" fetchpriority="high" />
+    <!-- Gallery hero images -->
+    <link rel="preload" href="/images/A.avif" as="image" type="image/avif" fetchpriority="high" />
+    <link rel="preload" href="/images/A.webp" as="image" type="image/webp" fetchpriority="high" />
+    <link rel="preload" href="/images/A1.avif" as="image" type="image/avif" fetchpriority="high" />
+    <link rel="preload" href="/images/A1.webp" as="image" type="image/webp" fetchpriority="high" />
 
     <title>JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar</title>
     <meta name="description" content="JK Interior – expert false ceiling, WPC wall panels &amp; modular interiors in Forbesganj, Araria, Bihar. Call +91 8541849118 for a free site visit." />
