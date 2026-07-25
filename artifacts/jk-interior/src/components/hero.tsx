@@ -56,16 +56,25 @@ export default function Hero() {
     >
       {/* Background Image with Cinematic Overlays */}
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
-        <motion.img
-          src="/images/hero-interior.webp"
-          alt="Luxury Gypsum False Ceiling and PVC Wall Design in Forbesganj Bihar by JK Interior"
-          className="absolute inset-0 h-full w-full object-cover object-center"
-          // @ts-ignore
-          fetchPriority="high"
-          initial={shouldReduce ? {} : { scale: 1.08 }}
-          animate={shouldReduce ? {} : { scale: 1 }}
-          transition={{ duration: 14, ease: "easeOut" }}
-        />
+        <motion.picture>
+          {/* AVIF format (best compression) */}
+          <source srcSet="/images/hero-interior.avif" type="image/avif" />
+          {/* WebP format (fallback) */}
+          <source srcSet="/images/hero-interior.webp" type="image/webp" />
+          {/* PNG fallback for older browsers */}
+          <motion.img
+            src="/images/hero-interior.webp"
+            alt="Luxury Gypsum False Ceiling and PVC Wall Design in Forbesganj Bihar by JK Interior"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            // @ts-ignore
+            fetchPriority="high"
+            loading="eager"
+            decoding="sync"
+            initial={shouldReduce ? {} : { scale: 1.08 }}
+            animate={shouldReduce ? {} : { scale: 1 }}
+            transition={{ duration: 14, ease: "easeOut" }}
+          />
+        </motion.picture>
         {/* Dark Vignette Gradients for Text Readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/65 to-black/40" />
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-zinc-950/40 to-transparent" />
