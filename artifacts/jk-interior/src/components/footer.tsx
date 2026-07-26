@@ -288,23 +288,26 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="flex flex-col items-center justify-between gap-5 border-t border-emerald-200 pt-8 md:flex-row">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700" suppressHydrationWarning>
-              © {currentYear} JK Interior Forbesganj
-            </p>
-            <p className="mt-0.5 text-[10px] font-semibold text-gray-500">
-              Araria&apos;s Most Trusted Interior Contractor
-            </p>
-          </div>
-          <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-500">
-            <Link href="/services" className="hover:text-emerald-600 transition-colors">All Services</Link>
-            <span>•</span>
-            <Link href="/faq" className="hover:text-emerald-600 transition-colors">FAQ</Link>
-            <span>•</span>
-            <span>Made with ❤ in Bihar</span>
-          </div>
-        </div>
+<div className="flex flex-col items-center justify-between gap-5 border-t border-emerald-200 pt-8 md:flex-row">
+  <div>
+    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700" suppressHydrationWarning>
+      © {currentYear} JK Interior Forbesganj
+    </p>
+    <p className="mt-0.5 flex items-center gap-1.5 text-[10px] font-semibold text-gray-500">
+      <span>Interior & Digital Experience Crafted by Jitendra Kumar</span>
+      <svg className="h-3 w-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    </p>
+  </div>
+  <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-500">
+    <Link href="/services" className="hover:text-emerald-600 transition-colors">All Services</Link>
+    <span>•</span>
+    <Link href="/faq" className="hover:text-emerald-600 transition-colors">FAQ</Link>
+    <span>•</span>
+    <span>Excellence Across Araria District</span>
+  </div>
+</div>
       </div>
     </footer>
   )
