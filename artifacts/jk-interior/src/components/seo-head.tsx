@@ -1,72 +1,37 @@
-import { Helmet } from "react-helmet-async"
+import React from 'react'
+import { SITE_URL, SITE_NAME, OG_IMAGE } from '@/lib/constants'
 
-const SITE_URL = "https://www.jkinterior.online"
-const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`
-const SITE_NAME = "JK Interior"
+type OpenGraph = { title?: string; description?: string; url?: string; image?: string }
 
-interface SeoHeadProps {
-  title: string
-  description: string
-  canonical?: string
-  ogImage?: string
-  ogType?: "website" | "article"
-  noindex?: boolean
-  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
-}
-
-export default function SeoHead({
-  title,
-  description,
-  canonical,
-  ogImage = DEFAULT_OG_IMAGE,
-  ogType = "website",
-  noindex = false,
-  jsonLd,
-}: SeoHeadProps) {
-  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`
-  const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : SITE_URL
+export default function SeoHead({ title, description, canonical, jsonLd, openGraph }: { title: string; description: string; canonical?: string; jsonLd?: any[] | any; openGraph?: OpenGraph }) {
+  const url = canonical ? `${SITE_URL.replace(/\/$/, '')}${canonical}` : SITE_URL
+  const og = openGraph ?? { title, description, url, image: OG_IMAGE }
 
   return (
-    <Helmet>
-      <title>{fullTitle}</title>
+    <>
+      <title>{title}</title>
       <meta name="description" content={description} />
-      {noindex ? (
-        <meta name="robots" content="noindex, nofollow" />
-      ) : (
-        <meta name="robots" content="index, follow" />
-      )}
-      <link rel="canonical" href={canonicalUrl} />
+      <link rel="canonical" href={url} />
 
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:locale" content="en_IN" />
-      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:title" content={og.title} />
+      <meta property="og:description" content={og.description} />
+      <meta property="og:url" content={og.url} />
+      <meta property="og:image" content={og.image} />
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:title" content={og.title} />
+      <meta name="twitter:description" content={og.description} />
+      <meta name="twitter:image" content={og.image} />
 
-      <meta name="format-detection" content="telephone=+918541849118" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-      {jsonLd && Array.isArray(jsonLd) ? (
-        jsonLd.map((schema, idx) => (
-          <script key={idx} type="application/ld+json">
-            {JSON.stringify(schema)}
-          </script>
-        ))
-      ) : jsonLd ? (
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
-        </script>
-      ) : null}
-    </Helmet>
+      {jsonLd && (
+        Array.isArray(jsonLd) ? (
+          jsonLd.map((obj, i) => (
+            <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
+          ))
+        ) : (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        )
+      )}
+    </>
   )
 }
