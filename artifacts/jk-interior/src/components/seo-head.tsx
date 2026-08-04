@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async"
 const SITE_URL = "https://www.jkinterior.online"
 const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`
 const SITE_NAME = "JK Interior"
+const SITE_EMAIL = "jkinteriorofficial@gmail.com"
 
 interface SeoHeadProps {
   title: string
@@ -47,12 +48,13 @@ export default function SeoHead({
       <meta property="og:locale" content="en_IN" />
       <meta property="og:site_name" content={SITE_NAME} />
 
-      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
 
-      <meta name="format-detection" content="telephone=+918541849118" />
+      <meta name="format-detection" content="telephone=yes" />
+      <meta name="contact:email" content={SITE_EMAIL} />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
@@ -63,9 +65,7 @@ export default function SeoHead({
           </script>
         ))
       ) : jsonLd ? (
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
-        </script>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       ) : null}
     </Helmet>
   )
