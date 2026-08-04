@@ -17,7 +17,8 @@ const sitemapItems = pages.map((p) => {
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapItems.join('\n')}\n</urlset>`
 
-const outPath = path.join(__dirname, 'artifacts/jk-interior/public/sitemap.xml')
+// scripts directory is at repo root/scripts, so go up one level to repo root
+const outPath = path.join(__dirname, '..', 'artifacts', 'jk-interior', 'public', 'sitemap.xml')
 fs.mkdirSync(path.dirname(outPath), { recursive: true })
 fs.writeFileSync(outPath, sitemap, 'utf8')
 console.log('Sitemap written to', outPath)

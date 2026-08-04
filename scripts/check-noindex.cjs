@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const publicDir = path.resolve(__dirname, 'artifacts/jk-interior/dist/public')
+const publicDir = path.resolve(__dirname, '..', 'artifacts', 'jk-interior', 'dist', 'public')
 if (!fs.existsSync(publicDir)) {
   console.log('Build output not found; skipping noindex check.')
   process.exit(0)
