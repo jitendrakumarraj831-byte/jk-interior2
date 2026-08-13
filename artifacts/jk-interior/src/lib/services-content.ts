@@ -147,7 +147,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     nameHi: "जिप्सम फॉल्स सीलिंग",
     category: "Ceiling",
     categoryHi: "सीलिंग",
-    tagline: "Turn a plain roof into a five-star ceiling — seamless, cove-lit, and built to any design you imagine",
+    tagline: "Turn a plain roof into a premium ceiling — seamless, cove-lit, and built to any design you imagine",
     taglineHi: "सादी छत को फाइव-स्टार सीलिंग बनाएं — बिना जोड़, Cove लाइट वाली, आपके सोचे हर डिज़ाइन पर",
     heroImage: "/images/gypsum5.webp",
     heroImageAlt: "Designer gypsum false ceiling with hidden cove lighting in a Forbesganj drawing room by JK Interior",
@@ -156,7 +156,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     priceTiers: [
       { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "One flat, single-level plane in 12.5mm board — clean, plain, no cove step.", descHi: "12.5mm बोर्ड में एक सादी सिंगल-लेवल छत — साफ, प्लेन, बिना Cove स्टेप।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹130/sq.ft", desc: "A stepped perimeter border with a cove channel ready for LED (strip billed apart).", descHi: "एक स्टेप बॉर्डर और LED के लिए तैयार Cove चैनल (स्ट्रिप का बिल अलग)।" },
-      { tier: "Premium", tierHi: "प्रीमिय��", range: "₹135–₹210/sq.ft", desc: "Multi-level trays, curves or islands with built-in cove lighting throughout.", descHi: "मल्टी-लेवल ट्रे, घुमाव या आइलैंड, पूरी छत में बिल्ट-इन Cove लाइट के साथ।" },
+      { tier: "Premium", tierHi: "प्रीमियम", range: "₹135–₹210/sq.ft", desc: "Multi-level trays, curves or islands with built-in cove lighting throughout.", descHi: "मल्टी-लेवल ट्रे, घुमाव या आइलैंड, पूरी छत में बिल्ट-इन Cove लाइट के साथ।" },
     ],
     sizesThickness: "12.5mm boards in 4×8 ft and 4×6 ft sheets, scored and cut on-site; a thinner 8mm board is used only where the design curves.",
     sizesThicknessHi: "12.5mm बोर्ड, 4×8 फुट और 4×6 फुट शीट में, साइट पर नाप कर काटा जाता है; घुमावदार हिस्से में ही सिर्फ पतला 8mm बोर्ड।",
@@ -226,7 +226,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     designOptions: [
       { name: "Single-level flat", nameHi: "सिंगल-लेवल फ्लैट", desc: "One clean plane — the quiet, budget-friendly base every room can carry.", descHi: "एक साफ प्लेन — शांत, बजट-फ्रेंडली बेस, जो हर कमरे में जँचे।" },
-      { name: "Stepped cove border", nameHi: "स्टेप्ड Cove बॉर्डर", desc: "A recessed step around the edge hides an LED strip for a soft glow ring.", descHi: "किनारे पर एक रिसेस्ड स्टेप, जिसमें LED स्ट्रिप छुपती है — सॉफ्ट ग्लो रिंग।" },
+      { name: "Stepped cove border", nameHi: "स्टेप Cove बॉर्डर", desc: "A recessed step around the edge hides an LED strip for a soft glow ring.", descHi: "किनारे पर एक रिसेस्ड स्टेप, जिसमें LED स्ट्रिप छुपती है — सॉफ्ट ग्लो रिंग।" },
       { name: "Central tray / island", nameHi: "सेंट्रल Tray / आइलैंड", desc: "A dropped centre panel that frames a fan or chandelier as the focal point.", descHi: "बीच में गिरा हुआ पैनल, जो पंखे या झूमर को फोकल पॉइंट बनाता है।" },
       { name: "Curved / multi-level designer", nameHi: "घुमावदार / मल्टी-लेवल डिज़ाइनर", desc: "Layered curves and multiple heights for a full statement drawing-room ceiling.", descHi: "परतदार घुमाव और कई ऊँचाइयाँ — पूरा स्टेटमेंट ड्रॉइंग-रूम सीलिंग।" },
     ],
@@ -307,7 +307,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     nameHi: "PVC फॉल्स सीलिंग",
     category: "Ceiling",
     categoryHi: "सीलिंग",
-    tagline: "The 100% waterproof ceiling that ends kitchen and bathroom dampness for good",
+    tagline: "The water-resistant for suitable wet-area applications ceiling that ends kitchen and bathroom dampness with proper installation and care",
     taglineHi: "100% वॉटरप्रूफ छत, जो किचन-बाथरूम की सीलन हमेशा के लिए खत्म कर दे",
     heroImage: "/images/pvc-ceiling.webp",
     heroImageAlt: "Waterproof wood-texture PVC false ceiling in a Bihar kitchen installed by JK Interior",
@@ -324,14 +324,14 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     labourCostHi: "ग्रिड, पैनल फिक्सिंग और बीडिंग की लेबर करीब ₹20–30/sq.ft, रेट में शामिल — हमारी लिस्ट में सबसे तेज़ लगने वाली छत यही है।",
     labourCostShort: "₹20–30/sq.ft",
     brandNote: "ISI-compliant branded PVC from authorised Forbesganj/Purnia suppliers — never the flimsy unbranded imports that yellow and bow. We show you the panel sample and its batch marking before you commit.",
-    brandNoteHi: "ISI-अनुरूप ब्रांडेड PVC, फारबिसगंज/पूर्णिया के अधिकृत सप्लायर से — कभी नहीं वो पतला अनब्रांडेड इम्पोर्ट, जो पीला पड़कर मुड़ जाता है। तय करने से पहले पैनल सैंपल और उसकी बैच मार्कि���ग दिखाते हैं।",
+    brandNoteHi: "ISI-अनुरूप ब्रांडेड PVC, फारबिसगंज/पूर्णिया के अधिकृत सप्लायर से — कभी नहीं वो पतला अनब्रांडेड इम्पोर्ट, जो पीला पड़कर मुड़ जाता है। तय करने से पहले पैनल सैंपल और उसकी बैच मार्किंग दिखाते हैं।",
     availability: "Stocked across the whole service area. It's our highest-volume ceiling, so the common whites and wood-grains are usually on hand with no waiting.",
-    availabilityHi: "पूरे सर्व��स एरिया में स्टॉक में। यह हमारी सबसे ज़्यादा लगने वाली छत है, तो आम सफेद और वुड-ग्रेन बिना इंतज़ार तैयार रहते हैं।",
+    availabilityHi: "पूरे सर्विस एरिया में स्टॉक में। यह हमारी सबसे ज़्यादा लगने वाली छत है, तो आम सफेद और वुड-ग्रेन बिना इंतज़ार तैयार रहते हैं।",
     installTime: "One room in a day, a full home in 3–4 days",
     maintenance: "Practically none — a damp cloth wipes it clean",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "Sealed, interlocking waterproof panels that never let steam, leakage or damp win again — the maintenance-free ceiling that stays bright and new for 20+ years without a single coat of paint.",
+      "Sealed, interlocking waterproof panels that never let steam, leakage or damp win again — the maintenance-free ceiling that stays bright and new for long service life with normal care without a single coat of paint.",
     whatItIsHi:
       "सील्ड, इंटरलॉकिंग वॉटरप्रूफ पैनल, जो भाप, लीकेज और सीलन को दोबारा जीतने न दें — बिना मेंटेनेंस वाली छत, जो 20+ साल बिना एक बार भी पेंट कराए नई-सी चमके।",
     whereUsed: [
@@ -355,8 +355,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "जहाँ हर कुछ साल में छत का नया रंग करवाना हो, वहाँ नहीं",
     ],
     benefits: [
-      "100% waterproof — kill kitchen, bathroom and balcony dampness permanently",
-      "Never needs paint or plaster again — looks new for 20+ years",
+      "water-resistant for suitable wet-area applications — kill kitchen, bathroom and balcony dampness permanently",
+      "Never needs paint or plaster again — looks new for long service life with normal care",
       "Termite-proof, fire-retardant and wipes clean in seconds",
       "Fastest ceiling we fit — a whole room done in a single day",
       "The friendliest price per sq.ft, backed by a 1-year leak-proof warranty",
@@ -426,7 +426,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     comparisonWith: "Gypsum Ceiling",
     comparisonWithHi: "जिप्सम सीलिंग",
     comparison: [
-      { point: "Water & steam", pointHi: "पानी और भाप", self: "100% waterproof — made for wet rooms", selfHi: "100% वॉटरप्रूफ — गीले कमरों के लिए बना", other: "Not waterproof — dry rooms only", otherHi: "वॉटरप्रूफ नहीं — सिर्फ सूखे कमरे" },
+      { point: "Water & steam", pointHi: "पानी और भाप", self: "water-resistant for suitable wet-area applications — made for wet rooms", selfHi: "100% वॉटरप्रूफ — गीले कमरों के लिए बना", other: "Not waterproof — dry rooms only", otherHi: "वॉटरप्रूफ नहीं — सिर्फ सूखे कमरे" },
       { point: "Fitting speed", pointHi: "लगने की रफ़्तार", self: "Often a single day per room", selfHi: "अक्सर एक कमरा एक दिन में", other: "2–3 days with taping and drying", otherHi: "टेपिंग-सुखने के साथ 2–3 दिन" },
       { point: "Design range", pointHi: "डिज़ाइन रेंज", self: "Flat, textured, printed — but simple", selfHi: "फ्लैट, टेक्सचर्ड, प्रिंटेड — पर सादा", other: "Cove, curves, multi-level — anything", otherHi: "Cove, घुमाव, मल्टी-लेवल — कुछ भी" },
       { point: "Upkeep", pointHi: "देखभाल", self: "Wipe clean, no paint ever", selfHi: "पोंछ लें, कभी पेंट नहीं", other: "Needs putty and periodic paint", otherHi: "पुट्टी और समय-समय पर पेंट चाहिए" },
@@ -443,14 +443,14 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       photos: 13,
     },
     faqs: [
-      { q: "Is PVC ceiling genuinely 100% waterproof?", qHi: "क्या PVC सीलिंग सचमुच 100% वॉटरप्रूफ है?", a: "Yes. The plank is solid PVC with no soak-in core, so splashing, steam and humidity have nowhere to go — they just roll off the surface.", aHi: "हाँ। तख्ता ठोस PVC है, कोई सोखने वाला कोर नहीं, तो पानी, भाप और नमी को कहीं जाना नहीं — बस सतह से बह जाती है।" },
+      { q: "Is PVC ceiling genuinely water-resistant for suitable wet-area applications?", qHi: "क्या PVC सीलिंग सचमुच 100% वॉटरप्रूफ है?", a: "Yes. The plank is solid PVC with no soak-in core, so splashing, steam and humidity have nowhere to go — they just roll off the surface.", aHi: "हाँ। तख्ता ठोस PVC है, कोई सोखने वाला कोर नहीं, तो पानी, भाप और नमी को कहीं जाना नहीं — बस सतह से बह जाती है।" },
       { q: "Will PVC look cheap next to gypsum in my hall?", qHi: "हॉल में PVC, जिप्सम के आगे सस्ती दिखेगी?", a: "In a formal cove-lit hall, gypsum reads more premium — no argument. But in kitchens, bathrooms and everyday rooms our wood and marble-texture PVC looks genuinely smart.", aHi: "Cove वाले फॉर्मल हॉल में Gypsum ज़्यादा प्रीमियम दिखती है — इसमें कोई बहस नहीं। पर किचन, बाथरूम और रोज़मर्रा कमरों में हमारी वुड-मार्बल टेक्सचर PVC सच में स्मार्ट लगती है।" },
       { q: "Can seepage or termites ruin a PVC ceiling?", qHi: "क्या सीपेज या टर्माइट PVC को खराब करेंगे?", a: "No — termites can't eat plastic and seepage runs off it. To protect the frame behind as well, we hang the planks on treated battens or GI channel.", aHi: "नहीं — टर्माइट प्लास्टिक नहीं खाते और सीपेज बह जाता है। पीछे का फ्रेम भी बचा रहे, इसलिए तख्ते ट्रीटेड बैटन या GI चैनल पर लटकाते हैं।" },
     ],
     relatedSlugs: ["gypsum-ceiling", "uv-marble-sheet", "grid-ceiling"],
   },
 
-  // ──────���──────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────────
   {
     slug: "grid-ceiling",
     icon: Grid3x3,
@@ -529,7 +529,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     limitationsHi: [
       "ग्रिड की लाइनें दिखती रहती हैं — यह काम की छत है, सजावटी नहीं",
-      "आम मिनरल टाइल वॉटरप्रूफ नहीं, गी��ी होकर झुकती है",
+      "आम मिनरल टाइल वॉटरप्रूफ नहीं, गीली होकर झुकती है",
       "PVC से थोड़ी ज़्यादा ड्रॉप-हाइट माँगती है",
       "Cove लाइट या घुमावदार शेप संभव नहीं",
     ],
@@ -596,7 +596,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       photos: 7,
     },
     faqs: [
-      { q: "Why pick grid over gypsum for my office?", qHi: "ऑफिस के लिए जिप्सम की जगह ग्रिड क्यों?", a: "If ducting, conduits or plumbing run overhead, grid lets an electrician lift one tile and get in without touching the rest. Gypsum looks premium but has to be cut open for that same access.", aHi: "ऊपर डक्टिंग, कंड्यूट या प्लंबिंग हो तो ग्रिड में एक टाइल उठाकर काम हो जाता है, बाकी छुए बिना। Gypsum प्रीमियम दिखती है पर उसी एक्सेस के लिए काटनी पड़ती है।" },
+      { q: "Why pick grid over gypsum for my office?", qHi: "ऑफिस के लिए जिप्सम की जगह ग्रिड क्यों?", a: "If ducting, conduits or plumbing run overhead, grid lets an electrician lift one tile and get in without touching the rest. Gypsum looks premium but has to be cut open for that same access.", aHi: "ऊपर डक्टिंग, कंड्यूट या प्लंबिंग हो तो ग्रिड में एक टाइल उठाकर काम हो जाता है, ाकी छुए बिना। Gypsum प्रीमियम दिखती है पर उसी एक्सेस के लिए काटनी पड़ती है।" },
       { q: "Are the tiles waterproof?", qHi: "क्या ग्रिड टाइल वॉटरप्रूफ होती है?", a: "Standard mineral-fibre tiles are not — they sag when wet. For washrooms or damp areas we drop PVC lay-in tiles into the very same grid instead.", aHi: "स्टैंडर्ड मिनरल-फाइबर टाइल नहीं — गीली होकर झुकती है। वॉशरूम या नम जगह में उसी ग्रिड में PVC टाइल रख देते हैं।" },
       { q: "Can I use grid ceiling at home?", qHi: "क्या ग्रिड सीलिंग घर में लगा सकते हैं?", a: "It's mostly a commercial choice because the grid lines show, but plenty of people use it in a store-room, garage or shop-cum-home where budget and easy access matter more than the look.", aHi: "आमतौर पर यह कमर्शियल चॉइस है क्योंकि लाइनें दिखती हैं, पर कई लोग स्टोर-रूम, गैरेज या दुकान-सह-घर में लगाते हैं, जहाँ बजट और एक्सेस लुक से ज़्यादा मायने रखते हैं।" },
     ],
@@ -627,7 +627,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     labourCost: "Labour is roughly ₹25–40/sq.ft for gypsum and ₹60–100/sq.ft for glass, included above — glass costs more because it demands careful handling and exact alignment.",
     labourCostHi: "लेबर Gypsum में करीब ₹25–40/sq.ft, ग्लास में ₹60–100/sq.ft, रेट में शामिल — ग्लास में सावधान हैंडलिंग और सटीक अलाइनमेंट की वजह से ज़्यादा।",
     labourCostShort: "₹25–40/sq.ft (gypsum) · ₹60–100/sq.ft (glass)",
-    brandNote: "Metal framing, gypsum board and toughened glass all come from ISI/BIS-compliant authorised Purnia/Forbesganj dealers. The glass is always genuine toughened safety glass — plain sheet is never used on a partition.",
+    brandNote: "Metal framing, gypsum board and toughened glass all come from ISI/BIS-compliant authorised Purnia/Forbesganj dealers. The glass is typically genuine toughened safety glass — plain sheet is never used on a partition.",
     brandNoteHi: "मेटल फ्रेमिंग, Gypsum Board और टफन्ड ग्लास — सब ISI/BIS-अनुरूप अधिकृत पूर्णिया/फारबिसगंज डीलरों से। ग्लास हमेशा असली टफन्ड सेफ्टी ग्लास, पार्टीशन पर प्लेन शीट कभी नहीं।",
     availability: "Gypsum partitions go up right across the service area. Glass partitions are booked most in Forbesganj and Araria offices; other towns add 2–4 days since the glass is cut in Purnia.",
     availabilityHi: "Gypsum पार्टीशन पूरे सर्विस एरिया में बनते हैं। ग्लास पार्टीशन फारबिसगंज-अररिया ऑफिस में सबसे ज़्यादा; बाकी शहरों में 2–4 दिन ज़्यादा, क्योंकि ग्लास पूर्णिया में कटती है।",
@@ -715,8 +715,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     whatsNotIncludedHi: [
       "नई दीवार पर वायरिंग, स्विच या सॉकेट — इलेक्ट्रीशियन का काम",
-      "इ��ारत में कोई स्ट्रक्चरल या लोड-बेयरिंग बदलाव",
-      "ग्लास पर सेफ्टी-लैमिनेटेड फिल्म, जब तक शुरू ��ें न माँगी-कोट की हो",
+      "इारत में कोई स्ट्रक्चरल या लोड-बेयरिंग बदलाव",
+      "ग्लास पर सेफ्टी-लैमिनेटेड फिल्म, जब तक शुरू ें न माँगी-कोट की हो",
     ],
     materials: [
       { name: "Metal stud framing", nameHi: "मेटल स्टड फ्रेमिंग", detail: "Floor and ceiling track with vertical studs — the gypsum partition's skeleton", detailHi: "फर्श-छत ट्रैक और वर्टिकल स्टड — Gypsum पार्टीशन का ढाँचा" },
@@ -725,7 +725,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { name: "Toughened glass + aluminium frame", nameHi: "टफन्ड ग्लास + एल्युमिनियम फ्रेम", detail: "8–12mm toughened glass — plain, frosted or fluted-film", detailHi: "8–12mm टफन्ड ग्लास — प्लेन, फ्रॉस्टेड या फ्लूटेड-फिल्म" },
     ],
     installSteps: [
-      { title: "Mark the layout", titleHi: "लेआउट मार्किंग", desc: "The partition line and door opening are marked on floor and ceiling.", descHi: "फर्श और छत पर पार्टीशन लाइन और दरवाज़ा मार्क करते हैं।" },
+      { title: "Mark the layout", titleHi: "लेआउट मार्किंग", desc: "The partition line and door opening are marked on floor and ceiling.", descHi: "फर्श और छत पर पार्टीशन लाइन र दरवाज़ा मार्क करते हैं।" },
       { title: "Frame it up", titleHi: "फ्रेमिंग", desc: "Gypsum gets tracks and studs; glass gets floor-to-ceiling aluminium U-channels.", descHi: "Gypsum में ट्रैक-स्टड; ग्लास में फर्श से छत तक एल्युमिनियम U-चैनल।" },
       { title: "Pack the acoustic infill", titleHi: "एकॉस्टिक इनफिल", desc: "If specified, rockwool is packed in before the second face closes.", descHi: "अगर तय हो, दूसरा फेस बंद होने से पहले रॉकवूल भरते हैं।" },
       { title: "Fit board or glass", titleHi: "बोर्ड या ग्लास फिटिंग", desc: "Boards are screwed to both faces, or the glass is lowered into its channel.", descHi: "दोनों फेस पर बोर्ड स्क्रू, या ग्लास को चैनल में उतारते हैं।" },
@@ -767,7 +767,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     nameHi: "WPC वॉल पैनल",
     category: "Wall",
     categoryHi: "वॉल",
-    tagline: "Rich teak-and-walnut wooden walls at 60% less — waterproof, termite-proof, and stunning",
+    tagline: "Rich teak-and-walnut wooden walls at at a lower cost than many natural-wood options — waterproof, termite-proof, and stunning",
     taglineHi: "असली सागवान-अखरोट जैसी लकड़ी वाली दीवार 60% कम में — वॉटरप्रूफ, दीमक-रोधी, शानदार",
     heroImage: "/images/wpc.webp",
     heroImageAlt: "Fluted WPC wall panel TV feature wall with LED backlight in Bihar by JK Interior",
@@ -817,8 +817,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "लोड-बेयरिंग दीवार के रूप में नहीं — यह क्लैडिंग है, दीवार खुद नहीं",
     ],
     benefits: [
-      "The rich look of teak/walnut timber at roughly 60% less cost",
-      "100% waterproof and termite-proof — never warps, swells or rots",
+      "The rich look of teak/walnut timber at roughly at a lower cost than many natural-wood options cost",
+      "water-resistant for suitable wet-area applications and termite-proof — never warps, swells or rots",
       "Zero maintenance — no polish or varnish, just wipe and it shines",
       "50+ premium textures, including trending fluted and LED louvre",
       "Adds VIP value to your home with a feature wall done in a day",
@@ -842,7 +842,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     designOptions: [
       { name: "Plain / solid colour", nameHi: "प्लेन / सॉलिड रंग", desc: "Flat panels in a single tone for a clean, understated backdrop.", descHi: "एक टोन में फ्लैट पैनल, साफ-शांत बैकड्रॉप के लिए।" },
-      { name: "Wood-grain finish", nameHi: "वुड-ग्रेन फिनिश", desc: "Teak, walnut and oak looks that read as real seasoned timber.", descHi: "सागवान, अखरोट और ओक लुक, जो असली सीज़न्ड लकड़ी जैसे दिखें।" },
+      { name: "Wood-grain finish", nameHi: "वुड-ग्रेन फििश", desc: "Teak, walnut and oak looks that read as real seasoned timber.", descHi: "सागवान, अखरोट और ओक लुक, जो असली सीज़न्ड लकड़ी जैसे दिखें।" },
       { name: "Vertical fluted", nameHi: "वर्टिकल Fluted", desc: "Ridged vertical lines that add depth and make a wall feel taller.", descHi: "उभरी वर्टिकल लाइनें, जो गहराई दें और दीवार ऊँची लगाएँ।" },
       { name: "Louvre with LED backlight", nameHi: "LED बैकलाइट वाला Louver", desc: "Deep slats with a hidden strip glowing behind — the showpiece TV wall.", descHi: "गहरी स्लैट्स, पीछे छुपी ग्लो करती स्ट्रिप — शोपीस TV वॉल।" },
     ],
@@ -887,7 +887,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     comparisonWithHi: "असली लकड़ी पैनलिंग",
     comparison: [
       { point: "Cost", pointHi: "कीमत", self: "About 60% of solid timber", selfHi: "सॉलिड टिम्बर का करीब 60%", other: "The full premium timber price", otherHi: "पूरी प्रीमियम टिम्बर कीमत" },
-      { point: "Damp & termites", pointHi: "नमी और दीमक", self: "Resists both — built for humidity", selfHi: "दोनों झेलता है — नम��� के लिए बना", other: "Can warp, swell or get eaten", otherHi: "मुड़, फूल या दीमक लग सकता है" },
+      { point: "Damp & termites", pointHi: "नमी और दीमक", self: "Resists both — built for humidity", selfHi: "दोनों झेलता है — नम के लिए बना", other: "Can warp, swell or get eaten", otherHi: "मुड़, फूल या दीमक लग सकता है" },
       { point: "Upkeep", pointHi: "देखभाल", self: "Just wipe — no polish ever", selfHi: "बस पोंछें — कभी पॉलिश नहीं", other: "Needs periodic polish/varnish", otherHi: "समय-समय पर पॉलिश-वार्निश" },
       { point: "Look", pointHi: "लुक", self: "Very close to real wood", selfHi: "असली लकड़ी के बहुत करीब", other: "Genuine natural grain", otherHi: "असली प्राकृतिक ग्रेन" },
     ],
@@ -942,7 +942,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "None to speak of — a damp cloth keeps it shining, no polishing",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "A glass-gloss, seamless marble-look wall that brings palace-like luxury to your pooja room or bathroom — 100% waterproof, with no grout lines to blacken, at a fraction of real marble's price.",
+      "A glass-gloss, seamless marble-look wall that brings palace-like luxury to your pooja room or bathroom — water-resistant for suitable wet-area applications, with no grout lines to blacken, at a fraction of real marble's price.",
     whatItIsHi:
       "शीशे जैसी चमकदार, बिना-जोड़ मार्बल दीवार, जो आपके पूजा घर या बाथरूम में पैलेस जैसी लग्जरी लाए — 100% वॉटरप्रूफ, काली पड़ने वाली ग्राउट लाइन नहीं, असली मार्बल से बहुत कम कीमत में।",
     whereUsed: [
@@ -952,7 +952,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Living-room feature walls after a stone finish",
     ],
     whereUsedHi: [
-      "बाथरूम की दीवार पर — टाइल जैसी काली पड़ने वाली ग्राउट लाइन नहीं",
+      "बारूम की दीवार पर — टाइल जैसी काली पड़ने वाली ग्राउट लाइन नहीं",
       "सीधी आँच से दूर किचन की दीवार पर (बैकस्प्लैश, साइड)",
       "पूजा-घर की दीवार पर — ज़्यादातर परिवारों की चाही मार्बल लुक",
       "स्टोन फिनिश वाली लिविंग-रूम फीचर वॉल पर",
@@ -970,7 +970,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     benefits: [
       "Royal Italian-marble look at 70–80% less than real stone",
       "Mirror-gloss finish that brightens the whole room with reflected light",
-      "100% waterproof with no grout lines — stays spotless for years",
+      "water-resistant for suitable wet-area applications with no grout lines — stays spotless for years",
       "Lightweight, scratch-resistant and wipes clean in seconds",
       "A full luxury makeover finished in a single, dust-free day",
     ],
@@ -1056,7 +1056,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     faqs: [
       { q: "Can UV marble go on the wall behind the stove?", qHi: "क्या चूल्हे के पीछे की दीवार पर UV मार्बल लगे?", a: "We keep it off the strip right behind the flame — direct heat can affect the PVC base. For that patch we suggest ceramic tile or a metal splashback and run UV marble across the rest of the wall.", aHi: "आँच के ठीक पीछे की पट्टी पर हम नहीं लगाते — सीधी गर्मी PVC बेस पर असर डाल सकती है। उस हिस्से में सेरेमिक टाइल या मेटल स्प्लैशबैक, बाकी पूरी दीवार पर UV मार्बल।" },
       { q: "Does it need grout like tiles?", qHi: "क्या टाइल की तरह इसमें ग्राउट लगती है?", a: "No — sheets meet edge-to-edge with the pattern aligned, so there's no grout line at all. That means no joint that turns black with mould over the years.", aHi: "नहीं — शीट किनारे-से-किनारे पैटर्न मिलाकर मिलती हैं, कोई ग्राउट लाइन नहीं। यानी सालों में फफूँद से काला पड़ने वाला कोई जोड़ नहीं।" },
-      { q: "UV marble sheet or WPC panel for my wall?", qHi: "दीवार के लिए UV मार्बल या WPC?", a: "UV marble gives a stone look, is fully waterproof and costs less; WPC gives a wood look, resists moisture and costs more. So bathroom and pooja rooms lean UV marble, while a TV wall or bedroom leans WPC.", aHi: "UV मार्बल पत्थर ल���क देती है, पूरी वॉटरप्रूफ और सस्ती; WPC लकड़ी लुक देती है, नमी-रोधी और महँगी। तो बाथरूम-पूजा घर UV मार्बल की तरफ, TV वॉल या बेडरूम WPC की तरफ।" },
+      { q: "UV marble sheet or WPC panel for my wall?", qHi: "दीवार के लिए UV मार्बल य WPC?", a: "UV marble gives a stone look, is fully waterproof and costs less; WPC gives a wood look, resists moisture and costs more. So bathroom and pooja rooms lean UV marble, while a TV wall or bedroom leans WPC.", aHi: "UV मार्बल पत्थर लक देती है, पूरी वॉटरप्रूफ और सस्ती; WPC लकड़ी लुक देती है, नमी-रोधी और महँगी। तो बाथरूम-पूजा घर UV मार्बल की तरफ, TV वॉल या बेडरूम WPC की तरफ।" },
     ],
     relatedSlugs: ["wpc-wall-panel", "pvc-false-ceiling", "modular-tv-unit"],
   },
@@ -1076,14 +1076,14 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     galleryCategory: "TV Unit Design",
     price: "₹15,000–₹75,000+ per unit (Forbesganj/Araria market rate)",
     priceTiers: [
-      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹15,000–₹25,000", desc: "6–8 ft unit in laminate finish with basic hinges, no LED.", descHi: "6–8 फुट यूनिट, लैमिनेट फिनिश, बेसिक हिंज, बिना LED।" },
+      { tier: "Economy", tierHi: "इकोनॉमी", range: "₹15,000–₹25,000", desc: "6–8 ft unit in laminate finish with basic hinges, no LED.", descHi: "6–8 फुट ूनिट, लैमिनेट फिनिश, बेसिक हिंज, बिना LED।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹26,000–₹45,000", desc: "8–10 ft unit, better finish, soft-close hardware, LED optional.", descHi: "8–10 फुट यूनिट, बेहतर फिनिश, सॉफ्ट-क्लोज़ हार्डवेयर, वैकल्पिक LED।" },
       { tier: "Premium", tierHi: "प्रीमियम", range: "₹46,000–₹75,000+", desc: "10–14 ft unit, premium veneer or gloss, LED backlight, extra storage.", descHi: "10–14 फुट यूनिट, प्रीमियम वीनियर या ग्लॉस, LED बैकलाइट, ज़्यादा स्टोरेज।" },
     ],
     sizesThickness: "Built to your wall's exact width, usually 6–14 ft. Carcass in 18mm plywood or MDF, 6mm back panel, ~1mm laminate face — shutter and shelf thicknesses vary with the design.",
     sizesThicknessHi: "आपकी दीवार की सही चौड़ाई, आमतौर पर 6–14 फुट, पर बनती है। कारकास 18mm प्लाईवुड या MDF, 6mm बैक पैनल, ~1mm लैमिनेट फेस — शटर-शेल्फ मोटाई डिज़ाइन के साथ बदलती है।",
     labourCost: "Fabrication and installation labour is bundled into the unit price — usually 25–35% of the total, and a little more where there's heavy LED work or several floating shelves.",
-    labourCostHi: "फैब्रिकेशन और इंस्टॉलेशन की लेबर यूनिट कीमत में शामिल — आमतौर पर कुल का 25–35%, और भारी LED या कई फ्लोटिंग शेल्फ पर थोड़ा ज़्यादा।",
+    labourCostHi: "फैब्रिकेशन और इंस्ॉलेशन की लेबर यूनिट कीमत में शामिल — आमतौर पर कुल का 25–35%, और भारी LED या कई फ्लोटिंग शेल्फ पर थोड़ा ज़्यादा।",
     labourCostShort: "25–35% of unit price",
     brandNote: "BWP/BWR-grade plywood or MDF from ISI-compliant branded stock, dressed in branded laminate or veneer with soft-close hardware. All the brand options are laid out for you at the design stage before anything is cut.",
     brandNoteHi: "ISI-अनुरूप ब्रांडेड BWP/BWR-ग्रेड प्लाईवुड या MDF, ब्रांडेड लैमिनेट या वीनियर और सॉफ्ट-क्लोज़ हार्डवेयर के साथ। कुछ भी कटने से पहले सभी ब्रांड विकल्प डिज़ाइन स्टेज पर आपके सामने रखते हैं।",
@@ -1156,8 +1156,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "साइट पर माप और आपके साथ कस्टम डिज़ाइन फाइनल करना",
       "आपकी चुनी लैमिनेट या वीनियर में कारकास फैब्रिकेशन",
       "सॉफ्ट-क्लोज़ हिंज और दराज़ हार्डवेयर",
-      "पैनल में बिल्ट-इन केबल-मैनेजमेंट चैनल",
-      "अगर डि���़ाइन में हो तो LED बैकलाइट वायरिंग",
+      "पैनल में बिल्ट-इन केबल-मैनेजमें चैनल",
+      "अगर डि़ाइन में हो तो LED बैकलाइट वायरिंग",
       "1 साल की लिखित Warranty",
     ],
     whatsNotIncluded: [
@@ -1182,7 +1182,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Fabricate the modules", titleHi: "मॉड्यूल फैब्रिकेशन", desc: "Carcass panels are cut, edge-banded and laminated to the agreed finish.", descHi: "कारकास पैनल काटकर एज-बैंड कर तय फिनिश में लैमिनेट करते हैं।" },
       { title: "Fix the wall bracket", titleHi: "वॉल ब्रैकेट फिक्सिंग", desc: "Mounting battens are fixed to the wall at the right height.", descHi: "सही ऊँचाई पर दीवार में माउंटिंग बैटन फिक्स करते हैं।" },
       { title: "Install the modules", titleHi: "मॉड्यूल इंस्टॉल", desc: "Modules go up and are levelled with the cable channel routed behind.", descHi: "मॉड्यूल लगाकर लेवल करते हैं, केबल चैनल पीछे से निकालते हैं।" },
-      { title: "Hardware, LED & handover", titleHi: "हार्डवेयर, LED और हैंडओवर", desc: "Hinges, channels and LED are fitted and tested, shutters checked, warranty handed over.", descHi: "हिंज, चैनल और LED फि��� कर टेस्ट, शटर चेक, Warranty के साथ हैंडओवर।" },
+      { title: "Hardware, LED & handover", titleHi: "हार्डवेयर, LED और हैंडओवर", desc: "Hinges, channels and LED are fitted and tested, shutters checked, warranty handed over.", descHi: "हिंज, चैनल और LED फि कर टेस्ट, शटर चेक, Warranty के साथ हैंडओवर।" },
     ],
     comparisonWith: "Ready-made TV Unit",
     comparisonWithHi: "रेडीमेड TV यूनिट",
@@ -1306,8 +1306,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "1-year written warranty",
     ],
     whatsIncludedHi: [
-      "सतह और ड्रेनेज जाँच, साथ में बेस या बैटन तैयारी",
-      "टर्फ रोलिंग या प���नल फिक्सिंग, आपकी सही बाउंड्री पर काटकर",
+      "सतह और ड्रेनेज जाँच, साथ में बेस या बैटन तैयरी",
+      "टर्फ रोलिंग या पनल फिक्सिंग, आपकी सही बाउंड्री पर काटकर",
       "सीम जोड़ना और एज फिक्सिंग, ताकि कोनों से कुछ न उठे",
       "भरे-भरे, ताज़े-लॉन फिनिश के लिए फाइनल ग्रूमिंग",
       "1 साल की लिखित Warranty",
@@ -1355,7 +1355,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       photos: 7,
     },
     faqs: [
-      { q: "Will it smell or grow mould in the monsoon?", qHi: "क्या मानसून में इससे बदबू या फफूँद आएगी?", a: "Not if the base drains properly — that's the one thing we always insist on checking. If your balcony doesn't drain well, we sort the drainage before a single roll goes down.", aHi: "अगर बेस से पानी ठीक निकले तो नहीं — यही एक चीज़ हम हमेशा ज़रूर जाँचते हैं। बालकनी ठीक से न निकलती हो तो एक भी रोल बिछाने से पहले ड्रेनेज ठीक करते हैं।" },
+      { q: "Will it smell or grow mould in the monsoon?", qHi: "क्या मानसून में इससे बदबू या फफूँद आएगी?", a: "Not if the base drains properly — that's the one thing we typically insist on checking. If your balcony doesn't drain well, we sort the drainage before a single roll goes down.", aHi: "अगर बेस से पानी ठीक निकले तो नहीं — यही एक चीज़ हम हमेशा ज़रूर जाँचते हैं। बालकनी ठीक से न निकलती हो तो एक भी रोल बिछाने से पहले ड्रेनेज ठीक करते हैं।" },
       { q: "How long does it last outdoors?", qHi: "यह बाहर कितने साल चलती है?", a: "Good UV-stabilised turf keeps its colour and pile for about 5–8 years of regular sun before it noticeably fades. Our 1-year warranty covers the installation; the material itself lasts well beyond that.", aHi: "अच्छी UV-स्टेबलाइज़्ड टर्फ सामान्य धूप में करीब 5–8 साल रंग और पाइल बनाए रखती है, फिर साफ़ फीकी पड़ती है। 1 साल की Warranty इंस्टॉलेशन कवर करती है; मटेरियल उससे कहीं आगे चलता है।" },
       { q: "Can it go on a wall as well?", qHi: "क्या यह दीवार पर भी लग सकती है?", a: "Yes — for a green feature wall we fix pre-cut turf panels onto a batten frame just like a WPC panel, with no drainage worry since it's vertical and stays dry.", aHi: "हाँ — ग्रीन फीचर वॉल के लिए पहले से कटे टर्फ पैनल WPC की तरह बैटन फ्रेम पर लगाते हैं, वर्टिकल और सूखी जगह होने से ड्रेनेज की चिंता नहीं।" },
     ],

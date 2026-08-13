@@ -193,7 +193,8 @@ export default function ServiceDetailPage() {
               {service.materials.slice(0, 4).map((material) => (
                 <li key={material.name}>
                   <p className="text-sm font-semibold text-gray-800">{material.name}</p>
-                  <p className="text-xs leading-relaxed text-gray-500">{material.detailHi}</p>
+                  <p className="text-xs leading-relaxed text-gray-600">{material.detail}</p>
+                  <p className="text-xs leading-relaxed text-gray-500">{material.nameHi}: {material.detailHi}</p>
                 </li>
               ))}
             </ul>
