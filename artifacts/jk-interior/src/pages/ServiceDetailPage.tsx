@@ -3,7 +3,7 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { SITE_URL } from "@/lib/seo"
-import { getServiceContentBySlug } from "@/lib/services-content"
+import { getServiceContentBySlug, SERVICE_AREA_NOTE, SERVICE_AREA_NOTE_HI } from "@/lib/services-content"
 import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import {
@@ -180,6 +180,45 @@ export default function ServiceDetailPage() {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Materials, suitability and inclusions ── */}
+      <section className="py-8">
+        <div className="mx-auto grid max-w-5xl gap-5 px-5 sm:px-6 lg:grid-cols-2 lg:px-12">
+          <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
+            <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">Materials and options <span className="block text-xs font-bold text-emerald-700">मटेरियल और विकल्प</span></h2>
+            <ul className="space-y-3">
+              {service.materials.slice(0, 4).map((material) => (
+                <li key={material.name}>
+                  <p className="text-sm font-semibold text-gray-800">{material.name}</p>
+                  <p className="text-xs leading-relaxed text-gray-500">{material.detailHi}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
+            <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">What&apos;s included <span className="block text-xs font-bold text-emerald-700">क्या शामिल है</span></h2>
+            <ul className="space-y-2.5">
+              {service.whatsIncluded.slice(0, 5).map((item, index) => (
+                <li key={item} className="flex gap-2 text-sm leading-relaxed text-gray-700">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
+                  <span>{item}<span className="mt-0.5 block text-xs text-gray-500">{service.whatsIncludedHi[index]}</span></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-[28px] border border-gray-200 bg-gray-50 p-6 sm:p-7">
+            <h2 className="mb-3 text-lg font-black text-gray-900">Best suited for <span className="block text-xs font-bold text-emerald-700">किसके लिए सही</span></h2>
+            <ul className="space-y-2 text-sm text-gray-700">
+              {service.whereUsed.slice(0, 5).map((item, index) => <li key={item}>• {item}<span className="ml-1 text-xs text-gray-500">({service.whereUsedHi[index]})</span></li>)}
+            </ul>
+          </div>
+          <div className="rounded-[28px] border border-gray-200 bg-gray-50 p-6 sm:p-7">
+            <h2 className="mb-3 text-lg font-black text-gray-900">Service areas <span className="block text-xs font-bold text-emerald-700">सेवा क्षेत्र</span></h2>
+            <p className="text-sm leading-relaxed text-gray-700">{SERVICE_AREA_NOTE}</p>
+            <p className="mt-2 text-xs leading-relaxed text-gray-500">{SERVICE_AREA_NOTE_HI}</p>
           </div>
         </div>
       </section>

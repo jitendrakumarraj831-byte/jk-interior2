@@ -152,11 +152,11 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     heroImage: "/images/gypsum5.webp",
     heroImageAlt: "Designer gypsum false ceiling with hidden cove lighting in a Forbesganj drawing room by JK Interior",
     galleryCategory: "Gypsum False Ceiling",
-    price: "₹70–₹150/sq.ft (Forbesganj/Araria market rate)",
+    price: "₹75–₹210/sq.ft (Forbesganj/Araria market estimate)",
     priceTiers: [
       { tier: "Economy", tierHi: "इकोनॉमी", range: "₹75–₹90/sq.ft", desc: "One flat, single-level plane in 12.5mm board — clean, plain, no cove step.", descHi: "12.5mm बोर्ड में एक सादी सिंगल-लेवल छत — साफ, प्लेन, बिना Cove स्टेप।" },
       { tier: "Standard", tierHi: "स्टैंडर्ड", range: "₹95–₹130/sq.ft", desc: "A stepped perimeter border with a cove channel ready for LED (strip billed apart).", descHi: "एक स्टेप बॉर्डर और LED के लिए तैयार Cove चैनल (स्ट्रिप का बिल अलग)।" },
-      { tier: "Premium", tierHi: "प्रीमियम", range: "₹135–₹210/sq.ft", desc: "Multi-level trays, curves or islands with built-in cove lighting throughout.", descHi: "मल्टी-लेवल ट्रे, घुमाव या आइलैंड, पूरी छत में बिल्ट-इन Cove लाइट के साथ।" },
+      { tier: "Premium", tierHi: "प्रीमिय��", range: "₹135–₹210/sq.ft", desc: "Multi-level trays, curves or islands with built-in cove lighting throughout.", descHi: "मल्टी-लेवल ट्रे, घुमाव या आइलैंड, पूरी छत में बिल्ट-इन Cove लाइट के साथ।" },
     ],
     sizesThickness: "12.5mm boards in 4×8 ft and 4×6 ft sheets, scored and cut on-site; a thinner 8mm board is used only where the design curves.",
     sizesThicknessHi: "12.5mm बोर्ड, 4×8 फुट और 4×6 फुट शीट में, साइट पर नाप कर काटा जाता है; घुमावदार हिस्से में ही सिर्फ पतला 8mm बोर्ड।",
@@ -324,9 +324,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     labourCostHi: "ग्रिड, पैनल फिक्सिंग और बीडिंग की लेबर करीब ₹20–30/sq.ft, रेट में शामिल — हमारी लिस्ट में सबसे तेज़ लगने वाली छत यही है।",
     labourCostShort: "₹20–30/sq.ft",
     brandNote: "ISI-compliant branded PVC from authorised Forbesganj/Purnia suppliers — never the flimsy unbranded imports that yellow and bow. We show you the panel sample and its batch marking before you commit.",
-    brandNoteHi: "ISI-अनुरूप ब्रांडेड PVC, फारबिसगंज/पूर्णिया के अधिकृत सप्लायर से — कभी नहीं वो पतला अनब्रांडेड इम्पोर्ट, जो पीला पड़कर मुड़ जाता है। तय करने से पहले पैनल सैंपल और उसकी बैच मार्किंग दिखाते हैं।",
+    brandNoteHi: "ISI-अनुरूप ब्रांडेड PVC, फारबिसगंज/पूर्णिया के अधिकृत सप्लायर से — कभी नहीं वो पतला अनब्रांडेड इम्पोर्ट, जो पीला पड़कर मुड़ जाता है। तय करने से पहले पैनल सैंपल और उसकी बैच मार्कि���ग दिखाते हैं।",
     availability: "Stocked across the whole service area. It's our highest-volume ceiling, so the common whites and wood-grains are usually on hand with no waiting.",
-    availabilityHi: "पूरे सर्विस एरिया में स्टॉक में। यह हमारी सबसे ज़्यादा लगने वाली छत है, तो आम सफेद और वुड-ग्रेन बिना इंतज़ार तैयार रहते हैं।",
+    availabilityHi: "पूरे सर्व��स एरिया में स्टॉक में। यह हमारी सबसे ज़्यादा लगने वाली छत है, तो आम सफेद और वुड-ग्रेन बिना इंतज़ार तैयार रहते हैं।",
     installTime: "One room in a day, a full home in 3–4 days",
     maintenance: "Practically none — a damp cloth wipes it clean",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -450,7 +450,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     relatedSlugs: ["gypsum-ceiling", "uv-marble-sheet", "grid-ceiling"],
   },
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ──────���──────────────────────────────────────────────────────────────────
   {
     slug: "grid-ceiling",
     icon: Grid3x3,
@@ -529,7 +529,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     limitationsHi: [
       "ग्रिड की लाइनें दिखती रहती हैं — यह काम की छत है, सजावटी नहीं",
-      "आम मिनरल टाइल वॉटरप्रूफ नहीं, गीली होकर झुकती है",
+      "आम मिनरल टाइल वॉटरप्रूफ नहीं, गी��ी होकर झुकती है",
       "PVC से थोड़ी ज़्यादा ड्रॉप-हाइट माँगती है",
       "Cove लाइट या घुमावदार शेप संभव नहीं",
     ],
@@ -715,8 +715,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     whatsNotIncludedHi: [
       "नई दीवार पर वायरिंग, स्विच या सॉकेट — इलेक्ट्रीशियन का काम",
-      "इमारत में कोई स्ट्रक्चरल या लोड-बेयरिंग बदलाव",
-      "ग्लास पर सेफ्टी-लैमिनेटेड फिल्म, जब तक शुरू में न माँगी-कोट की हो",
+      "इ��ारत में कोई स्ट्रक्चरल या लोड-बेयरिंग बदलाव",
+      "ग्लास पर सेफ्टी-लैमिनेटेड फिल्म, जब तक शुरू ��ें न माँगी-कोट की हो",
     ],
     materials: [
       { name: "Metal stud framing", nameHi: "मेटल स्टड फ्रेमिंग", detail: "Floor and ceiling track with vertical studs — the gypsum partition's skeleton", detailHi: "फर्श-छत ट्रैक और वर्टिकल स्टड — Gypsum पार्टीशन का ढाँचा" },
@@ -887,7 +887,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     comparisonWithHi: "असली लकड़ी पैनलिंग",
     comparison: [
       { point: "Cost", pointHi: "कीमत", self: "About 60% of solid timber", selfHi: "सॉलिड टिम्बर का करीब 60%", other: "The full premium timber price", otherHi: "पूरी प्रीमियम टिम्बर कीमत" },
-      { point: "Damp & termites", pointHi: "नमी और दीमक", self: "Resists both — built for humidity", selfHi: "दोनों झेलता है — नमी के लिए बना", other: "Can warp, swell or get eaten", otherHi: "मुड़, फूल या दीमक लग सकता है" },
+      { point: "Damp & termites", pointHi: "नमी और दीमक", self: "Resists both — built for humidity", selfHi: "दोनों झेलता है — नम��� के लिए बना", other: "Can warp, swell or get eaten", otherHi: "मुड़, फूल या दीमक लग सकता है" },
       { point: "Upkeep", pointHi: "देखभाल", self: "Just wipe — no polish ever", selfHi: "बस पोंछें — कभी पॉलिश नहीं", other: "Needs periodic polish/varnish", otherHi: "समय-समय पर पॉलिश-वार्निश" },
       { point: "Look", pointHi: "लुक", self: "Very close to real wood", selfHi: "असली लकड़ी के बहुत करीब", other: "Genuine natural grain", otherHi: "असली प्राकृतिक ग्रेन" },
     ],
@@ -1056,7 +1056,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     faqs: [
       { q: "Can UV marble go on the wall behind the stove?", qHi: "क्या चूल्हे के पीछे की दीवार पर UV मार्बल लगे?", a: "We keep it off the strip right behind the flame — direct heat can affect the PVC base. For that patch we suggest ceramic tile or a metal splashback and run UV marble across the rest of the wall.", aHi: "आँच के ठीक पीछे की पट्टी पर हम नहीं लगाते — सीधी गर्मी PVC बेस पर असर डाल सकती है। उस हिस्से में सेरेमिक टाइल या मेटल स्प्लैशबैक, बाकी पूरी दीवार पर UV मार्बल।" },
       { q: "Does it need grout like tiles?", qHi: "क्या टाइल की तरह इसमें ग्राउट लगती है?", a: "No — sheets meet edge-to-edge with the pattern aligned, so there's no grout line at all. That means no joint that turns black with mould over the years.", aHi: "नहीं — शीट किनारे-से-किनारे पैटर्न मिलाकर मिलती हैं, कोई ग्राउट लाइन नहीं। यानी सालों में फफूँद से काला पड़ने वाला कोई जोड़ नहीं।" },
-      { q: "UV marble sheet or WPC panel for my wall?", qHi: "दीवार के लिए UV मार्बल या WPC?", a: "UV marble gives a stone look, is fully waterproof and costs less; WPC gives a wood look, resists moisture and costs more. So bathroom and pooja rooms lean UV marble, while a TV wall or bedroom leans WPC.", aHi: "UV मार्बल पत्थर लुक देती है, पूरी वॉटरप्रूफ और सस्ती; WPC लकड़ी लुक देती है, नमी-रोधी और महँगी। तो बाथरूम-पूजा घर UV मार्बल की तरफ, TV वॉल या बेडरूम WPC की तरफ।" },
+      { q: "UV marble sheet or WPC panel for my wall?", qHi: "दीवार के लिए UV मार्बल या WPC?", a: "UV marble gives a stone look, is fully waterproof and costs less; WPC gives a wood look, resists moisture and costs more. So bathroom and pooja rooms lean UV marble, while a TV wall or bedroom leans WPC.", aHi: "UV मार्बल पत्थर ल���क देती है, पूरी वॉटरप्रूफ और सस्ती; WPC लकड़ी लुक देती है, नमी-रोधी और महँगी। तो बाथरूम-पूजा घर UV मार्बल की तरफ, TV वॉल या बेडरूम WPC की तरफ।" },
     ],
     relatedSlugs: ["wpc-wall-panel", "pvc-false-ceiling", "modular-tv-unit"],
   },
@@ -1157,7 +1157,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "आपकी चुनी लैमिनेट या वीनियर में कारकास फैब्रिकेशन",
       "सॉफ्ट-क्लोज़ हिंज और दराज़ हार्डवेयर",
       "पैनल में बिल्ट-इन केबल-मैनेजमेंट चैनल",
-      "अगर डिज़ाइन में हो तो LED बैकलाइट वायरिंग",
+      "अगर डि���़ाइन में हो तो LED बैकलाइट वायरिंग",
       "1 साल की लिखित Warranty",
     ],
     whatsNotIncluded: [
@@ -1182,7 +1182,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       { title: "Fabricate the modules", titleHi: "मॉड्यूल फैब्रिकेशन", desc: "Carcass panels are cut, edge-banded and laminated to the agreed finish.", descHi: "कारकास पैनल काटकर एज-बैंड कर तय फिनिश में लैमिनेट करते हैं।" },
       { title: "Fix the wall bracket", titleHi: "वॉल ब्रैकेट फिक्सिंग", desc: "Mounting battens are fixed to the wall at the right height.", descHi: "सही ऊँचाई पर दीवार में माउंटिंग बैटन फिक्स करते हैं।" },
       { title: "Install the modules", titleHi: "मॉड्यूल इंस्टॉल", desc: "Modules go up and are levelled with the cable channel routed behind.", descHi: "मॉड्यूल लगाकर लेवल करते हैं, केबल चैनल पीछे से निकालते हैं।" },
-      { title: "Hardware, LED & handover", titleHi: "हार्डवेयर, LED और हैंडओवर", desc: "Hinges, channels and LED are fitted and tested, shutters checked, warranty handed over.", descHi: "हिंज, चैनल और LED फिट कर टेस्ट, शटर चेक, Warranty के साथ हैंडओवर।" },
+      { title: "Hardware, LED & handover", titleHi: "हार्डवेयर, LED और हैंडओवर", desc: "Hinges, channels and LED are fitted and tested, shutters checked, warranty handed over.", descHi: "हिंज, चैनल और LED फि��� कर टेस्ट, शटर चेक, Warranty के साथ हैंडओवर।" },
     ],
     comparisonWith: "Ready-made TV Unit",
     comparisonWithHi: "रेडीमेड TV यूनिट",
@@ -1307,7 +1307,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     whatsIncludedHi: [
       "सतह और ड्रेनेज जाँच, साथ में बेस या बैटन तैयारी",
-      "टर्फ रोलिंग या पैनल फिक्सिंग, आपकी सही बाउंड्री पर काटकर",
+      "टर्फ रोलिंग या प���नल फिक्सिंग, आपकी सही बाउंड्री पर काटकर",
       "सीम जोड़ना और एज फिक्सिंग, ताकि कोनों से कुछ न उठे",
       "भरे-भरे, ताज़े-लॉन फिनिश के लिए फाइनल ग्रूमिंग",
       "1 साल की लिखित Warranty",
