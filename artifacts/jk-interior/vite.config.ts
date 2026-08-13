@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
-const DEFAULT_PORT = 5173;
+const DEFAULT_PORT = 3000;
 
 function resolvePort(rawPort: string | undefined): number {
   if (!rawPort) return DEFAULT_PORT;
