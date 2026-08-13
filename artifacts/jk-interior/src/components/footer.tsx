@@ -230,44 +230,68 @@ export default function Footer() {
           </motion.div>
         </div>
 
-                {/* Service Areas by City & Service — Full SEO Matrix */}
-        <motion.div
-          {...(shouldReduce ? {} : {
-            initial: { opacity: 0, y: 16 },
-            whileInView: { opacity: 1, y: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
-          })}
-          className="mt-12 rounded-2xl border border-emerald-200/80 bg-white/60 p-5 backdrop-blur-xs"
+                {/* Service Areas — Single Link */}
+<motion.div
+  {...(shouldReduce ? {} : {
+    initial: { opacity: 0, y: 16 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: {
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1],
+      delay: 0.2,
+    },
+  })}
+  className="mt-12"
+>
+  <Link
+    href="/service-areas"
+    className="group flex items-center justify-between rounded-2xl border border-emerald-200/80 bg-white/60 px-5 py-4 backdrop-blur-xs transition-all duration-300 hover:border-emerald-300 hover:bg-white/80 hover:shadow-md"
+    aria-label="View JK Interior service areas"
+  >
+    <div className="flex items-center gap-3">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+        <svg
+          className="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
         >
-          <h3 className="mb-3 text-[11px] font-black uppercase tracking-wider text-emerald-800">
-            Service Areas by Category &amp; City:
-          </h3>
-          
-          <div className="space-y-2.5 text-xs text-gray-600">
-            {SERVICE_CITY_SERVICES.map((service) => (
-              <div key={service.slug} className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span className="font-bold text-emerald-900 shrink-0">
-                  {service.name}:
-                </span>
-                {cityLinks.map((city, index) => (
-                  <span key={city.slug} className="inline-flex items-center gap-1.5">
-                    <Link
-                      href={`/services/${service.slug}/${city.slug}`}
-                      className="text-[11px] font-medium text-gray-600 hover:text-emerald-700 hover:underline transition-colors"
-                      title={`${service.name} in ${city.name}, Bihar`}
-                    >
-                      {city.name}
-                    </Link>
-                    {index < cityLinks.length - 1 && (
-                      <span className="text-emerald-300 text-[10px]">•</span>
-                    )}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </motion.div>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z"
+          />
+          <circle cx="12" cy="11" r="2.5" />
+        </svg>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-bold text-emerald-900">
+          Service Areas
+        </h3>
+        <p className="mt-0.5 text-xs text-gray-500">
+          View all cities we serve
+        </p>
+      </div>
+    </div>
+
+    <svg
+      className="h-5 w-5 text-emerald-600 transition-transform duration-300 group-hover:translate-x-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 5l7 7-7 7"
+      />
+    </svg>
+  </Link>
+</motion.div>
         
 
         {/* SEO text */}
