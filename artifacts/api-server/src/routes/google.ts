@@ -19,6 +19,11 @@ function config() {
   if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_REDIRECT_URI || !GOOGLE_ALLOWED_EMAILS || !GBP_TOKEN_ENCRYPTION_KEY) {
     throw new Error("GBP OAuth is not configured");
   }
+  if (process.env.NODE_ENV === "production" && GOOGLE_REDIRECT_URI !== "https://www.jkinterior.online/api/google/oauth/callback") {
+    throw new Error("GOOGLE_REDIRECT_URI must exactly match the production callback URL");
+  }
+  const key = Buffer.from(GBP_TOKEN_ENCRYPTION_KEY, "base64");
+  if (key.length !== 32) throw new Error("GBP_TOKEN_ENCRYPTION_KEY must decode to exactly 32 bytes");
   return { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, allowed: GOOGLE_ALLOWED_EMAILS.split(",").map((email) => email.trim().toLowerCase()).filter(Boolean), encryptionKey: GBP_TOKEN_ENCRYPTION_KEY };
 }
 
@@ -69,6 +74,7 @@ function encrypt(value: string) {
 function requireAdmin(req: Request, res: Response) { const email = sessionEmail(req); if (!email) { res.status(401).json({ ok: false, error: "Unauthorized" }); return null; } return email; }
 
 router.get("/google/auth", (req, res) => {
+  if (!requireAdmin(req, res)) return;
   try {
     const state = crypto.randomBytes(32).toString("base64url");
     const url = oauthClient().generateAuthUrl({ access_type: "offline", prompt: "consent", scope: SCOPES, state });
