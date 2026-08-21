@@ -8,4 +8,5 @@ export * from "./reviews";
 export * from "./faqs";
 export * from "./leads";
 export * from "./users";
+export * from "./googleBusiness";
 export * from "./relations";

@@ -13,6 +13,7 @@ const ContactPage = lazy(() => import("@/pages/ContactPage"))
 const FAQPage = lazy(() => import("@/pages/FAQPage"))
 const CityPage = lazy(() => import("@/pages/CityPage"))
 const AdminPage = lazy(() => import("@/pages/AdminPage"))
+const GBPPage = lazy(() => import("@/pages/GBPPage"))
 const NotFound = lazy(() => import("@/pages/not-found"))
 const JKChat = lazy(() => import("@/components/jk-chat"))
 
@@ -36,6 +37,7 @@ function Router() {
         <Route path="/faq" component={FAQPage} />
         <Route path="/cities/:city" component={CityPage} />
         <Route path="/admin" component={AdminPage} />
+        <Route path="/admin/gbp" component={GBPPage} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
@@ -54,6 +56,7 @@ function App() {
       const timer = setTimeout(() => setShowChat(true), 2500)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [])
 
   return (
