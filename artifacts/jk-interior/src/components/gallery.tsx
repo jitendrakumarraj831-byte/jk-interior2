@@ -99,7 +99,7 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
       }}>
       {/* Top bar */}
       <div className="flex items-center justify-between px-5 py-3.5 bg-black/80">
-        {img.category && <span className="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full">{img.category}</span>}
+        {img.category && <span className="text-xs font-bold uppercase tracking-widest text-gold-400 bg-gold-400/10 px-3 py-1 rounded-full">{img.category}</span>}
         <span className="text-white/40 text-xs ml-auto mr-4">{idx+1} / {images.length}</span>
         <button ref={btn} onClick={onClose} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all"><X size={18}/></button>
       </div>
@@ -153,13 +153,13 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
           <WhatsAppLink
             message={`नमस्ते JK Interior! इस डिज़ाइन का कोटेशन चाहिए: "${img.alt}"`}
             icon={false}
-            className="rounded-full px-5 py-2.5 text-sm shadow-none hover:bg-green-500 hover:shadow-none"
+            className="rounded-full px-5 py-2.5 text-sm shadow-none hover:bg-gold-500 hover:shadow-none"
           >
             <MessageCircle size={14} aria-hidden="true" /> WhatsApp
           </WhatsAppLink>
           <CallLink
             icon={false}
-            className="rounded-full bg-blue-600 px-5 py-2.5 text-sm shadow-none hover:bg-blue-500 hover:shadow-none"
+            className="rounded-full bg-charcoal-600 px-5 py-2.5 text-sm shadow-none hover:bg-charcoal-500 hover:shadow-none"
           >
             <Phone size={14} aria-hidden="true" /> Call
           </CallLink>
@@ -207,7 +207,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4 }}
-      className="group relative mb-6 break-inside-avoid scroll-mt-28 overflow-hidden rounded-2xl border border-emerald-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-xl"
+      className="group relative mb-6 break-inside-avoid scroll-mt-28 overflow-hidden rounded-2xl border border-gold-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/30 hover:shadow-xl"
     >
             {/* Slider Area with Fixed Aspect-Ratio (नो लेआउट जम्प) */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
@@ -279,7 +279,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
               <div className="absolute top-0 left-0 right-0 z-20 h-1 overflow-hidden bg-white/20">
                 <motion.div
                   key={`${cur}-prog`}
-                  className="h-full bg-emerald-400"
+                  className="h-full bg-gold-400"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 4, ease: "linear" }}
@@ -303,7 +303,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
               <button
                 key={i}
                 onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
-                className={`h-1.5 rounded-full transition-all duration-300 ${i === cur ? "w-5 bg-emerald-400" : "w-1.5 bg-white/50"}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === cur ? "w-5 bg-gold-400" : "w-1.5 bg-white/50"}`}
               />
             ))}
           </div>
@@ -336,7 +336,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
           variant="outline"
           message={`Hi JK Interior, I am interested in ${category} service in Forbesganj. Please share details.`}
           ariaLabel={`WhatsApp for ${category}`}
-          className="flex-1 py-2 text-xs font-semibold rounded-xl border-emerald-500/30 text-emerald-700 hover:bg-emerald-50"
+          className="flex-1 py-2 text-xs font-semibold rounded-xl border-gold-500/30 text-gold-700 hover:bg-gold-50"
         >
           WhatsApp
         </WhatsAppLink>
@@ -415,9 +415,9 @@ export default function Gallery() {
 
         {/* ── Section label ── */}
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-1 h-8 bg-emerald-500 rounded-full"/>
+          <div className="w-1 h-8 bg-gold-500 rounded-full"/>
           <h3 className="text-gray-800 font-bold text-lg">सर्विस के हिसाब से प्रोजेक्ट्स</h3>
-          <div className="flex-1 h-px bg-emerald-900/15"/>
+          <div className="flex-1 h-px bg-gold-900/15"/>
           <span className="text-gray-500 text-xs">{categories.length} services</span>
         </div>
 
@@ -438,8 +438,8 @@ export default function Gallery() {
             बजट आपका, ज़िम्मेदारी हमारी! प्रीमियम इंटीरियर और फॉल्स सीलिंग — किफायती रेट पर।
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(5,150,105,0.35)]">अभी कॉल करें</CallLink>
-            <WhatsAppLink className="px-8 py-4 shadow-none hover:bg-green-500 hover:shadow-none">WhatsApp करें</WhatsAppLink>
+            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]">अभी कॉल करें</CallLink>
+            <WhatsAppLink className="px-8 py-4 shadow-none hover:bg-gold-500 hover:shadow-none">WhatsApp करें</WhatsAppLink>
           </div>
         </motion.div>
       </div>

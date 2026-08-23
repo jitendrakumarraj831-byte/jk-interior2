@@ -58,9 +58,9 @@ export default function Contact() {
 
       {/* Background — a dark "invitation" panel; the form itself stays a bright card floating on it */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#04211a] via-[#0a3328] to-[#04211a]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#141c26] via-[#1f2a37] to-[#141c26]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_80%_10%,rgba(245,158,11,0.1),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_90%,rgba(16,185,129,0.14),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_90%,rgba(212, 175, 55,0.14),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -74,7 +74,7 @@ export default function Contact() {
           subtitle={
             <>
               Call, WhatsApp, or fill the form below — a real person from our Forbesganj office replies, not a bot.{" "}
-              <span className="text-emerald-300 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
+              <span className="text-gold-300 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
             </>
           }
         />
@@ -86,29 +86,29 @@ export default function Contact() {
             <div className="grid gap-4 sm:grid-cols-2">
               <motion.div
                 {...animProps}
-                className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
+                className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201, 162, 39,0.35)]">
                   <Phone className="h-5 w-5" />
                 </div>
-                <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Call Us</h3>
+                <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Call Us</h3>
                 <div className="flex flex-col gap-1.5 text-sm font-bold">
-                  <a href={`tel:${CALL_NUMBER}`} className="text-white hover:text-emerald-300 transition-colors">+91 8541849118</a>
-                  <a href={`tel:+${WA_NUMBER}`} className="text-slate-400 hover:text-emerald-300 transition-colors">+91 8651070831</a>
+                  <a href={`tel:${CALL_NUMBER}`} className="text-white hover:text-gold-300 transition-colors">+91 8541849118</a>
+                  <a href={`tel:+${WA_NUMBER}`} className="text-slate-400 hover:text-gold-300 transition-colors">+91 8651070831</a>
                 </div>
               </motion.div>
 
               <motion.div
                 {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
-                className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
+                className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201, 162, 39,0.35)]">
                   <Mail className="h-5 w-5" />
                 </div>
-                <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-emerald-300">Email Us</h3>
+                <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Email Us</h3>
                 <a
                   href="mailto:jkinteriorofficial@gmail.com"
-                  className="text-sm font-bold text-slate-200 hover:text-emerald-300 break-all transition-colors"
+                  className="text-sm font-bold text-slate-200 hover:text-gold-300 break-all transition-colors"
                 >
                   jkinteriorofficial@gmail.com
                 </a>
@@ -118,10 +118,10 @@ export default function Contact() {
             {/* Location */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
-              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
+              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-300 border border-emerald-400/20">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold-400/10 text-gold-300 border border-gold-400/20">
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
@@ -135,7 +135,7 @@ export default function Contact() {
             {/* Hours */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
-              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/30"
+              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
             >
               <div className="flex gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300 border border-amber-400/20">
@@ -195,7 +195,7 @@ export default function Contact() {
           >
             {/* Form Header */}
             <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-[0_4px_16px_rgba(5,150,105,0.35)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201, 162, 39,0.35)]">
                 <Star className="h-5 w-5" />
               </div>
               <div>
@@ -205,7 +205,7 @@ export default function Contact() {
             </div>
 
             {submitted && (
-              <div className="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-700 text-center">
+              <div className="mb-4 rounded-xl bg-gold-50 border border-gold-200 px-4 py-3 text-sm font-semibold text-gold-700 text-center">
                 ✅ WhatsApp opened in a new tab — tap Send there to reach us. We'll reply within 2 hours.
               </div>
             )}
@@ -273,7 +273,7 @@ export default function Contact() {
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-700 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_32px_rgba(5,150,105,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold-700 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_32px_rgba(201, 162, 39,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

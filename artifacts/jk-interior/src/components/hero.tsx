@@ -26,8 +26,8 @@ const stats = [
 
 const trustBadges = [
   { icon: Star, label: "4.9/5 Google Rating", color: "text-amber-700 border-amber-300/60 bg-amber-50" },
-  { icon: Droplets, label: "Waterproof PVC & UV Marble", color: "text-cyan-700 border-cyan-300/60 bg-cyan-50" },
-  { icon: Sparkles, label: "Dust-Free Clean Work", color: "text-violet-700 border-violet-300/60 bg-violet-50" },
+  { icon: Droplets, label: "Waterproof PVC & UV Marble", color: "text-gold-700 border-gold-300/60 bg-gold-50" },
+  { icon: Sparkles, label: "Dust-Free Clean Work", color: "text-charcoal-700 border-charcoal-300/60 bg-charcoal-50" },
 ]
 
 export default function Hero() {
@@ -60,7 +60,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
         <div className="absolute inset-0 bg-gradient-to-b from-[#fdfbf6] via-[#faf7f0] to-[#f3ecdd]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_85%_15%,rgba(212,160,23,0.14),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_5%_90%,rgba(5,150,105,0.10),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_5%_90%,rgba(201, 162, 39,0.10),transparent)]" />
         {/* fine grid texture */}
         <div
           className="absolute inset-0 opacity-[0.4]"
@@ -97,7 +97,7 @@ export default function Hero() {
 
             {/* Urgency / Offer Strip */}
             <motion.div {...anim(0.15)} className="mb-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-600/30 bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-800 sm:text-[11px]">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-600/30 bg-gold-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-800 sm:text-[11px]">
                 <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                 आज ही फ्री साइट विजिट बुक करें
               </span>
@@ -133,7 +133,7 @@ export default function Hero() {
               </h1>
               <p className="max-w-xl text-sm font-normal leading-relaxed text-stone-600 sm:text-base md:text-lg">
                 घर, ऑफिस या दुकान को दें एक मॉडर्न और साफ-सुथरा लुक। भरोसेमंद कारीगरी, ब्रांडेड टिकाऊ मटेरियल और{" "}
-                <span className="inline-block rounded-md border border-emerald-600/30 bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-800">
+                <span className="inline-block rounded-md border border-gold-600/30 bg-gold-50 px-2 py-0.5 font-semibold text-gold-800">
                   फ्री साइट विजिट
                 </span>{" "}
                 के साथ।
@@ -172,7 +172,7 @@ export default function Hero() {
                 aria-label={`Call JK Interior at ${CALL_DISPLAY}`}
                 className="group inline-flex items-center gap-2 text-sm font-medium text-stone-600 transition-colors hover:text-stone-900"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 ring-1 ring-emerald-600/20 transition-colors group-hover:bg-emerald-200">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-100 text-gold-700 ring-1 ring-gold-600/20 transition-colors group-hover:bg-gold-200">
                   <Phone className="h-4 w-4" aria-hidden="true" />
                 </span>
                 <span>
@@ -185,7 +185,7 @@ export default function Hero() {
             {/* Quick Micro-Features */}
             <motion.div {...anim(0.5)} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-stone-600">
               <span className="flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+                <Clock className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
                 2 घंटे में जवाब
               </span>
               <span className="text-stone-300" aria-hidden="true">•</span>
@@ -195,12 +195,12 @@ export default function Hero() {
               </span>
               <span className="text-stone-300" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
                 Expert Workmanship
               </span>
               <span className="text-stone-300" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-cyan-700" aria-hidden="true" />
+                <MapPin className="h-3.5 w-3.5 text-gold-700" aria-hidden="true" />
                 Forbesganj, Araria, Jogbani &amp; आस-पास
               </span>
             </motion.div>
@@ -218,7 +218,7 @@ export default function Hero() {
             className="relative mx-auto w-full max-w-md lg:max-w-none"
           >
             {/* gold gradient frame */}
-            <div className="relative rounded-[1.75rem] bg-gradient-to-br from-amber-200/70 via-white to-emerald-100/60 p-2 shadow-[0_30px_70px_-20px_rgba(120,90,20,0.35)] ring-1 ring-amber-300/40">
+            <div className="relative rounded-[1.75rem] bg-gradient-to-br from-amber-200/70 via-white to-gold-100/60 p-2 shadow-[0_30px_70px_-20px_rgba(120,90,20,0.35)] ring-1 ring-amber-300/40">
               <div className="overflow-hidden rounded-[1.4rem]">
                 <picture>
                   <source srcSet="/images/hero-interior.avif" type="image/avif" />
@@ -255,8 +255,8 @@ export default function Hero() {
             </div>
 
             {/* Floating projects chip */}
-            <div className="absolute -bottom-3 right-5 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-sm">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+            <div className="absolute -bottom-3 right-5 flex items-center gap-2 rounded-2xl border border-gold-200 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-sm">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-100 text-gold-700">
                 <TrendingUp className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="flex flex-col leading-tight">
@@ -275,7 +275,7 @@ export default function Hero() {
         >
           {stats.map((s) => (
             <div key={s.label} className="group flex flex-col items-center gap-1 p-3 text-center transition-colors hover:bg-amber-50/60 sm:p-5">
-              <s.icon className="h-4 w-4 text-amber-600 transition-colors group-hover:text-emerald-600" aria-hidden="true" />
+              <s.icon className="h-4 w-4 text-amber-600 transition-colors group-hover:text-gold-600" aria-hidden="true" />
               <div className="text-lg font-black tracking-tight text-stone-900 sm:text-2xl">{s.value}</div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-stone-500 sm:text-[10px]">{s.label}</div>
             </div>

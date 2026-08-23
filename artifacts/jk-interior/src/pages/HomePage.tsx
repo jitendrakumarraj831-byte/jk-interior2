@@ -52,6 +52,7 @@ export default function HomePage() {
             "@type": "LocalBusiness",
             "@id": "https://www.jkinterior.online/#business",
             name: "JK Interior",
+            slogan: "Interior & False Ceiling Solutions",
             description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit and complete interior design since 2019.",
             url: "https://www.jkinterior.online",
             logo: "https://www.jkinterior.online/logo.png",
@@ -149,11 +150,16 @@ export default function HomePage() {
           }
         ]}
       />
-      <h1 className="sr-only">
+      {/*
+        The Hero renders the page's single visible <h1>. This block keeps the
+        keyword-rich English summary crawlable without introducing a second H1
+        (two H1s on one page is an SEO anti-pattern).
+      */}
+      <p className="sr-only">
         Best Interior Designer and False Ceiling Contractor in Forbesganj,
         Araria Bihar – PVC Ceiling, Gypsum Ceiling, WPC Wall Panel,
         UV Marble Sheet and TV Unit Design by JK Interior
-      </h1>
+      </p>
       <Navbar />
       <Hero />
       <Services />

@@ -31,8 +31,8 @@ interface SectionHeaderProps {
 
 const TONE_BADGE: Record<SectionHeaderTone, { light: string; dark: string }> = {
   emerald: {
-    light: "border-emerald-500/30 bg-emerald-50 text-emerald-700",
-    dark: "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+    light: "border-gold-500/30 bg-gold-50 text-gold-700",
+    dark: "border-gold-400/30 bg-gold-400/10 text-gold-300",
   },
   amber: {
     light: "border-amber-300 bg-amber-50 text-amber-700",
@@ -41,7 +41,7 @@ const TONE_BADGE: Record<SectionHeaderTone, { light: string; dark: string }> = {
 }
 
 const TONE_DIVIDER: Record<SectionHeaderTone, string> = {
-  emerald: "via-emerald-500",
+  emerald: "via-gold-500",
   amber: "via-amber-400",
 }
 

@@ -56,7 +56,7 @@ export function FAQSkeleton() {
 
 export function WhyUsSkeleton() {
   return (
-    <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-emerald-50 to-white">
+    <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-b from-gold-50 to-white">
       <div className="max-w-5xl mx-auto">
         <div className="h-8 bg-gray-200 rounded w-48 mb-8 animate-pulse" />
         <div className="grid md:grid-cols-2 gap-8">

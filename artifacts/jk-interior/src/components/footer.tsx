@@ -45,9 +45,9 @@ export default function Footer() {
     <footer className="relative overflow-hidden pt-20 pb-28 md:pb-12">
       {/* Background — matches site light theme */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#ecfdf5] to-[#d1fae5]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#faf7f0] to-[#f3ecdd]" />
         <div className="absolute inset-0 grid-texture opacity-[0.04]" />
-        <div className="absolute top-0 inset-x-0 h-px bg-emerald-200/60" />
+        <div className="absolute top-0 inset-x-0 h-px bg-gold-200/60" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -71,14 +71,14 @@ export default function Footer() {
               loading="lazy"
             />
             <div className="space-y-4 mb-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">
-                Modern Interior & Ceiling Solutions
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-700">
+                Interior & False Ceiling Solutions
               </p>
               <p className="text-sm leading-relaxed text-gray-600 max-w-xs">
                 Premium interior design and false ceiling solutions in Bihar. Quality work for every budget — from PVC to complete home interiors.
               </p>
-              <div className="rounded-xl border border-emerald-200 bg-white/60 p-4">
-                <p className="text-xs leading-relaxed text-emerald-700/70 italic">
+              <div className="rounded-xl border border-gold-200 bg-white/60 p-4">
+                <p className="text-xs leading-relaxed text-gold-700/70 italic">
                   {"\u201C"}बिहार में इंटीरियर डिज़ाइन और सीलिंग का काम। आपके बजट में भरोसेमंद कारीगरी।{"\u201D"}
                 </p>
               </div>
@@ -91,7 +91,7 @@ export default function Footer() {
     target="_blank"
     rel="noopener noreferrer"
     aria-label="JK Interior on Facebook"
-    className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50 transition-all"
+    className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 hover:border-gold-400 hover:bg-gold-50 transition-all"
   >
     <Facebook className="h-4 w-4" />
   </a>
@@ -101,7 +101,7 @@ export default function Footer() {
     target="_blank"
     rel="noopener noreferrer"
     aria-label="JK Interior on Instagram"
-    className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50 transition-all"
+    className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 hover:border-gold-400 hover:bg-gold-50 transition-all"
   >
     <Instagram className="h-4 w-4" />
   </a>
@@ -118,8 +118,8 @@ export default function Footer() {
             })}
             className="lg:col-span-2"
           >
-            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
-              <span className="h-0.5 w-5 bg-emerald-500 rounded-full" />
+            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gold-700">
+              <span className="h-0.5 w-5 bg-gold-500 rounded-full" />
               Quick Links
             </h3>
             <nav className="flex flex-col gap-3">
@@ -127,9 +127,9 @@ export default function Footer() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-emerald-700"
+                  className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-gold-700"
                 >
-                  <ArrowRight className="h-3 w-3 text-emerald-500/0 group-hover:text-emerald-500 transition-all -translate-x-1 group-hover:translate-x-0" />
+                  <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" />
                   {link.label}
                 </Link>
               ))}
@@ -146,8 +146,8 @@ export default function Footer() {
             })}
             className="lg:col-span-3"
           >
-            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
-              <span className="h-0.5 w-5 bg-emerald-500 rounded-full" />
+            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gold-700">
+              <span className="h-0.5 w-5 bg-gold-500 rounded-full" />
               Our Services
             </h3>
             <div className="flex flex-col gap-3">
@@ -155,9 +155,9 @@ export default function Footer() {
                 <Link
                   key={s.label}
                   href="/services"
-                  className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-emerald-700"
+                  className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-gold-700"
                 >
-                  <ArrowRight className="h-3 w-3 text-emerald-500/0 group-hover:text-emerald-500 transition-all -translate-x-1 group-hover:translate-x-0" />
+                  <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" />
                   {s.label}
                 </Link>
               ))}
@@ -174,46 +174,46 @@ export default function Footer() {
             })}
             className="lg:col-span-3"
           >
-            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700">
-              <span className="h-0.5 w-5 bg-emerald-500 rounded-full" />
+            <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gold-700">
+              <span className="h-0.5 w-5 bg-gold-500 rounded-full" />
               Get in Touch
             </h3>
             <div className="flex flex-col gap-4">
               <a
                 href={`tel:${CALL_NUMBER}`}
-                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
+                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
                   <Phone className="h-4 w-4" />
                 </div>
                 <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-emerald-600">Primary</span>
+                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">Primary</span>
                   +91 8541849118
                 </div>
               </a>
               <a
                 href={`tel:+${WA_NUMBER}`}
-                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
+                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
                   <Phone className="h-4 w-4" />
                 </div>
                 <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-emerald-600">WhatsApp</span>
+                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">WhatsApp</span>
                   +91 8651070831
                 </div>
               </a>
               <a
                 href="mailto:jkinteriorofficial@gmail.com"
-                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-emerald-700 transition-colors"
+                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600 group-hover:bg-emerald-50 transition-colors">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
                   <Mail className="h-4 w-4" />
                 </div>
                 <span className="break-all">jkinteriorofficial@gmail.com</span>
               </a>
               <div className="flex items-start gap-3 text-sm font-semibold text-gray-600">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-white/70 text-emerald-600">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600">
                   <MapPin className="h-4 w-4" />
                 </div>
                 <span className="pt-0.5 leading-snug">Damaria Rewahi,<br />Forbesganj, Bihar 854318</span>
@@ -246,11 +246,11 @@ export default function Footer() {
 >
   <Link
     href="/#areas"
-    className="group flex items-center justify-between rounded-2xl border border-emerald-200/80 bg-white/60 px-5 py-4 backdrop-blur-xs transition-all duration-300 hover:border-emerald-300 hover:bg-white/80 hover:shadow-md"
+    className="group flex items-center justify-between rounded-2xl border border-gold-200/80 bg-white/60 px-5 py-4 backdrop-blur-xs transition-all duration-300 hover:border-gold-300 hover:bg-white/80 hover:shadow-md"
     aria-label="View JK Interior service areas"
   >
     <div className="flex items-center gap-3">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-700">
         <svg
           className="h-5 w-5"
           fill="none"
@@ -268,7 +268,7 @@ export default function Footer() {
       </div>
 
       <div>
-        <h3 className="text-sm font-bold text-emerald-900">
+        <h3 className="text-sm font-bold text-gold-900">
           Service Areas
         </h3>
         <p className="mt-0.5 text-xs text-gray-500">
@@ -278,7 +278,7 @@ export default function Footer() {
     </div>
 
     <svg
-      className="h-5 w-5 text-emerald-600 transition-transform duration-300 group-hover:translate-x-1"
+      className="h-5 w-5 text-gold-600 transition-transform duration-300 group-hover:translate-x-1"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -295,39 +295,39 @@ export default function Footer() {
         
 
         {/* SEO text */}
-        <div className="mt-6 mb-12 rounded-xl border border-emerald-200 bg-white/50 p-4">
+        <div className="mt-6 mb-12 rounded-xl border border-gold-200 bg-white/50 p-4">
           <p className="text-xs leading-relaxed text-gray-500">
             JK Interior — Best interior designer in Forbesganj, Araria, Bihar. We provide PVC false ceiling, gypsum ceiling design, WPC wall paneling, UV marble sheet, modular TV unit design, and complete interior solutions across{' '}
-            <Link href="/cities/forbesganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Forbesganj</Link>,{' '}
-            <Link href="/cities/araria" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Araria</Link>,{' '}
-            <Link href="/cities/jogbani" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Jogbani</Link>,{' '}
-            <Link href="/cities/raniganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Raniganj</Link>,{' '}
-            <Link href="/cities/narpatganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Narpatganj</Link>,{' '}
-            <Link href="/cities/kursakanta" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Kursakanta</Link>,{' '}
-            <Link href="/cities/tribeniganj" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Tribeniganj</Link>,{' '}
-            <Link href="/cities/chhatapur" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Chhatapur</Link>,{' '}
-            <Link href="/cities/supaul" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Supaul</Link> and{' '}
-            <Link href="/cities/purnia" className="underline underline-offset-2 hover:text-emerald-700 transition-colors">Purnia</Link>.
+            <Link href="/cities/forbesganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Forbesganj</Link>,{' '}
+            <Link href="/cities/araria" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Araria</Link>,{' '}
+            <Link href="/cities/jogbani" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Jogbani</Link>,{' '}
+            <Link href="/cities/raniganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Raniganj</Link>,{' '}
+            <Link href="/cities/narpatganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Narpatganj</Link>,{' '}
+            <Link href="/cities/kursakanta" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Kursakanta</Link>,{' '}
+            <Link href="/cities/tribeniganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Tribeniganj</Link>,{' '}
+            <Link href="/cities/chhatapur" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Chhatapur</Link>,{' '}
+            <Link href="/cities/supaul" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Supaul</Link> and{' '}
+            <Link href="/cities/purnia" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Purnia</Link>.
           </p>
         </div>
 
         {/* Copyright */}
-<div className="flex flex-col items-center justify-between gap-5 border-t border-emerald-200 pt-8 md:flex-row">
+<div className="flex flex-col items-center justify-between gap-5 border-t border-gold-200 pt-8 md:flex-row">
   <div>
-    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700" suppressHydrationWarning>
+    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-700" suppressHydrationWarning>
       © {currentYear} JK Interior Forbesganj
     </p>
     <p className="mt-0.5 flex items-center gap-1.5 text-[10px] font-semibold text-gray-500">
       <span>Interior & Digital Experience Crafted by Jitendra Kumar</span>
-      <svg className="h-3 w-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <svg className="h-3 w-3 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </svg>
     </p>
   </div>
   <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-500">
-    <Link href="/services" className="hover:text-emerald-600 transition-colors">All Services</Link>
+    <Link href="/services" className="hover:text-gold-600 transition-colors">All Services</Link>
     <span>•</span>
-    <Link href="/faq" className="hover:text-emerald-600 transition-colors">FAQ</Link>
+    <Link href="/faq" className="hover:text-gold-600 transition-colors">FAQ</Link>
     <span>•</span>
     <span>Excellence Across Araria District</span>
   </div>

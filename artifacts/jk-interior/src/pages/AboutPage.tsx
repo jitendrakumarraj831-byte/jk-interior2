@@ -16,6 +16,7 @@ export default function AboutPage() {
           "@type": "Organization",
           "@id": "https://www.jkinterior.online/#organization",
           name: "JK Interior",
+          slogan: "Interior & False Ceiling Solutions",
           url: "https://www.jkinterior.online",
           logo: "https://www.jkinterior.online/logo.png",
           foundingDate: "2019",
