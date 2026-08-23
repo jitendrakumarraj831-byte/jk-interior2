@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { ArrowRight, MapPin, Star, ShieldCheck, Droplets, Sparkles, Zap, Award, TrendingUp, PhoneCall } from "lucide-react"
+import { ArrowRight, MapPin, Star, ShieldCheck, Droplets, Sparkles, Zap, TrendingUp, PhoneCall, CheckCircle2 } from "lucide-react"
 import { Link } from "wouter"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
@@ -7,25 +7,23 @@ import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 const easeLux = [0.16, 1, 0.3, 1] as const
 
 const words = [
-  "False Ceiling Contractor",
+  "Gypsum False Ceiling Work",
   "PVC Wall Paneling & Louvers",
-  "UV Marble & Charcoal Sheets",
-  "Gypsum False Ceiling Expert",
-  "Modular Interior Designer",
+  "UV Marble & Charcoal Panels",
+  "Modern TV Unit & Partitions",
 ]
 
 const stats = [
-  { value: "500+", label: "Projects Done", icon: TrendingUp },
+  { value: "500+", label: "Projects Completed", icon: TrendingUp },
   { value: "100%", label: "Termite & Waterproof", icon: Droplets },
-  { value: "1 Year", label: "Written Warranty", icon: Award },
   { value: "0%", label: "Hidden Costs", icon: ShieldCheck },
+  { value: "Free", label: "Site Visit & Quote", icon: Zap },
 ]
 
 const trustBadges = [
-  { icon: Star, label: "4.9/5 Rated (100+ Reviews)", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
-  { icon: ShieldCheck, label: "1 Year Written Warranty", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
+  { icon: Star, label: "4.9/5 Customer Rating", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
   { icon: Droplets, label: "100% Waterproof Material", color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10" },
-  { icon: Sparkles, label: "Direct Factory Rates", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
+  { icon: Sparkles, label: "Dust-Free Clean Work", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
 ]
 
 export default function Hero() {
@@ -52,7 +50,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative min-h-[90vh] lg:min-h-[100dvh] w-full overflow-hidden bg-zinc-950 flex flex-col justify-center"
-      aria-label="JK Interior - False Ceiling & Interior Designer in Forbesganj Araria Bihar"
+      aria-label="JK Interior - False Ceiling & Interior Contractor in Forbesganj Araria Bihar"
     >
       {/* Background Image with Cinematic Overlays */}
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
@@ -102,7 +100,7 @@ export default function Hero() {
           {/* Dynamic Rotating Specialty */}
           <motion.div {...anim(0.2)} className="mb-2">
             <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-zinc-300 sm:text-base md:text-lg">
-              <span className="shrink-0 text-amber-400">Expert In:</span>
+              <span className="shrink-0 text-amber-400">Specialist in:</span>
               <span className="relative inline-flex h-7 items-center overflow-hidden sm:h-8">
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -120,19 +118,19 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Main Heading & Subtitle - Direct & Professional */}
+          {/* Main Heading & Subtitle */}
           <motion.div {...anim(0.3)} className="mb-5">
             <h1 className="mb-3 font-serif text-3xl font-black leading-[1.15] tracking-tight text-white sm:text-5xl md:text-6xl">
-              फारबिसगंज और अररिया के
+              फारबिसगंज और अररिया का
               <br />
               <span className="hero-gradient-text">#1 False Ceiling & Interior Contractor</span>
             </h1>
             <p className="max-w-xl text-sm font-normal leading-relaxed text-zinc-200 sm:text-base md:text-lg">
-              बेस्ट क्वालिटी Gypsum False Ceiling, PVC Wall Paneling और UV Marble वर्क।{" "}
+              घर, ऑफिस या दुकान को दें एक मॉडर्न और प्रीमियम लुक। बेहतरीन कारीगरी, 100% वॉटरप्रूफ मटेरियल और{" "}
               <span className="inline-block rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-semibold text-emerald-300 backdrop-blur-xs">
-                1 साल की लिखित वारंटी
+                फ्री साइट विजिट
               </span>{" "}
-              और फ्री साइट विजिट के साथ।
+              के साथ।
             </p>
           </motion.div>
 
@@ -161,16 +159,16 @@ export default function Hero() {
             </Link>
           </motion.div>
 
-          {/* Quick Micro-Trust Badges */}
+          {/* Quick Micro-Features */}
           <motion.div {...anim(0.5)} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-zinc-300">
             <span className="flex items-center gap-1.5">
-              <Zap className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
-              Free Site Visit
+              <CheckCircle2 className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
+              Direct Contractor Rates
             </span>
             <span className="text-zinc-600" aria-hidden="true">•</span>
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
-              1 Year Written Warranty
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
+              Expert Workmanship
             </span>
             <span className="text-zinc-600" aria-hidden="true">•</span>
             <span className="flex items-center gap-1.5">
