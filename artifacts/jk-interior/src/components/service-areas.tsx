@@ -6,16 +6,16 @@ import SectionHeader from "@/components/ui/section-header"
 import { CallLink } from "@/components/ui/cta-links"
 
 const areas = [
-  { name: "Forbesganj", desc: "Main Hub", highlight: true },
-  { name: "Araria", desc: "District HQ", highlight: true },
-  { name: "Jogbani", desc: "Border Town" },
-  { name: "Narpatganj", desc: "Nearby" },
-  { name: "Raniganj", desc: "Served Area" },
-  { name: "Kursakanta", desc: "Covered" },
-  { name: "Purnia", desc: "Major City" },
-  { name: "Chhatapur", desc: "Covered" },
-  { name: "Tribeniganj", desc: "Covered" },
-  { name: "Supaul", desc: "Served Area" },
+  { name: "Forbesganj", slug: "forbesganj", desc: "Main Hub", highlight: true },
+  { name: "Araria", slug: "araria", desc: "District HQ", highlight: true },
+  { name: "Jogbani", slug: "jogbani", desc: "Border Town" },
+  { name: "Narpatganj", slug: "narpatganj", desc: "Nearby" },
+  { name: "Raniganj", slug: "raniganj", desc: "Served Area" },
+  { name: "Kursakanta", slug: "kursakanta", desc: "Covered" },
+  { name: "Purnia", slug: "purnia", desc: "Major City" },
+  { name: "Chhatapur", slug: "chhatapur", desc: "Covered" },
+  { name: "Tribeniganj", slug: "tribeniganj", desc: "Covered" },
+  { name: "Supaul", slug: "supaul", desc: "Served Area" },
 ]
 
 const hubPositions = [
@@ -111,10 +111,13 @@ export default function ServiceAreas() {
                   className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
                   style={{ top: pos.top, left: pos.left }}
                 >
-                  <div className={`group flex items-center gap-2 rounded-2xl border px-4 py-2.5 shadow-sm transition-all duration-300 cursor-default backdrop-blur-sm hover:scale-110 hover:z-50 ${
+                  <Link
+                    href={`/cities/${area.slug}`}
+                    aria-label={`Interior design & false ceiling services in ${area.name}`}
+                    className={`group flex items-center gap-2 rounded-2xl border px-4 py-2.5 shadow-sm transition-all duration-300 cursor-pointer backdrop-blur-sm hover:scale-110 hover:z-50 ${
                     area.highlight
                       ? "border-emerald-300 bg-emerald-50 shadow-[0_4px_20px_rgba(5,150,105,0.15)]"
-                      : "border-gray-200 bg-white"
+                      : "border-gray-200 bg-white hover:border-emerald-300"
                   }`}>
                     <span className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
                       area.highlight
@@ -127,7 +130,7 @@ export default function ServiceAreas() {
                       <span className={`block text-sm font-bold ${area.highlight ? "text-emerald-700" : "text-gray-800"}`}>{area.name}</span>
                       <span className="block text-[9px] font-medium text-gray-500">{area.desc}</span>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
               )
             })}
@@ -137,20 +140,22 @@ export default function ServiceAreas() {
         {/* Mobile Grid */}
         <motion.div {...staggerContainer} className="grid grid-cols-2 gap-3 md:hidden mb-12">
           {areas.map((area) => (
-            <motion.div
-              key={area.name}
-              {...staggerItem}
-              className={`flex items-center gap-2 rounded-xl border p-3.5 ${
-                area.highlight
-                  ? "border-emerald-300 bg-emerald-50"
-                  : "border-gray-200 bg-white"
-              }`}
-            >
-              <MapPin className={`h-4 w-4 shrink-0 ${area.highlight ? "text-emerald-600" : "text-gray-400"}`} />
-              <div>
-                <span className="block text-sm font-bold text-gray-900">{area.name}</span>
-                <span className="block text-[9px] text-gray-500">{area.desc}</span>
-              </div>
+            <motion.div key={area.name} {...staggerItem}>
+              <Link
+                href={`/cities/${area.slug}`}
+                aria-label={`Interior design & false ceiling services in ${area.name}`}
+                className={`flex items-center gap-2 rounded-xl border p-3.5 transition-colors active:scale-95 ${
+                  area.highlight
+                    ? "border-emerald-300 bg-emerald-50"
+                    : "border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/50"
+                }`}
+              >
+                <MapPin className={`h-4 w-4 shrink-0 ${area.highlight ? "text-emerald-600" : "text-gray-400"}`} />
+                <div>
+                  <span className="block text-sm font-bold text-gray-900">{area.name}</span>
+                  <span className="block text-[9px] text-gray-500">{area.desc}</span>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </motion.div>

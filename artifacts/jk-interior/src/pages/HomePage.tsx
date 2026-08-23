@@ -149,11 +149,16 @@ export default function HomePage() {
           }
         ]}
       />
-      <h1 className="sr-only">
+      {/*
+        The Hero renders the page's single visible <h1>. This block keeps the
+        keyword-rich English summary crawlable without introducing a second H1
+        (two H1s on one page is an SEO anti-pattern).
+      */}
+      <p className="sr-only">
         Best Interior Designer and False Ceiling Contractor in Forbesganj,
         Araria Bihar – PVC Ceiling, Gypsum Ceiling, WPC Wall Panel,
         UV Marble Sheet and TV Unit Design by JK Interior
-      </h1>
+      </p>
       <Navbar />
       <Hero />
       <Services />
