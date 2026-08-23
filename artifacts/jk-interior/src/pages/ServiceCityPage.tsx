@@ -108,8 +108,13 @@ export default function ServiceCityPage() {
           </h1>
           <p className="mb-6 text-sm font-semibold text-gray-500 sm:text-base">{service.nameHi} · {city.nameHi}</p>
 
-          <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+          <p className="mb-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             {service.description} JK Interior installs {service.name} across {city.name}, {city.district} district with free site visits and a written 1-year warranty.
+          </p>
+          <p className="mb-8 max-w-3xl rounded-xl border-l-2 border-emerald-300 bg-emerald-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
+            {city.nameHi} और आसपास {service.nameHi} का काम JK Interior करती है — {service.price} रेंज में,
+            फ्री साइट विज़िट, ब्रांडेड मटेरियल और 1 साल की लिखित वारंटी के साथ। सही अनुमान और डिज़ाइन फोटो के
+            लिए <span className="font-semibold text-emerald-800">+91&nbsp;85418&nbsp;49118</span> पर कॉल या WhatsApp करें।
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -232,7 +237,10 @@ export default function ServiceCityPage() {
           <h2 className="mb-2 text-xl font-black">
             Ready for {service.name} in {city.name}?
           </h2>
-          <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
+          <p className="mb-1 text-emerald-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
+          <p className="mb-6 text-sm font-semibold text-white">
+            {city.nameHi} में {service.nameHi} के लिए फ्री साइट विज़िट और सही कोटेशन — अभी कॉल या WhatsApp करें।
+          </p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
               <Phone className="h-4 w-4" aria-hidden="true" />

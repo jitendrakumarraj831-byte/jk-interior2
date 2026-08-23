@@ -162,6 +162,13 @@ export default function CityPage() {
           <p className="text-base leading-relaxed text-gray-600 max-w-3xl">
             {city.uniqueContent}
           </p>
+          <p className="mt-4 rounded-xl border-l-2 border-emerald-300 bg-emerald-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700 max-w-3xl">
+            <span className="font-bold text-emerald-800">{city.nameHi} में इंटीरियर का काम?</span>{" "}
+            JK Interior {city.nameHi} और आसपास के इलाकों में PVC व जिप्सम फॉल्स सीलिंग, WPC वॉल पैनल,
+            UV मार्बल शीट, TV यूनिट और पूरा घर/ऑफिस इंटीरियर करती है — फ्री साइट विज़िट, ISI-ब्रांडेड
+            मटेरियल और 1 साल की लिखित वारंटी के साथ। सही रेट और डिज़ाइन फोटो के लिए{" "}
+            <span className="font-semibold text-emerald-800">+91&nbsp;85418&nbsp;49118</span> पर कॉल या WhatsApp करें।
+          </p>
         </div>
       </section>
 
@@ -229,7 +236,10 @@ export default function CityPage() {
           <h2 className="mb-2 text-xl font-black">
             Ready to Transform Your {city.name} Home?
           </h2>
-          <p className="mb-6 text-emerald-100 text-sm">Free site visit • No obligation • Same-week slots available</p>
+          <p className="mb-1 text-emerald-100 text-sm">Free site visit • No obligation • Same-week slots available</p>
+          <p className="mb-6 text-sm font-semibold text-white">
+            {city.nameHi} में फ्री साइट विज़िट और सही कोटेशन के लिए अभी कॉल या WhatsApp करें।
+          </p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink
               icon={false}

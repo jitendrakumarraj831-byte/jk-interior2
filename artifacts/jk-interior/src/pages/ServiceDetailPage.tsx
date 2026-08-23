@@ -238,7 +238,10 @@ export default function ServiceDetailPage() {
       <section className="bg-gradient-to-b from-emerald-700 to-emerald-900 py-14 text-white sm:py-16">
         <div className="mx-auto max-w-3xl px-5 text-center sm:px-6 lg:px-12">
           <h2 className="mb-2 text-xl font-black sm:text-2xl">Ready for {service.name}?</h2>
-          <p className="mb-6 text-sm text-emerald-100">Free site visit • No obligation • {service.warranty}</p>
+          <p className="mb-1 text-sm text-emerald-100">Free site visit • No obligation • {service.warranty}</p>
+          <p className="mb-6 text-sm font-semibold text-white">
+            {service.nameHi} का सही रेट और डिज़ाइन फोटो चाहिए? फ्री साइट विज़िट के लिए अभी कॉल या WhatsApp करें।
+          </p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
               <Phone className="h-4 w-4" aria-hidden="true" />
