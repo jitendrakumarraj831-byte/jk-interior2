@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowUpRight, Ruler, ShieldCheck, IndianRupee, MapPin, BadgeCheck, Sparkles, Droplets, Zap, ChevronDown, Clock, type LucideIcon } from "lucide-react"
+import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
@@ -88,27 +88,11 @@ export default function Services() {
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
         <SectionHeader
           icon={Ruler}
-          badge="Complete Service Catalogue"
+          badge="हमारी सर्विसेज"
           headingId="services-heading"
-          title={<>फारबिसगंज और अररिया का <span className="hero-gradient-text">#1 Interior Catalogue</span></>}
-          subtitle="हर सर्विस की पूरी जानकारी — सही कीमत, सामग्री, वारंटी और काम की टाइमलाइन"
+          title={<>आपके घर और ऑफिस के लिए <span className="hero-gradient-text">हर इंटीरियर सर्विस</span></>}
+          subtitle="साफ़ रेट, सही जानकारी और तेज़ काम — हर सर्विस पर टैप करके रेट, समय और सही जगह की पूरी डिटेल देखें।"
         />
-
-        {/* Top Badges */}
-        <div className="mx-auto mb-8 flex max-w-3xl flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
-          <div className="flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 shadow-xs sm:text-sm">
-            <Sparkles className="h-4 w-4 text-amber-500" aria-hidden="true" />
-            <span>500+ सफलतापूर्वक पूरे किए गए प्रोजेक्ट्स</span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 shadow-xs sm:text-sm">
-            <BadgeCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" />
-            <span>100% ISI-सर्टिफाइड मटेरियल</span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 shadow-xs sm:text-sm">
-            <ShieldCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" />
-            <span>1 साल की लिखित गारंटी</span>
-          </div>
-        </div>
 
         {/* 🌟 3. Filter Category Tabs */}
         <div className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -161,12 +145,12 @@ export default function Services() {
                         <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
                       </span>
 
-                      <div className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
-                        <span className="rounded-md bg-black/60 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-white backdrop-blur-md">
-                          1 Yr Warranty
+                      <div className="absolute bottom-3 left-3 flex flex-wrap items-center gap-1.5">
+                        <span className="rounded-md bg-emerald-600/90 px-2.5 py-1 text-[11px] font-extrabold tracking-wide text-white backdrop-blur-md">
+                          {service.price}
                         </span>
-                        <span className="rounded-md bg-emerald-600/80 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-white backdrop-blur-md">
-                          ISI Materials
+                        <span className="rounded-md bg-black/60 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white backdrop-blur-md">
+                          {service.installTimeHi}
                         </span>
                       </div>
                     </Link>
@@ -221,7 +205,7 @@ export default function Services() {
                       >
                         <span className="flex items-center gap-2">
                           <Ruler className="h-4 w-4 text-emerald-700" aria-hidden="true" />
-                          {isOpen ? "जानकारी छुपाएँ" : "पूरी डिटेल देखें (रेट, टाइमिंग, जगह)"}
+                          {isOpen ? "जानकारी छुपाएँ" : "पूरी डिटेल देखें — रेट, समय व सही जगह"}
                         </span>
                         <ChevronDown
                           className={`h-5 w-5 flex-none text-emerald-700 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -255,21 +239,24 @@ export default function Services() {
                                   <Clock className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
                                   <div>
                                     <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">काम का समय</dt>
-                                    <dd className="text-sm font-bold text-gray-900">{service.installTime}</dd>
+                                    <dd className="text-sm font-bold text-gray-900">{service.installTimeHi}</dd>
                                   </div>
                                 </div>
                                 <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
                                   <MapPin className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
                                   <div>
                                     <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">कहाँ लगेगा</dt>
-                                    <dd className="text-sm font-bold text-gray-900">{service.whereUsedFirst}</dd>
+                                    <dd className="text-sm font-bold text-gray-900">{service.whereUsedFirstHi}</dd>
                                   </div>
                                 </div>
                               </dl>
 
-                              <div className="mt-4 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2.5">
-                                <Sparkles className="h-4 w-4 flex-none text-amber-500" aria-hidden="true" />
-                                <span className="text-xs font-bold text-amber-900 sm:text-sm">{service.badgeHi}</span>
+                              <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2.5">
+                                <AlertTriangle className="mt-0.5 h-4 w-4 flex-none text-amber-500" aria-hidden="true" />
+                                <div>
+                                  <p className="text-[11px] font-black uppercase tracking-wide text-amber-800/80">कहाँ न लगाएँ</p>
+                                  <p className="text-xs font-semibold leading-snug text-amber-900 sm:text-sm">{service.avoidHi}</p>
+                                </div>
                               </div>
                             </div>
                           </motion.div>
@@ -287,7 +274,7 @@ export default function Services() {
                       </Link>
                       <span className="text-gray-300" aria-hidden="true">|</span>
                       <CallLink size="sm" variant="outline" ariaLabel={`Call for ${service.name} quote`}>
-                        फ्री रेट लें
+                        इसका फ्री रेट पाएँ
                       </CallLink>
                       <WhatsAppLink
                         size="sm"
@@ -309,10 +296,10 @@ export default function Services() {
         <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 rounded-2xl border border-emerald-900/10 bg-white p-8 text-center shadow-xs lg:mt-20">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700">
             <Zap className="h-4 w-4 text-amber-500" aria-hidden="true" />
-            <span>नो-हसल सर्विस (No Hidden Costs)</span>
+            <span>फ्री साइट विज़िट व सलाह</span>
           </div>
           <p className="max-w-2xl text-lg font-bold text-gray-900 sm:text-xl">
-            समझ नहीं आ रहा आपके कमरे के लिए क्या बेस्ट रहेगा? 10 मिनट की फ्री साइट विजिट में सब तय हो जाएगा।
+            समझ नहीं आ रहा किस कमरे में क्या लगवाएँ? हमें बताइए — आपके बजट और जगह के हिसाब से सही सर्विस और सही रेट हम खुद सुझा देंगे।
           </p>
           <div className="flex flex-wrap justify-center gap-3.5">
             <CallLink size="lg" shine ariaLabel="Call for free site visit" className="text-base">
