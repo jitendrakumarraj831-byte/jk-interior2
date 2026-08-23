@@ -65,8 +65,8 @@ export const COMPANY = {
   name: "JK Interior",
   fullName: "JK Interior Consultants",
   tagline: "Bihar's Most Trusted Interior Contractor",
-  founded: 2016,
-  experienceYears: 8,
+  founded: 2019,
+  experienceYears: 7,
   projectsCompleted: 500,
   locations: {
     headquarters: "Forbesganj, Araria District, Bihar",
@@ -99,7 +99,7 @@ export const COMPANY = {
     "No hidden charges",
     "Written warranty",
     "ISI-certified branded materials",
-    "8+ years experience",
+    "7+ years experience",
     "500+ completed projects",
   ],
 };

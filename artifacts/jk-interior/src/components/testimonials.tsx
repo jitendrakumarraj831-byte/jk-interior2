@@ -167,7 +167,7 @@ export default function Testimonials() {
         <motion.div {...animProps} className="mt-14 flex flex-col items-center gap-6 text-center">
           <div className="flex items-center gap-5 text-sm text-slate-300 sm:gap-6">
             <span className="flex items-center gap-1.5 font-bold text-white">
-              5.0 <Star className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
+              4.9 <Star className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
             </span>
             <span className="text-slate-500">|</span>
             <span>100+ reviews across Bihar</span>

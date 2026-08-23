@@ -9,7 +9,7 @@ export default function AboutPage() {
     <main>
       <SeoHead
         title="About JK Interior – Best False Ceiling Contractor in Forbesganj, Araria Bihar"
-        description="Learn about JK Interior – Bihar's most trusted interior contractor since 2016. 500+ projects, ISI-certified materials, 1-year written warranty. Serving Forbesganj, Araria, Purnia, Supaul and all of Bihar."
+        description="Learn about JK Interior – Bihar's most trusted interior contractor since 2019. 500+ projects, ISI-certified materials, 1-year written warranty. Serving Forbesganj, Araria, Purnia, Supaul and all of Bihar."
         canonical="/about"
         jsonLd={{
           "@context": "https://schema.org",
@@ -18,8 +18,8 @@ export default function AboutPage() {
           name: "JK Interior",
           url: "https://www.jkinterior.online",
           logo: "https://www.jkinterior.online/logo.png",
-          foundingDate: "2016",
-          description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel and complete interior design since 2016.",
+          foundingDate: "2019",
+          description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel and complete interior design since 2019.",
           telephone: ["+91-8541849118", "+91-8651070831"],
           email: "jkinteriorofficial@gmail.com",
           address: {
