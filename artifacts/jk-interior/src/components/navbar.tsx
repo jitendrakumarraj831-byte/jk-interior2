@@ -55,7 +55,7 @@ export default function Navbar() {
                 alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
                 width={220}
                 height={71}
-                className="relative h-11 w-auto sm:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                className="relative h-10 w-auto lg:h-11 xl:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
 
