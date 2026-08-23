@@ -126,8 +126,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white mb-1">Our Location</h3>
-                  <p className="text-slate-300 font-semibold text-sm">Damaria, Rewahi, Araria, Bihar - 854318</p>
-                  <p className="text-xs text-slate-500 mt-1">दमरिया, रेवाही, अररिया, बिहार</p>
+                  <p className="text-slate-300 font-semibold text-sm">Damaria Rewahi, Forbesganj, Bihar 854318</p>
+                  <p className="text-xs text-slate-500 mt-1">दमरिया रेवाही, फारबिसगंज, बिहार</p>
                 </div>
               </div>
             </motion.div>

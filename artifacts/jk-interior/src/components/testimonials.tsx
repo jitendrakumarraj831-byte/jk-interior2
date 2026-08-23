@@ -1,8 +1,9 @@
 
-import { Star, Quote, MapPin } from "lucide-react"
+import { Star, Quote, MapPin, ExternalLink } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import SectionHeader from "@/components/ui/section-header"
 import { WhatsAppLink } from "@/components/ui/cta-links"
+import { GOOGLE_REVIEWS_URL } from "@/lib/business-data"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -167,11 +168,29 @@ export default function Testimonials() {
         <motion.div {...animProps} className="mt-14 flex flex-col items-center gap-6 text-center">
           <div className="flex items-center gap-5 text-sm text-slate-300 sm:gap-6">
             <span className="flex items-center gap-1.5 font-bold text-white">
-              5.0 <Star className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
+              4.9 <Star className="h-4 w-4 text-amber-400 fill-amber-400" aria-hidden="true" />
             </span>
             <span className="text-slate-500">|</span>
             <span>100+ reviews across Bihar</span>
           </div>
+
+          {/* Link out to the verified Google Business profile */}
+          <a
+            href={GOOGLE_REVIEWS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Read all JK Interior reviews on Google"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-white backdrop-blur-sm transition-all hover:border-amber-300/40 hover:bg-white/10"
+          >
+            <span className="flex gap-0.5" aria-hidden="true">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
+              ))}
+            </span>
+            Google पर सभी reviews देखें
+            <ExternalLink className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" />
+          </a>
+
           <p className="text-base text-slate-300">अपने घर को भी दें प्रीमियम इंटीरियर का लुक</p>
           <WhatsAppLink
             size="lg"

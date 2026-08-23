@@ -7,6 +7,7 @@ import ServiceAreas from "@/components/service-areas"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
+import { FAQS } from "@/lib/faq-data"
 import {
   GallerySkeleton,
   WhyUsSkeleton,
@@ -51,18 +52,18 @@ export default function HomePage() {
             "@type": "LocalBusiness",
             "@id": "https://www.jkinterior.online/#business",
             name: "JK Interior",
-            description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit and complete interior design since 2016.",
+            description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit and complete interior design since 2019.",
             url: "https://www.jkinterior.online",
             logo: "https://www.jkinterior.online/logo.png",
             image: "https://www.jkinterior.online/og-image.png",
             telephone: ["+91-8541849118", "+91-8651070831"],
             email: "jkinteriorofficial@gmail.com",
-            foundingDate: "2016",
+            foundingDate: "2019",
             priceRange: "₹₹",
             address: {
               "@type": "PostalAddress",
-              streetAddress: "Damaria",
-              addressLocality: "Rewahi",
+              streetAddress: "Damaria Rewahi",
+              addressLocality: "Forbesganj",
               addressRegion: "Bihar",
               postalCode: "854318",
               addressCountry: "IN"
@@ -114,6 +115,7 @@ export default function HomePage() {
               bestRating: "5"
             },
             sameAs: [
+              "https://www.google.com/maps?cid=12398820263168117030",
               "https://wa.me/918651070831",
               "https://www.facebook.com/share/1GpAKHZZtb/",
               "https://www.instagram.com/jk_interior_ceiling_designer"
@@ -131,6 +133,19 @@ export default function HomePage() {
               target: "https://www.jkinterior.online/?s={search_term_string}",
               "query-input": "required name=search_term_string"
             }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": "https://www.jkinterior.online/#faq",
+            mainEntity: FAQS.map((faq) => ({
+              "@type": "Question",
+              name: faq.q,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.a
+              }
+            }))
           }
         ]}
       />

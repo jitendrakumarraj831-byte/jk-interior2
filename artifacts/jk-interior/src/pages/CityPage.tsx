@@ -33,8 +33,8 @@ export default function CityPage() {
     telephone: ["+91-8541849118", "+91-8651070831"],
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Damaria",
-      addressLocality: "Rewahi",
+      streetAddress: "Damaria Rewahi",
+      addressLocality: "Forbesganj",
       addressRegion: "Bihar",
       postalCode: "854318",
       addressCountry: "IN",

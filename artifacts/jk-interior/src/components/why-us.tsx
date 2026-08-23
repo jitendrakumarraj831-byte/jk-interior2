@@ -111,8 +111,8 @@ export default function WhyUs() {
               <span className="absolute -top-3 left-8 h-6 w-16 -rotate-3 bg-amber-200/70 shadow-sm" aria-hidden="true" />
               <Quote className="mb-4 h-8 w-8 text-emerald-300" aria-hidden="true" />
               <p className="mb-4 font-serif text-lg font-bold leading-snug text-gray-900 sm:text-xl">
-                We started JK Interior in Forbesganj in 2016 fitting PVC ceilings for a handful of
-                neighbours. Eight years and 100+ homes later, the job hasn't changed — we still
+                We started JK Interior in Forbesganj in 2019 fitting PVC ceilings for a handful of
+                neighbours. Several years and 100+ homes later, the job hasn't changed — we still
                 measure the room ourselves before we quote it.
               </p>
               <p className="mb-5 text-sm leading-relaxed text-gray-600 sm:text-base">
@@ -126,7 +126,7 @@ export default function WhyUs() {
                   JK
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-gray-900">JK Interior, since 2016</p>
+                  <p className="text-sm font-bold text-gray-900">JK Interior, since 2019</p>
                   <p className="text-xs text-gray-500">Forbesganj, Araria district, Bihar</p>
                 </div>
               </div>

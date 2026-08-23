@@ -13,8 +13,8 @@ export const BUSINESS = {
   whatsapp: '918651070831',
   email: 'jkinteriorofficial@gmail.com',
   address: {
-    street: 'Damaria',
-    city: 'Rewahi',
+    street: 'Damaria Rewahi',
+    city: 'Forbesganj',
     district: 'Araria',
     state: 'Bihar',
     postalCode: '854318',
@@ -24,7 +24,7 @@ export const BUSINESS = {
   hours: 'Mon–Sat 8:00 AM – 8:00 PM',
   hoursSun: 'Sun 9:00 AM – 6:00 PM',
   priceRange: '₹₹',
-  founded: '2016',
+  founded: '2019',
 } as const
 
 export const SERVICES_LIST = [
