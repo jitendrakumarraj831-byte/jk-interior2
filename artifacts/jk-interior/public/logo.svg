@@ -3,12 +3,13 @@
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9c6f1e"/>
       <stop offset="0.45" stop-color="#e7cd83"/>
-      <stop offset="0.75" stop-color="#c69a34"/>
+      <stop offset="0.78" stop-color="#c69a34"/>
       <stop offset="1" stop-color="#a2761f"/>
     </linearGradient>
-    <linearGradient id="goldSoft" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#caa044"/>
-      <stop offset="1" stop-color="#e7cd83"/>
+    <linearGradient id="goldArm" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#b07f22"/>
+      <stop offset="0.5" stop-color="#e7cd83"/>
+      <stop offset="1" stop-color="#c69a34"/>
     </linearGradient>
     <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#6fae54"/>
@@ -18,39 +19,34 @@
 
   <!-- ===== EMBLEM ===== -->
   <g>
-    <!-- gold sweeping ring, open on the right with a tail -->
-    <path d="M192,84 A96,66 0 1 0 150,172 Q188,172 220,150" fill="none" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
+    <!-- gold sweeping ring encircling the mark, open on the right with a tail -->
+    <path d="M180,68 A92,66 0 1 0 180,144 Q186,158 212,150" fill="none" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
 
     <!-- roof -->
-    <path d="M18,98 L104,30 L196,98 L180,98 L104,52 L34,98 Z" fill="#242c3b"/>
+    <path d="M20,96 L104,30 L188,96 L172,96 L104,52 L36,96 Z" fill="#242c3b"/>
     <!-- gold under-roof trim -->
-    <path d="M36,101 L104,55 L178,101" fill="none" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,99 L104,55 L170,99" fill="none" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
 
     <!-- chimney -->
-    <rect x="150" y="42" width="9" height="24" rx="2" fill="#242c3b"/>
+    <rect x="128" y="44" width="9" height="22" rx="2" fill="#242c3b"/>
 
-    <!-- pendant lamps hanging in the crook to the right -->
-    <line x1="158" y1="72" x2="158" y2="100" stroke="#242c3b" stroke-width="2"/>
-    <path d="M150,100 Q158,118 166,100 Z" fill="#242c3b"/>
-    <path d="M151,101 L165,101" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="176" y1="72" x2="176" y2="112" stroke="#242c3b" stroke-width="2"/>
-    <path d="M168,112 Q176,130 184,112 Z" fill="#242c3b"/>
-    <path d="M169,113 L183,113" stroke="url(#gold)" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- gable window (left slope) -->
+    <rect x="58" y="60" width="19" height="19" rx="2" fill="#242c3b"/>
+    <line x1="67.5" y1="60" x2="67.5" y2="79" stroke="url(#gold)" stroke-width="2"/>
+    <line x1="58" y1="69.5" x2="77" y2="69.5" stroke="url(#gold)" stroke-width="2"/>
 
-    <!-- gable window -->
-    <rect x="60" y="60" width="20" height="20" rx="2" fill="#242c3b"/>
-    <line x1="70" y1="60" x2="70" y2="80" stroke="url(#gold)" stroke-width="2"/>
-    <line x1="60" y1="70" x2="80" y2="70" stroke="url(#gold)" stroke-width="2"/>
+    <!-- monogram: J (dark serif) -->
+    <text x="50" y="156" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="98" fill="#242c3b">J</text>
 
-    <!-- monogram JK (K diagonal echoed in gold) -->
-    <text x="92" y="150" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="94" fill="#242c3b" letter-spacing="-3">J</text>
-    <text x="138" y="150" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="94" fill="#242c3b">K</text>
-    <path d="M132,150 L162,108" fill="none" stroke="url(#gold)" stroke-width="7" stroke-linecap="round"/>
+    <!-- monogram: K built from strokes (gold upper arm = roof slope) -->
+    <rect x="104" y="92" width="15" height="64" rx="3" fill="#242c3b"/>
+    <path d="M114,123 L150,94" fill="none" stroke="url(#goldArm)" stroke-width="16" stroke-linecap="round"/>
+    <path d="M114,125 L147,156" fill="none" stroke="#242c3b" stroke-width="15" stroke-linecap="round"/>
 
-    <!-- green leaf sprig -->
-    <path d="M112,178 Q116,160 124,146" fill="none" stroke="url(#leaf)" stroke-width="3" stroke-linecap="round"/>
-    <path d="M124,146 Q137,138 144,149 Q134,157 124,150 Z" fill="url(#leaf)"/>
-    <path d="M116,161 Q128,155 135,165 Q125,171 116,164 Z" fill="url(#leaf)"/>
+    <!-- green leaf sprig at the base -->
+    <path d="M150,170 Q154,156 161,146" fill="none" stroke="url(#leaf)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M161,146 Q173,139 179,149 Q169,157 161,150 Z" fill="url(#leaf)"/>
+    <path d="M153,157 Q165,151 171,161 Q161,167 153,160 Z" fill="url(#leaf)"/>
   </g>
 
   <!-- ===== DIVIDER ===== -->
