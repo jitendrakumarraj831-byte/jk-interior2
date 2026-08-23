@@ -72,7 +72,7 @@ export default function Footer() {
             />
             <div className="space-y-4 mb-6">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">
-                Modern Interior & Ceiling Solutions
+                Interior & False Ceiling Solutions
               </p>
               <p className="text-sm leading-relaxed text-gray-600 max-w-xs">
                 Premium interior design and false ceiling solutions in Bihar. Quality work for every budget — from PVC to complete home interiors.

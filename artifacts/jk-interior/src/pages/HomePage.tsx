@@ -52,6 +52,7 @@ export default function HomePage() {
             "@type": "LocalBusiness",
             "@id": "https://www.jkinterior.online/#business",
             name: "JK Interior",
+            slogan: "Interior & False Ceiling Solutions",
             description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit and complete interior design since 2019.",
             url: "https://www.jkinterior.online",
             logo: "https://www.jkinterior.online/logo.png",
