@@ -21,12 +21,12 @@ export default function NotFound() {
       <Navbar />
       <main className="relative flex min-h-[80vh] items-center overflow-hidden pt-28 pb-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] via-white to-[#f0fdf4]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#faf7f0] via-white to-[#faf7f0]" />
           <div className="absolute inset-0 grid-texture opacity-20" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-2xl px-5 text-center sm:px-6">
-          <p className="mb-4 text-7xl font-black tracking-tight text-emerald-600 sm:text-8xl">404</p>
+          <p className="mb-4 text-7xl font-black tracking-tight text-gold-600 sm:text-8xl">404</p>
           <h1 className="mb-4 text-2xl font-black tracking-tight text-gray-900 sm:text-3xl">
             यह पेज नहीं मिला — <span className="hero-gradient-text">Page Not Found</span>
           </h1>
@@ -39,7 +39,7 @@ export default function NotFound() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="group flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/8 px-4 py-2.5 text-sm font-bold text-emerald-700 transition-all hover:border-emerald-500/50 hover:bg-emerald-500/15"
+                className="group flex items-center gap-2 rounded-xl border border-gold-500/30 bg-gold-500/8 px-4 py-2.5 text-sm font-bold text-gold-700 transition-all hover:border-gold-500/50 hover:bg-gold-500/15"
               >
                 <link.icon className="h-4 w-4" aria-hidden="true" />
                 {link.label}

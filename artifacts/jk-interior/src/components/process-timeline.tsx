@@ -14,7 +14,7 @@ const steps = [
     titleHi: "संपर्क करें",
     desc: "Call or WhatsApp us to discuss your requirements. We'll schedule a free site visit at your convenience.",
     descHi: "कॉल या WhatsApp पर अपनी ज़रूरत बताएं। हम फ्री साइट विज़िट के लिए समय तय करेंगे।",
-    color: "from-blue-500 to-blue-700",
+    color: "from-charcoal-500 to-charcoal-700",
     glow: "rgba(37,99,235,0.25)",
   },
   {
@@ -34,8 +34,8 @@ const steps = [
     titleHi: "पैनल-सिस्टम इंस्टॉलेशन",
     desc: "Our crew works room by room on the schedule you were quoted — clip-and-panel wherever the design allows, so there's far less dust than a wet-plaster job.",
     descHi: "जो शेड्यूल बताया गया, उसी पर टीम कमरा-दर-कमरा काम करती है — जहाँ मुमकिन हो, गीले प्लास्टर की जगह पैनल सिस्टम, यानी कम धूल।",
-    color: "from-emerald-500 to-emerald-700",
-    glow: "rgba(5,150,105,0.25)",
+    color: "from-gold-500 to-gold-700",
+    glow: "rgba(201, 162, 39,0.25)",
   },
   {
     icon: CheckCircle2,
@@ -44,7 +44,7 @@ const steps = [
     titleHi: "1 साल की वारंटी",
     desc: "Project handed over with a written 1-year warranty. Your investment is fully protected with JK Interior.",
     descHi: "लिखित 1 साल की वारंटी के साथ प्रोजेक्ट हैंडओवर। आपका इन्वेस्टमेंट पूरी तरह सुरक्षित।",
-    color: "from-violet-500 to-violet-700",
+    color: "from-charcoal-500 to-charcoal-700",
     glow: "rgba(139,92,246,0.25)",
   },
 ]
@@ -87,7 +87,7 @@ export default function ProcessTimeline() {
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1830] to-[#0d1f3c]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(16,185,129,0.12),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(212, 175, 55,0.12),transparent)]" />
         <div className="absolute inset-0 dot-pattern opacity-[0.07]" />
       </div>
 
@@ -108,10 +108,10 @@ export default function ProcessTimeline() {
             <motion.div key={step.step} {...staggerItem} className="relative">
               {/* Connector line (desktop) */}
               {i < steps.length - 1 && (
-                <div className="absolute left-[calc(50%+3.5rem)] top-14 hidden h-0.5 w-[calc(100%-1rem)] bg-gradient-to-r from-emerald-400/40 to-transparent lg:block z-20" />
+                <div className="absolute left-[calc(50%+3.5rem)] top-14 hidden h-0.5 w-[calc(100%-1rem)] bg-gradient-to-r from-gold-400/40 to-transparent lg:block z-20" />
               )}
 
-              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-emerald-400/30 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_rgba(16,185,129,0.15)] sm:rounded-3xl">
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/30 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_rgba(212, 175, 55,0.15)] sm:rounded-3xl">
                 {/* Step number bg */}
                 <div className="absolute -top-4 -right-2 text-7xl font-black text-white/5 select-none">
                   {step.step}
@@ -125,12 +125,12 @@ export default function ProcessTimeline() {
                 </div>
 
                 {/* Step badge */}
-                <div className="mb-3 inline-flex items-center justify-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1">
-                  <span className="text-[10px] font-black text-emerald-300 tracking-widest">STEP {step.step}</span>
+                <div className="mb-3 inline-flex items-center justify-center gap-1 rounded-full border border-gold-400/30 bg-gold-400/10 px-3 py-1">
+                  <span className="text-[10px] font-black text-gold-300 tracking-widest">STEP {step.step}</span>
                 </div>
 
                 <h3 className="mb-1 text-lg font-bold text-white">{step.title}</h3>
-                <p className="mb-3 text-xs font-semibold text-emerald-300/70">{step.titleHi}</p>
+                <p className="mb-3 text-xs font-semibold text-gold-300/70">{step.titleHi}</p>
                 <p className="mb-2 text-sm leading-relaxed text-slate-300">{step.desc}</p>
                 <p className="text-xs leading-relaxed text-slate-500">{step.descHi}</p>
               </div>

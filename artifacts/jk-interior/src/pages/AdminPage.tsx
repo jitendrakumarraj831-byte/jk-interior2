@@ -62,7 +62,7 @@ function Row({ icon, label, value, highlight }: { icon: string; label: string; v
     <div className="flex items-start gap-2 text-xs">
       <span className="w-4 shrink-0">{icon}</span>
       <span className="text-gray-500 w-14 shrink-0 text-[11px]">{label}</span>
-      <span className={`font-semibold break-all text-[12px] ${highlight ? "text-emerald-700" : "text-gray-800"}`}>{value}</span>
+      <span className={`font-semibold break-all text-[12px] ${highlight ? "text-gold-700" : "text-gray-800"}`}>{value}</span>
     </div>
   )
 }
@@ -86,8 +86,8 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
   }
 
   return (
-    <div className={`rounded-2xl border bg-white shadow-sm overflow-hidden transition-all ${lead.is_read ? "opacity-70 border-gray-100" : "border-emerald-200 shadow-emerald-50"}`}>
-      <div className={`px-4 py-3 flex items-center justify-between ${lead.is_read ? "bg-gray-50" : "bg-gradient-to-r from-emerald-600 to-emerald-500"}`}>
+    <div className={`rounded-2xl border bg-white shadow-sm overflow-hidden transition-all ${lead.is_read ? "opacity-70 border-gray-100" : "border-gold-200 shadow-gold-50"}`}>
+      <div className={`px-4 py-3 flex items-center justify-between ${lead.is_read ? "bg-gray-50" : "bg-gradient-to-r from-gold-600 to-gold-500"}`}>
         <div className="flex items-center gap-2.5">
           <div className={`h-9 w-9 rounded-full flex items-center justify-center text-sm font-black shrink-0 ${lead.is_read ? "bg-gray-200 text-gray-500" : "bg-white/20 text-white"}`}>
             {lead.name.charAt(0).toUpperCase()}
@@ -119,7 +119,7 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
           <WAIcon /> WhatsApp
         </a>
         <a href={`tel:${lead.phone}`} onClick={markRead}
-          className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-[12px] font-bold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all">
+          className="flex items-center justify-center gap-1.5 rounded-xl border border-gold-200 bg-gold-50 px-4 py-2.5 text-[12px] font-bold text-gold-700 hover:bg-gold-100 active:scale-95 transition-all">
           📞 Call
         </a>
         {!lead.is_read && (
@@ -267,7 +267,7 @@ export default function AdminPage() {
       <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0e1f3d 0%, #152742 100%)" }}>
         <div className="w-full max-w-sm mx-4">
           <div className="text-center mb-8">
-            <div className="h-16 w-16 rounded-2xl bg-emerald-700 flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="h-16 w-16 rounded-2xl bg-gold-700 flex items-center justify-center mx-auto mb-4 shadow-lg">
               <span className="text-2xl font-black text-white">JK</span>
             </div>
             <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
@@ -278,9 +278,9 @@ export default function AdminPage() {
             {error && <p className="text-red-400 text-sm text-center mb-3">{error}</p>}
             <input type="password" value={inputKey} onChange={e => setInputKey(e.target.value)}
               placeholder="Password" aria-label="Admin password" autoComplete="current-password"
-              className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-emerald-400 mb-4"
+              className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-gold-400 mb-4"
               autoFocus />
-            <button type="submit" className="w-full rounded-xl bg-emerald-700 py-3 text-sm font-bold text-white hover:bg-emerald-600 active:scale-95 transition-all">
+            <button type="submit" className="w-full rounded-xl bg-gold-700 py-3 text-sm font-bold text-white hover:bg-gold-600 active:scale-95 transition-all">
               Login
             </button>
           </form>
@@ -293,12 +293,12 @@ export default function AdminPage() {
   return (
     <>
       {noIndexHelmet}
-    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #f7f9f8 100%)" }}>
+    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #faf7f0 0%, #f7f9f8 100%)" }}>
       <div className="max-w-2xl mx-auto">
         <div className="sticky top-0 z-10 bg-white border-b border-gray-100 shadow-sm">
           <div className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-emerald-700 flex items-center justify-center shrink-0">
+              <div className="h-9 w-9 rounded-xl bg-gold-700 flex items-center justify-center shrink-0">
                 <span className="text-xs font-black text-white">JK</span>
               </div>
               <div>
@@ -311,19 +311,19 @@ export default function AdminPage() {
               <button onClick={() => fetchLeads(key)} disabled={loading} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-600 hover:bg-gray-50 disabled:opacity-50 active:scale-95 transition-all">
                 {loading ? "…" : "↻ Refresh"}
               </button>
-              {newCount > 0 && <button onClick={markAllRead} className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all">✓ All Read</button>}
-              <button onClick={exportExcel} className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700 hover:bg-emerald-100 active:scale-95 transition-all">↓ Excel</button>
+              {newCount > 0 && <button onClick={markAllRead} className="rounded-xl border border-gold-200 bg-gold-50 px-3 py-1.5 text-[11px] font-semibold text-gold-700 hover:bg-gold-100 active:scale-95 transition-all">✓ All Read</button>}
+              <button onClick={exportExcel} className="rounded-xl border border-gold-300 bg-gold-50 px-3 py-1.5 text-[11px] font-semibold text-gold-700 hover:bg-gold-100 active:scale-95 transition-all">↓ Excel</button>
               <button onClick={exportCSV} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">↓ CSV</button>
               <button onClick={() => { setKey(""); sessionStorage.removeItem(ADMIN_KEY_SESSION) }} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">Logout</button>
             </div>
           </div>
           <div className="px-4 pb-3 space-y-2">
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, phone, city…" aria-label="Search leads"
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-[13px] text-gray-700 placeholder:text-gray-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:bg-white transition-all" />
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-[13px] text-gray-700 placeholder:text-gray-400 outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-100 focus:bg-white transition-all" />
             <div className="flex gap-2">
               {(["all", "new", "read"] as const).map(f => (
                 <button key={f} onClick={() => setFilter(f)}
-                  className={`flex-1 rounded-xl py-2 text-[11px] font-bold capitalize transition-all active:scale-95 ${filter === f ? "bg-emerald-700 text-white" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>
+                  className={`flex-1 rounded-xl py-2 text-[11px] font-bold capitalize transition-all active:scale-95 ${filter === f ? "bg-gold-700 text-white" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>
                   {f === "all" ? `All (${leads.length})` : f === "new" ? `New (${newCount})` : `Read (${leads.length - newCount})`}
                 </button>
               ))}
@@ -331,7 +331,7 @@ export default function AdminPage() {
           </div>
         </div>
         <div className="px-4 py-4 space-y-3">
-          {loading && <div className="flex items-center justify-center py-16"><div className="h-8 w-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" /></div>}
+          {loading && <div className="flex items-center justify-center py-16"><div className="h-8 w-8 rounded-full border-2 border-gold-500 border-t-transparent animate-spin" /></div>}
           {error && !loading && <div className="rounded-2xl bg-red-50 border border-red-200 px-4 py-6 text-center"><p className="text-red-600 font-semibold">{error}</p></div>}
           {!loading && !error && filtered.length === 0 && (
             <div className="rounded-2xl bg-white border border-gray-100 px-4 py-12 text-center">

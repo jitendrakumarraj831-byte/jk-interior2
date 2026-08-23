@@ -82,7 +82,7 @@ export default function Services() {
       aria-labelledby="services-heading"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(5,150,105,0.06),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(201, 162, 39,0.06),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
@@ -102,8 +102,8 @@ export default function Services() {
               onClick={() => setActiveTab(cat.id)}
               className={`rounded-xl px-4 py-2.5 text-xs font-extrabold transition-all sm:px-5 sm:py-3 sm:text-sm ${
                 activeTab === cat.id
-                  ? "bg-emerald-700 text-white shadow-md shadow-emerald-900/20 scale-105"
-                  : "bg-white text-gray-700 hover:bg-emerald-50 border border-emerald-900/10"
+                  ? "bg-gold-700 text-white shadow-md shadow-gold-900/20 scale-105"
+                  : "bg-white text-gray-700 hover:bg-gold-50 border border-gold-900/10"
               }`}
             >
               {cat.label}
@@ -112,7 +112,7 @@ export default function Services() {
         </div>
 
         {/* Services Listing with Animation */}
-        <div className="divide-y divide-emerald-900/[0.08]">
+        <div className="divide-y divide-gold-900/[0.08]">
           <AnimatePresence mode="wait">
             {filteredServices.map((service, i) => {
               const isReversed = i % 2 === 1
@@ -141,12 +141,12 @@ export default function Services() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                       
-                      <span className="absolute right-3.5 top-3.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-emerald-700 opacity-0 shadow-md backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
+                      <span className="absolute right-3.5 top-3.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gold-700 opacity-0 shadow-md backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
                         <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
                       </span>
 
                       <div className="absolute bottom-3 left-3 flex flex-wrap items-center gap-1.5">
-                        <span className="rounded-md bg-emerald-600/90 px-2.5 py-1 text-[11px] font-extrabold tracking-wide text-white backdrop-blur-md">
+                        <span className="rounded-md bg-gold-600/90 px-2.5 py-1 text-[11px] font-extrabold tracking-wide text-white backdrop-blur-md">
                           {service.price}
                         </span>
                         <span className="rounded-md bg-black/60 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white backdrop-blur-md">
@@ -155,36 +155,36 @@ export default function Services() {
                       </div>
                     </Link>
 
-                    <p className="mt-2.5 pl-1 text-[11px] font-extrabold uppercase tracking-widest text-emerald-800/60">
+                    <p className="mt-2.5 pl-1 text-[11px] font-extrabold uppercase tracking-widest text-gold-800/60">
                       Fig. {String(i + 1).padStart(2, "0")} — {service.category}
                     </p>
                   </div>
 
                   {/* Copy & Highlights */}
                   <div className={`lg:col-span-7 ${isReversed ? "lg:order-1" : "lg:order-2"}`}>
-                    <span className="mb-2 block font-serif text-5xl font-black leading-none text-emerald-900/10 sm:text-6xl">
+                    <span className="mb-2 block font-serif text-5xl font-black leading-none text-gold-900/10 sm:text-6xl">
                       {String(i + 1).padStart(2, "0")}
                     </span>
 
                     <h3 className="mb-1 text-2xl font-black text-gray-900 sm:text-3xl">
-                      <Link href={`/services/${service.slug}`} className="transition-colors hover:text-emerald-700">
+                      <Link href={`/services/${service.slug}`} className="transition-colors hover:text-gold-700">
                         {service.name}
                       </Link>
                     </h3>
-                    <p className="mb-5 text-sm font-bold text-emerald-700 sm:text-base">{service.nameHi}</p>
+                    <p className="mb-5 text-sm font-bold text-gold-700 sm:text-base">{service.nameHi}</p>
 
                     <ul className="mb-6 space-y-3.5">
                       {service.highlights.map((h) => {
                         const Icon = HIGHLIGHT_STYLES[h.kind].icon
                         return (
                           <li key={h.kind} className="flex gap-3">
-                            <span className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700">
+                            <span className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-lg bg-gold-500/10 text-gold-700">
                               <Icon className="h-4 w-4" aria-hidden="true" />
                             </span>
                             <div className="min-w-0">
-                              <p className="text-[13px] font-black uppercase tracking-wide text-emerald-900 sm:text-sm">
+                              <p className="text-[13px] font-black uppercase tracking-wide text-gold-900 sm:text-sm">
                                 {h.label}
-                                <span className="ml-1.5 font-bold normal-case tracking-normal text-emerald-600">/ {h.labelHi}</span>
+                                <span className="ml-1.5 font-bold normal-case tracking-normal text-gold-600">/ {h.labelHi}</span>
                               </p>
                               <p className="mt-0.5 text-sm font-semibold leading-snug text-gray-800">{h.en}</p>
                               <p className="mt-0.5 text-[13px] leading-relaxed text-gray-600 sm:text-sm">{h.hi}</p>
@@ -201,14 +201,14 @@ export default function Services() {
                         onClick={() => toggleDetails(service.slug)}
                         aria-expanded={isOpen}
                         aria-controls={`service-details-${service.slug}`}
-                        className="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-900/10 bg-emerald-50/60 px-4 py-3 text-left text-sm font-extrabold text-emerald-900 transition-colors hover:bg-emerald-100/70"
+                        className="flex w-full items-center justify-between gap-3 rounded-xl border border-gold-900/10 bg-gold-50/60 px-4 py-3 text-left text-sm font-extrabold text-gold-900 transition-colors hover:bg-gold-100/70"
                       >
                         <span className="flex items-center gap-2">
-                          <Ruler className="h-4 w-4 text-emerald-700" aria-hidden="true" />
+                          <Ruler className="h-4 w-4 text-gold-700" aria-hidden="true" />
                           {isOpen ? "जानकारी छुपाएँ" : "पूरी डिटेल देखें — रेट, समय व सही जगह"}
                         </span>
                         <ChevronDown
-                          className={`h-5 w-5 flex-none text-emerald-700 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                          className={`h-5 w-5 flex-none text-gold-700 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                           aria-hidden="true"
                         />
                       </button>
@@ -224,28 +224,28 @@ export default function Services() {
                             transition={{ duration: 0.35, ease: easeLux }}
                             className="overflow-hidden"
                           >
-                            <div className="mt-3 rounded-xl border border-emerald-900/10 bg-white p-4 sm:p-5">
+                            <div className="mt-3 rounded-xl border border-gold-900/10 bg-white p-4 sm:p-5">
                               <p className="mb-4 text-sm leading-relaxed text-gray-700">{service.taglineHi}</p>
 
                               <dl className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                                <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
-                                  <IndianRupee className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
+                                <div className="flex items-start gap-2.5 rounded-lg bg-gold-50/70 p-3">
+                                  <IndianRupee className="mt-0.5 h-4 w-4 flex-none text-gold-700" aria-hidden="true" />
                                   <div>
-                                    <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">रेट</dt>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">रेट</dt>
                                     <dd className="text-sm font-bold text-gray-900">{service.price}</dd>
                                   </div>
                                 </div>
-                                <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
-                                  <Clock className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
+                                <div className="flex items-start gap-2.5 rounded-lg bg-gold-50/70 p-3">
+                                  <Clock className="mt-0.5 h-4 w-4 flex-none text-gold-700" aria-hidden="true" />
                                   <div>
-                                    <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">काम का समय</dt>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">काम का समय</dt>
                                     <dd className="text-sm font-bold text-gray-900">{service.installTimeHi}</dd>
                                   </div>
                                 </div>
-                                <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
-                                  <MapPin className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
+                                <div className="flex items-start gap-2.5 rounded-lg bg-gold-50/70 p-3">
+                                  <MapPin className="mt-0.5 h-4 w-4 flex-none text-gold-700" aria-hidden="true" />
                                   <div>
-                                    <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">कहाँ लगेगा</dt>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">कहाँ लगेगा</dt>
                                     <dd className="text-sm font-bold text-gray-900">{service.whereUsedFirstHi}</dd>
                                   </div>
                                 </div>
@@ -267,7 +267,7 @@ export default function Services() {
                     <div className="flex flex-wrap items-center gap-3">
                       <Link
                         href={`/services/${service.slug}`}
-                        className="inline-flex items-center gap-1.5 font-serif text-sm font-bold text-emerald-800 underline decoration-emerald-400 decoration-2 underline-offset-4 transition-colors hover:text-emerald-600"
+                        className="inline-flex items-center gap-1.5 font-serif text-sm font-bold text-gold-800 underline decoration-gold-400 decoration-2 underline-offset-4 transition-colors hover:text-gold-600"
                       >
                         पूरी जानकारी पढ़ें
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -293,8 +293,8 @@ export default function Services() {
         </div>
 
         {/* Bottom Conversion Box */}
-        <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 rounded-2xl border border-emerald-900/10 bg-white p-8 text-center shadow-xs lg:mt-20">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700">
+        <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 rounded-2xl border border-gold-900/10 bg-white p-8 text-center shadow-xs lg:mt-20">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gold-700">
             <Zap className="h-4 w-4 text-amber-500" aria-hidden="true" />
             <span>फ्री साइट विज़िट व सलाह</span>
           </div>
@@ -307,7 +307,7 @@ export default function Services() {
             </CallLink>
             <Link
               href="/services"
-              className="flex items-center gap-2 rounded-xl border border-emerald-600/30 bg-emerald-50/80 px-6 py-4 text-sm font-bold text-emerald-800 transition-all hover:border-emerald-600/50 hover:bg-emerald-100 active:scale-95 sm:px-7 sm:text-base"
+              className="flex items-center gap-2 rounded-xl border border-gold-600/30 bg-gold-50/80 px-6 py-4 text-sm font-bold text-gold-800 transition-all hover:border-gold-600/50 hover:bg-gold-100 active:scale-95 sm:px-7 sm:text-base"
             >
               सभी 8 सर्विसेज देखें
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

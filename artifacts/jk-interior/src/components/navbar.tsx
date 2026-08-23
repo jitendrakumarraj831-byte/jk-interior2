@@ -42,14 +42,14 @@ export default function Navbar() {
           className={cn(
             "pointer-events-auto w-full max-w-6xl rounded-2xl border px-3 py-2.5 sm:px-5 sm:py-3 transition-all duration-300",
             scrolled
-              ? "border-emerald-500/25 shadow-[0_8px_40px_rgba(0,0,0,0.12),0_0_0_1px_rgba(5,150,105,0.12)] bg-white/95 backdrop-blur-xl"
-              : "border-emerald-500/15 shadow-[0_4px_24px_rgba(0,0,0,0.08)] bg-white/85 backdrop-blur-xl"
+              ? "border-gold-500/25 shadow-[0_8px_40px_rgba(0,0,0,0.12),0_0_0_1px_rgba(201, 162, 39,0.12)] bg-white/95 backdrop-blur-xl"
+              : "border-gold-500/15 shadow-[0_4px_24px_rgba(0,0,0,0.08)] bg-white/85 backdrop-blur-xl"
           )}
         >
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link href="/" className="relative group shrink-0" aria-label="JK Interior – Home">
-              <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-amber-400/15 via-emerald-500/10 to-amber-400/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-amber-400/15 via-gold-500/10 to-amber-400/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img
                 src="/jk-interior-navbar-logo.webp"
                 alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
@@ -70,7 +70,7 @@ export default function Navbar() {
                     className={cn(
                       "relative px-3.5 py-2 text-[11px] font-semibold uppercase tracking-widest transition-all duration-200 rounded-lg",
                       isActive
-                        ? "text-emerald-700 bg-emerald-500/10"
+                        ? "text-gold-700 bg-gold-500/10"
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/80"
                     )}
                   >
@@ -78,7 +78,7 @@ export default function Navbar() {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-emerald-600"
+                        className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-gold-600"
                       />
                     )}
                   </Link>
@@ -96,7 +96,7 @@ export default function Navbar() {
                 size="sm"
                 shine
                 message="नमस्ते JK Interior, मुझे इंटीरियर डिज़ाइन में मदद चाहिए।"
-                className="gap-2 bg-emerald-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_24px_rgba(5,150,105,0.5)]"
+                className="gap-2 bg-gold-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_24px_rgba(201, 162, 39,0.5)]"
               >
                 WhatsApp
               </WhatsAppLink>
@@ -106,7 +106,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileOpen((o) => !o)}
-              className="md:hidden p-2.5 rounded-xl border border-emerald-500/25 bg-emerald-500/8 text-emerald-700 hover:border-emerald-500/40 hover:bg-emerald-500/15 transition-all"
+              className="md:hidden p-2.5 rounded-xl border border-gold-500/25 bg-gold-500/8 text-gold-700 hover:border-gold-500/40 hover:bg-gold-500/15 transition-all"
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
             >
@@ -132,7 +132,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="md:hidden overflow-hidden border-t border-emerald-500/15 mt-3 pt-4"
+                className="md:hidden overflow-hidden border-t border-gold-500/15 mt-3 pt-4"
               >
                 <div className="flex flex-col gap-1 pb-3">
                   {navLinks.map((link, i) => {
@@ -150,15 +150,15 @@ export default function Navbar() {
                           className={cn(
                             "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
                             isActive
-                              ? "bg-emerald-500/12 text-emerald-700 border border-emerald-500/25"
+                              ? "bg-gold-500/12 text-gold-700 border border-gold-500/25"
                               : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                           )}
                         >
                           <div>
                             <span className="block text-base font-bold">{link.label}</span>
-                            <span className="block text-xs text-emerald-600/70">{link.labelHi}</span>
+                            <span className="block text-xs text-gold-600/70">{link.labelHi}</span>
                           </div>
-                          {isActive && <div className="h-2 w-2 rounded-full bg-emerald-600" />}
+                          {isActive && <div className="h-2 w-2 rounded-full bg-gold-600" />}
                         </Link>
                       </motion.div>
                     )
@@ -171,14 +171,14 @@ export default function Navbar() {
                     <WhatsAppLink
                       shine
                       message="नमस्ते JK Interior, मुझे इंटीरियर डिज़ाइन में मदद चाहिए।"
-                      className="bg-emerald-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(5,150,105,0.35)] hover:bg-emerald-600 hover:shadow-[0_4px_20px_rgba(5,150,105,0.35)]"
+                      className="bg-gold-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]"
                     >
                       Chat on WhatsApp
                     </WhatsAppLink>
                   </div>
 
                   <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2">
-                    <MapPin className="h-3 w-3 text-emerald-600" />
+                    <MapPin className="h-3 w-3 text-gold-600" />
                     Forbesganj • Araria • Bihar
                   </div>
                 </div>

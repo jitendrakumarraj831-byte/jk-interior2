@@ -696,7 +696,7 @@ function RichText({ text }: { text: string }) {
 // Typing dots
 const TypingDots = () => (
   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }} className="flex items-end gap-2">
-    <div className="h-6 w-6 shrink-0 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center shadow-sm">
+    <div className="h-6 w-6 shrink-0 rounded-full bg-gradient-to-br from-gold-600 to-gold-800 flex items-center justify-center shadow-sm">
       <IAssistantLogo className="h-3 w-3 text-white" />
     </div>
     <div className="rounded-2xl rounded-bl-sm px-4 py-3 shadow-md bg-white border border-gray-100">
@@ -704,7 +704,7 @@ const TypingDots = () => (
         {[0, 160, 320].map(d => (
           <motion.span
             key={d}
-            className="h-[7px] w-[7px] rounded-full bg-emerald-500"
+            className="h-[7px] w-[7px] rounded-full bg-gold-500"
             animate={{ y: [0, -6, 0] }}
             transition={{ repeat: Infinity, duration: 0.8, delay: d / 1000 }}
           />
@@ -730,8 +730,8 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`
   const bookHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`नमस्ते JK Interior! मैं ${data.name} हूं${data.city ? ` (${data.city})` : ""}। Free Site Visit बुक करना चाहता/चाहती हूं${data.preferredTime ? ` — ${data.preferredTime}` : ""}। कृपया कन्फर्म करें! 🙏`)}`
   return (
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-[90%] sm:max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-emerald-200 shadow-lg bg-white">
-      <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2">
+    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-[90%] sm:max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-gold-200 shadow-lg bg-white">
+      <div className="bg-gradient-to-r from-gold-700 to-gold-500 px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2">
         <span className="text-lg shrink-0">🎉</span>
         <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">बुकिंग कन्फर्म हो गई!</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
       </div>
@@ -739,10 +739,10 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
         {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-[11px] md:text-xs"><span className="text-gray-500 shrink-0 w-16 md:w-20 text-[10px] md:text-[11px] font-medium">{r.label}</span><span className="font-semibold break-all text-[11px] md:text-[12px] text-gray-800 flex-1">{r.value}</span></div>))}
       </div>
       <div className="px-3 md:px-4 pb-3 md:pb-3.5 pt-1 md:pt-1.5 space-y-2">
-        <p className="text-[10px] md:text-[11px] text-emerald-700 font-semibold text-center bg-emerald-50 rounded-lg py-1.5">✅ हमारी टीम जल्दी ही आपसे बात करेगी!</p>
+        <p className="text-[10px] md:text-[11px] text-gold-700 font-semibold text-center bg-gold-50 rounded-lg py-1.5">✅ हमारी टीम जल्दी ही आपसे बात करेगी!</p>
         <div className="flex flex-col sm:flex-row gap-2">
           <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp</a>
-          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-700 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-emerald-600 transition-all"><ICal /> Visit बुक करें</a>
+          <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-gold-700 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-gold-600 transition-all"><ICal /> Visit बुक करें</a>
         </div>
       </div>
     </motion.div>
@@ -1249,16 +1249,16 @@ const tLower = text.toLowerCase()
           <span
             className="absolute -inset-2 rounded-full"
             style={{
-              background: "radial-gradient(circle, rgba(16,185,129,0.28) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(212, 175, 55,0.28) 0%, transparent 70%)",
               animation: "jk-ring 2.8s ease-out infinite",
             }}
           />
 
           {/* Main pill — rich teal-to-emerald gradient */}
           <span
-            className="absolute inset-0 rounded-[20px] shadow-[0_8px_28px_rgba(16,185,129,0.45)]"
+            className="absolute inset-0 rounded-[20px] shadow-[0_8px_28px_rgba(212, 175, 55,0.45)]"
             style={{
-              background: "linear-gradient(140deg, #0d9f72 0%, #059669 45%, #047857 100%)",
+              background: "linear-gradient(140deg, #d4af37 0%, #c9a227 45%, #a9851d 100%)",
             }}
           />
 
@@ -1278,16 +1278,16 @@ const tLower = text.toLowerCase()
               {/* Bubble tail */}
               <path d="M10 28 L7 34 L17 29" fill="white" opacity="0.95"/>
               {/* Three dots inside */}
-              <circle cx="13" cy="17" r="2.4" fill="#059669"/>
-              <circle cx="20" cy="17" r="2.4" fill="#059669"/>
-              <circle cx="27" cy="17" r="2.4" fill="#059669"/>
+              <circle cx="13" cy="17" r="2.4" fill="#c9a227"/>
+              <circle cx="20" cy="17" r="2.4" fill="#c9a227"/>
+              <circle cx="27" cy="17" r="2.4" fill="#c9a227"/>
               {/* Sparkle top-right */}
               <path d="M31 5 L32 8 L35 9 L32 10 L31 13 L30 10 L27 9 L30 8Z" fill="white" opacity="0.85"/>
             </svg>
           </span>
 
           {/* "AI" label pill at top-right */}
-          <span className="absolute -top-1.5 -right-1 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 text-[8px] font-black text-emerald-700 shadow-lg z-20 leading-none">
+          <span className="absolute -top-1.5 -right-1 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 text-[8px] font-black text-gold-700 shadow-lg z-20 leading-none">
             <ISparkle />AI
           </span>
         </motion.button>
@@ -1303,11 +1303,11 @@ const tLower = text.toLowerCase()
             className="fixed z-50 flex flex-col overflow-hidden shadow-[0_24px_80px_rgba(15,23,42,0.25)] bottom-0 left-0 right-0 h-[94dvh] max-h-[720px] rounded-t-[28px] md:bottom-6 md:left-auto md:right-6 md:h-[640px] md:w-[420px] md:rounded-[28px] bg-white/85 backdrop-blur-2xl border border-white/50"
           >
             {/* Header */}
-            <div className="flex shrink-0 items-center justify-between px-4 py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-[#0f2f2a] via-[#11453d] to-[#1f6f61] text-white">
+            <div className="flex shrink-0 items-center justify-between px-4 py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-[#141c26] via-[#1f2a37] to-[#2e3b4a] text-white">
               <div className="flex items-center gap-2 md:gap-3 min-w-0">
                 <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 ring-2 ring-white/30 shrink-0">
                   <IAssistantLogo className="h-4 w-4 md:h-[18px] md:w-[18px] text-white" />
-                  <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-300 border-2 border-emerald-600" />
+                  <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-gold-300 border-2 border-gold-600" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs md:text-sm font-bold leading-tight truncate">JK Interior AI Assistant</p>
@@ -1337,9 +1337,9 @@ const tLower = text.toLowerCase()
             </div>
 
             {aiMode && (
-              <div className="shrink-0 flex items-center gap-2 px-3 md:px-4 py-1.5 bg-emerald-50 border-b border-emerald-100">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <p className="text-[9px] md:text-[10px] text-emerald-700 font-medium">AI से चलता है + तुरंत Estimate</p>
+              <div className="shrink-0 flex items-center gap-2 px-3 md:px-4 py-1.5 bg-gold-50 border-b border-gold-100">
+                <span className="h-1.5 w-1.5 rounded-full bg-gold-500 animate-pulse shrink-0" />
+                <p className="text-[9px] md:text-[10px] text-gold-700 font-medium">AI से चलता है + तुरंत Estimate</p>
               </div>
             )}
 
@@ -1377,7 +1377,7 @@ const tLower = text.toLowerCase()
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-emerald-50"
+                  className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-br from-gold-50 via-white to-gold-50"
                 >
                   {/* Animated greeting */}
                   <motion.div
@@ -1390,7 +1390,7 @@ const tLower = text.toLowerCase()
                     <motion.div
                       animate={{ y: [0, -10, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="relative flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 shadow-lg"
+                      className="relative flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold-600 to-gold-800 shadow-lg"
                     >
                       <IAssistantLogo className="h-7 w-7 md:h-9 md:w-9 text-white" />
                     </motion.div>
@@ -1402,8 +1402,8 @@ const tLower = text.toLowerCase()
                       transition={{ delay: 0.3, duration: 0.5 }}
                       className="text-center"
                     >
-                      <h2 className="text-lg md:text-xl font-bold text-emerald-900">JK Interior AI Assistant</h2>
-                      <p className="text-xs md:text-sm text-emerald-600 mt-1">आपकी बात शुरू करने की तैयारी हो रही है</p>
+                      <h2 className="text-lg md:text-xl font-bold text-gold-900">JK Interior AI Assistant</h2>
+                      <p className="text-xs md:text-sm text-gold-600 mt-1">आपकी बात शुरू करने की तैयारी हो रही है</p>
                     </motion.div>
 
                     {/* Animated dots */}
@@ -1413,7 +1413,7 @@ const tLower = text.toLowerCase()
                           key={i}
                           animate={{ y: [0, -6, 0] }}
                           transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                          className="h-2 w-2 rounded-full bg-emerald-600"
+                          className="h-2 w-2 rounded-full bg-gold-600"
                         />
                       ))}
                     </motion.div>
@@ -1437,7 +1437,7 @@ const tLower = text.toLowerCase()
                   className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   {m.role === "bot" && m.kind !== "card" && (
-                    <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
+                    <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-gold-600 to-gold-800 flex items-center justify-center">
                       <IAssistantLogo className="h-3 w-3 text-white" />
                     </div>
                   )}
@@ -1476,7 +1476,7 @@ const tLower = text.toLowerCase()
               <button
                 onClick={() => send("📂 डिज़ाइन देखें")}
                 disabled={typing}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-300 bg-gradient-to-r from-emerald-50 to-emerald-100 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-emerald-800 shadow-sm hover:from-emerald-100 hover:to-emerald-200 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gold-300 bg-gradient-to-r from-gold-50 to-gold-100 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-gold-800 shadow-sm hover:from-gold-100 hover:to-gold-200 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
               >
                 <span className="text-base leading-none">📂</span>
                 <span>डिज़ाइन देखें</span>
@@ -1484,7 +1484,7 @@ const tLower = text.toLowerCase()
               <button
                 onClick={() => send("✨ Free Site Visit बुक करें")}
                 disabled={typing}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-emerald-600 bg-gradient-to-r from-emerald-600 to-emerald-500 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-white shadow-sm hover:from-emerald-500 hover:to-emerald-400 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gold-600 bg-gradient-to-r from-gold-600 to-gold-500 px-3 py-2 text-[11px] md:text-[12px] font-semibold text-white shadow-sm hover:from-gold-500 hover:to-gold-400 hover:shadow-md active:scale-95 transition-all disabled:opacity-40 whitespace-nowrap min-w-[140px]"
               >
                 <span className="text-base leading-none">✨</span>
                 <span>Site Visit बुक करें</span>
@@ -1517,7 +1517,7 @@ const tLower = text.toLowerCase()
                   isListening
                     ? "bg-red-500 text-white shadow-lg"
                     : voiceSupported
-                    ? "bg-emerald-100 border border-emerald-400 text-emerald-800 hover:bg-emerald-200"
+                    ? "bg-gold-100 border border-gold-400 text-gold-800 hover:bg-gold-200"
                     : "bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed"
                 }`}
                 title={isListening ? "रिकॉर्ड हो रहा है... रोकने के लिए दबाएं" : voiceSupported ? "बोल कर टाइप करें" : "Voice यहां सपोर्ट नहीं करता"}
@@ -1534,7 +1534,7 @@ const tLower = text.toLowerCase()
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={onKey}
                 placeholder={isListening ? "सुन रहा हूं... बोलिए" : "डिज़ाइन, रेट या Site Visit के बारे में पूछें..."}
-                className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-colors"
+                className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-800 outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-100 transition-colors"
                 autoComplete="off"
               />
               <button

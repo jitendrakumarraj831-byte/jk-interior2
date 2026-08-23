@@ -34,16 +34,16 @@ export default function FAQSection() {
         aria-expanded={openIndex === i}
       >
         <span className={`mt-0.5 shrink-0 rounded border px-1.5 py-0.5 font-mono text-[10px] font-bold ${
-          openIndex === i ? "border-emerald-400 bg-emerald-50 text-emerald-700" : "border-gray-300 text-gray-400"
+          openIndex === i ? "border-gold-400 bg-gold-50 text-gold-700" : "border-gray-300 text-gray-400"
         }`}>
           Q{String(i + 1).padStart(2, "0")}
         </span>
-        <span className={`flex-1 font-serif text-sm font-bold leading-snug sm:text-base ${openIndex === i ? "text-emerald-800" : "text-gray-800"}`}>
+        <span className={`flex-1 font-serif text-sm font-bold leading-snug sm:text-base ${openIndex === i ? "text-gold-800" : "text-gray-800"}`}>
           {faq.q}
         </span>
         <ChevronDown
           className={`mt-0.5 h-4 w-4 shrink-0 transition-transform duration-300 ${
-            openIndex === i ? "rotate-180 text-emerald-600" : "text-gray-400"
+            openIndex === i ? "rotate-180 text-gold-600" : "text-gray-400"
           }`}
         />
       </button>
@@ -68,7 +68,7 @@ export default function FAQSection() {
     <section id="faq" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
       {/* Background — plain white "reference page", the one section without any tinted backdrop */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_0%,rgba(5,150,105,0.04),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_0%,rgba(201, 162, 39,0.04),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">

@@ -61,7 +61,7 @@ export default function FAQPage() {
 
       <section className="relative overflow-hidden py-16 sm:py-20">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f0fdf4] to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#faf7f0] to-white" />
           <div className="absolute inset-0 grid-texture opacity-10" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
@@ -70,14 +70,14 @@ export default function FAQPage() {
           </h2>
           <div className="space-y-6">
             {MORE_FAQS.map(({ q, a }) => (
-              <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm open:border-emerald-300 open:shadow-emerald-50">
-                <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-emerald-700">{q}</summary>
+              <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm open:border-gold-300 open:shadow-gold-50">
+                <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-gold-700">{q}</summary>
                 <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
               </details>
             ))}
           </div>
 
-          <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-emerald-700 mt-12">
+          <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-gold-700 mt-12">
             अभी भी सवाल हैं?
           </h3>
           <div className="flex flex-wrap gap-3">

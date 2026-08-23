@@ -38,24 +38,24 @@ export default function ServicesPage() {
       
 
             {/* 🌟 New Cyberpunk & Glowing CTA Banner */}
-      <section className="py-20 text-center relative overflow-hidden border-t border-emerald-500/10">
+      <section className="py-20 text-center relative overflow-hidden border-t border-gold-500/10">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-b from-[#060c18] via-[#0b172a] to-[#050b14]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(16,185,129,0.18),transparent_65%)]" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(212, 175, 55,0.18),transparent_65%)]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[1px] bg-gradient-to-r from-transparent via-gold-500/50 to-transparent" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-3xl px-6 space-y-6">
           {/* Glowing Animated Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-4 py-1.5 text-xs font-semibold text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.2)] backdrop-blur-md">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-gold-950/40 px-4 py-1.5 text-xs font-semibold text-gold-300 shadow-[0_0_20px_rgba(212, 175, 55,0.2)] backdrop-blur-md">
+            <span className="h-2 w-2 rounded-full bg-gold-400 animate-pulse" />
             Ready to Transform Your Space?
           </div>
 
           {/* Glowing Title */}
           <h2 className="text-3xl font-black text-white sm:text-4xl md:text-5xl leading-tight tracking-tight">
             Get Free Consultation &amp; <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-gold-400 via-gold-300 to-gold-400 bg-clip-text text-transparent">
               Instant Quote Today
             </span>
           </h2>
@@ -63,11 +63,11 @@ export default function ServicesPage() {
           {/* Subtext */}
           <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             Get a free quote for any of our services. We serve{" "}
-            <Link href="/#areas" className="font-semibold text-emerald-400 hover:text-emerald-300 underline decoration-emerald-500/50 underline-offset-4 transition-colors">
+            <Link href="/#areas" className="font-semibold text-gold-400 hover:text-gold-300 underline decoration-gold-500/50 underline-offset-4 transition-colors">
               Forbesganj, Araria, Narpatganj, Jogbani
             </Link>{" "}
             and all across Bihar. You can also{" "}
-            <Link href="/gallery" className="font-semibold text-emerald-400 hover:text-emerald-300 underline decoration-emerald-500/50 underline-offset-4 transition-colors">
+            <Link href="/gallery" className="font-semibold text-gold-400 hover:text-gold-300 underline decoration-gold-500/50 underline-offset-4 transition-colors">
               browse our recent false ceiling &amp; interior projects
             </Link>.
           </p>
@@ -87,7 +87,7 @@ export default function ServicesPage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap justify-center gap-4 pt-2">
-            <CallLink shine className="px-8 py-4 text-sm font-bold shadow-[0_0_25px_rgba(16,185,129,0.25)]">
+            <CallLink shine className="px-8 py-4 text-sm font-bold shadow-[0_0_25px_rgba(212, 175, 55,0.25)]">
               Get Free Quote
             </CallLink>
             <WhatsAppLink message="Hi JK Interior, I need a free quotation" className="px-8 py-4 text-sm font-bold shadow-[0_4px_24px_rgba(37,205,102,0.35)]">

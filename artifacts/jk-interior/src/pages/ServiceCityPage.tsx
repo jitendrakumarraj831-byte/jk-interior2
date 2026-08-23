@@ -19,7 +19,7 @@ export default function ServiceCityPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Page not found</h1>
-          <Link href="/services" className="text-emerald-700 hover:underline mt-4 block">View all services</Link>
+          <Link href="/services" className="text-gold-700 hover:underline mt-4 block">View all services</Link>
         </div>
       </div>
     )
@@ -89,11 +89,11 @@ export default function ServiceCityPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-white pt-28 pb-14 sm:pb-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute inset-0 bg-gradient-to-br from-[#f0fdf4] via-white to-white" />
-          <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-emerald-100/40 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#faf7f0] via-white to-white" />
+          <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-gold-100/40 blur-3xl" />
         </div>
         <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-emerald-700">
+          <div className="mb-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-gold-700">
             <Link href="/" className="hover:underline">Home</Link>
             <span className="text-gray-300">/</span>
             <Link href="/services" className="hover:underline">Services</Link>
@@ -111,10 +111,10 @@ export default function ServiceCityPage() {
           <p className="mb-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             {service.description} JK Interior installs {service.name} across {city.name}, {city.district} district with free site visits and a written 1-year warranty.
           </p>
-          <p className="mb-8 max-w-3xl rounded-xl border-l-2 border-emerald-300 bg-emerald-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
+          <p className="mb-8 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
             {city.nameHi} और आसपास {service.nameHi} का काम JK Interior करती है — {service.price} रेंज में,
             फ्री साइट विज़िट, ब्रांडेड मटेरियल और 1 साल की लिखित वारंटी के साथ। सही अनुमान और डिज़ाइन फोटो के
-            लिए <span className="font-semibold text-emerald-800">+91&nbsp;85418&nbsp;49118</span> पर कॉल या WhatsApp करें।
+            लिए <span className="font-semibold text-gold-800">+91&nbsp;85418&nbsp;49118</span> पर कॉल या WhatsApp करें।
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -130,7 +130,7 @@ export default function ServiceCityPage() {
               { icon: MapPin, label: `Serving ${city.name}` },
             ].map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm border border-gray-100">
-                <Icon className="h-3.5 w-3.5 text-emerald-600" />
+                <Icon className="h-3.5 w-3.5 text-gold-600" />
                 <span>{label}</span>
               </div>
             ))}
@@ -147,7 +147,7 @@ export default function ServiceCityPage() {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {service.pros.map((pro) => (
               <div key={pro} className="flex items-start gap-2.5 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-semibold text-gray-800 shadow-sm">
-                <CheckCircle className="h-4 w-4 shrink-0 text-emerald-600 mt-0.5" />
+                <CheckCircle className="h-4 w-4 shrink-0 text-gold-600 mt-0.5" />
                 {pro}
               </div>
             ))}
@@ -160,15 +160,15 @@ export default function ServiceCityPage() {
               { label: "Timeline", value: service.installTime },
               { label: "Maintenance", value: service.maintenance },
             ].map((item) => (
-              <div key={item.label} className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-3 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">{item.label}</p>
+              <div key={item.label} className="rounded-xl border border-gold-200 bg-gold-50 px-3 py-3 text-center">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gold-700">{item.label}</p>
                 <p className="mt-1 text-xs font-semibold text-gray-800">{item.value}</p>
               </div>
             ))}
           </div>
           <p className="mt-4 text-xs leading-relaxed text-gray-500">
             Rates shown are local {city.name}/Araria-district market estimates, not a fixed quote — final pricing depends on your free site visit, design, material quality tier, and project size. See the{" "}
-            <Link href={`/services/${service.slug}`} className="font-semibold text-emerald-700 hover:underline">
+            <Link href={`/services/${service.slug}`} className="font-semibold text-gold-700 hover:underline">
               full {service.name} guide
             </Link>{" "}
             for Economy/Standard/Premium pricing and material specifications.
@@ -186,7 +186,7 @@ export default function ServiceCityPage() {
               </h2>
               <Link
                 href={`/gallery#gallery-${slugify(service.galleryCategory)}`}
-                className="shrink-0 text-sm font-bold text-emerald-700 hover:underline"
+                className="shrink-0 text-sm font-bold text-gold-700 hover:underline"
               >
                 View All
               </Link>
@@ -220,9 +220,9 @@ export default function ServiceCityPage() {
           </h2>
           <div className="space-y-4">
             {service.faqs.map(({ q, a }) => (
-              <details key={q} className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 open:border-emerald-300 open:bg-white open:shadow-sm">
-                <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-emerald-700">
-                  <h3 className="mb-3 text-base font-bold text-gray-900 group-open:text-emerald-700 inline">{q}</h3>
+              <details key={q} className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 open:border-gold-300 open:bg-white open:shadow-sm">
+                <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-gold-700">
+                  <h3 className="mb-3 text-base font-bold text-gray-900 group-open:text-gold-700 inline">{q}</h3>
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
               </details>
@@ -232,17 +232,17 @@ export default function ServiceCityPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 sm:py-16 bg-gradient-to-b from-emerald-700 to-emerald-900 text-white">
+      <section className="py-14 sm:py-16 bg-gradient-to-b from-charcoal-800 to-charcoal-950 text-white">
         <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-12 text-center">
           <h2 className="mb-2 text-xl font-black">
             Ready for {service.name} in {city.name}?
           </h2>
-          <p className="mb-1 text-emerald-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
+          <p className="mb-1 text-gold-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
           <p className="mb-6 text-sm font-semibold text-white">
             {city.nameHi} में {service.nameHi} के लिए फ्री साइट विज़िट और सही कोटेशन — अभी कॉल या WhatsApp करें।
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-emerald-700 shadow hover:bg-emerald-50 hover:shadow">
+            <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-gold-700 shadow hover:bg-gold-50 hover:shadow">
               <Phone className="h-4 w-4" aria-hidden="true" />
               Call +91 8541849118
             </CallLink>
@@ -262,7 +262,7 @@ export default function ServiceCityPage() {
               <Link
                 key={s.slug}
                 href={`/services/${s.slug}/${city.slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
               >
                 <s.icon className="h-3 w-3" />
                 {s.name}
@@ -278,7 +278,7 @@ export default function ServiceCityPage() {
               <Link
                 key={c.slug}
                 href={`/services/${service.slug}/${c.slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
               >
                 <MapPin className="h-3 w-3" />
                 {c.name}
@@ -287,15 +287,15 @@ export default function ServiceCityPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/services" className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:underline">
+            <Link href="/services" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-700 hover:underline">
               <ArrowRight className="h-4 w-4" />
               View All Services
             </Link>
-            <Link href={`/cities/${city.slug}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:underline">
+            <Link href={`/cities/${city.slug}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-700 hover:underline">
               <ArrowRight className="h-4 w-4" />
               {city.name} Overview
             </Link>
-            <Link href="/gallery" className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:underline">
+            <Link href="/gallery" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-700 hover:underline">
               <ArrowRight className="h-4 w-4" />
               See Our Gallery
             </Link>
