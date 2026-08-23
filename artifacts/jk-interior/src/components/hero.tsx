@@ -7,10 +7,11 @@ import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 const easeLux = [0.16, 1, 0.3, 1] as const
 
 const words = [
-  "Modern False Ceiling Designs",
-  "Luxury Wall Paneling & Louvers",
-  "Designer TV Units & Partitions",
-  "Waterproof PVC & WPC Solutions",
+  "False Ceiling Contractor",
+  "PVC Wall Paneling & Louvers",
+  "UV Marble & Charcoal Sheets",
+  "Gypsum False Ceiling Expert",
+  "Modular Interior Designer",
 ]
 
 const stats = [
@@ -23,8 +24,8 @@ const stats = [
 const trustBadges = [
   { icon: Star, label: "4.9/5 Rated (100+ Reviews)", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
   { icon: ShieldCheck, label: "1 Year Written Warranty", color: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" },
-  { icon: Droplets, label: "100% Waterproof & Durable", color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10" },
-  { icon: Sparkles, label: "Dust-Free Installation", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
+  { icon: Droplets, label: "100% Waterproof Material", color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10" },
+  { icon: Sparkles, label: "Direct Factory Rates", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
 ]
 
 export default function Hero() {
@@ -51,7 +52,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative min-h-[90vh] lg:min-h-[100dvh] w-full overflow-hidden bg-zinc-950 flex flex-col justify-center"
-      aria-label="JK Interior - Best Interior & False Ceiling Designer in Forbesganj Araria Bihar"
+      aria-label="JK Interior - False Ceiling & Interior Designer in Forbesganj Araria Bihar"
     >
       {/* Background Image with Cinematic Overlays */}
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
@@ -60,7 +61,7 @@ export default function Hero() {
           <source srcSet="/images/hero-interior.webp" type="image/webp" />
           <motion.img
             src="/images/hero-interior.webp"
-            alt="Luxury Gypsum False Ceiling and PVC Wall Design in Forbesganj Bihar by JK Interior"
+            alt="False Ceiling Contractor and Interior Designer in Forbesganj Araria Bihar by JK Interior"
             className="absolute inset-0 h-full w-full object-cover object-center opacity-70 lg:opacity-100"
             // @ts-ignore
             fetchPriority="high"
@@ -101,7 +102,7 @@ export default function Hero() {
           {/* Dynamic Rotating Specialty */}
           <motion.div {...anim(0.2)} className="mb-2">
             <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-zinc-300 sm:text-base md:text-lg">
-              <span className="shrink-0 text-amber-400">Expertise in:</span>
+              <span className="shrink-0 text-amber-400">Expert In:</span>
               <span className="relative inline-flex h-7 items-center overflow-hidden sm:h-8">
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -119,43 +120,43 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Main Heading & Subtitle with New Luxury Content */}
+          {/* Main Heading & Subtitle - Direct & Professional */}
           <motion.div {...anim(0.3)} className="mb-5">
             <h1 className="mb-3 font-serif text-3xl font-black leading-[1.15] tracking-tight text-white sm:text-5xl md:text-6xl">
-              अपने सपनों के आशियाने को दें
+              फारबिसगंज और अररिया के
               <br />
-              <span className="hero-gradient-text">एक लग्जरी और मॉडर्न लुक</span>
+              <span className="hero-gradient-text">#1 False Ceiling & Interior Contractor</span>
             </h1>
             <p className="max-w-xl text-sm font-normal leading-relaxed text-zinc-200 sm:text-base md:text-lg">
-              फ्री 3D आइडिया, प्रीमियम फिनिशिंग और बेहतरीन कारीगरी के साथ।{" "}
+              बेस्ट क्वालिटी Gypsum False Ceiling, PVC Wall Paneling और UV Marble वर्क।{" "}
               <span className="inline-block rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-semibold text-emerald-300 backdrop-blur-xs">
-                फारबिसगंज का सबसे भरोसेमंद इंटीरियर डिज़ाइनर
+                1 साल की लिखित वारंटी
               </span>{" "}
-              — बिना किसी झंझट के।
+              और फ्री साइट विजिट के साथ।
             </p>
           </motion.div>
 
           {/* Action Buttons (CTAs) */}
           <motion.div {...anim(0.4)} className="mb-6 flex flex-wrap items-center gap-3">
-            <CallLink size="lg" shine ariaLabel="Call JK Interior for free design consultation">
+            <CallLink size="lg" shine ariaLabel="Call JK Interior for free rate list and site visit">
               <PhoneCall className="mr-2 h-4 w-4" />
-              फ्री डिज़ाइन कंसल्टेशन बुक करें
+              फ्री रेट लिस्ट व साइट विजिट लें
             </CallLink>
 
             <WhatsAppLink
               size="lg"
-              ariaLabel="WhatsApp JK Interior for catalog and designs"
-              message="Hi JK Interior, I want to check your catalog and design ideas for my home."
+              ariaLabel="WhatsApp JK Interior for design photos and rates"
+              message="Hi JK Interior, I want to check design photos and rates for interior work."
             >
-              WhatsApp पर कैटलॉग मंगाएं
+              WhatsApp पर डिज़ाइन और रेट पाएं
             </WhatsAppLink>
 
             <Link
               href="/gallery"
-              aria-label="हमारे प्रोजेक्ट्स देखें – View our work gallery"
+              aria-label="काम देखें – View our work gallery"
               className="group flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3.5 text-sm font-bold text-white backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/20 active:scale-95 sm:px-6 sm:py-4 sm:text-base"
             >
-              हमारे प्रोजेक्ट्स देखें
+              काम देखें
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </motion.div>
@@ -164,7 +165,7 @@ export default function Hero() {
           <motion.div {...anim(0.5)} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-zinc-300">
             <span className="flex items-center gap-1.5">
               <Zap className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
-              Free Design &amp; Quote
+              Free Site Visit
             </span>
             <span className="text-zinc-600" aria-hidden="true">•</span>
             <span className="flex items-center gap-1.5">
