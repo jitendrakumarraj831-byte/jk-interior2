@@ -1,6 +1,11 @@
 export const WA_NUMBER = "918651070831"
 export const CALL_NUMBER = "+918541849118"
 
+// Google Business Profile — deep-links straight to the JK Interior listing on
+// Google Maps (reviews included). Derived from the place CID in the embedded
+// map on the contact section, so it always resolves to the verified profile.
+export const GOOGLE_REVIEWS_URL = "https://www.google.com/maps?cid=12398820263168117030"
+
 export interface LeadContext {
   name?: string
   phone?: string

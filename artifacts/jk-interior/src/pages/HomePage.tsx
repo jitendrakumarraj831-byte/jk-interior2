@@ -115,6 +115,7 @@ export default function HomePage() {
               bestRating: "5"
             },
             sameAs: [
+              "https://www.google.com/maps?cid=12398820263168117030",
               "https://wa.me/918651070831",
               "https://www.facebook.com/share/1GpAKHZZtb/",
               "https://www.instagram.com/jk_interior_ceiling_designer"
