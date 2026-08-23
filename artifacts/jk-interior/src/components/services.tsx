@@ -50,7 +50,8 @@ export default function Services() {
     if (activeTab === "wall") {
       return (
         service.slug.includes("panel") ||
-        service.slug.includes("uv-sheet") ||
+        service.slug.includes("marble") ||
+        service.slug.includes("uv") ||
         service.slug.includes("wpc") ||
         service.slug.includes("wall")
       )
@@ -97,7 +98,7 @@ export default function Services() {
         <div className="mx-auto mb-8 flex max-w-3xl flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
           <div className="flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 shadow-xs sm:text-sm">
             <Sparkles className="h-4 w-4 text-amber-500" aria-hidden="true" />
-            <span>500+ सफलता पूर्वक पूरे किए गए प्रोजेक्ट्स</span>
+            <span>500+ सफलतापूर्वक पूरे किए गए प्रोजेक्ट्स</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-full border border-emerald-600/20 bg-emerald-50 px-3.5 py-1.5 text-xs font-bold text-emerald-800 shadow-xs sm:text-sm">
             <BadgeCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" />
