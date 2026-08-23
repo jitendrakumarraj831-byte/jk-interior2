@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowUpRight, Ruler, ShieldCheck, IndianRupee, MapPin, BadgeCheck, Sparkles, Droplets, Zap, type LucideIcon } from "lucide-react"
+import { ArrowUpRight, Ruler, ShieldCheck, IndianRupee, MapPin, BadgeCheck, Sparkles, Droplets, Zap, ChevronDown, Clock, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
@@ -24,7 +24,18 @@ const CATEGORIES = [
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState("all")
+  const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set())
   const shouldReduce = useReducedMotion()
+
+  // Toggle the accordion detail panel for a given service
+  const toggleDetails = (slug: string) => {
+    setOpenSlugs((prev) => {
+      const next = new Set(prev)
+      if (next.has(slug)) next.delete(slug)
+      else next.add(slug)
+      return next
+    })
+  }
 
   // 2. Filter logic based on service slug or category
   const filteredServices = SERVICES_SUMMARY.filter((service) => {
@@ -120,6 +131,7 @@ export default function Services() {
           <AnimatePresence mode="wait">
             {filteredServices.map((service, i) => {
               const isReversed = i % 2 === 1
+              const isOpen = openSlugs.has(service.slug)
               return (
                 <motion.article
                   key={service.slug}
@@ -196,6 +208,73 @@ export default function Services() {
                         )
                       })}
                     </ul>
+
+                    {/* 🔽 Custom interaction: expand/collapse detail (accordion) */}
+                    <div className="mb-6">
+                      <button
+                        type="button"
+                        onClick={() => toggleDetails(service.slug)}
+                        aria-expanded={isOpen}
+                        aria-controls={`service-details-${service.slug}`}
+                        className="flex w-full items-center justify-between gap-3 rounded-xl border border-emerald-900/10 bg-emerald-50/60 px-4 py-3 text-left text-sm font-extrabold text-emerald-900 transition-colors hover:bg-emerald-100/70"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Ruler className="h-4 w-4 text-emerald-700" aria-hidden="true" />
+                          {isOpen ? "जानकारी छुपाएँ" : "पूरी डिटेल देखें (रेट, टाइमिंग, जगह)"}
+                        </span>
+                        <ChevronDown
+                          className={`h-5 w-5 flex-none text-emerald-700 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                          aria-hidden="true"
+                        />
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            id={`service-details-${service.slug}`}
+                            key="details"
+                            initial={shouldReduce ? undefined : { height: 0, opacity: 0 }}
+                            animate={shouldReduce ? undefined : { height: "auto", opacity: 1 }}
+                            exit={shouldReduce ? undefined : { height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: easeLux }}
+                            className="overflow-hidden"
+                          >
+                            <div className="mt-3 rounded-xl border border-emerald-900/10 bg-white p-4 sm:p-5">
+                              <p className="mb-4 text-sm leading-relaxed text-gray-700">{service.taglineHi}</p>
+
+                              <dl className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                                <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
+                                  <IndianRupee className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
+                                  <div>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">रेट</dt>
+                                    <dd className="text-sm font-bold text-gray-900">{service.price}</dd>
+                                  </div>
+                                </div>
+                                <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
+                                  <Clock className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
+                                  <div>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">काम का समय</dt>
+                                    <dd className="text-sm font-bold text-gray-900">{service.installTime}</dd>
+                                  </div>
+                                </div>
+                                <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50/70 p-3">
+                                  <MapPin className="mt-0.5 h-4 w-4 flex-none text-emerald-700" aria-hidden="true" />
+                                  <div>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-emerald-800/70">कहाँ लगेगा</dt>
+                                    <dd className="text-sm font-bold text-gray-900">{service.whereUsedFirst}</dd>
+                                  </div>
+                                </div>
+                              </dl>
+
+                              <div className="mt-4 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2.5">
+                                <Sparkles className="h-4 w-4 flex-none text-amber-500" aria-hidden="true" />
+                                <span className="text-xs font-bold text-amber-900 sm:text-sm">{service.badgeHi}</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
 
                     <div className="flex flex-wrap items-center gap-3">
                       <Link
