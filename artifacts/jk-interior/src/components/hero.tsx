@@ -191,6 +191,11 @@ export default function Hero() {
           {/* Quick Micro-Features */}
           <motion.div {...anim(0.5)} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-zinc-300">
             <span className="flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
+              2 घंटे में जवाब
+            </span>
+            <span className="text-zinc-600" aria-hidden="true">•</span>
+            <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-amber-400" aria-hidden="true" />
               Direct Contractor Rates
             </span>
