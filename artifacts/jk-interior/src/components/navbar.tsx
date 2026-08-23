@@ -51,10 +51,10 @@ export default function Navbar() {
             <Link href="/" className="relative group shrink-0" aria-label="JK Interior – Home">
               <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-amber-400/15 via-emerald-500/10 to-amber-400/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img
-                src="/logo.svg"
+                src="/jk-interior-navbar-logo.webp"
                 alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
-                width={200}
-                height={51}
+                width={220}
+                height={71}
                 className="relative h-11 w-auto sm:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
