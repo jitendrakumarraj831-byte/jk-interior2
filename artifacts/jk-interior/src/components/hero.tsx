@@ -15,14 +15,14 @@ const words = [
 
 const stats = [
   { value: "500+", label: "Projects Completed", icon: TrendingUp },
-  { value: "100%", label: "Termite & Waterproof", icon: Droplets },
-  { value: "0%", label: "Hidden Costs", icon: ShieldCheck },
+  { value: "ISI", label: "Branded Material", icon: ShieldCheck },
+  { value: "0%", label: "Hidden Costs", icon: Droplets },
   { value: "Free", label: "Site Visit & Quote", icon: Zap },
 ]
 
 const trustBadges = [
   { icon: Star, label: "4.9/5 Customer Rating", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
-  { icon: Droplets, label: "100% Waterproof Material", color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10" },
+  { icon: Droplets, label: "Waterproof PVC & UV Marble", color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10" },
   { icon: Sparkles, label: "Dust-Free Clean Work", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
 ]
 
@@ -126,7 +126,7 @@ export default function Hero() {
               <span className="hero-gradient-text">#1 False Ceiling & Interior Contractor</span>
             </h1>
             <p className="max-w-xl text-sm font-normal leading-relaxed text-zinc-200 sm:text-base md:text-lg">
-              घर, ऑफिस या दुकान को दें एक मॉडर्न और प्रीमियम लुक। बेहतरीन कारीगरी, 100% वॉटरप्रूफ मटेरियल और{" "}
+              घर, ऑफिस या दुकान को दें एक मॉडर्न और साफ-सुथरा लुक। भरोसेमंद कारीगरी, ब्रांडेड टिकाऊ मटेरियल और{" "}
               <span className="inline-block rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-semibold text-emerald-300 backdrop-blur-xs">
                 फ्री साइट विजिट
               </span>{" "}

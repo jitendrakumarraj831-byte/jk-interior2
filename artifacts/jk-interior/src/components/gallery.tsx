@@ -13,8 +13,8 @@ const ALL = galleryImages as GalleryImage[]
 
 const CATEGORY_DESCRIPTIONS: Record<string, { en: string; hi: string }> = {
   "Gypsum False Ceiling": {
-    en: "Elegant gypsum ceiling designs with smooth finish and creative lighting integration — ideal for luxury interiors.",
-    hi: "स्मूथ फिनिश और सुंदर लाइटिंग के साथ बनी Gypsum Ceiling — हॉल-बेडरूम को प्रीमियम लुक देती है।",
+    en: "Gypsum ceiling designs with a smooth finish and cove/LED lighting — suited to halls, bedrooms and other dry rooms.",
+    hi: "स्मूथ फिनिश और Cove/LED लाइटिंग के साथ बनी Gypsum Ceiling — हॉल, बेडरूम और सूखे कमरों के लिए।",
   },
   "PVC Ceiling": {
     en: "Waterproof PVC false ceiling panels with modern designs and a long-lasting, dust-free finish.",
@@ -25,16 +25,16 @@ const CATEGORY_DESCRIPTIONS: Record<string, { en: string; hi: string }> = {
     hi: "ऑफिस, दुकान और हॉस्पिटल के लिए मज़बूत Grid Ceiling — साफ-सुथरी और मेंटेनेंस भी आसान।",
   },
   "WPC fluted panels & uv marble Sheet": {
-    en: "Termite-proof WPC fluted wall panels and real-marble-look UV marble sheets for a premium wall finish.",
-    hi: "कीड़े का असर न होने वाला WPC Fluted Panel और असली मार्बल जैसी UV Marble Sheet — दीवार को प्रीमियम लुक देते हैं।",
+    en: "Termite-resistant WPC fluted wall panels and marble-look UV marble sheets for TV walls and feature walls.",
+    hi: "दीमक-रोधी WPC Fluted Panel और मार्बल-लुक UV Marble Sheet — TV वॉल और फीचर वॉल के लिए।",
   },
   "TV Unit Design": {
     en: "Custom modular TV units with modern storage solutions, cable management, and premium finishes.",
     hi: "आपके कमरे की नाप पर बना Modular TV Unit — स्टोरेज, वायर छुपाने का इंतज़ाम, सब शामिल।",
   },
   "Artificial Grass": {
-    en: "Premium artificial grass for balconies, terraces, and gardens — always green, zero maintenance.",
-    hi: "बालकनी, टैरेस और गार्डन के लिए Artificial Grass — हमेशा हरी-भरी, कुछ करना भी नहीं पड़ता।",
+    en: "Artificial grass for balconies, terraces and gardens — stays green with very low maintenance.",
+    hi: "बालकनी, टैरेस और गार्डन के लिए Artificial Grass — हरी-भरी रहती है और रख-रखाव बहुत कम।",
   },
 }
 

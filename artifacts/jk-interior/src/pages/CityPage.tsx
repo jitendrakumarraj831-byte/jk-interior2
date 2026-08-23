@@ -139,7 +139,7 @@ export default function CityPage() {
 
           <div className="mt-8 flex flex-wrap gap-4">
             {[
-              { icon: "⭐", label: "5-Star Rated" },
+              { icon: "🧾", label: "Free Quotation" },
               { icon: "✅", label: "500+ Projects" },
               { icon: "🛡️", label: "1 Year Warranty" },
               { icon: "📍", label: `Serving ${city.name}` },

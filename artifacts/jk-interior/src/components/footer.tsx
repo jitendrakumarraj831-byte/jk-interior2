@@ -79,7 +79,7 @@ export default function Footer() {
               </p>
               <div className="rounded-xl border border-emerald-200 bg-white/60 p-4">
                 <p className="text-xs leading-relaxed text-emerald-700/70 italic">
-                  {"\u201C"}बिहार में प्रीमियम इंटीरियर डिज़ाइन और सीलिंग समाधान। आपके बजट में बेमिसाल कारीगरी।{"\u201D"}
+                  {"\u201C"}बिहार में इंटीरियर डिज़ाइन और सीलिंग का काम। आपके बजट में भरोसेमंद कारीगरी।{"\u201D"}
                 </p>
               </div>
             </div>
@@ -245,7 +245,7 @@ export default function Footer() {
   className="mt-12"
 >
   <Link
-    href="/service-areas"
+    href="/#areas"
     className="group flex items-center justify-between rounded-2xl border border-emerald-200/80 bg-white/60 px-5 py-4 backdrop-blur-xs transition-all duration-300 hover:border-emerald-300 hover:bg-white/80 hover:shadow-md"
     aria-label="View JK Interior service areas"
   >
