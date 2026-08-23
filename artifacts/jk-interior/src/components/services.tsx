@@ -11,7 +11,6 @@ const easeLux = [0.22, 1, 0.36, 1] as const
 const HIGHLIGHT_STYLES: Record<ServiceHighlight["kind"], { icon: LucideIcon }> = {
   special: { icon: Sparkles },
   pricing: { icon: IndianRupee },
-  warranty: { icon: ShieldCheck },
   suited: { icon: MapPin },
 }
 

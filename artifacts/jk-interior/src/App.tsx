@@ -49,6 +49,7 @@ function App() {
     // Defer chat initialization until after page is interactive
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => setShowChat(true), { timeout: 3000 })
+      return
     } else {
       // Fallback for browsers that don't support requestIdleCallback
       const timer = setTimeout(() => setShowChat(true), 2500)

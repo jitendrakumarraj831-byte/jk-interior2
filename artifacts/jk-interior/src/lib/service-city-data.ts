@@ -29,14 +29,14 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     description:
       "PVC (Polyvinyl Chloride) ceiling panels are 100% waterproof, termite-proof, and low-maintenance — making them the most versatile false ceiling option for bathrooms, kitchens, shops, and every room of the home.",
     pros: [
-      "100% waterproof — safe for bathroom and kitchen",
+      "Waterproof — safe for bathroom and kitchen",
       "Termite-proof and insect-resistant",
-      "Zero maintenance — just wipe clean",
-      "Never needs repainting, 20+ year lifespan",
+      "Low maintenance — just wipe clean",
+      "No repainting needed; long service life",
     ],
     bestFor: "Bathroom, kitchen, balcony, shop, office — any room",
     installTime: "1 room in a day, full home in 3–4 days",
-    maintenance: "Zero — just wipe with a damp cloth",
+    maintenance: "Very low — just wipe with a damp cloth",
     warranty: "1 year written warranty",
     faqs: [
       { q: "क्या PVC सीलिंग वॉटरप्रूफ है?", a: "हाँ भाई, 100% वॉटरप्रूफ है। बाथरूम-किचन हो या कोई भी नमी वाली जगह, यह कभी फूलता या खराब नहीं होता।" },
@@ -79,14 +79,14 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     description:
       "WPC (Wood Plastic Composite) panels give the luxury look of real wood without the maintenance headaches — termite-proof, moisture-resistant, and eco-friendly. Popular for TV walls, accent walls, and full room paneling.",
     pros: [
-      "Premium wood look at 60% less cost than real wood",
-      "Moisture and termite resistant — outlasts real wood",
-      "Zero maintenance — no polish or varnish ever needed",
-      "Available in 50+ colours and fluted textures",
+      "Wood look at a much lower cost than solid wood",
+      "Moisture- and termite-resistant — lasts longer than real wood in humidity",
+      "Low maintenance — no polish or varnish needed",
+      "Available in many colours and fluted textures",
     ],
     bestFor: "TV wall, bedroom headboard wall, accent wall, office reception",
     installTime: "TV wall accent in 1 day, full room in 2–3 days",
-    maintenance: "Wipe with a dry cloth — lifetime maintenance-free",
+    maintenance: "Wipe with a dry cloth — very low maintenance",
     warranty: "1 year written warranty",
     faqs: [
       { q: "WPC पैनल असली लकड़ी जैसा दिखता है?", a: "बिल्कुल भाई! WPC असली लकड़ी जैसा लुक देता है, पर टर्माइट, नमी और वार्पिंग की झंझट नहीं होती — और 60% सस्ता भी पड़ता है।" },

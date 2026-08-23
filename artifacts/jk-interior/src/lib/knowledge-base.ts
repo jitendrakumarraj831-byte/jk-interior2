@@ -430,7 +430,7 @@ export const WATERPROOF_SOLUTIONS = {
   },
   walls: {
     best: "UV Marble Sheets",
-    alternative: "WPC Panels (also waterproof but more expensive)",
+    alternative: "WPC Panels (moisture-resistant, but more expensive)",
     price: "₹45-120/sq.ft (UV), ₹180-650/sq.ft (WPC)",
     features: ["100% waterproof", "Easy to clean", "Mold/mildew resistant", "Scratch resistant"],
   },

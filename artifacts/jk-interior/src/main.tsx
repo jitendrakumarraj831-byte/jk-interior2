@@ -18,7 +18,7 @@ if ("serviceWorker" in navigator && import.meta.env.PROD) {
       navigator.serviceWorker.register("/sw.js").catch(() => {});
     }, { timeout: 5000 });
   } else {
-    window.addEventListener("load", () => {
+    (window as Window).addEventListener("load", () => {
       navigator.serviceWorker.register("/sw.js").catch(() => {});
     });
   }
