@@ -48,9 +48,15 @@ export default function Navbar() {
         >
           <div className="flex items-center justify-between gap-3">
             {/* Logo */}
-            <Link href="/" className="relative group shrink-0">
-              <div className="absolute -inset-2 rounded-xl bg-emerald-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img src="/logo.png" alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar" width={100} height={40} className="relative h-9 w-auto sm:h-10 object-contain" />
+            <Link href="/" className="relative group shrink-0" aria-label="JK Interior – Home">
+              <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-amber-400/15 via-emerald-500/10 to-amber-400/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <img
+                src="/logo.png"
+                alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
+                width={220}
+                height={56}
+                className="relative h-11 w-auto sm:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              />
             </Link>
 
             {/* Desktop Nav Links */}
