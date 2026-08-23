@@ -4,6 +4,33 @@ import FAQSection from "@/components/faq-section"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { FAQS } from "@/lib/faq-data"
+
+// Extra service-specific FAQs shown below the shared FAQ accordion. Kept in one
+// place so the visible <details> list and the FAQPage JSON-LD stay in sync —
+// Google requires FAQ rich-result markup to match what the visitor actually reads.
+const MORE_FAQS = [
+  {
+    q: "बिहार में Gypsum Ceiling की कीमत कितनी है?",
+    a: "अररिया-फोर्बेसगंज में Gypsum Ceiling आमतौर पर ₹75–₹210 प्रति sq.ft में लग जाती है — डिज़ाइन, Cove Light और POP वर्क के हिसाब से रेट बदलता है। फ्री और सही-सही कोटेशन के लिए +91 8541849118 पर संपर्क करें।",
+  },
+  {
+    q: "PVC Ceiling लगने में कितना समय लगता है?",
+    a: "एक स्टैंडर्ड कमरे की PVC Ceiling 1–2 दिन में लग जाती है। कई कमरों वाले बड़े प्रोजेक्ट में हम कमरा-दर-कमरा शेड्यूल बनाते हैं, जिससे आपकी रोज़मर्रा की ज़िंदगी में ज़्यादा दखल न हो।",
+  },
+  {
+    q: "फोर्बेसगंज के बाहर भी काम करते हैं?",
+    a: "हां! हम पूरे अररिया ज़िले में (फोर्बेसगंज, नरपतगंज, रानीगंज, कुर्साकाँटा, जोगबनी) और उससे आगे — पूर्णिया, सुपौल, त्रिवेणीगंज, छतापुर तक जाते हैं। कॉल करें: +91 8541849118।",
+  },
+  {
+    q: "काम पर वारंटी मिलती है क्या?",
+    a: "हां, हर installation पर 1 साल की लिखित Warranty मिलती है। Warranty के दौरान कोई भी खराबी हो तो बिना पैसे लिए ठीक करते हैं। लंबे समय तक चले, इसलिए ISI-Certified ब्रांडेड मटेरियल ही लगाते हैं।",
+  },
+  {
+    q: "पूरे बेडरूम का इंटीरियर बना सकते हैं?",
+    a: "बिल्कुल! False Ceiling, Wall Panel, TV Unit, वॉर्डरोब का सुझाव और लाइटिंग — पूरे बेडरूम का इंटीरियर हम एक ही टीम से करा देते हैं।",
+  },
+]
 
 export default function FAQPage() {
   return (
@@ -15,33 +42,14 @@ export default function FAQPage() {
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "PVC फॉल्स सीलिंग की कीमत क्या है?",
-              acceptedAnswer: { "@type": "Answer", text: "JK Interior में PVC फॉल्स सीलिंग ₹75–₹150 प्रति sq.ft से शुरू होती है। डिज़ाइन और लाइटिंग के अनुसार रेट अलग-अलग होता है। फ्री कोटेशन के लिए कॉल करें: +91 8541849118।" }
-            },
-            {
-              "@type": "Question",
-              name: "जिप्सम सीलिंग कितने दिन में तैयार होती है?",
-              acceptedAnswer: { "@type": "Answer", text: "एक स्टैंडर्ड कमरे की जिप्सम सीलिंग 1–3 दिन में पूरी होती है। बड़े प्रोजेक्ट के लिए विस्तृत टाइमलाइन पहले साझा की जाती है।" }
-            },
-            {
-              "@type": "Question",
-              name: "क्या JK Interior फ्री साइट विज़िट देती है?",
-              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior फोर्बेसगंज, अरारिया और आसपास के एरिया में फ्री एक्सपर्ट साइट विज़िट देती है। हमारी टीम आपके घर/दुकान आकर सटीक माप और अनुमान देती है।" }
-            },
-            {
-              "@type": "Question",
-              name: "WPC वॉल पैनल क्या होता है?",
-              acceptedAnswer: { "@type": "Answer", text: "WPC (वुड प्लास्टिक कम्पोजिट) वॉल पैनल एक वॉटरप्रूफ और टिकाऊ वॉल क्लैडिंग मटेरियल है। यह टर्माइट-प्रूफ, नमी-रोधी और आसानी से इंस्टॉल होता है। JK Interior ₹180/sq.ft से WPC पैनल लगाती है।" }
-            },
-            {
-              "@type": "Question",
-              name: "क्या JK Interior की कोई वारंटी है?",
-              acceptedAnswer: { "@type": "Answer", text: "हाँ, JK Interior सभी प्रोजेक्ट पर 1 साल की लिखित वारंटी देती है। ISI-प्रमाणित मटेरियल इस्तेमाल होते हैं।" }
-            }
-          ]
+          // Built from the exact questions rendered on this page (shared FAQ
+          // accordion + the service-specific list below), so the structured
+          // data always matches the visible content.
+          mainEntity: [...FAQS, ...MORE_FAQS].map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: { "@type": "Answer", text: faq.a },
+          })),
         }}
       />
       <Navbar />
@@ -61,28 +69,7 @@ export default function FAQPage() {
             हमारी सर्विस से जुड़े और सवाल
           </h2>
           <div className="space-y-6">
-            {[
-              {
-                q: 'बिहार में Gypsum Ceiling की कीमत कितनी है?',
-                a: 'अररिया-फोर्बेसगंज में Gypsum Ceiling आमतौर पर ₹75–₹210 प्रति sq.ft में लग जाती है — डिज़ाइन, Cove Light और POP वर्क के हिसाब से रेट बदलता है। फ्री और सही-सही कोटेशन के लिए +91 8541849118 पर संपर्क करें।',
-              },
-              {
-                q: 'PVC Ceiling लगने में कितना समय लगता है?',
-                a: 'एक स्टैंडर्ड कमरे की PVC Ceiling 1–2 दिन में लग जाती है। कई कमरों वाले बड़े प्रोजेक्ट में हम कमरा-दर-कमरा शेड्यूल बनाते हैं, जिससे आपकी रोज़मर्रा की ज़िंदगी में ज़्यादा दखल न हो।',
-              },
-              {
-                q: 'फोर्बेसगंज के बाहर भी काम करते हैं?',
-                a: 'हां! हम पूरे अररिया ज़िले में (फोर्बेसगंज, नरपतगंज, रानीगंज, कुर्साकाँटा, जोगबनी) और उससे आगे — पूर्णिया, सुपौल, त्रिवेणीगंज, छतापुर तक जाते हैं। कॉल करें: +91 8541849118।',
-              },
-              {
-                q: 'काम पर वारंटी मिलती है क्या?',
-                a: 'हां, हर installation पर 1 साल की लिखित Warranty मिलती है। Warranty के दौरान कोई भी खराबी हो तो बिना पैसे लिए ठीक करते हैं। लंबे समय तक चले, इसलिए ISI-Certified ब्रांडेड मटेरियल ही लगाते हैं।',
-              },
-              {
-                q: 'पूरे बेडरूम का इंटीरियर बना सकते हैं?',
-                a: 'बिल्कुल! False Ceiling, Wall Panel, TV Unit, वॉर्डरोब का सुझाव और लाइटिंग — पूरे बेडरूम का इंटीरियर हम एक ही टीम से करा देते हैं।',
-              },
-            ].map(({ q, a }) => (
+            {MORE_FAQS.map(({ q, a }) => (
               <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm open:border-emerald-300 open:shadow-emerald-50">
                 <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-emerald-700">{q}</summary>
                 <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
