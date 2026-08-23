@@ -62,8 +62,8 @@ export default function HomePage() {
             priceRange: "₹₹",
             address: {
               "@type": "PostalAddress",
-              streetAddress: "Damaria",
-              addressLocality: "Rewahi",
+              streetAddress: "Damaria Rewahi",
+              addressLocality: "Forbesganj",
               addressRegion: "Bihar",
               postalCode: "854318",
               addressCountry: "IN"

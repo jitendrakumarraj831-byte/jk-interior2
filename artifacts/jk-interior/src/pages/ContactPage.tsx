@@ -24,8 +24,8 @@ export default function ContactPage() {
             email: "jkinteriorofficial@gmail.com",
             address: {
               "@type": "PostalAddress",
-              streetAddress: "Damaria",
-              addressLocality: "Rewahi",
+              streetAddress: "Damaria Rewahi",
+              addressLocality: "Forbesganj",
               addressRegion: "Bihar",
               postalCode: "854318",
               addressCountry: "IN"
