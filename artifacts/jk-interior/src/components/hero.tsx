@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react"
-import { ArrowRight, MapPin, Star, ShieldCheck, Droplets, Sparkles, Zap, TrendingUp, PhoneCall, CheckCircle2 } from "lucide-react"
+import { ArrowRight, MapPin, Star, ShieldCheck, Droplets, Sparkles, Zap, TrendingUp, PhoneCall, CheckCircle2, Phone, Clock } from "lucide-react"
 import { Link } from "wouter"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { CALL_NUMBER } from "@/lib/business-data"
+
+// "+918541849118" → "+91 85418 49118" for a human-readable, tappable display.
+const CALL_DISPLAY = CALL_NUMBER.replace(/^(\+91)(\d{5})(\d{5})$/, "$1 $2 $3")
 
 const easeLux = [0.16, 1, 0.3, 1] as const
 
@@ -21,7 +25,7 @@ const stats = [
 ]
 
 const trustBadges = [
-  { icon: Star, label: "4.9/5 Customer Rating", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
+  { icon: Star, label: "4.9/5 Google Rating", color: "text-amber-400 border-amber-500/30 bg-amber-500/10" },
   { icon: Droplets, label: "Waterproof PVC & UV Marble", color: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10" },
   { icon: Sparkles, label: "Dust-Free Clean Work", color: "text-violet-400 border-violet-500/30 bg-violet-500/10" },
 ]
@@ -96,7 +100,15 @@ export default function Hero() {
 
         {/* Center Text & CTA Section */}
         <div className="max-w-3xl my-auto py-2">
-          
+
+          {/* Urgency / Offer Strip */}
+          <motion.div {...anim(0.15)} className="mb-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-md sm:text-[11px]">
+              <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+              आज ही फ्री साइट विजिट बुक करें
+            </span>
+          </motion.div>
+
           {/* Dynamic Rotating Specialty */}
           <motion.div {...anim(0.2)} className="mb-2">
             <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-zinc-300 sm:text-base md:text-lg">
@@ -159,6 +171,23 @@ export default function Hero() {
             </Link>
           </motion.div>
 
+          {/* Visible, tappable phone number */}
+          <motion.div {...anim(0.45)} className="mb-4">
+            <a
+              href={`tel:${CALL_NUMBER}`}
+              aria-label={`Call JK Interior at ${CALL_DISPLAY}`}
+              className="group inline-flex items-center gap-2 text-sm font-medium text-zinc-200 transition-colors hover:text-white"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30 transition-colors group-hover:bg-emerald-500/25">
+                <Phone className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="block text-[10px] font-bold uppercase tracking-widest text-zinc-400">Call करें</span>
+                <span className="block text-base font-black tracking-tight text-white sm:text-lg">{CALL_DISPLAY}</span>
+              </span>
+            </a>
+          </motion.div>
+
           {/* Quick Micro-Features */}
           <motion.div {...anim(0.5)} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-zinc-300">
             <span className="flex items-center gap-1.5">
@@ -173,7 +202,7 @@ export default function Hero() {
             <span className="text-zinc-600" aria-hidden="true">•</span>
             <span className="flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5 text-cyan-400" aria-hidden="true" />
-              Forbesganj &amp; Araria
+              Forbesganj, Araria, Jogbani &amp; आस-पास
             </span>
           </motion.div>
         </div>
