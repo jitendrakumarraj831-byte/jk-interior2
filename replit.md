@@ -1,45 +1,51 @@
-# [Project name]
+# JK Interior
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+The marketing site and AI sales assistant for JK Interior, a false-ceiling and
+interior-fit-out contractor serving Narpatganj, Forbesganj and Araria district,
+Bihar. Live at jkinterior.online.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `pnpm --filter @workspace/jk-interior run dev` — run the site locally (Vite dev server)
+- `pnpm run typecheck` — typecheck across all packages
+- `pnpm run build` — typecheck + production build
+- Required env (for the AI chat backend, `api/chat.ts`): `GROQ_API_KEY` — without it, the chat widget gracefully falls back to its local scripted responses
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- pnpm workspace, Node.js 24, TypeScript 5.9
+- Site: Vite + React 19 SPA (`wouter` for routing, not Next.js), Tailwind CSS, Framer Motion
+- AI chat backend: a single Vercel serverless function (`api/chat.ts`) that calls Groq's OpenAI-compatible chat API
+- Deploy: Vercel — `vercel.json` builds `artifacts/jk-interior` and serves `api/` as serverless functions
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/jk-interior/` — the entire site (pages, components, business content, gallery data)
+- `artifacts/jk-interior/src/components/jk-chat.tsx` — the AI assistant widget (lazy-loaded, deferred until the page is idle/interactive)
+- `artifacts/jk-interior/src/lib/business-data.ts`, `memory.ts` — shared by both the client-side chat fallback and `api/chat.ts` (imported directly by the serverless function via relative path)
+- `api/chat.ts` — the only backend code that's actually live in production
+- `scripts/post-merge.sh` — Replit post-merge hook, runs `pnpm install` after a merge
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The site is a Vite SPA, not Next.js, despite `next-themes` being a dependency (unused leftover from a shadcn template — harmless).
+- No database or Express API server is deployed. Lead capture currently posts to `/api/leads`, which has no backend yet (client-side only: saved to `localStorage`, then the visitor is hand-off to WhatsApp) — see Gotchas.
+- Images ship as AVIF+WebP pairs with lazy loading everywhere except the true above-the-fold hero/nav assets, which are eager + `fetchPriority="high"`.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+A conversion-focused marketing site (services, gallery, service-area pages, FAQ) plus an AI chat widget that answers pricing/material questions, estimates room costs from dimensions the visitor types, and hands qualified leads off to WhatsApp/a phone call.
+
+## Gotchas
+
+- `fetch("/api/leads", …)` in `jk-chat.tsx` has no live backend — it 404s silently (wrapped in `.catch(() => {})`). Leads are actually captured via `localStorage` + a WhatsApp deep link. Don't assume leads are landing in a database anywhere.
+- `api/chat.ts` imports directly from `artifacts/jk-interior/src/lib/*` by relative path — moving or renaming those files breaks the live AI backend, not just the frontend.
+- Without `GROQ_API_KEY` set in the Vercel project, `/api/chat` returns `{ ok: false }` and the widget silently uses its local scripted fallback — this fails safe, not loudly, so a missing key is easy to miss.
 
 ## User preferences
 
 _Populate as you build — explicit user instructions worth remembering across sessions._
 
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
 ## Pointers
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
