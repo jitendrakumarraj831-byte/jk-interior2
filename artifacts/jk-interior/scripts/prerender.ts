@@ -106,6 +106,16 @@ const STABILITY_ARGS = [
   "--disable-software-rasterizer",
 ]
 
+/** Logged once per run: the first thing worth knowing when diagnosing a SKIPPED
+ *  build is which Chromium was even attempted. crawlRoutes() relaunches per
+ *  retry attempt, so this is deduplicated to keep the build log readable. */
+let loggedBrowserChoice = ""
+function logBrowserChoice(choice: string) {
+  if (choice === loggedBrowserChoice) return
+  loggedBrowserChoice = choice
+  console.log(`[prerender] using ${choice}`)
+}
+
 async function launchBrowser(): Promise<Browser> {
   // 1) Explicit override, for any environment that wants full control.
   // 2) The Chromium this sandbox/dev environment ships pre-installed.
@@ -119,13 +129,16 @@ async function launchBrowser(): Promise<Browser> {
 
   for (const candidate of localCandidates) {
     if (existsSync(candidate)) {
+      logBrowserChoice(`local Chromium at ${candidate}`)
       return puppeteer.launch({ executablePath: candidate, args: STABILITY_ARGS, headless: true })
     }
   }
 
   const chromium = (await import("@sparticuz/chromium")).default
+  const executablePath = await chromium.executablePath()
+  logBrowserChoice(`bundled @sparticuz/chromium at ${executablePath}`)
   return puppeteer.launch({
-    executablePath: await chromium.executablePath(),
+    executablePath,
     args: [...chromium.args, ...STABILITY_ARGS],
     headless: chromium.headless,
   })
