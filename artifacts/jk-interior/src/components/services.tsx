@@ -9,6 +9,15 @@ import { SERVICES_SUMMARY, type ServiceHighlight, type ServiceSummary } from "@/
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
+/** Swaps a "/images/foo.webp" path for one of its generated variants (see
+ *  scripts/optimize-jk-interior-images.ts), e.g. "-800w.avif". */
+const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$/, suffix)
+
+/** Desktop rows put the image in 5 of 12 columns of a 7xl container; phones get full bleed. */
+const ROW_IMAGE_SIZES = "(min-width: 1024px) 520px, calc(100vw - 40px)"
+/** Swipe cards are a fixed-ish rail item, never full viewport width. */
+const CARD_IMAGE_SIZES = "(min-width: 640px) 340px, 80vw"
+
 const HIGHLIGHT_STYLES: Record<ServiceHighlight["kind"], { icon: LucideIcon }> = {
   special: { icon: Sparkles },
   pricing: { icon: IndianRupee },
@@ -154,13 +163,17 @@ export default function Services() {
                       href={`/services/${service.slug}`}
                       className="group relative block overflow-hidden rounded-2xl shadow-md transition-shadow hover:shadow-xl"
                     >
-                      <img
-                        src={service.heroImage}
-                        alt={service.heroImageAlt}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-56 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-64 lg:h-80"
-                      />
+                      <picture>
+                        <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={ROW_IMAGE_SIZES} type="image/avif" />
+                        <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={ROW_IMAGE_SIZES} type="image/webp" />
+                        <img
+                          src={service.heroImage}
+                          alt={service.heroImageAlt}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-56 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-64 lg:h-80"
+                        />
+                      </picture>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                       <span className="absolute right-3.5 top-3.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gold-700 opacity-0 shadow-md backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
@@ -348,13 +361,17 @@ function ServiceSwipeCard({ service, index }: { service: ServiceSummary; index: 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold-900/10 bg-white shadow-[0_18px_45px_-30px_rgba(76,58,18,0.7)]">
       <Link href={`/services/${service.slug}`} className="relative block">
-        <img
-          src={service.heroImage}
-          alt={service.heroImageAlt}
-          loading="lazy"
-          decoding="async"
-          className="h-48 w-full object-cover sm:h-56"
-        />
+        <picture>
+          <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={CARD_IMAGE_SIZES} type="image/avif" />
+          <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={CARD_IMAGE_SIZES} type="image/webp" />
+          <img
+            src={service.heroImage}
+            alt={service.heroImageAlt}
+            loading="lazy"
+            decoding="async"
+            className="h-48 w-full object-cover sm:h-56"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
         <span className="absolute left-3 top-3 rounded-full border border-white/25 bg-black/45 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
           {String(index + 1).padStart(2, "0")} · {service.category}

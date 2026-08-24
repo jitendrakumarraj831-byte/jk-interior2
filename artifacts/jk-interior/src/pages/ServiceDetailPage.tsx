@@ -22,6 +22,13 @@ import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 import NotFound from "@/pages/not-found"
 
+/** Swaps a "/images/foo.webp" path for one of its generated variants (see
+ *  scripts/optimize-jk-interior-images.ts), e.g. "-800w.avif". */
+const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$/, suffix)
+
+/** The hero sits in a 2-col grid above 1024px and full-bleed below it. */
+const HERO_SIZES = "(min-width: 1024px) 50vw, calc(100vw - 40px)"
+
 export default function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const service = getServiceContentBySlug(slug || "")
@@ -49,9 +56,28 @@ export default function ServiceDetailPage() {
       serviceType: service.name,
       description: service.whatItIs,
       provider: {
-        "@type": "LocalBusiness",
+        "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+        // Same @id as the static block in index.html, so the provider resolves
+        // to the one JK Interior entity rather than a partial duplicate.
+        "@id": `${SITE_URL}/#business`,
         name: "JK Interior",
-        telephone: "+91-8541849118",
+        telephone: ["+91-8541849118", "+91-8651070831"],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: "+91-8541849118",
+            contactType: "customer service",
+            areaServed: "IN-BR",
+            availableLanguage: ["English", "Hindi"],
+          },
+          {
+            "@type": "ContactPoint",
+            telephone: "+91-8651070831",
+            contactType: "sales",
+            areaServed: "IN-BR",
+            availableLanguage: ["English", "Hindi"],
+          },
+        ],
         address: {
           "@type": "PostalAddress",
           streetAddress: "Damaria Rewahi",
@@ -144,16 +170,30 @@ export default function ServiceDetailPage() {
               </div>
             </div>
 
-            {/* Hero image */}
+            {/* Hero image — the LCP element on this route, so it is served as
+                AVIF/WebP with an 800w variant for phones rather than the full
+                desktop-resolution file. */}
             <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
-              <img
-                src={service.heroImage}
-                alt={service.heroImageAlt}
-                className="h-72 w-full object-cover sm:h-96"
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-              />
+              <picture>
+                <source
+                  srcSet={`${srcVariant(service.heroImage, "-800w.avif")} 800w, ${srcVariant(service.heroImage, ".avif")} 1600w`}
+                  sizes={HERO_SIZES}
+                  type="image/avif"
+                />
+                <source
+                  srcSet={`${srcVariant(service.heroImage, "-800w.webp")} 800w, ${service.heroImage} 1600w`}
+                  sizes={HERO_SIZES}
+                  type="image/webp"
+                />
+                <img
+                  src={service.heroImage}
+                  alt={service.heroImageAlt}
+                  className="h-72 w-full object-cover sm:h-96"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
           </div>

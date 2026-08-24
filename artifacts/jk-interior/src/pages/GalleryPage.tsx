@@ -22,7 +22,7 @@ export default function GalleryPage() {
             description: "500+ completed interior design projects in Bihar – PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV units.",
             url: "https://www.jkinterior.online/gallery",
             author: {
-              "@type": "LocalBusiness",
+              "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
               "@id": "https://www.jkinterior.online/#business",
               name: "JK Interior"
             }

@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from "react"
 import { Switch, Route, Router as WouterRouter } from "wouter"
 import { MotionConfig } from "framer-motion"
 import ScrollProgress from "@/components/scroll-progress"
-import MobileCtaBar from "@/components/mobile-cta-bar"
 
 const HomePage = lazy(() => import("@/pages/HomePage"))
 const AboutPage = lazy(() => import("@/pages/AboutPage"))
@@ -64,7 +63,6 @@ function App() {
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <ScrollProgress />
         <Router />
-        <MobileCtaBar />
         {showChat && (
           <Suspense fallback={null}>
             <JKChat />

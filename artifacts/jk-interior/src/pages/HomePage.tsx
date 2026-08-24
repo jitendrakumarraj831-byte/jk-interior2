@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react"
 import Navbar from "@/components/navbar"
 import Hero from "@/components/hero"
 import Services from "@/components/services"
+import BusinessSummary from "@/components/business-summary"
 import ProcessTimeline from "@/components/process-timeline"
 import ServiceAreas from "@/components/service-areas"
 import Contact from "@/components/contact"
@@ -11,13 +12,11 @@ import { FAQS } from "@/lib/faq-data"
 import {
   GallerySkeleton,
   WhyUsSkeleton,
-  TestimonialSkeleton,
   FAQSkeleton,
 } from "@/components/loading-skeleton"
 
 const Gallery = lazy(() => import("@/components/gallery"))
 const WhyUs = lazy(() => import("@/components/why-us"))
-const Testimonials = lazy(() => import("@/components/testimonials"))
 const FAQSection = lazy(() => import("@/components/faq-section"))
 
 export default function HomePage() {
@@ -49,7 +48,7 @@ export default function HomePage() {
         jsonLd={[
           {
             "@context": "https://schema.org",
-            "@type": "LocalBusiness",
+            "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
             "@id": "https://www.jkinterior.online/#business",
             name: "JK Interior",
             slogan: "Interior & False Ceiling Solutions",
@@ -61,6 +60,22 @@ export default function HomePage() {
             email: "jkinteriorofficial@gmail.com",
             foundingDate: "2019",
             priceRange: "₹₹",
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                telephone: "+91-8541849118",
+                contactType: "customer service",
+                areaServed: "IN-BR",
+                availableLanguage: ["English", "Hindi"]
+              },
+              {
+                "@type": "ContactPoint",
+                telephone: "+91-8651070831",
+                contactType: "sales",
+                areaServed: "IN-BR",
+                availableLanguage: ["English", "Hindi"]
+              }
+            ],
             address: {
               "@type": "PostalAddress",
               streetAddress: "Damaria Rewahi",
@@ -109,12 +124,12 @@ export default function HomePage() {
                 { "@type": "Offer", itemOffered: { "@type": "Service", name: "Modular TV Unit" } }
               ]
             },
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "4.9",
-              reviewCount: "100",
-              bestRating: "5"
-            },
+            // No aggregateRating here on purpose. The ratings it used to assert
+            // were not collected by this site, and Google's structured-data
+            // policy treats self-serving review markup on your own business as
+            // a manual-action risk. Real reviews live on the Google Business
+            // Profile linked from sameAs below, where Google sources them
+            // itself.
             sameAs: [
               "https://www.google.com/maps?cid=12398820263168117030",
               "https://wa.me/918651070831",
@@ -162,6 +177,7 @@ export default function HomePage() {
       </p>
       <Navbar />
       <Hero />
+      <BusinessSummary />
       <Services />
       <ProcessTimeline />
       <Suspense fallback={<GallerySkeleton />}>
@@ -169,9 +185,6 @@ export default function HomePage() {
       </Suspense>
       <Suspense fallback={<WhyUsSkeleton />}>
         <WhyUs />
-      </Suspense>
-      <Suspense fallback={<TestimonialSkeleton />}>
-        <Testimonials />
       </Suspense>
       <ServiceAreas />
       <Suspense fallback={<FAQSkeleton />}>

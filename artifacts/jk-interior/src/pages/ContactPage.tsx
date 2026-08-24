@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar"
+import BusinessSummary from "@/components/business-summary"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
@@ -19,11 +20,27 @@ export default function ContactPage() {
           name: "Contact JK Interior",
           url: "https://www.jkinterior.online/contact",
           mainEntity: {
-            "@type": "LocalBusiness",
+            "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
             "@id": "https://www.jkinterior.online/#business",
             name: "JK Interior",
             telephone: ["+91-8541849118", "+91-8651070831"],
             email: "jkinteriorofficial@gmail.com",
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                telephone: "+91-8541849118",
+                contactType: "customer service",
+                areaServed: "IN-BR",
+                availableLanguage: ["English", "Hindi"]
+              },
+              {
+                "@type": "ContactPoint",
+                telephone: "+91-8651070831",
+                contactType: "sales",
+                areaServed: "IN-BR",
+                availableLanguage: ["English", "Hindi"]
+              }
+            ],
             address: {
               "@type": "PostalAddress",
               streetAddress: "Damaria Rewahi",
@@ -62,6 +79,7 @@ export default function ContactPage() {
         whatsappMessage="Hello JK Interior, I would like to discuss an interior project."
         whatsappLabel="Chat on WhatsApp"
       />
+      <BusinessSummary />
       <Contact />
       <Footer />
     </main>
