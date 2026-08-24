@@ -5,8 +5,10 @@
  * name, city, budget, rooms (with size + material + estimates), preferences,
  * project type, booking interest, and conversation stage.
  *
- * Shared by client (jk-chat.tsx) and server (api/chat/route.ts) — zero side effects.
+ * Shared by client (jk-chat.tsx) and server (api/chat.ts) — zero side effects.
  */
+
+import type { ReplyLanguage } from "./reply-language"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -52,6 +54,8 @@ export interface ConversationMemory {
   projectType?: "single-room" | "multi-room" | "full-home"
 
   // ── Conversation state ────────────────────────────────────────────────────
+  /** Language the assistant is answering in — sticky across the conversation. */
+  language?: ReplyLanguage
   stage: ConversationStage
   topicHistory: string[]     // ordered list of topics discussed (last 15)
   askedFields: string[]      // fields we've already asked about — never ask again
@@ -274,6 +278,8 @@ export function mergeMemory(
     currentRoom: updates.currentRoom ?? existing.currentRoom,
     // Project
     projectType: updates.projectType ?? existing.projectType,
+    // Language — sticky once the visitor has shown which one they use
+    language: updates.language ?? existing.language,
     // Booking — once true, stays true
     bookingInterest: updates.bookingInterest || existing.bookingInterest,
     // Latest estimate
@@ -313,10 +319,12 @@ export function updateStage(memory: ConversationMemory): ConversationStage {
  * Tells the model everything it needs to personalize responses.
  */
 export function summarizeForPrompt(memory: ConversationMemory): string {
-  // Don't pad empty memory
-  if (memory.messagesExchanged === 0 && !memory.name && !memory.city && memory.rooms.length === 0) {
-    return ""
-  }
+  // Don't pad empty memory — but a budget or an estimate on its own is context
+  // worth carrying even before anything else about the visitor is known.
+  const isEmpty =
+    !memory.name && !memory.phone && !memory.city && memory.rooms.length === 0 &&
+    !memory.budgetRaw && !memory.latestEstimate && !memory.bookingInterest
+  if (isEmpty) return ""
 
   const lines: string[] = [
     "--- CONVERSATION MEMORY (mandatory context) ---",
@@ -384,7 +392,12 @@ export function summarizeForPrompt(memory: ConversationMemory): string {
 
 // ─── Persistence helpers (client-side only) ──────────────────────────────────
 
-const MEMORY_KEY = "jk_memory_v1"
+/**
+ * localStorage key for the saved conversation. Exported because the chat widget's
+ * "clear conversation" button has to remove this exact key — it used to remove a
+ * key that never existed, so a cleared chat came straight back on the next reload.
+ */
+export const MEMORY_KEY = "jk_memory_v1"
 
 export function loadMemory(): ConversationMemory {
   if (typeof window === "undefined") return createMemory()
@@ -420,3 +433,100 @@ export function clearMemory(): void {
   if (typeof window === "undefined") return
   try { localStorage.removeItem(MEMORY_KEY) } catch {}
 }
+
+
+// ─── Server-side hardening ────────────────────────────────────────────────────
+
+const MAX_FIELD = 80
+const MAX_ROOMS = 12
+const MAX_TOPICS = 15
+
+const clean = (value: unknown, max = MAX_FIELD): string | undefined => {
+  if (typeof value !== "string") return undefined
+  // Strip newlines and control characters: this text is interpolated straight
+  // into the system prompt, and a multi-line value could otherwise forge its own
+  // instruction block inside it.
+  const trimmed = value.replace(/[\u0000-\u001F\u007F]+/g, " ").replace(/\s+/g, " ").trim()
+  return trimmed ? trimmed.slice(0, max) : undefined
+}
+
+const cleanNumber = (value: unknown): number | undefined =>
+  typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : undefined
+
+const ROOM_STATUSES: RoomStatus[] = ["mentioned", "sized", "estimated", "confirmed"]
+
+/**
+ * Rebuild a `ConversationMemory` from whatever the browser posted.
+ *
+ * Memory travels client → server and lands inside the system prompt, so it is
+ * attacker-controlled input, not trusted state: every field is re-typed, capped
+ * in length and stripped of line breaks, and unknown keys are dropped entirely.
+ */
+export function sanitizeMemory(raw: unknown): ConversationMemory {
+  const base = createMemory()
+  if (!raw || typeof raw !== "object") return base
+  const input = raw as Record<string, unknown>
+
+  const rooms: RoomContext[] = Array.isArray(input.rooms)
+    ? input.rooms
+        .slice(0, MAX_ROOMS)
+        .map((room): RoomContext | null => {
+          if (!room || typeof room !== "object") return null
+          const r = room as Record<string, unknown>
+          const name = clean(r.name, 40)
+          if (!name) return null
+          const status = ROOM_STATUSES.includes(r.status as RoomStatus) ? (r.status as RoomStatus) : "mentioned"
+          return {
+            name,
+            size: clean(r.size, 24),
+            sqft: cleanNumber(r.sqft),
+            material: clean(r.material, 40),
+            estimateRange: clean(r.estimateRange, 40),
+            requirements: clean(r.requirements, 80),
+            status,
+          }
+        })
+        .filter((r): r is RoomContext => r !== null)
+    : []
+
+  const language = input.language === "hindi" || input.language === "hinglish" || input.language === "english"
+    ? (input.language as ReplyLanguage)
+    : undefined
+
+  const stage = STAGES.includes(input.stage as ConversationStage) ? (input.stage as ConversationStage) : base.stage
+
+  return {
+    ...base,
+    name: clean(input.name, 40),
+    phone: clean(input.phone, 20),
+    city: clean(input.city, 40),
+    budgetRaw: clean(input.budgetRaw, 40),
+    budgetMin: cleanNumber(input.budgetMin),
+    budgetMax: cleanNumber(input.budgetMax),
+    rooms,
+    currentRoom: clean(input.currentRoom, 40),
+    preferredStyle: STYLES.includes(input.preferredStyle as Style) ? (input.preferredStyle as Style) : undefined,
+    preferredMaterial: clean(input.preferredMaterial, 40),
+    projectType: PROJECT_TYPES.includes(input.projectType as ProjectType) ? (input.projectType as ProjectType) : undefined,
+    language,
+    stage,
+    topicHistory: Array.isArray(input.topicHistory)
+      ? input.topicHistory.map((t) => clean(t, 40)).filter((t): t is string => !!t).slice(0, MAX_TOPICS)
+      : [],
+    askedFields: Array.isArray(input.askedFields)
+      ? input.askedFields.map((f) => clean(f, 40)).filter((f): f is string => !!f).slice(0, MAX_TOPICS)
+      : [],
+    previousTopics: {},
+    latestEstimate: clean(input.latestEstimate, 40),
+    bookingInterest: input.bookingInterest === true,
+    messagesExchanged: Math.min(cleanNumber(input.messagesExchanged) ?? 0, 500),
+    lastUpdated: Date.now(),
+  }
+}
+
+type Style = NonNullable<ConversationMemory["preferredStyle"]>
+type ProjectType = NonNullable<ConversationMemory["projectType"]>
+
+const STAGES: ConversationStage[] = ["greeting", "discovery", "consultation", "estimation", "booking"]
+const STYLES: Style[] = ["modern", "luxury", "minimal", "traditional", "contemporary"]
+const PROJECT_TYPES: ProjectType[] = ["single-room", "multi-room", "full-home"]
