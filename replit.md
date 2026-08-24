@@ -21,7 +21,8 @@ Bihar. Live at jkinterior.online.
 ## Where things live
 
 - `artifacts/jk-interior/` — the entire site (pages, components, business content, gallery data)
-- `artifacts/jk-interior/src/components/jk-chat.tsx` — the AI assistant widget (lazy-loaded, deferred until the page is idle/interactive)
+- `artifacts/jk-interior/src/components/jk-chat.tsx` — the AI assistant panel (lazy chunk, fetched on browser idle or on hover of the launcher)
+- `artifacts/jk-interior/src/components/ui/assistant-launcher.tsx`, `assistant-mark.tsx` — the floating AI button and its logo. Eager and dependency-free on purpose, so they are in the prerendered HTML and paint before React hydrates — see "Assistant loading" below
 - `artifacts/jk-interior/src/lib/business-data.ts` — builds the assistant's system prompt by *deriving* it from the modules the site itself renders (`services-summary.ts`, `faq-data.ts`, `business-facts.ts`, `seo.ts`). No business fact is hand-written here
 - `artifacts/jk-interior/src/lib/business-facts.ts` — the "at a glance" facts, shared by the visible section and the assistant
 - `artifacts/jk-interior/src/lib/memory.ts` — per-conversation memory, shared by the widget and `api/chat.ts` (imported directly by the serverless function via relative path)
@@ -50,6 +51,29 @@ rate and opening hours the site never published.
 To change what the assistant knows, edit the website data (`services-summary.ts`,
 `faq-data.ts`, `business-facts.ts`, `seo.ts`). Never add facts to
 `business-data.ts` or `jk-chat.tsx` directly.
+
+## Assistant loading
+
+The launcher button and the chat panel are deliberately separate:
+
+- `AssistantLauncher` is an ordinary eager component, so it lands in the
+  prerendered HTML of all 64 pages and is styled by `index.css` alone. It paints
+  with the document — verified visible with JavaScript disabled entirely.
+- `jk-chat.tsx` is a lazy chunk, fetched on `requestIdleCallback` or on hover of
+  the button, then mounted closed so the first tap is a state flip.
+- An inline script in `index.html` records a tap that lands before hydration and
+  `App` replays it. Without that, the early tap would hit a button with no
+  handler and silently do nothing.
+
+Measured on a throttled connection (1.6 Mbps, 150 ms RTT, 4× CPU): button
+visible at **0.5 s** rather than 2.8 s, and open latency unchanged at ~170 ms.
+The previous version rendered the button through Framer Motion, which baked
+`opacity: 0` into the static HTML — it was in the markup but invisible until the
+JS bundle had downloaded, hydrated and animated it in.
+
+Anything added to the launcher path must stay dependency-free. Importing Framer
+Motion, the chat code or business data into it pulls that weight into the main
+bundle and undoes this.
 
 ## Gotchas
 

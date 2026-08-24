@@ -12,6 +12,8 @@ import {
   findService,
 } from "@/lib/business-data"
 import { SERVICES_SUMMARY } from "@/lib/services-summary"
+import { AssistantMark } from "@/components/ui/assistant-mark"
+import { AssistantLauncher } from "@/components/ui/assistant-launcher"
 import {
   type ConversationMemory,
   createMemory,
@@ -359,15 +361,6 @@ const ISend = () => (<svg viewBox="0 0 24 24" fill="currentColor" className="h-4
 const IWA = () => (<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L.054 23.447a.5.5 0 00.611.61l5.7-1.461A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>)
 const ICal = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>)
 const IPhone = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2.74h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.34a16 16 0 0 0 6.06 6.06l1.66-1.66a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>)
-const ISparkle = () => (<svg viewBox="0 0 24 24" className="h-3 w-3 fill-current"><path d="M12 2l1.8 5.4L19.2 6l-4.2 3.6L16.8 15 12 11.4 7.2 15l1.8-5.4L4.8 6l5.4 1.4z"/></svg>)
-
-// JK Interior AI Assistant logo — sparkle cluster used everywhere the bot avatar appears
-const IAssistantLogo = ({ className = "h-3.5 w-3.5" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
-    <path d="M12 3.2c.5 2.7 1.1 4.4 2 5.3.9.9 2.6 1.5 5.3 2-2.7.5-4.4 1.1-5.3 2-.9.9-1.5 2.6-2 5.3-.5-2.7-1.1-4.4-2-5.3-.9-.9-2.6-1.5-5.3-2 2.7-.5 4.4-1.1 5.3-2 .9-.9 1.5-2.6 2-5.3z"/>
-    <path d="M19 2.4c.24 1.13.53 1.86.9 2.24.38.37 1.11.66 2.24.9-1.13.24-1.86.53-2.24.9-.37.38-.66 1.11-.9 2.24-.24-1.13-.53-1.86-.9-2.24-.38-.37-1.11-.66-2.24-.9 1.13-.24 1.86-.53 2.24-.9.37-.38.66-1.11.9-2.24z" opacity="0.75"/>
-  </svg>
-)
 
 // ── Mic Icon ──────────────────────────────────────────────────────────────────
 const IMic = () => (
@@ -400,7 +393,7 @@ function RichText({ text }: { text: string }) {
 const TypingDots = () => (
   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }} className="flex items-end gap-2">
     <div className="h-6 w-6 shrink-0 rounded-full bg-gradient-to-br from-gold-600 to-gold-800 flex items-center justify-center shadow-sm">
-      <IAssistantLogo className="h-3 w-3 text-white" />
+      <AssistantMark className="h-3 w-3 text-white" />
     </div>
     <div className="rounded-2xl rounded-bl-sm px-4 py-3 shadow-md bg-white border border-gray-100">
       <div className="flex gap-[5px] items-center h-[14px]">
@@ -462,9 +455,14 @@ const WELCOME_MSG = mk(
 // in the PARENT PAGE (not here). Remove them from your page layout/component.
 // Example: Delete any <a href="https://wa.me/..."> and <a href="tel:..."> buttons
 // that appear outside this JKChat component in your page JSX.
-export default function JKChat() {
+/**
+ * `startOpen` is passed by App when the visitor clicked the launcher before this
+ * chunk had loaded — the panel then opens as soon as it arrives, so the click
+ * isn't swallowed by the download.
+ */
+export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
   const [mounted, setMounted] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(startOpen)
   const [isInitializing, setIsInitializing] = useState(true)
   const [messages, setMsgs] = useState<Message[]>([WELCOME_MSG])
   const [input, setInput] = useState("")
@@ -548,16 +546,11 @@ export default function JKChat() {
     }
   }, [isListening])
 
-  useEffect(() => {
-    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback
-    if (ric) {
-      ric(() => setMounted(true), { timeout: 2000 })
-      return undefined
-    } else {
-      const t = setTimeout(() => setMounted(true), 800)
-      return () => clearTimeout(t)
-    }
-  }, [])
+  // Mount immediately. This chunk is only downloaded once the visitor has asked
+  // for the assistant (or the browser prefetched it while idle), so deferring
+  // again here only added latency to a click that already happened. The state
+  // still exists to keep localStorage and Web Speech access out of prerender.
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => { setOffHours(isOffHours()) }, [])
   useEffect(() => { document.body[open ? "setAttribute" : "removeAttribute"]("data-chat-open", "1") }, [open])
@@ -921,7 +914,6 @@ const tLower = text.toLowerCase()
   return (
     <>
       <style>{`
-        @keyframes jk-ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.9); opacity: 0; } }
         @keyframes jk-voice-ring { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.4); opacity: 0.2; } }
         @keyframes jk-soundwave { 0%, 100% { height: 6px; } 50% { height: 18px; } }
         .scrollbar-luxury::-webkit-scrollbar { width: 4px; }
@@ -937,63 +929,7 @@ const tLower = text.toLowerCase()
 
       {/* ── Floating Button — Modern AI Chat Bubble ────────────────────────── */}
       {!open && (
-        <motion.button
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 340, damping: 22 }}
-          whileHover={{ scale: 1.08, y: -3 }}
-          whileTap={{ scale: 0.93 }}
-          onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-4 z-50 md:bottom-24 md:right-6"
-          style={{ width: 62, height: 62 }}
-          aria-label="Open chat with JK Interior AI Assistant"
-        >
-          {/* Soft ambient glow */}
-          <span
-            className="absolute -inset-2 rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(212, 175, 55,0.28) 0%, transparent 70%)",
-              animation: "jk-ring 2.8s ease-out infinite",
-            }}
-          />
-
-          {/* Main pill — rich teal-to-emerald gradient */}
-          <span
-            className="absolute inset-0 rounded-[20px] shadow-[0_8px_28px_rgba(212, 175, 55,0.45)]"
-            style={{
-              background: "linear-gradient(140deg, #d4af37 0%, #c9a227 45%, #a9851d 100%)",
-            }}
-          />
-
-          {/* Subtle inner shimmer */}
-          <span
-            className="absolute inset-0 rounded-[20px] opacity-40"
-            style={{
-              background: "linear-gradient(135deg, rgba(255,255,255,0.35) 0%, transparent 55%)",
-            }}
-          />
-
-          {/* Chat bubble icon */}
-          <span className="absolute inset-0 flex items-center justify-center">
-            <svg viewBox="0 0 40 40" fill="none" style={{ width: 36, height: 36 }} aria-hidden="true">
-              {/* Chat bubble body */}
-              <rect x="4" y="6" width="32" height="22" rx="8" fill="white" opacity="0.95"/>
-              {/* Bubble tail */}
-              <path d="M10 28 L7 34 L17 29" fill="white" opacity="0.95"/>
-              {/* Three dots inside */}
-              <circle cx="13" cy="17" r="2.4" fill="#c9a227"/>
-              <circle cx="20" cy="17" r="2.4" fill="#c9a227"/>
-              <circle cx="27" cy="17" r="2.4" fill="#c9a227"/>
-              {/* Sparkle top-right */}
-              <path d="M31 5 L32 8 L35 9 L32 10 L31 13 L30 10 L27 9 L30 8Z" fill="white" opacity="0.85"/>
-            </svg>
-          </span>
-
-          {/* "AI" label pill at top-right */}
-          <span className="absolute -top-1.5 -right-1 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 text-[8px] font-black text-gold-700 shadow-lg z-20 leading-none">
-            <ISparkle />AI
-          </span>
-        </motion.button>
+        <AssistantLauncher onOpen={() => setOpen(true)} />
       )}
 
       <AnimatePresence>
@@ -1009,7 +945,7 @@ const tLower = text.toLowerCase()
             <div className="flex shrink-0 items-center justify-between px-4 py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-[#141c26] via-[#1f2a37] to-[#2e3b4a] text-white">
               <div className="flex items-center gap-2 md:gap-3 min-w-0">
                 <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 ring-2 ring-white/30 shrink-0">
-                  <IAssistantLogo className="h-4 w-4 md:h-[18px] md:w-[18px] text-white" />
+                  <AssistantMark className="h-4 w-4 md:h-[18px] md:w-[18px] text-white" />
                   <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-gold-300 border-2 border-gold-600" />
                 </div>
                 <div className="min-w-0">
@@ -1095,7 +1031,7 @@ const tLower = text.toLowerCase()
                       transition={{ duration: 2, repeat: Infinity }}
                       className="relative flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold-600 to-gold-800 shadow-lg"
                     >
-                      <IAssistantLogo className="h-7 w-7 md:h-9 md:w-9 text-white" />
+                      <AssistantMark className="h-7 w-7 md:h-9 md:w-9 text-white" />
                     </motion.div>
 
                     {/* Loading text */}
@@ -1141,7 +1077,7 @@ const tLower = text.toLowerCase()
                 >
                   {m.role === "bot" && m.kind !== "card" && (
                     <div className="shrink-0 h-6 w-6 rounded-full bg-gradient-to-br from-gold-600 to-gold-800 flex items-center justify-center">
-                      <IAssistantLogo className="h-3 w-3 text-white" />
+                      <AssistantMark className="h-3 w-3 text-white" />
                     </div>
                   )}
                   {m.role === "bot" && m.kind === "card" && <div className="h-6 w-6 shrink-0" />}

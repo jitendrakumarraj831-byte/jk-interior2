@@ -139,6 +139,26 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      /*
+       * The AI assistant launcher ships in the prerendered HTML and is painted
+       * by CSS alone, well before the React bundle has downloaded and hydrated.
+       * Without this, a tap in that window would land on a button with no
+       * handler attached yet and simply do nothing. Capture it here — App reads
+       * the flag as soon as it mounts and opens the assistant straight away.
+       */
+      (function () {
+        window.__jkChatWanted = false
+        document.addEventListener(
+          "click",
+          function (e) {
+            var t = e.target
+            if (t && t.closest && t.closest("[data-jk-launcher]")) window.__jkChatWanted = true
+          },
+          true
+        )
+      })()
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

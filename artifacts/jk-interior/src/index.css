@@ -511,3 +511,28 @@
   background: rgba(201, 162, 39, 0.22);
   color: #1c1917;
 }
+
+/* ── AI assistant launcher ──────────────────────────────────────────────────
+   Global so the eagerly-rendered launcher button styles itself on the first
+   frame, without waiting for the lazy chat chunk to inject a <style> block. */
+@keyframes jk-ring {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.jk-launcher {
+  transition: transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.jk-launcher:hover  { transform: scale(1.08) translateY(-3px); }
+.jk-launcher:active { transform: scale(0.93); }
+
+.jk-launcher-glow {
+  animation: jk-ring 2.8s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jk-launcher,
+  .jk-launcher:hover,
+  .jk-launcher:active { transform: none; transition: none; }
+  .jk-launcher-glow   { animation: none; }
+}
