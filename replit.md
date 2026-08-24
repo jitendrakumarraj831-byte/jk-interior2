@@ -23,9 +23,11 @@ Bihar. Live at jkinterior.online.
 - `artifacts/jk-interior/` — the entire site (pages, components, business content, gallery data)
 - `artifacts/jk-interior/src/components/jk-chat.tsx` — the AI assistant panel (lazy chunk, fetched on browser idle or on hover of the launcher)
 - `artifacts/jk-interior/src/components/ui/assistant-launcher.tsx`, `assistant-mark.tsx` — the floating AI button and its logo. Eager and dependency-free on purpose, so they are in the prerendered HTML and paint before React hydrates — see "Assistant loading" below
-- `artifacts/jk-interior/src/lib/business-data.ts` — builds the assistant's system prompt by *deriving* it from the modules the site itself renders (`services-summary.ts`, `faq-data.ts`, `business-facts.ts`, `seo.ts`). No business fact is hand-written here
+- `artifacts/jk-interior/src/lib/business-data.ts` — builds the assistant's system prompt by *deriving* it from the modules the site itself renders (`services-summary.ts`, `faq-data.ts`, `business-facts.ts`, `seo.ts`). No business fact is hand-written here. Also owns room-dimension parsing (`extractDimensions`, `isSizeOnlyMessage`) and `buildRoomEstimate`, shared by the widget and `api/chat.ts` so the same code computes a room total everywhere it's quoted — the model is handed the finished figures, never asked to multiply them itself
 - `artifacts/jk-interior/src/lib/business-facts.ts` — the "at a glance" facts, shared by the visible section and the assistant
-- `artifacts/jk-interior/src/lib/memory.ts` — per-conversation memory, shared by the widget and `api/chat.ts` (imported directly by the serverless function via relative path)
+- `artifacts/jk-interior/src/lib/memory.ts` — per-conversation memory, shared by the widget and `api/chat.ts` (imported directly by the serverless function via relative path). `sanitizeMemory()` re-validates whatever the browser posts before it lands in the system prompt
+- `artifacts/jk-interior/src/lib/reply-language.ts` — detects whether a message is English, Hindi (Devanagari) or Hinglish (romanised Hindi), and keeps that choice sticky across a conversation
+- `artifacts/jk-interior/src/lib/assistant-copy.ts` — the widget's own scripted lines (welcome message, booking questions, offline fallback) in all three languages
 - `api/chat.ts` — the only backend code that's actually live in production
 - `scripts/post-merge.sh` — Replit post-merge hook, runs `pnpm install` after a merge
 
@@ -51,6 +53,23 @@ rate and opening hours the site never published.
 To change what the assistant knows, edit the website data (`services-summary.ts`,
 `faq-data.ts`, `business-facts.ts`, `seo.ts`). Never add facts to
 `business-data.ts` or `jk-chat.tsx` directly.
+
+## The assistant mirrors the visitor's language, and never does its own math
+
+Most visitors write in Hindi or Hinglish (romanised Hindi), not English.
+`reply-language.ts` detects which one a message is in and `api/chat.ts` keeps
+that choice sticky in `ConversationMemory.language` for the rest of the
+conversation, so a visitor who has been typing Hinglish and then sends just
+"12x14" doesn't get answered in English. `assistant-copy.ts` carries the
+widget's own scripted lines (welcome, booking questions, offline fallback) in
+all three languages so the AI's replies and the widget's own UI copy never
+disagree on language mid-conversation.
+
+Room estimates are computed once, in `buildRoomEstimate()` (business-data.ts),
+and handed to the model already finished via `LeadContext.groundedEstimate` —
+the model is told to quote that figure, never to multiply area × rate itself.
+Models are unreliable arithmetic, and a wrong total on what reads like a
+quotation is worse than no total.
 
 ## Assistant loading
 
@@ -80,7 +99,9 @@ bundle and undoes this.
 - `fetch("/api/leads", …)` in `jk-chat.tsx` has no live backend — it 404s silently (wrapped in `.catch(() => {})`). Leads are actually captured via `localStorage` + a WhatsApp deep link. Don't assume leads are landing in a database anywhere.
 - `api/chat.ts` imports directly from `artifacts/jk-interior/src/lib/*` by relative path — moving or renaming those files breaks the live AI backend, not just the frontend.
 - Without `GROQ_API_KEY` set in the Vercel project, `/api/chat` returns `{ ok: false }` and the widget falls back to a minimal offline reply (the published rate list plus the phone numbers — it answers nothing on its own). This fails safe, not loudly, so a missing key is easy to miss.
-- `GROQ_MODEL` overrides the model (default `llama-3.1-8b-instant`). The system prompt is now a long block of website data; if the assistant starts drifting from it, a larger model such as `llama-3.3-70b-versatile` follows the grounding rules more reliably at some latency cost.
+- `GROQ_MODEL` overrides the model (default `llama-3.3-70b-versatile`). The system prompt is a long block of website data plus language-mirroring rules; the smaller `llama-3.1-8b-instant` model was faster but dropped those rules under load — quoting invented rates and answering Hindi messages in English. Only drop back to the 8b model if latency becomes the binding constraint and drift is re-verified as gone.
+- `api/chat.ts` rate-limits by IP in a module-scope `Map` — fine for a single warm lambda instance, but it resets on cold start and doesn't coordinate across concurrent instances. It's a cost ceiling, not a real abuse defense; don't rely on it if traffic grows enough to need one.
+- The chat widget's "clear conversation" (↺) button removes `localStorage["jk_memory_v1"]` via `clearMemory()` — that constant lives in `lib/memory.ts` (`MEMORY_KEY`) precisely so this can't drift out of sync again; it previously removed a key nothing ever wrote to, so a "cleared" chat reappeared on the next page load.
 
 ## User preferences
 
