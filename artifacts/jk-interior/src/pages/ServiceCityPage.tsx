@@ -197,7 +197,7 @@ export default function ServiceCityPage() {
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-xl bg-gray-100">
-                  <img src={img.src} alt={img.alt} loading="lazy" className="h-full w-full object-cover" />
+                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 </div>
               ))}
             </div>

@@ -85,13 +85,17 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="relative group shrink-0" aria-label="JK Interior – Home">
               <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-amber-400/15 via-gold-500/10 to-amber-400/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img
-                src="/jk-interior-navbar-logo.webp"
-                alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
-                width={220}
-                height={71}
-                className="relative h-10 w-auto lg:h-11 xl:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-              />
+              <picture>
+                <source srcSet="/jk-interior-navbar-logo.avif" type="image/avif" />
+                <img
+                  src="/jk-interior-navbar-logo.webp"
+                  alt="JK Interior – False Ceiling Contractor & Interior Designer in Forbesganj, Araria Bihar"
+                  width={220}
+                  height={71}
+                  decoding="async"
+                  className="relative h-10 w-auto lg:h-11 xl:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                />
+              </picture>
             </Link>
 
             {/* Desktop Nav Links */}
