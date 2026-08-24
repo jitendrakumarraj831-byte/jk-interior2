@@ -12,6 +12,14 @@ interface GalleryImage { src: string; alt: string; category?: string }
 
 const ALL = galleryImages as GalleryImage[]
 
+// Gallery cards only ever display a photo at ~300-420px, never its full
+// resolution (up to 1600px) — that's reserved for the lightbox. Every photo
+// has a pre-generated 800w-capped sibling for the card srcset so mobile
+// devices aren't downloading a desktop-sized image for a thumbnail.
+const CARD_SIZES = "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 82vw"
+const cardAvif = (webpSrc: string) => webpSrc.replace(/\.webp$/, "-800w.avif")
+const cardWebp = (webpSrc: string) => webpSrc.replace(/\.webp$/, "-800w.webp")
+
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "Gypsum False Ceiling":
     "Gypsum ceiling designs with a plaster-smooth finish and concealed cove or LED lighting — specified for halls, bedrooms and other dry rooms.",
@@ -203,13 +211,13 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.picture key={cur}>
-            {/* AVIF format (best compression) */}
-            <source srcSet={images[cur].src.replace(/\.webp$/, '.avif')} type="image/avif" />
-            {/* WebP format (fallback) */}
-            <source srcSet={images[cur].src} type="image/webp" />
+            {/* Card-sized AVIF (best compression, right resolution for a thumbnail) */}
+            <source srcSet={cardAvif(images[cur].src)} sizes={CARD_SIZES} type="image/avif" />
+            {/* Card-sized WebP (fallback) */}
+            <source srcSet={cardWebp(images[cur].src)} sizes={CARD_SIZES} type="image/webp" />
             {/* Fallback img tag */}
             <motion.img
-              src={images[cur].src}
+              src={cardWebp(images[cur].src)}
               alt={images[cur].alt}
               custom={dir}
               variants={{

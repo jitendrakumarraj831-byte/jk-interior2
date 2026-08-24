@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "hello": "tsx ./src/hello.ts",
+    "optimize-images": "tsx ./src/optimize-jk-interior-images.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@types/node": "catalog:",
+    "sharp": "^0.35.3",
     "tsx": "catalog:"
   }
 }

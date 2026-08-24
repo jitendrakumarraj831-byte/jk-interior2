@@ -231,8 +231,16 @@ export default function Hero() {
             <div className="relative rounded-[1.75rem] bg-gradient-to-br from-amber-200/70 via-white to-gold-100/60 p-2 shadow-[0_30px_70px_-20px_rgba(120,90,20,0.35)] ring-1 ring-amber-300/40">
               <div className="overflow-hidden rounded-[1.4rem]">
                 <picture>
-                  <source srcSet="/images/hero-interior.avif" type="image/avif" />
-                  <source srcSet="/images/hero-interior.webp" type="image/webp" />
+                  <source
+                    srcSet="/images/hero-interior-960w.avif 960w, /images/hero-interior.avif 1376w"
+                    sizes="(min-width: 1024px) 45vw, (min-width: 448px) 448px, calc(100vw - 32px)"
+                    type="image/avif"
+                  />
+                  <source
+                    srcSet="/images/hero-interior-960w.webp 960w, /images/hero-interior.webp 1376w"
+                    sizes="(min-width: 1024px) 45vw, (min-width: 448px) 448px, calc(100vw - 32px)"
+                    type="image/webp"
+                  />
                   <motion.img
                     src="/images/hero-interior.webp"
                     alt="False Ceiling Contractor and Interior Designer in Forbesganj Araria Bihar by JK Interior"
