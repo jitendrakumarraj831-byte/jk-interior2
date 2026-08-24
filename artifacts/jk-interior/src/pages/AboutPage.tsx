@@ -2,7 +2,6 @@ import { Link } from "wouter"
 import { Award, MapPin, Phone, ShieldCheck, Users, Building2, CalendarClock, ArrowRight } from "lucide-react"
 import Navbar from "@/components/navbar"
 import WhyUs from "@/components/why-us"
-import Testimonials from "@/components/testimonials"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
@@ -259,7 +258,6 @@ export default function AboutPage() {
       </section>
 
       <WhyUs />
-      <Testimonials />
 
       {/* ── Closing CTA ── */}
       <section className="bg-gradient-to-b from-charcoal-800 to-charcoal-950 py-14 text-white sm:py-16">

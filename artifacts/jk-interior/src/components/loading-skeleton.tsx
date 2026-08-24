@@ -18,25 +18,6 @@ export function GallerySkeleton() {
   )
 }
 
-export function TestimonialSkeleton() {
-  return (
-    <section className="py-12 md:py-20 px-4 md:px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="h-8 bg-gray-200 rounded w-48 mb-8 animate-pulse" />
-        <div className="grid md:grid-cols-3 gap-6">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-gray-100 p-6 rounded-xl animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-4" />
-              <div className="h-4 bg-gray-200 rounded w-full mb-2" />
-              <div className="h-4 bg-gray-200 rounded w-5/6" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 export function FAQSkeleton() {
   return (
     <section className="py-12 md:py-20 px-4 md:px-6">

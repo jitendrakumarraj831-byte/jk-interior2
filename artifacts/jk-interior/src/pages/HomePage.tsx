@@ -12,13 +12,11 @@ import { FAQS } from "@/lib/faq-data"
 import {
   GallerySkeleton,
   WhyUsSkeleton,
-  TestimonialSkeleton,
   FAQSkeleton,
 } from "@/components/loading-skeleton"
 
 const Gallery = lazy(() => import("@/components/gallery"))
 const WhyUs = lazy(() => import("@/components/why-us"))
-const Testimonials = lazy(() => import("@/components/testimonials"))
 const FAQSection = lazy(() => import("@/components/faq-section"))
 
 export default function HomePage() {
@@ -126,12 +124,12 @@ export default function HomePage() {
                 { "@type": "Offer", itemOffered: { "@type": "Service", name: "Modular TV Unit" } }
               ]
             },
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "4.9",
-              reviewCount: "100",
-              bestRating: "5"
-            },
+            // No aggregateRating here on purpose. The ratings it used to assert
+            // were not collected by this site, and Google's structured-data
+            // policy treats self-serving review markup on your own business as
+            // a manual-action risk. Real reviews live on the Google Business
+            // Profile linked from sameAs below, where Google sources them
+            // itself.
             sameAs: [
               "https://www.google.com/maps?cid=12398820263168117030",
               "https://wa.me/918651070831",
@@ -187,9 +185,6 @@ export default function HomePage() {
       </Suspense>
       <Suspense fallback={<WhyUsSkeleton />}>
         <WhyUs />
-      </Suspense>
-      <Suspense fallback={<TestimonialSkeleton />}>
-        <Testimonials />
       </Suspense>
       <ServiceAreas />
       <Suspense fallback={<FAQSkeleton />}>
