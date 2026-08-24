@@ -141,7 +141,10 @@ export default async function handler(req: any, res: any) {
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages,
-        temperature: 0.6,
+        // Low temperature on purpose: the system prompt is a fixed block of
+        // website data and the reply has to stay inside it. Sampling loosely is
+        // what produced invented rates and services people never asked about.
+        temperature: 0.3,
         max_tokens: 500,
         stream: wantsStream,
       }),

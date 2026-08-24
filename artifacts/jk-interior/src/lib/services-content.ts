@@ -96,13 +96,9 @@ export interface ServiceContent {
   relatedSlugs: string[]
 }
 
-/** Shown on every service page directly under the price tiers — the one non-negotiable disclaimer. */
-export const PRICE_DISCLAIMER =
-  "Every rate on this page is a current Forbesganj and Araria market estimate rather than a fixed quotation. Your final figure is set at the free site visit and varies with your design, the material grade you choose and the total area. Combining work — ceiling, wall panelling and television unit together — brings the per-sq.ft rate down."
-
-export const SERVICE_AREA_NOTE =
-  "JK Interior operates from Narpatganj, with its registered workshop in Forbesganj, and travels roughly 80 km around it — Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Purnia, Supaul, Tribeniganj, Kursakanta and Chhatapur. A single call or WhatsApp message confirms whether your village or mohalla is on the route before you book."
-
+// Both live in business-facts.ts (React-free) so the AI assistant's system
+// prompt and these service pages quote exactly the same wording.
+export { PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts"
 
 export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────

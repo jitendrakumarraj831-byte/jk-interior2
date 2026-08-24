@@ -5,6 +5,7 @@ import {
   PHONE_SECONDARY,
   PHONE_SECONDARY_DISPLAY,
 } from "@/lib/business-data"
+import { BUSINESS_FACTS as facts } from "@/lib/business-facts"
 
 /**
  * A compact, factual "at a glance" panel: who we are, where we work, what it
@@ -16,45 +17,6 @@ import {
  * are real <a href="tel:"> links rather than styled text, so they stay
  * extractable (and tappable) whether the page is read as HTML or rendered.
  */
-
-interface Fact {
-  term: string
-  detail: string
-}
-
-const facts: Fact[] = [
-  {
-    term: "Business",
-    detail:
-      "JK Interior — false ceiling contractor and interior designer, operating since 2019 with 500+ completed projects.",
-  },
-  {
-    term: "Address",
-    detail: "Damaria Rewahi, Forbesganj, Araria district, Bihar 854318. Day-to-day operating base: Narpatganj.",
-  },
-  {
-    term: "Areas served",
-    detail:
-      "Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia — roughly an 80 km radius.",
-  },
-  {
-    term: "Services",
-    detail:
-      "PVC false ceiling (₹75–₹150/sq.ft), gypsum false ceiling (₹75–₹210/sq.ft), WPC wall panels (₹180–₹650/sq.ft), UV marble sheets (₹45–₹120/sq.ft), modular TV units (from ₹15,000), grid ceilings, partition walls and complete home or office interiors.",
-  },
-  {
-    term: "Hours",
-    detail: "Monday to Saturday, 8:00 AM – 8:00 PM. Sunday, 9:00 AM – 6:00 PM. WhatsApp is answered outside these hours.",
-  },
-  {
-    term: "Site visit",
-    detail: "Free everywhere we work, with no obligation — measurements taken in person and a written quotation the same day.",
-  },
-  {
-    term: "Warranty",
-    detail: "A written one-year warranty on materials and workmanship for every project, handed over on completion.",
-  },
-]
 
 export default function BusinessSummary() {
   return (
