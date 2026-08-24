@@ -1,12 +1,20 @@
-import { buildSystemPrompt, type LeadContext } from "../artifacts/jk-interior/src/lib/business-data.js"
+import {
+  buildRoomEstimate,
+  buildSystemPrompt,
+  extractDimensions,
+  findService,
+  type LeadContext,
+} from "../artifacts/jk-interior/src/lib/business-data.js"
+import { SERVICES_SUMMARY } from "../artifacts/jk-interior/src/lib/services-summary.js"
 import {
   type ConversationMemory,
-  createMemory,
   extractFromText,
   mergeMemory,
+  sanitizeMemory,
   updateStage,
   summarizeForPrompt,
 } from "../artifacts/jk-interior/src/lib/memory.js"
+import { resolveReplyLanguage, type ReplyLanguage } from "../artifacts/jk-interior/src/lib/reply-language.js"
 
 // Vercel Node.js serverless function — no framework, no extra deps (uses global fetch).
 // Talks to Groq's OpenAI-compatible chat completions API.
@@ -16,19 +24,51 @@ import {
 declare const process: { env: Record<string, string | undefined> }
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-// llama-3.1-8b-instant trades a little reasoning depth for roughly 3-4x lower
-// per-token latency on Groq's LPUs than the 70b model — for short, templated
-// interior-pricing replies the smaller model's answers are indistinguishable
-// while the reply starts appearing noticeably faster.
-const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.1-8b-instant"
+// The system prompt is a long block of website data and the whole value of this
+// assistant is that it stays inside it. The 8b model was measurably faster but
+// drifted — inventing rates, answering in English when the visitor wrote Hindi,
+// and re-asking for details already in memory. 70b follows the grounding rules
+// reliably and, on Groq's LPUs with streaming on, still starts replying in well
+// under a second. Set GROQ_MODEL to override.
+const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile"
+
+/** How long to wait for Groq's first byte, and how long a silent stream may stall. */
+const UPSTREAM_TIMEOUT_MS = 20_000
 
 type ConvMsg = { role: "user" | "assistant"; content: string }
 
-function readMemory(raw: unknown): ConversationMemory {
-  const base = createMemory()
-  if (!raw || typeof raw !== "object") return base
-  return { ...base, ...(raw as Partial<ConversationMemory>), rooms: Array.isArray((raw as any).rooms) ? (raw as any).rooms : base.rooms }
+// ─── Rate limiting ───────────────────────────────────────────────────────────
+//
+// /api/chat is open to the internet and every call costs tokens. A per-IP
+// bucket in module scope survives for the life of a warm lambda, which is enough
+// to stop a single browser (or a scraper) hammering it; it is deliberately not a
+// distributed limiter, just a cheap ceiling.
+
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX = 20
+const hits = new Map<string, number[]>()
+
+function clientIp(req: any): string {
+  const forwarded = req.headers?.["x-forwarded-for"]
+  const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded
+  return String(raw || req.headers?.["x-real-ip"] || "unknown").split(",")[0].trim()
 }
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS)
+  recent.push(now)
+  hits.set(ip, recent)
+  // Keep the map from growing without bound on a long-lived warm lambda.
+  if (hits.size > 5000) {
+    for (const [key, times] of hits) {
+      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) hits.delete(key)
+    }
+  }
+  return recent.length > RATE_LIMIT_MAX
+}
+
+// ─── Request parsing ─────────────────────────────────────────────────────────
 
 async function readBody(req: any): Promise<any> {
   if (req.body && typeof req.body === "object") return req.body
@@ -38,6 +78,48 @@ async function readBody(req: any): Promise<any> {
   let raw = ""
   for await (const chunk of req) raw += chunk
   try { return JSON.parse(raw) } catch { return {} }
+}
+
+/**
+ * The last eight turns, with the message currently being answered removed.
+ *
+ * The widget appends the visitor's message to its own history before posting, so
+ * the same text used to arrive twice — once in `history`, once as `message` — and
+ * the model saw the customer say everything twice.
+ */
+function readHistory(raw: unknown, currentMessage: string): ConvMsg[] {
+  if (!Array.isArray(raw)) return []
+  const cleaned: ConvMsg[] = raw
+    .filter((m: any) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+    .map((m: ConvMsg) => ({ role: m.role, content: m.content.slice(0, 1000) }))
+
+  const last = cleaned[cleaned.length - 1]
+  if (last && last.role === "user" && last.content.trim() === currentMessage.trim()) cleaned.pop()
+
+  return cleaned.slice(-8)
+}
+
+/**
+ * When the visitor's message carries a room size, work the estimate out here and
+ * hand the model finished figures.
+ *
+ * Language models multiply badly, and a wrong total on what reads like a
+ * quotation is the worst failure this assistant has. `buildRoomEstimate` uses the
+ * same published rate band the service cards render, so the numbers in the chat
+ * and the numbers on the page cannot disagree.
+ */
+function groundedEstimateFor(message: string, memory: ConversationMemory): string | undefined {
+  const dims = extractDimensions(message)
+  if (!dims) return undefined
+
+  const named = findService(message) ?? (memory.preferredMaterial ? findService(memory.preferredMaterial) : null)
+  if (named) return buildRoomEstimate(dims.length, dims.width, named)
+
+  // No material named yet — price both ceilings the site lists rather than
+  // picking one on the visitor's behalf.
+  const ceilings = SERVICES_SUMMARY.filter((s) => s.slug === "gypsum-ceiling" || s.slug === "pvc-false-ceiling")
+  if (ceilings.length === 0) return undefined
+  return ceilings.map((s) => buildRoomEstimate(dims.length, dims.width, s, { disclaimer: false })).join("\n\n")
 }
 
 /**
@@ -100,6 +182,13 @@ export default async function handler(req: any, res: any) {
     return
   }
 
+  if (isRateLimited(clientIp(req))) {
+    // 200 + ok:false, like every other failure here, so the widget shows its
+    // offline reply (the published rates and the phone numbers) instead of an error.
+    res.status(200).json({ ok: false, error: "Too many requests" })
+    return
+  }
+
   const wantsStream = typeof req.url === "string" && /[?&]stream=1\b/.test(req.url)
 
   try {
@@ -110,21 +199,25 @@ export default async function handler(req: any, res: any) {
       return
     }
 
-    const history: ConvMsg[] = Array.isArray(body.history)
-      ? body.history
-          .filter((m: any) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
-          .slice(-8)
-          .map((m: ConvMsg) => ({ role: m.role, content: m.content.slice(0, 1000) }))
-      : []
+    const history = readHistory(body.history, message)
 
     const leadContext: Partial<LeadContext> = body.leadContext && typeof body.leadContext === "object" ? body.leadContext : {}
-    const clientMemory = readMemory(body.memory)
+    const clientMemory = sanitizeMemory(body.memory)
 
     const userUpdates = extractFromText(message, clientMemory, "user")
     const merged = mergeMemory(clientMemory, userUpdates, true)
     merged.stage = updateStage(merged)
+    // Sticky per conversation: a visitor who wrote Hindi and then types just
+    // "12x14" is still owed a Hindi reply.
+    const replyLanguage: ReplyLanguage = resolveReplyLanguage(message, merged.language)
+    merged.language = replyLanguage
 
-    const systemPrompt = buildSystemPrompt({ ...leadContext, memorySummary: summarizeForPrompt(merged) })
+    const systemPrompt = buildSystemPrompt({
+      ...leadContext,
+      memorySummary: summarizeForPrompt(merged),
+      replyLanguage,
+      groundedEstimate: groundedEstimateFor(message, merged),
+    })
 
     const messages = [
       { role: "system", content: systemPrompt },
@@ -148,7 +241,7 @@ export default async function handler(req: any, res: any) {
         max_tokens: 500,
         stream: wantsStream,
       }),
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     })
 
     if (!groqRes.ok) {
@@ -189,6 +282,7 @@ export default async function handler(req: any, res: any) {
         city: finalMemory.city,
         service: finalMemory.preferredMaterial,
         conversationStage: finalMemory.stage,
+        language: finalMemory.language,
       },
     })
   } catch (err) {

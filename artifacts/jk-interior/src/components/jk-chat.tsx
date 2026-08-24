@@ -9,14 +9,21 @@ import {
   PHONE_SECONDARY_DISPLAY,
   INITIAL_QUICK_REPLIES,
   buildRoomEstimate,
+  estimateDisclaimer,
+  extractDimensions,
   findService,
+  isSizeOnlyMessage,
+  type Dimensions,
 } from "@/lib/business-data"
+import { copyFor } from "@/lib/assistant-copy"
+import { resolveReplyLanguage, type ReplyLanguage } from "@/lib/reply-language"
 import { SERVICES_SUMMARY } from "@/lib/services-summary"
 import { AssistantMark } from "@/components/ui/assistant-mark"
 import { AssistantLauncher } from "@/components/ui/assistant-launcher"
 import {
   type ConversationMemory,
   createMemory,
+  clearMemory,
   loadMemory,
   saveMemory,
   extractFromText,
@@ -27,10 +34,13 @@ import {
 // ── Types ──────────────────────────────────────────────────────────────────────
 type Role    = "bot" | "user"
 type MsgKind = "text" | "card"
-type Message = { id: number; role: Role; text: string; kind?: MsgKind; cardData?: LeadCard }
+/** `galleryType` names a gallery category whose photos render under the bubble. */
+type Message = { id: number; role: Role; text: string; kind?: MsgKind; cardData?: LeadCard; galleryType?: string }
 type ConvMsg = { role: "user" | "assistant"; content: string }
 type Lead    = { name: string; phone: string; city?: string; service?: string }
 type LeadCard = Lead & { timestamp: string; estimate?: string; preferredTime?: string }
+/** Which booking detail the assistant is currently waiting for. */
+type CollectStep = "name" | "phone" | "city" | "time"
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 // Contact numbers and the service-area list come from lib/business-data.ts and
@@ -57,13 +67,18 @@ const mkId  = (id: number, role: Role, text: string, kind?: MsgKind, cardData?: 
   ({ id, role, text, kind: kind ?? "text", cardData })
 const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 
+/**
+ * Outside the hours business-facts.ts publishes: Mon–Sat 8:00 AM – 8:00 PM,
+ * Sunday 9:00 AM – 6:00 PM. Sunday used to be treated as a weekday, so the
+ * header claimed "Online now" at 7 PM on a Sunday, when nobody is.
+ */
 function isOffHours(): boolean {
-  const istH = parseInt(
-    new Intl.DateTimeFormat("en-IN", { hour: "numeric", hour12: false, timeZone: "Asia/Kolkata" }).format(new Date()),
-    10
-  )
-  // Matches the published business hours: Mon–Sat 8:00 AM – 8:00 PM.
-  return istH >= 20 || istH < 8
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    hour: "numeric", hour12: false, weekday: "short", timeZone: "Asia/Kolkata",
+  }).formatToParts(new Date())
+  const istH = parseInt(parts.find(p => p.type === "hour")?.value ?? "12", 10)
+  const isSunday = parts.find(p => p.type === "weekday")?.value === "Sun"
+  return isSunday ? istH >= 18 || istH < 9 : istH >= 20 || istH < 8
 }
 
 function tryExtractPhone(raw: string): string | null {
@@ -92,82 +107,57 @@ function detectService(t: string): string | null {
   return findService(t)?.name ?? null
 }
 
-// ── DIMENSIONS ENGINE ────────────────────────────────────────────────────────
-function extractDimensions(text: string): { length: number; width: number; rawMatch: string } | null {
-  const t = text.toLowerCase()
-
-  // Ignore time/date patterns — but where dimensions are also present, dimensions win
-  const IGNORE_PATTERNS = [
-    /\d+\s*(?:baj[eo]?|am\b|pm\b)/i,         // "12 baje", "10 am"
-    /\d+\s*(?:din|day|week|month|saal|year)/i, // "10 din mein"
-    /\d+\s*(?:january|february|march|april|may|june|july|august|september|october|november|december)/i,
-    /(?:subah|sham|raat|dopahar)\s*\d+/i,      // "subah 10"
-    /\d+\s*(?:ghante|hour|minute|second)/i,     // "2 ghante"
-    /(?:call|phone|number|contact)\s*\d+/i,     // phone numbers
-    /\d{10,}/,                                  // 10+ digit numbers = phone
-    /\b(?:ek|do|teen|char|paanch)\s+(?:din|week|month)\b/i, // "teen din"
-  ]
-
-  // First check if ANY ignore pattern matches
-  const hasIgnorePattern = IGNORE_PATTERNS.some(pattern => pattern.test(t))
-  // But don't skip dimensions if they're also present
-  if (hasIgnorePattern) {
-    // Check if dimensions are present — if yes, continue; if no, skip
-    const hasDimensionPattern = /(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft)/.test(t)
-    if (!hasDimensionPattern) return null
-  }
-
-  // Dimension patterns — clear size indicators only
-  const patterns = [
-    // "12x10", "12×10", "12*10" — most common
-    /(\d+(?:\.\d+)?)\s*[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot|फ़ीट|sqft)?/i,
-   /(\d+(?:\.\d+)?)\s+[x×*]\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot|फ़ीट|sqft)?/i,
-    // "12 by 10 feet"
-    /(\d+(?:\.\d+)?)\s*(?:feet|ft|foot)?\s*by\s*(\d+(?:\.\d+)?)\s*(?:feet|ft|foot)?/i,
-    // "length 12 width 10" / "12 feet length 10 feet width"
-    /(\d+(?:\.\d+)?)\s*(?:feet|ft)?\s*(?:length|lg|len|lambai|लंबाई)[^\d]{0,10}(\d+(?:\.\d+)?)/i,
-  ]
-
-  for (const pattern of patterns) {
-    const match = text.match(pattern)
-    if (match) {
-      let l = parseFloat(match[1])
-      let w = parseFloat(match[2])
-
-      // Sanity check — realistic room sizes only (5ft to 100ft)
-      if (isNaN(l) || isNaN(w) || l < 5 || w < 5 || l > 100 || w > 100) continue
-      
-  // Guard against a repeated number (10x10 is fine, but 99x99 is suspicious)
-      if (l > 60 && w > 60) continue
-
-      if (l < w) [l, w] = [w, l]
-      return { length: l, width: w, rawMatch: match[0] }
-    }
-  }
-  return null
-}
-
 /**
  * Instant estimate for a room the visitor has sized, calculated from the rate
  * band published on the service card — no rates of its own.
+ *
+ * Only used for a message that is *just* a size (see `isSizeOnlyMessage`).
+ * Anything with a real question in it goes to the model, which is handed these
+ * same figures already worked out.
  */
 function generateEstimateFromDimensions(
   length: number,
   width: number,
   service: string | null,
-  leadName?: string
+  leadName: string | undefined,
+  language: ReplyLanguage,
 ): string {
-  const greeting = leadName ? `${leadName}, here is your estimate.\n\n` : ""
-  const closing = `\n\n📅 Say "Book Visit" or share your name and I will set up the free site visit.`
+  const t = copyFor(language)
+  const greeting = t.estimateIntro(leadName)
   const matched = service ? findService(service) : null
 
-  if (matched) return `${greeting}${buildRoomEstimate(length, width, matched)}${closing}`
+  if (matched) return `${greeting}${buildRoomEstimate(length, width, matched, { language })}${t.estimateClosing}`
 
   // No material named yet — price the two ceilings the site lists rather than
   // guessing one on the visitor's behalf.
   const ceilings = SERVICES_SUMMARY.filter(sv => sv.slug === "gypsum-ceiling" || sv.slug === "pvc-false-ceiling")
-  const both = ceilings.map(sv => buildRoomEstimate(length, width, sv, { disclaimer: false })).join("\n\n")
-  return `${greeting}${both}\n\nBoth are Forbesganj/Araria market estimates — the exact figure is set at the free site visit. Which of the two suits your room?${closing}`
+  const both = ceilings.map(sv => buildRoomEstimate(length, width, sv, { disclaimer: false, language })).join("\n\n")
+  return `${greeting}${both}\n\n${estimateDisclaimer(language)} ${t.chooseMaterial}${t.estimateClosing}`
+}
+
+// ── Gallery ───────────────────────────────────────────────────────────────────
+/**
+ * The gallery category to show under a reply, or undefined when the visitor
+ * wasn't asking to see anything.
+ *
+ * Worked out from the visitor's message before the reply is requested, because
+ * the reply now streams: the old code only attached photos on the non-streaming
+ * branch, so with the AI backend live "View Designs" answered in words and never
+ * actually showed a design.
+ */
+function galleryCategoryFor(text: string, lastTopic: string | null, service?: string): string | undefined {
+  if (!/photo|photos|pic|image|images|gallery|dikhao|dikha|dekh|show|design|kaam|काम|फोटो|दिखा|डिज़ाइन/i.test(text)) {
+    return undefined
+  }
+  const haystack = `${text} ${lastTopic ?? ""} ${service ?? ""}`.toLowerCase()
+  if (/gypsum|jipsum|pop\b|false\s*ceil/.test(haystack))                  return "Gypsum False Ceiling"
+  if (/\bpvc\b/.test(haystack))                                           return "PVC Ceiling"
+  if (/wpc|wall\s*panel|fluted|uv\s*marble|louver|louvre/.test(haystack)) return "WPC fluted panels & uv marble Sheet"
+  if (/grid|mineral|office\s*ceil/.test(haystack))                         return "Grid Ceiling"
+  if (/tv\s*unit|tv\s*cabinet|television|\btv\b/.test(haystack))          return "TV Unit Design"
+  if (/grass|turf|garden/.test(haystack))                                  return "Artificial Grass"
+  // Asked for designs with nothing named — show the finish the site sells most.
+  return "Gypsum False Ceiling"
 }
 
 // ── store admin lead ──────────────────────────────────────────────────────────
@@ -206,6 +196,29 @@ function extractEstimateSummary(text: string): string | null {
   return rng ? rng[1] : null
 }
 
+/**
+ * A visitor part-way through booking a site visit who suddenly asks something
+ * else — a rate, a warranty, photos — or who sends a new room size.
+ *
+ * Without this, the booking flow swallowed everything: whatever was typed at the
+ * "what is your name?" question was stored as the name, and the question itself
+ * went unanswered. The assistant now answers, then picks the booking back up.
+ */
+const COLLECTION_ESCAPE_RE =
+  /\?|？|\b(kya|kaise|kaisa|kaisi|kitna|kitne|kitni|kyun|kyu|kahan|kab|rate|rates|price|cost|kharcha|charge|warranty|guarantee|photo|photos|pic|design|designs|gallery|dikhao|dikha|sample|what|how|why|when|where|which|much|show|difference|better|matlab)\b|(क्या|कितना|कितने|कितनी|कैसे|क्यों|कहाँ|कहां|कब|दिखा|रेट|फोटो|डिज़ाइन|डिजाइन|वारंटी)/i
+
+function isCollectionEscape(text: string, step: CollectStep, dims: Dimensions | null): boolean {
+  // A valid answer to the exact question that was asked always wins.
+  if (step === "phone" && tryExtractPhone(text)) return false
+  if (step === "city" && detectCity(text.toLowerCase())) return false
+  // A room size typed here is a new room to price, never a name or a visit time.
+  if (dims && step !== "time") return true
+  return COLLECTION_ESCAPE_RE.test(text)
+}
+
+/** How long the assistant may stay silent before the request is given up on. */
+const IDLE_TIMEOUT_MS = 15_000
+
 const LEAD_INTENT_RE = /\b(site\s*visit|book\s*(?:visit|karo|karein)|karwana\s*(?:hai|h\b)|visit\s*chahiye|free\s*visit|milna\s*chahta|milna\s*chahti|baat\s*karni\s*hai|sampark\s*karo|visit\s*book|appointment|bulao\s*(?:ji|please)?|aao\s*(?:zara|ji|please)?|booking\s*karni|visit\s*chahiye|aana\s*hai|visit\s*confirm)\b/i
 
 // ── AI API call ────────────────────────────────────────────────────────────────
@@ -233,6 +246,19 @@ async function getAIReply(
   try {
     const useStream = typeof onChunk === "function"
     const url = useStream ? "/api/chat?stream=1" : "/api/chat"
+
+    // A single AbortSignal.timeout() used to cover the whole request, streaming
+    // included — so any reply that took longer than the deadline to finish
+    // arriving was cut off mid-sentence and thrown away. The timer below is an
+    // *idle* one instead: it fires only when nothing has arrived for a while, and
+    // is pushed back by every chunk.
+    const controller = new AbortController()
+    let idleTimer = setTimeout(() => controller.abort(), IDLE_TIMEOUT_MS)
+    const keepAlive = () => {
+      clearTimeout(idleTimer)
+      idleTimer = setTimeout(() => controller.abort(), IDLE_TIMEOUT_MS)
+    }
+
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -253,9 +279,9 @@ async function getAIReply(
   conversationStage: (extras?.messagesExchanged ?? 0) > 6 ? "consultation" : (extras?.messagesExchanged ?? 0) > 2 ? "discovery" : "greeting",
 },
       }),
-      signal: AbortSignal.timeout(12000),
+      signal: controller.signal,
     })
-    if (!res.ok) return null
+    if (!res.ok) { clearTimeout(idleTimer); return null }
     const contentType = res.headers.get("content-type") || ""
 
     if (contentType.includes("text/plain") && res.body && onChunk) {
@@ -263,18 +289,29 @@ async function getAIReply(
       const decoder = new TextDecoder()
       let fullText = ""
       let isFirst = true
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        const chunk = decoder.decode(value, { stream: true })
-        if (!chunk) continue
-        fullText += chunk
-        onChunk(fullText, isFirst)
-        isFirst = false
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          keepAlive()
+          const chunk = decoder.decode(value, { stream: true })
+          if (!chunk) continue
+          fullText += chunk
+          onChunk(fullText, isFirst)
+          isFirst = false
+        }
+      } catch {
+        // Connection dropped part-way. Whatever arrived is a real, complete-enough
+        // sentence far more often than not — keep it rather than wiping the reply
+        // and replacing it with the offline notice.
+        if (!fullText.trim()) return null
+      } finally {
+        clearTimeout(idleTimer)
       }
-      return fullText ? { reply: fullText, source: "groq" } : null
+      return fullText.trim() ? { reply: fullText, source: "groq" } : null
     }
 
+    clearTimeout(idleTimer)
     const data = await res.json()
     if (!data.ok || !data.reply) return null
     return {
@@ -295,13 +332,19 @@ async function getAIReply(
  * because a second, hand-written copy of the business facts is exactly how the
  * assistant ended up quoting services and rates the website doesn't offer.
  */
-function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: string | null): string {
+function localFallback(
+  input: string,
+  lead: Partial<Lead> | null,
+  roomSize: string | null | undefined,
+  language: ReplyLanguage,
+): string {
+  const t = copyFor(language)
   const service = findService(input) || (lead?.service ? findService(lead.service) : null)
 
   if (service && roomSize) {
     const [l, w] = roomSize.split("x").map(Number)
     if (Number.isFinite(l) && Number.isFinite(w)) {
-      return `${buildRoomEstimate(l, w, service)}\n\n📞 ${PHONE_PRIMARY_DISPLAY} · ${PHONE_SECONDARY_DISPLAY}`
+      return `${buildRoomEstimate(l, w, service, { language })}\n\n📞 ${PHONE_PRIMARY_DISPLAY} · ${PHONE_SECONDARY_DISPLAY}`
     }
   }
 
@@ -309,20 +352,14 @@ function localFallback(input: string, lead: Partial<Lead> | null, roomSize?: str
     return [
       `**${service.name}** — ${service.price} · ${service.installTime}`,
       ``,
-      `Best for: ${service.whereUsedFirst}. ${service.avoid}`,
+      `${service.whereUsedFirst}. ${service.avoid}`,
       ``,
-      `Share the room size (for example 12×14) for an estimate, or call ${PHONE_PRIMARY_DISPLAY} for the free site visit.`,
+      t.askSizeFor(service.name),
     ].join("\n")
   }
 
   const rateList = SERVICES_SUMMARY.map(sv => `• ${sv.name} — ${sv.price}`).join("\n")
-  return [
-    `I could not reach the assistant just now, so here is our published rate list:`,
-    ``,
-    rateList,
-    ``,
-    `For anything else — designs, timelines, an exact quotation — call ${PHONE_PRIMARY_DISPLAY} or ${PHONE_SECONDARY_DISPLAY}. The site visit and quotation are free.`,
-  ].join("\n")
+  return [t.offlineIntro, ``, rateList, ``, t.offlineOutro].join("\n")
 }
 
 // These two are always pinned as the first chips in the strip
@@ -411,7 +448,8 @@ const TypingDots = () => (
 )
 
 // Lead confirmation card
-function LeadConfirmCard({ data }: { data: LeadCard }) {
+function LeadConfirmCard({ data, language }: { data: LeadCard; language: ReplyLanguage }) {
+  const t = copyFor(language)
   const rows = [
     { label: "👤 Name",    value: data.name },
     { label: "📱 Phone",   value: data.phone },
@@ -429,13 +467,13 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-[90%] sm:max-w-[85%] rounded-2xl rounded-bl-sm overflow-hidden border border-gold-200 shadow-lg bg-white">
       <div className="bg-gradient-to-r from-gold-700 to-gold-500 px-3 md:px-4 py-2 md:py-2.5 flex items-center gap-2">
         <span className="text-lg shrink-0">🎉</span>
-        <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">Booking confirmed</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
+        <div className="min-w-0"><p className="text-[11px] md:text-xs font-bold text-white leading-tight">{t.cardTitle}</p><p className="text-[9px] md:text-[10px] text-white/70">{ts}</p></div>
       </div>
       <div className="px-3 md:px-4 py-2 md:py-2.5 space-y-1.5">
         {rows.map(r => (<div key={r.label} className="flex items-start gap-2 text-[11px] md:text-xs"><span className="text-gray-500 shrink-0 w-16 md:w-20 text-[10px] md:text-[11px] font-medium">{r.label}</span><span className="font-semibold break-all text-[11px] md:text-[12px] text-gray-800 flex-1">{r.value}</span></div>))}
       </div>
       <div className="px-3 md:px-4 pb-3 md:pb-3.5 pt-1 md:pt-1.5 space-y-2">
-        <p className="text-[10px] md:text-[11px] text-gold-700 font-semibold text-center bg-gold-50 rounded-lg py-1.5">✅ Our team will be in touch with you shortly.</p>
+        <p className="text-[10px] md:text-[11px] text-gold-700 font-semibold text-center bg-gold-50 rounded-lg py-1.5">{t.teamWillContact}</p>
         <div className="flex flex-col sm:flex-row gap-2">
           <a href={waHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:opacity-90 transition-all"><IWA /> WhatsApp</a>
           <a href={bookHref} target="_blank" rel="noopener noreferrer" className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-gold-700 py-2 md:py-2.5 text-[10px] md:text-[11px] font-bold text-white hover:bg-gold-600 transition-all"><ICal /> Confirm on WhatsApp</a>
@@ -445,10 +483,7 @@ function LeadConfirmCard({ data }: { data: LeadCard }) {
   )
 }
 
-const WELCOME_MSG = mk(
-  "bot",
-  `Welcome to JK Interior.\n\nI am the **JK Interior AI Assistant**. I answer from what this website publishes — our services, our rates, our warranty and where we work.\n\n📐 Share your room size (for example 12×10) and I will work out an estimate straight away. ✨`
-)
+const welcomeMessage = (language: ReplyLanguage) => mk("bot", copyFor(language).welcome)
 
 // ── Main Component ────────────────────────────────────────────────────────────
 // NOTE: The large WhatsApp and Call buttons visible below the chat are rendered
@@ -464,7 +499,7 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(startOpen)
   const [isInitializing, setIsInitializing] = useState(true)
-  const [messages, setMsgs] = useState<Message[]>([WELCOME_MSG])
+  const [messages, setMsgs] = useState<Message[]>(() => [welcomeMessage("english")])
   const [input, setInput] = useState("")
   const [lead, setLead] = useState<Partial<Lead> | null>(null)
   const [lastTopic, setLastTopic] = useState<string | null>(null)
@@ -474,6 +509,14 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
   const [offHours, setOffHours] = useState(false)
   const [memory, setMemory] = useState<ConversationMemory>(createMemory)
   const memoryRef = useRef<ConversationMemory>(memory)
+  /**
+   * The language every reply — the model's and the widget's own scripted lines —
+   * is written in. Sticky per conversation, so a visitor who has been typing
+   * Hinglish and then sends just "12x14" is still answered in Hinglish.
+   */
+  const [language, setLanguage] = useState<ReplyLanguage>("english")
+  const languageRef = useRef<ReplyLanguage>("english")
+  const t = copyFor(language)
 
   // ── Voice / Speech-to-Text State ──────────────────────────────────────────
   const [isListening, setIsListening] = useState(false)
@@ -486,10 +529,11 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
   const sendLock       = useRef(false)
   const sessionIdRef   = useRef<string>(Math.random().toString(36).slice(2, 10))
   const streamingIdRef = useRef<number | null>(null)
-  const [collectStep, setCollectStep] = useState<null | "name" | "phone" | "city" | "time">(null)
+  const [collectStep, setCollectStep] = useState<CollectStep | null>(null)
   const [pendingEstimate, setPendingEstimate] = useState<string | null>(null)
 
   useEffect(() => { memoryRef.current = memory }, [memory])
+  useEffect(() => { languageRef.current = language }, [language])
 
   // ── Handle chat opening — instant load, no waiting screen ──────────────
   useEffect(() => {
@@ -559,6 +603,13 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
     const savedMem = loadMemory()
     memoryRef.current = savedMem
     setMemory(savedMem)
+    if (savedMem.language && savedMem.language !== "english") {
+      setLanguage(savedMem.language)
+      languageRef.current = savedMem.language
+      // The welcome was rendered in English before storage could be read — swap
+      // it for the returning visitor's language rather than greeting them twice.
+      setMsgs(prev => (prev.length === 1 && prev[0].role === "bot" ? [welcomeMessage(savedMem.language!)] : prev))
+    }
     try {
       const raw = localStorage.getItem("jk_chat_v5")
       if (raw) {
@@ -610,24 +661,37 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
     setMsgs(prev => [...prev, mk("user", text)].slice(-100))
     setTyping(true)
 
-    historyRef.current = [...historyRef.current, { role: "user", content: text }]
+    // Settle the language first: every scripted line produced in this turn — the
+    // estimate, the booking questions, the offline notice — has to come out in
+    // the same language the model is being told to answer in.
+    const replyLanguage = resolveReplyLanguage(text, languageRef.current)
+    languageRef.current = replyLanguage
+    setLanguage(replyLanguage)
+    const say = copyFor(replyLanguage)
+
+    // History as the model should see it — without the message being answered,
+    // which is passed separately. Appending first meant the visitor's words
+    // arrived twice on every single turn.
+    const historyBefore = historyRef.current
+    historyRef.current = [...historyBefore, { role: "user", content: text }]
 
     {
+      // Merged unconditionally, not only when something was extracted: the turn
+      // counter and the language belong in memory whatever the visitor typed,
+      // and `summarizeForPrompt` keys off that counter.
       const memUpd = extractFromText(text, memoryRef.current, "user")
-      if (Object.keys(memUpd).length > 0) {
-        const merged = mergeMemory(memoryRef.current, memUpd, true)
-        merged.stage = updateStage(merged)
-        memoryRef.current = merged
-        setMemory(merged)
-        saveMemory(merged)
-      }
+      const merged = mergeMemory(memoryRef.current, { ...memUpd, language: replyLanguage }, true)
+      merged.stage = updateStage(merged)
+      memoryRef.current = merged
+      setMemory(merged)
+      saveMemory(merged)
     }
 
     const dims = extractDimensions(text)
     const serviceFromMsg = detectService(text.toLowerCase())
     const currentService = serviceFromMsg || lead?.service || null
+    const galleryType = galleryCategoryFor(text, lastTopic, currentService ?? undefined)
 
-    
     // ✅ Service save (only if not already known)
     if (serviceFromMsg && !lead?.service) {
       const updLead = { ...(lead || {}), service: serviceFromMsg }
@@ -636,96 +700,131 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
       setLastTopic(serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
     }
 
-    // Where dimensions are present, always produce an estimate and skip collectStep
-if (dims) {
-  try {
-    setCollectStep(null)
-    await delay(400)
-    const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name)
-    const estSummary = extractEstimateSummary(estimateReply)
-    if (estSummary) setPendingEstimate(estSummary)
-    historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
-    setMsgs(prev => [...prev, mk("bot", estimateReply)])
-    const newRoomSize = `${dims.length}x${dims.width}`
-    setRoomSize(newRoomSize)
-    const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
-    if (svcSlug) setLastTopic(svcSlug)
-    const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
-    setLead(newLead)
-    persist(newLead, svcSlug)
-  } finally {
-    setTyping(false)
-    sendLock.current = false
-  }
-  return
+    // Mid-booking, the visitor may simply ask something else. Detecting that and
+    // answering it — then picking the booking back up — is the difference between
+    // an assistant and a form: "PVC ka rate kya hai?" typed at the name question
+    // used to be saved as the customer's name.
+    const divertedStep = collectStep && isCollectionEscape(text, collectStep, dims) ? collectStep : null
+
+    const resumeCollection = async () => {
+      if (!divertedStep) return
+      await delay(600)
+      const reask =
+        divertedStep === "name"  ? say.askName :
+        divertedStep === "phone" ? say.askPhone :
+        divertedStep === "city"  ? say.askCity :
+                                   say.askTime(lead?.city)
+      const line = `${say.resumeCollection} ${reask}`
+      historyRef.current = [...historyRef.current, { role: "assistant", content: line }]
+      setMsgs(prev => [...prev, mk("bot", line)])
     }
 
-    // CollectStep block — entirely separate from the branch above
-if (collectStep) {
-  let collReply = ""
-const tLower = text.toLowerCase()
-  if (collectStep === "name") {
-    const extractedName = tryExtractName(text)
-    const name = extractedName || text.trim()
-    if (!name || name.length < 2) {
-      collReply = `I could not quite read that as a name. Could you write just your name? (For example: Rahul, Priya)`
-    } else {
-      const updated = { ...(lead || {}), name }
-      setLead(updated); persist(updated, lastTopic)
-      setCollectStep("phone")
-      collReply = `Thank you, ${name}. Could you share your WhatsApp number? 📱`
-    }
-  } else if (collectStep === "phone") {
-    const phone = tryExtractPhone(text)
-    if (!phone) collReply = `Could you write a valid 10-digit mobile number? 📱`
-    else {
-      const city = detectCity(tLower) || lead?.city
-      const updated = { ...(lead || {}), phone, city: city || undefined }
-      setLead(updated); persist(updated, lastTopic)
-      if (city) { setCollectStep("time"); collReply = `Number saved. 📱 Which day and time would suit you for the site visit?` }
-      else { setCollectStep("city"); collReply = `Thank you. Which town are you in? (Narpatganj, Forbesganj, Araria, Purnia and so on)` }
-    }
-  } else if (collectStep === "city") {
-    const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
-    if (!city) collReply = `Could you tell me the name of your town?`
-    else {
-      const updated = { ...(lead || {}), city }
-      setLead(updated); persist(updated, lastTopic)
-      setCollectStep("time")
-      collReply = `${city} — excellent. 📍 Which day and time would suit you for the site visit?`
-    }
-  } else if (collectStep === "time") {
-    const preferredTime = text.trim()
-    setCollectStep(null)
-    const finalLead: Lead = {
-      name:    lead?.name    || "Friend",
-      phone:   lead?.phone   || "",
-      city:    lead?.city,
-      service: lead?.service,
-    }
-    storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
-    const card: LeadCard = {
-      ...finalLead,
-      estimate:      pendingEstimate || undefined,
-      preferredTime,
-      timestamp:     new Date().toISOString(),
-    }
-    historyRef.current = [...historyRef.current, { role: "assistant", content: "Booking confirmed. Our team will be in touch with you shortly." }]
-    setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
-    setTyping(false)
-    sendLock.current = false
-    return
-  }
+    // ── Instant estimate ──────────────────────────────────────────────────────
+    // Only for a message that is *nothing but* a room size. A message that also
+    // carries a question ("12x14 hall, warranty kitni hai?") goes to the model,
+    // which receives these very figures already worked out — answering the size
+    // and ignoring the question is what made the assistant feel deaf.
+    if (dims && isSizeOnlyMessage(text, dims) && !galleryType) {
+      try {
+        if (!divertedStep) setCollectStep(null)
+        await delay(400)
+        const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name, replyLanguage)
+        const estSummary = extractEstimateSummary(estimateReply)
+        if (estSummary) setPendingEstimate(estSummary)
+        historyRef.current = [...historyRef.current, { role: "assistant", content: estimateReply }]
+        setMsgs(prev => [...prev, mk("bot", estimateReply)])
 
-    // shared footer for the phone/city steps
-  historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
-  setMsgs(prev => [...prev, mk("bot", collReply)])
-  setTyping(false)
-  sendLock.current = false
-  return
-  } // ← closes `if (collectStep)`
+        // Record the estimate so the assistant never re-asks for a size it has,
+        // or re-quotes a room it has already priced.
+        const estUpd = extractFromText(estimateReply, memoryRef.current, "bot")
+        if (Object.keys(estUpd).length > 0) {
+          const merged = mergeMemory(memoryRef.current, estUpd)
+          merged.stage = updateStage(merged)
+          memoryRef.current = merged
+          setMemory(merged)
+          saveMemory(merged)
+        }
 
-    const svc = detectService(text.toLowerCase())
+        const newRoomSize = `${dims.length}x${dims.width}`
+        setRoomSize(newRoomSize)
+        const svcSlug = currentService ? currentService.toLowerCase().replace(/\s+/g, "-") : lastTopic
+        if (svcSlug) setLastTopic(svcSlug)
+        const newLead = { ...(lead || {}), ...(currentService && !lead?.service ? { service: currentService } : {}) }
+        setLead(newLead)
+        persist(newLead, svcSlug)
+        await resumeCollection()
+      } finally {
+        setTyping(false)
+        sendLock.current = false
+      }
+      return
+    }
+
+    // ── Booking details, one field at a time ──────────────────────────────────
+    if (collectStep && !divertedStep) {
+      let collReply = ""
+      const tLower = text.toLowerCase()
+      if (collectStep === "name") {
+        const extractedName = tryExtractName(text)
+        const name = extractedName || text.trim()
+        if (!name || name.length < 2) {
+          collReply = say.askNameAgain
+        } else {
+          const updated = { ...(lead || {}), name }
+          setLead(updated); persist(updated, lastTopic)
+          setCollectStep("phone")
+          collReply = say.thanksAskPhone(name)
+        }
+      } else if (collectStep === "phone") {
+        const phone = tryExtractPhone(text)
+        if (!phone) collReply = say.askPhoneAgain
+        else {
+          const city = detectCity(tLower) || lead?.city
+          const updated = { ...(lead || {}), phone, city: city || undefined }
+          setLead(updated); persist(updated, lastTopic)
+          if (city) { setCollectStep("time"); collReply = say.askTime(city) }
+          else { setCollectStep("city"); collReply = say.askCity }
+        }
+      } else if (collectStep === "city") {
+        const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
+        if (!city) collReply = say.askCityAgain
+        else {
+          const updated = { ...(lead || {}), city }
+          setLead(updated); persist(updated, lastTopic)
+          setCollectStep("time")
+          collReply = say.askTime(city)
+        }
+      } else if (collectStep === "time") {
+        const preferredTime = text.trim()
+        setCollectStep(null)
+        const finalLead: Lead = {
+          name:    lead?.name    || "Friend",
+          phone:   lead?.phone   || "",
+          city:    lead?.city,
+          service: lead?.service,
+        }
+        storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
+        const card: LeadCard = {
+          ...finalLead,
+          estimate:      pendingEstimate || undefined,
+          preferredTime,
+          timestamp:     new Date().toISOString(),
+        }
+        historyRef.current = [...historyRef.current, { role: "assistant", content: say.bookingConfirmed }]
+        setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
+        setTyping(false)
+        sendLock.current = false
+        return
+      }
+
+      historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
+      setMsgs(prev => [...prev, mk("bot", collReply)])
+      setTyping(false)
+      sendLock.current = false
+      return
+    }
+
+    const svc = serviceFromMsg
     const city = detectCity(text.toLowerCase())
     const extractedPhone = tryExtractPhone(text)
     let updatedLead = lead ? { ...lead } : null
@@ -754,7 +853,7 @@ const tLower = text.toLowerCase()
     if (aiMode) {
       const aiResult = await getAIReply(
         text,
-        historyRef.current,
+        historyBefore,
         updatedLead,
         sessionIdRef.current,
         memoryRef.current,
@@ -770,7 +869,7 @@ const tLower = text.toLowerCase()
             setMsgs(prev => prev.map(m => m.id === sid ? { ...m, text: partial } : m))
           }
         },
-        { roomSize, lastTopic, messagesExchanged: historyRef.current.length },
+        { roomSize, lastTopic, messagesExchanged: memoryRef.current.messagesExchanged },
       )
       if (aiResult) {
         reply = aiResult.reply
@@ -797,7 +896,7 @@ const tLower = text.toLowerCase()
       }
       wasStreamed = false
       await delay(400)
-      reply = localFallback(text, updatedLead)
+      reply = localFallback(text, updatedLead, roomSize, replyLanguage)
     }
 
     historyRef.current = [...historyRef.current, { role: "assistant", content: reply }]
@@ -837,38 +936,14 @@ const tLower = text.toLowerCase()
     streamingIdRef.current = null
 
     setMsgs(prev => {
+      // `galleryType` is applied on both branches. It used to be set only on the
+      // non-streaming one, so with the AI backend live the "View Designs" button
+      // answered in words and never showed a single photo.
       let next: Message[]
       if (wasStreamed && finalStreamId !== null) {
-        next = prev.map(m => m.id === finalStreamId ? { ...m, text: reply! } : m)
+        next = prev.map(m => m.id === finalStreamId ? { ...m, text: reply!, galleryType } : m)
       } else {
-        const botMessage = mk("bot", reply as string) as any
-
-        const userWantsPhoto = /photo|photos|image|images|gallery|dikhao|dekh|show|design\s+dekh|kaam\s+dekh/i.test(text)
-        if (userWantsPhoto) {
-          const ut = text.toLowerCase()
-          let cat: string | undefined
-          if (/gypsum|pop\b|false\s*ceil/.test(ut))                      cat = "Gypsum False Ceiling"
-          else if (/\bpvc\b/.test(ut))                                    cat = "PVC Ceiling"
-          else if (/wpc|wall\s*panel|fluted|uv\s*marble|louver/.test(ut)) cat = "WPC fluted panels & uv marble Sheet"
-          else if (/grid|mineral|office\s*ceil/.test(ut))                 cat = "Grid Ceiling"
-          else if (/tv\s*unit|tv\s*cabinet|television|\btv\b/.test(ut))   cat = "TV Unit Design"
-          else if (/grass|turf|garden/.test(ut))                         cat = "Artificial Grass"
-          else if (lastTopic?.includes("gypsum"))  cat = "Gypsum False Ceiling"
-          else if (lastTopic?.includes("pvc"))     cat = "PVC Ceiling"
-          else if (lastTopic?.includes("wpc") || lastTopic?.includes("wall")) cat = "WPC fluted panels & uv marble Sheet"
-          else if (lastTopic?.includes("grid"))    cat = "Grid Ceiling"
-          else if (lastTopic?.includes("tv"))      cat = "TV Unit Design"
-          else if (lastTopic?.includes("grass"))   cat = "Artificial Grass"
-          else if (updatedLead?.service?.toLowerCase().includes("gypsum")) cat = "Gypsum False Ceiling"
-          else if (updatedLead?.service?.toLowerCase().includes("pvc"))    cat = "PVC Ceiling"
-          else if (updatedLead?.service?.toLowerCase().includes("wpc"))    cat = "WPC fluted panels & uv marble Sheet"
-          else if (updatedLead?.service?.toLowerCase().includes("grid"))   cat = "Grid Ceiling"
-          else if (updatedLead?.service?.toLowerCase().includes("tv"))     cat = "TV Unit Design"
-          else cat = "Gypsum False Ceiling"
-          botMessage.galleryType = cat
-        }
-
-        next = [...prev, botMessage]
+        next = [...prev, { ...mk("bot", reply as string), galleryType }]
       }
       if (extractedPhone && !lead?.phone && updatedLead?.phone) {
         const card: LeadCard = { name: updatedLead.name || "Friend", phone: updatedLead.phone!, city: updatedLead.city, service: updatedLead.service, estimate: pendingEstimate || estSummary || undefined, timestamp: new Date().toISOString() }
@@ -877,18 +952,26 @@ const tLower = text.toLowerCase()
       return next
     })
 
+    if (divertedStep) {
+      setTyping(false)
+      await resumeCollection()
+      setTyping(false)
+      sendLock.current = false
+      return
+    }
+
     const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone && !dims
     if (hasLeadIntent) {
       setTyping(false); await delay(1100); setTyping(true); await delay(700)
       let startMsg: string
       if (updatedLead?.name && updatedLead?.phone) {
-        startMsg = `${updatedLead.name}, when would suit you? Please share a day and time. 📅`
+        startMsg = say.askTime(updatedLead.city)
         setCollectStep("time")
       } else if (updatedLead?.name) {
-        startMsg = `Thank you, ${updatedLead.name}. I will need your WhatsApp number to book the free site visit. 📱`
+        startMsg = `${updatedLead.name} — ${say.askPhone}`
         setCollectStep("phone")
       } else {
-        startMsg = `To book a free site visit, could you tell me your name first?`
+        startMsg = say.askName
         setCollectStep("name")
       }
       historyRef.current = [...historyRef.current, { role: "assistant", content: startMsg }]
@@ -907,7 +990,7 @@ const tLower = text.toLowerCase()
   const lastBotMsg = messages.filter(m => m.role === "bot").slice(-1)[0]?.text || ""
   const hasEstimate = lastBotMsg.includes("₹") || !!pendingEstimate
   const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg, lastTopic)
-  const statusText = offHours ? "Available from 8:00 AM" : "Online now • replies in seconds"
+  const statusText = offHours ? t.statusOffHours : t.statusOnline
 
   if (!mounted) return null
 
@@ -956,17 +1039,24 @@ const tLower = text.toLowerCase()
               <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={() => {
-                    setMsgs([WELCOME_MSG])
+                    setMsgs([welcomeMessage("english")])
                     setLead(null)
                     setLastTopic(null)
                     setRoomSize(null)
                     setCollectStep(null)
                     setPendingEstimate(null)
+                    setLanguage("english")
+                    languageRef.current = "english"
                     historyRef.current = []
                     const freshMem = createMemory()
                     memoryRef.current = freshMem
                     setMemory(freshMem)
-                    try { localStorage.removeItem("jk_chat_v5"); localStorage.removeItem("jk_chat_memory_v2") } catch {}
+                    // clearMemory() removes the key lib/memory.ts actually writes.
+                    // This used to delete "jk_chat_memory_v2", a key nothing has
+                    // ever written, so a cleared conversation — name, phone,
+                    // rooms and all — came straight back on the next page load.
+                    clearMemory()
+                    try { localStorage.removeItem("jk_chat_v5") } catch {}
                   }}
                   title="Clear the conversation"
                   className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 text-white/70 hover:text-white text-[11px] font-bold transition-colors"
@@ -1000,7 +1090,7 @@ const tLower = text.toLowerCase()
                       />
                     ))}
                   </div>
-                  <p className="text-[10px] text-red-600 font-semibold">Go ahead — I am listening 👂</p>
+                  <p className="text-[10px] text-red-600 font-semibold">{t.listening} 👂</p>
                   <button
                     onClick={toggleVoice}
                     className="ml-auto text-[9px] text-red-500 font-bold border border-red-300 rounded-full px-2 py-0.5 hover:bg-red-100"
@@ -1083,7 +1173,7 @@ const tLower = text.toLowerCase()
                   {m.role === "bot" && m.kind === "card" && <div className="h-6 w-6 shrink-0" />}
 
                   {m.kind === "card" && m.cardData ? (
-                    <LeadConfirmCard data={m.cardData} />
+                    <LeadConfirmCard data={m.cardData} language={language} />
                   ) : (
                     <div
                       className={`max-w-[85%] sm:max-w-[80%] whitespace-pre-line rounded-2xl px-3 md:px-4 py-2 md:py-2.5 text-[12px] sm:text-[13px] md:text-[13.5px] leading-relaxed shadow-sm ${
@@ -1093,10 +1183,10 @@ const tLower = text.toLowerCase()
                       }`}
                     >
                       <RichText text={m.text} />
-                      {(m as any).galleryType && (
+                      {m.galleryType && (
                         <div className="mt-2 md:mt-3 flex gap-2 md:gap-3 overflow-x-auto pb-1.5">
                           {galleryImages
-                            .filter(img => img.category === (m as any).galleryType)
+                            .filter(img => img.category === m.galleryType)
                             .slice(0, 6)
                             .map((img, i) => (
                               <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" fetchPriority="low" className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
@@ -1172,7 +1262,7 @@ const tLower = text.toLowerCase()
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={onKey}
-                placeholder={isListening ? "Listening — go ahead" : "Ask about designs, rates or a site visit…"}
+                placeholder={isListening ? t.listening : t.placeholder}
                 className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-800 outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-100 transition-colors"
                 autoComplete="off"
               />
