@@ -77,6 +77,24 @@ const HELMET_MANAGED_SELECTORS = [
 const NAV_TIMEOUT_MS = 30_000
 const MAX_ATTEMPTS = 3
 
+/** Identifies which build produced a page, stamped into every prerendered file. */
+const BUILD_STAMP = new Date().toISOString()
+
+/** Inserts the build stamp immediately after the doctype, so View Source on any
+ *  deployed page shows whether that page is static HTML and which build made it. */
+function stampPrerendered(html: string): string {
+  return html.replace(/^(\s*<!DOCTYPE[^>]*>)/i, `$1\n<!-- prerendered ${BUILD_STAMP} -->`)
+}
+
+/** A summary line that survives skimming a long Vercel build log.
+ *  This script is deliberately fail-soft, which means a green build alone does
+ *  NOT prove prerendering happened — grep the log for this banner to tell the
+ *  difference between "64/64 static" and "silently skipped". */
+function banner(status: "PRERENDERED" | "PARTIAL" | "SKIPPED", detail: string) {
+  const line = "=".repeat(64)
+  console.log(`\n${line}\n[prerender] RESULT: ${status} — ${detail}\n${line}\n`)
+}
+
 const STABILITY_ARGS = [
   "--no-sandbox",
   "--disable-setuid-sandbox",
@@ -270,9 +288,13 @@ async function main() {
       await probe.close().catch(() => {})
     }
   } catch (err) {
-    console.warn("[prerender] could not launch a headless browser in this environment — skipping static")
-    console.warn("[prerender] prerendering. The site will still deploy as a client-rendered SPA (unchanged).")
+    console.warn("[prerender] could not launch a headless browser in this environment.")
     console.warn(err instanceof Error ? err.message : String(err))
+    banner(
+      "SKIPPED",
+      "no headless browser available. The site still deploys as a client-rendered SPA, " +
+        "but crawlers that do not run JS will see an empty shell — the indexing fix is NOT active.",
+    )
     process.exit(0)
   }
 
@@ -293,7 +315,14 @@ async function main() {
       const outPath =
         route === "/" ? path.join(DIST_DIR, "index.html") : path.join(DIST_DIR, route.replace(/^\//, ""), "index.html")
       await mkdir(path.dirname(outPath), { recursive: true })
-      await writeFile(outPath, html, "utf-8")
+      // Stamp each page so "was this actually prerendered, and by which
+      // build?" is answerable from View Source alone — see the SKIPPED
+      // banner below for why a green build is not by itself proof. The
+      // stamp goes *after* the doctype, never before it: content preceding
+      // the doctype is a quirks-mode trigger in legacy parsers. If there is
+      // somehow no doctype to anchor to, the page ships unstamped rather
+      // than risk that.
+      await writeFile(outPath, stampPrerendered(html), "utf-8")
     }
 
     console.log(`[prerender] wrote ${succeeded.length}/${total} static pages to dist/public`)
@@ -302,13 +331,21 @@ async function main() {
         `[prerender] ${failed.length} route(s) failed and were left as client-rendered only: ${failed.join(", ")}`,
       )
     }
+    banner(
+      succeeded.length === total ? "PRERENDERED" : "PARTIAL",
+      `${succeeded.length}/${total} routes are static HTML.`,
+    )
   } finally {
     await previewServer?.close().catch(() => {})
   }
 }
 
 main().catch((err) => {
-  console.error("[prerender] unexpected error — leaving dist as a client-rendered SPA.")
   console.error(err)
+  banner(
+    "SKIPPED",
+    "unexpected error, leaving dist as a client-rendered SPA. The site still deploys, " +
+      "but crawlers that do not run JS will see an empty shell — the indexing fix is NOT active.",
+  )
   process.exit(0)
 })
