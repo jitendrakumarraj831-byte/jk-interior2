@@ -6,36 +6,25 @@ import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SectionHeader from "@/components/ui/section-header"
+import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 
 interface GalleryImage { src: string; alt: string; category?: string }
 
 const ALL = galleryImages as GalleryImage[]
 
-const CATEGORY_DESCRIPTIONS: Record<string, { en: string; hi: string }> = {
-  "Gypsum False Ceiling": {
-    en: "Gypsum ceiling designs with a smooth finish and cove/LED lighting — suited to halls, bedrooms and other dry rooms.",
-    hi: "स्मूथ फिनिश और Cove/LED लाइटिंग के साथ बनी Gypsum Ceiling — हॉल, बेडरूम और सूखे कमरों के लिए।",
-  },
-  "PVC Ceiling": {
-    en: "Waterproof PVC false ceiling panels with modern designs and a long-lasting, dust-free finish.",
-    hi: "पानी का असर न होने वाली PVC Ceiling — मॉडर्न डिज़ाइन में, बरसों तक बिना खराब हुए चलती है।",
-  },
-  "Grid Ceiling": {
-    en: "Durable mineral-fiber grid ceilings for offices, shops, and hospitals — clean, acoustic, and easy to maintain.",
-    hi: "ऑफिस, दुकान और हॉस्पिटल के लिए मज़बूत Grid Ceiling — साफ-सुथरी और मेंटेनेंस भी आसान।",
-  },
-  "WPC fluted panels & uv marble Sheet": {
-    en: "Termite-resistant WPC fluted wall panels and marble-look UV marble sheets for TV walls and feature walls.",
-    hi: "दीमक-रोधी WPC Fluted Panel और मार्बल-लुक UV Marble Sheet — TV वॉल और फीचर वॉल के लिए।",
-  },
-  "TV Unit Design": {
-    en: "Custom modular TV units with modern storage solutions, cable management, and premium finishes.",
-    hi: "आपके कमरे की नाप पर बना Modular TV Unit — स्टोरेज, वायर छुपाने का इंतज़ाम, सब शामिल।",
-  },
-  "Artificial Grass": {
-    en: "Artificial grass for balconies, terraces and gardens — stays green with very low maintenance.",
-    hi: "बालकनी, टैरेस और गार्डन के लिए Artificial Grass — हरी-भरी रहती है और रख-रखाव बहुत कम।",
-  },
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  "Gypsum False Ceiling":
+    "Gypsum ceiling designs with a plaster-smooth finish and concealed cove or LED lighting — specified for halls, bedrooms and other dry rooms.",
+  "PVC Ceiling":
+    "Fully waterproof PVC false ceiling panels in contemporary designs, holding a clean, long-lasting finish year after year.",
+  "Grid Ceiling":
+    "Durable mineral-fibre grid ceilings for offices, shops and clinics — acoustic, orderly and simple to service.",
+  "WPC fluted panels & uv marble Sheet":
+    "Termite-resistant WPC fluted wall panelling and high-gloss UV marble sheets for television walls and feature walls.",
+  "TV Unit Design":
+    "Bespoke modular television units with considered storage, fully concealed cabling and premium finishes.",
+  "Artificial Grass":
+    "Artificial grass for balconies, terraces and gardens — evergreen through every season, with virtually no upkeep.",
 }
 
 function groupByCategory(images: GalleryImage[]) {
@@ -151,7 +140,7 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
         </div>
         <div className="flex gap-2">
           <WhatsAppLink
-            message={`नमस्ते JK Interior! इस डिज़ाइन का कोटेशन चाहिए: "${img.alt}"`}
+            message={`Hello JK Interior, I would like a quotation for this design: "${img.alt}"`}
             icon={false}
             className="rounded-full px-5 py-2.5 text-sm shadow-none hover:bg-gold-500 hover:shadow-none"
           >
@@ -190,7 +179,8 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
 
     useEffect(() => {
     if (!playing || total <= 1) return
-    // हर कार्ड अलग-अलग समय पर फोटो बदलेगा, जिससे एक साथ फ्लिकर (ब्लैक होना) नहीं दिखेगा
+    // Each card advances on its own randomised interval, so the whole wall never
+    // flips at the same instant (which reads as a flicker).
     const randomTime = Math.floor(Math.random() * 2000) + 3500
     timer.current = setTimeout(() => go(1), randomTime)
     return () => { if (timer.current) clearTimeout(timer.current) }
@@ -207,9 +197,9 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4 }}
-      className="group relative mb-6 break-inside-avoid scroll-mt-28 overflow-hidden rounded-2xl border border-gold-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/30 hover:shadow-xl"
+      className="group relative mb-6 break-inside-avoid scroll-mt-36 overflow-hidden rounded-2xl border border-gold-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/30 hover:shadow-xl"
     >
-            {/* Slider Area with Fixed Aspect-Ratio (नो लेआउट जम्प) */}
+            {/* Slider area on a fixed aspect ratio — no layout shift as photos change */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.picture key={cur}>
@@ -310,15 +300,10 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
         )}
       </div>
 
-      {/* Description & Rate */}
+      {/* Description */}
       {description && (
-        <div className="p-4 space-y-1 bg-white">
-          <p className="text-xs text-gray-600 leading-relaxed font-medium">
-            {description.en}
-          </p>
-          <p className="text-[11px] text-gray-400 leading-relaxed">
-            {description.hi}
-          </p>
+        <div className="bg-white p-4">
+          <p className="text-xs font-medium leading-relaxed text-gray-600">{description}</p>
         </div>
       )}
 
@@ -334,7 +319,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
         <WhatsAppLink
           size="sm"
           variant="outline"
-          message={`Hi JK Interior, I am interested in ${category} service in Forbesganj. Please share details.`}
+          message={`Hello JK Interior, I am interested in your ${category} service. Please share details and rates.`}
           ariaLabel={`WhatsApp for ${category}`}
           className="flex-1 py-2 text-xs font-semibold rounded-xl border-gold-500/30 text-gold-700 hover:bg-gold-50"
         >
@@ -400,7 +385,7 @@ export default function Gallery() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(0,0,0,0.05),transparent)]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-16">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-20 pb-6 sm:px-6 sm:pt-24 md:pb-16 lg:px-8">
 
         {/* ── Header ── */}
         <SectionHeader
@@ -409,37 +394,61 @@ export default function Gallery() {
           tone="amber"
           headingSize="md"
           className="mb-10"
-          title={<>हमारे काम, <span className="hero-gradient-text">आपका विश्वास</span></>}
-          subtitle={`${ALL.length}+ premium interior projects — Forbesganj, Araria, Bihar`}
+          title={<>Our Work, <span className="hero-gradient-text">Your Confidence</span></>}
+          subtitle={`${ALL.length}+ completed interior projects across Narpatganj, Forbesganj and Araria district, Bihar.`}
         />
 
         {/* ── Section label ── */}
         <div className="flex items-center gap-4 mb-6">
           <div className="w-1 h-8 bg-gold-500 rounded-full"/>
-          <h3 className="text-gray-800 font-bold text-lg">सर्विस के हिसाब से प्रोजेक्ट्स</h3>
-          <div className="flex-1 h-px bg-gold-900/15"/>
-          <span className="text-gray-500 text-xs">{categories.length} services</span>
+          <h3 className="text-lg font-bold text-gray-800">Projects by service</h3>
+          <div className="h-px flex-1 bg-gold-900/15"/>
+          <span className="text-xs text-gray-500">{categories.length} services</span>
         </div>
 
-        {/* ── Portfolio Wall Layout ── */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 sm:gap-6">
+        {/* ── Portfolio wall — masonry on desktop ── */}
+        <div className="hidden gap-5 sm:columns-2 sm:gap-6 md:block lg:columns-3">
           {categories.map(({ category, images }, index) => (
             <CategoryCard key={category} category={category} images={images} onOpen={open} index={index} />
           ))}
         </div>
+      </div>
+
+      {/* ── MOBILE: swipeable category rail ── */}
+      <div className="relative z-10 pb-4 md:hidden">
+        <SwipeRail
+          ariaLabel="JK Interior project gallery by service"
+          itemClassName="w-[84%]"
+          fadeColor="#efece3"
+          arrows={false}
+        >
+          {categories.map(({ category, images }, index) => (
+            <CategoryCard key={category} category={category} images={images} onOpen={open} index={index} />
+          ))}
+        </SwipeRail>
+        <SwipeHint className="mt-1" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
 
         {/* ── CTA ── */}
         <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:.6 }}
           className="glass-card-bright rounded-3xl px-6 py-12 md:px-14 text-center mt-14">
-          <h3 className="text-gray-900 text-2xl md:text-4xl font-black mb-3">
-            आपका घर, <span className="hero-gradient-text">हमारी पहचान</span>
+          <h3 className="mb-3 text-2xl font-black text-gray-900 md:text-4xl">
+            Your Home, <span className="hero-gradient-text">Our Signature</span>
           </h3>
-          <p className="text-gray-500 max-w-lg mx-auto text-sm mb-8">
-            बजट आपका, ज़िम्मेदारी हमारी! प्रीमियम इंटीरियर और फॉल्स सीलिंग — किफायती रेट पर।
+          <p className="mx-auto mb-8 max-w-lg text-sm text-gray-500">
+            You set the budget; we take responsibility for the result. Premium interiors and false
+            ceilings, priced honestly.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]">अभी कॉल करें</CallLink>
-            <WhatsAppLink className="px-8 py-4 shadow-none hover:bg-gold-500 hover:shadow-none">WhatsApp करें</WhatsAppLink>
+          <div className="flex flex-col justify-center gap-3 sm:flex-row">
+            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]">Call Us Now</CallLink>
+            <WhatsAppLink
+              message="Hello JK Interior, I would like a quotation for interior work."
+              className="px-8 py-4 shadow-none hover:bg-gold-500 hover:shadow-none"
+            >
+              Message on WhatsApp
+            </WhatsAppLink>
           </div>
         </motion.div>
       </div>

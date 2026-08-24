@@ -38,7 +38,7 @@ export default function GalleryPage() {
       <h1 className="sr-only">
         Interior Design Gallery – JK Interior Forbesganj Bihar
       </h1>
-      <div className="pt-28" />
+      <div className="pt-36" />
       <Gallery />
       <Footer />
     </main>

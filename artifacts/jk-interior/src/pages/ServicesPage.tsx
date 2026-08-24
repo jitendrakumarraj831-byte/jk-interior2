@@ -33,7 +33,7 @@ export default function ServicesPage() {
       <h1 className="sr-only">
         False Ceiling Contractor &amp; Interior Design Services in Forbesganj, Araria Bihar – Gypsum, PVC, WPC, TV Unit by JK Interior
       </h1>
-      <div className="pt-28" />
+      <div className="pt-36" />
       <Services />
       
 

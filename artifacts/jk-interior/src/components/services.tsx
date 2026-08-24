@@ -3,8 +3,9 @@ import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, C
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
+import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { SERVICES_SUMMARY, type ServiceHighlight } from "@/lib/services-summary"
+import { SERVICES_SUMMARY, type ServiceHighlight, type ServiceSummary } from "@/lib/services-summary"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -14,12 +15,12 @@ const HIGHLIGHT_STYLES: Record<ServiceHighlight["kind"], { icon: LucideIcon }> =
   suited: { icon: MapPin },
 }
 
-// 1. Filter categories Definition
+// Filter categories
 const CATEGORIES = [
-  { id: "all", label: "All Services (सभी)" },
-  { id: "ceiling", label: "False Ceiling (छत)" },
-  { id: "wall", label: "Wall Paneling (दीवार)" },
-  { id: "decor", label: "Interior & Decor (टीवी यूनिट/अन्य)" },
+  { id: "all", label: "All Services" },
+  { id: "ceiling", label: "False Ceilings" },
+  { id: "wall", label: "Wall Panelling" },
+  { id: "decor", label: "Interiors & Decor" },
 ]
 
 export default function Services() {
@@ -37,7 +38,7 @@ export default function Services() {
     })
   }
 
-  // 2. Filter logic based on service slug or category
+  // Filter logic based on service slug or category
   const filteredServices = SERVICES_SUMMARY.filter((service) => {
     if (activeTab === "all") return true
     if (activeTab === "ceiling") {
@@ -88,18 +89,20 @@ export default function Services() {
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
         <SectionHeader
           icon={Ruler}
-          badge="हमारी सर्विसेज"
+          badge="Our Services"
           headingId="services-heading"
-          title={<>आपके घर और ऑफिस के लिए <span className="hero-gradient-text">हर इंटीरियर सर्विस</span></>}
-          subtitle="साफ़ रेट, सही जानकारी और तेज़ काम — हर सर्विस पर टैप करके रेट, समय और सही जगह की पूरी डिटेल देखें।"
+          title={<>Every Interior Service <span className="hero-gradient-text">Your Space Needs</span></>}
+          subtitle="Transparent rates, honest guidance and disciplined execution. Open any service to see its price band, working timeline and the rooms it genuinely suits."
         />
 
-        {/* 🌟 3. Filter Category Tabs */}
+        {/* Filter category tabs */}
         <div className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
+              type="button"
               onClick={() => setActiveTab(cat.id)}
+              aria-pressed={activeTab === cat.id}
               className={`rounded-xl px-4 py-2.5 text-xs font-extrabold transition-all sm:px-5 sm:py-3 sm:text-sm ${
                 activeTab === cat.id
                   ? "bg-gold-700 text-white shadow-md shadow-gold-900/20 scale-105"
@@ -110,8 +113,26 @@ export default function Services() {
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Services Listing with Animation */}
+      {/* ── MOBILE & TABLET: touch-friendly swipe carousel ── */}
+      <div className="relative z-10 lg:hidden">
+        <SwipeRail
+          key={activeTab}
+          ariaLabel="JK Interior services"
+          itemClassName="w-[84%] sm:w-[58%]"
+          fadeColor="#fbfaf5"
+          arrows={false}
+        >
+          {filteredServices.map((service, i) => (
+            <ServiceSwipeCard key={service.slug} service={service} index={i} />
+          ))}
+        </SwipeRail>
+        <SwipeHint className="mt-3" />
+      </div>
+
+      {/* ── DESKTOP: alternating editorial index ── */}
+      <div className="relative z-10 mx-auto hidden max-w-6xl px-5 sm:px-6 lg:block lg:px-12">
         <div className="divide-y divide-gold-900/[0.08]">
           <AnimatePresence mode="wait">
             {filteredServices.map((service, i) => {
@@ -140,7 +161,7 @@ export default function Services() {
                         className="h-56 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-64 lg:h-80"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                      
+
                       <span className="absolute right-3.5 top-3.5 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gold-700 opacity-0 shadow-md backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
                         <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
                       </span>
@@ -150,7 +171,7 @@ export default function Services() {
                           {service.price}
                         </span>
                         <span className="rounded-md bg-black/60 px-2.5 py-1 text-[11px] font-bold tracking-wide text-white backdrop-blur-md">
-                          {service.installTimeHi}
+                          {service.installTime}
                         </span>
                       </div>
                     </Link>
@@ -171,7 +192,7 @@ export default function Services() {
                         {service.name}
                       </Link>
                     </h3>
-                    <p className="mb-5 text-sm font-bold text-gold-700 sm:text-base">{service.nameHi}</p>
+                    <p className="mb-5 text-sm font-bold text-gold-700 sm:text-base">{service.tagline}</p>
 
                     <ul className="mb-6 space-y-3.5">
                       {service.highlights.map((h) => {
@@ -184,17 +205,15 @@ export default function Services() {
                             <div className="min-w-0">
                               <p className="text-[13px] font-black uppercase tracking-wide text-gold-900 sm:text-sm">
                                 {h.label}
-                                <span className="ml-1.5 font-bold normal-case tracking-normal text-gold-600">/ {h.labelHi}</span>
                               </p>
-                              <p className="mt-0.5 text-sm font-semibold leading-snug text-gray-800">{h.en}</p>
-                              <p className="mt-0.5 text-[13px] leading-relaxed text-gray-600 sm:text-sm">{h.hi}</p>
+                              <p className="mt-0.5 text-sm font-medium leading-snug text-gray-700">{h.text}</p>
                             </div>
                           </li>
                         )
                       })}
                     </ul>
 
-                    {/* 🔽 Custom interaction: expand/collapse detail (accordion) */}
+                    {/* Expand/collapse detail */}
                     <div className="mb-6">
                       <button
                         type="button"
@@ -205,7 +224,7 @@ export default function Services() {
                       >
                         <span className="flex items-center gap-2">
                           <Ruler className="h-4 w-4 text-gold-700" aria-hidden="true" />
-                          {isOpen ? "जानकारी छुपाएँ" : "पूरी डिटेल देखें — रेट, समय व सही जगह"}
+                          {isOpen ? "Hide details" : "View full details — rate, timeline and best use"}
                         </span>
                         <ChevronDown
                           className={`h-5 w-5 flex-none text-gold-700 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -225,28 +244,28 @@ export default function Services() {
                             className="overflow-hidden"
                           >
                             <div className="mt-3 rounded-xl border border-gold-900/10 bg-white p-4 sm:p-5">
-                              <p className="mb-4 text-sm leading-relaxed text-gray-700">{service.taglineHi}</p>
+                              <p className="mb-4 text-sm leading-relaxed text-gray-700">{service.detail}</p>
 
                               <dl className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                                 <div className="flex items-start gap-2.5 rounded-lg bg-gold-50/70 p-3">
                                   <IndianRupee className="mt-0.5 h-4 w-4 flex-none text-gold-700" aria-hidden="true" />
                                   <div>
-                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">रेट</dt>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">Rate</dt>
                                     <dd className="text-sm font-bold text-gray-900">{service.price}</dd>
                                   </div>
                                 </div>
                                 <div className="flex items-start gap-2.5 rounded-lg bg-gold-50/70 p-3">
                                   <Clock className="mt-0.5 h-4 w-4 flex-none text-gold-700" aria-hidden="true" />
                                   <div>
-                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">काम का समय</dt>
-                                    <dd className="text-sm font-bold text-gray-900">{service.installTimeHi}</dd>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">Timeline</dt>
+                                    <dd className="text-sm font-bold text-gray-900">{service.installTime}</dd>
                                   </div>
                                 </div>
                                 <div className="flex items-start gap-2.5 rounded-lg bg-gold-50/70 p-3">
                                   <MapPin className="mt-0.5 h-4 w-4 flex-none text-gold-700" aria-hidden="true" />
                                   <div>
-                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">कहाँ लगेगा</dt>
-                                    <dd className="text-sm font-bold text-gray-900">{service.whereUsedFirstHi}</dd>
+                                    <dt className="text-[11px] font-black uppercase tracking-wide text-gold-800/70">Best Placed In</dt>
+                                    <dd className="text-sm font-bold text-gray-900">{service.whereUsedFirst}</dd>
                                   </div>
                                 </div>
                               </dl>
@@ -254,8 +273,8 @@ export default function Services() {
                               <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2.5">
                                 <AlertTriangle className="mt-0.5 h-4 w-4 flex-none text-amber-500" aria-hidden="true" />
                                 <div>
-                                  <p className="text-[11px] font-black uppercase tracking-wide text-amber-800/80">कहाँ न लगाएँ</p>
-                                  <p className="text-xs font-semibold leading-snug text-amber-900 sm:text-sm">{service.avoidHi}</p>
+                                  <p className="text-[11px] font-black uppercase tracking-wide text-amber-800/80">Where Not To Use It</p>
+                                  <p className="text-xs font-semibold leading-snug text-amber-900 sm:text-sm">{service.avoid}</p>
                                 </div>
                               </div>
                             </div>
@@ -269,18 +288,18 @@ export default function Services() {
                         href={`/services/${service.slug}`}
                         className="inline-flex items-center gap-1.5 font-serif text-sm font-bold text-gold-800 underline decoration-gold-400 decoration-2 underline-offset-4 transition-colors hover:text-gold-600"
                       >
-                        पूरी जानकारी पढ़ें
+                        Read the full guide
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                       <span className="text-gray-300" aria-hidden="true">|</span>
-                      <CallLink size="sm" variant="outline" ariaLabel={`Call for ${service.name} quote`}>
-                        इसका फ्री रेट पाएँ
+                      <CallLink size="sm" variant="outline" ariaLabel={`Call for a ${service.name} quotation`}>
+                        Get a free rate
                       </CallLink>
                       <WhatsAppLink
                         size="sm"
                         variant="outline"
-                        message={`नमस्ते JK Interior, मुझे ${service.name} के रेट और फोटो चाहिए।`}
-                        ariaLabel={`WhatsApp for ${service.name}`}
+                        message={`Hello JK Interior, please share rates and design photographs for ${service.name}.`}
+                        ariaLabel={`WhatsApp about ${service.name}`}
                       >
                         WhatsApp
                       </WhatsAppLink>
@@ -291,25 +310,28 @@ export default function Services() {
             })}
           </AnimatePresence>
         </div>
+      </div>
 
-        {/* Bottom Conversion Box */}
+      {/* Bottom Conversion Box */}
+      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
         <motion.div {...animProps} className="mt-16 flex flex-col items-center gap-5 rounded-2xl border border-gold-900/10 bg-white p-8 text-center shadow-xs lg:mt-20">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gold-700">
             <Zap className="h-4 w-4 text-amber-500" aria-hidden="true" />
-            <span>फ्री साइट विज़िट व सलाह</span>
+            <span>Free Site Visit &amp; Consultation</span>
           </div>
           <p className="max-w-2xl text-lg font-bold text-gray-900 sm:text-xl">
-            समझ नहीं आ रहा किस कमरे में क्या लगवाएँ? हमें बताइए — आपके बजट और जगह के हिसाब से सही सर्विस और सही रेट हम खुद सुझा देंगे।
+            Not sure which finish belongs in which room? Tell us about the space and your budget, and
+            we will recommend the right specification and an honest rate before any commitment.
           </p>
           <div className="flex flex-wrap justify-center gap-3.5">
-            <CallLink size="lg" shine ariaLabel="Call for free site visit" className="text-base">
-              📞 फ्री साइट विजिट बुक करें
+            <CallLink size="lg" shine ariaLabel="Call to book a free site visit" className="text-base">
+              Book a Free Site Visit
             </CallLink>
             <Link
               href="/services"
               className="flex items-center gap-2 rounded-xl border border-gold-600/30 bg-gold-50/80 px-6 py-4 text-sm font-bold text-gold-800 transition-all hover:border-gold-600/50 hover:bg-gold-100 active:scale-95 sm:px-7 sm:text-base"
             >
-              सभी 8 सर्विसेज देखें
+              Browse All {SERVICES_SUMMARY.length} Services
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -319,3 +341,105 @@ export default function Services() {
   )
 }
 
+/* ── One service, rendered as a self-contained swipe card for touch layouts ── */
+function ServiceSwipeCard({ service, index }: { service: ServiceSummary; index: number }) {
+  const [showDetail, setShowDetail] = useState(false)
+
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold-900/10 bg-white shadow-[0_18px_45px_-30px_rgba(76,58,18,0.7)]">
+      <Link href={`/services/${service.slug}`} className="relative block">
+        <img
+          src={service.heroImage}
+          alt={service.heroImageAlt}
+          loading="lazy"
+          className="h-48 w-full object-cover sm:h-56"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+        <span className="absolute left-3 top-3 rounded-full border border-white/25 bg-black/45 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+          {String(index + 1).padStart(2, "0")} · {service.category}
+        </span>
+        <div className="absolute bottom-3 left-3 right-3">
+          <h3 className="text-lg font-black leading-tight text-white drop-shadow-md">{service.name}</h3>
+          <p className="mt-1 flex flex-wrap gap-1.5">
+            <span className="rounded-md bg-gold-600/90 px-2 py-0.5 text-[10px] font-extrabold text-white">{service.price}</span>
+            <span className="rounded-md bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-md">{service.installTime}</span>
+          </p>
+        </div>
+      </Link>
+
+      <div className="flex flex-1 flex-col p-4">
+        <p className="mb-3 text-sm font-semibold leading-snug text-gray-800">{service.tagline}</p>
+
+        <dl className="mb-3 grid grid-cols-2 gap-2">
+          <div className="rounded-lg bg-gold-50/80 p-2.5">
+            <dt className="text-[9px] font-black uppercase tracking-widest text-gold-800/70">Best Placed In</dt>
+            <dd className="text-xs font-bold text-gray-900">{service.whereUsedFirst}</dd>
+          </div>
+          <div className="rounded-lg bg-gold-50/80 p-2.5">
+            <dt className="text-[9px] font-black uppercase tracking-widest text-gold-800/70">Badge</dt>
+            <dd className="text-xs font-bold text-gray-900">{service.badge}</dd>
+          </div>
+        </dl>
+
+        <button
+          type="button"
+          onClick={() => setShowDetail((v) => !v)}
+          aria-expanded={showDetail}
+          aria-controls={`swipe-detail-${service.slug}`}
+          className="mb-3 flex items-center justify-between gap-2 rounded-xl border border-gold-900/10 bg-gold-50/60 px-3.5 py-2.5 text-left text-xs font-extrabold text-gold-900"
+        >
+          {showDetail ? "Hide details" : "View full details"}
+          <ChevronDown className={`h-4 w-4 flex-none transition-transform duration-300 ${showDetail ? "rotate-180" : ""}`} aria-hidden="true" />
+        </button>
+
+        <AnimatePresence initial={false}>
+          {showDetail && (
+            <motion.div
+              id={`swipe-detail-${service.slug}`}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: easeLux }}
+              className="overflow-hidden"
+            >
+              <p className="mb-3 text-xs leading-relaxed text-gray-600">{service.detail}</p>
+              <ul className="mb-3 space-y-2">
+                {service.highlights.map((h) => {
+                  const Icon = HIGHLIGHT_STYLES[h.kind].icon
+                  return (
+                    <li key={h.kind} className="flex gap-2">
+                      <Icon className="mt-0.5 h-3.5 w-3.5 flex-none text-gold-700" aria-hidden="true" />
+                      <span className="text-xs leading-snug text-gray-700">
+                        <span className="font-black uppercase tracking-wide text-gold-900">{h.label}: </span>
+                        {h.text}
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+              <p className="mb-3 flex gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-semibold leading-snug text-amber-900">
+                <AlertTriangle className="mt-0.5 h-3.5 w-3.5 flex-none text-amber-500" aria-hidden="true" />
+                {service.avoid}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="mt-auto flex gap-2">
+          <CallLink size="sm" ariaLabel={`Call for a ${service.name} quotation`} className="flex-1 justify-center">
+            Free Rate
+          </CallLink>
+          <WhatsAppLink
+            size="sm"
+            variant="outline"
+            message={`Hello JK Interior, please share rates and design photographs for ${service.name}.`}
+            ariaLabel={`WhatsApp about ${service.name}`}
+            className="flex-1 justify-center"
+          >
+            WhatsApp
+          </WhatsAppLink>
+        </div>
+      </div>
+    </article>
+  )
+}

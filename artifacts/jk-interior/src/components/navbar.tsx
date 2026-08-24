@@ -1,18 +1,23 @@
-
 import { useState, useEffect } from "react"
-import { Menu, X, MapPin } from "lucide-react"
+import { Menu, X, MapPin, Phone } from "lucide-react"
 import { Link, useLocation } from "wouter"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import {
+  PHONE_PRIMARY,
+  PHONE_PRIMARY_DISPLAY,
+  PHONE_SECONDARY,
+  PHONE_SECONDARY_DISPLAY,
+} from "@/lib/business-data"
 
 const navLinks = [
-  { href: "/", label: "Home", labelHi: "होम" },
-  { href: "/services", label: "Services", labelHi: "सेवाएं" },
-  { href: "/gallery", label: "Gallery", labelHi: "गैलरी" },
-  { href: "/about", label: "About", labelHi: "हमारे बारे में" },
-  { href: "/faq", label: "FAQ", labelHi: "सवाल-जवाब" },
-  { href: "/contact", label: "Contact", labelHi: "संपर्क" },
+  { href: "/", label: "Home", caption: "Start here" },
+  { href: "/services", label: "Services", caption: "Ceilings, panels & interiors" },
+  { href: "/gallery", label: "Gallery", caption: "Completed projects" },
+  { href: "/about", label: "About", caption: "Our story & standards" },
+  { href: "/faq", label: "FAQ", caption: "Answers before you call" },
+  { href: "/contact", label: "Contact", caption: "Book a free site visit" },
 ]
 
 export default function Navbar() {
@@ -32,10 +37,40 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Utility strip — both official numbers stay visible above the fold on
+          every page, on every screen size. */}
+      <div className="fixed inset-x-0 top-0 z-50 border-b border-gold-500/15 bg-charcoal-900 text-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-1.5 sm:px-5">
+          <p className="hidden items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-200/90 sm:flex">
+            <MapPin className="h-3 w-3 text-gold-400" aria-hidden="true" />
+            Narpatganj · Forbesganj · Araria District, Bihar
+          </p>
+          <div className="flex w-full items-center justify-center gap-2 sm:w-auto sm:justify-end sm:gap-4">
+            <a
+              href={`tel:${PHONE_PRIMARY}`}
+              aria-label={`Call JK Interior on the primary line ${PHONE_PRIMARY_DISPLAY}`}
+              className="flex items-center gap-1.5 text-[11px] font-bold tracking-tight text-white transition-colors hover:text-gold-300 sm:text-xs"
+            >
+              <Phone className="h-3 w-3 text-gold-400" aria-hidden="true" />
+              {PHONE_PRIMARY_DISPLAY}
+            </a>
+            <span className="text-gold-500/40" aria-hidden="true">|</span>
+            <a
+              href={`tel:${PHONE_SECONDARY}`}
+              aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+              className="flex items-center gap-1.5 text-[11px] font-bold tracking-tight text-white transition-colors hover:text-gold-300 sm:text-xs"
+            >
+              <Phone className="h-3 w-3 text-gold-400" aria-hidden="true" />
+              {PHONE_SECONDARY_DISPLAY}
+            </a>
+          </div>
+        </div>
+      </div>
+
       <header
         className={cn(
-          "fixed left-0 right-0 z-50 flex justify-center px-3 sm:px-4 pointer-events-none transition-all duration-300",
-          scrolled ? "top-2 sm:top-3" : "top-4 sm:top-5",
+          "pointer-events-none fixed left-0 right-0 z-50 flex justify-center px-3 transition-all duration-300 sm:px-4",
+          scrolled ? "top-9 sm:top-10" : "top-11 sm:top-12",
         )}
       >
         <nav
@@ -88,14 +123,14 @@ export default function Navbar() {
 
             {/* Desktop CTAs */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
-              <CallLink size="sm" variant="outline" className="gap-2" ariaLabel="Call JK Interior +91 8541849118">
-                <span className="hidden xl:inline">+91 8541849118</span>
+              <CallLink size="sm" variant="outline" className="gap-2" ariaLabel={`Call JK Interior ${PHONE_PRIMARY_DISPLAY}`}>
+                <span className="hidden xl:inline">{PHONE_PRIMARY_DISPLAY}</span>
                 <span className="xl:hidden">Call</span>
               </CallLink>
               <WhatsAppLink
                 size="sm"
                 shine
-                message="नमस्ते JK Interior, मुझे इंटीरियर डिज़ाइन में मदद चाहिए।"
+                message="Hello JK Interior, I would like guidance on an interior design project."
                 className="gap-2 bg-gold-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_24px_rgba(201, 162, 39,0.5)]"
               >
                 WhatsApp
@@ -107,7 +142,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileOpen((o) => !o)}
               className="md:hidden p-2.5 rounded-xl border border-gold-500/25 bg-gold-500/8 text-gold-700 hover:border-gold-500/40 hover:bg-gold-500/15 transition-all"
-              aria-label="Toggle menu"
+              aria-label="Toggle navigation menu"
               aria-expanded={mobileOpen}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -156,7 +191,7 @@ export default function Navbar() {
                         >
                           <div>
                             <span className="block text-base font-bold">{link.label}</span>
-                            <span className="block text-xs text-gold-600/70">{link.labelHi}</span>
+                            <span className="block text-xs text-gold-600/70">{link.caption}</span>
                           </div>
                           {isActive && <div className="h-2 w-2 rounded-full bg-gold-600" />}
                         </Link>
@@ -165,12 +200,31 @@ export default function Navbar() {
                   })}
 
                   <div className="mt-3 flex flex-col gap-2">
-                    <CallLink variant="outline" className="px-5 py-3">
-                      +91 8541849118
-                    </CallLink>
+                    <a
+                      href={`tel:${PHONE_PRIMARY}`}
+                      aria-label={`Call JK Interior on the primary line ${PHONE_PRIMARY_DISPLAY}`}
+                      className="flex items-center justify-between rounded-xl border border-gold-500/30 bg-gold-500/8 px-5 py-3 text-gold-700 transition-colors hover:bg-gold-500/15"
+                    >
+                      <span className="flex items-center gap-2 text-sm font-black">
+                        <Phone className="h-4 w-4" aria-hidden="true" />
+                        {PHONE_PRIMARY_DISPLAY}
+                      </span>
+                      <span className="text-[9px] font-black uppercase tracking-widest text-gold-600/70">Primary</span>
+                    </a>
+                    <a
+                      href={`tel:${PHONE_SECONDARY}`}
+                      aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+                      className="flex items-center justify-between rounded-xl border border-gold-500/30 bg-gold-500/8 px-5 py-3 text-gold-700 transition-colors hover:bg-gold-500/15"
+                    >
+                      <span className="flex items-center gap-2 text-sm font-black">
+                        <Phone className="h-4 w-4" aria-hidden="true" />
+                        {PHONE_SECONDARY_DISPLAY}
+                      </span>
+                      <span className="text-[9px] font-black uppercase tracking-widest text-gold-600/70">Alternate</span>
+                    </a>
                     <WhatsAppLink
                       shine
-                      message="नमस्ते JK Interior, मुझे इंटीरियर डिज़ाइन में मदद चाहिए।"
+                      message="Hello JK Interior, I would like guidance on an interior design project."
                       className="bg-gold-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]"
                     >
                       Chat on WhatsApp
@@ -179,7 +233,7 @@ export default function Navbar() {
 
                   <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2">
                     <MapPin className="h-3 w-3 text-gold-600" />
-                    Forbesganj • Araria • Bihar
+                    Narpatganj • Forbesganj • Araria, Bihar
                   </div>
                 </div>
               </motion.div>

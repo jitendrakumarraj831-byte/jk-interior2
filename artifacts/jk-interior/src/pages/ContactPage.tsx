@@ -51,7 +51,7 @@ export default function ContactPage() {
       <h1 className="sr-only">
         Contact JK Interior – Get Free Quote for Interior Design in Forbesganj Bihar
       </h1>
-      <div className="pt-28" />
+      <div className="pt-36" />
       <Contact />
       <Footer />
     </main>

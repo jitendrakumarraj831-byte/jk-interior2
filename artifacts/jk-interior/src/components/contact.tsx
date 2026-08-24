@@ -4,7 +4,14 @@ import { Phone, Mail, MapPin, MessageCircle, Loader2, Clock, Star } from "lucide
 import { motion } from "framer-motion"
 import SectionHeader from "@/components/ui/section-header"
 import { WhatsAppLink } from "@/components/ui/cta-links"
-import { CALL_NUMBER, WA_NUMBER } from "@/lib/business-data"
+import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
+import {
+  WA_NUMBER,
+  PHONE_PRIMARY,
+  PHONE_PRIMARY_DISPLAY,
+  PHONE_SECONDARY,
+  PHONE_SECONDARY_DISPLAY,
+} from "@/lib/business-data"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -26,12 +33,12 @@ export default function Contact() {
     const message = String(data.get("message") || "").trim().slice(0, 500)
 
     const text =
-      `Hello JK Interior!\n\n` +
-      `Naam: ${name}\n` +
+      `Hello JK Interior,\n\n` +
+      `Name: ${name}\n` +
       `Phone: ${phone}\n` +
       `Service: ${service}\n` +
       `Message: ${message}\n\n` +
-      `Mujhe is service ke baare me jaankari aur free quote chahiye.`
+      `Please share details of this service along with a free quotation.`
 
     const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`
 
@@ -67,23 +74,88 @@ export default function Contact() {
         {/* Header */}
         <SectionHeader
           icon={MessageCircle}
-          badge="संपर्क करें"
+          badge="Contact Us"
           headingSize="md"
           dark
           title={<>Get In <span className="hero-gradient-text">Touch</span></>}
-          subtitle={
-            <>
-              Call, WhatsApp, or fill the form below — a real person from our Forbesganj office replies, not a bot.{" "}
-              <span className="text-gold-300 font-semibold">कॉल करें, WhatsApp करें, या नीचे फॉर्म भरें।</span>
-            </>
-          }
+          subtitle="Call either line, message us on WhatsApp, or send the form below. A member of our team replies personally — usually within two hours."
         />
+
+        {/* MOBILE: the four contact essentials as a swipeable rail */}
+        <div className="-mx-5 mb-8 sm:hidden">
+          <SwipeRail
+            ariaLabel="Ways to reach JK Interior"
+            itemClassName="w-[76%]"
+            gapClassName="gap-3"
+            fadeColor="#1a2430"
+            dark
+            arrows={false}
+          >
+            <a
+              href={`tel:${PHONE_PRIMARY}`}
+              aria-label={`Call JK Interior on the primary line ${PHONE_PRIMARY_DISPLAY}`}
+              className="flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white">
+                <Phone className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Primary Line</span>
+              <span className="text-base font-black text-white">{PHONE_PRIMARY_DISPLAY}</span>
+            </a>
+
+            <a
+              href={`tel:${PHONE_SECONDARY}`}
+              aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+              className="flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white">
+                <Phone className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">WhatsApp Line</span>
+              <span className="text-base font-black text-white">{PHONE_SECONDARY_DISPLAY}</span>
+            </a>
+
+            <a
+              href="mailto:jkinteriorofficial@gmail.com"
+              className="flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white">
+                <Mail className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Email</span>
+              <span className="break-all text-sm font-bold text-white">jkinteriorofficial@gmail.com</span>
+            </a>
+
+            <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-400/20 bg-gold-400/10 text-gold-300">
+                <MapPin className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Where We Work</span>
+              <span className="text-sm font-bold leading-snug text-white">
+                Narpatganj &amp; Forbesganj, Araria district, Bihar
+              </span>
+            </div>
+
+            <div className="flex h-full flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-400/20 bg-amber-400/10 text-amber-300">
+                <Clock className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Working Hours</span>
+              <span className="text-sm font-bold leading-snug text-white">
+                Mon&nbsp;&ndash;&nbsp;Sat 8:00&nbsp;AM&nbsp;&ndash;&nbsp;8:00&nbsp;PM
+                <br />
+                Sunday 9:00&nbsp;AM&nbsp;&ndash;&nbsp;6:00&nbsp;PM
+              </span>
+            </div>
+          </SwipeRail>
+          <SwipeHint dark className="mt-3" />
+        </div>
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-start">
           {/* LEFT: Info */}
           <div className="space-y-5">
             {/* Contact Cards */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="hidden gap-4 sm:grid sm:grid-cols-2">
               <motion.div
                 {...animProps}
                 className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
@@ -92,9 +164,23 @@ export default function Contact() {
                   <Phone className="h-5 w-5" />
                 </div>
                 <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Call Us</h3>
-                <div className="flex flex-col gap-1.5 text-sm font-bold">
-                  <a href={`tel:${CALL_NUMBER}`} className="text-white hover:text-gold-300 transition-colors">+91 8541849118</a>
-                  <a href={`tel:+${WA_NUMBER}`} className="text-slate-400 hover:text-gold-300 transition-colors">+91 8651070831</a>
+                <div className="flex flex-col gap-2.5 text-sm font-bold">
+                  <a
+                    href={`tel:${PHONE_PRIMARY}`}
+                    aria-label={`Call JK Interior on the primary line ${PHONE_PRIMARY_DISPLAY}`}
+                    className="text-white transition-colors hover:text-gold-300"
+                  >
+                    <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400">Primary Line</span>
+                    {PHONE_PRIMARY_DISPLAY}
+                  </a>
+                  <a
+                    href={`tel:${PHONE_SECONDARY}`}
+                    aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+                    className="text-white transition-colors hover:text-gold-300"
+                  >
+                    <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400">WhatsApp Line</span>
+                    {PHONE_SECONDARY_DISPLAY}
+                  </a>
                 </div>
               </motion.div>
 
@@ -118,16 +204,18 @@ export default function Contact() {
             {/* Location */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
-              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
+              className="hidden rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30 sm:block"
             >
               <div className="flex gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold-400/10 text-gold-300 border border-gold-400/20">
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white mb-1">Our Location</h3>
-                  <p className="text-slate-300 font-semibold text-sm">Damaria Rewahi, Forbesganj, Bihar 854318</p>
-                  <p className="text-xs text-slate-500 mt-1">दमरिया रेवाही, फारबिसगंज, बिहार</p>
+                  <h3 className="mb-1 text-base font-bold text-white">Our Location</h3>
+                  <p className="text-sm font-semibold text-slate-300">Damaria Rewahi, Forbesganj, Bihar 854318</p>
+                  <p className="mt-1 text-xs text-slate-400">
+                    Operating base: Narpatganj · Serving all of Araria district, Bihar
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -135,7 +223,7 @@ export default function Contact() {
             {/* Hours */}
             <motion.div
               {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
-              className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
+              className="hidden rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30 sm:block"
             >
               <div className="flex gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300 border border-amber-400/20">
@@ -163,10 +251,10 @@ export default function Contact() {
             >
               <WhatsAppLink
                 size="lg"
-                message="Hello JK Interior, I am interested in your services."
+                message="Hello JK Interior, I am interested in your services. Please share details."
                 className="w-full rounded-2xl px-8 py-4 text-base shadow-[0_4px_24px_rgba(37,211,102,0.3)] hover:scale-[1.02] hover:shadow-[0_4px_32px_rgba(37,211,102,0.45)]"
               >
-                WhatsApp पर बात करें
+                Chat With Us on WhatsApp
               </WhatsAppLink>
             </motion.div>
 
@@ -183,7 +271,7 @@ export default function Contact() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="JK Interior Rewahi Location"
+                title="JK Interior location on Google Maps — Damaria Rewahi, Forbesganj, Bihar"
               />
             </motion.div>
           </div>
@@ -200,13 +288,13 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="text-xl font-black text-gray-900">Send Us a Message</h3>
-                <p className="text-xs text-gray-500">Free consultation, no obligation</p>
+                <p className="text-xs text-gray-500">Free consultation, with no obligation</p>
               </div>
             </div>
 
             {submitted && (
               <div className="mb-4 rounded-xl bg-gold-50 border border-gold-200 px-4 py-3 text-sm font-semibold text-gold-700 text-center">
-                ✅ WhatsApp opened in a new tab — tap Send there to reach us. We'll reply within 2 hours.
+                WhatsApp has opened in a new tab — tap Send there to reach us. We reply within two hours.
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -253,7 +341,7 @@ export default function Contact() {
                   <option>UV Marble Sheet</option>
                   <option>Modular TV Unit</option>
                   <option>Modular Kitchen</option>
-                  <option>Full Home Interior</option>
+                  <option>Complete Home Interior</option>
                   <option>Office Interior</option>
                 </select>
               </div>
@@ -280,11 +368,11 @@ export default function Contact() {
                 ) : (
                   <MessageCircle className="h-4 w-4" />
                 )}
-                WhatsApp पर भेजें / Send via WhatsApp
+                Send via WhatsApp
               </button>
 
               <p className="text-center text-[10px] font-medium text-gray-500">
-                Your message will open WhatsApp directly. We respond within 2 hours.
+                Your message opens directly in WhatsApp. We respond within two hours.
               </p>
             </form>
           </motion.div>

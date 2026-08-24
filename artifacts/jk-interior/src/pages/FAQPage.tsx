@@ -5,30 +5,31 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { FAQS } from "@/lib/faq-data"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
 // Extra service-specific FAQs shown below the shared FAQ accordion. Kept in one
 // place so the visible <details> list and the FAQPage JSON-LD stay in sync —
 // Google requires FAQ rich-result markup to match what the visitor actually reads.
 const MORE_FAQS = [
   {
-    q: "बिहार में Gypsum Ceiling की कीमत कितनी है?",
-    a: "अररिया-फोर्बेसगंज में Gypsum Ceiling आमतौर पर ₹75–₹210 प्रति sq.ft में लग जाती है — डिज़ाइन, Cove Light और POP वर्क के हिसाब से रेट बदलता है। फ्री और सही-सही कोटेशन के लिए +91 8541849118 पर संपर्क करें।",
+    q: "What does a gypsum ceiling cost in Bihar?",
+    a: "Across Araria district and Forbesganj, a gypsum ceiling typically works out between ₹75 and ₹210 per sq.ft. The rate moves with the design, the cove lighting and any POP detailing. Call +91 8541849118 or +91 8651070831 for a free, precise quotation.",
   },
   {
-    q: "PVC Ceiling लगने में कितना समय लगता है?",
-    a: "एक स्टैंडर्ड कमरे की PVC Ceiling 1–2 दिन में लग जाती है। कई कमरों वाले बड़े प्रोजेक्ट में हम कमरा-दर-कमरा शेड्यूल बनाते हैं, जिससे आपकी रोज़मर्रा की ज़िंदगी में ज़्यादा दखल न हो।",
+    q: "How long does a PVC ceiling take to install?",
+    a: "A standard room is completed in one to two days. On larger multi-room projects we schedule the work room by room, so your daily routine is disturbed as little as possible.",
   },
   {
-    q: "फोर्बेसगंज के बाहर भी काम करते हैं?",
-    a: "हां! हम पूरे अररिया ज़िले में (फोर्बेसगंज, नरपतगंज, रानीगंज, कुर्साकाँटा, जोगबनी) और उससे आगे — पूर्णिया, सुपौल, त्रिवेणीगंज, छतापुर तक जाते हैं। कॉल करें: +91 8541849118।",
+    q: "Do you work outside Forbesganj?",
+    a: "Yes. We cover the whole of Araria district — Narpatganj, Forbesganj, Raniganj, Kursakanta and Jogbani — and travel on to Purnia, Supaul, Tribeniganj and Chhatapur. Call +91 8541849118 to confirm availability for your location.",
   },
   {
-    q: "काम पर वारंटी मिलती है क्या?",
-    a: "हां, हर installation पर 1 साल की लिखित Warranty मिलती है। Warranty के दौरान कोई भी खराबी हो तो बिना पैसे लिए ठीक करते हैं। लंबे समय तक चले, इसलिए ISI-Certified ब्रांडेड मटेरियल ही लगाते हैं।",
+    q: "Is the work covered by a warranty?",
+    a: "Every installation carries a written one-year warranty. Any defect that arises within that period is rectified at no cost. We fit ISI-certified branded materials specifically so the work lasts well beyond the warranty term.",
   },
   {
-    q: "पूरे बेडरूम का इंटीरियर बना सकते हैं?",
-    a: "बिल्कुल! False Ceiling, Wall Panel, TV Unit, वॉर्डरोब का सुझाव और लाइटिंग — पूरे बेडरूम का इंटीरियर हम एक ही टीम से करा देते हैं।",
+    q: "Can you design a complete bedroom interior?",
+    a: "Certainly. False ceiling, wall panelling, television unit, wardrobe guidance and lighting — a single team delivers the complete bedroom interior, with one point of accountability throughout.",
   },
 ]
 
@@ -56,7 +57,7 @@ export default function FAQPage() {
       <h1 className="sr-only">
         Frequently Asked Questions – JK Interior False Ceiling &amp; Interior Design Services in Forbesganj, Araria Bihar
       </h1>
-      <div className="pt-28" />
+      <div className="pt-36" />
       <FAQSection />
 
       <section className="relative overflow-hidden py-16 sm:py-20">
@@ -66,7 +67,7 @@ export default function FAQPage() {
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
           <h2 className="mb-10 text-2xl font-black text-gray-900 sm:text-3xl">
-            हमारी सर्विस से जुड़े और सवाल
+            More questions about our services
           </h2>
           <div className="space-y-6">
             {MORE_FAQS.map(({ q, a }) => (
@@ -78,18 +79,28 @@ export default function FAQPage() {
           </div>
 
           <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-gold-700 mt-12">
-            अभी भी सवाल हैं?
+            Still have a question?
           </h3>
           <div className="flex flex-wrap gap-3">
-            <CallLink className="shadow-sm hover:shadow-sm">कॉल करें +91 8541849118</CallLink>
-            <WhatsAppLink message="नमस्ते JK Interior, मुझे आपकी सर्विस के बारे में एक सवाल पूछना है।" className="shadow-sm hover:shadow-sm">
-              WhatsApp करें
+            <CallLink className="shadow-sm hover:shadow-sm">{`Call ${PHONE_PRIMARY_DISPLAY}`}</CallLink>
+            <a
+              href={`tel:${PHONE_SECONDARY}`}
+              aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-gold-500/30 bg-gold-500/8 px-6 py-3.5 text-sm font-bold text-gold-700 shadow-sm transition-colors hover:bg-gold-500/15 active:scale-95"
+            >
+              {`Call ${PHONE_SECONDARY_DISPLAY}`}
+            </a>
+            <WhatsAppLink
+              message="Hello JK Interior, I have a question about your services."
+              className="shadow-sm hover:shadow-sm"
+            >
+              Message on WhatsApp
             </WhatsAppLink>
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"
             >
-              मैसेज भेजें
+              Send a Message
             </Link>
           </div>
         </div>

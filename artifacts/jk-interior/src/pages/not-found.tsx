@@ -19,7 +19,7 @@ export default function NotFound() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <Navbar />
-      <main className="relative flex min-h-[80vh] items-center overflow-hidden pt-28 pb-16">
+      <main className="relative flex min-h-[80vh] items-center overflow-hidden pt-36 pb-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-b from-[#faf7f0] via-white to-[#faf7f0]" />
           <div className="absolute inset-0 grid-texture opacity-20" />
@@ -28,10 +28,11 @@ export default function NotFound() {
         <div className="relative z-10 mx-auto max-w-2xl px-5 text-center sm:px-6">
           <p className="mb-4 text-7xl font-black tracking-tight text-gold-600 sm:text-8xl">404</p>
           <h1 className="mb-4 text-2xl font-black tracking-tight text-gray-900 sm:text-3xl">
-            यह पेज नहीं मिला — <span className="hero-gradient-text">Page Not Found</span>
+            <span className="hero-gradient-text">Page Not Found</span>
           </h1>
           <p className="mx-auto mb-8 max-w-md text-sm leading-relaxed text-gray-600 sm:text-base">
-            जो पेज आप ढूंढ रहे हैं वो हट गया है या मिल नहीं रहा। हमारी सर्विस और गैलरी देखिए, या फ्री कोटेशन के लिए संपर्क कीजिए।
+            The page you are looking for has been moved or no longer exists. Browse our services and
+            project gallery instead, or get in touch for a free quotation.
           </p>
 
           <div className="mb-10 flex flex-wrap justify-center gap-3">
@@ -49,8 +50,10 @@ export default function NotFound() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-3">
-            <CallLink shine>Free Quote के लिए कॉल करें</CallLink>
-            <WhatsAppLink message="नमस्ते JK Interior, मैं एक खराब पेज पर पहुंच गया — मदद चाहिए।">WhatsApp करें</WhatsAppLink>
+            <CallLink shine>Call for a Free Quotation</CallLink>
+            <WhatsAppLink message="Hello JK Interior, I landed on a broken page and would like some help.">
+              Message on WhatsApp
+            </WhatsAppLink>
           </div>
         </div>
       </main>

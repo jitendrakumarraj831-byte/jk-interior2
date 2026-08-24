@@ -4,8 +4,10 @@ export const OG_IMAGE = `${SITE_URL}/og-image.png`
 
 export const BUSINESS = {
   name: 'JK Interior',
-  nameHi: 'जेके इंटीरियर',
   tagline: "Bihar's Most Trusted Interior Contractor",
+  // Narpatganj is the day-to-day operating base; the Forbesganj address below is
+  // the registered workshop used in every schema.org block and on Google Business.
+  operatingBase: 'Narpatganj',
   // phone1 = primary business number (matches Google Business Profile)
   phone1: '+91-8541849118',
   // phone2 = secondary WhatsApp / website contact
@@ -45,7 +47,6 @@ export const SERVICES_LIST = [
 export interface CityData {
   slug: string
   name: string
-  nameHi: string
   district: string
   state: string
   distance: string
@@ -59,14 +60,13 @@ export const CITIES: CityData[] = [
   {
     slug: 'forbesganj',
     name: 'Forbesganj',
-    nameHi: 'फोर्बेसगंज',
     district: 'Araria',
     state: 'Bihar',
-    distance: 'Main Office',
+    distance: 'Registered Workshop',
     description:
-      'JK Interior is headquartered in Forbesganj. We are the most trusted interior design and false ceiling contractor for homes, shops, and offices in Forbesganj, Araria.',
+      'JK Interior\'s registered workshop is in Forbesganj. We are the most trusted interior design and false ceiling contractor for homes, shops and offices across Forbesganj and Araria district.',
     uniqueContent:
-      "Forbesganj is the heart of JK Interior's operations. As the primary base of our business, we serve every neighbourhood in Forbesganj with the fastest response time and most competitive pricing. Whether you need a modern PVC false ceiling for your living room, a gypsum ceiling with cove lighting, WPC wall panels for your TV unit, or a complete home interior makeover — JK Interior delivers premium results at budget-friendly prices right here in Forbesganj.",
+      "Forbesganj holds JK Interior's registered workshop and material store, and it remains the town we work in most. We serve every neighbourhood here with quick response times and competitive, transparent pricing. Whether you need a modern PVC false ceiling for a living room, a gypsum ceiling with cove lighting, WPC wall panelling behind a television unit, or a complete home interior — JK Interior delivers a premium result at an honest rate right here in Forbesganj.",
     keywords: [
       'interior designer Forbesganj',
       'false ceiling contractor Forbesganj',
@@ -84,23 +84,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'फोर्बेसगंज में PVC फॉल्स सीलिंग का क्या रेट है?',
-        a: 'फोर्बेसगंज में PVC फॉल्स सीलिंग ₹75–₹150 प्रति sq.ft से शुरू होती है, डिज़ाइन और लाइटिंग के हिसाब से रेट बदलता है। सही रेट जानने के लिए +91 8541849118 पर कॉल करें, फ्री कोटेशन देंगे।',
+        q: 'What does a PVC false ceiling cost in Forbesganj?',
+        a: 'A PVC false ceiling in Forbesganj starts from ₹75–₹150 per sq.ft, with the rate varying by design and lighting. Call +91 8541849118 or +91 8651070831 for an exact figure and a free quotation.',
       },
       {
-        q: 'क्या JK Interior फोर्बेसगंज में फ्री साइट विज़िट देती है?',
-        a: 'हाँ भाई, फोर्बेसगंज में हम फ्री साइट विज़िट देते हैं। हमारी टीम खुद आपके घर या दुकान आकर सही माप लेती है और उसी हिसाब से अनुमान बताती है।',
+        q: 'Does JK Interior offer a free site visit in Forbesganj?',
+        a: 'Yes. We provide a free site visit throughout Forbesganj. Our team attends your home or shop in person, takes accurate measurements and prepares the estimate from those measurements.',
       },
       {
-        q: 'फोर्बेसगंज में जिप्सम सीलिंग कितने दिन में तैयार होती है?',
-        a: 'एक सामान्य कमरे की जिप्सम सीलिंग फोर्बेसगंज में 1–3 दिन में तैयार हो जाती है। बड़े काम के लिए हम पहले ही सही टाइमलाइन बता देते हैं।',
+        q: 'How many days does a gypsum ceiling take in Forbesganj?',
+        a: 'A standard room in Forbesganj is completed in one to three days. For larger projects we confirm a precise timeline before any work begins.',
       },
     ],
   },
   {
     slug: 'araria',
     name: 'Araria',
-    nameHi: 'अरारिया',
     district: 'Araria',
     state: 'Bihar',
     distance: '22 km from Forbesganj',
@@ -121,23 +120,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'अरारिया में सबसे अच्छा इंटीरियर डिज़ाइनर कौन है?',
-        a: 'हम JK Interior हैं, अरारिया ज़िला में सबसे भरोसेमंद नाम। 500+ प्रोजेक्ट पूरे कर चुके हैं और 1 साल की लिखित वारंटी देते हैं, तो अरारिया में इंटीरियर डिज़ाइन और फॉल्स सीलिंग का काम बेफिक्र होकर हमें दे सकते हैं।',
+        q: 'Who is the best interior designer in Araria?',
+        a: 'JK Interior is among the most trusted names in Araria district. With more than 500 completed projects and a written one-year warranty on every job, you can hand over interior design and false ceiling work with confidence.',
       },
       {
-        q: 'अरारिया में जिप्सम सीलिंग की कीमत क्या है?',
-        a: 'अरारिया में जिप्सम फॉल्स सीलिंग ₹75–₹210 प्रति sq.ft से शुरू होती है। Cove Lighting और मल्टी-लेवल डिज़ाइन चाहिए तो प्रीमियम रेंज में आएगा। फ्री साइट विज़िट के लिए +91 8541849118 पर कॉल करें।',
+        q: 'What does a gypsum ceiling cost in Araria?',
+        a: 'A gypsum false ceiling in Araria starts from ₹75–₹210 per sq.ft. Cove lighting and multi-level designs sit at the premium end of that band. Call +91 8541849118 to arrange a free site visit.',
       },
       {
-        q: 'क्या JK Interior अरारिया शहर में काम करती है?',
-        a: 'हाँ, हम अरारिया शहर और पूरे ज़िले में काम करते हैं। हमारी टीम अरारिया में लगातार आती-जाती रहती है, तो काम में देरी नहीं होती।',
+        q: 'Does JK Interior work in Araria town?',
+        a: 'Yes. We work across Araria town and the wider district. Our team travels there continuously, so projects are never held up by distance.',
       },
     ],
   },
   {
     slug: 'purnia',
     name: 'Purnia',
-    nameHi: 'पूर्णिया',
     district: 'Purnia',
     state: 'Bihar',
     distance: '65 km from Forbesganj',
@@ -158,23 +156,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'पूर्णिया में इंटीरियर डिज़ाइनर कैसे संपर्क करें?',
-        a: 'हमें +91 8541849118 पर कॉल करें या +91 8651070831 पर WhatsApp कर दें। पूर्णिया में हम फ्री साइट विज़िट करते हैं और पूरा कोटेशन बना कर देते हैं।',
+        q: 'How do I contact an interior designer in Purnia?',
+        a: 'Call +91 8541849118 or send a message to +91 8651070831 on WhatsApp. We carry out free site visits across Purnia and prepare a complete written quotation.',
       },
       {
-        q: 'पूर्णिया में PVC सीलिंग का काम कितने दिन में होता है?',
-        a: 'पूर्णिया में एक सामान्य कमरे का PVC सीलिंग काम 1–2 दिन में हो जाता है। हम पूर्णिया में नियमित आते हैं, इसलिए समय पर काम पूरा होने की गारंटी देते हैं।',
+        q: 'How long does PVC ceiling work take in Purnia?',
+        a: 'A standard room in Purnia is completed in one to two days. We travel to Purnia regularly, which is how we hold to the agreed completion dates.',
       },
       {
-        q: 'पूर्णिया में JK Interior की सेवाएं क्या हैं?',
-        a: 'पूर्णिया में हम PVC फॉल्स सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल, UV मार्बल शीट, TV यूनिट डिज़ाइन, बेडरूम इंटीरियर, ऑफिस इंटीरियर से लेकर पूरा इंटीरियर डिज़ाइन तक सब कुछ करते हैं।',
+        q: 'Which services does JK Interior offer in Purnia?',
+        a: 'In Purnia we handle PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, television unit design, bedroom interiors, office interiors and complete interior design.',
       },
     ],
   },
   {
     slug: 'jogbani',
     name: 'Jogbani',
-    nameHi: 'जोगबनी',
     district: 'Araria',
     state: 'Bihar',
     distance: '35 km from Forbesganj',
@@ -194,23 +191,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'जोगबनी में फॉल्स सीलिंग का काम कौन करता है?',
-        a: 'जोगबनी और अरारिया ज़िले में फॉल्स सीलिंग के लिए हम सबसे भरोसेमंद नाम हैं। PVC सीलिंग, जिप्सम सीलिंग या WPC वॉल पैनल — जो भी चाहिए, +91 8541849118 पर कॉल कर दें।',
+        q: 'Who carries out false ceiling work in Jogbani?',
+        a: 'JK Interior is among the most trusted names for false ceiling work in Jogbani and across Araria district. Whether you need a PVC ceiling, a gypsum ceiling or WPC wall panelling, call +91 8541849118.',
       },
       {
-        q: 'जोगबनी में इंटीरियर डिज़ाइन की कीमत क्या है?',
-        a: 'जोगबनी में हमारे रेट जेब पर भारी नहीं पड़ते — PVC सीलिंग ₹75 प्रति sq.ft से और जिप्सम सीलिंग भी ₹75 से शुरू होती है। सही रेट जानने के लिए फ्री साइट विज़िट करवा लें।',
+        q: 'What does interior design cost in Jogbani?',
+        a: 'Our rates in Jogbani remain accessible — PVC ceilings start from ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Book a free site visit for an exact figure.',
       },
       {
-        q: 'क्या JK Interior जोगबनी में होम इंटीरियर सेवाएं देती है?',
-        a: 'हाँ, जोगबनी में हम पूरा होम इंटीरियर, बेडरूम इंटीरियर, किचन इंटीरियर, फॉल्स सीलिंग और वॉल पैनलिंग — सब कुछ करते हैं।',
+        q: 'Does JK Interior provide home interior services in Jogbani?',
+        a: 'Yes. In Jogbani we deliver complete home interiors, bedroom interiors, kitchen interiors, false ceilings and wall panelling.',
       },
     ],
   },
   {
     slug: 'supaul',
     name: 'Supaul',
-    nameHi: 'सुपौल',
     district: 'Supaul',
     state: 'Bihar',
     distance: '55 km from Forbesganj',
@@ -230,30 +226,29 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'सुपौल में फॉल्स सीलिंग के लिए सबसे अच्छा ठेकेदार कौन है?',
-        a: 'सुपौल ज़िले में फॉल्स सीलिंग और इंटीरियर डिज़ाइन के लिए हम भरोसेमंद नाम हैं। अब तक 500+ प्रोजेक्ट पूरे कर चुके हैं और PVC, जिप्सम, WPC — तीनों का काम करते हैं।',
+        q: 'Who is the best false ceiling contractor in Supaul?',
+        a: 'JK Interior is a trusted name for false ceiling and interior design work across Supaul district. We have completed more than 500 projects and work in PVC, gypsum and WPC alike.',
       },
       {
-        q: 'सुपौल में PVC सीलिंग की कीमत क्या है?',
-        a: 'सुपौल में PVC फॉल्स सीलिंग ₹75–₹150 प्रति sq.ft से शुरू होती है। फ्री साइट विज़िट और कोटेशन के लिए +91 8541849118 पर बात कर लें।',
+        q: 'What does a PVC ceiling cost in Supaul?',
+        a: 'A PVC false ceiling in Supaul starts from ₹75–₹150 per sq.ft. Call +91 8541849118 to arrange a free site visit and quotation.',
       },
       {
-        q: 'क्या JK Interior सुपौल में आती है?',
-        a: 'हाँ, हम सुपौल शहर और ज़िले के हर ब्लॉक में काम करते हैं — त्रिवेणीगंज, छतापुर समेत। फ्री साइट विज़िट भी करवा देते हैं।',
+        q: 'Does JK Interior travel to Supaul?',
+        a: 'Yes. We work in Supaul town and in every block of the district, including Tribeniganj and Chhatapur, and we provide a free site visit throughout.',
       },
     ],
   },
   {
     slug: 'narpatganj',
     name: 'Narpatganj',
-    nameHi: 'नरपतगंज',
     district: 'Araria',
     state: 'Bihar',
-    distance: '28 km from Forbesganj',
+    distance: 'Our Operating Base',
     description:
-      'JK Interior provides expert false ceiling, PVC ceiling, gypsum ceiling and interior design services in Narpatganj, Araria district.',
+      'Narpatganj is JK Interior\'s day-to-day operating base. We provide expert false ceiling, PVC ceiling, gypsum ceiling and complete interior design services here and throughout Araria district.',
     uniqueContent:
-      'Narpatganj is one of the prominent blocks in Araria district, and JK Interior regularly serves its growing residential and commercial clients. Our team handles false ceiling installation, PVC and gypsum ceiling work, WPC wall paneling, UV marble sheet, and TV unit design in Narpatganj. We offer prompt service and free site visits in Narpatganj and nearby areas.',
+      'Narpatganj is where JK Interior operates from, which makes it the area we reach fastest of all. Our team handles false ceiling installation, PVC and gypsum ceiling work, WPC wall panelling, UV marble sheets and television unit design for the block\'s growing residential and commercial clients. Free site visits in Narpatganj and the surrounding villages are usually arranged within a day.',
     keywords: [
       'interior designer Narpatganj',
       'false ceiling Narpatganj',
@@ -266,23 +261,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'नरपतगंज में इंटीरियर डिज़ाइन सेवाएं कौन देता है?',
-        a: 'नरपतगंज में हम PVC सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल, UV मार्बल शीट से लेकर पूरा इंटीरियर डिज़ाइन तक करते हैं। कॉल करें: +91 8541849118।',
+        q: 'Who provides interior design services in Narpatganj?',
+        a: 'Narpatganj is JK Interior\'s operating base, so our team is close at hand. We deliver PVC ceilings, gypsum ceilings, WPC wall panels, UV marble sheets and complete interior design here. Call +91 8541849118 or +91 8651070831.',
       },
       {
-        q: 'नरपतगंज में फॉल्स सीलिंग की कीमत क्या है?',
-        a: 'नरपतगंज में PVC सीलिंग ₹75 प्रति sq.ft से और जिप्सम सीलिंग भी ₹75 से शुरू होती है। सही अनुमान के लिए फ्री साइट विज़िट करवा लें।',
+        q: 'What does a false ceiling cost in Narpatganj?',
+        a: 'In Narpatganj, PVC ceilings start from ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Book a free site visit for an accurate estimate.',
       },
       {
-        q: 'JK Interior का ऑफिस नरपतगंज से कितने दूर है?',
-        a: 'हमारा मुख्य ऑफिस फोर्बेसगंज में है, जो नरपतगंज से करीब 28 km दूर है। पर हम नरपतगंज में नियमित आते-जाते हैं, तो दूरी की चिंता न करें।',
+        q: 'How far is JK Interior\'s workshop from Narpatganj?',
+        a: 'Our team operates out of Narpatganj itself, and our registered workshop address is in Forbesganj, roughly 28 km away. Response times in and around Narpatganj are the quickest we offer.',
       },
     ],
   },
   {
     slug: 'raniganj',
     name: 'Raniganj',
-    nameHi: 'रानीगंज',
     district: 'Araria',
     state: 'Bihar',
     distance: '18 km from Forbesganj',
@@ -302,23 +296,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'रानीगंज में फॉल्स सीलिंग का काम JK Interior करती है?',
-        a: 'हाँ, रानीगंज में हम PVC फॉल्स सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल और पूरा इंटीरियर डिज़ाइन का काम करते हैं। फ्री साइट विज़िट भी करवा देते हैं।',
+        q: 'Does JK Interior carry out false ceiling work in Raniganj?',
+        a: 'Yes. In Raniganj we install PVC false ceilings, gypsum ceilings, WPC wall panels and complete interior design, with a free site visit included.',
       },
       {
-        q: 'रानीगंज में सीलिंग काम का रेट क्या है?',
-        a: 'रानीगंज में PVC सीलिंग ₹75/sq.ft और जिप्सम सीलिंग भी ₹75/sq.ft से शुरू होती है। सही अनुमान चाहिए तो +91 8541849118 पर कॉल कर दें।',
+        q: 'What is the rate for ceiling work in Raniganj?',
+        a: 'In Raniganj, PVC ceilings start at ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Call +91 8541849118 for an accurate estimate.',
       },
       {
-        q: 'JK Interior रानीगंज में कितने समय में आ सकती है?',
-        a: 'रानीगंज तो फोर्बेसगंज से बस 18 km दूर है, इसलिए हमारी टीम ज्यादातर 24 घंटे के अंदर वहां साइट विज़िट पर पहुंच जाती है।',
+        q: 'How quickly can JK Interior reach Raniganj?',
+        a: 'Raniganj is only 18 km from Forbesganj, so our team usually attends a site visit there within 24 hours.',
       },
     ],
   },
   {
     slug: 'tribeniganj',
     name: 'Tribeniganj',
-    nameHi: 'त्रिवेणीगंज',
     district: 'Supaul',
     state: 'Bihar',
     distance: '48 km from Forbesganj',
@@ -337,23 +330,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'त्रिवेणीगंज में इंटीरियर डिज़ाइनर कहाँ मिलेगा?',
-        a: 'त्रिवेणीगंज में इंटीरियर डिज़ाइन के लिए हम भरोसेमंद नाम हैं। PVC सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल या पूरा इंटीरियर — जो भी काम हो, +91 8541849118 पर कॉल करें।',
+        q: 'Where can I find an interior designer in Tribeniganj?',
+        a: 'JK Interior is a trusted name for interior design in Tribeniganj. For PVC ceilings, gypsum ceilings, WPC wall panelling or a complete interior, call +91 8541849118.',
       },
       {
-        q: 'त्रिवेणीगंज में फॉल्स सीलिंग कितने में होगी?',
-        a: 'त्रिवेणीगंज में PVC फॉल्स सीलिंग ₹75/sq.ft से और जिप्सम सीलिंग भी ₹75/sq.ft से शुरू होती है। फ्री साइट विज़िट करवा कर सही अनुमान ले सकते हैं।',
+        q: 'What does a false ceiling cost in Tribeniganj?',
+        a: 'In Tribeniganj, PVC false ceilings start at ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Book a free site visit for an accurate estimate.',
       },
       {
-        q: 'क्या JK Interior त्रिवेणीगंज में सेवा देती है?',
-        a: 'हाँ, सुपौल ज़िले के त्रिवेणीगंज में हम नियमित इंटीरियर डिज़ाइन और फॉल्स सीलिंग का काम करते हैं। फ्री साइट विज़िट के लिए आज ही कॉल कर दें।',
+        q: 'Does JK Interior serve Tribeniganj?',
+        a: 'Yes. We carry out interior design and false ceiling work regularly in Tribeniganj, Supaul district. Call today to book a free site visit.',
       },
     ],
   },
   {
     slug: 'kursakanta',
     name: 'Kursakanta',
-    nameHi: 'कुर्साकाँटा',
     district: 'Araria',
     state: 'Bihar',
     distance: '32 km from Forbesganj',
@@ -372,23 +364,22 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'कुर्साकाँटा में फॉल्स सीलिंग ठेकेदार कौन है?',
-        a: 'कुर्साकाँटा में फॉल्स सीलिंग के लिए हम सबसे अच्छा विकल्प हैं। PVC सीलिंग, जिप्सम सीलिंग, WPC पैनल या इंटीरियर डिज़ाइन — कॉल करें: +91 8541849118।',
+        q: 'Who is the false ceiling contractor for Kursakanta?',
+        a: 'JK Interior is a leading choice for false ceiling work in Kursakanta. For PVC ceilings, gypsum ceilings, WPC panels or interior design, call +91 8541849118.',
       },
       {
-        q: 'कुर्साकाँटा में इंटीरियर डिज़ाइन का काम JK Interior करती है?',
-        a: 'हाँ, कुर्साकाँटा में हम PVC फॉल्स सीलिंग, जिप्सम सीलिंग, WPC वॉल पैनल, UV मार्बल शीट और TV यूनिट डिज़ाइन — सब कुछ करते हैं।',
+        q: 'Does JK Interior handle interior design work in Kursakanta?',
+        a: 'Yes. In Kursakanta we deliver PVC false ceilings, gypsum ceilings, WPC wall panels, UV marble sheets and television unit design.',
       },
       {
-        q: 'कुर्साकाँटा में PVC सीलिंग की कीमत क्या है?',
-        a: 'कुर्साकाँटा में PVC फॉल्स सीलिंग ₹75/sq.ft से शुरू होती है। फ्री माप और अनुमान के लिए +91 8541849118 पर कॉल कर दें।',
+        q: 'What does a PVC ceiling cost in Kursakanta?',
+        a: 'A PVC false ceiling in Kursakanta starts from ₹75 per sq.ft. Call +91 8541849118 for free measurements and an estimate.',
       },
     ],
   },
   {
     slug: 'chhatapur',
     name: 'Chhatapur',
-    nameHi: 'छतापुर',
     district: 'Supaul',
     state: 'Bihar',
     distance: '52 km from Forbesganj',
@@ -407,16 +398,16 @@ export const CITIES: CityData[] = [
     ],
     faqs: [
       {
-        q: 'छतापुर में इंटीरियर डिज़ाइनर कौन है?',
-        a: 'छतापुर और सुपौल ज़िले में इंटीरियर के काम के लिए हम भरोसेमंद नाम हैं। PVC सीलिंग, जिप्सम सीलिंग या वॉल पैनल के लिए कॉल करें: +91 8541849118।',
+        q: 'Who is the interior designer for Chhatapur?',
+        a: 'JK Interior is a trusted name for interior work in Chhatapur and across Supaul district. For PVC ceilings, gypsum ceilings or wall panelling, call +91 8541849118.',
       },
       {
-        q: 'छतापुर में फॉल्स सीलिंग की कीमत क्या है?',
-        a: 'छतापुर में PVC सीलिंग ₹75/sq.ft और जिप्सम सीलिंग भी ₹75/sq.ft से शुरू होती है। फ्री साइट विज़िट के लिए आज ही संपर्क कर लें।',
+        q: 'What does a false ceiling cost in Chhatapur?',
+        a: 'In Chhatapur, PVC ceilings start at ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Get in touch today to book a free site visit.',
       },
       {
-        q: 'क्या JK Interior छतापुर में सेवा देती है?',
-        a: 'हाँ, सुपौल ज़िले के छतापुर में हम फॉल्स सीलिंग, वॉल पैनलिंग और इंटीरियर डिज़ाइन का काम करते हैं।',
+        q: 'Does JK Interior serve Chhatapur?',
+        a: 'Yes. We carry out false ceiling, wall panelling and interior design work in Chhatapur, Supaul district.',
       },
     ],
   },

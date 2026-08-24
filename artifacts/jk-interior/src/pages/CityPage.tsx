@@ -6,6 +6,7 @@ import { CITIES, SERVICES_LIST, getCityBySlug, SITE_URL } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
 import { MapPin, CheckCircle, ArrowRight, Star, Clock, Phone } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
 export default function CityPage() {
   const { city: citySlug } = useParams<{ city: string }>()
@@ -91,7 +92,7 @@ export default function CityPage() {
       </h1>
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-white pt-28 pb-16 sm:pb-20">
+      <section className="relative overflow-hidden bg-white pt-36 pb-16 sm:pb-20">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-br from-[#faf7f0] via-white to-white" />
           <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-gold-100/40 blur-3xl" />
@@ -162,12 +163,14 @@ export default function CityPage() {
           <p className="text-base leading-relaxed text-gray-600 max-w-3xl">
             {city.uniqueContent}
           </p>
-          <p className="mt-4 rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700 max-w-3xl">
-            <span className="font-bold text-gold-800">{city.nameHi} में इंटीरियर का काम?</span>{" "}
-            JK Interior {city.nameHi} और आसपास के इलाकों में PVC व जिप्सम फॉल्स सीलिंग, WPC वॉल पैनल,
-            UV मार्बल शीट, TV यूनिट और पूरा घर/ऑफिस इंटीरियर करती है — फ्री साइट विज़िट, ISI-ब्रांडेड
-            मटेरियल और 1 साल की लिखित वारंटी के साथ। सही रेट और डिज़ाइन फोटो के लिए{" "}
-            <span className="font-semibold text-gold-800">+91&nbsp;85418&nbsp;49118</span> पर कॉल या WhatsApp करें।
+          <p className="mt-4 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
+            <span className="font-bold text-gold-800">Planning interior work in {city.name}?</span>{" "}
+            JK Interior installs PVC and gypsum false ceilings, WPC wall panelling, UV marble sheets,
+            modular television units and complete home or office interiors throughout {city.name} and
+            the surrounding area — with a free site visit, ISI-certified branded materials and a
+            written one-year warranty. For exact rates and design photographs, call or WhatsApp{" "}
+            <span className="font-semibold text-gold-800">{PHONE_PRIMARY_DISPLAY}</span> or{" "}
+            <span className="font-semibold text-gold-800">{PHONE_SECONDARY_DISPLAY}</span>.
           </p>
         </div>
       </section>
@@ -178,7 +181,7 @@ export default function CityPage() {
           <h2 className="mb-3 text-2xl font-black text-gray-900 sm:text-3xl">
             Our Services in {city.name}
           </h2>
-          <p className="mb-8 text-sm text-gray-500">Everything you need for a beautiful interior — in one place.</p>
+          <p className="mb-8 text-sm text-gray-500">Everything a finished interior needs, from one accountable team.</p>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {SERVICES_LIST.map((service) => {
               const linked = SERVICE_CITY_SERVICES.find((s) => s.name === service)
@@ -213,7 +216,7 @@ export default function CityPage() {
         <section className="py-14 sm:py-16 bg-white">
           <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
             <h2 className="mb-3 text-2xl font-black text-gray-900 sm:text-3xl">
-              {city.name} – अक्सर पूछे जाने वाले सवाल
+              {city.name} — Frequently Asked Questions
             </h2>
             <p className="mb-8 text-sm text-gray-500">Common questions from our {city.name} customers.</p>
             <div className="space-y-4">
@@ -238,7 +241,8 @@ export default function CityPage() {
           </h2>
           <p className="mb-1 text-gold-100 text-sm">Free site visit • No obligation • Same-week slots available</p>
           <p className="mb-6 text-sm font-semibold text-white">
-            {city.nameHi} में फ्री साइट विज़िट और सही कोटेशन के लिए अभी कॉल या WhatsApp करें।
+            Call or message us on WhatsApp to book a free site visit and receive an accurate
+            quotation for your property in {city.name}.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink
