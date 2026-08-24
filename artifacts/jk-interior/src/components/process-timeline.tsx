@@ -12,7 +12,7 @@ const steps = [
     step: "01",
     title: "Call or WhatsApp",
     subtitle: "Tell us about the space",
-    desc: "Share the rooms, the finish you have in mind and your timeline. We book a free site visit at a time that suits you — no charge, no obligation.",
+    desc: "Tell us the rooms and finish you want. We book a free site visit at a time that suits you.",
     color: "from-charcoal-500 to-charcoal-700",
     glow: "rgba(37,99,235,0.25)",
   },
@@ -21,7 +21,7 @@ const steps = [
     step: "02",
     title: "Free Site Visit",
     subtitle: "Measured, then quoted",
-    desc: "Our supervisor measures every room, checks the ceiling height and moisture conditions, and hands you a written, itemised quotation — entirely free.",
+    desc: "We measure every room and hand you a written, itemised quotation — entirely free.",
     color: "from-amber-500 to-amber-700",
     glow: "rgba(245,158,11,0.25)",
   },
@@ -30,7 +30,7 @@ const steps = [
     step: "03",
     title: "Panel-System Installation",
     subtitle: "Room by room, to schedule",
-    desc: "Our crew works to the exact schedule you were quoted. Wherever the design permits we use clip-and-panel systems rather than wet plaster, so a home you are still living in stays far cleaner.",
+    desc: "Our crew works to the exact schedule quoted. Clip-and-panel systems over wet plaster — far less dust in a lived-in home.",
     color: "from-gold-500 to-gold-700",
     glow: "rgba(201, 162, 39,0.25)",
   },
@@ -39,7 +39,7 @@ const steps = [
     step: "04",
     title: "Handover & Warranty",
     subtitle: "One year, in writing",
-    desc: "The site is cleared and the project handed over with a written one-year warranty covering both materials and workmanship. Your investment stays protected.",
+    desc: "Site cleared, project handed over with a written one-year warranty on materials and workmanship.",
     color: "from-charcoal-500 to-charcoal-700",
     glow: "rgba(139,92,246,0.25)",
   },
@@ -131,7 +131,7 @@ export default function ProcessTimeline() {
           headingSize="md"
           dark
           title={<>How We <span className="hero-gradient-text">Work</span></>}
-          subtitle="From your first WhatsApp message to a signed warranty in hand — four steps, none of them skipped."
+          subtitle="From your first message to a signed warranty — four steps, nothing skipped."
         />
       </div>
 

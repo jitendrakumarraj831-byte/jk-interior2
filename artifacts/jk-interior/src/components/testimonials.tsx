@@ -13,7 +13,7 @@ const featured = {
   service: "Complete Interior",
   color: "from-gold-700 to-gold-900",
   initials: "DG",
-  text: "We handed the entire home interior to JK Interior — from the ceilings through to the television unit. Every element was finished exactly as promised, delivered on schedule, with no charges beyond the quotation. Genuinely the best interior team we have worked with in Bihar.",
+  text: "We handed the entire home interior to JK Interior, ceilings to television unit. Finished exactly as promised, on schedule, no surprise charges. The best interior team we've worked with in Bihar.",
 }
 
 const testimonials = [
@@ -21,7 +21,7 @@ const testimonials = [
     name: "Rahul Kumar",
     location: "Forbesganj",
     rating: 5,
-    text: "JK Interior installed the PVC false ceiling throughout our home. The quality of the finish and the speed of the work were both outstanding.",
+    text: "JK Interior fitted our PVC ceiling throughout. Finish and speed were both outstanding.",
     service: "PVC False Ceiling",
     initials: "RK",
     color: "from-gold-700 to-gold-900",
@@ -30,7 +30,7 @@ const testimonials = [
     name: "Priya Sharma",
     location: "Araria",
     rating: 5,
-    text: "We appointed JK Interior for a gypsum ceiling. A professional team, a clean site at the end of each day, and a written one-year warranty on handover.",
+    text: "Gypsum ceiling, done right. Professional team, clean site every evening, written warranty on handover.",
     service: "Gypsum Ceiling",
     initials: "PS",
     color: "from-charcoal-700 to-charcoal-900",
@@ -39,7 +39,7 @@ const testimonials = [
     name: "Amit Singh",
     location: "Jogbani",
     rating: 5,
-    text: "Excellent WPC wall panelling work — termite-proof and waterproof panels throughout. The television unit design turned out remarkably stylish as well.",
+    text: "Excellent WPC panelling — termite-proof and waterproof. The TV unit design turned out remarkably stylish too.",
     service: "WPC Wall Panel",
     initials: "AS",
     color: "from-amber-700 to-amber-900",
@@ -48,7 +48,7 @@ const testimonials = [
     name: "Sunita Devi",
     location: "Narpatganj",
     rating: 5,
-    text: "We had UV marble sheets fitted across the whole bedroom. It reads exactly like natural marble, at a fraction of the cost.",
+    text: "UV marble across the whole bedroom — reads exactly like natural marble, at a fraction of the cost.",
     service: "UV Marble Sheet",
     initials: "SD",
     color: "from-charcoal-700 to-charcoal-900",
@@ -57,7 +57,7 @@ const testimonials = [
     name: "Meena Yadav",
     location: "Raniganj",
     rating: 5,
-    text: "They came out for the free site visit, provided a detailed written quotation, and started on the agreed date. Every stage was handled professionally.",
+    text: "Free site visit, detailed written quote, started on the agreed date. Handled professionally start to finish.",
     service: "PVC False Ceiling",
     initials: "MY",
     color: "from-charcoal-700 to-charcoal-900",
@@ -131,7 +131,7 @@ export default function Testimonials() {
           headingSize="md"
           dark
           title={<>What Bihar Says <span className="hero-gradient-text">After We Leave</span></>}
-          subtitle="From the first site visit to the day we hand over — in our customers' own words."
+          subtitle="In our customers' own words."
           className="mb-12"
         />
 

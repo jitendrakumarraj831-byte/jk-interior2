@@ -92,7 +92,7 @@ export default function Services() {
           badge="Our Services"
           headingId="services-heading"
           title={<>Every Interior Service <span className="hero-gradient-text">Your Space Needs</span></>}
-          subtitle="Transparent rates, honest guidance and disciplined execution. Open any service to see its price band, working timeline and the rooms it genuinely suits."
+          subtitle="Transparent rates, honest guidance. Tap any service for pricing, timeline and best use."
         />
 
         {/* Filter category tabs */}
@@ -320,8 +320,7 @@ export default function Services() {
             <span>Free Site Visit &amp; Consultation</span>
           </div>
           <p className="max-w-2xl text-lg font-bold text-gray-900 sm:text-xl">
-            Not sure which finish belongs in which room? Tell us about the space and your budget, and
-            we will recommend the right specification and an honest rate before any commitment.
+            Not sure what suits your room? Tell us the space and budget — we'll recommend the right fit.
           </p>
           <div className="flex flex-wrap justify-center gap-3.5">
             <CallLink size="lg" shine ariaLabel="Call to book a free site visit" className="text-base">

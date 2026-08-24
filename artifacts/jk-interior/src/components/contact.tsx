@@ -78,7 +78,7 @@ export default function Contact() {
           headingSize="md"
           dark
           title={<>Get In <span className="hero-gradient-text">Touch</span></>}
-          subtitle="Call either line, message us on WhatsApp, or send the form below. A member of our team replies personally — usually within two hours."
+          subtitle="Call, WhatsApp, or send the form — we reply personally within two hours."
         />
 
         {/* MOBILE: the four contact essentials as a swipeable rail */}

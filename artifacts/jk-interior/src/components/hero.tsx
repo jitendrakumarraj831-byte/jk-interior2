@@ -135,13 +135,12 @@ export default function Hero() {
                 <span className="hero-gradient-text">False Ceiling &amp; Interior Contractor</span>
               </h1>
               <p className="max-w-xl text-sm font-normal leading-relaxed text-stone-600 sm:text-base md:text-lg">
-                Refined ceilings, wall panelling and modular interiors for homes, offices and
-                showrooms across Narpatganj, Forbesganj and Araria &mdash; delivered with certified
-                materials, disciplined workmanship and a{" "}
+                Ceilings, wall panelling and modular interiors for homes, offices and showrooms
+                across Narpatganj, Forbesganj and Araria &mdash; certified materials, a{" "}
                 <span className="inline-block rounded-md border border-gold-600/30 bg-gold-50 px-2 py-0.5 font-semibold text-gold-800">
                   free site visit
                 </span>{" "}
-                before you commit.
+                first.
               </p>
             </motion.div>
 

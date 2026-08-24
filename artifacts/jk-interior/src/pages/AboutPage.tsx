@@ -18,22 +18,22 @@ const milestones = [
   {
     year: "2019",
     title: "The first ceilings",
-    desc: "JK Interior starts out fitting PVC false ceilings for neighbours around Forbesganj — one crew, one van, and a rule that every room gets measured before it gets quoted.",
+    desc: "PVC false ceilings for neighbours around Forbesganj — one crew, one rule: measure before you quote.",
   },
   {
     year: "2021",
     title: "Gypsum and cove lighting",
-    desc: "Demand for designer drawing-room ceilings grows, and we add gypsum board, cove detailing and concealed LED work to the specification we will stand behind.",
+    desc: "Demand grows for designer ceilings, so we add gypsum, cove detailing and concealed LED work.",
   },
   {
     year: "2023",
     title: "Wall panelling and modular units",
-    desc: "WPC panelling, UV marble sheets and built-to-measure television units join the catalogue, letting a customer complete a whole room with one accountable team.",
+    desc: "WPC panelling, UV marble and built-to-measure TV units — one team completes the whole room.",
   },
   {
     year: "Today",
-    title: "500+ projects across three districts",
-    desc: "Operating from Narpatganj, with the registered workshop in Forbesganj, we now serve homes, offices and showrooms throughout Araria, Supaul and Purnia.",
+    title: "500+ projects, three districts",
+    desc: "Based in Narpatganj, serving homes and offices across Araria, Supaul and Purnia.",
   },
 ]
 
@@ -140,19 +140,15 @@ export default function AboutPage() {
           </h1>
 
           <p className="mb-4 max-w-3xl text-base leading-relaxed text-gray-700 sm:text-lg">
-            JK Interior is an interior and false ceiling contractor working across Araria district in
-            Bihar. We began in 2019 fitting PVC ceilings for a handful of families around Forbesganj.
-            More than five hundred projects later, the discipline that built the business has not
-            changed: we measure the room ourselves, we quote in writing, and we specify only materials
-            we would fit in our own home.
+            An interior and false ceiling contractor working across Araria district, Bihar since 2019.
+            500+ projects, and the same rule every time: we measure the room ourselves, quote in
+            writing, and fit only materials we'd use at home.
           </p>
 
           <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600">
-            Our team operates day to day out of <span className="font-bold text-gray-900">Narpatganj</span>,
-            with the registered workshop and material store at{" "}
-            <span className="font-bold text-gray-900">Damaria Rewahi, Forbesganj</span>. From there we
-            cover roughly eighty kilometres in every direction — the whole of Araria district, and on
-            into Supaul and Purnia.
+            Based in <span className="font-bold text-gray-900">Narpatganj</span>, with our registered
+            workshop at <span className="font-bold text-gray-900">Damaria Rewahi, Forbesganj</span>.
+            From there we cover roughly 80 km — all of Araria district, and on into Supaul and Purnia.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -270,8 +266,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-3xl px-5 text-center sm:px-6 lg:px-12">
           <h2 className="mb-3 text-2xl font-black sm:text-3xl">Let&rsquo;s Plan Your Space</h2>
           <p className="mb-6 text-sm leading-relaxed text-gold-100">
-            Tell us about the room and we will attend a free site visit, take proper measurements and
-            hand you an itemised written quotation — with no obligation to proceed.
+            Free site visit, proper measurements, a written quotation — no obligation.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink

@@ -80,7 +80,7 @@ export default function FAQSection() {
           headingSize="md"
           className="mb-12"
           title={<>Frequently Asked <span className="hero-gradient-text">Questions</span></>}
-          subtitle="The questions customers ask us most often, answered plainly — so you know exactly what to expect before you call."
+          subtitle="The questions we hear most, answered plainly."
         />
 
         {/* Two-column glossary/index layout */}

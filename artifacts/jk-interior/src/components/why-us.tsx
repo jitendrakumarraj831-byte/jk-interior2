@@ -10,37 +10,37 @@ const reasons = [
     icon: ShieldCheck,
     title: "ISI-certified materials, never substituted",
     reasoning:
-      "Every panel and board we fit carries ISI certification. We do not switch to cheaper unbranded stock to protect a margin, and you are welcome to inspect the material tag on site before installation begins.",
+      "Every panel we fit carries ISI certification — no cheaper unbranded stock, ever. Ask to see the material tag on site.",
   },
   {
     icon: Droplets,
     title: "Specified for a four-month monsoon",
     reasoning:
-      "PVC panels and UV marble sheets are waterproof by design rather than adapted from a drier-climate product line. That is precisely what rainfall across Araria district demands of a ceiling.",
+      "PVC panels and UV marble sheets are waterproof by design — built for Araria's monsoon, not adapted from a drier climate.",
   },
   {
     icon: Clock,
     title: "A day-by-day schedule, not a vague estimate",
     reasoning:
-      "Before work starts you receive a written installation timeline — which day the ceiling goes up, which day the finishing happens, which day we hand over. No open-ended delays.",
+      "You get a written timeline before we start — which day the ceiling goes up, which day we hand over. No open-ended delays.",
   },
   {
     icon: Sparkles,
     title: "Panel systems in place of wet plaster",
     reasoning:
-      "Wherever the design allows, we install clip-and-panel systems instead of wet plaster work. In a home you are still living in, that means meaningfully less dust and disruption.",
+      "Wherever possible, we clip panels in instead of wet plastering — far less dust in a home you're still living in.",
   },
   {
     icon: Award,
     title: "A signed warranty, not a verbal assurance",
     reasoning:
-      "Every project is handed over with a written one-year warranty document covering materials and workmanship alike — in your hand on the day we finish.",
+      "A written one-year warranty on materials and workmanship, handed to you the day we finish.",
   },
   {
     icon: HeartHandshake,
     title: "The site visit costs nothing, either way",
     reasoning:
-      "We measure, quote and explain the options free of charge — whether you appoint us or use the quotation to compare rates elsewhere. There is no fee and no obligation.",
+      "We measure, quote and advise for free — no fee, no obligation, even if you take the quote elsewhere.",
   },
 ]
 
@@ -117,7 +117,7 @@ export default function WhyUs() {
           badge="How We Work"
           headingId="why-us-heading"
           title={<>Six Decisions Behind <span className="hero-gradient-text">Every Job</span></>}
-          subtitle="There is a considered reason behind every choice we make on site — here are the six that matter most to you."
+          subtitle="A considered reason behind every choice we make on site."
           className="mb-12 sm:mb-14 lg:mb-16"
         />
 
@@ -128,20 +128,16 @@ export default function WhyUs() {
               <span className="absolute -top-3 left-8 h-6 w-16 -rotate-3 bg-amber-200/70 shadow-sm" aria-hidden="true" />
               <Quote className="mb-4 h-8 w-8 text-gold-300" aria-hidden="true" />
               <p className="mb-4 font-serif text-lg font-bold leading-snug text-gray-900 sm:text-xl">
-                JK Interior began in 2019, fitting PVC ceilings for a handful of neighbours around
-                Forbesganj. Several years and more than a hundred homes later, the discipline has not
-                changed — we still measure the room ourselves before we quote it.
+                Since 2019, one rule has never changed: we measure the room ourselves before we
+                quote it.
               </p>
               <p className="mb-4 text-sm leading-relaxed text-gray-600 sm:text-base">
-                What has changed is which materials we will put our name behind. The monsoon across
-                Araria district ruins anything that is not genuinely waterproof, so PVC and UV marble
-                are what we specify for wet rooms, and gypsum stays reserved for dry ones — even when
-                a customer asks for the prettier option in the wrong place.
+                Araria's monsoon ruins anything that isn't genuinely waterproof — so PVC and UV
+                marble go in wet rooms, gypsum stays in dry ones. No exceptions, even on request.
               </p>
               <p className="mb-5 rounded-lg border-l-2 border-gold-300 bg-gold-50/50 py-2 pl-3 pr-2 text-sm leading-relaxed text-gray-600">
-                Our team operates out of Narpatganj and works daily across Forbesganj and the wider
-                Araria district. Two officially listed numbers, one accountable team, and the same
-                standard of finish on a single bedroom as on a full commercial floor.
+                Based in Narpatganj, working daily across Forbesganj and Araria district. One team,
+                one standard — bedroom or commercial floor.
               </p>
               <div className="flex items-center gap-3 border-t border-dashed border-gray-200 pt-5">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-700 text-sm font-black text-white">

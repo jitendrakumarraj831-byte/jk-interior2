@@ -80,7 +80,7 @@ export default function ServiceAreas() {
           badge="Service Areas"
           headingSize="md"
           title={<>Where We <span className="hero-gradient-text">Work</span></>}
-          subtitle="Our team operates from Narpatganj and travels roughly 80 kilometres out — covering Forbesganj, the whole of Araria district, and on into Supaul and Purnia. We attend every site in person."
+          subtitle="Based in Narpatganj, covering Araria, Supaul and Purnia within 80 km — we attend every site in person."
         />
 
         {/* Desktop hub map */}
