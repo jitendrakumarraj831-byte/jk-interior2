@@ -91,11 +91,26 @@ export default function SwipeRail({
     const el = scrollerRef.current
     if (!el) return
     sync()
-    el.addEventListener("scroll", sync, { passive: true })
-    window.addEventListener("resize", sync)
+
+    // The scroll handler reads layout (offsetLeft/offsetWidth) on every
+    // call, which forces a reflow — running that on every single "scroll"
+    // event (native momentum scrolling can fire it dozens of times a
+    // second) causes jank on low-end phones. Coalesce to at most once per
+    // animation frame instead.
+    let raf = 0
+    const onScroll = () => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        sync()
+      })
+    }
+    el.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
     return () => {
-      el.removeEventListener("scroll", sync)
-      window.removeEventListener("resize", sync)
+      if (raf) cancelAnimationFrame(raf)
+      el.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
     }
   }, [sync, slides.length])
 

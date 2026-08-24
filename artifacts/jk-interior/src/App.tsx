@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from "react"
 import { Switch, Route, Router as WouterRouter } from "wouter"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MotionConfig } from "framer-motion"
 import ScrollProgress from "@/components/scroll-progress"
 import MobileCtaBar from "@/components/mobile-cta-bar"
@@ -17,8 +16,6 @@ const CityPage = lazy(() => import("@/pages/CityPage"))
 const AdminPage = lazy(() => import("@/pages/AdminPage"))
 const NotFound = lazy(() => import("@/pages/not-found"))
 const JKChat = lazy(() => import("@/components/jk-chat"))
-
-const queryClient = new QueryClient()
 
 function PageFallback() {
   return <div className="min-h-screen bg-white" role="status" aria-live="polite" aria-label="Loading page" />
@@ -60,23 +57,21 @@ function App() {
   }, [])
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* reducedMotion="user" makes every Framer Motion animation in the tree honor
-          the OS-level prefers-reduced-motion setting automatically, so individual
-          components don't each need their own useReducedMotion() check. */}
-      <MotionConfig reducedMotion="user">
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <ScrollProgress />
-          <Router />
-          <MobileCtaBar />
-          {showChat && (
-            <Suspense fallback={null}>
-              <JKChat />
-            </Suspense>
-          )}
-        </WouterRouter>
-      </MotionConfig>
-    </QueryClientProvider>
+    // reducedMotion="user" makes every Framer Motion animation in the tree honor
+    // the OS-level prefers-reduced-motion setting automatically, so individual
+    // components don't each need their own useReducedMotion() check.
+    <MotionConfig reducedMotion="user">
+      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+        <ScrollProgress />
+        <Router />
+        <MobileCtaBar />
+        {showChat && (
+          <Suspense fallback={null}>
+            <JKChat />
+          </Suspense>
+        )}
+      </WouterRouter>
+    </MotionConfig>
   )
 }
 
