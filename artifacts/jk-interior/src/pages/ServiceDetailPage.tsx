@@ -151,6 +151,8 @@ export default function ServiceDetailPage() {
                 alt={service.heroImageAlt}
                 className="h-72 w-full object-cover sm:h-96"
                 loading="eager"
+                decoding="async"
+                fetchPriority="high"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
@@ -476,7 +478,7 @@ export default function ServiceDetailPage() {
             <div className="hidden gap-3 sm:grid sm:grid-cols-3">
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
-                  <img src={img.src} alt={img.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
                 </div>
               ))}
             </div>
@@ -493,7 +495,7 @@ export default function ServiceDetailPage() {
             >
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
-                  <img src={img.src} alt={img.alt} loading="lazy" className="h-full w-full object-cover" />
+                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 </div>
               ))}
             </SwipeRail>
