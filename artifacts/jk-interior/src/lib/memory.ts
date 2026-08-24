@@ -382,31 +382,6 @@ export function summarizeForPrompt(memory: ConversationMemory): string {
   return lines.join("\n")
 }
 
-// ─── Budget Context ───────────────────────────────────────────────────────────
-
-/**
- * Returns a brief budget-aware string to prepend to a response when a new room is mentioned.
- */
-export function getBudgetContext(memory: ConversationMemory, newRoom?: string): string {
-  if (!memory.budgetRaw) return ""
-  const budget = memory.budgetMax ?? 0
-  const room = newRoom ?? "is room"
-
-  if (budget <= 0 || memory.budgetRaw === "low budget") {
-    return `${memory.budgetRaw} range mein ${room} ke liye PVC ya UV marble best affordable choice hai.`
-  }
-  if (budget < 60_000) {
-    return `${memory.budgetRaw} budget mein ${room} ke liye PVC ceiling (₹80-140/sqft) best fit hai.`
-  }
-  if (budget < 150_000) {
-    return `${memory.budgetRaw} budget mein ${room} ka ceiling aaram se ho sakta hai — Gypsum ya PVC dono option available hain.`
-  }
-  if (budget < 300_000) {
-    return `${memory.budgetRaw} budget mein ${room} + 1-2 aur rooms comfortably ho sakte hain — Gypsum + WPC accent wall bhi ho sakta hai.`
-  }
-  return `${memory.budgetRaw} budget ke saath ${room} ka premium interior ho sakta hai — Gypsum cove, WPC panels, LED lighting sab possible hai.`
-}
-
 // ─── Persistence helpers (client-side only) ──────────────────────────────────
 
 const MEMORY_KEY = "jk_memory_v1"
