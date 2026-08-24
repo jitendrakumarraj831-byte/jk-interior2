@@ -1,8 +1,10 @@
 import { Link } from "wouter"
+import { HelpCircle } from "lucide-react"
 import Navbar from "@/components/navbar"
 import FAQSection from "@/components/faq-section"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
+import PageHero from "@/components/ui/page-hero"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { FAQS } from "@/lib/faq-data"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
@@ -54,10 +56,17 @@ export default function FAQPage() {
         }}
       />
       <Navbar />
-      <h1 className="sr-only">
-        Frequently Asked Questions – JK Interior False Ceiling &amp; Interior Design Services in Forbesganj, Araria Bihar
-      </h1>
-      <div className="pt-36" />
+      <PageHero
+        icon={HelpCircle}
+        title={
+          <>
+            Answers Before You{" "}
+            <span className="hero-gradient-text">Even Have to Ask</span>
+          </>
+        }
+        subtitle="Rates, timelines, warranty and coverage for every service we offer — straight talk, no sales pitch."
+        whatsappMessage="Hello JK Interior, I have a question that isn't covered in your FAQ."
+      />
       <FAQSection />
 
       <section className="relative overflow-hidden py-16 sm:py-20">
