@@ -27,11 +27,30 @@ export default function CityPage() {
 
   const cityJsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+    // Same @id as the static block in index.html, so both resolve to the one
+    // JK Interior entity instead of asserting a second, separate business.
+    "@id": `${SITE_URL}/#business`,
     name: "JK Interior",
     description: city.description,
-    url: `${SITE_URL}/cities/${city.slug}`,
+    url: SITE_URL,
     telephone: ["+91-8541849118", "+91-8651070831"],
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+91-8541849118",
+        contactType: "customer service",
+        areaServed: "IN-BR",
+        availableLanguage: ["English", "Hindi"],
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: "+91-8651070831",
+        contactType: "sales",
+        areaServed: "IN-BR",
+        availableLanguage: ["English", "Hindi"],
+      },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: "Damaria Rewahi",

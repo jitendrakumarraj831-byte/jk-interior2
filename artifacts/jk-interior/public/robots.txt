@@ -1,5 +1,73 @@
+# JK Interior — robots.txt
+# Fully open for search engines and AI answer-engine crawlers.
+# Only the internal /admin tool is excluded (it is also marked noindex).
+
 User-agent: *
 Allow: /
 Disallow: /admin
+
+# ── Google ──────────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Google-Extended controls use of this site's content for Gemini / AI
+# Overviews training and grounding — explicitly allowed.
+User-agent: Google-Extended
+Allow: /
+
+# ── Bing / Microsoft Copilot ────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+
+# ── Major AI answer-engine & assistant crawlers ─────────────────────────
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Diffbot
+Allow: /
 
 Sitemap: https://www.jkinterior.online/sitemap.xml

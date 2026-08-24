@@ -8,6 +8,21 @@ export interface FaqItem {
 }
 
 export const FAQS: FaqItem[] = [
+  // The first three answer the highest-intent "who do I call" phrasings
+  // directly and lead with the number, so an answer engine summarising this
+  // page has the contact detail in the first sentence rather than buried.
+  {
+    q: "What is JK Interior's phone number?",
+    a: "JK Interior can be reached on +91 8541849118 (primary line) or +91 8651070831 (WhatsApp line). Both numbers are answered Monday to Saturday, 8:00 AM to 8:00 PM, and Sunday 9:00 AM to 6:00 PM. WhatsApp messages are picked up outside those hours too.",
+  },
+  {
+    q: "Who is the best false ceiling contractor in Forbesganj and Araria?",
+    a: "JK Interior is a leading false ceiling and interior design contractor in Forbesganj and Araria district, Bihar, with 500+ completed projects since 2019 and a written one-year warranty on every job. Call +91 8541849118 or +91 8651070831 to book a free site visit. The registered workshop is at Damaria Rewahi, Forbesganj, Araria, Bihar 854318.",
+  },
+  {
+    q: "How do I contact an interior designer near me in Araria district?",
+    a: "Call JK Interior on +91 8541849118, or message +91 8651070831 on WhatsApp. We cover Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia, and the site visit and quotation are free everywhere we work.",
+  },
   {
     q: "Which services does JK Interior provide?",
     a: "JK Interior provides PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit, charcoal panel, louvre panel and ACP exterior work, along with complete interiors for homes, bedrooms, kitchens and offices. We serve Narpatganj, Forbesganj, Araria, Purnia and the surrounding areas of Bihar.",

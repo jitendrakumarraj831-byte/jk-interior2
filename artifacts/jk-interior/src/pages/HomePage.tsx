@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react"
 import Navbar from "@/components/navbar"
 import Hero from "@/components/hero"
 import Services from "@/components/services"
+import BusinessSummary from "@/components/business-summary"
 import ProcessTimeline from "@/components/process-timeline"
 import ServiceAreas from "@/components/service-areas"
 import Contact from "@/components/contact"
@@ -49,7 +50,7 @@ export default function HomePage() {
         jsonLd={[
           {
             "@context": "https://schema.org",
-            "@type": "LocalBusiness",
+            "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
             "@id": "https://www.jkinterior.online/#business",
             name: "JK Interior",
             slogan: "Interior & False Ceiling Solutions",
@@ -61,6 +62,22 @@ export default function HomePage() {
             email: "jkinteriorofficial@gmail.com",
             foundingDate: "2019",
             priceRange: "₹₹",
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                telephone: "+91-8541849118",
+                contactType: "customer service",
+                areaServed: "IN-BR",
+                availableLanguage: ["English", "Hindi"]
+              },
+              {
+                "@type": "ContactPoint",
+                telephone: "+91-8651070831",
+                contactType: "sales",
+                areaServed: "IN-BR",
+                availableLanguage: ["English", "Hindi"]
+              }
+            ],
             address: {
               "@type": "PostalAddress",
               streetAddress: "Damaria Rewahi",
@@ -162,6 +179,7 @@ export default function HomePage() {
       </p>
       <Navbar />
       <Hero />
+      <BusinessSummary />
       <Services />
       <ProcessTimeline />
       <Suspense fallback={<GallerySkeleton />}>

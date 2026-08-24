@@ -23,14 +23,37 @@
          index.css), so loading it late causes a late font swap and a large CLS hit. -->
     <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
     <link rel="preload" href="/fonts/playfair-display-normal-latin.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high" />
-    <link rel="stylesheet" href="/fonts/fonts.css" />
-
-    <!-- DNS prefetch & connection hints -->
-    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    
-    <!-- Defer non-critical scripts -->
-    <link rel="prefetch" href="/fonts/fonts.css" />
+    <!-- These @font-face rules are inlined rather than linked from
+         /fonts/fonts.css: a stylesheet <link> is render-blocking, so linking
+         ~1.5 kB of @font-face cost a full request round trip before first
+         paint on every cold load. public/fonts/fonts.css is kept in sync as
+         the readable reference copy. -->
+    <style>
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+        src: url('/fonts/inter-latin.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Playfair Display';
+        font-style: normal;
+        font-weight: 700 800;
+        font-display: swap;
+        src: url('/fonts/playfair-display-normal-latin.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Playfair Display';
+        font-style: italic;
+        font-weight: 700;
+        font-display: swap;
+        src: url('/fonts/playfair-display-italic-700-latin.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
 
     <!-- Critical resources (preload for LCP performance) -->
     <!-- Hero image only — this is the LCP element on every route. Gallery
@@ -68,13 +91,30 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+      "@id": "https://www.jkinterior.online/#business",
       "name": "JK Interior",
       "image": "https://www.jkinterior.online/logo.png",
       "description": "JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Bihar.",
       "url": "https://www.jkinterior.online",
       "telephone": ["+91-8541849118", "+91-8651070831"],
       "priceRange": "₹₹",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-8541849118",
+          "contactType": "customer service",
+          "areaServed": "IN-BR",
+          "availableLanguage": ["English", "Hindi"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-8651070831",
+          "contactType": "sales",
+          "areaServed": "IN-BR",
+          "availableLanguage": ["English", "Hindi"]
+        }
+      ],
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Damaria Rewahi",

@@ -10,6 +10,13 @@ import { MapPin, CheckCircle, ArrowRight, Clock, ShieldCheck, Sparkles, Phone } 
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
+/** Swaps a "/images/foo.webp" path for one of its generated variants (see
+ *  scripts/optimize-jk-interior-images.ts), e.g. "-800w.avif". */
+const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$/, suffix)
+
+/** Thumbnails render in a 2-col grid on phones, 4-col from 640px, inside a 5xl container. */
+const THUMB_SIZES = "(min-width: 640px) 240px, calc(50vw - 24px)"
+
 export default function ServiceCityPage() {
   const { service: serviceSlug, city: citySlug } = useParams<{ service: string; city: string }>()
   const service = getServiceCityInfoBySlug(serviceSlug || "")
@@ -40,9 +47,28 @@ export default function ServiceCityPage() {
       serviceType: service.name,
       description: service.description,
       provider: {
-        "@type": "LocalBusiness",
+        "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+        // Same @id as the static block in index.html, so the provider resolves
+        // to the one JK Interior entity rather than a partial duplicate.
+        "@id": `${SITE_URL}/#business`,
         name: "JK Interior",
-        telephone: "+91-8541849118",
+        telephone: ["+91-8541849118", "+91-8651070831"],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: "+91-8541849118",
+            contactType: "customer service",
+            areaServed: "IN-BR",
+            availableLanguage: ["English", "Hindi"],
+          },
+          {
+            "@type": "ContactPoint",
+            telephone: "+91-8651070831",
+            contactType: "sales",
+            areaServed: "IN-BR",
+            availableLanguage: ["English", "Hindi"],
+          },
+        ],
         address: {
           "@type": "PostalAddress",
           streetAddress: "Damaria Rewahi",
@@ -197,7 +223,11 @@ export default function ServiceCityPage() {
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-xl bg-gray-100">
-                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  <picture>
+                    <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={THUMB_SIZES} type="image/avif" />
+                    <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={THUMB_SIZES} type="image/webp" />
+                    <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  </picture>
                 </div>
               ))}
             </div>
