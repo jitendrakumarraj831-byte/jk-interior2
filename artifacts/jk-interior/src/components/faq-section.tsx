@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import SectionHeader from "@/components/ui/section-header"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { FAQS as faqs } from "@/lib/faq-data"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -79,7 +80,7 @@ export default function FAQSection() {
           headingSize="md"
           className="mb-12"
           title={<>Frequently Asked <span className="hero-gradient-text">Questions</span></>}
-          subtitle="JK Interior के बारे में सबसे आम सवाल के जवाब — अपनी शंका दूर करें"
+          subtitle="The questions we hear most, answered plainly."
         />
 
         {/* Two-column glossary/index layout */}
@@ -96,10 +97,17 @@ export default function FAQSection() {
 
         {/* Bottom CTA */}
         <motion.div {...animProps} className="mt-12 text-center">
-          <p className="mb-5 text-gray-500 text-sm">और सवाल हैं? हमसे सीधे बात करें</p>
+          <p className="mb-5 text-sm text-gray-500">Still have a question? Speak to us directly on either line.</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <CallLink variant="outline">Call: +91 8541849118</CallLink>
-            <WhatsAppLink message="Hi JK Interior, I have a question.">WhatsApp Us</WhatsAppLink>
+            <CallLink variant="outline">{`Call ${PHONE_PRIMARY_DISPLAY}`}</CallLink>
+            <a
+              href={`tel:${PHONE_SECONDARY}`}
+              aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-gold-500/30 bg-gold-500/8 px-6 py-3.5 text-sm font-bold text-gold-700 transition-all hover:border-gold-500/50 hover:bg-gold-500/15 active:scale-95"
+            >
+              {`Call ${PHONE_SECONDARY_DISPLAY}`}
+            </a>
+            <WhatsAppLink message="Hello JK Interior, I have a question about your services.">WhatsApp Us</WhatsAppLink>
           </div>
         </motion.div>
       </div>

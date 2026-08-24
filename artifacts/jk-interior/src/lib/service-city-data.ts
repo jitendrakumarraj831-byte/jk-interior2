@@ -3,7 +3,6 @@ import { Layers, PanelTop, Tv } from "lucide-react"
 export interface ServiceCityInfo {
   slug: string
   name: string
-  nameHi: string
   icon: typeof Layers
   galleryCategory: string
   price: string
@@ -21,7 +20,6 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
   {
     slug: "pvc-false-ceiling",
     name: "PVC False Ceiling",
-    nameHi: "PVC फॉल्स सीलिंग",
     icon: Layers,
     galleryCategory: "PVC Ceiling",
     price: "₹75–₹150/sq.ft",
@@ -39,14 +37,13 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Very low — just wipe with a damp cloth",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "क्या PVC सीलिंग वॉटरप्रूफ है?", a: "हाँ भाई, 100% वॉटरप्रूफ है। बाथरूम-किचन हो या कोई भी नमी वाली जगह, यह कभी फूलता या खराब नहीं होता।" },
-      { q: "PVC सीलिंग कितने दिन में लग जाती है?", a: "एक कमरे की PVC फॉल्स सीलिंग 1 दिन में लग जाती है, पूरे घर के लिए 3–4 दिन का समय लगता है।" },
+      { q: "Is a PVC ceiling genuinely waterproof?", a: "Yes — it is fully waterproof. In a bathroom, a kitchen or any humid room, the panels never swell, warp or deteriorate." },
+      { q: "How long does a PVC ceiling take to install?", a: "A single room is completed in one day. A full home typically takes three to four days." },
     ],
   },
   {
     slug: "gypsum-ceiling",
     name: "Gypsum Ceiling",
-    nameHi: "जिप्सम सीलिंग",
     icon: Layers,
     galleryCategory: "Gypsum False Ceiling",
     price: "₹75–₹210/sq.ft",
@@ -64,14 +61,13 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Minimal — occasional dusting, repaint every 5–7 years",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "जिप्सम सीलिंग पानी में खराब होगी?", a: "गीली जगह जैसे बाथरूम या किचन में जिप्सम की जगह PVC लगवाना ही सही रहेगा। हॉल और बेडरूम जैसी ड्राई जगह के लिए जिप्सम बिल्कुल परफेक्ट है।" },
-      { q: "जिप्सम सीलिंग में कितना समय लगता है?", a: "एक कमरे में 2–3 दिन और पूरे घर में 5–7 दिन लगते हैं, यह डिज़ाइन कितना जटिल है उस पर निर्भर करता है।" },
+      { q: "Will a gypsum ceiling be damaged by water?", a: "In wet rooms such as bathrooms and kitchens we specify PVC instead of gypsum. For dry rooms — halls, bedrooms, drawing rooms — gypsum is the ideal choice." },
+      { q: "How long does a gypsum ceiling take?", a: "A single room takes two to three days and a full home five to seven, depending on how intricate the design is." },
     ],
   },
   {
     slug: "wpc-wall-panel",
     name: "WPC Wall Panel",
-    nameHi: "WPC वॉल पैनल",
     icon: PanelTop,
     galleryCategory: "WPC fluted panels & uv marble Sheet",
     price: "₹180–₹650/sq.ft",
@@ -89,17 +85,16 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Wipe with a dry cloth — very low maintenance",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "WPC पैनल असली लकड़ी जैसा दिखता है?", a: "बिल्कुल भाई! WPC असली लकड़ी जैसा लुक देता है, पर टर्माइट, नमी और वार्पिंग की झंझट नहीं होती — और 60% सस्ता भी पड़ता है।" },
-      { q: "TV वॉल के लिए WPC कैसा रहेगा?", a: "TV वॉल के लिए WPC हमारी पहली पसंद है — खूबसूरत लकड़ी टेक्सचर, केबल मैनेजमेंट आसान, और लुक बहुत प्रीमियम आता है।" },
+      { q: "Does a WPC panel really look like solid wood?", a: "It does. WPC reproduces the look of natural timber without any risk of termites, moisture damage or warping — and it typically costs around 60% less." },
+      { q: "Is WPC a good choice for a television wall?", a: "It is our first recommendation for television walls: a convincing wood texture, straightforward cable management, and a genuinely premium finish." },
     ],
   },
   {
     slug: "modular-tv-unit",
     name: "Modular TV Unit",
-    nameHi: "मॉड्यूलर TV यूनिट",
     icon: Tv,
     galleryCategory: "TV Unit Design",
-    price: "₹15,000 से शुरू (बेसिक)",
+    price: "From ₹15,000 (basic)",
     premiumPrice: "₹46,000–₹75,000+ (premium designs)",
     description:
       "Custom-designed modular TV units built to fit your exact room dimensions — with built-in cable management, LED backlighting, and storage shelves, in wood laminate, matte, glossy, or combination finishes.",
@@ -114,8 +109,8 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     maintenance: "Wipe with a dry cloth — no special care needed",
     warranty: "1 year written warranty",
     faqs: [
-      { q: "TV यूनिट की कीमत कितनी है?", a: "बेसिक TV यूनिट ₹15,000 से शुरू होती है। LED लाइटिंग और बड़े स्टोरेज वाला प्रीमियम डिज़ाइन ₹46,000–₹75,000+ तक जा सकता है, यह साइज़ पर निर्भर करता है।" },
-      { q: "TV यूनिट बनाने में कितने दिन लगते हैं?", a: "साइज़ और डिज़ाइन के हिसाब से 3–5 दिन में तैयार हो जाती है। सही माप लेने के बाद हम पक्का टाइमलाइन बता देते हैं।" },
+      { q: "What does a modular TV unit cost?", a: "A basic unit starts at ₹15,000. A premium design with LED lighting and extensive storage runs from ₹46,000 to ₹75,000 and above, depending on size." },
+      { q: "How many days does a TV unit take to build?", a: "Three to five days, depending on size and design. We confirm a firm timeline once the measurements are taken." },
     ],
   },
 ]

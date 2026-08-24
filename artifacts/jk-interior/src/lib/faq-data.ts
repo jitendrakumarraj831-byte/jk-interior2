@@ -9,35 +9,35 @@ export interface FaqItem {
 
 export const FAQS: FaqItem[] = [
   {
-    q: "JK Interior कौन-कौन सी सेवाएं देती है?",
-    a: "हम PVC False Ceiling, Gypsum Ceiling, WPC Wall Panel, UV Marble Sheet, Modular TV Unit, Charcoal Panel, Louvers Panel, ACP Exterior — और पूरे घर, बेडरूम, ऑफिस या किचन के इंटीरियर का भी काम करते हैं। फोर्बेसगंज, अररिया, पूर्णिया और आसपास के बिहार के इलाकों में सेवा देते हैं।",
+    q: "Which services does JK Interior provide?",
+    a: "JK Interior provides PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit, charcoal panel, louvre panel and ACP exterior work, along with complete interiors for homes, bedrooms, kitchens and offices. We serve Narpatganj, Forbesganj, Araria, Purnia and the surrounding areas of Bihar.",
   },
   {
-    q: "फोर्बेसगंज में PVC फॉल्स सीलिंग की कीमत क्या होती है?",
-    a: "PVC सीलिंग की कीमत अरारिया/फोर्बेसगंज में आमतौर पर ₹75-₹150 प्रति sq.ft होती है, जो पैनल क्वालिटी, डिज़ाइन और लाइटिंग के अनुसार अलग-अलग होती है। फ्री साइट विज़िट और विस्तृत कोटेशन के लिए +91 8541849118 पर कॉल करें।",
+    q: "What does a PVC false ceiling cost in Forbesganj?",
+    a: "A PVC false ceiling in Forbesganj and across Araria district typically ranges from ₹75 to ₹150 per sq.ft, depending on panel quality, design and lighting. Call +91 8541849118 or +91 8651070831 for a free site visit and a detailed written quotation.",
   },
   {
-    q: "क्या आप फ्री साइट विज़िट देते हैं?",
-    a: "हां, JK Interior फ्री एक्सपर्ट साइट विज़िट और विस्तृत कोटेशन देती है — बिना किसी बाध्यता के। हम फोर्बेसगंज, अरारिया और आसपास के बिहार एरिया में फ्री साइट विज़िट देते हैं।",
+    q: "Do you offer a free site visit?",
+    a: "Yes. JK Interior provides a free expert site visit and a detailed quotation with no obligation whatsoever. Free site visits are available throughout Narpatganj, Forbesganj, Araria and the neighbouring areas of Bihar.",
   },
   {
-    q: "इंस्टॉलेशन कितने दिनों में पूरी होती है?",
-    a: "कमरा साइज़ और सेवा के अनुसार, एक स्टैंडर्ड कमरे की इंस्टॉलेशन 1-3 दिन में पूरी हो जाती है। काम शुरू करने से पहले हम पूरी टाइमलाइन बता देते हैं, ताकि आपको पहले से जानकारी रहे।",
+    q: "How long does installation take?",
+    a: "Depending on room size and the service chosen, a standard room is completed in one to three days. We confirm the full timeline in writing before work begins, so you always know what to expect and when.",
   },
   {
-    q: "कौन-कौन से मटेरियल वॉटरप्रूफ हैं?",
-    a: "PVC पैनल और UV मार्बल शीट पानी और नमी झेल लेते हैं, इसलिए किचन-बाथरूम के लिए सही रहते हैं। WPC पैनल नमी-रोधी है (लगातार पानी वाली जगह के लिए नहीं)। जिप्सम सीलिंग सिर्फ सूखी जगहों (हॉल, बेडरूम) के लिए है। हम ISI-प्रमाणित ब्रांडेड मटेरियल इस्तेमाल करते हैं।",
+    q: "Which materials are waterproof?",
+    a: "PVC panels and UV marble sheets withstand water and humidity, which makes them the right specification for kitchens and bathrooms. WPC panels are moisture-resistant but not intended for constantly wet areas. Gypsum ceilings are for dry rooms only, such as halls and bedrooms. We fit ISI-certified branded materials throughout.",
   },
   {
-    q: "वारंटी कितनी मिलती है?",
-    a: "JK Interior हर प्रोजेक्ट पर 1 साल की लिखित वारंटी देती है। यह वारंटी मटेरियल और कारीगरी दोनों को कवर करती है। लिखित दस्तावेज़ दिया जाता है।",
+    q: "What warranty do you provide?",
+    a: "JK Interior issues a written one-year warranty on every project, covering both materials and workmanship. You receive the warranty document on the day the work is handed over.",
   },
   {
-    q: "आप कौन-कौन से एरिया में सेवा करते हैं?",
-    a: "हम फोर्बेसगंज, अरारिया, जोगबनी, रानीगंज, नरपतगंज, कुर्साकाँटा, त्रिवेणीगंज, छतापुर, सुपौल और पूर्णिया में सेवा देते हैं — अरारिया, सुपौल और पूर्णिया ज़िले को कवर करते हैं।",
+    q: "Which areas do you serve?",
+    a: "We work across Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia — covering the Araria, Supaul and Purnia districts of Bihar.",
   },
   {
-    q: "पेमेंट के कौन-से विकल्प उपलब्ध हैं?",
-    a: "हम कैश, UPI (GPay, PhonePe, Paytm), और बैंक ट्रांसफर एक्सेप्ट करते हैं। कोई छुपे हुए शुल्क नहीं — पारदर्शी कीमत हमेशा। पेमेंट शेड्यूल प्रोजेक्ट शुरू से पहले डिस्कस होता है।",
+    q: "Which payment methods do you accept?",
+    a: "We accept cash, UPI (Google Pay, PhonePe and Paytm) and bank transfer. Pricing is transparent with no hidden charges, and the payment schedule is agreed with you before the project begins.",
   },
 ]

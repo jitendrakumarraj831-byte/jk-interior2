@@ -8,6 +8,7 @@ import { galleryImages } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { MapPin, CheckCircle, ArrowRight, Clock, ShieldCheck, Sparkles, Phone } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
 export default function ServiceCityPage() {
   const { service: serviceSlug, city: citySlug } = useParams<{ service: string; city: string }>()
@@ -79,7 +80,7 @@ export default function ServiceCityPage() {
     <main>
       <SeoHead
         title={`${service.name} in ${city.name} – JK Interior ${city.district} Bihar`}
-        description={`${service.name} in ${city.name}, ${city.district} Bihar — ${service.price}. ${service.bestFor}. Free site visit, 1 year warranty. Call +91 8541849118.`}
+        description={`${service.name} in ${city.name}, ${city.district} Bihar — ${service.price}. ${service.bestFor}. Free site visit, 1 year warranty. Call +91 8541849118 or +91 8651070831.`}
         canonical={`/services/${service.slug}/${city.slug}`}
         jsonLd={jsonLd}
       />
@@ -87,7 +88,7 @@ export default function ServiceCityPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-white pt-28 pb-14 sm:pb-16">
+      <section className="relative overflow-hidden bg-white pt-36 pb-14 sm:pb-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute inset-0 bg-gradient-to-br from-[#faf7f0] via-white to-white" />
           <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-gold-100/40 blur-3xl" />
@@ -106,15 +107,17 @@ export default function ServiceCityPage() {
           <h1 className="mb-2 text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
             {service.name} in <span className="hero-gradient-text">{city.name}</span>
           </h1>
-          <p className="mb-6 text-sm font-semibold text-gray-500 sm:text-base">{service.nameHi} · {city.nameHi}</p>
+          <p className="mb-6 text-sm font-semibold text-gray-500 sm:text-base">{service.name} · {city.name}, {city.district} district</p>
 
           <p className="mb-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             {service.description} JK Interior installs {service.name} across {city.name}, {city.district} district with free site visits and a written 1-year warranty.
           </p>
           <p className="mb-8 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
-            {city.nameHi} और आसपास {service.nameHi} का काम JK Interior करती है — {service.price} रेंज में,
-            फ्री साइट विज़िट, ब्रांडेड मटेरियल और 1 साल की लिखित वारंटी के साथ। सही अनुमान और डिज़ाइन फोटो के
-            लिए <span className="font-semibold text-gold-800">+91&nbsp;85418&nbsp;49118</span> पर कॉल या WhatsApp करें।
+            JK Interior carries out {service.name} work across {city.name} and the surrounding area,
+            in the {service.price} range, with a free site visit, branded materials and a written
+            one-year warranty. For an accurate estimate and design photographs, call or WhatsApp{" "}
+            <span className="font-semibold text-gold-800">{PHONE_PRIMARY_DISPLAY}</span> or{" "}
+            <span className="font-semibold text-gold-800">{PHONE_SECONDARY_DISPLAY}</span>.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -216,7 +219,7 @@ export default function ServiceCityPage() {
       <section className="py-14 sm:py-16 bg-white">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
           <h2 className="mb-6 text-2xl font-black text-gray-900 sm:text-3xl">
-            {service.name} in {city.name} – अक्सर पूछे जाने वाले सवाल
+            {service.name} in {city.name} — Frequently Asked Questions
           </h2>
           <div className="space-y-4">
             {service.faqs.map(({ q, a }) => (
@@ -239,7 +242,8 @@ export default function ServiceCityPage() {
           </h2>
           <p className="mb-1 text-gold-100 text-sm">Free site visit • No obligation • {service.warranty}</p>
           <p className="mb-6 text-sm font-semibold text-white">
-            {city.nameHi} में {service.nameHi} के लिए फ्री साइट विज़िट और सही कोटेशन — अभी कॉल या WhatsApp करें।
+            Book a free site visit for {service.name} in {city.name} and receive an accurate
+            quotation — call either line or message us on WhatsApp.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <CallLink icon={false} ariaLabel="Call +91 8541849118" className="bg-white text-gold-700 shadow hover:bg-gold-50 hover:shadow">

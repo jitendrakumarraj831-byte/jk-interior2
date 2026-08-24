@@ -1248,7 +1248,8 @@ export function tryExtractName(raw: string): string {
 
 export function isOffHours(): boolean {
   const h = new Date(Date.now() + 5.5 * 3600000).getUTCHours()
-  return h >= 21 || h < 9
+  // Matches the published business hours: Mon–Sat 8:00 AM – 8:00 PM.
+  return h >= 20 || h < 8
 }
 
 export { ALL_AREAS, CITY_MAP }

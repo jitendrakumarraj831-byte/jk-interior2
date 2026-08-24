@@ -2,9 +2,13 @@
 import { Phone, Mail, MapPin, ArrowRight, Facebook, Instagram } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
-import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { CALL_NUMBER, WA_NUMBER } from "@/lib/business-data"
-import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
+import { WhatsAppLink } from "@/components/ui/cta-links"
+import {
+  PHONE_PRIMARY,
+  PHONE_PRIMARY_DISPLAY,
+  PHONE_SECONDARY,
+  PHONE_SECONDARY_DISPLAY,
+} from "@/lib/business-data"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -22,19 +26,6 @@ const serviceLinks = [
   { label: "UV Marble Sheet" },
   { label: "Modular TV Unit" },
   { label: "Complete Interior" },
-]
-
-const cityLinks = [
-  { slug: "forbesganj", name: "Forbesganj" },
-  { slug: "araria", name: "Araria" },
-  { slug: "purnia", name: "Purnia" },
-  { slug: "jogbani", name: "Jogbani" },
-  { slug: "supaul", name: "Supaul" },
-  { slug: "narpatganj", name: "Narpatganj" },
-  { slug: "raniganj", name: "Raniganj" },
-  { slug: "tribeniganj", name: "Tribeniganj" },
-  { slug: "kursakanta", name: "Kursakanta" },
-  { slug: "chhatapur", name: "Chhatapur" },
 ]
 
 export default function Footer() {
@@ -74,12 +65,15 @@ export default function Footer() {
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-700">
                 Interior & False Ceiling Solutions
               </p>
-              <p className="text-sm leading-relaxed text-gray-600 max-w-xs">
-                Premium interior design and false ceiling solutions in Bihar. Quality work for every budget — from PVC to complete home interiors.
+              <p className="max-w-xs text-sm leading-relaxed text-gray-600">
+                Premium interior design and false ceiling solutions across Bihar. Considered
+                workmanship at every budget — from a single PVC ceiling to a complete home interior.
               </p>
               <div className="rounded-xl border border-gold-200 bg-white/60 p-4">
-                <p className="text-xs leading-relaxed text-gold-700/70 italic">
-                  {"\u201C"}बिहार में इंटीरियर डिज़ाइन और सीलिंग का काम। आपके बजट में भरोसेमंद कारीगरी।{"\u201D"}
+                <p className="text-xs leading-relaxed text-gold-700/80">
+                  Operating from <span className="font-bold">Narpatganj</span>, with our registered
+                  workshop in <span className="font-bold">Forbesganj</span> — serving the whole of{" "}
+                  <span className="font-bold">Araria district, Bihar</span>.
                 </p>
               </div>
             </div>
@@ -180,27 +174,29 @@ export default function Footer() {
             </h3>
             <div className="flex flex-col gap-4">
               <a
-                href={`tel:${CALL_NUMBER}`}
-                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
+                href={`tel:${PHONE_PRIMARY}`}
+                aria-label={`Call JK Interior on the primary line ${PHONE_PRIMARY_DISPLAY}`}
+                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 transition-colors hover:text-gold-700"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
-                  <Phone className="h-4 w-4" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 transition-colors group-hover:bg-gold-50">
+                  <Phone className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">Primary</span>
-                  +91 8541849118
+                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">Primary Line</span>
+                  {PHONE_PRIMARY_DISPLAY}
                 </div>
               </a>
               <a
-                href={`tel:+${WA_NUMBER}`}
-                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
+                href={`tel:${PHONE_SECONDARY}`}
+                aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
+                className="group flex items-center gap-3 text-sm font-semibold text-gray-600 transition-colors hover:text-gold-700"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
-                  <Phone className="h-4 w-4" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 transition-colors group-hover:bg-gold-50">
+                  <Phone className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">WhatsApp</span>
-                  +91 8651070831
+                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">WhatsApp Line</span>
+                  {PHONE_SECONDARY_DISPLAY}
                 </div>
               </a>
               <a
@@ -214,17 +210,22 @@ export default function Footer() {
               </a>
               <div className="flex items-start gap-3 text-sm font-semibold text-gray-600">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600">
-                  <MapPin className="h-4 w-4" />
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
                 </div>
-                <span className="pt-0.5 leading-snug">Damaria Rewahi,<br />Forbesganj, Bihar 854318</span>
+                <span className="pt-0.5 leading-snug">
+                  Damaria Rewahi,<br />Forbesganj, Bihar 854318
+                  <span className="mt-1 block text-xs font-medium text-gray-500">
+                    Operating base: Narpatganj, Araria district
+                  </span>
+                </span>
               </div>
 
               {/* WhatsApp CTA */}
               <WhatsAppLink
-                message="नमस्ते JK Interior, मुझे मदद चाहिए।"
+                message="Hello JK Interior, I would like some assistance with an interior project."
                 className="mt-1 w-full shadow-[0_4px_16px_rgba(37,211,102,0.25)] hover:shadow-[0_4px_24px_rgba(37,211,102,0.4)]"
               >
-                WhatsApp करें
+                Message on WhatsApp
               </WhatsAppLink>
             </div>
           </motion.div>
@@ -272,7 +273,7 @@ export default function Footer() {
           Service Areas
         </h3>
         <p className="mt-0.5 text-xs text-gray-500">
-          View all cities we serve
+          View every town and city we cover
         </p>
       </div>
     </div>
@@ -297,7 +298,7 @@ export default function Footer() {
         {/* SEO text */}
         <div className="mt-6 mb-12 rounded-xl border border-gold-200 bg-white/50 p-4">
           <p className="text-xs leading-relaxed text-gray-500">
-            JK Interior — Best interior designer in Forbesganj, Araria, Bihar. We provide PVC false ceiling, gypsum ceiling design, WPC wall paneling, UV marble sheet, modular TV unit design, and complete interior solutions across{' '}
+            JK Interior — the leading interior designer in Narpatganj, Forbesganj and Araria, Bihar. We provide PVC false ceiling, gypsum ceiling design, WPC wall panelling, UV marble sheet, modular TV unit design and complete interior solutions across{' '}
             <Link href="/cities/forbesganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Forbesganj</Link>,{' '}
             <Link href="/cities/araria" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Araria</Link>,{' '}
             <Link href="/cities/jogbani" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Jogbani</Link>,{' '}
@@ -315,10 +316,10 @@ export default function Footer() {
 <div className="flex flex-col items-center justify-between gap-5 border-t border-gold-200 pt-8 md:flex-row">
   <div>
     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-700" suppressHydrationWarning>
-      © {currentYear} JK Interior Forbesganj
+      © {currentYear} JK Interior — Narpatganj &amp; Forbesganj, Bihar
     </p>
     <p className="mt-0.5 flex items-center gap-1.5 text-[10px] font-semibold text-gray-500">
-      <span>Interior & Digital Experience Crafted by Jitendra Kumar</span>
+      <span>Interior &amp; digital experience crafted by Jitendra Kumar</span>
       <svg className="h-3 w-3 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </svg>
@@ -329,7 +330,7 @@ export default function Footer() {
     <span>•</span>
     <Link href="/faq" className="hover:text-gold-600 transition-colors">FAQ</Link>
     <span>•</span>
-    <span>Excellence Across Araria District</span>
+    <span>Serving Narpatganj, Forbesganj &amp; Araria District</span>
   </div>
 </div>
       </div>

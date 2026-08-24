@@ -2,6 +2,8 @@ import Navbar from "@/components/navbar"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
+import PageHero from "@/components/ui/page-hero"
+import { MessageCircle } from "lucide-react"
 
 export default function ContactPage() {
   return (
@@ -48,10 +50,18 @@ export default function ContactPage() {
         }}
       />
       <Navbar />
-      <h1 className="sr-only">
-        Contact JK Interior – Get Free Quote for Interior Design in Forbesganj Bihar
-      </h1>
-      <div className="pt-28" />
+      <PageHero
+        icon={MessageCircle}
+        title={
+          <>
+            Let&rsquo;s Talk About{" "}
+            <span className="hero-gradient-text">Your Space</span>
+          </>
+        }
+        subtitle="Call either line, message us on WhatsApp, or fill the form below — a real person from our team replies within two hours, not a bot."
+        whatsappMessage="Hello JK Interior, I would like to discuss an interior project."
+        whatsappLabel="Chat on WhatsApp"
+      />
       <Contact />
       <Footer />
     </main>
