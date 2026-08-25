@@ -146,7 +146,12 @@ function groundedEstimateFor(message: string, memory: ConversationMemory): strin
  * Streaming shaves the perceived wait from "one long pause" to "reply starts
  * typing almost immediately," which is most of what makes the assistant feel fast.
  */
-async function pipeGroqStream(groqRes: Response, res: any): Promise<string> {
+async function pipeGroqStream(
+  groqRes: Response,
+  res: any,
+  servedByModel: string,
+  recover?: () => Promise<string | null>,
+): Promise<string> {
   res.writeHead(200, {
     "Content-Type": "text/plain; charset=utf-8",
     "Cache-Control": "no-cache, no-transform",
@@ -185,12 +190,25 @@ async function pipeGroqStream(groqRes: Response, res: any): Promise<string> {
     }
   }
 
-  // The response has already been sent as 200 text/plain, so this can't change
-  // what the client sees — but an empty stream is exactly what makes the widget
-  // fall back to its offline reply while looking, from the outside, like nothing
-  // went wrong. Logging it here is what makes that failure diagnosable.
+  // An empty stream is exactly what makes the widget fall back to its offline
+  // reply while looking, from the outside, like nothing went wrong. Headers are
+  // already sent as 200 text/plain, but nothing has been written to the body
+  // yet in this case — so there's still time to recover with a second model
+  // before ending the response, rather than shipping an empty reply.
   if (!fullText) {
-    console.error(`Groq stream (model=${GROQ_MODEL}) completed with no content — check for a tool-only turn or an upstream content filter.`)
+    console.error(`Groq stream (model=${servedByModel}) completed with no content — check for a tool-only turn or an upstream content filter.`)
+    if (recover) {
+      const recovered = await recover().catch((err) => {
+        console.error("Groq stream recovery request failed", err)
+        return null
+      })
+      if (recovered) {
+        res.write(recovered)
+        fullText = recovered
+      } else {
+        console.error("Groq stream recovery also produced no content")
+      }
+    }
   }
 
   res.end()
@@ -228,12 +246,39 @@ async function fetchGroqOnce(payload: object, apiKey: string): Promise<Response>
  * account/region doesn't have compound access (404/400) or the request
  * otherwise fails outright. This only re-fetches before anything has been
  * written to the client, so it's safe to do even on the streaming path.
+ *
+ * Returns which model actually answered alongside the response, so callers
+ * can tell a genuinely fresh retry (a different model) from a pointless one
+ * (the same model that already answered) when recovering from empty content.
  */
-async function fetchGroqWithRetry(payload: { model: string; [key: string]: unknown }, apiKey: string): Promise<Response> {
+async function fetchGroqWithRetry(
+  payload: { model: string; [key: string]: unknown },
+  apiKey: string,
+): Promise<{ res: Response; model: string }> {
   const primary = await fetchGroqOnce(payload, apiKey)
-  if (primary.ok || payload.model === GROQ_FALLBACK_MODEL) return primary
+  if (primary.ok || payload.model === GROQ_FALLBACK_MODEL) return { res: primary, model: payload.model }
 
-  return fetchGroqOnce({ ...payload, model: GROQ_FALLBACK_MODEL }, apiKey)
+  return { res: await fetchGroqOnce({ ...payload, model: GROQ_FALLBACK_MODEL }, apiKey), model: GROQ_FALLBACK_MODEL }
+}
+
+/**
+ * A plain, non-streaming completion against a specific model — used to recover
+ * a reply when the streaming or primary call came back with nothing usable.
+ * Compound systems occasionally spend their whole turn on tool orchestration
+ * and leave no room for the actual answer; one retry against a different,
+ * non-agentic model is far more likely to just answer than repeating the same
+ * request against the same model that already came back empty.
+ */
+async function fetchPlainReply(basePayload: object, model: string, apiKey: string): Promise<string | null> {
+  const res = await fetchGroqOnce({ ...basePayload, model, stream: false }, apiKey)
+  if (!res.ok) {
+    const errText = await res.text().catch(() => "")
+    console.error("Groq recovery fetch failed", model, res.status, errText.slice(0, 300))
+    return null
+  }
+  const data = await res.json().catch(() => null)
+  const reply: string | undefined = data?.choices?.[0]?.message?.content?.trim()
+  return reply || null
 }
 
 export default async function handler(req: any, res: any) {
@@ -292,17 +337,24 @@ export default async function handler(req: any, res: any) {
       { role: "user", content: message },
     ]
 
-    const groqRes = await fetchGroqWithRetry(
-      {
-        model: GROQ_MODEL,
-        messages,
-        // Low temperature on purpose: the system prompt is a fixed block of
-        // website data and the reply has to stay inside it. Sampling loosely is
-        // what produced invented rates and services people never asked about.
-        temperature: 0.3,
-        max_tokens: 500,
-        stream: wantsStream,
-      },
+    // Kept separate from the request payload so a recovery retry (a plain,
+    // non-streaming call against a different model) can reuse the same
+    // messages/temperature without re-threading them through every call site.
+    const basePayload = {
+      messages,
+      // Low temperature on purpose: the system prompt is a fixed block of
+      // website data and the reply has to stay inside it. Sampling loosely is
+      // what produced invented rates and services people never asked about.
+      temperature: 0.3,
+      // Compound systems spend some of this budget on tool orchestration
+      // (deciding whether to search, framing the query) before any of it
+      // reaches the visible reply — 500 was tight enough that a turn could
+      // exhaust it on that scaffolding alone and stream back nothing.
+      max_tokens: 700,
+    }
+
+    const { res: groqRes, model: servedByModel } = await fetchGroqWithRetry(
+      { model: GROQ_MODEL, ...basePayload, stream: wantsStream },
       apiKey,
     )
 
@@ -313,23 +365,37 @@ export default async function handler(req: any, res: any) {
       return
     }
 
+    // A genuinely different second model is worth one recovery attempt; retrying
+    // the exact model that just answered empty is unlikely to do anything but
+    // burn another request.
+    const recoveryModel = servedByModel === GROQ_FALLBACK_MODEL ? undefined : GROQ_FALLBACK_MODEL
+
     // Streaming path: pipe tokens to the client as plain text as they arrive.
     // Response is already sent (text/plain) once this resolves — memory/context
     // extraction for streamed replies happens client-side, so nothing more to do.
     if (wantsStream && groqRes.body) {
-      await pipeGroqStream(groqRes, res)
+      await pipeGroqStream(
+        groqRes,
+        res,
+        servedByModel,
+        recoveryModel ? () => fetchPlainReply(basePayload, recoveryModel, apiKey) : undefined,
+      )
       return
     }
 
     const data = await groqRes.json()
-    const reply: string | undefined = data?.choices?.[0]?.message?.content?.trim()
+    let reply: string | undefined = data?.choices?.[0]?.message?.content?.trim()
 
     if (!reply) {
       // Groq returned 200 with nothing usable in it — logged because this is
       // exactly the case that otherwise looks, from the widget's offline
       // fallback, indistinguishable from "the AI backend is fine but chose not
       // to answer."
-      console.error(`Groq reply (model=${GROQ_MODEL}) had no content`, JSON.stringify(data).slice(0, 500))
+      console.error(`Groq reply (model=${servedByModel}) had no content`, JSON.stringify(data).slice(0, 500))
+      if (recoveryModel) reply = (await fetchPlainReply(basePayload, recoveryModel, apiKey)) ?? undefined
+    }
+
+    if (!reply) {
       res.status(200).json({ ok: false, error: "Empty AI reply" })
       return
     }
