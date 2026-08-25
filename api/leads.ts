@@ -56,7 +56,38 @@ function makeLimiter(windowMs: number, max: number) {
 }
 
 const isLeadRateLimited = makeLimiter(10 * 60_000, 8) // 8 lead submissions per 10 min per IP
-const isAuthRateLimited = makeLimiter(15 * 60_000, 5) // 5 failed admin-key attempts per 15 min per IP
+
+/**
+ * Separate from makeLimiter above: this one must only count FAILED admin-key
+ * attempts, not every request. A single combined "record and check" call (the
+ * makeLimiter shape) was recording a hit on every GET/PATCH regardless of
+ * whether the key was right — so loading the dashboard once, then clicking
+ * "Mark all read" on five-plus unread leads, burned through the whole 5-hit
+ * budget on correctly-authenticated requests and 429'd the admin out of their
+ * own dashboard for 15 minutes. `isBlocked` only reads the current count;
+ * `recordFailure` is the one call site that adds to it, and it only runs
+ * after a key has already been checked and found wrong.
+ */
+function makeFailureLimiter(windowMs: number, max: number) {
+  const hits = new Map<string, number[]>()
+  function pruned(key: string): number[] {
+    const now = Date.now()
+    const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs)
+    hits.set(key, recent)
+    if (hits.size > 5000) {
+      for (const [k, times] of hits) {
+        if (times.every((t) => now - t >= windowMs)) hits.delete(k)
+      }
+    }
+    return recent
+  }
+  return {
+    isBlocked: (key: string): boolean => pruned(key).length >= max,
+    recordFailure: (key: string): void => { pruned(key).push(Date.now()) },
+  }
+}
+
+const authLimiter = makeFailureLimiter(15 * 60_000, 5) // 5 failed admin-key attempts per 15 min per IP
 
 function clientIp(req: any): string {
   const forwarded = req.headers?.["x-forwarded-for"]
@@ -123,6 +154,23 @@ function isAuthorized(req: any): boolean {
   return Boolean(expected) && key === expected
 }
 
+/**
+ * Shared by GET and PATCH. Checks the failure-lockout status *before*
+ * authorizing (so an IP that's already over budget can't use another attempt
+ * to probe the key), but only records a new failure — via authLimiter.recordFailure —
+ * once the key has actually been checked and found wrong. A correct key never
+ * touches the limiter at all.
+ */
+function checkAdminAuth(req: any, ip: string): "ok" | "not-configured" | "blocked" | "unauthorized" {
+  if (!process.env.ADMIN_KEY) return "not-configured"
+  if (authLimiter.isBlocked(ip)) return "blocked"
+  if (!isAuthorized(req)) {
+    authLimiter.recordFailure(ip)
+    return "unauthorized"
+  }
+  return "ok"
+}
+
 export default async function handler(req: any, res: any) {
   try {
     await ensureTable()
@@ -164,15 +212,16 @@ export default async function handler(req: any, res: any) {
   }
 
   if (req.method === "GET") {
-    if (!process.env.ADMIN_KEY) {
+    const auth = checkAdminAuth(req, clientIp(req))
+    if (auth === "not-configured") {
       res.status(500).json({ ok: false, error: "Admin access not configured" })
       return
     }
-    if (isAuthRateLimited(clientIp(req))) {
+    if (auth === "blocked") {
       res.status(429).json({ ok: false, error: "Too many attempts. Try again later." })
       return
     }
-    if (!isAuthorized(req)) {
+    if (auth === "unauthorized") {
       res.status(401).json({ ok: false, error: "Unauthorized" })
       return
     }
@@ -190,15 +239,16 @@ export default async function handler(req: any, res: any) {
   }
 
   if (req.method === "PATCH") {
-    if (!process.env.ADMIN_KEY) {
+    const auth = checkAdminAuth(req, clientIp(req))
+    if (auth === "not-configured") {
       res.status(500).json({ ok: false, error: "Admin access not configured" })
       return
     }
-    if (isAuthRateLimited(clientIp(req))) {
+    if (auth === "blocked") {
       res.status(429).json({ ok: false, error: "Too many attempts. Try again later." })
       return
     }
-    if (!isAuthorized(req)) {
+    if (auth === "unauthorized") {
       res.status(401).json({ ok: false, error: "Unauthorized" })
       return
     }
