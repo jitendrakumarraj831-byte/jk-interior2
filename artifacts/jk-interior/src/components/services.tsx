@@ -24,6 +24,8 @@ const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$
 const ROW_IMAGE_SIZES = "(min-width: 1024px) 520px, calc(100vw - 40px)"
 /** Swipe cards are a fixed-ish rail item, never full viewport width. */
 const CARD_IMAGE_SIZES = "(min-width: 640px) 340px, 80vw"
+/** Featured Work grid tiles are 2/3/4 columns inside a max-w-6xl container — much narrower than a full row image. */
+const GRID_IMAGE_SIZES = "(min-width: 1024px) 260px, (min-width: 640px) 30vw, 45vw"
 
 const HIGHLIGHT_STYLES: Record<ServiceHighlight["kind"], { icon: LucideIcon }> = {
   special: { icon: Sparkles },
@@ -401,12 +403,16 @@ function FeaturedWorkGrid() {
             key={service.slug}
             href={`/services/${service.slug}`}
             aria-label={`${service.name} photos — ${service.seoKeyword}`}
+            itemScope
+            itemType="https://schema.org/Service"
+            itemProp="url"
             className="group relative block overflow-hidden rounded-xl border border-gold-900/10 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
           >
+            <meta itemProp="keywords" content={service.seoKeyword} />
             <div className="relative aspect-square w-full overflow-hidden bg-slate-900">
               <picture itemProp="image" itemScope itemType="https://schema.org/ImageObject">
-                <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={ROW_IMAGE_SIZES} type="image/avif" />
-                <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={ROW_IMAGE_SIZES} type="image/webp" />
+                <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={GRID_IMAGE_SIZES} type="image/avif" />
+                <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={GRID_IMAGE_SIZES} type="image/webp" />
                 <meta itemProp="contentUrl" content={service.heroImage} />
                 <img
                   src={service.heroImage}
@@ -421,7 +427,7 @@ function FeaturedWorkGrid() {
                 />
               </picture>
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <span className="absolute bottom-2.5 left-2.5 right-2.5 text-xs font-extrabold leading-tight text-white drop-shadow-md sm:text-sm">
+              <span itemProp="name" className="absolute bottom-2.5 left-2.5 right-2.5 text-xs font-extrabold leading-tight text-white drop-shadow-md sm:text-sm">
                 {service.name}
               </span>
             </div>

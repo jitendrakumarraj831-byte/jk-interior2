@@ -320,7 +320,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
       <div className="flex gap-2 p-3 pt-0 bg-white">
         <CallLink
           size="sm"
-          ariaLabel={`Call for ${category} quote — ${seo?.keywordSuffix.split(" | ")[0] ?? category}`}
+          ariaLabel={`Call for ${category} quote — ${seo?.keywordSuffix ?? category}`}
           className="flex-1 py-2 text-xs font-semibold rounded-xl"
         >
           Get Quote

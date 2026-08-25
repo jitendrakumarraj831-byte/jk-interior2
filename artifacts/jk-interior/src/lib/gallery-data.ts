@@ -97,35 +97,41 @@ export type GalleryImage = (typeof galleryImages)[number]
  * human-read prose shown under the card and doubles as the schema.org
  * `description` for that category's images.
  */
-export const CATEGORY_SEO: Record<string, { keywordSuffix: string; caption: string }> = {
+export const CATEGORY_SEO: Record<string, { keywordSuffix: string; keywords: string; caption: string }> = {
   "Gypsum False Ceiling": {
-    keywordSuffix: "gypsum false ceiling design with price | false ceiling contractor forbesganj",
+    keywordSuffix: "gypsum false ceiling design with price",
+    keywords: "gypsum false ceiling design with price, false ceiling contractor forbesganj",
     caption:
       "Gypsum false ceiling design with price you can see upfront — a plaster-smooth finish with concealed cove or LED lighting, installed by JK Interior Forbesganj for halls, bedrooms and other dry rooms across Araria district.",
   },
   "PVC Ceiling": {
-    keywordSuffix: "pvc ceiling design for bedroom | jk interior forbesganj",
+    keywordSuffix: "pvc ceiling design for bedroom",
+    keywords: "pvc ceiling design for bedroom, jk interior forbesganj",
     caption:
       "A fully waterproof PVC ceiling design for bedroom, kitchen and bathroom use — contemporary panel patterns that hold a clean finish for years, fitted by JK Interior, the false ceiling contractor Forbesganj homeowners call first.",
   },
   "Grid Ceiling": {
-    keywordSuffix: "grid false ceiling installation | interior designer in araria bihar",
+    keywordSuffix: "grid false ceiling installation",
+    keywords: "grid false ceiling installation, interior designer in araria bihar",
     caption:
       "Grid false ceiling installation for offices, shops and clinics — durable, acoustic mineral-fibre tiles that lift out for service in seconds, by the same interior designer in Araria Bihar businesses rely on for commercial fit-outs.",
   },
   "WPC fluted panels & uv marble Sheet": {
-    keywordSuffix:
-      "wpc louvers wall panelling | pvc wall panel design catalog | charcoal panel suppliers | uv marble sheet wall cladding",
+    keywordSuffix: "wpc louvers wall panelling",
+    keywords:
+      "wpc louvers wall panelling, pvc wall panel design catalog, charcoal panel suppliers, uv marble sheet wall cladding",
     caption:
       "WPC louvers wall panelling and charcoal-tone fluted designs, drawn from trusted charcoal panel suppliers and our own pvc wall panel design catalog, paired with high-gloss uv marble sheet wall cladding for TV and feature walls — all installed by JK Interior Forbesganj.",
   },
   "TV Unit Design": {
-    keywordSuffix: "modern tv unit design for living room | interior designer in araria bihar",
+    keywordSuffix: "modern tv unit design for living room",
+    keywords: "modern tv unit design for living room, interior designer in araria bihar",
     caption:
       "Modern TV unit design for living room spaces — bespoke modular units with concealed cabling and premium finishes, custom-built by JK Interior for homes across Forbesganj and Araria.",
   },
   "Artificial Grass": {
-    keywordSuffix: "jk interior forbesganj | false ceiling contractor forbesganj",
+    keywordSuffix: "jk interior forbesganj",
+    keywords: "jk interior forbesganj, false ceiling contractor forbesganj",
     caption:
       "Evergreen artificial grass for balconies, terraces and gardens — near-zero-upkeep landscaping installed by JK Interior Forbesganj, the interior designer in Araria Bihar homeowners trust for outdoor finishing too.",
   },
@@ -163,7 +169,7 @@ export function buildGalleryImageObjects() {
       description: seo?.caption ?? img.alt,
       width: img.width,
       height: img.height,
-      keywords: seo?.keywordSuffix ?? TARGET_KEYWORDS_CONTENT,
+      keywords: seo?.keywords ?? TARGET_KEYWORDS_CONTENT,
       representativeOfPage: false,
     }
   })
