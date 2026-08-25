@@ -176,6 +176,32 @@ async function pipeGroqStream(groqRes: Response, res: any): Promise<string> {
   return fullText
 }
 
+/**
+ * Groq's 8,000 TPM free-tier cap is easy to hit with this app's system
+ * prompt — a single turn can run close to 4,000 tokens on its own. Groq's
+ * 429 body names how long to wait (e.g. "Please try again in 2.7s"), so one
+ * short retry recovers a burst that would otherwise drop straight to the
+ * widget's offline fallback for no real reason.
+ */
+async function fetchGroqWithRetry(payload: object, apiKey: string): Promise<Response> {
+  const doFetch = () =>
+    fetch(GROQ_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+    })
+
+  const first = await doFetch()
+  if (first.status !== 429) return first
+
+  const errText = await first.text().catch(() => "")
+  const waitMatch = errText.match(/try again in ([\d.]+)s/i)
+  const waitMs = Math.min(Math.max(Number(waitMatch?.[1]) * 1000 || 1500, 500), 4000)
+  await new Promise((resolve) => setTimeout(resolve, waitMs))
+  return doFetch()
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     res.status(405).json({ ok: false, error: "Method not allowed" })
@@ -232,13 +258,8 @@ export default async function handler(req: any, res: any) {
       { role: "user", content: message },
     ]
 
-    const groqRes = await fetch(GROQ_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
+    const groqRes = await fetchGroqWithRetry(
+      {
         model: GROQ_MODEL,
         messages,
         // Low temperature on purpose: the system prompt is a fixed block of
@@ -247,9 +268,9 @@ export default async function handler(req: any, res: any) {
         temperature: 0.3,
         max_tokens: 500,
         stream: wantsStream,
-      }),
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
-    })
+      },
+      apiKey,
+    )
 
     if (!groqRes.ok) {
       const errText = await groqRes.text().catch(() => "")
