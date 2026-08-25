@@ -516,7 +516,6 @@ const welcomeMessage = (language: ReplyLanguage) => mk("bot", copyFor(language).
 export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(startOpen)
-  const [isInitializing, setIsInitializing] = useState(true)
   const [messages, setMsgs] = useState<Message[]>(() => [welcomeMessage("english")])
   const [input, setInput] = useState("")
   const [lead, setLead] = useState<Partial<Lead> | null>(null)
@@ -552,16 +551,6 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
 
   useEffect(() => { memoryRef.current = memory }, [memory])
   useEffect(() => { languageRef.current = language }, [language])
-
-  // ── Handle chat opening — instant load, no waiting screen ──────────────
-  useEffect(() => {
-    if (open) {
-      // Show content immediately; tiny frame delay just to let paint flush
-      const timer = setTimeout(() => setIsInitializing(false), 80)
-      return () => clearTimeout(timer)
-    }
-    return undefined
-  }, [open])
 
   // ── Check voice support ───────────────────────────────────────────────────
   useEffect(() => {
@@ -679,71 +668,78 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
     setMsgs(prev => [...prev, mk("user", text)].slice(-100))
     setTyping(true)
 
-    // Settle the language first: every scripted line produced in this turn — the
-    // estimate, the booking questions, the offline notice — has to come out in
-    // the same language the model is being told to answer in.
-    const replyLanguage = resolveReplyLanguage(text, languageRef.current)
-    languageRef.current = replyLanguage
-    setLanguage(replyLanguage)
-    const say = copyFor(replyLanguage)
+    // Everything below can throw on unexpected input (a malformed memory blob,
+    // a network primitive that isn't there). Without this wrapper, an
+    // exception anywhere past this point left `sendLock` stuck `true` forever
+    // — the chat would show "typing…" and silently refuse every message after
+    // until the widget was reset. The `finally` guarantees the lock always
+    // clears, whatever branch is taken or however it exits.
+    try {
 
-    // History as the model should see it — without the message being answered,
-    // which is passed separately. Appending first meant the visitor's words
-    // arrived twice on every single turn.
-    const historyBefore = historyRef.current
-    historyRef.current = [...historyBefore, { role: "user", content: text }]
+      // Settle the language first: every scripted line produced in this turn — the
+      // estimate, the booking questions, the offline notice — has to come out in
+      // the same language the model is being told to answer in.
+      const replyLanguage = resolveReplyLanguage(text, languageRef.current)
+      languageRef.current = replyLanguage
+      setLanguage(replyLanguage)
+      const say = copyFor(replyLanguage)
 
-    {
-      // Merged unconditionally, not only when something was extracted: the turn
-      // counter and the language belong in memory whatever the visitor typed,
-      // and `summarizeForPrompt` keys off that counter.
-      const memUpd = extractFromText(text, memoryRef.current, "user")
-      const merged = mergeMemory(memoryRef.current, { ...memUpd, language: replyLanguage }, true)
-      merged.stage = updateStage(merged)
-      memoryRef.current = merged
-      setMemory(merged)
-      saveMemory(merged)
-    }
+      // History as the model should see it — without the message being answered,
+      // which is passed separately. Appending first meant the visitor's words
+      // arrived twice on every single turn.
+      const historyBefore = historyRef.current
+      historyRef.current = [...historyBefore, { role: "user", content: text }]
 
-    const dims = extractDimensions(text)
-    const serviceFromMsg = detectService(text.toLowerCase())
-    const currentService = serviceFromMsg || lead?.service || null
-    const galleryType = galleryCategoryFor(text, lastTopic, currentService ?? undefined)
+      {
+        // Merged unconditionally, not only when something was extracted: the turn
+        // counter and the language belong in memory whatever the visitor typed,
+        // and `summarizeForPrompt` keys off that counter.
+        const memUpd = extractFromText(text, memoryRef.current, "user")
+        const merged = mergeMemory(memoryRef.current, { ...memUpd, language: replyLanguage }, true)
+        merged.stage = updateStage(merged)
+        memoryRef.current = merged
+        setMemory(merged)
+        saveMemory(merged)
+      }
 
-    // ✅ Service save (only if not already known)
-    if (serviceFromMsg && !lead?.service) {
-      const updLead = { ...(lead || {}), service: serviceFromMsg }
-      setLead(updLead)
-      persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
-      setLastTopic(serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
-    }
+      const dims = extractDimensions(text)
+      const serviceFromMsg = detectService(text.toLowerCase())
+      const currentService = serviceFromMsg || lead?.service || null
+      const galleryType = galleryCategoryFor(text, lastTopic, currentService ?? undefined)
 
-    // Mid-booking, the visitor may simply ask something else. Detecting that and
-    // answering it — then picking the booking back up — is the difference between
-    // an assistant and a form: "PVC ka rate kya hai?" typed at the name question
-    // used to be saved as the customer's name.
-    const divertedStep = collectStep && isCollectionEscape(text, collectStep, dims) ? collectStep : null
+      // ✅ Service save (only if not already known)
+      if (serviceFromMsg && !lead?.service) {
+        const updLead = { ...(lead || {}), service: serviceFromMsg }
+        setLead(updLead)
+        persist(updLead, serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
+        setLastTopic(serviceFromMsg.toLowerCase().replace(/\s+/g, "-"))
+      }
 
-    const resumeCollection = async () => {
-      if (!divertedStep) return
-      await delay(600)
-      const reask =
-        divertedStep === "name"  ? say.askName :
-        divertedStep === "phone" ? say.askPhone :
-        divertedStep === "city"  ? say.askCity :
-                                   say.askTime(lead?.city)
-      const line = `${say.resumeCollection} ${reask}`
-      historyRef.current = [...historyRef.current, { role: "assistant", content: line }]
-      setMsgs(prev => [...prev, mk("bot", line)])
-    }
+      // Mid-booking, the visitor may simply ask something else. Detecting that and
+      // answering it — then picking the booking back up — is the difference between
+      // an assistant and a form: "PVC ka rate kya hai?" typed at the name question
+      // used to be saved as the customer's name.
+      const divertedStep = collectStep && isCollectionEscape(text, collectStep, dims) ? collectStep : null
 
-    // ── Instant estimate ──────────────────────────────────────────────────────
-    // Only for a message that is *nothing but* a room size. A message that also
-    // carries a question ("12x14 hall, warranty kitni hai?") goes to the model,
-    // which receives these very figures already worked out — answering the size
-    // and ignoring the question is what made the assistant feel deaf.
-    if (dims && isSizeOnlyMessage(text, dims) && !galleryType) {
-      try {
+      const resumeCollection = async () => {
+        if (!divertedStep) return
+        await delay(600)
+        const reask =
+          divertedStep === "name"  ? say.askName :
+          divertedStep === "phone" ? say.askPhone :
+          divertedStep === "city"  ? say.askCity :
+                                     say.askTime(lead?.city)
+        const line = `${say.resumeCollection} ${reask}`
+        historyRef.current = [...historyRef.current, { role: "assistant", content: line }]
+        setMsgs(prev => [...prev, mk("bot", line)])
+      }
+
+      // ── Instant estimate ──────────────────────────────────────────────────────
+      // Only for a message that is *nothing but* a room size. A message that also
+      // carries a question ("12x14 hall, warranty kitni hai?") goes to the model,
+      // which receives these very figures already worked out — answering the size
+      // and ignoring the question is what made the assistant feel deaf.
+      if (dims && isSizeOnlyMessage(text, dims) && !galleryType) {
         if (!divertedStep) setCollectStep(null)
         await delay(400)
         const estimateReply = generateEstimateFromDimensions(dims.length, dims.width, currentService, lead?.name, replyLanguage)
@@ -771,236 +767,226 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
         setLead(newLead)
         persist(newLead, svcSlug)
         await resumeCollection()
-      } finally {
-        setTyping(false)
-        sendLock.current = false
-      }
-      return
-    }
-
-    // ── Booking details, one field at a time ──────────────────────────────────
-    if (collectStep && !divertedStep) {
-      let collReply = ""
-      const tLower = text.toLowerCase()
-      if (collectStep === "name") {
-        const extractedName = tryExtractName(text)
-        const name = extractedName || text.trim()
-        if (!name || name.length < 2) {
-          collReply = say.askNameAgain
-        } else {
-          const updated = { ...(lead || {}), name }
-          setLead(updated); persist(updated, lastTopic)
-          setCollectStep("phone")
-          collReply = say.thanksAskPhone(name)
-        }
-      } else if (collectStep === "phone") {
-        const phone = tryExtractPhone(text)
-        if (!phone) collReply = say.askPhoneAgain
-        else {
-          const city = detectCity(tLower) || lead?.city
-          const updated = { ...(lead || {}), phone, city: city || undefined }
-          setLead(updated); persist(updated, lastTopic)
-          if (city) { setCollectStep("time"); collReply = say.askTime(city) }
-          else { setCollectStep("city"); collReply = say.askCity }
-        }
-      } else if (collectStep === "city") {
-        const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
-        if (!city) collReply = say.askCityAgain
-        else {
-          const updated = { ...(lead || {}), city }
-          setLead(updated); persist(updated, lastTopic)
-          setCollectStep("time")
-          collReply = say.askTime(city)
-        }
-      } else if (collectStep === "time") {
-        const preferredTime = text.trim()
-        setCollectStep(null)
-        const finalLead: Lead = {
-          name:    lead?.name    || "Friend",
-          phone:   lead?.phone   || "",
-          city:    lead?.city,
-          service: lead?.service,
-        }
-        storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
-        const card: LeadCard = {
-          ...finalLead,
-          estimate:      pendingEstimate || undefined,
-          preferredTime,
-          timestamp:     new Date().toISOString(),
-        }
-        historyRef.current = [...historyRef.current, { role: "assistant", content: say.bookingConfirmed }]
-        setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
-        setTyping(false)
-        sendLock.current = false
         return
       }
 
-      historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
-      setMsgs(prev => [...prev, mk("bot", collReply)])
-      setTyping(false)
-      sendLock.current = false
-      return
-    }
-
-    const svc = serviceFromMsg
-    const city = detectCity(text.toLowerCase())
-    const extractedPhone = tryExtractPhone(text)
-    let updatedLead = lead ? { ...lead } : null
-    if (extractedPhone && !lead?.phone) {
-      const extractedName = tryExtractName(text)
-      updatedLead = { ...(lead || {}), phone: extractedPhone, name: extractedName || lead?.name || "Friend", city: city || lead?.city, service: svc || lead?.service }
-      setLead(updatedLead)
-      storeAdminLead(updatedLead as Lead, pendingEstimate || undefined, undefined, historyRef.current)
-    } else {
-      // Save city and/or service together — don't lose one when both are detected
-      const needsCity    = city && !lead?.city
-      const needsService = svc  && !lead?.service
-      if (needsCity || needsService) {
-        updatedLead = {
-          ...(lead || {}),
-          ...(needsCity    ? { city }        : {}),
-          ...(needsService ? { service: svc } : {}),
+      // ── Booking details, one field at a time ──────────────────────────────────
+      if (collectStep && !divertedStep) {
+        let collReply = ""
+        const tLower = text.toLowerCase()
+        if (collectStep === "name") {
+          const extractedName = tryExtractName(text)
+          const name = extractedName || text.trim()
+          if (!name || name.length < 2) {
+            collReply = say.askNameAgain
+          } else {
+            const updated = { ...(lead || {}), name }
+            setLead(updated); persist(updated, lastTopic)
+            setCollectStep("phone")
+            collReply = say.thanksAskPhone(name)
+          }
+        } else if (collectStep === "phone") {
+          const phone = tryExtractPhone(text)
+          if (!phone) collReply = say.askPhoneAgain
+          else {
+            const city = detectCity(tLower) || lead?.city
+            const updated = { ...(lead || {}), phone, city: city || undefined }
+            setLead(updated); persist(updated, lastTopic)
+            if (city) { setCollectStep("time"); collReply = say.askTime(city) }
+            else { setCollectStep("city"); collReply = say.askCity }
+          }
+        } else if (collectStep === "city") {
+          const city = detectCity(tLower) || (text.trim().length > 2 ? text.trim() : null)
+          if (!city) collReply = say.askCityAgain
+          else {
+            const updated = { ...(lead || {}), city }
+            setLead(updated); persist(updated, lastTopic)
+            setCollectStep("time")
+            collReply = say.askTime(city)
+          }
+        } else if (collectStep === "time") {
+          const preferredTime = text.trim()
+          setCollectStep(null)
+          const finalLead: Lead = {
+            name:    lead?.name    || "Friend",
+            phone:   lead?.phone   || "",
+            city:    lead?.city,
+            service: lead?.service,
+          }
+          storeAdminLead(finalLead, pendingEstimate || undefined, preferredTime, historyRef.current)
+          const card: LeadCard = {
+            ...finalLead,
+            estimate:      pendingEstimate || undefined,
+            preferredTime,
+            timestamp:     new Date().toISOString(),
+          }
+          historyRef.current = [...historyRef.current, { role: "assistant", content: say.bookingConfirmed }]
+          setMsgs(prev => [...prev, mk("bot", "lead_card", "card", card)])
+          return
         }
+
+        historyRef.current = [...historyRef.current, { role: "assistant", content: collReply }]
+        setMsgs(prev => [...prev, mk("bot", collReply)])
+        return
+      }
+
+      const svc = serviceFromMsg
+      const city = detectCity(text.toLowerCase())
+      const extractedPhone = tryExtractPhone(text)
+      let updatedLead = lead ? { ...lead } : null
+      if (extractedPhone && !lead?.phone) {
+        const extractedName = tryExtractName(text)
+        updatedLead = { ...(lead || {}), phone: extractedPhone, name: extractedName || lead?.name || "Friend", city: city || lead?.city, service: svc || lead?.service }
         setLead(updatedLead)
-      }
-    }
-
-    let reply: string | null = null
-    let wasStreamed = false
-
-    if (aiMode) {
-      const aiResult = await getAIReply(
-        text,
-        historyBefore,
-        updatedLead,
-        sessionIdRef.current,
-        memoryRef.current,
-        (partial, isFirst) => {
-          wasStreamed = true
-          if (isFirst) {
-            setTyping(false)
-            const newId = uid()
-            streamingIdRef.current = newId
-            setMsgs(prev => [...prev, mkId(newId, "bot", partial)])
-          } else if (streamingIdRef.current !== null) {
-            const sid = streamingIdRef.current
-            setMsgs(prev => prev.map(m => m.id === sid ? { ...m, text: partial } : m))
+        storeAdminLead(updatedLead as Lead, pendingEstimate || undefined, undefined, historyRef.current)
+      } else {
+        // Save city and/or service together — don't lose one when both are detected
+        const needsCity    = city && !lead?.city
+        const needsService = svc  && !lead?.service
+        if (needsCity || needsService) {
+          updatedLead = {
+            ...(lead || {}),
+            ...(needsCity    ? { city }        : {}),
+            ...(needsService ? { service: svc } : {}),
           }
-        },
-        { roomSize, lastTopic, messagesExchanged: memoryRef.current.messagesExchanged },
-      )
-      if (aiResult) {
-        reply = aiResult.reply
-        if (aiResult.updatedContext) {
-          const ctx = aiResult.updatedContext
-          if (ctx.roomSize && !roomSize) setRoomSize(ctx.roomSize)
-          if (ctx.lastTopic && ctx.lastTopic !== lastTopic) setLastTopic(ctx.lastTopic)
-          if (ctx.city || ctx.service) {
-            setLead(prev => ({
-              ...prev,
-              city: ctx.city || prev?.city,
-              service: ctx.service || prev?.service,
-            }))
+          setLead(updatedLead)
+        }
+      }
+
+      let reply: string | null = null
+      let wasStreamed = false
+
+      if (aiMode) {
+        const aiResult = await getAIReply(
+          text,
+          historyBefore,
+          updatedLead,
+          sessionIdRef.current,
+          memoryRef.current,
+          (partial, isFirst) => {
+            wasStreamed = true
+            if (isFirst) {
+              setTyping(false)
+              const newId = uid()
+              streamingIdRef.current = newId
+              setMsgs(prev => [...prev, mkId(newId, "bot", partial)])
+            } else if (streamingIdRef.current !== null) {
+              const sid = streamingIdRef.current
+              setMsgs(prev => prev.map(m => m.id === sid ? { ...m, text: partial } : m))
+            }
+          },
+          { roomSize, lastTopic, messagesExchanged: memoryRef.current.messagesExchanged },
+        )
+        if (aiResult) {
+          reply = aiResult.reply
+          if (aiResult.updatedContext) {
+            const ctx = aiResult.updatedContext
+            if (ctx.roomSize && !roomSize) setRoomSize(ctx.roomSize)
+            if (ctx.lastTopic && ctx.lastTopic !== lastTopic) setLastTopic(ctx.lastTopic)
+            if (ctx.city || ctx.service) {
+              setLead(prev => ({
+                ...prev,
+                city: ctx.city || prev?.city,
+                service: ctx.service || prev?.service,
+              }))
+            }
           }
         }
       }
-    }
 
-    if (!reply) {
-      if (wasStreamed && streamingIdRef.current !== null) {
-        setMsgs(prev => prev.filter(m => m.id !== streamingIdRef.current))
-        streamingIdRef.current = null
-        setTyping(true)
+      if (!reply) {
+        if (wasStreamed && streamingIdRef.current !== null) {
+          setMsgs(prev => prev.filter(m => m.id !== streamingIdRef.current))
+          streamingIdRef.current = null
+          setTyping(true)
+        }
+        wasStreamed = false
+        await delay(400)
+        reply = localFallback(text, updatedLead, roomSize, replyLanguage)
       }
-      wasStreamed = false
-      await delay(400)
-      reply = localFallback(text, updatedLead, roomSize, replyLanguage)
-    }
 
-    historyRef.current = [...historyRef.current, { role: "assistant", content: reply }]
+      historyRef.current = [...historyRef.current, { role: "assistant", content: reply }]
 
-    {
-      const replyUpd = extractFromText(reply, memoryRef.current, "bot")
-      if (Object.keys(replyUpd).length > 0) {
-        const merged = mergeMemory(memoryRef.current, replyUpd)
-        merged.stage = updateStage(merged)
-        memoryRef.current = merged
-        setMemory(merged)
-        saveMemory(merged)
+      {
+        const replyUpd = extractFromText(reply, memoryRef.current, "bot")
+        if (Object.keys(replyUpd).length > 0) {
+          const merged = mergeMemory(memoryRef.current, replyUpd)
+          merged.stage = updateStage(merged)
+          memoryRef.current = merged
+          setMemory(merged)
+          saveMemory(merged)
+        }
       }
-    }
 
-    const newTopic = svc ? svc.toLowerCase().replace(/\s+/g, "-") : lastTopic
-    if (svc && newTopic) {
-      const slug = newTopic
-      const prevTopics = memoryRef.current.topicHistory
-      if (!prevTopics.includes(slug)) {
-        const topicMem = mergeMemory(memoryRef.current, {
-          topicHistory: [slug, ...prevTopics].slice(0, 15),
-          previousTopics: { ...memoryRef.current.previousTopics, [slug]: true },
-        })
-        memoryRef.current = topicMem
-        setMemory(topicMem)
-        saveMemory(topicMem)
+      const newTopic = svc ? svc.toLowerCase().replace(/\s+/g, "-") : lastTopic
+      if (svc && newTopic) {
+        const slug = newTopic
+        const prevTopics = memoryRef.current.topicHistory
+        if (!prevTopics.includes(slug)) {
+          const topicMem = mergeMemory(memoryRef.current, {
+            topicHistory: [slug, ...prevTopics].slice(0, 15),
+            previousTopics: { ...memoryRef.current.previousTopics, [slug]: true },
+          })
+          memoryRef.current = topicMem
+          setMemory(topicMem)
+          saveMemory(topicMem)
+        }
       }
-    }
 
-    setLastTopic(newTopic)
-    persist(updatedLead, newTopic)
-    const estSummary = extractEstimateSummary(reply)
-    if (estSummary && !pendingEstimate) setPendingEstimate(estSummary)
+      setLastTopic(newTopic)
+      persist(updatedLead, newTopic)
+      const estSummary = extractEstimateSummary(reply)
+      if (estSummary && !pendingEstimate) setPendingEstimate(estSummary)
 
-    const finalStreamId = streamingIdRef.current
-    streamingIdRef.current = null
+      const finalStreamId = streamingIdRef.current
+      streamingIdRef.current = null
 
-    setMsgs(prev => {
-      // `galleryType` is applied on both branches. It used to be set only on the
-      // non-streaming one, so with the AI backend live the "View Designs" button
-      // answered in words and never showed a single photo.
-      let next: Message[]
-      if (wasStreamed && finalStreamId !== null) {
-        next = prev.map(m => m.id === finalStreamId ? { ...m, text: reply!, galleryType } : m)
-      } else {
-        next = [...prev, { ...mk("bot", reply as string), galleryType }]
+      setMsgs(prev => {
+        // `galleryType` is applied on both branches. It used to be set only on the
+        // non-streaming one, so with the AI backend live the "View Designs" button
+        // answered in words and never showed a single photo.
+        let next: Message[]
+        if (wasStreamed && finalStreamId !== null) {
+          next = prev.map(m => m.id === finalStreamId ? { ...m, text: reply!, galleryType } : m)
+        } else {
+          next = [...prev, { ...mk("bot", reply as string), galleryType }]
+        }
+        if (extractedPhone && !lead?.phone && updatedLead?.phone) {
+          const card: LeadCard = { name: updatedLead.name || "Friend", phone: updatedLead.phone!, city: updatedLead.city, service: updatedLead.service, estimate: pendingEstimate || estSummary || undefined, timestamp: new Date().toISOString() }
+          next = [...next, mk("bot", "lead_card", "card", card)]
+        }
+        return next
+      })
+
+      if (divertedStep) {
+        setTyping(false)
+        await resumeCollection()
+        return
       }
-      if (extractedPhone && !lead?.phone && updatedLead?.phone) {
-        const card: LeadCard = { name: updatedLead.name || "Friend", phone: updatedLead.phone!, city: updatedLead.city, service: updatedLead.service, estimate: pendingEstimate || estSummary || undefined, timestamp: new Date().toISOString() }
-        next = [...next, mk("bot", "lead_card", "card", card)]
-      }
-      return next
-    })
 
-    if (divertedStep) {
-      setTyping(false)
-      await resumeCollection()
+      const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone && !dims
+      if (hasLeadIntent) {
+        setTyping(false); await delay(1100); setTyping(true); await delay(700)
+        let startMsg: string
+        if (updatedLead?.name && updatedLead?.phone) {
+          startMsg = say.askTime(updatedLead.city)
+          setCollectStep("time")
+        } else if (updatedLead?.name) {
+          startMsg = `${updatedLead.name} — ${say.askPhone}`
+          setCollectStep("phone")
+        } else {
+          startMsg = say.askName
+          setCollectStep("name")
+        }
+        historyRef.current = [...historyRef.current, { role: "assistant", content: startMsg }]
+        setMsgs(prev => [...prev, mk("bot", startMsg)])
+        setTyping(false)
+        return
+      }
+    } finally {
       setTyping(false)
       sendLock.current = false
-      return
     }
-
-    const hasLeadIntent = LEAD_INTENT_RE.test(text.toLowerCase()) && !updatedLead?.phone && !extractedPhone && !dims
-    if (hasLeadIntent) {
-      setTyping(false); await delay(1100); setTyping(true); await delay(700)
-      let startMsg: string
-      if (updatedLead?.name && updatedLead?.phone) {
-        startMsg = say.askTime(updatedLead.city)
-        setCollectStep("time")
-      } else if (updatedLead?.name) {
-        startMsg = `${updatedLead.name} — ${say.askPhone}`
-        setCollectStep("phone")
-      } else {
-        startMsg = say.askName
-        setCollectStep("name")
-      }
-      historyRef.current = [...historyRef.current, { role: "assistant", content: startMsg }]
-      setMsgs(prev => [...prev, mk("bot", startMsg)])
-      setTyping(false)
-      sendLock.current = false
-      return
-    }
-
-    setTyping(false)
-    sendLock.current = false
   }, [input, lead, typing, lastTopic, roomSize, aiMode, collectStep, pendingEstimate, isListening])
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() } }
@@ -1113,58 +1099,6 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
                     onClick={toggleVoice}
                     className="ml-auto text-[9px] text-red-500 font-bold border border-red-300 rounded-full px-2 py-0.5 hover:bg-red-100"
                   >Stop</button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Loading Screen */}
-            <AnimatePresence>
-              {isInitializing && (
-                <motion.div
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gradient-to-br from-gold-50 via-white to-gold-50"
-                >
-                  {/* Animated greeting */}
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.1, duration: 0.5 }}
-                    className="flex flex-col items-center gap-4"
-                  >
-                    {/* Animated avatar */}
-                    <motion.div
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="relative flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold-600 to-gold-800 shadow-lg"
-                    >
-                      <AssistantMark className="h-7 w-7 md:h-9 md:w-9 text-white" />
-                    </motion.div>
-
-                    {/* Loading text */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3, duration: 0.5 }}
-                      className="text-center"
-                    >
-                      <h2 className="text-lg md:text-xl font-bold text-gold-900">JK Interior AI Assistant</h2>
-                      <p className="text-xs md:text-sm text-gold-600 mt-1">Getting ready to start your conversation</p>
-                    </motion.div>
-
-                    {/* Animated dots */}
-                    <motion.div className="flex gap-2">
-                      {[0, 1, 2].map((i) => (
-                        <motion.div
-                          key={i}
-                          animate={{ y: [0, -6, 0] }}
-                          transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                          className="h-2 w-2 rounded-full bg-gold-600"
-                        />
-                      ))}
-                    </motion.div>
-                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
