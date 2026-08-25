@@ -33,7 +33,7 @@ export const BUSINESS_FACTS: BusinessFact[] = [
   {
     term: "Services",
     detail:
-      "PVC false ceiling (₹75–₹150/sq.ft), gypsum false ceiling (₹75–₹210/sq.ft), WPC wall panels (₹180–₹650/sq.ft), UV marble sheets (₹45–₹120/sq.ft), modular TV units (from ₹15,000), grid ceilings, partition walls and complete home or office interiors.",
+      "PVC false ceiling (₹75–₹150/sq.ft), gypsum false ceiling (₹75–₹210/sq.ft), grid ceiling (₹45–₹115/sq.ft), partition wall (₹100–₹750/sq.ft), WPC wall panels (₹180–₹650/sq.ft), UV marble sheets (₹45–₹120/sq.ft), modular TV units (from ₹15,000), artificial grass (₹40–₹150/sq.ft) and complete home or office interiors.",
   },
   {
     term: "Hours",

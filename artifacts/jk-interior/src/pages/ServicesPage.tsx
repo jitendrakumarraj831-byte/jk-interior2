@@ -21,11 +21,12 @@ export default function ServicesPage() {
           itemListElement: [
             { "@type": "ListItem", position: 1, name: "PVC False Ceiling", url: "https://www.jkinterior.online/services" },
             { "@type": "ListItem", position: 2, name: "Gypsum Ceiling", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 3, name: "WPC Wall Panel", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 4, name: "UV Marble Sheet", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 5, name: "Modular TV Unit", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 6, name: "Bedroom Interior", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 7, name: "Office Interior", url: "https://www.jkinterior.online/services" }
+            { "@type": "ListItem", position: 3, name: "Grid Ceiling", url: "https://www.jkinterior.online/services" },
+            { "@type": "ListItem", position: 4, name: "Partition Wall", url: "https://www.jkinterior.online/services" },
+            { "@type": "ListItem", position: 5, name: "WPC Wall Panel", url: "https://www.jkinterior.online/services" },
+            { "@type": "ListItem", position: 6, name: "UV Marble Sheet", url: "https://www.jkinterior.online/services" },
+            { "@type": "ListItem", position: 7, name: "Modular TV Unit", url: "https://www.jkinterior.online/services" },
+            { "@type": "ListItem", position: 8, name: "Artificial Grass", url: "https://www.jkinterior.online/services" }
           ]
         }}
       />
@@ -38,7 +39,7 @@ export default function ServicesPage() {
             <span className="hero-gradient-text">Done Right the First Time</span>
           </>
         }
-        subtitle="Gypsum, PVC, WPC panelling, UV marble, TV units and more — nine services, transparent rates, one accountable team across Narpatganj, Forbesganj and Araria district."
+        subtitle="Gypsum, PVC, WPC panelling, UV marble, TV units and more — eight services, transparent rates, one accountable team across Narpatganj, Forbesganj and Araria district."
         whatsappMessage="Hello JK Interior, I'd like to know more about your services and current rates."
       />
       <Services />
