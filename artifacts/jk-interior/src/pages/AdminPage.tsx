@@ -74,12 +74,17 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
     if (lead.is_read || marking) return
     setMarking(true)
     try {
-      await fetch(`/api/leads`, {
+      const res = await fetch(`/api/leads`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
         body: JSON.stringify({ id: lead.id }),
       })
-      onRead(lead.id)
+      // A failed request (wrong key expired mid-session, a server error) still
+      // resolves rather than throwing — checking status here is what stops the
+      // UI from marking a lead read that the server never actually updated.
+      if (res.ok) onRead(lead.id)
+    } catch {
+      // Network failure — leave the lead unread so the tap can be retried.
     } finally {
       setMarking(false)
     }
@@ -193,8 +198,15 @@ export default function AdminPage() {
           })
         )
       )
+      // "fulfilled" only means the request completed without a network error —
+      // a 401/500 response still fulfills the promise, so it's checked too.
+      // Without this, a lead could show as read in the UI when the server
+      // never actually updated it.
       const successIds = new Set(
-        unread.filter((_, i) => results[i].status === "fulfilled").map(l => l.id)
+        unread.filter((_, i) => {
+          const r = results[i]
+          return r.status === "fulfilled" && r.value.ok
+        }).map(l => l.id)
       )
       setLeads(prev => prev.map(l => successIds.has(l.id) ? { ...l, is_read: true } : l))
     } catch {
