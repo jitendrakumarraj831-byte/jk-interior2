@@ -281,7 +281,14 @@ async function getAIReply(
       }),
       signal: controller.signal,
     })
-    if (!res.ok) { clearTimeout(idleTimer); return null }
+    if (!res.ok) {
+      clearTimeout(idleTimer)
+      // A non-2xx here means the widget is about to fall back to its offline
+      // script — logging why keeps that silent-looking swap diagnosable instead
+      // of indistinguishable from "the AI just decided not to answer."
+      console.error(`[JK Chat] /api/chat responded ${res.status}; falling back to offline reply.`)
+      return null
+    }
     const contentType = res.headers.get("content-type") || ""
 
     if (contentType.includes("text/plain") && res.body && onChunk) {
@@ -300,26 +307,37 @@ async function getAIReply(
           onChunk(fullText, isFirst)
           isFirst = false
         }
-      } catch {
+      } catch (err) {
         // Connection dropped part-way. Whatever arrived is a real, complete-enough
         // sentence far more often than not — keep it rather than wiping the reply
         // and replacing it with the offline notice.
-        if (!fullText.trim()) return null
+        if (!fullText.trim()) {
+          console.error("[JK Chat] AI stream dropped before any content arrived; falling back to offline reply.", err)
+          return null
+        }
       } finally {
         clearTimeout(idleTimer)
       }
-      return fullText.trim() ? { reply: fullText, source: "groq" } : null
+      if (!fullText.trim()) {
+        console.error("[JK Chat] AI stream completed with empty content; falling back to offline reply.")
+        return null
+      }
+      return { reply: fullText, source: "groq" }
     }
 
     clearTimeout(idleTimer)
     const data = await res.json()
-    if (!data.ok || !data.reply) return null
+    if (!data.ok || !data.reply) {
+      console.error("[JK Chat] AI backend returned no usable reply; falling back to offline reply.", data.error)
+      return null
+    }
     return {
       reply: data.reply as string,
       source: (data.source as "groq" | "local") ?? "groq",
       updatedContext: data.updatedContext ?? undefined,
     }
-  } catch {
+  } catch (err) {
+    console.error("[JK Chat] AI request failed; falling back to offline reply.", err)
     return null
   }
 }
