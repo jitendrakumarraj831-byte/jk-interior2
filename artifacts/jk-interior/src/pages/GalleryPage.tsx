@@ -14,19 +14,10 @@ export default function GalleryPage() {
         description="Browse JK Interior's gallery of 500+ completed interior design projects in Bihar. PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit work in Forbesganj and across Bihar."
         canonical="/gallery"
         jsonLd={[
-          {
-            "@context": "https://schema.org",
-            "@type": "ImageGallery",
-            "@id": "https://www.jkinterior.online/gallery",
-            name: "JK Interior – Project Gallery",
-            description: "500+ completed interior design projects in Bihar – PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV units.",
-            url: "https://www.jkinterior.online/gallery",
-            author: {
-              "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
-              "@id": "https://www.jkinterior.online/#business",
-              name: "JK Interior"
-            }
-          },
+          // The full ImageGallery — every photo as a schema.org ImageObject with its
+          // caption and target keywords — is emitted by the <Gallery /> component
+          // itself (lib/gallery-data.ts#buildGalleryJsonLd), wherever it's rendered.
+          // This page only adds the breadcrumb, which is page-specific.
           {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",

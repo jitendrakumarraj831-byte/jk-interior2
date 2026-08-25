@@ -1,6 +1,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { galleryImages } from "@/lib/gallery-data"
+import { galleryImages, seoAlt } from "@/lib/gallery-data"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   CALL_NUMBER,
@@ -1152,7 +1152,7 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
                             .filter(img => img.category === m.galleryType)
                             .slice(0, 6)
                             .map((img, i) => (
-                              <img key={i} src={img.src} alt={img.alt} loading="lazy" decoding="async" fetchPriority="low" className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
+                              <img key={i} src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" fetchPriority="low" className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
                             ))}
                         </div>
                       )}

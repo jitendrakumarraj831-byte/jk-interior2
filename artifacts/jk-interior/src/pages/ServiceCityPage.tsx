@@ -4,7 +4,7 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { CITIES, getCityBySlug, SITE_URL } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES, getServiceCityInfoBySlug } from "@/lib/service-city-data"
-import { galleryImages } from "@/lib/gallery-data"
+import { galleryImages, seoAlt } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { MapPin, CheckCircle, ArrowRight, Clock, ShieldCheck, Sparkles, Phone } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
@@ -226,7 +226,7 @@ export default function ServiceCityPage() {
                   <picture>
                     <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={THUMB_SIZES} type="image/avif" />
                     <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={THUMB_SIZES} type="image/webp" />
-                    <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                    <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                   </picture>
                 </div>
               ))}
