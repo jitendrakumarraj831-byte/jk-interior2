@@ -10,6 +10,7 @@ Bihar. Live at jkinterior.online.
 - `pnpm run typecheck` — typecheck across all packages
 - `pnpm run build` — typecheck + production build
 - Required env (for the AI chat backend, `api/chat.ts`): `GROQ_API_KEY` — without it, the chat widget gracefully falls back to its local scripted responses
+- Required env (for lead storage, `api/leads.ts`): a Postgres database connected to the Vercel project (Storage tab → Postgres; `@vercel/postgres` reads the connection string it injects automatically) and `ADMIN_KEY` (any long random string — the password `/admin` asks for)
 
 ## Stack
 
@@ -28,13 +29,14 @@ Bihar. Live at jkinterior.online.
 - `artifacts/jk-interior/src/lib/memory.ts` — per-conversation memory, shared by the widget and `api/chat.ts` (imported directly by the serverless function via relative path). `sanitizeMemory()` re-validates whatever the browser posts before it lands in the system prompt
 - `artifacts/jk-interior/src/lib/reply-language.ts` — detects whether a message is English, Hindi (Devanagari) or Hinglish (romanised Hindi), and keeps that choice sticky across a conversation
 - `artifacts/jk-interior/src/lib/assistant-copy.ts` — the widget's own scripted lines (welcome message, booking questions, offline fallback) in all three languages
-- `api/chat.ts` — the only backend code that's actually live in production
+- `api/chat.ts` — the AI chat backend
+- `api/leads.ts` — the leads backend: POST saves a lead (called by `jk-chat.tsx`), GET/PATCH (both `x-admin-key`-gated) list and mark-read (called by `AdminPage.tsx` at `/admin`). Owns its own `CREATE TABLE IF NOT EXISTS`, no separate migration step
 - `scripts/post-merge.sh` — Replit post-merge hook, runs `pnpm install` after a merge
 
 ## Architecture decisions
 
 - The site is a Vite SPA, not Next.js, despite `next-themes` being a dependency (unused leftover from a shadcn template — harmless).
-- No database or Express API server is deployed. Lead capture currently posts to `/api/leads`, which has no backend yet (client-side only: saved to `localStorage`, then the visitor is hand-off to WhatsApp) — see Gotchas.
+- No Express API server or ORM is deployed — just two Vercel serverless functions (`api/chat.ts`, `api/leads.ts`) talking to a Postgres database (`@vercel/postgres`) connected via the Vercel Storage tab. Simpler than the removed Next.js + Drizzle stack this replaced, for the one table this project actually needs.
 - Images ship as AVIF+WebP pairs with lazy loading everywhere except the true above-the-fold hero/nav assets, which are eager + `fetchPriority="high"`.
 
 ## Product
@@ -96,13 +98,14 @@ bundle and undoes this.
 
 ## Gotchas
 
-- `fetch("/api/leads", …)` in `jk-chat.tsx` has no live backend — it 404s silently (wrapped in `.catch(() => {})`). Leads are actually captured via `localStorage` + a WhatsApp deep link. Don't assume leads are landing in a database anywhere.
+- `api/leads.ts` needs a Postgres database connected to the Vercel project (Storage tab) and `ADMIN_KEY` set, or every request 500s with "Database not reachable" / "Admin access not configured". `jk-chat.tsx`'s POST swallows that silently (`.catch(() => {})` — a lead is never worth breaking the chat over), but `/admin` surfaces it as a visible error.
 - `api/chat.ts` imports directly from `artifacts/jk-interior/src/lib/*` by relative path — moving or renaming those files breaks the live AI backend, not just the frontend.
 - Without `GROQ_API_KEY` set in the Vercel project, `/api/chat` returns `{ ok: false }` and the widget falls back to a minimal offline reply (the published rate list plus the phone numbers — it answers nothing on its own). This fails safe, not loudly, so a missing key is easy to miss.
-- `GROQ_MODEL` overrides the model (default `openai/gpt-oss-120b`). The system prompt is a long block of website data plus language-mirroring rules; smaller/distilled models were faster but dropped those rules under load — quoting invented rates and answering Hindi messages in English. Only drop to a smaller model if latency becomes the binding constraint and drift is re-verified as gone.
+- `GROQ_MODEL` overrides the model (default `groq/compound`, which decides per-message whether to run a real web search before answering; falls back automatically to `GROQ_FALLBACK_MODEL`, default `openai/gpt-oss-120b`, if the primary call fails or comes back with no content). The system prompt is a long block of website data plus language-mirroring rules; smaller/distilled models were faster but dropped those rules under load — quoting invented rates and answering Hindi messages in English. Only drop to a smaller model if latency becomes the binding constraint and drift is re-verified as gone.
 - Groq deprecated `llama-3.3-70b-versatile` and `llama-3.1-8b-instant` for free/developer-tier usage in June 2026 (enterprise committed-spend contracts were unaffected), which silently took `/api/chat` down in production — every call 404'd with `model_not_found` until the default was updated. If the assistant starts always giving the offline fallback reply again, check the Vercel function logs for a Groq 404 before anything else; Groq has deprecated models here before and will again — see https://console.groq.com/docs/deprecations.
 - `openai/gpt-oss-120b`'s free tier is capped at 8,000 TPM (tokens per minute), and this app's system prompt alone can run close to 4,000 tokens a turn, so a customer sending a couple of messages in quick succession — or two customers chatting at once — can trip a real Groq 429 (`rate_limit_exceeded`), not a bug. `fetchGroqWithRetry` in `api/chat.ts` retries once, honouring the wait Groq's error message names, which absorbs a brief burst; sustained traffic will still exhaust that and fall back to the offline reply. No free-tier Groq model currently combines high TPM with the instruction-following reliability this prompt needs — Gemma 2 9B has the highest free TPM (15,000) but is exactly the class of smaller model that previously drifted off the grounding rules (see above). If 429s start showing up regularly in the logs, that's a real capacity ceiling to raise with the business owner — either Groq's paid Dev Tier (the 429 error links straight to it) or shrinking the system prompt — not something to silently model-swap around.
-- `api/chat.ts` rate-limits by IP in a module-scope `Map` — fine for a single warm lambda instance, but it resets on cold start and doesn't coordinate across concurrent instances. It's a cost ceiling, not a real abuse defense; don't rely on it if traffic grows enough to need one.
+- `api/chat.ts` and `api/leads.ts` both rate-limit by IP in a module-scope `Map` — fine for a single warm lambda instance, but it resets on cold start and doesn't coordinate across concurrent instances. It's a cost ceiling, not a real abuse defense; don't rely on it if traffic grows enough to need one.
+- `api/leads.ts`'s `ensureTable()` memoizes the `CREATE TABLE IF NOT EXISTS` in module scope so it only actually runs once per warm lambda, not on every request — same reasoning as the rate-limit `Map`s. A failure clears the memo so the next request retries rather than getting stuck believing the table exists.
 - The chat widget's "clear conversation" (↺) button removes `localStorage["jk_memory_v1"]` via `clearMemory()` — that constant lives in `lib/memory.ts` (`MEMORY_KEY`) precisely so this can't drift out of sync again; it previously removed a key nothing ever wrote to, so a "cleared" chat reappeared on the next page load.
 
 ## User preferences

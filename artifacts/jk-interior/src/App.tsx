@@ -79,7 +79,16 @@ function Assistant() {
       return
     }
     // Otherwise warm the chunk while the browser has nothing better to do, and
-    // mount the widget once it lands so the first tap opens instantly.
+    // mount the widget once it lands so the first tap opens instantly. The
+    // timeout here is a worst-case cap, not a delay — requestIdleCallback still
+    // fires the moment the main thread is actually free, which on most devices
+    // is well under a second after hydration. It was 3000/2500ms, which meant a
+    // visitor on a slow connection who tapped the launcher inside that window —
+    // very plausible, it's the most visible thing on the page — got the "busy"
+    // launcher for the full wait even though the chunk could have already been
+    // most of the way downloaded by then. Shorter caps ask the browser to
+    // start warming sooner on a busy main thread, without competing with
+    // anything the hero image / fonts preload above needs.
     let cancelled = false
     const warm = () => {
       void loadChat().then(() => {
@@ -87,13 +96,13 @@ function Assistant() {
       })
     }
     if ("requestIdleCallback" in window) {
-      const id = requestIdleCallback(warm, { timeout: 3000 })
+      const id = requestIdleCallback(warm, { timeout: 1200 })
       return () => {
         cancelled = true
         cancelIdleCallback(id)
       }
     }
-    const timer = setTimeout(warm, 2500)
+    const timer = setTimeout(warm, 1000)
     return () => {
       cancelled = true
       clearTimeout(timer)

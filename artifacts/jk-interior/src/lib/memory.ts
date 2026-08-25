@@ -89,6 +89,14 @@ export function createMemory(): ConversationMemory {
 
 // ─── Extraction ───────────────────────────────────────────────────────────────
 
+/** "13,500" → 13500, "1.2k" → 1200 — used to tell a total apart from a rate by size. */
+function parseRupeeNumber(raw: string): number {
+  const cleaned = raw.replace(/,/g, "")
+  const isK = /k$/i.test(cleaned)
+  const num = parseFloat(cleaned)
+  return isK ? num * 1000 : num
+}
+
 /**
  * Extract information from a user (or bot) message and return a partial update.
  * Pure function — never mutates the existing memory.
@@ -211,7 +219,19 @@ export function extractFromText(
 
   // ── Extract estimate from bot reply ───────────────────────────────────────
   if (source === "bot") {
-    const estM = text.match(/₹([\d,]+(?:\.\d+)?[k]?)\s*[–\-]\s*₹([\d,]+(?:\.\d+)?[k]?)/)
+    // A reply routinely contains two "₹X–₹Y" patterns: the per-sq.ft rate
+    // ("Rate: ₹75–₹150/sq.ft") and the actual room total ("₹13,500–₹27,000").
+    // Taking whichever came first picked the rate almost every time — memory
+    // then "remembered" a rate as the customer's quoted total, which surfaced
+    // as a wrong "already gave you ₹75–₹150" in later turns of the same
+    // conversation. Skip anything immediately followed by a per-unit marker,
+    // and take the numerically larger match: a real total for any room this
+    // business prices is always well above its own per-sq.ft rate.
+    const candidates = [...text.matchAll(/₹([\d,]+(?:\.\d+)?k?)\s*[–\-]\s*₹([\d,]+(?:\.\d+)?k?)(\s*\/?\s*(?:per\s*)?sq\.?\s*\.?ft)?/gi)]
+      .filter((m) => !m[3])
+    const estM = candidates.length > 0
+      ? candidates.reduce((biggest, m) => (parseRupeeNumber(m[2]) > parseRupeeNumber(biggest[2]) ? m : biggest))
+      : null
     if (estM) {
       const range = `₹${estM[1]}–₹${estM[2]}`
       updates.latestEstimate = range
