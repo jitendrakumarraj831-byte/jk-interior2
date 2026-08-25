@@ -145,21 +145,46 @@ function generateEstimateFromDimensions(
  * branch, so with the AI backend live "View Designs" answered in words and never
  * actually showed a design.
  */
+/**
+ * Every service's actual photo bucket in gallery-data.ts. Three services
+ * (partition wall, WPC panel, UV marble) share one bucket because the site
+ * only has a handful of dedicated partition-wall photos, mixed into the wall
+ * panels category rather than split out on their own.
+ */
+const GALLERY_CATEGORY_BY_SLUG: Record<string, string> = {
+  "gypsum-ceiling": "Gypsum False Ceiling",
+  "pvc-false-ceiling": "PVC Ceiling",
+  "grid-ceiling": "Grid Ceiling",
+  "partition-wall": "WPC fluted panels & uv marble Sheet",
+  "wpc-wall-panel": "WPC fluted panels & uv marble Sheet",
+  "uv-marble-sheet": "WPC fluted panels & uv marble Sheet",
+  "modular-tv-unit": "TV Unit Design",
+  "artificial-grass": "Artificial Grass",
+}
+
+/**
+ * lastTopic/service are often already a slug or a slugified service name
+ * (see setLastTopic call sites below) rather than something a visitor typed,
+ * so try an exact slug match before falling back to findService's fuzzy,
+ * alias-aware match on real text.
+ */
+function resolveServiceLoose(candidate: string | null | undefined) {
+  if (!candidate) return null
+  return SERVICES_SUMMARY.find((s) => s.slug === candidate.toLowerCase()) ?? findService(candidate)
+}
+
 function galleryCategoryFor(text: string, lastTopic: string | null, service?: string): string | undefined {
   if (!/photo|photos|pic|image|images|gallery|dikhao|dikha|dekh|show|design|kaam|काम|फोटो|दिखा|डिज़ाइन/i.test(text)) {
     return undefined
   }
-  const haystack = `${text} ${lastTopic ?? ""} ${service ?? ""}`.toLowerCase()
-  // Checked before the generic "false ceiling" match below — every ceiling
-  // service on the site is technically a false ceiling (the PVC service's own
-  // name is "PVC False Ceiling"), so a bare "false ceil" match must never win
-  // over an explicit PVC mention, or "PVC photo" shows gypsum photos instead.
-  if (/\bpvc\b/.test(haystack))                                           return "PVC Ceiling"
-  if (/gypsum|jipsum|pop\b|false\s*ceil/.test(haystack))                  return "Gypsum False Ceiling"
-  if (/wpc|wall\s*panel|fluted|uv\s*marble|louver|louvre/.test(haystack)) return "WPC fluted panels & uv marble Sheet"
-  if (/grid|mineral|office\s*ceil/.test(haystack))                         return "Grid Ceiling"
-  if (/tv\s*unit|tv\s*cabinet|television|\btv\b/.test(haystack))          return "TV Unit Design"
-  if (/grass|turf|garden/.test(haystack))                                  return "Artificial Grass"
+  // The visitor's own words always win over prior context. Reuses
+  // findService — the same alias-aware matcher the AI backend and the room
+  // estimator use — instead of a second, hand-rolled keyword list. That
+  // duplication is what previously let "PVC photo" match gypsum's generic
+  // "false ceiling" pattern, and left partition-wall unable to match at all
+  // (it had no keyword branch of its own).
+  const matched = findService(text) ?? resolveServiceLoose(service) ?? resolveServiceLoose(lastTopic)
+  if (matched) return GALLERY_CATEGORY_BY_SLUG[matched.slug]
   // Asked for designs with nothing named — show the finish the site sells most.
   return "Gypsum False Ceiling"
 }
