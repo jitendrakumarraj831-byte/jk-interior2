@@ -1,8 +1,8 @@
-import { BUSINESS_FACTS, PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts"
-import { FAQS } from "./faq-data"
-import { SERVICES_SUMMARY, type ServiceSummary } from "./services-summary"
-import { BUSINESS, CITIES, SITE_URL } from "./seo"
-import { languageInstruction, type ReplyLanguage } from "./reply-language"
+import { BUSINESS_FACTS, PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts.js"
+import { FAQS } from "./faq-data.js"
+import { SERVICES_SUMMARY, type ServiceSummary } from "./services-summary.js"
+import { BUSINESS, CITIES, SITE_URL } from "./seo.js"
+import { languageInstruction, type ReplyLanguage } from "./reply-language.js"
 
 /**
  * Official JK Interior contact numbers, derived from the `BUSINESS` profile in

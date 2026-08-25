@@ -1,5 +1,5 @@
-import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "./business-data"
-import type { ReplyLanguage } from "./reply-language"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "./business-data.js"
+import type { ReplyLanguage } from "./reply-language.js"
 
 /**
  * The lines the chat widget says on its own — the welcome, the questions it asks

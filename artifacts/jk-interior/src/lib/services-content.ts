@@ -98,7 +98,7 @@ export interface ServiceContent {
 
 // Both live in business-facts.ts (React-free) so the AI assistant's system
 // prompt and these service pages quote exactly the same wording.
-export { PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts"
+export { PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts.js"
 
 export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────

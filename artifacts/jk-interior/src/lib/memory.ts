@@ -8,7 +8,7 @@
  * Shared by client (jk-chat.tsx) and server (api/chat.ts) — zero side effects.
  */
 
-import type { ReplyLanguage } from "./reply-language"
+import type { ReplyLanguage } from "./reply-language.js"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
