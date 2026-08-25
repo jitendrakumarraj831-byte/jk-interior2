@@ -2,15 +2,14 @@
 import { X, ChevronLeft, ChevronRight, MessageCircle, Sparkles, Play, Pause, Phone } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
-import { galleryImages } from "@/lib/gallery-data"
+import { galleryImages, CATEGORY_SEO, seoAlt, buildGalleryJsonLd, type GalleryImage } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
+import KeywordChips from "@/components/ui/keyword-chips"
 
-interface GalleryImage { src: string; alt: string; category?: string }
-
-const ALL = galleryImages as GalleryImage[]
+const ALL = galleryImages
 
 // Gallery cards only ever display a photo at ~300-420px, never its full
 // resolution (up to 1600px) — that's reserved for the lightbox. Every photo
@@ -19,21 +18,6 @@ const ALL = galleryImages as GalleryImage[]
 const CARD_SIZES = "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 82vw"
 const cardAvif = (webpSrc: string) => webpSrc.replace(/\.webp$/, "-800w.avif")
 const cardWebp = (webpSrc: string) => webpSrc.replace(/\.webp$/, "-800w.webp")
-
-const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  "Gypsum False Ceiling":
-    "Gypsum ceiling designs with a plaster-smooth finish and concealed cove or LED lighting — specified for halls, bedrooms and other dry rooms.",
-  "PVC Ceiling":
-    "Fully waterproof PVC false ceiling panels in contemporary designs, holding a clean, long-lasting finish year after year.",
-  "Grid Ceiling":
-    "Durable mineral-fibre grid ceilings for offices, shops and clinics — acoustic, orderly and simple to service.",
-  "WPC fluted panels & uv marble Sheet":
-    "Termite-resistant WPC fluted wall panelling and high-gloss UV marble sheets for television walls and feature walls.",
-  "TV Unit Design":
-    "Bespoke modular television units with considered storage, fully concealed cabling and premium finishes.",
-  "Artificial Grass":
-    "Artificial grass for balconies, terraces and gardens — evergreen through every season, with virtually no upkeep.",
-}
 
 function groupByCategory(images: GalleryImage[]) {
   const order: string[] = []
@@ -83,10 +67,13 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   }, [onClose, onNext, onPrev])
 
   const img = images[idx]; if (!img) return null
+  const alt = seoAlt(img)
+  const seo = img.category ? CATEGORY_SEO[img.category] : undefined
 
   return createPortal(
     <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
       className="fixed inset-0 z-[9999] bg-black flex flex-col" role="dialog" aria-modal
+      aria-label={`${img.category ?? "JK Interior"} photo viewer`}
       onTouchStart={e => { tx.current = e.touches[0].clientX }}
       onTouchEnd={e => {
         if (!tx.current) return
@@ -98,25 +85,28 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
       <div className="flex items-center justify-between px-5 py-3.5 bg-black/80">
         {img.category && <span className="text-xs font-bold uppercase tracking-widest text-gold-400 bg-gold-400/10 px-3 py-1 rounded-full">{img.category}</span>}
         <span className="text-white/40 text-xs ml-auto mr-4">{idx+1} / {images.length}</span>
-        <button ref={btn} onClick={onClose} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all"><X size={18}/></button>
+        <button ref={btn} onClick={onClose} aria-label="Close photo viewer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all"><X size={18}/></button>
       </div>
 
       {/* Image */}
       <div className="flex-1 relative flex items-center justify-center overflow-hidden">
-        <button onClick={() => { setDir(-1); onPrev() }}
+        <button onClick={() => { setDir(-1); onPrev() }} aria-label="Previous photo"
           className="absolute left-3 md:left-6 z-10 p-3 rounded-full bg-white/8 hover:bg-white/20 text-white border border-white/10 transition-all hidden md:flex">
           <ChevronLeft size={28}/>
         </button>
 
         <AnimatePresence mode="wait" custom={dir}>
-          <motion.picture key={idx}>
+          <motion.picture key={idx} itemScope itemType="https://schema.org/ImageObject">
             {/* AVIF format (best compression) */}
             <source srcSet={img.src.replace(/\.webp$/, '.avif')} type="image/avif" />
             {/* WebP format (fallback) */}
             <source srcSet={img.src} type="image/webp" />
+            <meta itemProp="contentUrl" content={img.src} />
+            <meta itemProp="description" content={seo?.caption ?? alt} />
             {/* Fallback img tag */}
             <motion.img
-              src={img.src} alt={img.alt}
+              src={img.src} alt={alt} title={alt} itemProp="url"
+              width={img.width} height={img.height}
               custom={dir}
               variants={{
                 enter: (d: number) => ({ opacity:0, x: d * 80, scale:.97 }),
@@ -133,20 +123,21 @@ function Lightbox({ images, idx, onClose, onNext, onPrev }: {
           </motion.picture>
         </AnimatePresence>
 
-        <button onClick={() => { setDir(1); onNext() }}
+        <button onClick={() => { setDir(1); onNext() }} aria-label="Next photo"
           className="absolute right-3 md:right-6 z-10 p-3 rounded-full bg-white/8 hover:bg-white/20 text-white border border-white/10 transition-all hidden md:flex">
           <ChevronRight size={28}/>
         </button>
       </div>
 
       {/* Bottom */}
-      <div className="bg-black/90 px-5 pt-3 pb-5 flex flex-col items-center gap-3">
+      <div className="bg-black/90 px-5 pt-3 pb-5 flex flex-col items-center gap-1.5">
         <p className="text-white/60 text-sm text-center">{img.alt}</p>
-        <div className="flex gap-2 md:hidden">
+        {seo && <p className="text-gold-400/70 text-[11px] text-center tracking-wide">{seo.keywordSuffix}</p>}
+        <div className="flex gap-2 md:hidden mt-1.5">
           <button onClick={() => { setDir(-1); onPrev() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10"><ChevronLeft size={14}/> Prev</button>
           <button onClick={() => { setDir(1); onNext() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10">Next <ChevronRight size={14}/></button>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-1.5">
           <WhatsAppLink
             message={`Hello JK Interior, I would like a quotation for this design: "${img.alt}"`}
             icon={false}
@@ -193,32 +184,41 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
     timer.current = setTimeout(() => go(1), randomTime)
     return () => { if (timer.current) clearTimeout(timer.current) }
   }, [cur, playing, go, total])
- 
+
 
   const id = `gallery-${slugify(category)}`
-  const description = CATEGORY_DESCRIPTIONS[category]
+  const seo = CATEGORY_SEO[category]
+  const activeAlt = seoAlt(images[cur])
 
   return (
     <motion.div
       id={id}
+      itemScope
+      itemType="https://schema.org/Service"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4 }}
       className="group relative mb-6 break-inside-avoid scroll-mt-36 overflow-hidden rounded-2xl border border-gold-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/30 hover:shadow-xl"
     >
+      <meta itemProp="areaServed" content="Forbesganj, Araria, Bihar" />
             {/* Slider area on a fixed aspect ratio — no layout shift as photos change */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
-          <motion.picture key={cur}>
+          <motion.picture key={cur} itemProp="image" itemScope itemType="https://schema.org/ImageObject">
             {/* Card-sized AVIF (best compression, right resolution for a thumbnail) */}
             <source srcSet={cardAvif(images[cur].src)} sizes={CARD_SIZES} type="image/avif" />
             {/* Card-sized WebP (fallback) */}
             <source srcSet={cardWebp(images[cur].src)} sizes={CARD_SIZES} type="image/webp" />
+            <meta itemProp="contentUrl" content={images[cur].src} />
             {/* Fallback img tag */}
             <motion.img
               src={cardWebp(images[cur].src)}
-              alt={images[cur].alt}
+              alt={activeAlt}
+              title={activeAlt}
+              itemProp="url"
+              width={images[cur].width}
+              height={images[cur].height}
               custom={dir}
               variants={{
                 enter: (d: number) => ({ opacity: 0, x: d * 50 }),
@@ -236,7 +236,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
             />
           </motion.picture>
         </AnimatePresence>
-       
+
         {/* Gradient Overlay for Text Visibility */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
@@ -250,14 +250,14 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
             {/* Prev / Next Buttons */}
             <button
               onClick={e => { e.stopPropagation(); go(-1) }}
-              aria-label="Previous photo"
+              aria-label={`Previous ${category} photo`}
               className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white opacity-0 backdrop-blur-md transition-all hover:bg-black/70 group-hover:opacity-100"
             >
               <ChevronLeft size={16} />
             </button>
             <button
               onClick={e => { e.stopPropagation(); go(1) }}
-              aria-label="Next photo"
+              aria-label={`Next ${category} photo`}
               className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/20 bg-black/40 p-2 text-white opacity-0 backdrop-blur-md transition-all hover:bg-black/70 group-hover:opacity-100"
             >
               <ChevronRight size={16} />
@@ -266,7 +266,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
             {/* Play/Pause Button */}
             <button
               onClick={e => { e.stopPropagation(); setPlaying(p => !p) }}
-              aria-label={playing ? "Pause slider" : "Play slider"}
+              aria-label={playing ? `Pause ${category} slider` : `Play ${category} slider`}
               className="absolute right-3 top-3 z-20 rounded-full border border-white/20 bg-black/50 p-1.5 text-white backdrop-blur-md transition-all hover:bg-black/70"
             >
               {playing ? <Pause size={12} /> : <Play size={12} />}
@@ -289,7 +289,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
 
         {/* Category Title on Image */}
         <div className="absolute bottom-3 left-3 right-3 z-20">
-          <h3 className="text-lg font-extrabold text-white tracking-tight drop-shadow-md sm:text-xl">
+          <h3 itemProp="name" className="text-lg font-extrabold text-white tracking-tight drop-shadow-md sm:text-xl">
             {category}
           </h3>
         </div>
@@ -301,6 +301,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
               <button
                 key={i}
                 onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
+                aria-label={`Show ${category} photo ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all duration-300 ${i === cur ? "w-5 bg-gold-400" : "w-1.5 bg-white/50"}`}
               />
             ))}
@@ -308,10 +309,10 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
         )}
       </div>
 
-      {/* Description */}
-      {description && (
+      {/* Caption — keyword-optimized description for search engines and visitors alike */}
+      {seo && (
         <div className="bg-white p-4">
-          <p className="text-xs font-medium leading-relaxed text-gray-600">{description}</p>
+          <p itemProp="description" className="text-xs font-medium leading-relaxed text-gray-600">{seo.caption}</p>
         </div>
       )}
 
@@ -319,7 +320,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
       <div className="flex gap-2 p-3 pt-0 bg-white">
         <CallLink
           size="sm"
-          ariaLabel={`Call for ${category} quote`}
+          ariaLabel={`Call for ${category} quote — ${seo?.keywordSuffix.split(" | ")[0] ?? category}`}
           className="flex-1 py-2 text-xs font-semibold rounded-xl"
         >
           Get Quote
@@ -328,7 +329,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
           size="sm"
           variant="outline"
           message={`Hello JK Interior, I am interested in your ${category} service. Please share details and rates.`}
-          ariaLabel={`WhatsApp for ${category}`}
+          ariaLabel={`WhatsApp for ${category} — JK Interior Forbesganj`}
           className="flex-1 py-2 text-xs font-semibold rounded-xl border-gold-500/30 text-gold-700 hover:bg-gold-50"
         >
           WhatsApp
@@ -347,6 +348,7 @@ export default function Gallery() {
   useEffect(() => setMounted(true), [])
 
   const categories = useMemo(() => groupByCategory(ALL), [])
+  const galleryJsonLd = useMemo(() => buildGalleryJsonLd(), [])
 
   const open = useCallback((images: GalleryImage[], idx: number) => {
     setLbImgs(images); setLbIdx(idx)
@@ -387,7 +389,12 @@ export default function Gallery() {
   )
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-[#efece3]">
+    <section id="gallery" className="relative overflow-hidden bg-[#efece3]" itemScope itemType="https://schema.org/ImageGallery">
+      {/* Structured data — lets Google Search Console crawl every photo's caption, keywords
+          and the local-service context directly, wherever this section is rendered. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(galleryJsonLd) }} />
+      <meta itemProp="name" content="JK Interior Gallery - Bihar" />
+
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 dot-pattern opacity-[0.18]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(0,0,0,0.05),transparent)]" />
@@ -405,6 +412,8 @@ export default function Gallery() {
           title={<>Our Work, <span className="hero-gradient-text">Your Confidence</span></>}
           subtitle={`${ALL.length}+ completed interior projects across Narpatganj, Forbesganj and Araria district, Bihar.`}
         />
+
+        <KeywordChips className="mb-8" />
 
         {/* ── Section label ── */}
         <div className="flex items-center gap-4 mb-6">

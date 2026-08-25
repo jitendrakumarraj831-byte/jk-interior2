@@ -1,3 +1,6 @@
+import { SITE_URL } from "@/lib/seo"
+import { TARGET_KEYWORDS_CONTENT } from "@/lib/seo-keywords"
+
 export const galleryImages = [
   // ── Gypsum False Ceiling (16 Images) ────────────────────────────────────────────
   { src: "/images/gypsum.webp",        alt: "Gypsum false ceiling with a stepped border design",        category: "Gypsum False Ceiling", width: 1080, height: 1080 },
@@ -81,14 +84,111 @@ export const galleryImages = [
   { src: "/images/A4.webp",            alt: "Dense-pile artificial grass close-up",                      category: "Artificial Grass", width: 1080, height: 1080 },
   { src: "/images/A5.webp",            alt: "Artificial grass in a small landscaped corner",             category: "Artificial Grass", width: 1080, height: 1080 },
   { src: "/images/artificial-grass.webp", alt: "Artificial grass balcony installation in Bihar",         category: "Artificial Grass", width: 1080, height: 1080 },
-];
+]
+
+export type GalleryImage = (typeof galleryImages)[number]
+
+/**
+ * Per-category SEO copy — the exact local + material keywords JK Interior is
+ * targeting in Search Console (see `lib/seo-keywords.ts`), written once per
+ * category rather than repeated verbatim on every photo. `keywordSuffix` is
+ * the machine-read half (appended to each photo's `alt`/`title` so every
+ * image in the category carries the target phrase); `caption` is the
+ * human-read prose shown under the card and doubles as the schema.org
+ * `description` for that category's images.
+ */
+export const CATEGORY_SEO: Record<string, { keywordSuffix: string; caption: string }> = {
+  "Gypsum False Ceiling": {
+    keywordSuffix: "gypsum false ceiling design with price | false ceiling contractor forbesganj",
+    caption:
+      "Gypsum false ceiling design with price you can see upfront — a plaster-smooth finish with concealed cove or LED lighting, installed by JK Interior Forbesganj for halls, bedrooms and other dry rooms across Araria district.",
+  },
+  "PVC Ceiling": {
+    keywordSuffix: "pvc ceiling design for bedroom | jk interior forbesganj",
+    caption:
+      "A fully waterproof PVC ceiling design for bedroom, kitchen and bathroom use — contemporary panel patterns that hold a clean finish for years, fitted by JK Interior, the false ceiling contractor Forbesganj homeowners call first.",
+  },
+  "Grid Ceiling": {
+    keywordSuffix: "grid false ceiling installation | interior designer in araria bihar",
+    caption:
+      "Grid false ceiling installation for offices, shops and clinics — durable, acoustic mineral-fibre tiles that lift out for service in seconds, by the same interior designer in Araria Bihar businesses rely on for commercial fit-outs.",
+  },
+  "WPC fluted panels & uv marble Sheet": {
+    keywordSuffix:
+      "wpc louvers wall panelling | pvc wall panel design catalog | charcoal panel suppliers | uv marble sheet wall cladding",
+    caption:
+      "WPC louvers wall panelling and charcoal-tone fluted designs, drawn from trusted charcoal panel suppliers and our own pvc wall panel design catalog, paired with high-gloss uv marble sheet wall cladding for TV and feature walls — all installed by JK Interior Forbesganj.",
+  },
+  "TV Unit Design": {
+    keywordSuffix: "modern tv unit design for living room | interior designer in araria bihar",
+    caption:
+      "Modern TV unit design for living room spaces — bespoke modular units with concealed cabling and premium finishes, custom-built by JK Interior for homes across Forbesganj and Araria.",
+  },
+  "Artificial Grass": {
+    keywordSuffix: "jk interior forbesganj | false ceiling contractor forbesganj",
+    caption:
+      "Evergreen artificial grass for balconies, terraces and gardens — near-zero-upkeep landscaping installed by JK Interior Forbesganj, the interior designer in Araria Bihar homeowners trust for outdoor finishing too.",
+  },
+}
+
+/**
+ * The rendered `alt`/`title` for one gallery photo: its own unique description
+ * plus the category's target keyword phrase(s), so every photo card carries
+ * the localized and material keywords Search Console is tracking without
+ * making every image's alt text an identical, spam-flagged string.
+ */
+export function seoAlt(img: Pick<GalleryImage, "alt" | "category">): string {
+  const seo = img.category ? CATEGORY_SEO[img.category] : undefined
+  return seo ? `${img.alt} — ${seo.keywordSuffix}` : img.alt
+}
+
+/** Absolute, canonical photo URL — schema.org `ImageObject.contentUrl` wants a full URL, not a root-relative path. */
+export function absoluteImageUrl(src: string): string {
+  return `${SITE_URL}${src}`
+}
+
+/**
+ * One schema.org ImageObject per gallery photo — richer than a bare URL list
+ * so Search Console can crawl each photo's caption and keywords directly from
+ * the JSON-LD, without depending on the DOM `alt` attribute alone.
+ */
+export function buildGalleryImageObjects() {
+  return galleryImages.map((img) => {
+    const seo = img.category ? CATEGORY_SEO[img.category] : undefined
+    return {
+      "@type": "ImageObject",
+      contentUrl: absoluteImageUrl(img.src),
+      name: img.alt,
+      caption: img.alt,
+      description: seo?.caption ?? img.alt,
+      width: img.width,
+      height: img.height,
+      keywords: seo?.keywordSuffix ?? TARGET_KEYWORDS_CONTENT,
+      representativeOfPage: false,
+    }
+  })
+}
 
 export function buildGalleryJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ImageGallery",
+    "@id": `${SITE_URL}/gallery#imagegallery`,
     name: "JK Interior Gallery - Bihar",
-    description: "Gypsum, PVC, grid ceiling, wall panel and TV unit projects by JK Interior in Forbesganj, Araria and nearby areas of Bihar.",
-    image: galleryImages.map((img) => `https://www.jkinterior.online${img.src}`),
+    description:
+      "Gypsum false ceiling design with price, PVC ceiling design for bedroom, grid false ceiling installation, WPC louvers wall panelling, uv marble sheet wall cladding and modern TV unit design projects by JK Interior in Forbesganj, Araria and nearby areas of Bihar.",
+    url: `${SITE_URL}/gallery`,
+    keywords: TARGET_KEYWORDS_CONTENT,
+    about: Object.keys(CATEGORY_SEO).map((category) => ({
+      "@type": "Service",
+      name: category,
+      areaServed: "Forbesganj, Araria, Bihar",
+    })),
+    provider: {
+      "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+      "@id": `${SITE_URL}/#business`,
+      name: "JK Interior",
+    },
+    image: buildGalleryImageObjects(),
   }
 }

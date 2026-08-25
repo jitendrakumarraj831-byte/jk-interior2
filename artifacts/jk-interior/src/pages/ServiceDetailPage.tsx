@@ -11,7 +11,7 @@ import {
   type InstallStep,
   type PriceTier,
 } from "@/lib/services-content"
-import { galleryImages } from "@/lib/gallery-data"
+import { galleryImages, seoAlt } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import {
   Clock, ShieldCheck, Phone, HelpCircle, CheckCircle2, ArrowRight, IndianRupee, ImageIcon,
@@ -518,7 +518,7 @@ export default function ServiceDetailPage() {
             <div className="hidden gap-3 sm:grid sm:grid-cols-3">
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
-                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                  <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
                 </div>
               ))}
             </div>
@@ -535,7 +535,7 @@ export default function ServiceDetailPage() {
             >
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
-                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 </div>
               ))}
             </SwipeRail>

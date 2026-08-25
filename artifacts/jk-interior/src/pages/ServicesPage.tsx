@@ -14,20 +14,16 @@ export default function ServicesPage() {
         description="JK Interior offers PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, modular TV unit, bedroom interior and office interior services in Forbesganj, Araria, Bihar. Starting ₹45/sq.ft. Free site visit."
         canonical="/services"
         jsonLd={{
+          // The full, per-service ItemList (price, image, keywords) is emitted by the
+          // <Services /> component itself (lib/services-summary.ts#buildServicesJsonLd) —
+          // it renders wherever that component is used, this page included. This page
+          // only adds the breadcrumb, which is page-specific.
           "@context": "https://schema.org",
-          "@type": "ItemList",
-          name: "JK Interior Services",
-          description: "Interior design and false ceiling services in Bihar",
+          "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "PVC False Ceiling", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 2, name: "Gypsum Ceiling", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 3, name: "Grid Ceiling", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 4, name: "Partition Wall", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 5, name: "WPC Wall Panel", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 6, name: "UV Marble Sheet", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 7, name: "Modular TV Unit", url: "https://www.jkinterior.online/services" },
-            { "@type": "ListItem", position: 8, name: "Artificial Grass", url: "https://www.jkinterior.online/services" }
-          ]
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online/" },
+            { "@type": "ListItem", position: 2, name: "Services", item: "https://www.jkinterior.online/services" },
+          ],
         }}
       />
       <Navbar />

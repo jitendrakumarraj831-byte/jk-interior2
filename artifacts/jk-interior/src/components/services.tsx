@@ -1,11 +1,18 @@
-import { useState } from "react"
-import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, type LucideIcon } from "lucide-react"
+import { useMemo, useState } from "react"
+import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, ChefHat, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
+import KeywordChips from "@/components/ui/keyword-chips"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { SERVICES_SUMMARY, type ServiceHighlight, type ServiceSummary } from "@/lib/services-summary"
+import {
+  SERVICES_SUMMARY,
+  serviceSeoAlt,
+  buildServicesJsonLd,
+  type ServiceHighlight,
+  type ServiceSummary,
+} from "@/lib/services-summary"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -36,6 +43,7 @@ export default function Services() {
   const [activeTab, setActiveTab] = useState("all")
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set())
   const shouldReduce = useReducedMotion()
+  const servicesJsonLd = useMemo(() => buildServicesJsonLd(), [])
 
   // Toggle the accordion detail panel for a given service
   const toggleDetails = (slug: string) => {
@@ -90,7 +98,13 @@ export default function Services() {
       id="services"
       className="relative overflow-hidden bg-[#fbfaf5] py-20 sm:py-24 lg:py-28"
       aria-labelledby="services-heading"
+      itemScope
+      itemType="https://schema.org/OfferCatalog"
     >
+      {/* Structured data — every service's price, image and target keyword, wherever this section renders. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }} />
+      <meta itemProp="name" content="JK Interior Services — Forbesganj, Araria, Bihar" />
+
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(201, 162, 39,0.06),transparent)]" />
       </div>
@@ -103,6 +117,8 @@ export default function Services() {
           title={<>Every Interior Service <span className="hero-gradient-text">Your Space Needs</span></>}
           subtitle="Transparent rates, honest guidance. Tap any service for pricing, timeline and best use."
         />
+
+        <KeywordChips className="mb-8 justify-center" />
 
         {/* Filter category tabs */}
         <div className="mb-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -151,24 +167,32 @@ export default function Services() {
                 <motion.article
                   key={service.slug}
                   layout
+                  itemScope
+                  itemType="https://schema.org/Service"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4 }}
                   className="grid grid-cols-1 gap-6 py-10 first:pt-0 last:pb-0 sm:gap-8 sm:py-14 lg:grid-cols-12 lg:items-center lg:gap-12"
                 >
+                  <meta itemProp="areaServed" content="Forbesganj, Araria, Narpatganj, Bihar" />
+                  <meta itemProp="keywords" content={service.seoKeyword} />
                   {/* Image */}
                   <div className={`lg:col-span-5 ${isReversed ? "lg:order-2" : "lg:order-1"}`}>
                     <Link
                       href={`/services/${service.slug}`}
+                      aria-label={`${service.name} — ${service.seoKeyword}`}
                       className="group relative block overflow-hidden rounded-2xl shadow-md transition-shadow hover:shadow-xl"
                     >
-                      <picture>
+                      <picture itemProp="image" itemScope itemType="https://schema.org/ImageObject">
                         <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={ROW_IMAGE_SIZES} type="image/avif" />
                         <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={ROW_IMAGE_SIZES} type="image/webp" />
+                        <meta itemProp="contentUrl" content={service.heroImage} />
                         <img
                           src={service.heroImage}
-                          alt={service.heroImageAlt}
+                          alt={serviceSeoAlt(service)}
+                          title={serviceSeoAlt(service)}
+                          itemProp="url"
                           loading="lazy"
                           decoding="async"
                           className="h-56 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 sm:h-64 lg:h-80"
@@ -191,7 +215,7 @@ export default function Services() {
                     </Link>
 
                     <p className="mt-2.5 pl-1 text-[11px] font-extrabold uppercase tracking-widest text-gold-800/60">
-                      Fig. {String(i + 1).padStart(2, "0")} — {service.category}
+                      Fig. {String(i + 1).padStart(2, "0")} — {service.category} · {service.seoKeyword}
                     </p>
                   </div>
 
@@ -201,12 +225,12 @@ export default function Services() {
                       {String(i + 1).padStart(2, "0")}
                     </span>
 
-                    <h3 className="mb-1 text-2xl font-black text-gray-900 sm:text-3xl">
+                    <h3 itemProp="name" className="mb-1 text-2xl font-black text-gray-900 sm:text-3xl">
                       <Link href={`/services/${service.slug}`} className="transition-colors hover:text-gold-700">
                         {service.name}
                       </Link>
                     </h3>
-                    <p className="mb-5 text-sm font-bold text-gold-700 sm:text-base">{service.tagline}</p>
+                    <p itemProp="description" className="mb-5 text-sm font-bold text-gold-700 sm:text-base">{service.tagline}</p>
 
                     <ul className="mb-6 space-y-3.5">
                       {service.highlights.map((h) => {
@@ -306,14 +330,14 @@ export default function Services() {
                         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </Link>
                       <span className="text-gray-300" aria-hidden="true">|</span>
-                      <CallLink size="sm" variant="outline" ariaLabel={`Call for a ${service.name} quotation`}>
+                      <CallLink size="sm" variant="outline" ariaLabel={`Call for a ${service.name} quotation — ${service.seoKeyword}`}>
                         Get a free rate
                       </CallLink>
                       <WhatsAppLink
                         size="sm"
                         variant="outline"
                         message={`Hello JK Interior, please share rates and design photographs for ${service.name}.`}
-                        ariaLabel={`WhatsApp about ${service.name}`}
+                        ariaLabel={`WhatsApp about ${service.name} — JK Interior Forbesganj`}
                       >
                         WhatsApp
                       </WhatsAppLink>
@@ -325,6 +349,8 @@ export default function Services() {
           </AnimatePresence>
         </div>
       </div>
+
+      <FeaturedWorkGrid />
 
       {/* Bottom Conversion Box */}
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
@@ -354,19 +380,89 @@ export default function Services() {
   )
 }
 
+/**
+ * Responsive grid-based gallery, sitting directly alongside the services list
+ * — one tile per service (`<picture>` AVIF/WebP variants, zero layout shift
+ * via a fixed aspect box) plus a closing tile for custom, site-specific work
+ * like a modular kitchen design service that doesn't have a fixed rate card.
+ */
+function FeaturedWorkGrid() {
+  return (
+    <div className="relative z-10 mx-auto mt-16 max-w-6xl px-5 sm:px-6 lg:mt-20 lg:px-12">
+      <div className="mb-6 flex items-center gap-4">
+        <div className="h-px flex-1 bg-gold-900/15" />
+        <h3 className="text-center text-lg font-bold text-gray-800">Featured Work, By Service</h3>
+        <div className="h-px flex-1 bg-gold-900/15" />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+        {SERVICES_SUMMARY.map((service) => (
+          <Link
+            key={service.slug}
+            href={`/services/${service.slug}`}
+            aria-label={`${service.name} photos — ${service.seoKeyword}`}
+            className="group relative block overflow-hidden rounded-xl border border-gold-900/10 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            <div className="relative aspect-square w-full overflow-hidden bg-slate-900">
+              <picture itemProp="image" itemScope itemType="https://schema.org/ImageObject">
+                <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={ROW_IMAGE_SIZES} type="image/avif" />
+                <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={ROW_IMAGE_SIZES} type="image/webp" />
+                <meta itemProp="contentUrl" content={service.heroImage} />
+                <img
+                  src={service.heroImage}
+                  alt={serviceSeoAlt(service)}
+                  title={serviceSeoAlt(service)}
+                  itemProp="url"
+                  width={800}
+                  height={800}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </picture>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              <span className="absolute bottom-2.5 left-2.5 right-2.5 text-xs font-extrabold leading-tight text-white drop-shadow-md sm:text-sm">
+                {service.name}
+              </span>
+            </div>
+          </Link>
+        ))}
+
+        {/* Modular kitchen — custom, site-specific work outside the fixed rate list (see /contact), still targeted here for search. */}
+        <Link
+          href="/contact"
+          aria-label="Modular kitchen design service — custom quote from JK Interior Forbesganj"
+          className="group relative flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-dashed border-gold-500/40 bg-gold-50/60 p-3 text-center transition-all hover:-translate-y-0.5 hover:border-gold-500/70 hover:bg-gold-100/60 hover:shadow-lg"
+        >
+          <ChefHat className="h-7 w-7 text-gold-700" aria-hidden="true" />
+          <span className="text-xs font-extrabold leading-tight text-gold-900 sm:text-sm">
+            Modular Kitchen Design Service
+          </span>
+          <span className="text-[10px] font-semibold text-gold-700/80">Custom on-site quote</span>
+        </Link>
+      </div>
+    </div>
+  )
+}
+
 /* ── One service, rendered as a self-contained swipe card for touch layouts ── */
 function ServiceSwipeCard({ service, index }: { service: ServiceSummary; index: number }) {
   const [showDetail, setShowDetail] = useState(false)
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold-900/10 bg-white shadow-[0_18px_45px_-30px_rgba(76,58,18,0.7)]">
-      <Link href={`/services/${service.slug}`} className="relative block">
-        <picture>
+    <article itemScope itemType="https://schema.org/Service" className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold-900/10 bg-white shadow-[0_18px_45px_-30px_rgba(76,58,18,0.7)]">
+      <meta itemProp="areaServed" content="Forbesganj, Araria, Narpatganj, Bihar" />
+      <meta itemProp="keywords" content={service.seoKeyword} />
+      <Link href={`/services/${service.slug}`} aria-label={`${service.name} — ${service.seoKeyword}`} className="relative block">
+        <picture itemProp="image" itemScope itemType="https://schema.org/ImageObject">
           <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={CARD_IMAGE_SIZES} type="image/avif" />
           <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={CARD_IMAGE_SIZES} type="image/webp" />
+          <meta itemProp="contentUrl" content={service.heroImage} />
           <img
             src={service.heroImage}
-            alt={service.heroImageAlt}
+            alt={serviceSeoAlt(service)}
+            title={serviceSeoAlt(service)}
+            itemProp="url"
             loading="lazy"
             decoding="async"
             className="h-48 w-full object-cover sm:h-56"
@@ -377,7 +473,7 @@ function ServiceSwipeCard({ service, index }: { service: ServiceSummary; index: 
           {String(index + 1).padStart(2, "0")} · {service.category}
         </span>
         <div className="absolute bottom-3 left-3 right-3">
-          <h3 className="text-lg font-black leading-tight text-white drop-shadow-md">{service.name}</h3>
+          <h3 itemProp="name" className="text-lg font-black leading-tight text-white drop-shadow-md">{service.name}</h3>
           <p className="mt-1 flex flex-wrap gap-1.5">
             <span className="rounded-md bg-gold-600/90 px-2 py-0.5 text-[10px] font-extrabold text-white">{service.price}</span>
             <span className="rounded-md bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-md">{service.installTime}</span>
@@ -386,7 +482,7 @@ function ServiceSwipeCard({ service, index }: { service: ServiceSummary; index: 
       </Link>
 
       <div className="flex flex-1 flex-col p-4">
-        <p className="mb-3 text-sm font-semibold leading-snug text-gray-800">{service.tagline}</p>
+        <p itemProp="description" className="mb-3 text-sm font-semibold leading-snug text-gray-800">{service.tagline}</p>
 
         <dl className="mb-3 grid grid-cols-2 gap-2">
           <div className="rounded-lg bg-gold-50/80 p-2.5">
@@ -444,14 +540,14 @@ function ServiceSwipeCard({ service, index }: { service: ServiceSummary; index: 
         </AnimatePresence>
 
         <div className="mt-auto flex gap-2">
-          <CallLink size="sm" ariaLabel={`Call for a ${service.name} quotation`} className="flex-1 justify-center">
+          <CallLink size="sm" ariaLabel={`Call for a ${service.name} quotation — ${service.seoKeyword}`} className="flex-1 justify-center">
             Free Rate
           </CallLink>
           <WhatsAppLink
             size="sm"
             variant="outline"
             message={`Hello JK Interior, please share rates and design photographs for ${service.name}.`}
-            ariaLabel={`WhatsApp about ${service.name}`}
+            ariaLabel={`WhatsApp about ${service.name} — JK Interior Forbesganj`}
             className="flex-1 justify-center"
           >
             WhatsApp
