@@ -176,10 +176,21 @@ async function pipeGroqStream(groqRes: Response, res: any): Promise<string> {
           fullText += delta
           res.write(delta)
         }
-      } catch {
-        // Ignore partial/malformed SSE frames — the buffer above re-joins them next read.
+      } catch (parseErr) {
+        // Ignore partial/malformed SSE frames — the buffer above re-joins them
+        // next read. Logged (not thrown) because a frame that never rejoins
+        // cleanly would otherwise fail completely silently.
+        console.error("Groq stream: unparsable SSE frame", parseErr, payload.slice(0, 200))
       }
     }
+  }
+
+  // The response has already been sent as 200 text/plain, so this can't change
+  // what the client sees — but an empty stream is exactly what makes the widget
+  // fall back to its offline reply while looking, from the outside, like nothing
+  // went wrong. Logging it here is what makes that failure diagnosable.
+  if (!fullText) {
+    console.error(`Groq stream (model=${GROQ_MODEL}) completed with no content — check for a tool-only turn or an upstream content filter.`)
   }
 
   res.end()
@@ -314,6 +325,11 @@ export default async function handler(req: any, res: any) {
     const reply: string | undefined = data?.choices?.[0]?.message?.content?.trim()
 
     if (!reply) {
+      // Groq returned 200 with nothing usable in it — logged because this is
+      // exactly the case that otherwise looks, from the widget's offline
+      // fallback, indistinguishable from "the AI backend is fine but chose not
+      // to answer."
+      console.error(`Groq reply (model=${GROQ_MODEL}) had no content`, JSON.stringify(data).slice(0, 500))
       res.status(200).json({ ok: false, error: "Empty AI reply" })
       return
     }
