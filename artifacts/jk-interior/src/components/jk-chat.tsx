@@ -150,8 +150,12 @@ function galleryCategoryFor(text: string, lastTopic: string | null, service?: st
     return undefined
   }
   const haystack = `${text} ${lastTopic ?? ""} ${service ?? ""}`.toLowerCase()
-  if (/gypsum|jipsum|pop\b|false\s*ceil/.test(haystack))                  return "Gypsum False Ceiling"
+  // Checked before the generic "false ceiling" match below — every ceiling
+  // service on the site is technically a false ceiling (the PVC service's own
+  // name is "PVC False Ceiling"), so a bare "false ceil" match must never win
+  // over an explicit PVC mention, or "PVC photo" shows gypsum photos instead.
   if (/\bpvc\b/.test(haystack))                                           return "PVC Ceiling"
+  if (/gypsum|jipsum|pop\b|false\s*ceil/.test(haystack))                  return "Gypsum False Ceiling"
   if (/wpc|wall\s*panel|fluted|uv\s*marble|louver|louvre/.test(haystack)) return "WPC fluted panels & uv marble Sheet"
   if (/grid|mineral|office\s*ceil/.test(haystack))                         return "Grid Ceiling"
   if (/tv\s*unit|tv\s*cabinet|television|\btv\b/.test(haystack))          return "TV Unit Design"
