@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres"
+import { neon } from "@neondatabase/serverless"
 
 // Vercel Node.js serverless function for the chat widget's leads.
 //
@@ -10,14 +10,26 @@ import { sql } from "@vercel/postgres"
 // by the chat widget and read by AdminPage.tsx (/admin).
 //
 // Storage: connect a Postgres database to this Vercel project (Storage tab ->
-// Postgres) — that's the only setup needed; @vercel/postgres reads the
-// connection string Vercel injects automatically. Also set ADMIN_KEY (any
-// long random string) in the project's environment variables — that's the
-// password /admin asks for.
+// Postgres, backed by Neon) — that's the only setup needed; whichever of
+// DATABASE_URL / POSTGRES_URL Vercel injects is picked up automatically.
+// (@vercel/postgres, the older package for this, is deprecated in favour of
+// @neondatabase/serverless directly — see
+// https://neon.com/docs/guides/vercel-postgres-transition-guide.) Also set
+// ADMIN_KEY (any long random string) in the project's environment variables
+// — that's the password /admin asks for.
 //
 // `process` is a Node.js runtime global; declared locally instead of pulling
 // in @types/node, the same reasoning as api/chat.ts.
 declare const process: { env: Record<string, string | undefined> }
+
+const CONNECTION_STRING = process.env.DATABASE_URL || process.env.POSTGRES_URL
+const sql = CONNECTION_STRING ? neon(CONNECTION_STRING) : null
+
+/** Throws (not returns null) so every call site's existing try/catch handles a missing connection the same way it handles a real query failure. */
+function getSql() {
+  if (!sql) throw new Error("DATABASE_URL / POSTGRES_URL not set — connect a Postgres database in the Vercel project's Storage tab")
+  return sql
+}
 
 // Rate limiting
 //
@@ -84,7 +96,7 @@ function clean(value: unknown, max: number): string | null {
 let tableReady: Promise<void> | null = null
 function ensureTable(): Promise<void> {
   if (tableReady) return tableReady
-  const promise: Promise<void> = sql`
+  const promise: Promise<void> = getSql()`
     CREATE TABLE IF NOT EXISTS leads (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
@@ -139,7 +151,7 @@ export default async function handler(req: any, res: any) {
     const chatSummary = clean(body.chat_summary, 800)
 
     try {
-      await sql`
+      await getSql()`
         INSERT INTO leads (name, phone, city, service, estimate, preferred_time, chat_summary)
         VALUES (${name}, ${phone}, ${city}, ${service}, ${estimate}, ${preferredTime}, ${chatSummary})
       `
@@ -165,7 +177,10 @@ export default async function handler(req: any, res: any) {
       return
     }
     try {
-      const { rows } = await sql`SELECT * FROM leads ORDER BY created_at DESC LIMIT 500`
+      // @neondatabase/serverless returns the rows directly (not wrapped in a
+      // { rows } result object) unless fullResults is set — this is that
+      // default shape.
+      const rows = await getSql()`SELECT * FROM leads ORDER BY created_at DESC LIMIT 500`
       res.status(200).json({ ok: true, leads: rows })
     } catch (err) {
       console.error("api/leads: select failed", err)
@@ -194,7 +209,7 @@ export default async function handler(req: any, res: any) {
       return
     }
     try {
-      await sql`UPDATE leads SET is_read = TRUE WHERE id = ${id}`
+      await getSql()`UPDATE leads SET is_read = TRUE WHERE id = ${id}`
       res.status(200).json({ ok: true })
     } catch (err) {
       console.error("api/leads: update failed", err)
