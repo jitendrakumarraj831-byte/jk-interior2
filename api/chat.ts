@@ -25,12 +25,19 @@ declare const process: { env: Record<string, string | undefined> }
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 // The system prompt is a long block of website data and the whole value of this
-// assistant is that it stays inside it. The 8b model was measurably faster but
-// drifted — inventing rates, answering in English when the visitor wrote Hindi,
-// and re-asking for details already in memory. 70b follows the grounding rules
-// reliably and, on Groq's LPUs with streaming on, still starts replying in well
-// under a second. Set GROQ_MODEL to override.
-const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile"
+// assistant is that it stays inside it. A small/distilled model was measurably
+// faster but drifted — inventing rates, answering in English when the visitor
+// wrote Hindi, and re-asking for details already in memory. A larger model
+// follows the grounding rules reliably and, on Groq's LPUs with streaming on,
+// still starts replying in well under a second.
+//
+// Groq deprecated llama-3.3-70b-versatile (and llama-3.1-8b-instant) for
+// free/developer-tier usage in June 2026 — every call to this endpoint started
+// failing with a 404 model_not_found until this was updated. openai/gpt-oss-120b
+// is Groq's own recommended replacement for the 70b-class model. Set GROQ_MODEL
+// to override; check https://console.groq.com/docs/deprecations before pinning
+// a specific model long-term, since Groq has done this before.
+const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b"
 
 /** How long to wait for Groq's first byte, and how long a silent stream may stall. */
 const UPSTREAM_TIMEOUT_MS = 20_000
