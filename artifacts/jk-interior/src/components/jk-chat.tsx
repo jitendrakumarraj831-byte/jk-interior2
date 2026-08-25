@@ -150,7 +150,12 @@ function galleryCategoryFor(text: string, lastTopic: string | null, service?: st
     return undefined
   }
   const haystack = `${text} ${lastTopic ?? ""} ${service ?? ""}`.toLowerCase()
-  if (/gypsum|jipsum|pop\b|false\s*ceil/.test(haystack))                  return "Gypsum False Ceiling"
+  // "false ceiling" used to sit in this pattern too, but that phrase is generic
+  // — it's literally inside the PVC service's own name ("PVC False Ceiling"),
+  // so any PVC query whose lastTopic/service context carried that name matched
+  // here first and showed gypsum photos for a PVC request. gypsum/jipsum/pop
+  // are the only markers actually specific to gypsum.
+  if (/gypsum|jipsum|pop\b/.test(haystack))                               return "Gypsum False Ceiling"
   if (/\bpvc\b/.test(haystack))                                           return "PVC Ceiling"
   if (/wpc|wall\s*panel|fluted|uv\s*marble|louver|louvre/.test(haystack)) return "WPC fluted panels & uv marble Sheet"
   if (/grid|mineral|office\s*ceil/.test(haystack))                         return "Grid Ceiling"
