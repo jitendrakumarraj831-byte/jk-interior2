@@ -1,4 +1,4 @@
-import { Layers, PanelTop, Tv } from "lucide-react"
+import { Layers, PanelTop, Tv, Grid3x3, DoorClosed, Gem, Trees } from "lucide-react"
 
 export interface ServiceCityInfo {
   slug: string
@@ -111,6 +111,102 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     faqs: [
       { q: "What does a modular TV unit cost?", a: "A basic unit starts at ₹15,000. A premium design with LED lighting and extensive storage runs from ₹46,000 to ₹75,000 and above, depending on size." },
       { q: "How many days does a TV unit take to build?", a: "Three to five days, depending on size and design. We confirm a firm timeline once the measurements are taken." },
+    ],
+  },
+  {
+    slug: "grid-ceiling",
+    name: "Grid Ceiling",
+    icon: Grid3x3,
+    galleryCategory: "Grid Ceiling",
+    price: "₹45–₹115/sq.ft",
+    premiumPrice: "₹76–₹115/sq.ft for acoustic-rated or edge-lit tiles on a heavier grid",
+    description:
+      "Grid ceiling is a 2×2 lay-in tile system on a light metal grid — the commercial standard for offices, shops and clinics. Any tile lifts out in seconds to reach wiring or AC ducts above, with no breaking and no mess.",
+    pros: [
+      "Lift a single tile anytime to reach wiring or AC ducts",
+      "Fastest and most economical ceiling for large floors",
+      "Acoustic tile options cut office echo",
+      "Fire-safe tiles backed by a 1-year warranty",
+    ],
+    bestFor: "Offices, shops, showrooms, clinics",
+    installTime: "1–2 days for a room, 3–4 days for a larger floor",
+    maintenance: "Very low — dust now and then; a stained tile is swapped on its own",
+    warranty: "1 year written warranty",
+    faqs: [
+      { q: "Why pick grid over gypsum for my office?", a: "If ducting, conduits or plumbing run overhead, grid lets an electrician lift one tile and get in without touching the rest. Gypsum looks premium but has to be cut open for that same access." },
+      { q: "Are the tiles waterproof?", a: "Standard mineral-fibre tiles are not — they sag when wet. For washrooms or damp areas we drop PVC lay-in tiles into the very same grid instead." },
+    ],
+  },
+  {
+    slug: "partition-wall",
+    name: "Partition Wall",
+    icon: DoorClosed,
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
+    price: "₹100–₹750/sq.ft",
+    premiumPrice: "₹460–₹750/sq.ft for frosted or fluted glass in aluminium framing",
+    description:
+      "Partition wall splits any space into a private cabin or extra room without the dust and weeks of brickwork — a rock-solid gypsum or elegant toughened-glass wall that gives privacy, sound control and a clean modern look, fast.",
+    pros: [
+      "No brickwork or cement dust — ready in 2–4 days",
+      "Rock-solid gypsum or elegant toughened glass",
+      "Real sound privacy with rockwool insulation",
+      "Fully removable and reworked later if your layout changes",
+    ],
+    bestFor: "Office cabins, room division, reception areas",
+    installTime: "2–4 days by length and whether it's gypsum or glass",
+    maintenance: "Gypsum face: an occasional dust. Glass face: a wipe with glass cleaner.",
+    warranty: "1 year written warranty",
+    faqs: [
+      { q: "Can a partition hold a wall-mounted TV or shelves?", a: "Yes — as long as we know in advance. We build solid backing into the frame at the mounting height so the screws grip that, not just the board. Just flag it at the site-visit stage." },
+      { q: "Is a glass partition safe with kids around?", a: "We fit toughened glass as standard, which shatters into small blunt granules rather than sharp shards. For homes with young children we also recommend a safety-laminated film — just ask for it in the quote." },
+    ],
+  },
+  {
+    slug: "uv-marble-sheet",
+    name: "UV Marble Sheet",
+    icon: Gem,
+    galleryCategory: "WPC fluted panels & uv marble Sheet",
+    price: "₹45–₹120/sq.ft",
+    premiumPrice: "₹90–₹120/sq.ft for premium granite or exotic prints with an anti-fingerprint coat",
+    description:
+      "UV marble sheet gives a glossy, seamless marble-look wall for a pooja room or bathroom — fully waterproof, with no grout lines to blacken, at a fraction of real marble's price.",
+    pros: [
+      "Premium marble look at a fraction of natural stone's cost",
+      "Waterproof with no grout lines to blacken",
+      "Lightweight, scratch-resistant, wipes clean in seconds",
+      "Fresh wall makeover finished in a single day",
+    ],
+    bestFor: "Pooja rooms, bathroom walls, feature walls",
+    installTime: "1–2 days per room",
+    maintenance: "None to speak of — a damp cloth keeps it shining, no polishing",
+    warranty: "1 year written warranty",
+    faqs: [
+      { q: "Can UV marble go on the wall behind the stove?", a: "We keep it off the strip right behind the flame — direct heat can affect the PVC base. For that patch we suggest ceramic tile or a metal splashback and run UV marble across the rest of the wall." },
+      { q: "Does it need grout like tiles?", a: "No — sheets meet edge-to-edge with the pattern aligned, so there's no grout line at all. That means no joint that turns black with mould over the years." },
+    ],
+  },
+  {
+    slug: "artificial-grass",
+    name: "Artificial Grass",
+    icon: Trees,
+    galleryCategory: "Artificial Grass",
+    price: "₹40–₹150/sq.ft",
+    premiumPrice: "₹90–₹150/sq.ft for 40–50mm premium-density pile with the longest-lasting colour and UV",
+    description:
+      "Artificial grass is soft, premium UV-protected turf that turns a balcony, terrace or wall into a fresh green space all year — no watering, no mowing, no insects — and it drains the monsoon straight through.",
+    pros: [
+      "Lush green 365 days a year — no watering or mowing",
+      "Soft and safe for kids and pets",
+      "Drains the monsoon straight through — no mud or pooling",
+      "UV-protected colour that won't fade for years",
+    ],
+    bestFor: "Balconies, terraces, green feature walls",
+    installTime: "Half a day to a full day for a typical balcony or wall",
+    maintenance: "An occasional rinse and a light brush — never any mowing or watering",
+    warranty: "1 year written warranty",
+    faqs: [
+      { q: "Will it smell or grow mould in the monsoon?", a: "Not if the base drains properly — that's the one thing we always insist on checking. If your balcony doesn't drain well, we sort the drainage before a single roll goes down." },
+      { q: "How long does it last outdoors?", a: "Good UV-stabilised turf keeps its colour and pile for about 5–8 years of regular sun before it noticeably fades. Our 1-year warranty covers the installation; the material itself lasts well beyond that." },
     ],
   },
 ]
