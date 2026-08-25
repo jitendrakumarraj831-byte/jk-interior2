@@ -34,10 +34,20 @@ const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 // Groq deprecated llama-3.3-70b-versatile (and llama-3.1-8b-instant) for
 // free/developer-tier usage in June 2026 — every call to this endpoint started
 // failing with a 404 model_not_found until this was updated. openai/gpt-oss-120b
-// is Groq's own recommended replacement for the 70b-class model. Set GROQ_MODEL
-// to override; check https://console.groq.com/docs/deprecations before pinning
-// a specific model long-term, since Groq has done this before.
-const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b"
+// is Groq's own recommended replacement for the 70b-class model, and is kept as
+// the automatic fallback below. Check https://console.groq.com/docs/deprecations
+// before pinning a specific model long-term, since Groq has done this before.
+//
+// `groq/compound` is the primary model: it is openai/gpt-oss-120b underneath,
+// but decides on its own, per message, whether to run a real web search before
+// answering — so a plain "Hi" or a rate question stays just as fast (no tool
+// call triggered), while a question the WEBSITE DATA block can't answer (a
+// material comparison, "what's trending in 2026", general upkeep advice) comes
+// back with real, current information instead of the model's frozen training
+// data or a flat "can't confirm that here." Same endpoint, same API key, no new
+// dependency. Set GROQ_MODEL / GROQ_FALLBACK_MODEL to override either.
+const GROQ_MODEL = process.env.GROQ_MODEL || "groq/compound"
+const GROQ_FALLBACK_MODEL = process.env.GROQ_FALLBACK_MODEL || "openai/gpt-oss-120b"
 
 /** How long to wait for Groq's first byte, and how long a silent stream may stall. */
 const UPSTREAM_TIMEOUT_MS = 20_000
@@ -183,7 +193,7 @@ async function pipeGroqStream(groqRes: Response, res: any): Promise<string> {
  * short retry recovers a burst that would otherwise drop straight to the
  * widget's offline fallback for no real reason.
  */
-async function fetchGroqWithRetry(payload: object, apiKey: string): Promise<Response> {
+async function fetchGroqOnce(payload: object, apiKey: string): Promise<Response> {
   const doFetch = () =>
     fetch(GROQ_URL, {
       method: "POST",
@@ -200,6 +210,19 @@ async function fetchGroqWithRetry(payload: object, apiKey: string): Promise<Resp
   const waitMs = Math.min(Math.max(Number(waitMatch?.[1]) * 1000 || 1500, 500), 4000)
   await new Promise((resolve) => setTimeout(resolve, waitMs))
   return doFetch()
+}
+
+/**
+ * Tries `groq/compound` first, then falls back to the plain model if the
+ * account/region doesn't have compound access (404/400) or the request
+ * otherwise fails outright. This only re-fetches before anything has been
+ * written to the client, so it's safe to do even on the streaming path.
+ */
+async function fetchGroqWithRetry(payload: { model: string; [key: string]: unknown }, apiKey: string): Promise<Response> {
+  const primary = await fetchGroqOnce(payload, apiKey)
+  if (primary.ok || payload.model === GROQ_FALLBACK_MODEL) return primary
+
+  return fetchGroqOnce({ ...payload, model: GROQ_FALLBACK_MODEL }, apiKey)
 }
 
 export default async function handler(req: any, res: any) {
