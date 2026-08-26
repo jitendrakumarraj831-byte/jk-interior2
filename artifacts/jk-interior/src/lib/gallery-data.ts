@@ -62,9 +62,15 @@ export const galleryImages = [
   { src: "/images/fluted-panels.webp", alt: "Fluted wall panels in a Bihar home",                        category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/uv-marble.webp",     alt: "UV marble sheet wall cladding with a glossy finish",        category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/wpc-louvers.webp",   alt: "WPC louvre wall panelling",                                 category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
-  { src: "/images/partition-wall.webp", alt: "Partition wall with a panelled finish",                    category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/gallery-34.webp",    alt: "Feature wall with fluted WPC panels",                       category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/gallery-35.webp",    alt: "WPC wall cladding project by JK Interior",                  category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+
+  // ── Partition Wall (5 Images) ─────────────────────────────────────────────
+  { src: "/images/p1.jpg",             alt: "WPC panel partition wall with metal stud framing",          category: "Partition Wall", width: 1080, height: 1080 },
+  { src: "/images/p2.jpg",             alt: "WPC panel partition wall being installed in a corridor",    category: "Partition Wall", width: 1080, height: 1080 },
+  { src: "/images/p3.jpg",             alt: "WPC panelled partition wall in a warehouse office",         category: "Partition Wall", width: 1080, height: 1080 },
+  { src: "/images/p4.jpg",             alt: "WPC panel partition framing along a corridor",              category: "Partition Wall", width: 1080, height: 1080 },
+  { src: "/images/p5.jpg",             alt: "WPC fluted panel partition wall installation",              category: "Partition Wall", width: 1080, height: 1080 },
 
   // ── TV Unit (8 Images) ────────────────────────────────────────────────────
   { src: "/images/tv-unit.webp",       alt: "Modular TV unit with a wall-mounted TV",                    category: "TV Unit Design", width: 1080, height: 1080 },
@@ -122,6 +128,12 @@ export const CATEGORY_SEO: Record<string, { keywordSuffix: string; keywords: str
       "wpc louvers wall panelling, pvc wall panel design catalog, charcoal panel suppliers, uv marble sheet wall cladding",
     caption:
       "WPC louvers wall panelling and charcoal-tone fluted designs, drawn from trusted charcoal panel suppliers and our own pvc wall panel design catalog, paired with high-gloss uv marble sheet wall cladding for TV and feature walls — all installed by JK Interior Forbesganj.",
+  },
+  "Partition Wall": {
+    keywordSuffix: "partition wall design forbesganj",
+    keywords: "partition wall design forbesganj, gypsum partition wall, glass partition office cabin",
+    caption:
+      "Gypsum and glass partition walls that carve a private cabin or extra room out of one open floor in days, no bricks or cement — installed by JK Interior Forbesganj for homes and offices across Araria district.",
   },
   "TV Unit Design": {
     keywordSuffix: "modern tv unit design for living room",

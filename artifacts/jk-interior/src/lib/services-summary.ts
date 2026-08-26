@@ -101,8 +101,8 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
     detail:
       "A dry-build partition on a metal frame, clad in gypsum or toughened glass. Divides a room in days, with none of the mess of masonry.",
     badge: "Dry Build, Low Mess",
-    heroImage: "/images/partition-wall.webp",
-    heroImageAlt: "Gypsum board partition wall dividing an office cabin, installed by JK Interior",
+    heroImage: "/images/p1.jpg",
+    heroImageAlt: "WPC panel partition wall dividing an office cabin, installed by JK Interior",
     price: "₹100–₹750 / sq.ft",
     installTime: "Ready in 2–4 days",
     whereUsedFirst: "Office cabins & room division",

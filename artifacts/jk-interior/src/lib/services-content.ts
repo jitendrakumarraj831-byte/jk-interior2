@@ -420,9 +420,9 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     name: "Partition Wall",
     category: "Partition",
     tagline: "A brand-new room or private cabin in days — no bricks, no cement, no mess",
-    heroImage: "/images/partition-wall.webp",
-    heroImageAlt: "Gypsum and glass partition wall dividing an office cabin, installed by JK Interior",
-    galleryCategory: "WPC fluted panels & uv marble Sheet",
+    heroImage: "/images/p1.jpg",
+    heroImageAlt: "WPC panel partition wall dividing an office cabin, installed by JK Interior",
+    galleryCategory: "Partition Wall",
     price: "₹100–₹750/sq.ft (gypsum or glass, Forbesganj/Araria market rate)",
     priceTiers: [
       { tier: "Economy", range: "₹100–₹130/sq.ft", desc: "Single-layer gypsum wall on one row of metal studs." },
