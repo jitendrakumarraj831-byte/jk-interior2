@@ -62,7 +62,11 @@ export const galleryImages = [
   { src: "/images/fluted-panels.webp", alt: "Fluted wall panels in a Bihar home",                        category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/uv-marble.webp",     alt: "UV marble sheet wall cladding with a glossy finish",        category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/wpc-louvers.webp",   alt: "WPC louvre wall panelling",                                 category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
-  { src: "/images/partition-wall.webp", alt: "Partition wall with a panelled finish",                    category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/p1.jpg",              alt: "WPC panel partition wall with metal stud framing",         category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/p2.jpg",              alt: "WPC panel partition wall being installed in a corridor",   category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/p3.jpg",              alt: "WPC panelled partition wall in a warehouse office",        category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/p4.jpg",              alt: "WPC panel partition framing along a corridor",             category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
+  { src: "/images/p5.jpg",              alt: "WPC fluted panel partition wall installation",             category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/gallery-34.webp",    alt: "Feature wall with fluted WPC panels",                       category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
   { src: "/images/gallery-35.webp",    alt: "WPC wall cladding project by JK Interior",                  category: "WPC fluted panels & uv marble Sheet", width: 1080, height: 1080 },
 
