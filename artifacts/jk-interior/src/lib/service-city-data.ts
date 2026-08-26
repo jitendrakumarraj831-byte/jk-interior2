@@ -141,7 +141,7 @@ export const SERVICE_CITY_SERVICES: ServiceCityInfo[] = [
     slug: "partition-wall",
     name: "Partition Wall",
     icon: DoorClosed,
-    galleryCategory: "WPC fluted panels & uv marble Sheet",
+    galleryCategory: "Partition Wall",
     price: "₹100–₹750/sq.ft",
     premiumPrice: "₹460–₹750/sq.ft for frosted or fluted glass in aluminium framing",
     description:

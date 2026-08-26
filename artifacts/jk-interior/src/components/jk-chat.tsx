@@ -157,12 +157,8 @@ function galleryCategoryFor(text: string, lastTopic: string | null, service?: st
   // are the only markers actually specific to gypsum.
   if (/gypsum|jipsum|pop\b/.test(haystack))                               return "Gypsum False Ceiling"
   if (/\bpvc\b/.test(haystack))                                           return "PVC Ceiling"
-  // Partition Wall has no gallery category of its own — its photos
-  // (p1.jpg–p5.jpg) are tagged under this one in gallery-data.ts — so
-  // without this line a "partition wall photo" request matched nothing above
-  // and fell through to the generic default below, showing gypsum photos for
-  // a partition-wall request.
-  if (/wpc|wall\s*panel|fluted|uv\s*marble|louver|louvre|partition|cabin\s*wall|glass\s*wall/.test(haystack))
+  if (/partition|cabin\s*wall|glass\s*wall/.test(haystack))                return "Partition Wall"
+  if (/wpc|wall\s*panel|fluted|uv\s*marble|louver|louvre/.test(haystack))
     return "WPC fluted panels & uv marble Sheet"
   if (/grid|mineral|office\s*ceil/.test(haystack))                         return "Grid Ceiling"
   if (/tv\s*unit|tv\s*cabinet|television|\btv\b/.test(haystack))          return "TV Unit Design"
