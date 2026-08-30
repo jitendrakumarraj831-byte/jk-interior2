@@ -14,11 +14,49 @@ import {
   type ServiceHighlight,
   type ServiceSummary,
 } from "@/lib/services-summary"
-import { PINTEREST_QUERY, pinterestSearchUrl } from "@/lib/pinterest-queries"
+import { PINTEREST_QUERY, PINTEREST_BOARD_URL, pinterestSearchUrl } from "@/lib/pinterest-queries"
 
 /** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
  *  number by design, kept separate from the site-wide `WA_NUMBER`. */
 const GALLERY_WHATSAPP_NUMBER = "918541849118"
+
+declare global {
+  interface Window {
+    /** Pinterest's widget SDK (`pinit.js`) — turns any `data-pin-do` anchor into a rendered widget. */
+    PinUtils?: { build: (elements?: HTMLElement[]) => void }
+  }
+}
+
+const PINTEREST_SCRIPT_ID = "pinterest-pinit-sdk"
+let pinterestScriptPromise: Promise<void> | null = null
+
+/**
+ * Loads Pinterest's official widget SDK exactly once per page (cached across
+ * every modal open), then resolves once `window.PinUtils` is available. A
+ * board widget renders via `widgets.pinterest.com`, which — unlike a raw
+ * `pinterest.com` page — Pinterest designed to be embedded by other sites.
+ */
+function loadPinterestWidgetScript(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve()
+  if (window.PinUtils) return Promise.resolve()
+  if (pinterestScriptPromise) return pinterestScriptPromise
+
+  pinterestScriptPromise = new Promise((resolve) => {
+    const existing = document.getElementById(PINTEREST_SCRIPT_ID)
+    if (existing) {
+      existing.addEventListener("load", () => resolve(), { once: true })
+      return
+    }
+    const script = document.createElement("script")
+    script.id = PINTEREST_SCRIPT_ID
+    script.async = true
+    script.defer = true
+    script.src = "//assets.pinterest.com/js/pinit.js"
+    script.addEventListener("load", () => resolve(), { once: true })
+    document.body.appendChild(script)
+  })
+  return pinterestScriptPromise
+}
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -483,14 +521,22 @@ function FeaturedWorkGrid() {
 
 /**
  * Glassmorphism modal opened by a Featured Work tile — embeds that service's
- * Pinterest search gallery in-page (no new tab) with a sticky WhatsApp CTA.
- * Portals to `document.body` so it always sits above the section's own
- * `overflow-hidden`, and mirrors the escape/scroll-lock/focus handling the
- * gallery lightbox already uses (see `Lightbox` in `components/gallery.tsx`).
+ * Pinterest board in-page (no new tab) via Pinterest's official widget SDK,
+ * with a sticky WhatsApp CTA. Portals to `document.body` so it always sits
+ * above the section's own `overflow-hidden`, and mirrors the
+ * escape/scroll-lock/focus handling the gallery lightbox already uses (see
+ * `Lightbox` in `components/gallery.tsx`).
+ *
+ * A raw `<iframe src="pinterest.com/search/...">` doesn't work in production
+ * — Pinterest sends `X-Frame-Options` on that page, so browsers refuse to
+ * render it framed. The board widget instead renders through
+ * `widgets.pinterest.com`, which Pinterest built specifically to be embedded
+ * elsewhere.
  */
 function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null)
-  const [iframeLoaded, setIframeLoaded] = useState(false)
+  const boardContainerRef = useRef<HTMLDivElement>(null)
+  const [widgetReady, setWidgetReady] = useState(false)
 
   useEffect(() => {
     closeBtnRef.current?.focus()
@@ -507,10 +553,40 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   }, [onClose])
 
   const query = PINTEREST_QUERY[service.slug] ?? `${service.name} design`
-  const embedUrl = pinterestSearchUrl(query)
+  const searchUrl = pinterestSearchUrl(query)
+  const boardUrl = PINTEREST_BOARD_URL[service.slug]
+  const externalUrl = boardUrl ?? searchUrl
   const waHref = `https://wa.me/${GALLERY_WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hello JK Interior, I was browsing the ${service.name} design gallery and would like an instant quote.`
   )}`
+
+  // Trigger the Pinterest SDK to render the board widget's anchor tag once
+  // it's mounted, and watch for the iframe it injects to clear the loading
+  // skeleton — `PinUtils.build()` has no completion callback of its own.
+  useEffect(() => {
+    if (!boardUrl) return
+    setWidgetReady(false)
+    const container = boardContainerRef.current
+    if (!container) return
+
+    const observer = new MutationObserver(() => {
+      if (container.querySelector("iframe")) {
+        setWidgetReady(true)
+        observer.disconnect()
+      }
+    })
+    observer.observe(container, { childList: true, subtree: true })
+
+    let cancelled = false
+    loadPinterestWidgetScript().then(() => {
+      if (!cancelled) window.PinUtils?.build()
+    })
+
+    return () => {
+      cancelled = true
+      observer.disconnect()
+    }
+  }, [service.slug, boardUrl])
 
   return createPortal(
     <motion.div
@@ -542,7 +618,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
           </div>
           <div className="flex flex-none items-center gap-2">
             <a
-              href={embedUrl}
+              href={externalUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open ${service.name} gallery on Pinterest in a new tab`}
@@ -564,21 +640,43 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
         </div>
 
         {/* Pinterest embed */}
-        <div className="relative flex-1 overflow-hidden bg-white">
-          {!iframeLoaded && (
-            <div className="absolute inset-0 flex animate-pulse flex-col items-center justify-center gap-3 bg-charcoal-100">
-              <Sparkles className="h-6 w-6 text-gold-500" aria-hidden="true" />
-              <p className="text-xs font-bold text-charcoal-500">Loading {service.name} ideas…</p>
+        <div className="relative flex-1 overflow-y-auto bg-white scrollbar-luxury">
+          {boardUrl ? (
+            <>
+              {!widgetReady && (
+                <div className="absolute inset-0 flex animate-pulse flex-col items-center justify-center gap-3 bg-charcoal-100">
+                  <Sparkles className="h-6 w-6 text-gold-500" aria-hidden="true" />
+                  <p className="text-xs font-bold text-charcoal-500">Loading {service.name} ideas…</p>
+                </div>
+              )}
+              <div ref={boardContainerRef} className="p-4">
+                <a
+                  key={service.slug}
+                  data-pin-do="embedBoard"
+                  data-pin-board-width="100%"
+                  data-pin-scale-height="400"
+                  data-pin-scale-width="80"
+                  href={boardUrl}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
+              <Sparkles className="h-8 w-8 text-gold-500" aria-hidden="true" />
+              <div>
+                <p className="text-sm font-bold text-charcoal-700">The {service.name} board is being curated</p>
+                <p className="mt-1 text-xs text-charcoal-500">Browse live design ideas on Pinterest in the meantime.</p>
+              </div>
+              <a
+                href={searchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-gold-500/30 bg-gold-500/8 px-5 py-2.5 text-sm font-bold text-gold-700 transition-all hover:border-gold-500/50 hover:bg-gold-500/15"
+              >
+                Browse on Pinterest <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
             </div>
           )}
-          <iframe
-            key={service.slug}
-            src={embedUrl}
-            title={`${service.name} design ideas on Pinterest`}
-            loading="lazy"
-            onLoad={() => setIframeLoaded(true)}
-            className="relative h-full w-full border-0"
-          />
         </div>
 
         {/* Sticky CTA bar */}
