@@ -36,15 +36,15 @@ export function pinterestSearchUrl(query: string): string {
  * A slug with no entry here (or no Pinterest board yet) falls back to the
  * "open search on Pinterest" link instead of a broken embed — fill in the
  * real board URL for a service once it has one, e.g.
- * `"gypsum-ceiling": "https://www.pinterest.com/jkinterior/gypsum-false-ceiling/"`.
+ * `"gypsum-ceiling": "https://www.pinterest.com/Jkinteriorfbg/gypsum-false-ceiling/"`.
  */
 export const PINTEREST_BOARD_URL: Partial<Record<string, string>> = {
-  "gypsum-ceiling": "https://www.pinterest.com/jkinterior/gypsum-false-ceiling/",
-  "pvc-false-ceiling": "https://www.pinterest.com/jkinterior/pvc-false-ceiling/",
-  "grid-ceiling": "https://www.pinterest.com/jkinterior/grid-ceiling/",
-  "wpc-wall-panel": "https://www.pinterest.com/jkinterior/wpc-wall-paneling/",
-  "uv-marble-sheet": "https://www.pinterest.com/jkinterior/uv-marble-sheet/",
-  "partition-wall": "https://www.pinterest.com/jkinterior/gypsum-partition-wall/",
-  "modular-tv-unit": "https://www.pinterest.com/jkinterior/modern-tv-unit/",
-  "artificial-grass": "https://www.pinterest.com/jkinterior/artificial-grass/",
+  "gypsum-ceiling": "https://www.pinterest.com/Jkinteriorfbg/gypsum-false-ceiling/",
+  "pvc-false-ceiling": "https://www.pinterest.com/Jkinteriorfbg/pvc-false-ceiling/",
+  "grid-ceiling": "https://www.pinterest.com/Jkinteriorfbg/grid-ceiling/",
+  "wpc-wall-panel": "https://www.pinterest.com/Jkinteriorfbg/wpc-wall-paneling/",
+  "uv-marble-sheet": "https://www.pinterest.com/Jkinteriorfbg/uv-marble-sheet/",
+  "partition-wall": "https://www.pinterest.com/Jkinteriorfbg/gypsum-partition-wall/",
+  "modular-tv-unit": "https://www.pinterest.com/Jkinteriorfbg/modern-tv-unit/",
+  "artificial-grass": "https://www.pinterest.com/Jkinteriorfbg/artificial-grass/",
 }
