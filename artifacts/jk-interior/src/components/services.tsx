@@ -31,6 +31,25 @@ const PINTEREST_SCRIPT_ID = "pinterest-pinit-sdk"
 let pinterestScriptPromise: Promise<void> | null = null
 
 /**
+ * Warms the connection to the hosts the widget SDK talks to (its own script,
+ * then the board iframe it injects at `widgets.pinterest.com`) before either
+ * is actually requested — the DNS/TLS handshake happens while the modal is
+ * still animating in, instead of adding to the critical path once the script
+ * or the iframe request actually fires.
+ */
+function preconnectPinterest(): void {
+  if (typeof document === "undefined") return
+  for (const href of ["https://assets.pinterest.com", "https://widgets.pinterest.com"]) {
+    if (document.querySelector(`link[rel="preconnect"][href="${href}"]`)) continue
+    const link = document.createElement("link")
+    link.rel = "preconnect"
+    link.href = href
+    link.crossOrigin = "anonymous"
+    document.head.appendChild(link)
+  }
+}
+
+/**
  * Loads Pinterest's official widget SDK exactly once per page (cached across
  * every modal open), then resolves once `window.PinUtils` is available. A
  * board widget renders via `widgets.pinterest.com`, which — unlike a raw
@@ -38,6 +57,7 @@ let pinterestScriptPromise: Promise<void> | null = null
  */
 function loadPinterestWidgetScript(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve()
+  preconnectPinterest()
   if (window.PinUtils) return Promise.resolve()
   if (pinterestScriptPromise) return pinterestScriptPromise
 
@@ -563,8 +583,8 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   // Trigger the Pinterest SDK to render the board widget's anchor tag once
   // it's mounted, and watch for the img/iframe it injects to clear the
   // loading skeleton — `PinUtils.build()` has no completion callback of its
-  // own, and the widget renders as inline <img> tags rather than an iframe,
-  // so a 6s fallback also clears the skeleton if that markup ever changes.
+  // own. A 6s fallback also clears the skeleton if that markup ever changes
+  // in a way the observer doesn't catch.
   useEffect(() => {
     if (!boardUrl) return
     setWidgetReady(false)
@@ -582,10 +602,26 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
     }
 
     const observer = new MutationObserver(() => {
-      if (container.querySelector("img, iframe")) {
-        setWidgetReady(true)
-        observer.disconnect()
+      const media = container.querySelector<HTMLIFrameElement>("img, iframe")
+      if (!media) return
+
+      if (media.tagName === "IFRAME") {
+        // Pinterest bakes a fixed pixel width onto the iframe it injects —
+        // that's what leaves it narrow inside a fluid modal. Drop the width
+        // attribute and let it fill the container instead. Its height
+        // attribute is left alone: that number is how tall Pinterest actually
+        // laid the pins out, and zeroing it would collapse the iframe to the
+        // browser's ~150px default and hide most of the board rather than
+        // fix anything. `loading="lazy"` costs nothing since the browser only
+        // defers a fetch that hasn't started yet.
+        media.removeAttribute("width")
+        media.style.width = "100%"
+        media.style.maxWidth = "100%"
+        media.loading = "lazy"
       }
+
+      setWidgetReady(true)
+      observer.disconnect()
     })
     observer.observe(container, { childList: true, subtree: true })
 
@@ -657,7 +693,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
         </div>
 
         {/* Pinterest embed */}
-        <div className="relative flex-1 overflow-y-auto bg-white scrollbar-luxury">
+        <div className="relative w-full max-w-full flex-1 overflow-y-auto bg-white scrollbar-luxury">
           {boardUrl ? (
             <>
               {!widgetReady && (
@@ -666,11 +702,11 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
                   <p className="text-xs font-bold text-charcoal-500">Loading {service.name} ideas…</p>
                 </div>
               )}
-              <div ref={boardContainerRef} className="w-full p-4">
+              <div ref={boardContainerRef} className="w-full max-w-full p-4">
                 <a
                   key={service.slug}
                   data-pin-do="embedBoard"
-                  data-pin-scale-height="400"
+                  data-pin-scale-height="240"
                   data-pin-scale-width="80"
                   href={boardUrl}
                   className="block w-full"
