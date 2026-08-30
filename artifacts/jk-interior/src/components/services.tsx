@@ -15,68 +15,11 @@ import {
   type ServiceSummary,
 } from "@/lib/services-summary"
 import { PINTEREST_QUERY, PINTEREST_BOARD_URL, pinterestSearchUrl } from "@/lib/pinterest-queries"
+import { galleryImagesForService, seoAlt as gallerySeoAlt, type GalleryImage } from "@/lib/gallery-data"
 
 /** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
  *  number by design, kept separate from the site-wide `WA_NUMBER`. */
 const GALLERY_WHATSAPP_NUMBER = "918541849118"
-
-declare global {
-  interface Window {
-    /** Pinterest's widget SDK (`pinit.js`) — turns any `data-pin-do` anchor into a rendered widget. */
-    PinUtils?: { build: (elements?: HTMLElement[]) => void }
-  }
-}
-
-const PINTEREST_SCRIPT_ID = "pinterest-pinit-sdk"
-let pinterestScriptPromise: Promise<void> | null = null
-
-/**
- * Warms the connection to the hosts the widget SDK talks to (its own script,
- * then the board iframe it injects at `widgets.pinterest.com`) before either
- * is actually requested — the DNS/TLS handshake happens while the modal is
- * still animating in, instead of adding to the critical path once the script
- * or the iframe request actually fires.
- */
-function preconnectPinterest(): void {
-  if (typeof document === "undefined") return
-  for (const href of ["https://assets.pinterest.com", "https://widgets.pinterest.com"]) {
-    if (document.querySelector(`link[rel="preconnect"][href="${href}"]`)) continue
-    const link = document.createElement("link")
-    link.rel = "preconnect"
-    link.href = href
-    link.crossOrigin = "anonymous"
-    document.head.appendChild(link)
-  }
-}
-
-/**
- * Loads Pinterest's official widget SDK exactly once per page (cached across
- * every modal open), then resolves once `window.PinUtils` is available. A
- * board widget renders via `widgets.pinterest.com`, which — unlike a raw
- * `pinterest.com` page — Pinterest designed to be embedded by other sites.
- */
-function loadPinterestWidgetScript(): Promise<void> {
-  if (typeof window === "undefined") return Promise.resolve()
-  preconnectPinterest()
-  if (window.PinUtils) return Promise.resolve()
-  if (pinterestScriptPromise) return pinterestScriptPromise
-
-  pinterestScriptPromise = new Promise((resolve) => {
-    const existing = document.getElementById(PINTEREST_SCRIPT_ID)
-    if (existing) {
-      existing.addEventListener("load", () => resolve(), { once: true })
-      return
-    }
-    const script = document.createElement("script")
-    script.id = PINTEREST_SCRIPT_ID
-    script.async = true
-    script.defer = true
-    script.src = "//assets.pinterest.com/js/pinit.js"
-    script.addEventListener("load", () => resolve(), { once: true })
-    document.body.appendChild(script)
-  })
-  return pinterestScriptPromise
-}
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -90,6 +33,8 @@ const ROW_IMAGE_SIZES = "(min-width: 1024px) 520px, calc(100vw - 40px)"
 const CARD_IMAGE_SIZES = "(min-width: 640px) 340px, 80vw"
 /** Featured Work grid tiles are 2/3/4 columns inside a max-w-6xl container — much narrower than a full row image. */
 const GRID_IMAGE_SIZES = "(min-width: 1024px) 260px, (min-width: 640px) 30vw, 45vw"
+/** Design gallery modal tiles are 2/3 columns inside a max-w-3xl dialog. */
+const GALLERY_GRID_SIZES = "(min-width: 640px) 230px, 45vw"
 
 const HIGHLIGHT_STYLES: Record<ServiceHighlight["kind"], { icon: LucideIcon }> = {
   special: { icon: Sparkles },
@@ -540,23 +485,21 @@ function FeaturedWorkGrid() {
 }
 
 /**
- * Glassmorphism modal opened by a Featured Work tile — embeds that service's
- * Pinterest board in-page (no new tab) via Pinterest's official widget SDK,
- * with a sticky WhatsApp CTA. Portals to `document.body` so it always sits
- * above the section's own `overflow-hidden`, and mirrors the
+ * Glassmorphism modal opened by a Featured Work tile — renders that
+ * service's own installed-project photos (from `gallery-data.ts`) in a fast
+ * native grid, with a sticky WhatsApp CTA. Portals to `document.body` so it
+ * always sits above the section's own `overflow-hidden`, and mirrors the
  * escape/scroll-lock/focus handling the gallery lightbox already uses (see
  * `Lightbox` in `components/gallery.tsx`).
  *
- * A raw `<iframe src="pinterest.com/search/...">` doesn't work in production
- * — Pinterest sends `X-Frame-Options` on that page, so browsers refuse to
- * render it framed. The board widget instead renders through
- * `widgets.pinterest.com`, which Pinterest built specifically to be embedded
- * elsewhere.
+ * This used to embed the service's Pinterest board via Pinterest's widget
+ * SDK, which took several seconds to load and rendered into a fixed-height
+ * iframe that left most of the modal blank on mobile. Local photos load
+ * instantly and fill the modal edge-to-edge, so the grid is the primary
+ * view; "Open on Pinterest" stays as an external link for browsing further.
  */
 function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null)
-  const boardContainerRef = useRef<HTMLDivElement>(null)
-  const [widgetReady, setWidgetReady] = useState(false)
 
   useEffect(() => {
     closeBtnRef.current?.focus()
@@ -572,6 +515,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
     }
   }, [onClose])
 
+  const images = useMemo(() => galleryImagesForService(service.slug), [service.slug])
   const query = PINTEREST_QUERY[service.slug] ?? `${service.name} design`
   const searchUrl = pinterestSearchUrl(query)
   const boardUrl = PINTEREST_BOARD_URL[service.slug]
@@ -579,67 +523,6 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   const waHref = `https://wa.me/${GALLERY_WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hello JK Interior, I was browsing the ${service.name} design gallery and would like an instant quote.`
   )}`
-
-  // Trigger the Pinterest SDK to render the board widget's anchor tag once
-  // it's mounted, and watch for the img/iframe it injects to clear the
-  // loading skeleton — `PinUtils.build()` has no completion callback of its
-  // own. A 6s fallback also clears the skeleton if that markup ever changes
-  // in a way the observer doesn't catch.
-  useEffect(() => {
-    if (!boardUrl) return
-    setWidgetReady(false)
-    const container = boardContainerRef.current
-    if (!container) return
-
-    // Pinterest's board widget wants a pixel width on data-pin-board-width,
-    // not "100%" — without a real number it falls back to a narrow default
-    // and the board renders squeezed on the left. Measure the actual
-    // container and set it just before the SDK reads the anchor's attributes.
-    const anchor = container.querySelector<HTMLAnchorElement>('a[data-pin-do="embedBoard"]')
-    const width = Math.round(container.getBoundingClientRect().width)
-    if (anchor && width > 0) {
-      anchor.setAttribute("data-pin-board-width", String(width))
-    }
-
-    const observer = new MutationObserver(() => {
-      const media = container.querySelector<HTMLIFrameElement>("img, iframe")
-      if (!media) return
-
-      if (media.tagName === "IFRAME") {
-        // Pinterest bakes a fixed pixel width onto the iframe it injects —
-        // that's what leaves it narrow inside a fluid modal. Drop the width
-        // attribute and let it fill the container instead. Its height
-        // attribute is left alone: that number is how tall Pinterest actually
-        // laid the pins out, and zeroing it would collapse the iframe to the
-        // browser's ~150px default and hide most of the board rather than
-        // fix anything. `loading="lazy"` costs nothing since the browser only
-        // defers a fetch that hasn't started yet.
-        media.removeAttribute("width")
-        media.style.width = "100%"
-        media.style.maxWidth = "100%"
-        media.loading = "lazy"
-      }
-
-      setWidgetReady(true)
-      observer.disconnect()
-    })
-    observer.observe(container, { childList: true, subtree: true })
-
-    let cancelled = false
-    loadPinterestWidgetScript().then(() => {
-      if (!cancelled) window.PinUtils?.build()
-    })
-
-    const fallbackTimer = setTimeout(() => {
-      if (!cancelled) setWidgetReady(true)
-    }, 6000)
-
-    return () => {
-      cancelled = true
-      observer.disconnect()
-      clearTimeout(fallbackTimer)
-    }
-  }, [service.slug, boardUrl])
 
   return createPortal(
     <motion.div
@@ -661,7 +544,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 24, scale: 0.97 }}
         transition={{ duration: 0.35, ease: easeLux }}
-        className="relative flex h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-white/15 bg-charcoal-900/70 shadow-2xl backdrop-blur-2xl sm:h-[85vh] sm:rounded-2xl"
+        className="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-white/15 bg-charcoal-900/70 shadow-2xl backdrop-blur-2xl sm:max-h-[75vh] sm:rounded-2xl"
       >
         {/* Header */}
         <div className="flex flex-none items-center justify-between gap-3 border-b border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl">
@@ -692,32 +575,19 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
           </div>
         </div>
 
-        {/* Pinterest embed */}
-        <div className="relative w-full max-w-full flex-1 overflow-y-auto bg-white scrollbar-luxury">
-          {boardUrl ? (
-            <>
-              {!widgetReady && (
-                <div className="absolute inset-0 flex animate-pulse flex-col items-center justify-center gap-3 bg-charcoal-100">
-                  <Sparkles className="h-6 w-6 text-gold-500" aria-hidden="true" />
-                  <p className="text-xs font-bold text-charcoal-500">Loading {service.name} ideas…</p>
-                </div>
-              )}
-              <div ref={boardContainerRef} className="w-full max-w-full p-4">
-                <a
-                  key={service.slug}
-                  data-pin-do="embedBoard"
-                  data-pin-scale-height="240"
-                  data-pin-scale-width="80"
-                  href={boardUrl}
-                  className="block w-full"
-                />
-              </div>
-            </>
+        {/* Design gallery — local project photos, no third-party script on the critical path */}
+        <div className="relative min-h-0 w-full max-w-full flex-1 overflow-y-auto bg-white scrollbar-luxury">
+          {images.length > 0 ? (
+            <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3">
+              {images.map((img) => (
+                <GalleryGridImage key={img.src} img={img} />
+              ))}
+            </div>
           ) : (
             <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
               <Sparkles className="h-8 w-8 text-gold-500" aria-hidden="true" />
               <div>
-                <p className="text-sm font-bold text-charcoal-700">The {service.name} board is being curated</p>
+                <p className="text-sm font-bold text-charcoal-700">The {service.name} gallery is being curated</p>
                 <p className="mt-1 text-xs text-charcoal-500">Browse live design ideas on Pinterest in the meantime.</p>
               </div>
               <a
@@ -748,6 +618,51 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
       </motion.div>
     </motion.div>,
     document.body
+  )
+}
+
+/** Gallery grid tile — 800w AVIF/WebP variant (all local photos have one),
+ *  falling back to the original file for the handful that don't (`p1.jpg`
+ *  … `p5.jpg`, the Partition Wall photos). Fades in on load so the grid
+ *  shows a skeleton, never a blank square, while an image is still fetching. */
+function GalleryGridImage({ img }: { img: GalleryImage }) {
+  const [loaded, setLoaded] = useState(false)
+  const hasVariants = img.src.endsWith(".webp")
+  const alt = gallerySeoAlt(img)
+
+  return (
+    <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-charcoal-100">
+      {!loaded && <div className="absolute inset-0 animate-pulse bg-charcoal-200" aria-hidden="true" />}
+      {hasVariants ? (
+        <picture>
+          <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={GALLERY_GRID_SIZES} type="image/avif" />
+          <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={GALLERY_GRID_SIZES} type="image/webp" />
+          <img
+            src={srcVariant(img.src, "-800w.webp")}
+            alt={alt}
+            title={alt}
+            width={img.width}
+            height={img.height}
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setLoaded(true)}
+            className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+          />
+        </picture>
+      ) : (
+        <img
+          src={img.src}
+          alt={alt}
+          title={alt}
+          width={img.width}
+          height={img.height}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+        />
+      )}
+    </div>
   )
 }
 

@@ -95,6 +95,32 @@ export const galleryImages = [
 export type GalleryImage = (typeof galleryImages)[number]
 
 /**
+ * Maps a service's `slug` (from `services-summary.ts`) to the gallery
+ * category that photographs it, so the Featured Work modal in
+ * `components/services.tsx` can render real installed-project photos
+ * instantly instead of waiting on Pinterest's widget SDK. WPC wall panels
+ * and UV marble sheets share one photographed category — they're installed
+ * side by side in the same shoots.
+ */
+export const SERVICE_GALLERY_CATEGORY: Record<string, string> = {
+  "gypsum-ceiling": "Gypsum False Ceiling",
+  "pvc-false-ceiling": "PVC Ceiling",
+  "grid-ceiling": "Grid Ceiling",
+  "partition-wall": "Partition Wall",
+  "wpc-wall-panel": "WPC fluted panels & uv marble Sheet",
+  "uv-marble-sheet": "WPC fluted panels & uv marble Sheet",
+  "modular-tv-unit": "TV Unit Design",
+  "artificial-grass": "Artificial Grass",
+}
+
+/** Every gallery photo for a service's Featured Work modal, by slug. */
+export function galleryImagesForService(slug: string): GalleryImage[] {
+  const category = SERVICE_GALLERY_CATEGORY[slug]
+  if (!category) return []
+  return galleryImages.filter((img) => img.category === category)
+}
+
+/**
  * Per-category SEO copy — the exact local + material keywords JK Interior is
  * targeting in Search Console (see `lib/seo-keywords.ts`), written once per
  * category rather than repeated verbatim on every photo. `keywordSuffix` is
