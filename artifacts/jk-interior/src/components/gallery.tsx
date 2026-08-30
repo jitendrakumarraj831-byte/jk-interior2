@@ -34,7 +34,7 @@ function groupByCategory(images: GalleryImage[]) {
 }
 
 /* ─── Lightbox (direction-aware) ─── */
-function Lightbox({ images, idx, onClose, onNext, onPrev }: {
+export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   images: GalleryImage[]; idx: number
   onClose(): void; onNext(): void; onPrev(): void
 }) {

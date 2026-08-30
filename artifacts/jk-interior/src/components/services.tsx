@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, ChefHat, X, MessageCircle, type LucideIcon } from "lucide-react"
+import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, ChefHat, X, MessageCircle, Maximize2, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
@@ -16,6 +16,7 @@ import {
 } from "@/lib/services-summary"
 import { PINTEREST_QUERY, PINTEREST_BOARD_URL, pinterestSearchUrl } from "@/lib/pinterest-queries"
 import { galleryImagesForService, seoAlt as gallerySeoAlt, type GalleryImage } from "@/lib/gallery-data"
+import { Lightbox } from "@/components/gallery"
 
 /** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
  *  number by design, kept separate from the site-wide `WA_NUMBER`. */
@@ -497,23 +498,34 @@ function FeaturedWorkGrid() {
  * iframe that left most of the modal blank on mobile. Local photos load
  * instantly and fill the modal edge-to-edge, so the grid is the primary
  * view; "Open on Pinterest" stays as an external link for browsing further.
+ *
+ * Tapping a tile opens the full-resolution photo in the shared `Lightbox`,
+ * which stacks above this modal and takes over Escape while it's open.
  */
 function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null)
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
+  const lightboxOpen = lightboxIdx !== null
 
   useEffect(() => {
     closeBtnRef.current?.focus()
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prevOverflow
+    }
+  }, [])
+
+  // The lightbox runs its own Escape handler, so this one stands down while
+  // it's open — otherwise one keypress would close both layers at once.
+  useEffect(() => {
+    if (lightboxOpen) return
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
     }
     window.addEventListener("keydown", onKeyDown)
-    return () => {
-      document.body.style.overflow = prevOverflow
-      window.removeEventListener("keydown", onKeyDown)
-    }
-  }, [onClose])
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [onClose, lightboxOpen])
 
   const images = useMemo(() => galleryImagesForService(service.slug), [service.slug])
   const query = PINTEREST_QUERY[service.slug] ?? `${service.name} design`
@@ -579,8 +591,8 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
         <div className="relative min-h-0 w-full max-w-full flex-1 overflow-y-auto bg-white scrollbar-luxury">
           {images.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3">
-              {images.map((img) => (
-                <GalleryGridImage key={img.src} img={img} />
+              {images.map((img, i) => (
+                <GalleryGridImage key={img.src} img={img} onOpen={() => setLightboxIdx(i)} />
               ))}
             </div>
           ) : (
@@ -616,6 +628,18 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
           </a>
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {lightboxIdx !== null && (
+          <Lightbox
+            images={images}
+            idx={lightboxIdx}
+            onClose={() => setLightboxIdx(null)}
+            onNext={() => setLightboxIdx((p) => (p === null ? null : (p + 1) % images.length))}
+            onPrev={() => setLightboxIdx((p) => (p === null ? null : (p - 1 + images.length) % images.length))}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>,
     document.body
   )
@@ -625,13 +649,18 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
  *  falling back to the original file for the handful that don't (`p1.jpg`
  *  … `p5.jpg`, the Partition Wall photos). Fades in on load so the grid
  *  shows a skeleton, never a blank square, while an image is still fetching. */
-function GalleryGridImage({ img }: { img: GalleryImage }) {
+function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => void }) {
   const [loaded, setLoaded] = useState(false)
   const hasVariants = img.src.endsWith(".webp")
   const alt = gallerySeoAlt(img)
 
   return (
-    <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-charcoal-100">
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={`View full-size photo — ${alt}`}
+      className="group relative aspect-square w-full overflow-hidden rounded-xl bg-charcoal-100 transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+    >
       {!loaded && <div className="absolute inset-0 animate-pulse bg-charcoal-200" aria-hidden="true" />}
       {hasVariants ? (
         <picture>
@@ -662,7 +691,11 @@ function GalleryGridImage({ img }: { img: GalleryImage }) {
           className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       )}
-    </div>
+
+      <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/30 group-hover:opacity-100">
+        <Maximize2 className="h-5 w-5 text-white drop-shadow-md" aria-hidden="true" />
+      </span>
+    </button>
   )
 }
 
