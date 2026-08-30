@@ -39,12 +39,12 @@ export function pinterestSearchUrl(query: string): string {
  * `"gypsum-ceiling": "https://www.pinterest.com/jkinterior/gypsum-false-ceiling/"`.
  */
 export const PINTEREST_BOARD_URL: Partial<Record<string, string>> = {
-  "gypsum-ceiling": "https://pin.it/5JCzCNMBW",
-  "pvc-false-ceiling": "https://pin.it/3KRJ2meL2",
-  "grid-ceiling": "https://pin.it/3rYURFr83",
-  "wpc-wall-panel": "https://pin.it/3O5HLydyX",
-  "uv-marble-sheet": "https://pin.it/7wFk230ii",
-  "partition-wall": "https://pin.it/1S0XsU8QI",
-  "modular-tv-unit": "https://pin.it/49wkXzKZW",
-  "artificial-grass": "https://pin.it/3Gm5tAi2W",
+  "gypsum-ceiling": "https://www.pinterest.com/jkinterior/gypsum-false-ceiling/",
+  "pvc-false-ceiling": "https://www.pinterest.com/jkinterior/pvc-false-ceiling/",
+  "grid-ceiling": "https://www.pinterest.com/jkinterior/grid-ceiling/",
+  "wpc-wall-panel": "https://www.pinterest.com/jkinterior/wpc-wall-paneling/",
+  "uv-marble-sheet": "https://www.pinterest.com/jkinterior/uv-marble-sheet/",
+  "partition-wall": "https://www.pinterest.com/jkinterior/gypsum-partition-wall/",
+  "modular-tv-unit": "https://www.pinterest.com/jkinterior/modern-tv-unit/",
+  "artificial-grass": "https://www.pinterest.com/jkinterior/artificial-grass/",
 }
