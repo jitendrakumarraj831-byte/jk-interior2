@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react"
-import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, ChefHat, type LucideIcon } from "lucide-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { createPortal } from "react-dom"
+import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, ChefHat, X, MessageCircle, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
@@ -13,6 +14,11 @@ import {
   type ServiceHighlight,
   type ServiceSummary,
 } from "@/lib/services-summary"
+import { PINTEREST_QUERY, pinterestSearchUrl } from "@/lib/pinterest-queries"
+
+/** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
+ *  number by design, kept separate from the site-wide `WA_NUMBER`. */
+const GALLERY_WHATSAPP_NUMBER = "918541849118"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -387,8 +393,12 @@ export default function Services() {
  * — one tile per service (`<picture>` AVIF/WebP variants, zero layout shift
  * via a fixed aspect box) plus a closing tile for custom, site-specific work
  * like a modular kitchen design service that doesn't have a fixed rate card.
+ * Tapping a tile opens its Pinterest gallery in an in-page modal rather than
+ * navigating away — see `ServiceGalleryModal` below.
  */
 function FeaturedWorkGrid() {
+  const [activeService, setActiveService] = useState<ServiceSummary | null>(null)
+
   return (
     <div className="relative z-10 mx-auto mt-16 max-w-6xl px-5 sm:px-6 lg:mt-20 lg:px-12">
       <div className="mb-6 flex items-center gap-4">
@@ -396,20 +406,25 @@ function FeaturedWorkGrid() {
         <h3 className="text-center text-lg font-bold text-gray-800">Featured Work, By Service</h3>
         <div className="h-px flex-1 bg-gold-900/15" />
       </div>
+      <p className="mx-auto -mt-2 mb-6 max-w-lg text-center text-xs font-medium text-gray-500 sm:text-sm">
+        Tap any service to browse its design gallery — right here on the page.
+      </p>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
         {SERVICES_SUMMARY.map((service) => (
-          <Link
+          <button
             key={service.slug}
-            href={`/services/${service.slug}`}
-            aria-label={`${service.name} photos — ${service.seoKeyword}`}
+            type="button"
+            onClick={() => setActiveService(service)}
+            aria-haspopup="dialog"
+            aria-label={`Open ${service.name} design gallery — ${service.seoKeyword}`}
             itemScope
             itemType="https://schema.org/Service"
-            itemProp="url"
-            className="group relative block overflow-hidden rounded-xl border border-gold-900/10 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            className="group relative block aspect-square w-full overflow-hidden rounded-2xl border border-gold-900/10 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-gold-400/60 hover:shadow-[0_16px_40px_-12px_rgba(201,162,39,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
           >
+            <meta itemProp="url" content={`https://www.jkinterior.online/services/${service.slug}`} />
             <meta itemProp="keywords" content={service.seoKeyword} />
-            <div className="relative aspect-square w-full overflow-hidden bg-slate-900">
+            <div className="absolute inset-0 bg-slate-900">
               <picture itemProp="image" itemScope itemType="https://schema.org/ImageObject">
                 <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={GRID_IMAGE_SIZES} type="image/avif" />
                 <source srcSet={srcVariant(service.heroImage, "-800w.webp")} sizes={GRID_IMAGE_SIZES} type="image/webp" />
@@ -418,27 +433,36 @@ function FeaturedWorkGrid() {
                   src={service.heroImage}
                   alt={serviceSeoAlt(service)}
                   title={serviceSeoAlt(service)}
-                  itemProp="url"
                   width={800}
                   height={800}
                   loading="lazy"
                   decoding="async"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
                 />
               </picture>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <span itemProp="name" className="absolute bottom-2.5 left-2.5 right-2.5 text-xs font-extrabold leading-tight text-white drop-shadow-md sm:text-sm">
-                {service.name}
-              </span>
             </div>
-          </Link>
+
+            {/* Bottom gradient — keeps the label legible over any photo */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent transition-opacity duration-300 group-hover:from-black/90" />
+
+            {/* Glowing border ring on hover */}
+            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-2 group-hover:ring-gold-400/60" />
+
+            <span className="absolute right-2.5 top-2.5 inline-flex items-center gap-1 rounded-full border border-white/25 bg-black/50 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider text-white opacity-90 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:opacity-100 group-hover:bg-gold-600/90 sm:text-[10px]">
+              Explore Catalog ↗
+            </span>
+
+            <span itemProp="name" className="absolute bottom-2.5 left-2.5 right-2.5 text-xs font-extrabold leading-tight text-white drop-shadow-md sm:text-sm">
+              {service.name}
+            </span>
+          </button>
         ))}
 
         {/* Modular kitchen — custom, site-specific work outside the fixed rate list (see /contact), still targeted here for search. */}
         <Link
           href="/contact"
           aria-label="Modular kitchen design service — custom quote from JK Interior Forbesganj"
-          className="group relative flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-dashed border-gold-500/40 bg-gold-50/60 p-3 text-center transition-all hover:-translate-y-0.5 hover:border-gold-500/70 hover:bg-gold-100/60 hover:shadow-lg"
+          className="group relative flex aspect-square flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-dashed border-gold-500/40 bg-gold-50/60 p-3 text-center transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-gold-500/70 hover:bg-gold-100/60 hover:shadow-[0_16px_40px_-12px_rgba(201,162,39,0.5)]"
         >
           <ChefHat className="h-7 w-7 text-gold-700" aria-hidden="true" />
           <span className="text-xs font-extrabold leading-tight text-gold-900 sm:text-sm">
@@ -447,7 +471,132 @@ function FeaturedWorkGrid() {
           <span className="text-[10px] font-semibold text-gold-700/80">Custom on-site quote</span>
         </Link>
       </div>
+
+      <AnimatePresence>
+        {activeService && (
+          <ServiceGalleryModal service={activeService} onClose={() => setActiveService(null)} />
+        )}
+      </AnimatePresence>
     </div>
+  )
+}
+
+/**
+ * Glassmorphism modal opened by a Featured Work tile — embeds that service's
+ * Pinterest search gallery in-page (no new tab) with a sticky WhatsApp CTA.
+ * Portals to `document.body` so it always sits above the section's own
+ * `overflow-hidden`, and mirrors the escape/scroll-lock/focus handling the
+ * gallery lightbox already uses (see `Lightbox` in `components/gallery.tsx`).
+ */
+function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; onClose: () => void }) {
+  const closeBtnRef = useRef<HTMLButtonElement>(null)
+  const [iframeLoaded, setIframeLoaded] = useState(false)
+
+  useEffect(() => {
+    closeBtnRef.current?.focus()
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.body.style.overflow = prevOverflow
+      window.removeEventListener("keydown", onKeyDown)
+    }
+  }, [onClose])
+
+  const query = PINTEREST_QUERY[service.slug] ?? `${service.name} design`
+  const embedUrl = pinterestSearchUrl(query)
+  const waHref = `https://wa.me/${GALLERY_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hello JK Interior, I was browsing the ${service.name} design gallery and would like an instant quote.`
+  )}`
+
+  return createPortal(
+    <motion.div
+      role="presentation"
+      className="fixed inset-0 z-[9999] flex items-end justify-center bg-charcoal-950/75 backdrop-blur-sm sm:items-center sm:p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
+    >
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${service.name} design gallery`}
+        initial={{ opacity: 0, y: 40, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 24, scale: 0.97 }}
+        transition={{ duration: 0.35, ease: easeLux }}
+        className="relative flex h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-white/15 bg-charcoal-900/70 shadow-2xl backdrop-blur-2xl sm:h-[85vh] sm:rounded-2xl"
+      >
+        {/* Header */}
+        <div className="flex flex-none items-center justify-between gap-3 border-b border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl">
+          <div className="min-w-0">
+            <p className="text-[10px] font-black uppercase tracking-widest text-gold-400/90">Design Gallery</p>
+            <h3 className="truncate text-lg font-black text-white sm:text-xl">{service.name}</h3>
+          </div>
+          <div className="flex flex-none items-center gap-2">
+            <a
+              href={embedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${service.name} gallery on Pinterest in a new tab`}
+              title="Open on Pinterest"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-all hover:bg-white/20 active:scale-90"
+            >
+              <ArrowUpRight className="h-5 w-5" aria-hidden="true" />
+            </a>
+            <button
+              ref={closeBtnRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Close gallery"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-all hover:bg-white/20 active:scale-90"
+            >
+              <X className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        {/* Pinterest embed */}
+        <div className="relative flex-1 overflow-hidden bg-white">
+          {!iframeLoaded && (
+            <div className="absolute inset-0 flex animate-pulse flex-col items-center justify-center gap-3 bg-charcoal-100">
+              <Sparkles className="h-6 w-6 text-gold-500" aria-hidden="true" />
+              <p className="text-xs font-bold text-charcoal-500">Loading {service.name} ideas…</p>
+            </div>
+          )}
+          <iframe
+            key={service.slug}
+            src={embedUrl}
+            title={`${service.name} design ideas on Pinterest`}
+            loading="lazy"
+            onLoad={() => setIframeLoaded(true)}
+            className="relative h-full w-full border-0"
+          />
+        </div>
+
+        {/* Sticky CTA bar */}
+        <div className="flex flex-none items-center gap-3 border-t border-white/10 bg-charcoal-900/95 px-5 py-4 backdrop-blur-xl">
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Get an instant WhatsApp quote for ${service.name}`}
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#0F7A3D] px-5 py-3.5 text-sm font-black text-white shadow-[0_4px_24px_rgba(15,122,61,0.4)] transition-all hover:bg-[#0c6b35] active:scale-95"
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden="true" />
+            Get Instant Quote on WhatsApp
+          </a>
+        </div>
+      </motion.div>
+    </motion.div>,
+    document.body
   )
 }
 
