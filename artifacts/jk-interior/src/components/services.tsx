@@ -561,16 +561,28 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   )}`
 
   // Trigger the Pinterest SDK to render the board widget's anchor tag once
-  // it's mounted, and watch for the iframe it injects to clear the loading
-  // skeleton — `PinUtils.build()` has no completion callback of its own.
+  // it's mounted, and watch for the img/iframe it injects to clear the
+  // loading skeleton — `PinUtils.build()` has no completion callback of its
+  // own, and the widget renders as inline <img> tags rather than an iframe,
+  // so a 6s fallback also clears the skeleton if that markup ever changes.
   useEffect(() => {
     if (!boardUrl) return
     setWidgetReady(false)
     const container = boardContainerRef.current
     if (!container) return
 
+    // Pinterest's board widget wants a pixel width on data-pin-board-width,
+    // not "100%" — without a real number it falls back to a narrow default
+    // and the board renders squeezed on the left. Measure the actual
+    // container and set it just before the SDK reads the anchor's attributes.
+    const anchor = container.querySelector<HTMLAnchorElement>('a[data-pin-do="embedBoard"]')
+    const width = Math.round(container.getBoundingClientRect().width)
+    if (anchor && width > 0) {
+      anchor.setAttribute("data-pin-board-width", String(width))
+    }
+
     const observer = new MutationObserver(() => {
-      if (container.querySelector("iframe")) {
+      if (container.querySelector("img, iframe")) {
         setWidgetReady(true)
         observer.disconnect()
       }
@@ -582,9 +594,14 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
       if (!cancelled) window.PinUtils?.build()
     })
 
+    const fallbackTimer = setTimeout(() => {
+      if (!cancelled) setWidgetReady(true)
+    }, 6000)
+
     return () => {
       cancelled = true
       observer.disconnect()
+      clearTimeout(fallbackTimer)
     }
   }, [service.slug, boardUrl])
 
@@ -649,14 +666,14 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
                   <p className="text-xs font-bold text-charcoal-500">Loading {service.name} ideas…</p>
                 </div>
               )}
-              <div ref={boardContainerRef} className="p-4">
+              <div ref={boardContainerRef} className="w-full p-4">
                 <a
                   key={service.slug}
                   data-pin-do="embedBoard"
-                  data-pin-board-width="100%"
                   data-pin-scale-height="400"
                   data-pin-scale-width="80"
                   href={boardUrl}
+                  className="block w-full"
                 />
               </div>
             </>
