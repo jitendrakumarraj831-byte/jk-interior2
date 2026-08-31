@@ -1,7 +1,31 @@
 import { SITE_URL } from "@/lib/seo"
 import { TARGET_KEYWORDS_CONTENT } from "@/lib/seo-keywords"
+import type { PinterestPin } from "@/lib/pinterest-rss"
 
-export const galleryImages = [
+/**
+ * One photo in a gallery grid or Lightbox.
+ *
+ * Nearly every one is a local project photo under `/images/…`, shipped with the
+ * bundle and pre-processed into `-800w.avif` / `-800w.webp` siblings. A pin
+ * pulled from a Pinterest board feed at runtime (see `mergeGalleryWithPins`)
+ * is the exception, and is flagged `remote` — it lives on `i.pinimg.com`, has
+ * no generated variants and no known dimensions, so the components must not
+ * try to derive either from its URL.
+ */
+export type GalleryImage = {
+  src: string
+  alt: string
+  category?: string
+  /** Intrinsic size, for aspect-ratio reservation. Unknown for remote pins. */
+  width?: number
+  height?: number
+  /** True for a Pinterest pin fetched at runtime rather than a local file. */
+  remote?: boolean
+  /** Permalink to the pin on Pinterest. Only set on remote pins. */
+  href?: string
+}
+
+export const galleryImages: GalleryImage[] = [
   // ── Gypsum False Ceiling (16 Images) ────────────────────────────────────────────
   { src: "/images/gypsum.webp",        alt: "Gypsum false ceiling with a stepped border design",        category: "Gypsum False Ceiling", width: 1080, height: 1080 },
   { src: "/images/gypsum1.webp",       alt: "Modern gypsum ceiling with recessed downlights",            category: "Gypsum False Ceiling", width: 1080, height: 1080 },
@@ -92,8 +116,6 @@ export const galleryImages = [
   { src: "/images/artificial-grass.webp", alt: "Artificial grass balcony installation in Bihar",         category: "Artificial Grass", width: 1080, height: 1080 },
 ]
 
-export type GalleryImage = (typeof galleryImages)[number]
-
 /**
  * Maps a service's `slug` (from `services-summary.ts`) to the gallery
  * category that photographs it, so the Featured Work modal in
@@ -118,6 +140,52 @@ export function galleryImagesForService(slug: string): GalleryImage[] {
   const category = SERVICE_GALLERY_CATEGORY[slug]
   if (!category) return []
   return galleryImages.filter((img) => img.category === category)
+}
+
+/**
+ * Local project photos for a service, with that service's Pinterest pins
+ * appended — the combined list the gallery modal and its Lightbox render.
+ *
+ * Order is deliberate and not interleaved: our own installed-project
+ * photographs come first, every time. They are already in the bundle so they
+ * paint immediately, they are the work JK Interior actually did, and they are
+ * the ones carrying the schema.org markup. Pins fetched from the board feed
+ * are inspiration shots appended after them, and they arrive a moment later
+ * over the network — appending means the grid never reshuffles under a
+ * visitor's finger when they land, and an index already open in the Lightbox
+ * keeps pointing at the same photo.
+ *
+ * `pins` being empty (Pinterest unreachable, board renamed, feed format
+ * changed, request still in flight) is the normal, expected case rather than
+ * an error: the result is then exactly the local gallery, unchanged.
+ */
+export function mergeGalleryWithPins(local: GalleryImage[], pins: PinterestPin[]): GalleryImage[] {
+  if (!pins.length) return local
+
+  // A pin whose image we already ship locally would otherwise show twice.
+  const seen = new Set(local.map((img) => img.src))
+  const category = local[0]?.category
+
+  const remote: GalleryImage[] = []
+  for (const pin of pins) {
+    if (seen.has(pin.src)) continue
+    seen.add(pin.src)
+    remote.push({
+      src: pin.src,
+      // The pin's own title where it has a usable one, so the alt text
+      // describes the actual image; otherwise a category label, which is still
+      // more useful to a screen reader than the pin's hashed filename.
+      alt: pin.title || `${category ?? "Interior"} design idea from our Pinterest board`,
+      // Sharing the local category is what gives a pin the same SEO keyword
+      // suffix and caption as the photos it sits beside (see `seoAlt`), and
+      // what labels it correctly in the Lightbox's top bar.
+      category,
+      remote: true,
+      href: pin.link || undefined,
+    })
+  }
+
+  return [...local, ...remote]
 }
 
 /**

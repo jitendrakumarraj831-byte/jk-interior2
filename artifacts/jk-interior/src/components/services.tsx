@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { ArrowUpRight, Ruler, IndianRupee, MapPin, Sparkles, Zap, ChevronDown, Clock, AlertTriangle, ChefHat, X, MessageCircle, Maximize2, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
@@ -15,7 +15,8 @@ import {
   type ServiceSummary,
 } from "@/lib/services-summary"
 import { PINTEREST_QUERY, PINTEREST_BOARD_URL, pinterestSearchUrl } from "@/lib/pinterest-queries"
-import { galleryImagesForService, seoAlt as gallerySeoAlt, type GalleryImage } from "@/lib/gallery-data"
+import { galleryImagesForService, mergeGalleryWithPins, seoAlt as gallerySeoAlt, type GalleryImage } from "@/lib/gallery-data"
+import { usePinterestPins } from "@/lib/use-pinterest-pins"
 import { Lightbox } from "@/components/gallery"
 
 /** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
@@ -527,7 +528,36 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [onClose, lightboxOpen])
 
-  const images = useMemo(() => galleryImagesForService(service.slug), [service.slug])
+  // Local project photos render on the first frame; the board's Pinterest pins
+  // are appended a moment later, once /api/pinterest answers. Until then (and
+  // forever, if the feed is unreachable) this is just the local gallery.
+  const localImages = useMemo(() => galleryImagesForService(service.slug), [service.slug])
+  const pins = usePinterestPins(service.slug)
+
+  // A pin can be deleted from Pinterest's CDN between the feed being cached and
+  // a visitor opening the modal. Dropping it from `images` — rather than just
+  // hiding its tile — is what keeps the Lightbox honest: its "n / total"
+  // counter and its arrow-key navigation both walk this exact array, so a pin
+  // that is merely hidden in the grid would still be reachable as a broken frame.
+  const [deadPins, setDeadPins] = useState<ReadonlySet<string>>(() => new Set())
+  const notePinFailed = useCallback((src: string) => {
+    setDeadPins((prev) => (prev.has(src) ? prev : new Set(prev).add(src)))
+  }, [])
+
+  const images = useMemo(
+    () => mergeGalleryWithPins(localImages, pins).filter((img) => !deadPins.has(img.src)),
+    [localImages, pins, deadPins]
+  )
+
+  // Dead pins only ever drop off the end (local photos come first and never
+  // fail this way), but if one does so while the Lightbox is open on it, step
+  // back to the last surviving photo rather than rendering an empty slot.
+  useEffect(() => {
+    setLightboxIdx((prev) => {
+      if (prev === null || prev < images.length) return prev
+      return images.length > 0 ? images.length - 1 : null
+    })
+  }, [images.length])
   const query = PINTEREST_QUERY[service.slug] ?? `${service.name} design`
   const searchUrl = pinterestSearchUrl(query)
   const boardUrl = PINTEREST_BOARD_URL[service.slug]
@@ -592,7 +622,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
           {images.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3">
               {images.map((img, i) => (
-                <GalleryGridImage key={img.src} img={img} onOpen={() => setLightboxIdx(i)} />
+                <GalleryGridImage key={img.src} img={img} onOpen={() => setLightboxIdx(i)} onFail={notePinFailed} />
               ))}
             </div>
           ) : (
@@ -635,6 +665,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
             images={images}
             idx={lightboxIdx}
             onClose={() => setLightboxIdx(null)}
+            onImageError={notePinFailed}
             onNext={() => setLightboxIdx((p) => (p === null ? null : (p + 1) % images.length))}
             onPrev={() => setLightboxIdx((p) => (p === null ? null : (p - 1 + images.length) % images.length))}
           />
@@ -647,12 +678,30 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
 
 /** Gallery grid tile — 800w AVIF/WebP variant (all local photos have one),
  *  falling back to the original file for the handful that don't (`p1.jpg`
- *  … `p5.jpg`, the Partition Wall photos). Fades in on load so the grid
- *  shows a skeleton, never a blank square, while an image is still fetching. */
-function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => void }) {
+ *  … `p5.jpg`, the Partition Wall photos) and for Pinterest pins, which are
+ *  served from `i.pinimg.com` and have no variants of ours to point at.
+ *  Fades in on load so the grid shows a skeleton, never a blank square, while
+ *  an image is still fetching. */
+function GalleryGridImage({
+  img,
+  onOpen,
+  onFail,
+}: {
+  img: GalleryImage
+  onOpen: () => void
+  /** Reports a pin whose image won't load, so the parent can drop it from the list. */
+  onFail: (src: string) => void
+}) {
   const [loaded, setLoaded] = useState(false)
-  const hasVariants = img.src.endsWith(".webp")
+  // A remote pin must never go down the variant path: `-800w.avif` next to a
+  // pinimg URL is a guaranteed 404, and declaring a JPEG as `type="image/avif"`
+  // hands the browser a source it was told to expect in another format.
+  const hasVariants = !img.remote && img.src.endsWith(".webp")
   const alt = gallerySeoAlt(img)
+
+  // Only pins are reported: a missing local file still renders exactly as it
+  // always has, rather than silently vanishing and hiding an asset regression.
+  const onImageError = img.remote ? () => onFail(img.src) : undefined
 
   return (
     <button
@@ -675,6 +724,7 @@ function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => vo
             loading="lazy"
             decoding="async"
             onLoad={() => setLoaded(true)}
+            onError={onImageError}
             className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
           />
         </picture>
@@ -688,6 +738,7 @@ function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => vo
           loading="lazy"
           decoding="async"
           onLoad={() => setLoaded(true)}
+          onError={onImageError}
           className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       )}

@@ -9,7 +9,17 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    // `include` below pulls in the whole of the app's src/lib, some of which
+    // imports its siblings through the app's "@/" alias. Nothing this function
+    // imports at runtime uses the alias, but tsc still has to resolve it to
+    // typecheck those files. The explicit ".ts" candidate is what makes this
+    // work under nodenext resolution, which otherwise rejects the
+    // extensionless target the first mapping produces.
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../artifacts/jk-interior/src/*", "../artifacts/jk-interior/src/*.ts"]
+    }
   },
   "include": ["./**/*.ts", "../artifacts/jk-interior/src/lib/**/*.ts"]
 }

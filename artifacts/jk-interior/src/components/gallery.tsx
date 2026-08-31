@@ -34,9 +34,12 @@ function groupByCategory(images: GalleryImage[]) {
 }
 
 /* ─── Lightbox (direction-aware) ─── */
-export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
+export function Lightbox({ images, idx, onClose, onNext, onPrev, onImageError }: {
   images: GalleryImage[]; idx: number
   onClose(): void; onNext(): void; onPrev(): void
+  /** Called with the src of a remote pin that failed to load, so the owner can
+   *  drop it from `images`. Local photos never report; omit for local-only galleries. */
+  onImageError?(src: string): void
 }) {
   const tx = useRef<number | null>(null)
   const btn = useRef<HTMLButtonElement>(null)
@@ -97,10 +100,19 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 
         <AnimatePresence mode="wait" custom={dir}>
           <motion.picture key={idx} itemScope itemType="https://schema.org/ImageObject">
-            {/* AVIF format (best compression) */}
-            <source srcSet={img.src.replace(/\.webp$/, '.avif')} type="image/avif" />
-            {/* WebP format (fallback) */}
-            <source srcSet={img.src} type="image/webp" />
+            {/* Local photos ship as an AVIF/WebP pair, so the browser can pick
+                the better one. A Pinterest pin gets neither <source>: there is
+                no .avif sibling on i.pinimg.com to point at, and labelling a
+                pin's JPEG as image/avif tells the browser to expect a format
+                the bytes aren't in. It falls through to the plain <img> below. */}
+            {!img.remote && (
+              <>
+                {/* AVIF format (best compression) */}
+                <source srcSet={img.src.replace(/\.webp$/, '.avif')} type="image/avif" />
+                {/* WebP format (fallback) */}
+                <source srcSet={img.src} type="image/webp" />
+              </>
+            )}
             <meta itemProp="contentUrl" content={img.src} />
             <meta itemProp="description" content={seo?.caption ?? alt} />
             {/* Fallback img tag */}
@@ -119,6 +131,7 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
               style={{ maxHeight:"calc(100vh - 180px)" }}
               loading="eager"
               decoding="sync"
+              onError={img.remote && onImageError ? () => onImageError(img.src) : undefined}
             />
           </motion.picture>
         </AnimatePresence>
@@ -133,6 +146,22 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
       <div className="bg-black/90 px-5 pt-3 pb-5 flex flex-col items-center gap-1.5">
         <p className="text-white/60 text-sm text-center">{img.alt}</p>
         {seo && <p className="text-gold-400/70 text-[11px] text-center tracking-wide">{seo.keywordSuffix}</p>}
+        {/* A pin is someone else's photo pulled from our Pinterest board, not
+            one of our installed projects — say so, and link back to the source. */}
+        {img.remote && (
+          img.href ? (
+            <a
+              href={img.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/40 text-[11px] text-center underline decoration-white/20 underline-offset-2 transition-colors hover:text-white/70"
+            >
+              Design inspiration from our Pinterest board
+            </a>
+          ) : (
+            <p className="text-white/40 text-[11px] text-center">Design inspiration from our Pinterest board</p>
+          )
+        )}
         <div className="flex gap-2 md:hidden mt-1.5">
           <button onClick={() => { setDir(-1); onPrev() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10"><ChevronLeft size={14}/> Prev</button>
           <button onClick={() => { setDir(1); onNext() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10">Next <ChevronRight size={14}/></button>
