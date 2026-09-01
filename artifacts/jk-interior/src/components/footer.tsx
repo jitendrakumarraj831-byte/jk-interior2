@@ -40,7 +40,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="relative overflow-hidden pt-20 pb-12">
+    <footer className="relative overflow-hidden pt-20 pb-28 md:pb-12">
       {/* Background — matches site light theme */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#faf7f0] to-[#f3ecdd]" />

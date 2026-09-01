@@ -205,8 +205,8 @@ export function serviceSeoAlt(service: Pick<ServiceSummary, "heroImageAlt" | "se
   return `${service.heroImageAlt} — ${service.seoKeyword}`
 }
 
-/** Reads "₹75–₹210 / sq.ft" or "₹15,000–₹75,000+" into a numeric min/max — schema.org `Offer.price` wants a number, not a display string. */
-function parsePriceRange(price: string): { min: number; max: number } | null {
+/** Reads "₹75–₹210 / sq.ft" or "₹15,000–₹75,000+" into a numeric min/max — schema.org `Offer.price` wants a number, not a display string. Exported so other rate-driven UI (e.g. the cost estimator) reads the same numbers instead of duplicating them. */
+export function parsePriceRange(price: string): { min: number; max: number } | null {
   const numbers = price.match(/₹\s*([\d,]+)/g)
   if (!numbers || numbers.length === 0) return null
   const values = numbers.map((n) => Number(n.replace(/[₹,\s]/g, ""))).filter((n) => Number.isFinite(n) && n > 0)

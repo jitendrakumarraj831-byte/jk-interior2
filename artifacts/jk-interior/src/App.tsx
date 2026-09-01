@@ -3,6 +3,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter"
 import { MotionConfig } from "framer-motion"
 import ScrollProgress from "@/components/scroll-progress"
 import { AssistantLauncher } from "@/components/ui/assistant-launcher"
+import MobileQuickActions from "@/components/mobile-quick-actions"
 
 const HomePage = lazy(() => import("@/pages/HomePage"))
 const AboutPage = lazy(() => import("@/pages/AboutPage"))
@@ -130,6 +131,7 @@ function App() {
         <ScrollProgress />
         <Router />
         <Assistant />
+        <MobileQuickActions />
       </WouterRouter>
     </MotionConfig>
   )

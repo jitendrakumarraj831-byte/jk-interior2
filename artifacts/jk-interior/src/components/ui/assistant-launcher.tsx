@@ -30,7 +30,7 @@ export function AssistantLauncher({
       onPointerEnter={onPrefetch}
       onFocus={onPrefetch}
       onTouchStart={onPrefetch}
-      className="jk-launcher fixed bottom-6 right-4 z-50 md:bottom-24 md:right-6"
+      className="jk-launcher fixed bottom-24 right-4 z-50 md:bottom-24 md:right-6"
       style={{ width: 62, height: 62 }}
       aria-label="Open chat with JK Interior AI Assistant"
     >

@@ -8,6 +8,7 @@ import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import KeywordChips from "@/components/ui/keyword-chips"
+import DesignIdeasSearch from "@/components/design-search-modal"
 
 const ALL = galleryImages
 
@@ -416,6 +417,10 @@ export default function Gallery() {
         />
 
         <KeywordChips className="mb-8" />
+
+        <div className="mb-8 flex justify-center">
+          <DesignIdeasSearch />
+        </div>
 
         {/* ── Section label ── */}
         <div className="flex items-center gap-4 mb-6">

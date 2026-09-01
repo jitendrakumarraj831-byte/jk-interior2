@@ -4,6 +4,8 @@ import Hero from "@/components/hero"
 import Services from "@/components/services"
 import BusinessSummary from "@/components/business-summary"
 import ProcessTimeline from "@/components/process-timeline"
+import Transformation from "@/components/transformation"
+import CostEstimator from "@/components/cost-estimator"
 import ServiceAreas from "@/components/service-areas"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
@@ -180,6 +182,8 @@ export default function HomePage() {
       <BusinessSummary />
       <Services />
       <ProcessTimeline />
+      <Transformation />
+      <CostEstimator />
       <Suspense fallback={<GallerySkeleton />}>
         <Gallery />
       </Suspense>
