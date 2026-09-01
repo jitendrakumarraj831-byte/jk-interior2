@@ -79,10 +79,18 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 
         <AnimatePresence mode="wait" custom={dir}>
           <motion.picture key={idx} itemScope itemType="https://schema.org/ImageObject">
-            {/* AVIF format (best compression) */}
-            <source srcSet={img.src.replace(/\.webp$/, '.avif')} type="image/avif" />
-            {/* WebP format (fallback) */}
-            <source srcSet={img.src} type="image/webp" />
+            {/* AVIF/WebP <source> variants only exist for our own portfolio
+                photos (see scripts/optimize-jk-interior-images.ts) — an
+                external photo (a Pinterest pin, an Unsplash result) is
+                whatever format it already is, so it renders through the
+                plain <img> below instead of a source claiming a format it
+                isn't. */}
+            {img.src.endsWith(".webp") && (
+              <>
+                <source srcSet={img.src.replace(/\.webp$/, '.avif')} type="image/avif" />
+                <source srcSet={img.src} type="image/webp" />
+              </>
+            )}
             <meta itemProp="contentUrl" content={img.src} />
             <meta itemProp="description" content={seo?.caption ?? alt} />
             {/* Fallback img tag */}

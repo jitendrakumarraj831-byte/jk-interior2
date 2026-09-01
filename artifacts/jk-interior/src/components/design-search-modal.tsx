@@ -5,7 +5,9 @@ import { Search, X, Sparkles, MessageCircle, ExternalLink } from "lucide-react"
 import {
   DESIGN_TAGS,
   searchPortfolio,
+  fetchPinterestBoardResults,
   fetchUnsplashResults,
+  inferDesignTag,
   type DesignResult,
 } from "@/lib/design-search"
 import { WhatsAppLink } from "@/components/ui/cta-links"
@@ -14,8 +16,10 @@ import { useGalleryModal } from "@/lib/gallery-modal-context"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 const RESULT_SIZES = "(min-width: 640px) 220px, 44vw"
-/** Keeps the skeleton on screen just long enough to read as a real search rather than a flicker, whether or not a live Unsplash fetch is actually happening. */
+/** Keeps the skeleton on screen just long enough to read as a real search rather than a flicker, whether or not a live Pinterest/Unsplash fetch is actually happening. */
 const MIN_LOADING_MS = 350
+/** Below this many combined Pinterest + portfolio results, top up with the general Unsplash search rather than leaving a category looking sparse. */
+const MIN_RESULTS_BEFORE_FALLBACK = 6
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -91,22 +95,37 @@ function SearchModal({ onClose }: { onClose: () => void }) {
   }, [onClose, lightboxIdx])
 
   // Re-runs on every tag/query change. Portfolio matches are synchronous, so
-  // they're computed up front; the (optional) Unsplash call and the minimum
-  // skeleton delay race in parallel, and whichever result set is current when
-  // both settle wins — a fast typist never sees a stale response overwrite a
-  // newer one.
+  // they're computed up front; JK Interior's own Pinterest board for the
+  // matched category (if any — see inferDesignTag) is the priority fetch,
+  // racing against the minimum skeleton delay. Unsplash is only reached for
+  // once those two are in, and only when they're still thin — it enriches a
+  // sparse result set rather than diluting a category that already has
+  // plenty of real Pinterest/portfolio photos to show.
   useEffect(() => {
     let cancelled = false
-    const tag = DESIGN_TAGS.find((t) => t.id === activeTag)
-    const searchTerm = query.trim() || tag?.label || "interior design"
+    const tagDef = inferDesignTag(activeTag, query)
+    const searchTerm = query.trim() || tagDef?.label || "interior design"
 
     setLoading(true)
     const portfolioResults = searchPortfolio(activeTag, query)
+    const pinterestPromise = tagDef ? fetchPinterestBoardResults(tagDef.id) : Promise.resolve<DesignResult[]>([])
 
-    Promise.all([fetchUnsplashResults(searchTerm), delay(MIN_LOADING_MS)]).then(([unsplashResults]) => {
+    Promise.all([pinterestPromise, delay(MIN_LOADING_MS)]).then(([pinterestResults]) => {
       if (cancelled) return
-      setResults([...portfolioResults, ...unsplashResults])
-      setLoading(false)
+      // Pinterest first — it's the priority/primary source for a matched category.
+      const combined = [...pinterestResults, ...portfolioResults]
+
+      if (combined.length >= MIN_RESULTS_BEFORE_FALLBACK) {
+        setResults(combined)
+        setLoading(false)
+        return
+      }
+
+      fetchUnsplashResults(searchTerm).then((unsplashResults) => {
+        if (cancelled) return
+        setResults([...combined, ...unsplashResults])
+        setLoading(false)
+      })
     })
 
     return () => {
@@ -279,7 +298,7 @@ function ResultTile({ result, onOpen }: { result: DesignResult; onOpen: () => vo
         />
       </button>
 
-      {result.source === "unsplash" && result.credit && (
+      {result.source !== "portfolio" && result.credit && (
         <a
           href={result.credit.profileUrl}
           target="_blank"
