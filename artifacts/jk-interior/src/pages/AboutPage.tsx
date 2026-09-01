@@ -7,6 +7,7 @@ import SeoHead from "@/components/seo-head"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import {
+  GOOGLE_REVIEWS_URL,
   PHONE_PRIMARY,
   PHONE_PRIMARY_DISPLAY,
   PHONE_SECONDARY,
@@ -59,7 +60,11 @@ const credentials = [
     icon: Award,
     label: "Google Rating",
     value: "4.9 / 5",
-    detail: "Across 100+ verified customer reviews.",
+    detail: "On our verified Google Business Profile — read the reviews yourself.",
+    // A rating stated on our own page is worth nothing unless the visitor can
+    // go and check it. This is also why there is no aggregateRating in the
+    // page's JSON-LD: Google sources that from the profile below, not from us.
+    href: GOOGLE_REVIEWS_URL,
   },
   {
     icon: CalendarClock,
@@ -303,14 +308,38 @@ export default function AboutPage() {
 }
 
 function CredentialCard({ item }: { item: (typeof credentials)[number] }) {
-  return (
-    <div className="flex h-full flex-col rounded-2xl border border-gold-900/10 bg-white p-5 shadow-[0_14px_36px_-30px_rgba(76,58,18,0.9)]">
+  const body = (
+    <>
       <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gold-500/10 text-gold-700">
         <item.icon className="h-5 w-5" aria-hidden="true" />
       </span>
       <p className="text-[10px] font-black uppercase tracking-widest text-gold-700">{item.label}</p>
       <p className="mt-0.5 text-2xl font-black tracking-tight text-gray-900">{item.value}</p>
       <p className="mt-1.5 text-xs leading-relaxed text-gray-600">{item.detail}</p>
-    </div>
+    </>
   )
+
+  const shell = "flex h-full flex-col rounded-2xl border border-gold-900/10 bg-white p-5 shadow-[0_14px_36px_-30px_rgba(76,58,18,0.9)]"
+
+  // A figure a visitor can go and verify is worth more than one they have to
+  // take on trust, so the card links out wherever a public source exists.
+  if ("href" in item && item.href) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${item.label} ${item.value} — open the JK Interior Google Business Profile`}
+        className={`${shell} transition-colors hover:border-gold-400/50 hover:bg-gold-50/40`}
+      >
+        {body}
+        <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-gold-700">
+          Open on Google
+          <ArrowRight className="h-3 w-3" aria-hidden="true" />
+        </span>
+      </a>
+    )
+  }
+
+  return <div className={shell}>{body}</div>
 }

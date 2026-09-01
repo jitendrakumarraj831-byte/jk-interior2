@@ -19,13 +19,20 @@ const navLinks = [
   { href: "/contact", label: "Contact Us" },
 ]
 
+// Each row deep-links to the service's own guide page rather than dumping every
+// visitor on /services — the anchor text and the destination then actually
+// match, which is what makes a footer link worth anything for a visitor or a
+// crawler. "Complete Interior" has no single page of its own, so it keeps the
+// index.
 const serviceLinks = [
-  { label: "PVC False Ceiling" },
-  { label: "Gypsum Ceiling" },
-  { label: "WPC Wall Paneling" },
-  { label: "UV Marble Sheet" },
-  { label: "Modular TV Unit" },
-  { label: "Complete Interior" },
+  { label: "PVC False Ceiling", href: "/services/pvc-false-ceiling" },
+  { label: "Gypsum Ceiling", href: "/services/gypsum-ceiling" },
+  { label: "WPC Wall Paneling", href: "/services/wpc-wall-panel" },
+  { label: "UV Marble Sheet", href: "/services/uv-marble-sheet" },
+  { label: "Modular TV Unit", href: "/services/modular-tv-unit" },
+  { label: "Grid Ceiling", href: "/services/grid-ceiling" },
+  { label: "Partition Wall", href: "/services/partition-wall" },
+  { label: "Complete Interior", href: "/services" },
 ]
 
 export default function Footer() {
@@ -54,13 +61,19 @@ export default function Footer() {
             })}
             className="lg:col-span-4"
           >
-            <img               src="/logo.png"
-              alt="JK Interior – False Ceiling Contractor in Forbesganj Bihar"
-              width={180}
-              height={70}
-              className="object-contain h-14 w-auto mb-6"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/jk-interior-navbar-logo.avif" type="image/avif" />
+              <source srcSet="/jk-interior-navbar-logo.webp" type="image/webp" />
+              <img
+                src="/logo.png"
+                alt="JK Interior – False Ceiling Contractor in Forbesganj Bihar"
+                width={180}
+                height={70}
+                className="object-contain h-14 w-auto mb-6"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <div className="space-y-4 mb-6">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-700">
                 Interior & False Ceiling Solutions
@@ -148,7 +161,7 @@ export default function Footer() {
               {serviceLinks.map((s) => (
                 <Link
                   key={s.label}
-                  href="/services"
+                  href={s.href}
                   className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-gold-700"
                 >
                   <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" />
@@ -298,7 +311,10 @@ export default function Footer() {
         {/* SEO text */}
         <div className="mt-6 mb-12 rounded-xl border border-gold-200 bg-white/50 p-4">
           <p className="text-xs leading-relaxed text-gray-500">
-            JK Interior — the leading interior designer in Narpatganj, Forbesganj and Araria, Bihar. We provide PVC false ceiling, gypsum ceiling design, WPC wall panelling, UV marble sheet, modular TV unit design and complete interior solutions across{' '}
+            JK Interior — false ceiling and interior contractor working out of Narpatganj, with its
+            registered workshop in Forbesganj, Araria district. PVC false ceiling, gypsum ceiling
+            design, grid ceiling, partition walls, WPC wall panelling, UV marble sheet, modular TV
+            unit design and complete home or office interiors, installed across{' '}
             <Link href="/cities/forbesganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Forbesganj</Link>,{' '}
             <Link href="/cities/araria" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Araria</Link>,{' '}
             <Link href="/cities/jogbani" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Jogbani</Link>,{' '}

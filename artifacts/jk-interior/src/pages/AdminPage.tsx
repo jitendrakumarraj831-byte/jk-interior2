@@ -160,9 +160,16 @@ export default function AdminPage() {
     try {
       const res = await fetch(`/api/leads`, { headers: { "x-admin-key": k } })
       if (res.status === 401) { setError("Wrong password."); setKey(""); sessionStorage.removeItem(ADMIN_KEY_SESSION); return }
-      const data = await res.json()
-      if (!data.ok) { setError("Failed to load leads."); return }
-      setLeads(data.leads)
+      // 429 (locked out after failed attempts) and 500 (ADMIN_KEY or the
+      // database not configured on the deployment) both used to surface as a
+      // flat "Failed to load leads.", which sends you looking for a bug in the
+      // dashboard instead of at the thing the server just told you was wrong.
+      const data = await res.json().catch(() => null)
+      if (!res.ok || !data?.ok) {
+        setError(typeof data?.error === "string" ? data.error : `Could not load leads (${res.status}).`)
+        return
+      }
+      setLeads(Array.isArray(data.leads) ? data.leads : [])
     } catch {
       setError("Network error. Try again.")
     } finally {

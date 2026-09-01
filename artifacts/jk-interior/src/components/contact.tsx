@@ -15,9 +15,40 @@ import {
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
+/**
+ * Sends the enquiry to the leads table behind /api/leads — the same endpoint
+ * the chat assistant writes to, so a form enquiry shows up in /admin next to
+ * the chat ones.
+ *
+ * This is deliberately fire-and-forget and never blocks the WhatsApp hand-off:
+ * the visitor's next action is the WhatsApp tab, and a slow or unconfigured
+ * database must not delay or break that. It matters because the WhatsApp
+ * message is only *drafted* — until the visitor taps Send in WhatsApp, the
+ * business has no record of them at all, and a blocked popup or an abandoned
+ * draft used to lose the enquiry completely.
+ */
+function saveEnquiry(data: { name: string; phone: string; service: string; message: string }) {
+  try {
+    void fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: data.name,
+        phone: data.phone,
+        service: data.service,
+        chat_summary: `Website contact form: ${data.message}`,
+      }),
+      keepalive: true,
+    }).catch(() => {})
+  } catch {
+    // Never let lead capture break the WhatsApp hand-off below.
+  }
+}
+
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState<"idle" | "sent" | "blocked">("idle")
+  const [waFallbackUrl, setWaFallbackUrl] = useState("")
   const [mounted, setMounted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
 
@@ -43,9 +74,17 @@ export default function Contact() {
     const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`
 
     try {
-      window.open(waUrl, "_blank", "noopener,noreferrer")
-      form.reset()
-      setSubmitted(true)
+      saveEnquiry({ name, phone, service, message })
+      // A blocked popup returns null. Saying "WhatsApp has opened" when nothing
+      // opened is how an enquiry silently goes nowhere — offer the link instead.
+      const opened = window.open(waUrl, "_blank", "noopener,noreferrer")
+      setWaFallbackUrl(waUrl)
+      if (opened) {
+        form.reset()
+        setStatus("sent")
+      } else {
+        setStatus("blocked")
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -67,7 +106,7 @@ export default function Contact() {
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-br from-[#141c26] via-[#1f2a37] to-[#141c26]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_80%_10%,rgba(245,158,11,0.1),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_90%,rgba(212, 175, 55,0.14),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_90%,rgba(212,175,55,0.14),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -160,7 +199,7 @@ export default function Contact() {
                 {...animProps}
                 className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201, 162, 39,0.35)]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201,162,39,0.35)]">
                   <Phone className="h-5 w-5" />
                 </div>
                 <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Call Us</h3>
@@ -188,7 +227,7 @@ export default function Contact() {
                 {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
                 className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201, 162, 39,0.35)]">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201,162,39,0.35)]">
                   <Mail className="h-5 w-5" />
                 </div>
                 <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Email Us</h3>
@@ -283,7 +322,7 @@ export default function Contact() {
           >
             {/* Form Header */}
             <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201, 162, 39,0.35)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201,162,39,0.35)]">
                 <Star className="h-5 w-5" />
               </div>
               <div>
@@ -292,9 +331,19 @@ export default function Contact() {
               </div>
             </div>
 
-            {submitted && (
-              <div className="mb-4 rounded-xl bg-gold-50 border border-gold-200 px-4 py-3 text-sm font-semibold text-gold-700 text-center">
-                WhatsApp has opened in a new tab — tap Send there to reach us. We reply within two hours.
+            {status === "sent" && (
+              <div role="status" className="mb-4 rounded-xl bg-gold-50 border border-gold-200 px-4 py-3 text-sm font-semibold text-gold-700 text-center">
+                Enquiry received — WhatsApp has opened in a new tab, tap Send there too. Either way we
+                reply within two hours.
+              </div>
+            )}
+            {status === "blocked" && (
+              <div role="alert" className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-semibold text-amber-900">
+                Your enquiry has reached us — but your browser blocked the WhatsApp tab.{" "}
+                <a href={waFallbackUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                  Open WhatsApp
+                </a>{" "}
+                to send it there as well, or just call {PHONE_PRIMARY_DISPLAY}.
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -361,7 +410,7 @@ export default function Contact() {
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold-700 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_32px_rgba(201, 162, 39,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold-700 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(201,162,39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_32px_rgba(201,162,39,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -372,7 +421,7 @@ export default function Contact() {
               </button>
 
               <p className="text-center text-[10px] font-medium text-gray-500">
-                Your message opens directly in WhatsApp. We respond within two hours.
+                Your enquiry reaches our team and opens in WhatsApp too. We respond within two hours.
               </p>
             </form>
           </motion.div>

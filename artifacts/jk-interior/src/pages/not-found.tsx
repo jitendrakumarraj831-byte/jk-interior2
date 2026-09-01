@@ -1,8 +1,8 @@
 import { Link } from "wouter"
-import { Helmet } from "react-helmet-async"
 import { Compass, Home, LayoutGrid, ArrowRight } from "lucide-react"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import SeoHead from "@/components/seo-head"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 
 const quickLinks = [
@@ -14,10 +14,20 @@ const quickLinks = [
 export default function NotFound() {
   return (
     <>
-      <Helmet>
-        <title>404 – Page Not Found | JK Interior</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      {/*
+        A bare <Helmet> here used to override only the <title> and robots meta,
+        leaving whatever route's canonical/description/OG tags the prerendered
+        HTML shipped with (almost always the homepage's, since a 404 is what
+        Vercel's SPA rewrite serves for literally any unmatched path — see
+        vercel.json) stuck in <head>, mismatched to a page that says "404" in
+        its title. SeoHead is the same component every real page uses, so a
+        404 gets a canonical/description/OG set that actually describes it.
+      */}
+      <SeoHead
+        title="404 – Page Not Found"
+        description="The page you're looking for doesn't exist. Browse JK Interior's services and project gallery, or get in touch for a free quotation."
+        noindex
+      />
       <Navbar />
       <main className="relative flex min-h-[80vh] items-center overflow-hidden pt-36 pb-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden>

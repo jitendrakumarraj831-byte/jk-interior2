@@ -1,4 +1,8 @@
-const CACHE_NAME = 'jk-interior-v1'
+// Bumped from v1 so the activate handler below drops the old cache outright.
+// That matters here rather than being housekeeping: v1 was written by a fetch
+// handler that cached /api responses, so an admin device could be holding a
+// cached copy of the leads table. Renaming the cache is what actually deletes it.
+const CACHE_NAME = 'jk-interior-v2'
 const PRECACHE_URLS = [
   '/',
   '/logo.png',
@@ -40,7 +44,18 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url)
 
   // Skip non-GET requests and cross-origin requests
-  if (request.method !== 'GET' || !url.origin.includes(self.location.origin)) {
+  if (request.method !== 'GET' || url.origin !== self.location.origin) {
+    return
+  }
+
+  // Never touch the API.
+  //
+  // GET /api/leads returns the whole leads table — real customers' names and
+  // phone numbers — behind an admin key. Caching that wrote it into
+  // CacheStorage on whatever device the dashboard was opened on, where it
+  // outlived the session and would be replayed offline with no key checked at
+  // all. Chat replies are per-conversation and equally pointless to cache.
+  if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
     return
   }
 
@@ -48,12 +63,14 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(request)
       .then((response) => {
-        // Cache successful responses
-        if (response && response.status === 200) {
+        // Cache successful same-origin responses only. `response.type` guards
+        // against storing an opaque cross-origin redirect result, which is
+        // unusable from the cache anyway.
+        if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone()
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(request, responseClone)
-          })
+          }).catch(() => {})
         }
         return response
       })

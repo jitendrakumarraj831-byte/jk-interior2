@@ -54,7 +54,7 @@ export function CallLink({
     // gold-600 (#ab861d) contrasts only ~3.9:1 against white text (fails WCAG AA's 4.5:1);
     // gold-700 (#896918) clears it (~5.5:1) while staying the same brand hue.
     variant === "solid"
-      ? "bg-gold-700 text-white shadow-[0_4px_24px_rgba(201, 162, 39,0.4)] hover:bg-gold-600 hover:shadow-[0_4px_32px_rgba(201, 162, 39,0.55)]"
+      ? "bg-gold-700 text-white shadow-[0_4px_24px_rgba(201,162,39,0.4)] hover:bg-gold-600 hover:shadow-[0_4px_32px_rgba(201,162,39,0.55)]"
       : "border border-gold-500/30 bg-gold-500/8 text-gold-700 hover:border-gold-500/50 hover:bg-gold-500/15"
 
   // WCAG 2.5.3 "Label in Name": the accessible name must contain the visible

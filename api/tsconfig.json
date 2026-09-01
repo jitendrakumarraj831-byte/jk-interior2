@@ -11,5 +11,10 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["./**/*.ts", "../artifacts/jk-interior/src/lib/**/*.ts"]
+  // Only the functions themselves. The shared modules they pull in from
+  // artifacts/jk-interior/src/lib are type-checked through those imports, so
+  // they do not need to be globbed in — globbing the whole lib/ directory also
+  // dragged in browser-only modules (gallery-data.ts and friends) that use the
+  // Vite "@/" alias this project does not define, and broke `pnpm run build`.
+  "include": ["./**/*.ts"]
 }

@@ -7,21 +7,16 @@ import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
 import { MapPin, CheckCircle, ArrowRight, Star, Clock, Phone } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
+import NotFound from "@/pages/not-found"
 
 export default function CityPage() {
   const { city: citySlug } = useParams<{ city: string }>()
   const city = getCityBySlug(citySlug || "")
 
-  if (!city) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">City not found</h1>
-          <Link href="/" className="text-gold-700 hover:underline mt-4 block">Go home</Link>
-        </div>
-      </div>
-    )
-  }
+  // An unknown city slug is a 404, not a bare stub: NotFound carries the navbar,
+  // the footer and the noindex meta, so the visitor can get somewhere useful and
+  // the URL never enters the index.
+  if (!city) return <NotFound />
 
   const otherCities = CITIES.filter((c) => c.slug !== city.slug)
 
@@ -106,10 +101,6 @@ export default function CityPage() {
 
       <Navbar />
 
-      <h1 className="sr-only">
-        Interior Designer in {city.name} – JK Interior Bihar
-      </h1>
-
       {/* Hero */}
       <section className="relative overflow-hidden bg-white pt-36 pb-16 sm:pb-20">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -127,10 +118,10 @@ export default function CityPage() {
             <span>{city.name}</span>
           </div>
 
-          <h2 className="mb-4 text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
+          <h1 className="mb-4 font-serif text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
             Interior Designer in{" "}
             <span className="hero-gradient-text">{city.name}</span>
-          </h2>
+          </h1>
 
           <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior

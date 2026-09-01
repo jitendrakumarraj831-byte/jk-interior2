@@ -296,14 +296,20 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
 
         {/* Slider Dots */}
         {total > 1 && showDots && (
-          <div className="absolute bottom-3 right-3 z-20 flex gap-1">
+          /* Same reasoning as SwipeRail's dots: the button carries a real
+             24px hit area and the span is the visible dot, so these are
+             tappable on a phone instead of 6x6 px targets. */
+          <div className="absolute bottom-1 right-2 z-20 flex">
             {images.map((_, i) => (
               <button
                 key={i}
                 onClick={e => { e.stopPropagation(); setDir(i > cur ? 1 : -1); setCur(i) }}
                 aria-label={`Show ${category} photo ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${i === cur ? "w-5 bg-gold-400" : "w-1.5 bg-white/50"}`}
-              />
+                aria-current={i === cur}
+                className="flex h-6 min-w-6 items-center justify-center px-1"
+              >
+                <span className={`block h-1.5 rounded-full transition-all duration-300 ${i === cur ? "w-5 bg-gold-400" : "w-1.5 bg-white/50"}`} />
+              </button>
             ))}
           </div>
         )}
@@ -341,11 +347,8 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
 
 /* ─── Main Gallery ─── */
 export default function Gallery() {
-  const [mounted, setMounted] = useState(false)
   const [lbImgs, setLbImgs] = useState<GalleryImage[]>([])
   const [lbIdx, setLbIdx] = useState<number | null>(null)
-
-  useEffect(() => setMounted(true), [])
 
   const categories = useMemo(() => groupByCategory(ALL), [])
   const galleryJsonLd = useMemo(() => buildGalleryJsonLd(), [])
@@ -359,7 +362,6 @@ export default function Gallery() {
   const prev = useCallback(() => setLbIdx(p => p !== null ? (p-1+lbImgs.length) % lbImgs.length : null), [lbImgs.length])
 
   useEffect(() => {
-    if (!mounted) return
     const hash = window.location.hash
     if (!hash) return
     let attempts = 0
@@ -375,19 +377,15 @@ export default function Gallery() {
     }
     t = setTimeout(tryScroll, 100)
     return () => clearTimeout(t)
-  }, [mounted])
+  }, [])
 
-  if (!mounted) return (
-    <section className="min-h-screen bg-[#efece3] pt-24 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="h-10 w-64 mx-auto rounded-full bg-white/60 animate-pulse mb-10"/>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Array.from({length:4}).map((_,i)=><div key={i} className="h-64 bg-white/60 animate-pulse"/>)}
-        </div>
-      </div>
-    </section>
-  )
-
+  // No `mounted` gate here any more. This component rendered a full-viewport
+  // skeleton on its very first pass and only swapped in the real gallery from
+  // an effect — which, since main.tsx mounts with createRoot (not hydrateRoot),
+  // bought nothing: there is no hydration to mismatch. All it did was guarantee
+  // a screen-height skeleton flash and the layout shift that comes with it,
+  // on top of the Suspense fallback the homepage already shows while this
+  // chunk loads. Nothing below touches window/document during render.
   return (
     <section id="gallery" className="relative overflow-hidden bg-[#efece3]" itemScope itemType="https://schema.org/ImageGallery">
       {/* Structured data — lets Google Search Console crawl every photo's caption, keywords
@@ -410,7 +408,11 @@ export default function Gallery() {
           headingSize="md"
           className="mb-10"
           title={<>Our Work, <span className="hero-gradient-text">Your Confidence</span></>}
-          subtitle={`${ALL.length}+ completed interior projects across Narpatganj, Forbesganj and Araria district, Bihar.`}
+          // ALL.length counts photographs, not projects. Reading it as
+          // "76+ completed interior projects" both understated the work and
+          // contradicted the 500+ figure stated everywhere else on the site —
+          // and it moved every time a photo was added. Say what the number is.
+          subtitle={`${ALL.length} photographs of finished ceilings, wall panelling and units from homes and businesses across Narpatganj, Forbesganj and Araria district, Bihar.`}
         />
 
         <KeywordChips className="mb-8" />
@@ -459,7 +461,7 @@ export default function Gallery() {
             ceilings, priced honestly.
           </p>
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
-            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]">Call Us Now</CallLink>
+            <CallLink className="px-8 py-4 shadow-[0_4px_20px_rgba(201,162,39,0.35)]">Call Us Now</CallLink>
             <WhatsAppLink
               message="Hello JK Interior, I would like a quotation for interior work."
               className="px-8 py-4 shadow-none hover:bg-gold-500 hover:shadow-none"

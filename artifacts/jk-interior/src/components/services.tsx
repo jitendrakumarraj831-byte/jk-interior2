@@ -118,7 +118,7 @@ export default function Services() {
       <meta itemProp="name" content="JK Interior Services — Forbesganj, Araria, Bihar" />
 
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(201, 162, 39,0.06),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(201,162,39,0.06),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
@@ -645,10 +645,12 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   )
 }
 
-/** Gallery grid tile — 800w AVIF/WebP variant (all local photos have one),
- *  falling back to the original file for the handful that don't (`p1.jpg`
- *  … `p5.jpg`, the Partition Wall photos). Fades in on load so the grid
- *  shows a skeleton, never a blank square, while an image is still fetching. */
+/** Gallery grid tile — 800w AVIF/WebP variant. Every photo in gallery-data.ts
+ *  is a .webp with a generated `-800w` sibling (see
+ *  scripts/optimize-jk-interior-images.ts); the non-webp branch stays as a
+ *  guard so a future photo added in another format still renders rather than
+ *  pointing an AVIF <source> at a file that isn't one. Fades in on load so the
+ *  grid shows a skeleton, never a blank square, while an image is fetching. */
 function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => void }) {
   const [loaded, setLoaded] = useState(false)
   const hasVariants = img.src.endsWith(".webp")
