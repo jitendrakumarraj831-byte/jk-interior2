@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail from "@/components/ui/swipe-rail"
 import {
+  GOOGLE_REVIEWS_URL,
   PHONE_PRIMARY,
   PHONE_PRIMARY_DISPLAY,
   PHONE_SECONDARY,
@@ -63,7 +64,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
         <div className="absolute inset-0 bg-gradient-to-b from-[#fdfbf6] via-[#faf7f0] to-[#f3ecdd]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_85%_15%,rgba(212,160,23,0.14),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_5%_90%,rgba(201, 162, 39,0.10),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_5%_90%,rgba(201,162,39,0.10),transparent)]" />
         {/* fine grid texture */}
         <div
           className="absolute inset-0 opacity-[0.4]"
@@ -146,8 +147,12 @@ export default function Hero() {
 
             {/* Action Buttons (CTAs) */}
             <motion.div {...anim(0.4)} className="mb-6 flex flex-wrap items-center gap-3">
-              <CallLink size="lg" shine ariaLabel="Call JK Interior for a free rate list and site visit">
-                <PhoneCall className="mr-2 h-4 w-4" />
+              {/* icon={false} because this button supplies its own PhoneCall
+                  glyph — CallLink renders a Phone icon by default, so leaving
+                  it on put two phone icons side by side on the site's primary
+                  call-to-action. */}
+              <CallLink size="lg" shine icon={false} ariaLabel="Call JK Interior for a free rate list and site visit">
+                <PhoneCall className="mr-2 h-4 w-4" aria-hidden="true" />
                 Request Your Free Quotation
               </CallLink>
 
@@ -257,8 +262,15 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Floating rating chip */}
-            <div className="absolute -left-3 top-6 flex items-center gap-2 rounded-2xl border border-amber-200 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-sm sm:-left-5">
+            {/* Floating rating chip — links to the Google Business Profile it
+                comes from, so the number is checkable rather than asserted. */}
+            <a
+              href={GOOGLE_REVIEWS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="4.9 out of 5 on Google — open the JK Interior Google Business Profile"
+              className="absolute -left-3 top-6 flex items-center gap-2 rounded-2xl border border-amber-200 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-sm transition-colors hover:border-amber-300 hover:bg-white sm:-left-5"
+            >
               <div className="flex flex-col">
                 <span className="flex items-center gap-1 text-sm font-black text-stone-900">
                   4.9
@@ -270,7 +282,7 @@ export default function Hero() {
                 </span>
                 <span className="text-[9px] font-bold uppercase tracking-wider text-stone-500">Google Rating</span>
               </div>
-            </div>
+            </a>
 
             {/* Floating projects chip */}
             <div className="absolute -bottom-3 right-5 flex items-center gap-2 rounded-2xl border border-gold-200 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-sm">

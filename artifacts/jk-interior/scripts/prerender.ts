@@ -74,6 +74,11 @@ const HELMET_MANAGED_SELECTORS = [
   'meta[name="apple-mobile-web-app-capable"]',
   'meta[name="apple-mobile-web-app-status-bar-style"]',
 ]
+/** Marks the SEO tags this script writes into the static HTML so the app can retire them once
+ *  react-helmet-async has put its own in place. Must stay identical to the constant of the same
+ *  name in src/main.tsx. */
+const PRERENDERED_TAG_ATTR = "data-jk-prerendered"
+
 const NAV_TIMEOUT_MS = 30_000
 const MAX_ATTEMPTS = 3
 
@@ -173,28 +178,39 @@ async function getStaticDefaults(browser: Browser, indexHtmlPath: string): Promi
 /** Collapses each HELMET_MANAGED_SELECTORS field down to one tag, preferring the value that
  *  differs from `defaults` (the route-specific Helmet tag) over the generic static one.
  *
+ *  Every surviving tag is then stamped with PRERENDERED_TAG_ATTR. That attribute is what lets
+ *  the app clear these tags again once react-helmet-async has inserted its own live copies —
+ *  see dropPrerenderedSeoTags() in src/main.tsx. Without it the deduped static tag and the
+ *  Helmet tag both sit in the DOM after mount, so a JS-executing crawler reads two <title>s,
+ *  two canonicals and two descriptions on every route (identical values, but duplicated).
+ *  react-helmet-async cannot recognise the static tags on its own: it only reclaims tags it
+ *  rendered itself, and it emits no marker of its own in this version.
+ *
  *  Note: the callback body must not assign any function to a variable — esbuild (via tsx)
  *  rewrites those into `__name(fn, "...")` calls, and `__name` does not exist in the page
  *  context, so the evaluate would throw "__name is not defined". Keep the logic inline. */
 async function dedupeSeoTags(page: Awaited<ReturnType<Browser["newPage"]>>, defaults: Record<string, string | null>) {
   await page.evaluate(
-    (defaultsArg: Record<string, string | null>, selectors: string[]) => {
+    (defaultsArg: Record<string, string | null>, selectors: string[], markerAttr: string) => {
       for (const sel of selectors) {
         const els = Array.from(document.querySelectorAll(sel))
-        if (els.length <= 1) continue
         const defaultVal = defaultsArg[sel]
-        const matchesDefault = els.filter(
-          (el) =>
-            defaultVal != null &&
-            (sel === "title" ? el.textContent : (el.getAttribute("content") ?? el.getAttribute("href"))) === defaultVal,
-        )
-        const survivors = els.filter((el) => !matchesDefault.includes(el))
-        const toRemove = survivors.length > 0 ? matchesDefault : matchesDefault.slice(1)
-        toRemove.forEach((el) => el.remove())
+        if (els.length > 1) {
+          const matchesDefault = els.filter(
+            (el) =>
+              defaultVal != null &&
+              (sel === "title" ? el.textContent : (el.getAttribute("content") ?? el.getAttribute("href"))) === defaultVal,
+          )
+          const survivors = els.filter((el) => !matchesDefault.includes(el))
+          const toRemove = survivors.length > 0 ? matchesDefault : matchesDefault.slice(1)
+          toRemove.forEach((el) => el.remove())
+        }
+        document.querySelectorAll(sel).forEach((el) => el.setAttribute(markerAttr, "1"))
       }
     },
     defaults,
     HELMET_MANAGED_SELECTORS,
+    PRERENDERED_TAG_ATTR,
   )
 }
 

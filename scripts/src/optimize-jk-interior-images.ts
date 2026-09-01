@@ -23,7 +23,7 @@
 
 import { readdir, stat } from "node:fs/promises"
 import path from "node:path"
-import sharp from "sharp"
+import sharp, { type AvifOptions, type WebpOptions } from "sharp"
 
 const IMAGES_DIR = path.resolve(
   import.meta.dirname,
@@ -38,8 +38,8 @@ const CARD_MAX_WIDTH = 800
 // desktop-resolution photo to a phone.
 const HERO_MOBILE_WIDTH = 960
 
-const AVIF_OPTS: sharp.AvifOptions = { quality: 55, effort: 3 }
-const WEBP_OPTS: sharp.WebpOptions = { quality: 78 }
+const AVIF_OPTS: AvifOptions = { quality: 55, effort: 3 }
+const WEBP_OPTS: WebpOptions = { quality: 78 }
 
 async function exists(p: string): Promise<boolean> {
   try {

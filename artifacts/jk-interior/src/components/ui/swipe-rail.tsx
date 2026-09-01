@@ -221,7 +221,11 @@ export default function SwipeRail({
       )}
 
       {dots && slides.length > 1 && (
-        <div className="mt-5 flex items-center justify-center gap-1.5">
+        // The button is the hit area, the span is the dot. They used to be the
+        // same element, which made every indicator a 6x6 px tap target on a
+        // phone — unusable, and well under the 24x24 minimum. The dots look
+        // identical; there is just something to actually hit around them now.
+        <div className="mt-5 flex items-center justify-center">
           {slides.map((_, i) => (
             <button
               key={i}
@@ -229,13 +233,17 @@ export default function SwipeRail({
               onClick={() => scrollToIndex(i)}
               aria-label={`Go to slide ${i + 1} of ${slides.length}`}
               aria-current={i === active}
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
-                i === active
-                  ? cn("w-6", dark ? "bg-gold-300" : "bg-gold-600")
-                  : cn("w-1.5", dark ? "bg-white/30" : "bg-gold-900/20"),
-              )}
-            />
+              className="flex h-6 min-w-6 items-center justify-center px-1"
+            >
+              <span
+                className={cn(
+                  "block h-1.5 rounded-full transition-all duration-300",
+                  i === active
+                    ? cn("w-6", dark ? "bg-gold-300" : "bg-gold-600")
+                    : cn("w-1.5", dark ? "bg-white/30" : "bg-gold-900/20"),
+                )}
+              />
+            </button>
           ))}
         </div>
       )}

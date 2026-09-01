@@ -54,7 +54,7 @@ function StepCard({ step, showConnector }: { step: Step; showConnector?: boolean
         <div className="absolute left-[calc(50%+3.5rem)] top-14 hidden h-0.5 w-[calc(100%-1rem)] bg-gradient-to-r from-gold-400/40 to-transparent lg:block z-20" />
       )}
 
-      <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/30 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_rgba(212, 175, 55,0.15)] sm:rounded-3xl">
+      <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/30 hover:bg-white/[0.06] hover:shadow-[0_20px_60px_rgba(212,175,55,0.15)] sm:rounded-3xl">
         {/* Step number watermark */}
         <div className="absolute -top-4 -right-2 select-none text-7xl font-black text-white/5" aria-hidden="true">
           {step.step}
@@ -119,7 +119,7 @@ export default function ProcessTimeline() {
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1830] to-[#0d1f3c]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(212, 175, 55,0.12),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(212,175,55,0.12),transparent)]" />
         <div className="absolute inset-0 dot-pattern opacity-[0.07]" />
       </div>
 

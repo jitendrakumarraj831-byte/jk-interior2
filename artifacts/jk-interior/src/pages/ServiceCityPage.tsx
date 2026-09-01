@@ -8,7 +8,8 @@ import { galleryImages, seoAlt } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { MapPin, CheckCircle, ArrowRight, Clock, ShieldCheck, Sparkles, Phone } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY, parseRateBand } from "@/lib/business-data"
+import NotFound from "@/pages/not-found"
 
 /** Swaps a "/images/foo.webp" path for one of its generated variants (see
  *  scripts/optimize-jk-interior-images.ts), e.g. "-800w.avif". */
@@ -22,22 +23,19 @@ export default function ServiceCityPage() {
   const service = getServiceCityInfoBySlug(serviceSlug || "")
   const city = getCityBySlug(citySlug || "")
 
-  if (!service || !city) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Page not found</h1>
-          <Link href="/services" className="text-gold-700 hover:underline mt-4 block">View all services</Link>
-        </div>
-      </div>
-    )
-  }
+  // An unknown service or city slug is a 404, not a bare stub: NotFound carries
+  // the navbar, the footer and the noindex meta, so the visitor can get
+  // somewhere useful and the URL never enters the index.
+  if (!service || !city) return <NotFound />
 
   const photos = galleryImages.filter((img) => img.category === service.galleryCategory).slice(0, 8)
   const otherServices = SERVICE_CITY_SERVICES.filter((s) => s.slug !== service.slug)
   const otherCities = CITIES.filter((c) => c.slug !== city.slug)
 
   const waText = `Hi JK Interior, I am interested in ${service.name} in ${city.name}. Please share details and a free quotation.`
+
+  // "₹75–₹150/sq.ft" / "From ₹15,000 (basic)" → numeric min/max for the Offer below.
+  const priceBand = parseRateBand(service.price)
 
   const jsonLd = [
     {
@@ -79,7 +77,25 @@ export default function ServiceCityPage() {
         },
       },
       areaServed: { "@type": "City", name: city.name, addressRegion: "Bihar" },
-      offers: { "@type": "Offer", priceCurrency: "INR", price: service.price.replace(/[^0-9–-]/g, "") || undefined },
+      // schema.org `price` must be a single number — feeding it a stripped
+      // range like "75–150" produced invalid Offer markup on every one of
+      // these pages. A band belongs in priceSpecification, same as the
+      // services ItemList emits (lib/services-summary.ts#buildServicesJsonLd).
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "INR",
+        availability: "https://schema.org/InStock",
+        ...(priceBand
+          ? {
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                priceCurrency: "INR",
+                minPrice: priceBand.min,
+                maxPrice: priceBand.max,
+              },
+            }
+          : {}),
+      },
     },
     {
       "@context": "https://schema.org",

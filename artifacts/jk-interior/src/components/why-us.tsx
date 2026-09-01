@@ -192,10 +192,12 @@ export default function WhyUs() {
         <SwipeHint className="mt-3" />
       </div>
 
-      <div className="sr-only" aria-hidden="true">
-        <h2>Why Choose JK Interior - Best Interior Designer in Forbesganj, Bihar</h2>
-        <p>JK Interior is the most trusted interior design company in Forbesganj and Araria, Bihar. We provide premium quality PVC false ceiling installation, gypsum ceiling design, WPC wall paneling, UV marble sheet, and modular TV unit design with 1-year written warranty and free site visits.</p>
-      </div>
+      {/* A `sr-only aria-hidden` block of keyword prose used to sit here: hidden
+          from sighted visitors AND from screen readers, so it existed for
+          crawlers alone. That is hidden text under Google's spam policies, and
+          it duplicated what the visible cards above, "JK Interior at a Glance"
+          and the footer already say in plain sight. Removed rather than
+          reworded — the same keywords are all present in visible copy. */}
     </section>
   )
 }

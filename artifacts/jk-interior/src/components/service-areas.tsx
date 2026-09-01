@@ -71,7 +71,7 @@ export default function ServiceAreas() {
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#f8fafc] via-[#eef2f6] to-[#f8fafc]" />
         <div className="absolute inset-0 dot-pattern opacity-25" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(201, 162, 39,0.05),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(201,162,39,0.05),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
@@ -116,7 +116,7 @@ export default function ServiceAreas() {
                     aria-label={`Interior design and false ceiling services in ${area.name}`}
                     className={`group flex items-center gap-2 rounded-2xl border px-4 py-2.5 shadow-sm transition-all duration-300 cursor-pointer backdrop-blur-sm hover:scale-110 hover:z-50 ${
                       area.highlight
-                        ? "border-gold-300 bg-gold-50 shadow-[0_4px_20px_rgba(201, 162, 39,0.15)]"
+                        ? "border-gold-300 bg-gold-50 shadow-[0_4px_20px_rgba(201,162,39,0.15)]"
                         : "border-gray-200 bg-white hover:border-gold-300"
                     }`}
                   >
@@ -181,7 +181,7 @@ export default function ServiceAreas() {
             </p>
             <p className="mb-6 text-sm text-gray-500">Wherever your property is, our team will reach it.</p>
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
-              <CallLink className="shadow-[0_4px_20px_rgba(201, 162, 39,0.3)]" ariaLabel="Call to check service availability in your area">
+              <CallLink className="shadow-[0_4px_20px_rgba(201,162,39,0.3)]" ariaLabel="Call to check service availability in your area">
                 Check Availability
               </CallLink>
               <Link

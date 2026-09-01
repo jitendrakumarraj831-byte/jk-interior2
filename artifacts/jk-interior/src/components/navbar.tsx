@@ -40,7 +40,7 @@ export default function Navbar() {
       {/* Utility strip — both official numbers stay visible above the fold on
           every page, on every screen size. */}
       <div className="fixed inset-x-0 top-0 z-50 border-b border-gold-500/15 bg-charcoal-900 text-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-1.5 sm:px-5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-0.5 sm:px-5">
           <p className="hidden items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-200/90 sm:flex">
             <MapPin className="h-3 w-3 text-gold-400" aria-hidden="true" />
             Narpatganj · Forbesganj · Araria District, Bihar
@@ -49,7 +49,7 @@ export default function Navbar() {
             <a
               href={`tel:${PHONE_PRIMARY}`}
               aria-label={`Call JK Interior on the primary line ${PHONE_PRIMARY_DISPLAY}`}
-              className="flex items-center gap-1.5 text-[11px] font-bold tracking-tight text-white transition-colors hover:text-gold-300 sm:text-xs"
+              className="flex min-h-[28px] items-center gap-1.5 px-1.5 py-1 text-[11px] font-bold tracking-tight text-white transition-colors hover:text-gold-300 sm:text-xs"
             >
               <Phone className="h-3 w-3 text-gold-400" aria-hidden="true" />
               {PHONE_PRIMARY_DISPLAY}
@@ -58,7 +58,7 @@ export default function Navbar() {
             <a
               href={`tel:${PHONE_SECONDARY}`}
               aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
-              className="flex items-center gap-1.5 text-[11px] font-bold tracking-tight text-white transition-colors hover:text-gold-300 sm:text-xs"
+              className="flex min-h-[28px] items-center gap-1.5 px-1.5 py-1 text-[11px] font-bold tracking-tight text-white transition-colors hover:text-gold-300 sm:text-xs"
             >
               <Phone className="h-3 w-3 text-gold-400" aria-hidden="true" />
               {PHONE_SECONDARY_DISPLAY}
@@ -77,7 +77,7 @@ export default function Navbar() {
           className={cn(
             "pointer-events-auto w-full max-w-6xl rounded-2xl border px-3 py-2.5 sm:px-5 sm:py-3 transition-all duration-300",
             scrolled
-              ? "border-gold-500/25 shadow-[0_8px_40px_rgba(0,0,0,0.12),0_0_0_1px_rgba(201, 162, 39,0.12)] bg-white/95 backdrop-blur-xl"
+              ? "border-gold-500/25 shadow-[0_8px_40px_rgba(0,0,0,0.12),0_0_0_1px_rgba(201,162,39,0.12)] bg-white/95 backdrop-blur-xl"
               : "border-gold-500/15 shadow-[0_4px_24px_rgba(0,0,0,0.08)] bg-white/85 backdrop-blur-xl"
           )}
         >
@@ -135,7 +135,7 @@ export default function Navbar() {
                 size="sm"
                 shine
                 message="Hello JK Interior, I would like guidance on an interior design project."
-                className="gap-2 bg-gold-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_24px_rgba(201, 162, 39,0.5)]"
+                className="gap-2 bg-gold-700 font-black uppercase tracking-wide shadow-[0_4px_16px_rgba(201,162,39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_24px_rgba(201,162,39,0.5)]"
               >
                 WhatsApp
               </WhatsAppLink>
@@ -229,7 +229,7 @@ export default function Navbar() {
                     <WhatsAppLink
                       shine
                       message="Hello JK Interior, I would like guidance on an interior design project."
-                      className="bg-gold-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(201, 162, 39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_20px_rgba(201, 162, 39,0.35)]"
+                      className="bg-gold-700 px-5 py-3.5 text-base font-black shadow-[0_4px_20px_rgba(201,162,39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_20px_rgba(201,162,39,0.35)]"
                     >
                       Chat on WhatsApp
                     </WhatsAppLink>

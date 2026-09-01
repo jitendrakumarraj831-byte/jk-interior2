@@ -28,11 +28,16 @@ export default function FAQSection() {
   const columns = [faqs.slice(0, mid), faqs.slice(mid)]
 
   const renderEntry = (faq: (typeof faqs)[number], i: number) => (
-    <div key={i} className="border-b border-gray-200 py-5 first:pt-0 last:border-b-0">
+    <div key={i} className="border-b border-gray-200 py-4 first:pt-0 last:border-b-0">
+      {/* py-1 here (with the row's py-5 trimmed to py-4 to keep the rhythm
+          identical) lifts a single-line question from a 23px-tall tap target
+          to 31px — over the 24px minimum, at no cost in layout. */}
       <button
-        className="flex w-full items-start gap-3 text-left"
+        className="flex w-full items-start gap-3 py-1 text-left"
         onClick={() => toggle(i)}
         aria-expanded={openIndex === i}
+        aria-controls={`faq-answer-${i}`}
+        id={`faq-question-${i}`}
       >
         <span className={`mt-0.5 shrink-0 rounded border px-1.5 py-0.5 font-mono text-[10px] font-bold ${
           openIndex === i ? "border-gold-400 bg-gold-50 text-gold-700" : "border-gray-300 text-gray-400"
@@ -52,6 +57,9 @@ export default function FAQSection() {
       <AnimatePresence initial={false}>
         {openIndex === i && (
           <motion.div
+            id={`faq-answer-${i}`}
+            role="region"
+            aria-labelledby={`faq-question-${i}`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -69,7 +77,7 @@ export default function FAQSection() {
     <section id="faq" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
       {/* Background — plain white "reference page", the one section without any tinted backdrop */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_0%,rgba(201, 162, 39,0.04),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_0%,rgba(201,162,39,0.04),transparent)]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
