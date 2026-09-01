@@ -9,7 +9,8 @@ import {
   type DesignResult,
 } from "@/lib/design-search"
 import { WhatsAppLink } from "@/components/ui/cta-links"
-import { Lightbox } from "@/components/gallery"
+import { Lightbox } from "@/components/ui/lightbox"
+import { useGalleryModal } from "@/lib/gallery-modal-context"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 const RESULT_SIZES = "(min-width: 640px) 220px, 44vw"
@@ -21,8 +22,22 @@ function delay(ms: number) {
 }
 
 /**
- * Self-contained "Search Design Ideas" launcher + modal. Drop `<DesignIdeasSearch />`
- * anywhere; it owns its own open state so no parent wiring is needed.
+ * The modal itself, mounted exactly once at the app root (see `App.tsx`) so
+ * it's always present in the tree and reads its open/closed state from the
+ * shared `GalleryModalProvider` — any trigger anywhere (the Gallery section's
+ * "Search Design Ideas" button, the mobile sticky bar's "View Designs"
+ * button) opens this same instance, rather than each mounting a private copy
+ * that only exists while that trigger's own subtree happens to be rendered.
+ */
+export function GalleryModalHost() {
+  const { isGalleryOpen, closeGalleryModal } = useGalleryModal()
+  return <AnimatePresence>{isGalleryOpen && <SearchModal onClose={closeGalleryModal} />}</AnimatePresence>
+}
+
+/**
+ * "Search Design Ideas" trigger button — drop it anywhere; it just flips the
+ * shared modal open, it doesn't own or render the modal itself (see
+ * `GalleryModalHost` above).
  *
  * Every search runs against our own photographed project catalog instantly
  * (see `lib/design-search.ts`), then merges in live Unsplash results when a
@@ -30,25 +45,21 @@ function delay(ms: number) {
  * richer as the site owner adds inspiration-photo capability later.
  */
 export default function DesignIdeasSearch({ triggerClassName }: { triggerClassName?: string }) {
-  const [open, setOpen] = useState(false)
+  const { openGalleryModal } = useGalleryModal()
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-haspopup="dialog"
-        className={
-          triggerClassName ??
-          "inline-flex items-center gap-2 rounded-xl border border-gold-500/30 bg-gold-500/8 px-5 py-3 text-sm font-bold text-gold-800 transition-all hover:border-gold-500/50 hover:bg-gold-500/15"
-        }
-      >
-        <Search className="h-4 w-4" aria-hidden="true" />
-        Search Design Ideas
-      </button>
-
-      <AnimatePresence>{open && <SearchModal onClose={() => setOpen(false)} />}</AnimatePresence>
-    </>
+    <button
+      type="button"
+      onClick={openGalleryModal}
+      aria-haspopup="dialog"
+      className={
+        triggerClassName ??
+        "inline-flex items-center gap-2 rounded-xl border border-gold-500/30 bg-gold-500/8 px-5 py-3 text-sm font-bold text-gold-800 transition-all hover:border-gold-500/50 hover:bg-gold-500/15"
+      }
+    >
+      <Search className="h-4 w-4" aria-hidden="true" />
+      Search Design Ideas
+    </button>
   )
 }
 

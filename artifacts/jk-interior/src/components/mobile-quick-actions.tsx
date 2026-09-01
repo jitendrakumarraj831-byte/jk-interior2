@@ -1,6 +1,7 @@
 import { Phone, MessageCircle, Images } from "lucide-react"
-import { Link, useLocation } from "wouter"
+import { useLocation } from "wouter"
 import { CALL_NUMBER, WA_NUMBER } from "@/lib/business-data"
+import { useGalleryModal } from "@/lib/gallery-modal-context"
 
 const WA_MESSAGE = "Hi JK Interior, I found your website and need interior design help."
 
@@ -10,9 +11,16 @@ const WA_MESSAGE = "Hi JK Interior, I found your website and need interior desig
  * reach, regardless of how far down the page they've scrolled. Hidden at the
  * `md` breakpoint, where the navbar's own CTAs already do this job, and on
  * `/admin` since that's an internal tool, not a marketing surface.
+ *
+ * "View Designs" opens the same global gallery-search modal as the Gallery
+ * section's "Search Design Ideas" button (see `GalleryModalHost`, mounted
+ * once in `App.tsx`) rather than navigating to `/gallery` — so it works
+ * instantly from any page, without waiting on that page's own lazy-loaded
+ * sections to mount first.
  */
 export default function MobileQuickActions() {
   const [pathname] = useLocation()
+  const { openGalleryModal } = useGalleryModal()
   if (pathname.startsWith("/admin")) return null
 
   return (
@@ -45,8 +53,10 @@ export default function MobileQuickActions() {
           <span className="text-[11px] font-bold">WhatsApp</span>
         </a>
 
-        <Link
-          href="/gallery"
+        <button
+          type="button"
+          onClick={openGalleryModal}
+          aria-haspopup="dialog"
           aria-label="View JK Interior design gallery"
           className="flex flex-col items-center gap-1 py-2.5 text-charcoal-800 transition-colors active:bg-black/5"
         >
@@ -54,7 +64,7 @@ export default function MobileQuickActions() {
             <Images className="h-4 w-4" aria-hidden="true" />
           </span>
           <span className="text-[11px] font-bold">View Designs</span>
-        </Link>
+        </button>
       </div>
     </nav>
   )

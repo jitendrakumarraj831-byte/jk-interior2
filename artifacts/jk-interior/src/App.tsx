@@ -4,6 +4,7 @@ import { MotionConfig } from "framer-motion"
 import ScrollProgress from "@/components/scroll-progress"
 import { AssistantLauncher } from "@/components/ui/assistant-launcher"
 import MobileQuickActions from "@/components/mobile-quick-actions"
+import { GalleryModalProvider } from "@/lib/gallery-modal-context"
 
 const HomePage = lazy(() => import("@/pages/HomePage"))
 const AboutPage = lazy(() => import("@/pages/AboutPage"))
@@ -43,6 +44,37 @@ function Router() {
 }
 
 const loadChat = () => import("@/components/jk-chat")
+const loadGalleryModal = () => import("@/components/design-search-modal")
+const GalleryModalHost = lazy(() => loadGalleryModal().then((m) => ({ default: m.GalleryModalHost })))
+
+/**
+ * The design-search gallery modal is mounted once here so every trigger
+ * (the Gallery section's "Search Design Ideas" button, the mobile sticky
+ * bar's "View Designs" button) opens the same always-present instance — see
+ * `lib/gallery-modal-context.tsx`. Its actual UI is a lazy chunk, same
+ * rationale as the chat panel above: warmed on browser idle so it's normally
+ * ready before anyone clicks, but never blocks the initial page load for
+ * visitors who never open it. `openGalleryModal()` flips the shared state
+ * immediately regardless of whether the chunk has finished loading yet —
+ * Suspense just renders it the moment it lands.
+ */
+function GalleryModal() {
+  React.useEffect(() => {
+    const warm = () => { void loadGalleryModal() }
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(warm, { timeout: 2000 })
+      return () => cancelIdleCallback(id)
+    }
+    const t = setTimeout(warm, 1500)
+    return () => clearTimeout(t)
+  }, [])
+
+  return (
+    <Suspense fallback={null}>
+      <GalleryModalHost />
+    </Suspense>
+  )
+}
 
 /**
  * The assistant, split so the button never waits on the panel.
@@ -128,10 +160,13 @@ function App() {
     // components don't each need their own useReducedMotion() check.
     <MotionConfig reducedMotion="user">
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-        <ScrollProgress />
-        <Router />
-        <Assistant />
-        <MobileQuickActions />
+        <GalleryModalProvider>
+          <ScrollProgress />
+          <Router />
+          <Assistant />
+          <MobileQuickActions />
+          <GalleryModal />
+        </GalleryModalProvider>
       </WouterRouter>
     </MotionConfig>
   )
