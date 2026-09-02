@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { ArrowRight, MapPin, Star, ShieldCheck, Droplets, Sparkles, Zap, TrendingUp, PhoneCall, CheckCircle2, Phone, Clock } from "lucide-react"
 import { Link } from "wouter"
+import { Helmet } from "react-helmet-async"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail from "@/components/ui/swipe-rail"
@@ -60,6 +61,30 @@ export default function Hero() {
       className="relative min-h-[90vh] lg:min-h-[100dvh] w-full overflow-hidden bg-[#faf7f0] flex flex-col justify-center"
       aria-label="JK Interior – false ceiling and interior contractor in Narpatganj, Forbesganj and Araria district, Bihar"
     >
+      {/* Preload hints for this section's own LCP image — scoped to the home
+          route via react-helmet-async (Hero is not rendered anywhere else),
+          so other routes never compete with an image they don't use. See the
+          note in index.html for why this moved out of the static shell. */}
+      <Helmet>
+        <link
+          rel="preload"
+          href="/images/hero-interior-960w.avif"
+          as="image"
+          type="image/avif"
+          fetchPriority="high"
+          imageSrcSet="/images/hero-interior-960w.avif 960w, /images/hero-interior.avif 1376w"
+          imageSizes="(min-width: 1024px) 45vw, (min-width: 448px) 448px, calc(100vw - 32px)"
+        />
+        <link
+          rel="preload"
+          href="/images/hero-interior-960w.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+          imageSrcSet="/images/hero-interior-960w.webp 960w, /images/hero-interior.webp 1376w"
+          imageSizes="(min-width: 1024px) 45vw, (min-width: 448px) 448px, calc(100vw - 32px)"
+        />
+      </Helmet>
       {/* Soft luxury backdrop — warm cream with gold glows */}
       <div className="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
         <div className="absolute inset-0 bg-gradient-to-b from-[#fdfbf6] via-[#faf7f0] to-[#f3ecdd]" />

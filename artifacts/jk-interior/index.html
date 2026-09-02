@@ -60,15 +60,16 @@
     </style>
 
     <!-- Critical resources (preload for LCP performance) -->
-    <!-- Hero image only — this is the LCP element on every route. Gallery
-         images are below the fold inside a lazy-loaded component, so they
-         must NOT be preloaded here: doing so competed with the hero image,
-         fonts and critical JS for bandwidth on first load and actively hurt
-         mobile LCP. Sized variants are chosen at runtime via srcset/sizes
-         in Hero (see src/components/hero.tsx), so a single mobile-first
-         preload is enough of a hint for the browser's preload scanner. -->
-    <link rel="preload" href="/images/hero-interior-960w.avif" as="image" type="image/avif" fetchpriority="high" imagesrcset="/images/hero-interior-960w.avif 960w, /images/hero-interior.avif 1376w" imagesizes="(min-width: 1024px) 45vw, (min-width: 448px) 448px, calc(100vw - 32px)" />
-    <link rel="preload" href="/images/hero-interior-960w.webp" as="image" type="image/webp" fetchpriority="high" imagesrcset="/images/hero-interior-960w.webp 960w, /images/hero-interior.webp 1376w" imagesizes="(min-width: 1024px) 45vw, (min-width: 448px) 448px, calc(100vw - 32px)" />
+    <!-- The hero room photo is the LCP element on the home route only — Hero
+         (src/components/hero.tsx) is not rendered by any other page. Its
+         preload hints are therefore emitted route-scoped, by Hero itself via
+         react-helmet-async (same mechanism as SeoHead), and captured into the
+         prerendered static HTML for "/" by the prerender script. Preloading
+         it here unconditionally used to compete with each *other* route's own
+         critical resources (fonts, its own LCP element) for bandwidth and
+         actively hurt mobile LCP everywhere except home. Gallery images stay
+         out of this entirely — they're below the fold inside a lazy-loaded
+         component and must never be preloaded. -->
 
     <title>JK Interior – Best False Ceiling &amp; Interior Designer in Forbesganj, Araria Bihar</title>
     <meta name="description" content="JK Interior – expert false ceiling, WPC wall panels &amp; modular interiors in Forbesganj, Araria, Bihar. Call +91 8541849118 for a free site visit." />
