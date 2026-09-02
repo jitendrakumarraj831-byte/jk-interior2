@@ -1,4 +1,5 @@
 import { Phone, MapPin, Clock, ShieldCheck } from "lucide-react"
+import { motion, useReducedMotion } from "framer-motion"
 import {
   PHONE_PRIMARY,
   PHONE_PRIMARY_DISPLAY,
@@ -6,6 +7,8 @@ import {
   PHONE_SECONDARY_DISPLAY,
 } from "@/lib/business-data"
 import { BUSINESS_FACTS as facts } from "@/lib/business-facts"
+
+const easeLux = [0.22, 1, 0.36, 1] as const
 
 /**
  * A compact, factual "at a glance" panel: who we are, where we work, what it
@@ -19,6 +22,39 @@ import { BUSINESS_FACTS as facts } from "@/lib/business-facts"
  */
 
 export default function BusinessSummary() {
+  const shouldReduce = useReducedMotion()
+
+  const anim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-60px" },
+          transition: { duration: 0.6, ease: easeLux, delay },
+        }
+
+  const staggerContainer = shouldReduce
+    ? {}
+    : {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true, margin: "-60px" },
+        variants: {
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+        },
+      }
+
+  const staggerItem = shouldReduce
+    ? {}
+    : {
+        variants: {
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeLux } },
+        },
+      }
+
   return (
     <section
       id="business-summary"
@@ -26,10 +62,10 @@ export default function BusinessSummary() {
       className="border-y border-gold-200 bg-[#fdfbf6] py-14 sm:py-16"
     >
       <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-        <h2 id="business-summary-heading" className="text-2xl font-black text-gray-900 sm:text-3xl">
+        <motion.h2 {...anim(0)} id="business-summary-heading" className="text-2xl font-black text-gray-900 sm:text-3xl">
           JK Interior at a Glance
-        </h2>
-        <p className="mt-3 max-w-3xl text-base leading-relaxed text-gray-700">
+        </motion.h2>
+        <motion.p {...anim(0.05)} className="mt-3 max-w-3xl text-base leading-relaxed text-gray-700">
           JK Interior is a false ceiling and interior design contractor based in Forbesganj, Araria
           district, Bihar, serving Narpatganj, Forbesganj, Araria, Purnia, Supaul and the surrounding
           towns. To book a free site visit or ask for a quotation, call{" "}
@@ -41,20 +77,22 @@ export default function BusinessSummary() {
             {PHONE_SECONDARY_DISPLAY}
           </a>
           .
-        </p>
+        </motion.p>
 
         {/* Phone numbers first, as tappable targets — this is the single most
             common reason a visitor arrives on the page. */}
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <motion.div {...staggerContainer} className="mt-6 grid gap-3 sm:grid-cols-2">
           {[
             { tel: PHONE_PRIMARY, display: PHONE_PRIMARY_DISPLAY, caption: "Primary line" },
             { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, caption: "WhatsApp line" },
           ].map(({ tel, display, caption }) => (
-            <a
+            <motion.a
               key={tel}
+              {...staggerItem}
+              whileHover={shouldReduce ? undefined : { scale: 1.02 }}
               href={`tel:${tel}`}
               aria-label={`Call JK Interior at ${display}`}
-              className="flex items-center gap-3 rounded-2xl border border-gold-300 bg-white px-5 py-4 shadow-sm transition-colors hover:border-gold-400 hover:bg-gold-50"
+              className="glass-card flex items-center gap-3 px-5 py-4 transition-colors hover:border-gold-400/60 hover:bg-gold-50/60"
             >
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-700">
                 <Phone className="h-5 w-5" aria-hidden="true" />
@@ -63,20 +101,25 @@ export default function BusinessSummary() {
                 <span className="block text-[10px] font-bold uppercase tracking-widest text-gray-500">{caption}</span>
                 <span className="block text-lg font-black tracking-tight text-gray-900">{display}</span>
               </span>
-            </a>
+            </motion.a>
           ))}
-        </div>
+        </motion.div>
 
-        <dl className="mt-8 divide-y divide-gold-200 border-t border-gold-200">
+        <motion.dl {...staggerContainer} className="mt-8 grid gap-3 sm:grid-cols-2">
           {facts.map(({ term, detail }) => (
-            <div key={term} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-6">
+            <motion.div
+              key={term}
+              {...staggerItem}
+              whileHover={shouldReduce ? undefined : { scale: 1.02 }}
+              className="glass-card p-4"
+            >
               <dt className="text-xs font-black uppercase tracking-widest text-gold-700">{term}</dt>
-              <dd className="text-sm leading-relaxed text-gray-700">{detail}</dd>
-            </div>
+              <dd className="mt-1 text-sm leading-relaxed text-gray-700">{detail}</dd>
+            </motion.div>
           ))}
-        </dl>
+        </motion.dl>
 
-        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-gray-600">
+        <motion.div {...anim(0.1)} className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-gray-600">
           <span className="flex items-center gap-1.5">
             <MapPin className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
             Forbesganj, Araria, Bihar 854318
@@ -89,7 +132,7 @@ export default function BusinessSummary() {
             <ShieldCheck className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
             1-year written warranty
           </span>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

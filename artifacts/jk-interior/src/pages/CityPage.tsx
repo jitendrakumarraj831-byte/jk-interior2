@@ -1,4 +1,5 @@
 import { useParams, Link } from "wouter"
+import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
@@ -9,9 +10,54 @@ import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 import NotFound from "@/pages/not-found"
 
+const easeLux = [0.22, 1, 0.36, 1] as const
+
 export default function CityPage() {
   const { city: citySlug } = useParams<{ city: string }>()
   const city = getCityBySlug(citySlug || "")
+  const shouldReduce = useReducedMotion()
+
+  const anim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.7, ease: easeLux, delay },
+        }
+
+  const inViewAnim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-60px" },
+          transition: { duration: 0.65, ease: easeLux, delay },
+        }
+
+  const staggerContainer = shouldReduce
+    ? {}
+    : {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true, margin: "-60px" },
+        variants: {
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+        },
+      }
+
+  const staggerItem = shouldReduce
+    ? {}
+    : {
+        variants: {
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeLux } },
+        },
+      }
+
+  const hoverScale = shouldReduce ? undefined : { scale: 1.02 }
 
   // An unknown city slug is a 404, not a bare stub: NotFound carries the navbar,
   // the footer and the noindex meta, so the visitor can get somewhere useful and
@@ -109,26 +155,26 @@ export default function CityPage() {
           <div className="absolute inset-0 grid-texture opacity-20" />
         </div>
         <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-gold-700">
+          <motion.div {...anim(0)} className="mb-4 flex items-center gap-2 text-sm font-semibold text-gold-700">
             <MapPin className="h-4 w-4" />
             <Link href="/" className="hover:underline">Home</Link>
             <span className="text-gray-300">/</span>
             <span>Cities</span>
             <span className="text-gray-300">/</span>
             <span>{city.name}</span>
-          </div>
+          </motion.div>
 
-          <h1 className="mb-4 font-serif text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
+          <motion.h1 {...anim(0.1)} className="mb-4 font-serif text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
             Interior Designer in{" "}
             <span className="hero-gradient-text">{city.name}</span>
-          </h1>
+          </motion.h1>
 
-          <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+          <motion.p {...anim(0.2)} className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall panel and interior
             design services in {city.name}, {city.district} Bihar. Free site visit. Call +91 8541849118.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap gap-3">
+          <motion.div {...anim(0.3)} className="flex flex-wrap gap-3">
             <CallLink className="shadow-md hover:shadow-md">Call Now</CallLink>
             <WhatsAppLink
               className="shadow-md hover:shadow-md"
@@ -146,34 +192,34 @@ export default function CityPage() {
               <Clock className="h-4 w-4" aria-hidden="true" />
               Free Site Visit
             </WhatsAppLink>
-          </div>
+          </motion.div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <motion.div {...staggerContainer} className="mt-8 flex flex-wrap gap-4">
             {[
               { icon: "🧾", label: "Free Quotation" },
               { icon: "✅", label: "500+ Projects" },
               { icon: "🛡️", label: "1 Year Warranty" },
               { icon: "📍", label: `Serving ${city.name}` },
             ].map(({ icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm border border-gray-100">
+              <motion.div key={label} {...staggerItem} whileHover={hoverScale} className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm border border-gray-100 backdrop-blur-md">
                 <span>{icon}</span>
                 <span>{label}</span>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* City description */}
       <section className="py-14 sm:py-16 bg-white">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-4 text-2xl font-black text-gray-900 sm:text-3xl">
+          <motion.h2 {...inViewAnim(0)} className="mb-4 text-2xl font-black text-gray-900 sm:text-3xl">
             Interior Design Services in <span className="text-gold-700">{city.name}</span>
-          </h2>
-          <p className="text-base leading-relaxed text-gray-600 max-w-3xl">
+          </motion.h2>
+          <motion.p {...inViewAnim(0.05)} className="text-base leading-relaxed text-gray-600 max-w-3xl">
             {city.uniqueContent}
-          </p>
-          <p className="mt-4 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
+          </motion.p>
+          <motion.p {...inViewAnim(0.1)} className="mt-4 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
             <span className="font-bold text-gold-800">Planning interior work in {city.name}?</span>{" "}
             JK Interior installs PVC and gypsum false ceilings, WPC wall panelling, UV marble sheets,
             modular television units and complete home or office interiors throughout {city.name} and
@@ -181,43 +227,46 @@ export default function CityPage() {
             written one-year warranty. For exact rates and design photographs, call or WhatsApp{" "}
             <span className="font-semibold text-gold-800">{PHONE_PRIMARY_DISPLAY}</span> or{" "}
             <span className="font-semibold text-gold-800">{PHONE_SECONDARY_DISPLAY}</span>.
-          </p>
+          </motion.p>
         </div>
       </section>
 
       {/* Services grid */}
       <section className="py-14 sm:py-16 bg-gray-50">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-3 text-2xl font-black text-gray-900 sm:text-3xl">
+          <motion.h2 {...inViewAnim(0)} className="mb-3 text-2xl font-black text-gray-900 sm:text-3xl">
             Our Services in {city.name}
-          </h2>
-          <p className="mb-8 text-sm text-gray-500">Everything a finished interior needs, from one accountable team.</p>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          </motion.h2>
+          <motion.p {...inViewAnim(0.05)} className="mb-8 text-sm text-gray-500">Everything a finished interior needs, from one accountable team.</motion.p>
+          <motion.div {...staggerContainer} className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {SERVICES_LIST.map((service) => {
               const linked = SERVICE_CITY_SERVICES.find((s) => s.name === service)
               if (linked) {
                 return (
-                  <Link
-                    key={service}
-                    href={`/services/${linked.slug}/${city.slug}`}
-                    className="flex items-center gap-2 rounded-xl border border-gold-200 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow-sm hover:border-gold-400 hover:bg-gold-50 hover:text-gold-700 transition-colors"
-                  >
-                    <CheckCircle className="h-4 w-4 shrink-0 text-gold-600" />
-                    {service}
-                  </Link>
+                  <motion.div key={service} {...staggerItem} whileHover={hoverScale}>
+                    <Link
+                      href={`/services/${linked.slug}/${city.slug}`}
+                      className="flex items-center gap-2 rounded-xl border border-gold-200 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow-sm hover:border-gold-400 hover:bg-gold-50 hover:text-gold-700 transition-colors"
+                    >
+                      <CheckCircle className="h-4 w-4 shrink-0 text-gold-600" />
+                      {service}
+                    </Link>
+                  </motion.div>
                 )
               }
               return (
-                <div
+                <motion.div
                   key={service}
+                  {...staggerItem}
+                  whileHover={hoverScale}
                   className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow-sm"
                 >
                   <CheckCircle className="h-4 w-4 shrink-0 text-gold-600" />
                   {service}
-                </div>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -225,27 +274,27 @@ export default function CityPage() {
       {city.faqs.length > 0 && (
         <section className="py-14 sm:py-16 bg-white">
           <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-            <h2 className="mb-3 text-2xl font-black text-gray-900 sm:text-3xl">
+            <motion.h2 {...inViewAnim(0)} className="mb-3 text-2xl font-black text-gray-900 sm:text-3xl">
               {city.name} — Frequently Asked Questions
-            </h2>
-            <p className="mb-8 text-sm text-gray-500">Common questions from our {city.name} customers.</p>
-            <div className="space-y-4">
+            </motion.h2>
+            <motion.p {...inViewAnim(0.05)} className="mb-8 text-sm text-gray-500">Common questions from our {city.name} customers.</motion.p>
+            <motion.div {...staggerContainer} className="space-y-4">
               {city.faqs.map(({ q, a }) => (
-                <details key={q} className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 open:border-gold-300 open:bg-white open:shadow-sm">
+                <motion.details key={q} {...staggerItem} className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 open:border-gold-300 open:bg-white open:shadow-sm">
                   <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-gold-700">
                     <h3 className="mb-3 text-base font-bold text-gray-900 group-open:text-gold-700 inline">{q}</h3>
                   </summary>
                   <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
-                </details>
+                </motion.details>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
 
       {/* CTA */}
       <section className="py-14 sm:py-16 bg-gradient-to-b from-charcoal-800 to-charcoal-950 text-white">
-        <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-12 text-center">
+        <motion.div {...inViewAnim(0)} className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/[0.04] px-5 py-10 sm:px-10 sm:py-12 lg:px-12 text-center backdrop-blur-sm">
           <h2 className="mb-2 text-xl font-black">
             Ready to Transform Your {city.name} Home?
           </h2>
@@ -270,7 +319,7 @@ export default function CityPage() {
               WhatsApp Us
             </WhatsAppLink>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Other cities */}
@@ -279,18 +328,19 @@ export default function CityPage() {
           <h2 className="mb-5 text-lg font-black text-gray-900">
             Explore JK Interior
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <motion.div {...staggerContainer} className="flex flex-wrap gap-2">
             {otherCities.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/cities/${c.slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
-              >
-                <MapPin className="h-3 w-3" />
-                {c.name}
-              </Link>
+              <motion.div key={c.slug} {...staggerItem} whileHover={hoverScale}>
+                <Link
+                  href={`/cities/${c.slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
+                >
+                  <MapPin className="h-3 w-3" />
+                  {c.name}
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
