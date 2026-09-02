@@ -171,7 +171,7 @@ export default function Services() {
       {/* ── DESKTOP: alternating editorial index ── */}
       <div className="relative z-10 mx-auto hidden max-w-6xl px-5 sm:px-6 lg:block lg:px-12">
         <div className="divide-y divide-gold-900/[0.08]">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             {filteredServices.map((service, i) => {
               const isReversed = i % 2 === 1
               const isOpen = openSlugs.has(service.slug)
