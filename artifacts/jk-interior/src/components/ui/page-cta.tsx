@@ -1,6 +1,9 @@
 import { Phone } from "lucide-react"
+import { motion, useReducedMotion } from "framer-motion"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
+
+const easeLux = [0.22, 1, 0.36, 1] as const
 
 interface PageCtaProps {
   eyebrow: string
@@ -16,6 +19,17 @@ interface PageCtaProps {
  * step, both numbers, one tap away.
  */
 export default function PageCta({ eyebrow, title, subtitle, whatsappMessage }: PageCtaProps) {
+  const shouldReduce = useReducedMotion()
+
+  const animProps = shouldReduce
+    ? {}
+    : {
+        initial: { opacity: 0, y: 24 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-80px" },
+        transition: { duration: 0.7, ease: easeLux },
+      }
+
   return (
     <section className="relative overflow-hidden border-t border-gold-500/10 py-16 text-center sm:py-20">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -23,7 +37,7 @@ export default function PageCta({ eyebrow, title, subtitle, whatsappMessage }: P
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(212,175,55,0.16),transparent_65%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-2xl space-y-5 px-6">
+      <motion.div {...animProps} className="relative z-10 mx-auto max-w-2xl space-y-5 rounded-3xl border border-white/10 bg-white/[0.04] px-6 py-10 backdrop-blur-sm sm:px-10">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-gold-950/40 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-gold-300">
           <span className="h-1.5 w-1.5 rounded-full bg-gold-400" aria-hidden="true" />
           {eyebrow}
@@ -51,7 +65,7 @@ export default function PageCta({ eyebrow, title, subtitle, whatsappMessage }: P
             Message on WhatsApp
           </WhatsAppLink>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

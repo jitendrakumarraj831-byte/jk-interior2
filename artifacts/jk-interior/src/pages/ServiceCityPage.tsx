@@ -1,4 +1,5 @@
 import { useParams, Link } from "wouter"
+import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
@@ -18,10 +19,55 @@ const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$
 /** Thumbnails render in a 2-col grid on phones, 4-col from 640px, inside a 5xl container. */
 const THUMB_SIZES = "(min-width: 640px) 240px, calc(50vw - 24px)"
 
+const easeLux = [0.22, 1, 0.36, 1] as const
+
 export default function ServiceCityPage() {
   const { service: serviceSlug, city: citySlug } = useParams<{ service: string; city: string }>()
   const service = getServiceCityInfoBySlug(serviceSlug || "")
   const city = getCityBySlug(citySlug || "")
+  const shouldReduce = useReducedMotion()
+
+  const anim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.7, ease: easeLux, delay },
+        }
+
+  const inViewAnim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-60px" },
+          transition: { duration: 0.65, ease: easeLux, delay },
+        }
+
+  const staggerContainer = shouldReduce
+    ? {}
+    : {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true, margin: "-60px" },
+        variants: {
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
+        },
+      }
+
+  const staggerItem = shouldReduce
+    ? {}
+    : {
+        variants: {
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeLux } },
+        },
+      }
+
+  const hoverScale = shouldReduce ? undefined : { scale: 1.02 }
 
   // An unknown service or city slug is a 404, not a bare stub: NotFound carries
   // the navbar, the footer and the noindex meta, so the visitor can get
@@ -136,7 +182,7 @@ export default function ServiceCityPage() {
           <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-gold-100/40 blur-3xl" />
         </div>
         <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-gold-700">
+          <motion.div {...anim(0)} className="mb-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-gold-700">
             <Link href="/" className="hover:underline">Home</Link>
             <span className="text-gray-300">/</span>
             <Link href="/services" className="hover:underline">Services</Link>
@@ -144,73 +190,73 @@ export default function ServiceCityPage() {
             <span>{service.name}</span>
             <span className="text-gray-300">/</span>
             <span>{city.name}</span>
-          </div>
+          </motion.div>
 
-          <h1 className="mb-2 text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
+          <motion.h1 {...anim(0.1)} className="mb-2 text-3xl font-black text-gray-900 sm:text-4xl lg:text-5xl">
             {service.name} in <span className="hero-gradient-text">{city.name}</span>
-          </h1>
-          <p className="mb-6 text-sm font-semibold text-gray-500 sm:text-base">{service.name} · {city.name}, {city.district} district</p>
+          </motion.h1>
+          <motion.p {...anim(0.15)} className="mb-6 text-sm font-semibold text-gray-500 sm:text-base">{service.name} · {city.name}, {city.district} district</motion.p>
 
-          <p className="mb-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+          <motion.p {...anim(0.2)} className="mb-4 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
             {service.description} JK Interior installs {service.name} across {city.name}, {city.district} district with free site visits and a written 1-year warranty.
-          </p>
-          <p className="mb-8 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
+          </motion.p>
+          <motion.p {...anim(0.25)} className="mb-8 max-w-3xl rounded-xl border-l-2 border-gold-300 bg-gold-50/50 py-3 pl-4 pr-3 text-[15px] leading-relaxed text-gray-700">
             JK Interior carries out {service.name} work across {city.name} and the surrounding area,
             in the {service.price} range, with a free site visit, branded materials and a written
             one-year warranty. For an accurate estimate and design photographs, call or WhatsApp{" "}
             <span className="font-semibold text-gold-800">{PHONE_PRIMARY_DISPLAY}</span> or{" "}
             <span className="font-semibold text-gold-800">{PHONE_SECONDARY_DISPLAY}</span>.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap gap-3">
+          <motion.div {...anim(0.3)} className="flex flex-wrap gap-3">
             <CallLink className="shadow-md hover:shadow-md">Call Now</CallLink>
             <WhatsAppLink message={waText} className="shadow-md hover:shadow-md">WhatsApp</WhatsAppLink>
-          </div>
+          </motion.div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <motion.div {...staggerContainer} className="mt-8 flex flex-wrap gap-4">
             {[
               { icon: Sparkles, label: service.price },
               { icon: ShieldCheck, label: service.warranty },
               { icon: Clock, label: service.installTime },
               { icon: MapPin, label: `Serving ${city.name}` },
             ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm border border-gray-100">
+              <motion.div key={label} {...staggerItem} whileHover={hoverScale} className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm border border-gray-100 backdrop-blur-md">
                 <Icon className="h-3.5 w-3.5 text-gold-600" />
                 <span>{label}</span>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Why this service */}
       <section className="py-14 sm:py-16 bg-gray-50">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-6 text-2xl font-black text-gray-900 sm:text-3xl">
+          <motion.h2 {...inViewAnim(0)} className="mb-6 text-2xl font-black text-gray-900 sm:text-3xl">
             Why {service.name} in {city.name}?
-          </h2>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          </motion.h2>
+          <motion.div {...staggerContainer} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {service.pros.map((pro) => (
-              <div key={pro} className="flex items-start gap-2.5 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-semibold text-gray-800 shadow-sm">
+              <motion.div key={pro} {...staggerItem} whileHover={hoverScale} className="flex items-start gap-2.5 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-semibold text-gray-800 shadow-sm">
                 <CheckCircle className="h-4 w-4 shrink-0 text-gold-600 mt-0.5" />
                 {pro}
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <motion.div {...staggerContainer} className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
               { label: "Price", value: service.price },
               { label: "Premium", value: service.premiumPrice },
               { label: "Timeline", value: service.installTime },
               { label: "Maintenance", value: service.maintenance },
             ].map((item) => (
-              <div key={item.label} className="rounded-xl border border-gold-200 bg-gold-50 px-3 py-3 text-center">
+              <motion.div key={item.label} {...staggerItem} whileHover={hoverScale} className="rounded-xl border border-gold-200 bg-gold-50 px-3 py-3 text-center">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-gold-700">{item.label}</p>
                 <p className="mt-1 text-xs font-semibold text-gray-800">{item.value}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
           <p className="mt-4 text-xs leading-relaxed text-gray-500">
             Rates shown are local {city.name}/Araria-district market estimates, not a fixed quote — final pricing depends on your free site visit, design, material quality tier, and project size. See the{" "}
             <Link href={`/services/${service.slug}`} className="font-semibold text-gold-700 hover:underline">
@@ -225,7 +271,7 @@ export default function ServiceCityPage() {
       {photos.length > 0 && (
         <section className="py-14 sm:py-16 bg-white">
           <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-            <div className="mb-6 flex items-center justify-between gap-4">
+            <motion.div {...inViewAnim(0)} className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">
                 {service.name} Photos
               </h2>
@@ -235,18 +281,18 @@ export default function ServiceCityPage() {
               >
                 View All
               </Link>
-            </div>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            </motion.div>
+            <motion.div {...staggerContainer} className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {photos.map((img) => (
-                <div key={img.src} className="aspect-square overflow-hidden rounded-xl bg-gray-100">
+                <motion.div key={img.src} {...staggerItem} whileHover={hoverScale} className="aspect-square overflow-hidden rounded-xl bg-gray-100">
                   <picture>
                     <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={THUMB_SIZES} type="image/avif" />
                     <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={THUMB_SIZES} type="image/webp" />
                     <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                   </picture>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
@@ -254,35 +300,35 @@ export default function ServiceCityPage() {
       {/* City context */}
       <section className="py-14 sm:py-16 bg-gray-50">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-4 text-2xl font-black text-gray-900 sm:text-3xl">
+          <motion.h2 {...inViewAnim(0)} className="mb-4 text-2xl font-black text-gray-900 sm:text-3xl">
             Serving {city.name}, {city.district}
-          </h2>
-          <p className="text-base leading-relaxed text-gray-600 max-w-3xl">{city.uniqueContent}</p>
+          </motion.h2>
+          <motion.p {...inViewAnim(0.05)} className="text-base leading-relaxed text-gray-600 max-w-3xl">{city.uniqueContent}</motion.p>
         </div>
       </section>
 
       {/* FAQs */}
       <section className="py-14 sm:py-16 bg-white">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-6 text-2xl font-black text-gray-900 sm:text-3xl">
+          <motion.h2 {...inViewAnim(0)} className="mb-6 text-2xl font-black text-gray-900 sm:text-3xl">
             {service.name} in {city.name} — Frequently Asked Questions
-          </h2>
-          <div className="space-y-4">
+          </motion.h2>
+          <motion.div {...staggerContainer} className="space-y-4">
             {service.faqs.map(({ q, a }) => (
-              <details key={q} className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 open:border-gold-300 open:bg-white open:shadow-sm">
+              <motion.details key={q} {...staggerItem} className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 open:border-gold-300 open:bg-white open:shadow-sm">
                 <summary className="cursor-pointer list-none font-bold text-gray-900 group-open:text-gold-700">
                   <h3 className="mb-3 text-base font-bold text-gray-900 group-open:text-gold-700 inline">{q}</h3>
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
-              </details>
+              </motion.details>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="py-14 sm:py-16 bg-gradient-to-b from-charcoal-800 to-charcoal-950 text-white">
-        <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-12 text-center">
+        <motion.div {...inViewAnim(0)} className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/[0.04] px-5 py-10 sm:px-10 sm:py-12 lg:px-12 text-center backdrop-blur-sm">
           <h2 className="mb-2 text-xl font-black">
             Ready for {service.name} in {city.name}?
           </h2>
@@ -298,7 +344,7 @@ export default function ServiceCityPage() {
             </CallLink>
             <WhatsAppLink message={waText} className="shadow hover:shadow">WhatsApp Us</WhatsAppLink>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Cross-links */}
@@ -307,34 +353,36 @@ export default function ServiceCityPage() {
           <h2 className="mb-4 text-lg font-black text-gray-900">
             Other Services in {city.name}
           </h2>
-          <div className="flex flex-wrap gap-2 mb-10">
+          <motion.div {...staggerContainer} className="flex flex-wrap gap-2 mb-10">
             {otherServices.map((s) => (
-              <Link
-                key={s.slug}
-                href={`/services/${s.slug}/${city.slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
-              >
-                <s.icon className="h-3 w-3" />
-                {s.name}
-              </Link>
+              <motion.div key={s.slug} {...staggerItem} whileHover={hoverScale}>
+                <Link
+                  href={`/services/${s.slug}/${city.slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
+                >
+                  <s.icon className="h-3 w-3" />
+                  {s.name}
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <h2 className="mb-4 text-lg font-black text-gray-900">
             {service.name} in Other Cities
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <motion.div {...staggerContainer} className="flex flex-wrap gap-2">
             {otherCities.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/services/${service.slug}/${c.slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
-              >
-                <MapPin className="h-3 w-3" />
-                {c.name}
-              </Link>
+              <motion.div key={c.slug} {...staggerItem} whileHover={hoverScale}>
+                <Link
+                  href={`/services/${service.slug}/${c.slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700 hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700 transition-colors"
+                >
+                  <MapPin className="h-3 w-3" />
+                  {c.name}
+                </Link>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/services" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-700 hover:underline">

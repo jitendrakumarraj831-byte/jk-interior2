@@ -1,4 +1,5 @@
 import { useParams, Link } from "wouter"
+import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
@@ -29,9 +30,54 @@ const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$
 /** The hero sits in a 2-col grid above 1024px and full-bleed below it. */
 const HERO_SIZES = "(min-width: 1024px) 50vw, calc(100vw - 40px)"
 
+const easeLux = [0.22, 1, 0.36, 1] as const
+
 export default function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const service = getServiceContentBySlug(slug || "")
+  const shouldReduce = useReducedMotion()
+
+  const anim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.7, ease: easeLux, delay },
+        }
+
+  const inViewAnim = (delay = 0) =>
+    shouldReduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: "-60px" },
+          transition: { duration: 0.65, ease: easeLux, delay },
+        }
+
+  const staggerContainer = shouldReduce
+    ? {}
+    : {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true, margin: "-60px" },
+        variants: {
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+        },
+      }
+
+  const staggerItem = shouldReduce
+    ? {}
+    : {
+        variants: {
+          hidden: { opacity: 0, y: 24 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: easeLux } },
+        },
+      }
+
+  const hoverScale = shouldReduce ? undefined : { scale: 1.02 }
 
   if (!service) return <NotFound />
 
@@ -127,36 +173,36 @@ export default function ServiceDetailPage() {
         </div>
 
         <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex flex-wrap items-center gap-2 text-sm font-semibold text-gold-700">
+          <motion.div {...anim(0)} className="mb-6 flex flex-wrap items-center gap-2 text-sm font-semibold text-gold-700">
             <Link href="/" className="hover:underline">Home</Link>
             <span className="text-gray-300">/</span>
             <Link href="/services" className="hover:underline">Services</Link>
             <span className="text-gray-300">/</span>
             <span className="text-gray-700">{service.name}</span>
-          </div>
+          </motion.div>
 
           <div className="grid items-center gap-10 lg:grid-cols-2">
             {/* Text */}
             <div>
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold-300 bg-gold-50 px-4 py-1.5">
+              <motion.div {...anim(0.05)} className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold-300 bg-gold-50/90 px-4 py-1.5 shadow-xs backdrop-blur-md">
                 <service.icon className="h-3.5 w-3.5 text-gold-700" aria-hidden="true" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-gold-700 sm:text-xs">{service.category}</span>
-              </div>
+              </motion.div>
 
-              <h1 className="mb-2 text-3xl font-black leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+              <motion.h1 {...anim(0.1)} className="mb-2 text-3xl font-black leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
                 {service.name}
-              </h1>
-              <p className="mb-3 text-base font-bold text-gold-700 sm:text-lg">{service.category} · {service.price}</p>
-              <p className="mb-6 max-w-2xl text-base font-medium leading-relaxed text-gray-600">
+              </motion.h1>
+              <motion.p {...anim(0.15)} className="mb-3 text-base font-bold text-gold-700 sm:text-lg">{service.category} · {service.price}</motion.p>
+              <motion.p {...anim(0.2)} className="mb-6 max-w-2xl text-base font-medium leading-relaxed text-gray-600">
                 {service.tagline}
-              </p>
+              </motion.p>
 
-              <div className="mb-6 flex flex-wrap gap-3">
+              <motion.div {...anim(0.25)} className="mb-6 flex flex-wrap gap-3">
                 <CallLink shine ariaLabel={`Call for a ${service.name} quotation`}>Get a Free Quotation</CallLink>
                 <WhatsAppLink message={waText} ariaLabel={`WhatsApp about ${service.name}`}>Message on WhatsApp</WhatsAppLink>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-wrap gap-3">
+              <motion.div {...anim(0.3)} className="flex flex-wrap gap-3">
                 {[
                   { icon: IndianRupee, label: service.price },
                   { icon: ShieldCheck, label: service.warranty },
@@ -167,13 +213,22 @@ export default function ServiceDetailPage() {
                     <span>{label}</span>
                   </div>
                 ))}
-              </div>
+              </motion.div>
             </div>
 
             {/* Hero image — the LCP element on this route, so it is served as
                 AVIF/WebP with an 800w variant for phones rather than the full
                 desktop-resolution file. */}
-            <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
+            <motion.div
+              {...(shouldReduce
+                ? {}
+                : {
+                    initial: { opacity: 0, scale: 0.96, y: 20 },
+                    animate: { opacity: 1, scale: 1, y: 0 },
+                    transition: { duration: 0.9, ease: easeLux, delay: 0.15 },
+                  })}
+              className="relative overflow-hidden rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
+            >
               <picture>
                 <source
                   srcSet={`${srcVariant(service.heroImage, "-800w.avif")} 800w, ${srcVariant(service.heroImage, ".avif")} 1600w`}
@@ -195,7 +250,7 @@ export default function ServiceDetailPage() {
                 />
               </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -203,17 +258,17 @@ export default function ServiceDetailPage() {
       {/* ── Overview + key benefits ── */}
       <section className="py-4">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="grid gap-5 md:grid-cols-2">
+          <motion.div {...staggerContainer} className="grid gap-5 md:grid-cols-2">
             {/* Overview */}
-            <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gray-200 bg-white/90 p-6 shadow-sm backdrop-blur-md sm:p-7">
               <h2 className="mb-3 text-lg font-black text-gray-900 sm:text-xl">
                 What is {service.name}?
               </h2>
               <p className="text-sm leading-relaxed text-gray-700">{service.whatItIs}</p>
-            </div>
+            </motion.div>
 
             {/* Key benefits */}
-            <div className="rounded-[28px] border border-gold-200 bg-gradient-to-br from-gold-50 to-gold-50/50 p-6 shadow-sm sm:p-7">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gold-200 bg-gradient-to-br from-gold-50 to-gold-50/50 p-6 shadow-sm backdrop-blur-md sm:p-7">
               <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">
                 Why Choose It
               </h2>
@@ -225,24 +280,26 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Transparent pricing tiers ── */}
       <section className="py-12 sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex items-center gap-2">
+          <motion.div {...inViewAnim(0)} className="mb-6 flex items-center gap-2">
             <IndianRupee className="h-5 w-5 text-gold-600" aria-hidden="true" />
             <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">What It Costs</h2>
-          </div>
+          </motion.div>
 
-          <div className="hidden gap-4 sm:grid sm:grid-cols-3">
+          <motion.div {...staggerContainer} className="hidden gap-4 sm:grid sm:grid-cols-3">
             {service.priceTiers.map((tier) => (
-              <PriceTierCard key={tier.tier} tier={tier} />
+              <motion.div key={tier.tier} {...staggerItem} whileHover={hoverScale}>
+                <PriceTierCard tier={tier} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         <div className="sm:hidden">
@@ -261,40 +318,42 @@ export default function ServiceDetailPage() {
         </div>
 
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <p className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900 sm:text-sm">
+          <motion.p {...inViewAnim(0)} className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900 sm:text-sm">
             {PRICE_DISCLAIMER}
-          </p>
+          </motion.p>
 
-          <dl className="mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+          <motion.dl {...staggerContainer} className="mt-5 grid gap-3 sm:grid-cols-3">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
               <dt className="text-[10px] font-black uppercase tracking-widest text-gold-700">Labour Component</dt>
               <dd className="mt-1 text-sm font-bold text-gray-900">{service.labourCostShort}</dd>
               <dd className="mt-1 text-xs leading-relaxed text-gray-600">{service.labourCost}</dd>
-            </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+            </motion.div>
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
               <dt className="text-[10px] font-black uppercase tracking-widest text-gold-700">Sizes &amp; Thickness</dt>
               <dd className="mt-1 text-xs leading-relaxed text-gray-600">{service.sizesThickness}</dd>
-            </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+            </motion.div>
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
               <dt className="text-[10px] font-black uppercase tracking-widest text-gold-700">Materials We Source</dt>
               <dd className="mt-1 text-xs leading-relaxed text-gray-600">{service.brandNote}</dd>
-            </div>
-          </dl>
+            </motion.div>
+          </motion.dl>
         </div>
       </section>
 
       {/* ── Design options ── */}
       <section className="bg-gray-50 py-12 sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex items-center gap-2">
+          <motion.div {...inViewAnim(0)} className="mb-6 flex items-center gap-2">
             <Palette className="h-5 w-5 text-gold-600" aria-hidden="true" />
             <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">Design Options</h2>
-          </div>
-          <div className="hidden gap-4 sm:grid sm:grid-cols-2">
+          </motion.div>
+          <motion.div {...staggerContainer} className="hidden gap-4 sm:grid sm:grid-cols-2">
             {service.designOptions.map((option) => (
-              <DesignOptionCard key={option.name} option={option} />
+              <motion.div key={option.name} {...staggerItem} whileHover={hoverScale}>
+                <DesignOptionCard option={option} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         <div className="sm:hidden">
@@ -316,8 +375,8 @@ export default function ServiceDetailPage() {
       {/* ── Where it belongs, and where it does not ── */}
       <section className="py-12 sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="grid gap-5 md:grid-cols-2">
-            <div className="rounded-[28px] border border-gold-200 bg-gold-50/40 p-6 shadow-sm sm:p-7">
+          <motion.div {...staggerContainer} className="grid gap-5 md:grid-cols-2">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gold-200 bg-gold-50/40 p-6 shadow-sm backdrop-blur-md sm:p-7">
               <h2 className="mb-4 flex items-center gap-2 text-lg font-black text-gray-900 sm:text-xl">
                 <CheckCircle2 className="h-5 w-5 text-gold-600" aria-hidden="true" />
                 Where It Belongs
@@ -330,9 +389,9 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div className="rounded-[28px] border border-amber-200 bg-amber-50/50 p-6 shadow-sm sm:p-7">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-amber-200 bg-amber-50/50 p-6 shadow-sm backdrop-blur-md sm:p-7">
               <h2 className="mb-4 flex items-center gap-2 text-lg font-black text-gray-900 sm:text-xl">
                 <AlertTriangle className="h-5 w-5 text-amber-500" aria-hidden="true" />
                 Where We Will Not Fit It
@@ -345,11 +404,11 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="mt-5 grid gap-5 md:grid-cols-2">
-            <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
+          <motion.div {...staggerContainer} className="mt-5 grid gap-5 md:grid-cols-2">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
               <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">Included In Our Quotation</h2>
               <ul className="space-y-2.5">
                 {service.whatsIncluded.map((item) => (
@@ -359,8 +418,8 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
+            </motion.div>
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
               <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">Quoted Separately</h2>
               <ul className="space-y-2.5">
                 {service.whatsNotIncluded.map((item) => (
@@ -370,27 +429,27 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Materials & installation sequence ── */}
       <section className="bg-charcoal-900 py-12 text-white sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex items-center gap-2">
+          <motion.div {...inViewAnim(0)} className="mb-6 flex items-center gap-2">
             <Layers className="h-5 w-5 text-gold-400" aria-hidden="true" />
             <h2 className="text-2xl font-black sm:text-3xl">Materials &amp; Method</h2>
-          </div>
+          </motion.div>
 
-          <div className="mb-8 grid gap-3 sm:grid-cols-2">
+          <motion.div {...staggerContainer} className="mb-8 grid gap-3 sm:grid-cols-2">
             {service.materials.map((m) => (
-              <div key={m.name} className="rounded-2xl border border-white/10 bg-white/[0.05] p-4">
+              <motion.div key={m.name} {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-white/10 bg-white/[0.05] p-4">
                 <p className="text-sm font-bold text-gold-300">{m.name}</p>
                 <p className="mt-1 text-xs leading-relaxed text-slate-300">{m.detail}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <h3 className="mb-4 text-sm font-black uppercase tracking-widest text-gold-300">
             How the work runs, step by step
@@ -414,17 +473,17 @@ export default function ServiceDetailPage() {
         </div>
 
         <div className="mx-auto hidden max-w-5xl px-5 sm:px-6 lg:block lg:px-12">
-          <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.ol {...staggerContainer} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {service.installSteps.map((step, i) => (
-              <li key={step.title}>
+              <motion.li key={step.title} {...staggerItem} whileHover={hoverScale}>
                 <InstallStepCard step={step} index={i} />
-              </li>
+              </motion.li>
             ))}
-          </ol>
+          </motion.ol>
         </div>
 
         <div className="mx-auto mt-8 max-w-5xl px-5 sm:px-6 lg:px-12">
-          <p className="flex gap-3 rounded-2xl border border-gold-400/25 bg-gold-400/10 p-4 text-sm leading-relaxed text-gold-100">
+          <motion.p {...inViewAnim(0)} className="flex gap-3 rounded-2xl border border-gold-400/25 bg-gold-400/10 p-4 text-sm leading-relaxed text-gold-100">
             <Lightbulb className="mt-0.5 h-5 w-5 flex-none text-gold-300" aria-hidden="true" />
             <span>
               <span className="block text-[10px] font-black uppercase tracking-widest text-gold-300">
@@ -432,21 +491,21 @@ export default function ServiceDetailPage() {
               </span>
               {service.expertTip}
             </span>
-          </p>
+          </motion.p>
         </div>
       </section>
 
       {/* ── Head-to-head comparison ── */}
       <section className="py-12 sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <h2 className="mb-2 text-2xl font-black text-gray-900 sm:text-3xl">
+          <motion.h2 {...inViewAnim(0)} className="mb-2 text-2xl font-black text-gray-900 sm:text-3xl">
             {service.name} vs {service.comparisonWith}
-          </h2>
-          <p className="mb-6 text-sm text-gray-500">
+          </motion.h2>
+          <motion.p {...inViewAnim(0.05)} className="mb-6 text-sm text-gray-500">
             The comparison customers ask us to make most often, answered honestly.
-          </p>
+          </motion.p>
 
-          <div className="overflow-x-auto rounded-2xl border border-gray-200">
+          <motion.div {...inViewAnim(0.1)} className="overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
               <thead>
                 <tr className="bg-gold-50">
@@ -465,23 +524,23 @@ export default function ServiceDetailPage() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </motion.div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+          <motion.div {...staggerContainer} className="mt-5 grid gap-3 sm:grid-cols-2">
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
               <p className="text-[10px] font-black uppercase tracking-widest text-gold-700">Recent Project</p>
               <p className="mt-1 text-sm font-bold text-gray-900">{service.realProject.title}</p>
               <p className="mt-1 text-xs leading-relaxed text-gray-600">{service.realProject.desc}</p>
-            </div>
-            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+            </motion.div>
+            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
               <p className="text-[10px] font-black uppercase tracking-widest text-gold-700">Availability</p>
               <p className="mt-1 text-xs leading-relaxed text-gray-600">{service.availability}</p>
               <p className="mt-2 text-xs leading-relaxed text-gray-500">{SERVICE_AREA_NOTE}</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {service.limitations.length > 0 && (
-            <div className="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-5">
+            <motion.div {...inViewAnim(0)} className="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-5">
               <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-gray-700">
                 Honest limitations
               </h3>
@@ -493,7 +552,7 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           )}
         </div>
       </section>
@@ -515,13 +574,13 @@ export default function ServiceDetailPage() {
                 <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </Link>
             </div>
-            <div className="hidden gap-3 sm:grid sm:grid-cols-3">
+            <motion.div {...staggerContainer} className="hidden gap-3 sm:grid sm:grid-cols-3">
               {photos.map((img) => (
-                <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
+                <motion.div key={img.src} {...staggerItem} whileHover={hoverScale} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
                   <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           <div className="sm:hidden">
@@ -547,26 +606,26 @@ export default function ServiceDetailPage() {
       {/* ── FAQs ── */}
       <section className="py-12 sm:py-14">
         <div className="mx-auto max-w-3xl px-5 sm:px-6 lg:px-12">
-          <div className="mb-6 flex items-center gap-2">
+          <motion.div {...inViewAnim(0)} className="mb-6 flex items-center gap-2">
             <HelpCircle className="h-5 w-5 text-gold-600" aria-hidden="true" />
             <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">Common Questions</h2>
-          </div>
-          <div className="space-y-4">
+          </motion.div>
+          <motion.div {...staggerContainer} className="space-y-4">
             {faqs.map(({ q, a }) => (
-              <details key={q} className="group rounded-2xl border border-gray-200 bg-white p-5 open:border-gold-300 open:shadow-sm">
+              <motion.details key={q} {...staggerItem} className="group rounded-2xl border border-gray-200 bg-white p-5 open:border-gold-300 open:shadow-sm">
                 <summary className="cursor-pointer list-none">
                   <h3 className="inline text-base font-bold text-gray-900 group-open:text-gold-700">{q}</h3>
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-gray-600">{a}</p>
-              </details>
+              </motion.details>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── CTA ── */}
       <section className="bg-gradient-to-b from-charcoal-800 to-charcoal-950 py-14 text-white sm:py-16">
-        <div className="mx-auto max-w-3xl px-5 text-center sm:px-6 lg:px-12">
+        <motion.div {...inViewAnim(0)} className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/[0.04] px-5 py-10 text-center backdrop-blur-sm sm:px-10 sm:py-12">
           <h2 className="mb-2 text-xl font-black sm:text-2xl">Ready for {service.name}?</h2>
           <p className="mb-1 text-sm text-gold-100">Free site visit • No obligation • {service.warranty}</p>
           <p className="mb-6 text-sm font-semibold text-white">
@@ -588,7 +647,7 @@ export default function ServiceDetailPage() {
             </a>
             <WhatsAppLink message={waText} className="shadow hover:shadow">Message on WhatsApp</WhatsAppLink>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* ── Related services (light internal links) ── */}
@@ -596,21 +655,22 @@ export default function ServiceDetailPage() {
         <section className="bg-white py-12">
           <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
             <h2 className="mb-4 text-base font-black text-gray-900">Related Services</h2>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <motion.div {...staggerContainer} className="grid gap-3 sm:grid-cols-3">
               {related.map((r) => (
-                <Link
-                  key={r.slug}
-                  href={`/services/${r.slug}`}
-                  className="group flex items-center justify-between gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm font-semibold text-gray-700 transition-colors hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700"
-                >
-                  <span className="flex items-center gap-2">
-                    <r.icon className="h-4 w-4 shrink-0 text-gold-600" aria-hidden="true" />
-                    {r.name}
-                  </span>
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
-                </Link>
+                <motion.div key={r.slug} {...staggerItem} whileHover={hoverScale}>
+                  <Link
+                    href={`/services/${r.slug}`}
+                    className="group flex items-center justify-between gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm font-semibold text-gray-700 transition-colors hover:border-gold-300 hover:bg-gold-50 hover:text-gold-700"
+                  >
+                    <span className="flex items-center gap-2">
+                      <r.icon className="h-4 w-4 shrink-0 text-gold-600" aria-hidden="true" />
+                      {r.name}
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+                  </Link>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
