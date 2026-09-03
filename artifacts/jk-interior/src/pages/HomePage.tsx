@@ -11,6 +11,7 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { FAQS } from "@/lib/faq-data"
+import { BUSINESS, BUSINESS_SCHEMA_TYPES, CORE_SERVICES, SITE_URL, businessAddress, businessContactPoints, businessGeo } from "@/lib/seo"
 import {
   GallerySkeleton,
   WhyUsSkeleton,
@@ -44,53 +45,27 @@ export default function HomePage() {
   return (
     <main className="min-h-screen overflow-x-hidden">
       <SeoHead
-        title="JK Interior – Best False Ceiling & Interior Designer in Forbesganj, Araria Bihar"
-        description="JK Interior provides expert PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet and modular TV unit installation in Forbesganj, Araria, Narpatganj, Jogbani, Purnia and across Bihar. Call +91 8541849118 for free site visit."
+        title="JK Interior | Best False Ceiling & Interior Designer in Forbesganj, Araria"
+        description="Bihar's trusted interior contractor for Gypsum false ceiling, PVC & WPC louvers, UV marble sheets, and modular TV units. Call +91 8541849118 for free site visits."
         canonical="/"
         jsonLd={[
           {
             "@context": "https://schema.org",
-            "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
-            "@id": "https://www.jkinterior.online/#business",
-            name: "JK Interior",
-            slogan: "Interior & False Ceiling Solutions",
-            description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit and complete interior design since 2019.",
-            url: "https://www.jkinterior.online",
-            logo: "https://www.jkinterior.online/logo.png",
-            image: "https://www.jkinterior.online/og-image.png",
-            telephone: ["+91-8541849118", "+91-8651070831"],
-            email: "jkinteriorofficial@gmail.com",
-            foundingDate: "2019",
-            priceRange: "₹₹",
-            contactPoint: [
-              {
-                "@type": "ContactPoint",
-                telephone: "+91-8541849118",
-                contactType: "customer service",
-                areaServed: "IN-BR",
-                availableLanguage: ["English", "Hindi"]
-              },
-              {
-                "@type": "ContactPoint",
-                telephone: "+91-8651070831",
-                contactType: "sales",
-                areaServed: "IN-BR",
-                availableLanguage: ["English", "Hindi"]
-              }
-            ],
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Damaria Rewahi",
-              addressLocality: "Forbesganj",
-              addressRegion: "Bihar",
-              postalCode: "854318",
-              addressCountry: "IN"
-            },
-            geo: {
-              "@type": "GeoCoordinates",
-              latitude: 26.3001,
-              longitude: 87.2533
-            },
+            "@type": [...BUSINESS_SCHEMA_TYPES],
+            "@id": `${SITE_URL}/#business`,
+            name: BUSINESS.name,
+            slogan: BUSINESS.tagline,
+            description: "Bihar's trusted interior contractor for Gypsum false ceiling, PVC & WPC louvers, UV marble sheets, and modular TV units. Serving Forbesganj, Araria and Bihar since 2019.",
+            url: SITE_URL,
+            logo: `${SITE_URL}/jk-interior-navbar-logo.webp`,
+            image: `${SITE_URL}/opengraph.jpg`,
+            telephone: [BUSINESS.phone1, BUSINESS.phone2],
+            email: BUSINESS.email,
+            foundingDate: BUSINESS.founded,
+            priceRange: BUSINESS.priceRange,
+            contactPoint: businessContactPoints(),
+            address: businessAddress(),
+            geo: businessGeo(),
             openingHoursSpecification: [
               {
                 "@type": "OpeningHoursSpecification",
@@ -109,22 +84,24 @@ export default function HomePage() {
               { "@type": "City", name: "Forbesganj" },
               { "@type": "City", name: "Araria" },
               { "@type": "City", name: "Purnia" },
+              { "@type": "City", name: "Narpatganj" },
               { "@type": "City", name: "Jogbani" },
               { "@type": "City", name: "Supaul" },
-              { "@type": "City", name: "Narpatganj" },
               { "@type": "City", name: "Raniganj" },
-              { "@type": "City", name: "Rewahi" }
+              { "@type": "City", name: "Madhubani" },
+              { "@type": "City", name: "Pratapganj" },
+              { "@type": "City", name: "Triveniganj" },
+              { "@type": "City", name: "Simrahi Bazar" },
+              { "@type": "City", name: "Sarsi" },
+              { "@type": "City", name: "Jadia" }
             ],
             hasOfferCatalog: {
               "@type": "OfferCatalog",
-              name: "Interior Design Services",
-              itemListElement: [
-                { "@type": "Offer", itemOffered: { "@type": "Service", name: "PVC False Ceiling" } },
-                { "@type": "Offer", itemOffered: { "@type": "Service", name: "Gypsum Ceiling" } },
-                { "@type": "Offer", itemOffered: { "@type": "Service", name: "WPC Wall Panel" } },
-                { "@type": "Offer", itemOffered: { "@type": "Service", name: "UV Marble Sheet" } },
-                { "@type": "Offer", itemOffered: { "@type": "Service", name: "Modular TV Unit" } }
-              ]
+              name: "JK Interior Services",
+              itemListElement: CORE_SERVICES.map((name) => ({
+                "@type": "Offer",
+                itemOffered: { "@type": "Service", name },
+              })),
             },
             // No aggregateRating here on purpose. The ratings it used to assert
             // were not collected by this site, and Google's structured-data
@@ -134,7 +111,7 @@ export default function HomePage() {
             // itself.
             sameAs: [
               "https://www.google.com/maps?cid=12398820263168117030",
-              "https://wa.me/918651070831",
+              "https://wa.me/918541849118",
               "https://www.facebook.com/share/1GpAKHZZtb/",
               "https://www.instagram.com/jk_interior_ceiling_designer"
             ]

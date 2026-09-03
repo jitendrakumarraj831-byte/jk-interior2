@@ -10,10 +10,15 @@ import { languageInstruction, type ReplyLanguage } from "./reply-language.js"
  * never quote different numbers.
  *
  * Both numbers must stay visible in the header, the footer and every contact
- * block. `PHONE_PRIMARY` matches the verified Google Business Profile listing;
- * `PHONE_SECONDARY` is the WhatsApp / alternate line. The `*_DISPLAY` values are
- * the human-readable forms rendered on screen, while the `tel:` values are used
- * for dialling.
+ * block. `PHONE_PRIMARY` matches the verified Google Business Profile listing
+ * and is also the WhatsApp-enabled number; `PHONE_SECONDARY` is the alternate
+ * line. The `*_DISPLAY` values are the human-readable forms rendered on
+ * screen, while the `tel:`/`wa.me` values are used for dialling and chat.
+ *
+ * `WA_NUMBER` and `PHONE_SECONDARY` are deliberately independent — each reads
+ * its own `BUSINESS.phoneN` field — so that changing which number takes
+ * WhatsApp traffic can never leave a "second line" button dialling one number
+ * while its label displays another.
  */
 const digitsOf = (phone: string) => phone.replace(/\D/g, "")
 /** "+91-8541849118" → "+91 85418 49118" */
@@ -22,18 +27,18 @@ const displayForm = (phone: string) => {
   return `+91 ${local.slice(0, 5)} ${local.slice(5)}`
 }
 
-export const WA_NUMBER = BUSINESS.whatsapp
 export const CALL_NUMBER = `+${digitsOf(BUSINESS.phone1)}`
+export const WA_NUMBER = digitsOf(BUSINESS.phone1)
 
 export const PHONE_PRIMARY = CALL_NUMBER
 export const PHONE_PRIMARY_DISPLAY = displayForm(BUSINESS.phone1)
-export const PHONE_SECONDARY = `+${WA_NUMBER}`
+export const PHONE_SECONDARY = `+${digitsOf(BUSINESS.phone2)}`
 export const PHONE_SECONDARY_DISPLAY = displayForm(BUSINESS.phone2)
 
 /** Both official numbers, in the order they should be presented to a visitor. */
 export const OFFICIAL_PHONES = [
   { tel: PHONE_PRIMARY, display: PHONE_PRIMARY_DISPLAY, label: "Primary Line" },
-  { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, label: "WhatsApp Line" },
+  { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, label: "Alternate Line" },
 ] as const
 
 /**

@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { CITIES, SERVICES_LIST, getCityBySlug, SITE_URL } from "@/lib/seo"
+import { CITIES, SERVICES_LIST, getCityBySlug, SITE_URL, buildBusinessIdentity } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES } from "@/lib/service-city-data"
 import { MapPin, CheckCircle, ArrowRight, Star, Clock, Phone } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
@@ -68,47 +68,15 @@ export default function CityPage() {
 
   const cityJsonLd = {
     "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
     // Same @id as the static block in index.html, so both resolve to the one
     // JK Interior entity instead of asserting a second, separate business.
-    "@id": `${SITE_URL}/#business`,
-    name: "JK Interior",
+    ...buildBusinessIdentity(),
     description: city.description,
     url: SITE_URL,
-    telephone: ["+91-8541849118", "+91-8651070831"],
-    contactPoint: [
-      {
-        "@type": "ContactPoint",
-        telephone: "+91-8541849118",
-        contactType: "customer service",
-        areaServed: "IN-BR",
-        availableLanguage: ["English", "Hindi"],
-      },
-      {
-        "@type": "ContactPoint",
-        telephone: "+91-8651070831",
-        contactType: "sales",
-        areaServed: "IN-BR",
-        availableLanguage: ["English", "Hindi"],
-      },
-    ],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Damaria Rewahi",
-      addressLocality: "Forbesganj",
-      addressRegion: "Bihar",
-      postalCode: "854318",
-      addressCountry: "IN",
-    },
     areaServed: {
       "@type": "City",
       name: city.name,
       addressRegion: "Bihar",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: "26.3001",
-      longitude: "87.2533",
     },
   }
 

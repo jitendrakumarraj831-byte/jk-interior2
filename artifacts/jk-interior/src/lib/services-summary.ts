@@ -1,3 +1,5 @@
+import { BUSINESS_SCHEMA_TYPES } from "./seo.js"
+
 export interface ServiceHighlight {
   kind: "special" | "pricing" | "suited"
   label: string
@@ -244,7 +246,7 @@ export function buildServicesJsonLd() {
           { "@type": "City", name: "Narpatganj" },
         ],
         provider: {
-          "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+          "@type": [...BUSINESS_SCHEMA_TYPES],
           "@id": "https://www.jkinterior.online/#business",
           name: "JK Interior",
         },

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
 import { Helmet } from "react-helmet-async"
+import { PHONE_PRIMARY_DISPLAY } from "@/lib/business-data"
 
 interface Lead {
   id: number
@@ -29,7 +30,7 @@ function waLink(lead: Lead) {
     lead.service ? `Aapne ${lead.service} ke baare mein inquiry ki thi.` : "",
     lead.estimate ? `Rough estimate: ${lead.estimate}` : "",
     `Free site visit ke liye kab aana theek rahega?`,
-    `📞 +91 8651070831`,
+    `📞 ${PHONE_PRIMARY_DISPLAY}`,
   ].filter(Boolean).join("\n")
   return `https://wa.me/${normalizeIndianPhone(lead.phone)}?text=${encodeURIComponent(msg)}`
 }

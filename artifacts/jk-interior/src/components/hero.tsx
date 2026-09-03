@@ -203,7 +203,7 @@ export default function Hero() {
             <motion.div {...anim(0.45)} className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
               {[
                 { tel: PHONE_PRIMARY, display: PHONE_PRIMARY_DISPLAY, caption: "Primary Line" },
-                { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, caption: "WhatsApp Line" },
+                { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, caption: "Alternate Line" },
               ].map(({ tel, display, caption }) => (
                 <a
                   key={tel}

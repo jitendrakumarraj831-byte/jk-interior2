@@ -139,7 +139,7 @@ export default function AboutPage() {
           name: "JK Interior",
           slogan: "Interior & False Ceiling Solutions",
           url: "https://www.jkinterior.online",
-          logo: "https://www.jkinterior.online/logo.png",
+          logo: "https://www.jkinterior.online/jk-interior-navbar-logo.webp",
           foundingDate: "2019",
           description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel and complete interior design since 2019.",
           telephone: ["+91-8541849118", "+91-8651070831"],
@@ -159,7 +159,7 @@ export default function AboutPage() {
           ],
           sameAs: [
             "https://www.google.com/maps?cid=12398820263168117030",
-            "https://wa.me/918651070831",
+            "https://wa.me/918541849118",
             "https://www.facebook.com/share/1GpAKHZZtb/",
             "https://www.instagram.com/jk_interior_ceiling_designer"
           ],

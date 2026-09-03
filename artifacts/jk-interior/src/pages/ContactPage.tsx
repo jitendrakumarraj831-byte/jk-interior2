@@ -5,13 +5,14 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import PageHero from "@/components/ui/page-hero"
 import { MessageCircle } from "lucide-react"
+import { BUSINESS, buildBusinessIdentity } from "@/lib/seo"
 
 export default function ContactPage() {
   return (
     <main>
       <SeoHead
         title="Contact JK Interior – Free Quote for Interior Design in Forbesganj Bihar"
-        description="Contact JK Interior for a free site visit and quote. Call +91 8541849118 or WhatsApp +91 8651070831 for PVC ceiling, gypsum ceiling, WPC wall panel and interior design in Forbesganj, Araria, Bihar."
+        description="Contact JK Interior for a free site visit and quote. Call or WhatsApp +91 8541849118 for PVC ceiling, gypsum ceiling, WPC wall panel and interior design in Forbesganj, Araria, Bihar."
         canonical="/contact"
         jsonLd={{
           "@context": "https://schema.org",
@@ -20,35 +21,8 @@ export default function ContactPage() {
           name: "Contact JK Interior",
           url: "https://www.jkinterior.online/contact",
           mainEntity: {
-            "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
-            "@id": "https://www.jkinterior.online/#business",
-            name: "JK Interior",
-            telephone: ["+91-8541849118", "+91-8651070831"],
-            email: "jkinteriorofficial@gmail.com",
-            contactPoint: [
-              {
-                "@type": "ContactPoint",
-                telephone: "+91-8541849118",
-                contactType: "customer service",
-                areaServed: "IN-BR",
-                availableLanguage: ["English", "Hindi"]
-              },
-              {
-                "@type": "ContactPoint",
-                telephone: "+91-8651070831",
-                contactType: "sales",
-                areaServed: "IN-BR",
-                availableLanguage: ["English", "Hindi"]
-              }
-            ],
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "Damaria Rewahi",
-              addressLocality: "Forbesganj",
-              addressRegion: "Bihar",
-              postalCode: "854318",
-              addressCountry: "IN"
-            },
+            ...buildBusinessIdentity(),
+            email: BUSINESS.email,
             openingHoursSpecification: [
               {
                 "@type": "OpeningHoursSpecification",
