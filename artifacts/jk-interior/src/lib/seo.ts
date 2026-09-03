@@ -4,15 +4,17 @@ export const OG_IMAGE = `${SITE_URL}/og-image.png`
 
 export const BUSINESS = {
   name: 'JK Interior',
-  tagline: "Bihar's Most Trusted Interior Contractor",
+  tagline: 'Best False Ceiling & Interior Designer in Forbesganj, Araria, Bihar',
   // Narpatganj is the day-to-day operating base; the Forbesganj address below is
   // the registered workshop used in every schema.org block and on Google Business.
   operatingBase: 'Narpatganj',
-  // phone1 = primary business number (matches Google Business Profile)
+  // phone1 = primary business number (matches Google Business Profile). It is
+  // also the WhatsApp-enabled number: WA_NUMBER in business-data.ts is derived
+  // from this field, not from phone2, so the GBP appointment link and every
+  // "WhatsApp" button on the site resolve to the same primary line.
   phone1: '+91-8541849118',
-  // phone2 = secondary WhatsApp / website contact
+  // phone2 = secondary / alternate business number
   phone2: '+91-8651070831',
-  whatsapp: '918651070831',
   email: 'jkinteriorofficial@gmail.com',
   address: {
     street: 'Damaria Rewahi',
@@ -22,12 +24,92 @@ export const BUSINESS = {
     postalCode: '854318',
     country: 'IN',
   },
-  geo: { lat: 26.3001, lng: 87.2533 },
+  // Matches the pin on the embedded Google Maps iframe (contact.tsx) and the
+  // verified Google Business Profile listing (cid=12398820263168117030) — do
+  // not "round" these back to an approximate town-centre coordinate.
+  geo: { lat: 26.2920031, lng: 87.2034309 },
   hours: 'Mon–Sat 8:00 AM – 8:00 PM',
   hoursSun: 'Sun 9:00 AM – 6:00 PM',
   priceRange: '₹₹',
   founded: '2019',
 } as const
+
+/**
+ * The @type array asserted for JK Interior across every schema.org block on
+ * the site. `InteriorDesigner` is not (yet) a core schema.org vocabulary term,
+ * but Google's structured-data parser accepts and ignores unrecognised extra
+ * types in an @type array without penalising the recognised ones — so it adds
+ * business-identity precision for rich-result and Business Profile matching
+ * with no downside, alongside the two validated types.
+ */
+export const BUSINESS_SCHEMA_TYPES = ['LocalBusiness', 'HomeAndConstructionBusiness', 'InteriorDesigner'] as const
+
+/** The core, always-on-the-rate-card services — the schema.org `hasOfferCatalog` / `Service` catalog. */
+export const CORE_SERVICES = [
+  'Gypsum False Ceiling',
+  'PVC & WPC Wall Paneling',
+  'UV Marble Sheet Installation',
+  'Modular TV Unit & Fluted Panel Design',
+  'Grid T-Bar Ceiling Installation',
+  'Cove & Profile LED Lighting',
+  'Partition Walls & Artificial Grass',
+] as const
+
+/** schema.org PostalAddress for the registered Forbesganj workshop — one source, reused by every JSON-LD block. */
+export function businessAddress() {
+  return {
+    '@type': 'PostalAddress',
+    streetAddress: BUSINESS.address.street,
+    addressLocality: BUSINESS.address.city,
+    addressRegion: BUSINESS.address.state,
+    postalCode: BUSINESS.address.postalCode,
+    addressCountry: BUSINESS.address.country,
+  }
+}
+
+/** schema.org GeoCoordinates for the registered workshop — see BUSINESS.geo for the source of truth. */
+export function businessGeo() {
+  return { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng }
+}
+
+/** The two published ContactPoints, in the order used across every JSON-LD block. */
+export function businessContactPoints() {
+  return [
+    {
+      '@type': 'ContactPoint',
+      telephone: BUSINESS.phone1,
+      contactType: 'customer service',
+      areaServed: 'IN-BR',
+      availableLanguage: ['English', 'Hindi'],
+    },
+    {
+      '@type': 'ContactPoint',
+      telephone: BUSINESS.phone2,
+      contactType: 'sales',
+      areaServed: 'IN-BR',
+      availableLanguage: ['English', 'Hindi'],
+    },
+  ]
+}
+
+/**
+ * The reusable JK Interior identity block — used as the `provider` of a
+ * per-service `Service` schema, the `mainEntity` of the ContactPage schema, or
+ * spread into the page-level LocalBusiness block on the home and city pages.
+ * Every field here is pulled from BUSINESS, so a GBP detail (phone, address,
+ * geo) only ever needs updating in one place.
+ */
+export function buildBusinessIdentity() {
+  return {
+    '@type': [...BUSINESS_SCHEMA_TYPES],
+    '@id': `${SITE_URL}/#business`,
+    name: BUSINESS.name,
+    telephone: [BUSINESS.phone1, BUSINESS.phone2],
+    contactPoint: businessContactPoints(),
+    address: businessAddress(),
+    geo: businessGeo(),
+  }
+}
 
 export const SERVICES_LIST = [
   'PVC False Ceiling',

@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { CITIES, getCityBySlug, SITE_URL } from "@/lib/seo"
+import { CITIES, getCityBySlug, SITE_URL, buildBusinessIdentity } from "@/lib/seo"
 import { SERVICE_CITY_SERVICES, getServiceCityInfoBySlug } from "@/lib/service-city-data"
 import { galleryImages, seoAlt } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
@@ -90,38 +90,9 @@ export default function ServiceCityPage() {
       name: `${service.name} in ${city.name}`,
       serviceType: service.name,
       description: service.description,
-      provider: {
-        "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
-        // Same @id as the static block in index.html, so the provider resolves
-        // to the one JK Interior entity rather than a partial duplicate.
-        "@id": `${SITE_URL}/#business`,
-        name: "JK Interior",
-        telephone: ["+91-8541849118", "+91-8651070831"],
-        contactPoint: [
-          {
-            "@type": "ContactPoint",
-            telephone: "+91-8541849118",
-            contactType: "customer service",
-            areaServed: "IN-BR",
-            availableLanguage: ["English", "Hindi"],
-          },
-          {
-            "@type": "ContactPoint",
-            telephone: "+91-8651070831",
-            contactType: "sales",
-            areaServed: "IN-BR",
-            availableLanguage: ["English", "Hindi"],
-          },
-        ],
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Damaria Rewahi",
-          addressLocality: "Forbesganj",
-          addressRegion: "Bihar",
-          postalCode: "854318",
-          addressCountry: "IN",
-        },
-      },
+      // Same @id as the static block in index.html, so the provider resolves
+      // to the one JK Interior entity rather than a partial duplicate.
+      provider: buildBusinessIdentity(),
       areaServed: { "@type": "City", name: city.name, addressRegion: "Bihar" },
       // schema.org `price` must be a single number — feeding it a stripped
       // range like "75–150" produced invalid Offer markup on every one of

@@ -13,7 +13,7 @@ export const FAQS: FaqItem[] = [
   // page has the contact detail in the first sentence rather than buried.
   {
     q: "What is JK Interior's phone number?",
-    a: "JK Interior can be reached on +91 8541849118 (primary line) or +91 8651070831 (WhatsApp line). Both numbers are answered Monday to Saturday, 8:00 AM to 8:00 PM, and Sunday 9:00 AM to 6:00 PM. WhatsApp messages are picked up outside those hours too.",
+    a: "JK Interior can be reached on +91 8541849118 (primary line, also on WhatsApp) or +91 8651070831 (alternate line). Both numbers are answered Monday to Saturday, 8:00 AM to 8:00 PM, and Sunday 9:00 AM to 6:00 PM. WhatsApp messages are picked up outside those hours too.",
   },
   {
     q: "Who is the best false ceiling contractor in Forbesganj and Araria?",
@@ -21,7 +21,7 @@ export const FAQS: FaqItem[] = [
   },
   {
     q: "How do I contact an interior designer near me in Araria district?",
-    a: "Call JK Interior on +91 8541849118, or message +91 8651070831 on WhatsApp. We cover Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia, and the site visit and quotation are free everywhere we work.",
+    a: "Call or message JK Interior on WhatsApp at +91 8541849118, or call the alternate line +91 8651070831. We cover Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia, and the site visit and quotation are free everywhere we work.",
   },
   {
     q: "Which services does JK Interior provide?",

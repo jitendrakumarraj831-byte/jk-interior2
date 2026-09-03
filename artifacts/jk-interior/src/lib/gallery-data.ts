@@ -1,4 +1,4 @@
-import { SITE_URL } from "@/lib/seo"
+import { SITE_URL, BUSINESS_SCHEMA_TYPES } from "@/lib/seo"
 import { TARGET_KEYWORDS_CONTENT } from "@/lib/seo-keywords"
 
 export const galleryImages = [
@@ -234,7 +234,7 @@ export function buildGalleryJsonLd() {
       areaServed: "Forbesganj, Araria, Bihar",
     })),
     provider: {
-      "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+      "@type": [...BUSINESS_SCHEMA_TYPES],
       "@id": `${SITE_URL}/#business`,
       name: "JK Interior",
     },

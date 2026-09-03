@@ -150,7 +150,7 @@ export default function Contact() {
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white">
                 <Phone className="h-4 w-4" aria-hidden="true" />
               </span>
-              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">WhatsApp Line</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Alternate Line</span>
               <span className="text-base font-black text-white">{PHONE_SECONDARY_DISPLAY}</span>
             </a>
 
@@ -217,7 +217,7 @@ export default function Contact() {
                     aria-label={`Call JK Interior on the second line ${PHONE_SECONDARY_DISPLAY}`}
                     className="text-white transition-colors hover:text-gold-300"
                   >
-                    <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400">WhatsApp Line</span>
+                    <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400">Alternate Line</span>
                     {PHONE_SECONDARY_DISPLAY}
                   </a>
                 </div>

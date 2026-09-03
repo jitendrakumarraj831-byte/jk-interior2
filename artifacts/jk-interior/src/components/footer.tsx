@@ -208,7 +208,7 @@ export default function Footer() {
                   <Phone className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">WhatsApp Line</span>
+                  <span className="block text-[9px] uppercase tracking-wider text-gold-600">Alternate Line</span>
                   {PHONE_SECONDARY_DISPLAY}
                 </div>
               </a>
