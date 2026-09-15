@@ -16,7 +16,13 @@ import {
 } from "@/lib/services-summary"
 import { PINTEREST_QUERY, PINTEREST_BOARD_URL, pinterestSearchUrl } from "@/lib/pinterest-queries"
 import { galleryImagesForService, seoAlt as gallerySeoAlt, type GalleryImage } from "@/lib/gallery-data"
-import { Lightbox } from "@/components/gallery"
+// Imported from its own module, never re-exported through
+// `components/gallery` — `Services` is eager on the home page, so reaching the
+// Lightbox through the gallery barrel made Rollup pull the (otherwise lazy)
+// gallery and design-search-modal chunks into the initial page load.
+import { Lightbox } from "@/components/ui/lightbox"
+import { useImageLoaded } from "@/lib/use-image-loaded"
+import { useFocusTrap } from "@/lib/use-focus-trap"
 
 /** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
  *  number by design, kept separate from the site-wide `WA_NUMBER`. */
@@ -506,6 +512,9 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   const closeBtnRef = useRef<HTMLButtonElement>(null)
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
   const lightboxOpen = lightboxIdx !== null
+  // Stands down while the lightbox is open, for the same reason its Escape
+  // handler does: that dialog stacks above this one and traps focus itself.
+  const trapRef = useFocusTrap<HTMLDivElement>(!lightboxOpen)
 
   useEffect(() => {
     closeBtnRef.current?.focus()
@@ -549,6 +558,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
       }}
     >
       <motion.div
+        ref={trapRef}
         role="dialog"
         aria-modal="true"
         aria-label={`${service.name} design gallery`}
@@ -652,7 +662,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
  *  pointing an AVIF <source> at a file that isn't one. Fades in on load so the
  *  grid shows a skeleton, never a blank square, while an image is fetching. */
 function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => void }) {
-  const [loaded, setLoaded] = useState(false)
+  const { loaded, imgRef, onLoad, onError } = useImageLoaded()
   const hasVariants = img.src.endsWith(".webp")
   const alt = gallerySeoAlt(img)
 
@@ -669,6 +679,7 @@ function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => vo
           <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={GALLERY_GRID_SIZES} type="image/avif" />
           <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={GALLERY_GRID_SIZES} type="image/webp" />
           <img
+            ref={imgRef}
             src={srcVariant(img.src, "-800w.webp")}
             alt={alt}
             title={alt}
@@ -676,12 +687,14 @@ function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => vo
             height={img.height}
             loading="lazy"
             decoding="async"
-            onLoad={() => setLoaded(true)}
+            onLoad={onLoad}
+            onError={onError}
             className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
           />
         </picture>
       ) : (
         <img
+          ref={imgRef}
           src={img.src}
           alt={alt}
           title={alt}
@@ -689,7 +702,8 @@ function GalleryGridImage({ img, onOpen }: { img: GalleryImage; onOpen: () => vo
           height={img.height}
           loading="lazy"
           decoding="async"
-          onLoad={() => setLoaded(true)}
+          onLoad={onLoad}
+          onError={onError}
           className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       )}

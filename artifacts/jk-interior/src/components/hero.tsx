@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail from "@/components/ui/swipe-rail"
+import { useActiveOnScreen } from "@/lib/use-active-on-screen"
 import {
   GOOGLE_REVIEWS_URL,
   PHONE_PRIMARY,
@@ -38,13 +39,19 @@ const trustBadges = [
 export default function Hero() {
   const [index, setIndex] = useState(0)
   const shouldReduce = useReducedMotion()
+  // The specialty line used to cycle every 3.2s for as long as the tab existed —
+  // including while the visitor was reading the contact form three screens down,
+  // or had the tab in the background. Each tick re-renders the hero and runs an
+  // AnimatePresence enter/exit pair, so it is not free.
+  const { ref: rotatorRef, active: rotating } = useActiveOnScreen<HTMLSpanElement>({ rootMargin: "0px" })
 
   useEffect(() => {
+    if (!rotating) return
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % words.length)
     }, 3200)
     return () => clearInterval(timer)
-  }, [])
+  }, [rotating])
 
   const anim = (delay = 0) =>
     shouldReduce
@@ -136,7 +143,7 @@ export default function Hero() {
             <motion.div {...anim(0.2)} className="mb-2">
               <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-stone-600 sm:text-base md:text-lg">
                 <span className="shrink-0 text-amber-700">Specialists in:</span>
-                <span className="relative inline-flex h-7 items-center overflow-hidden sm:h-8">
+                <span ref={rotatorRef} className="relative inline-flex h-7 items-center overflow-hidden sm:h-8">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={words[index]}

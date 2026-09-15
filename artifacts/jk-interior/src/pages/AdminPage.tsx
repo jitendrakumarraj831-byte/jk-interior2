@@ -52,7 +52,7 @@ function fmt(iso: string) {
 
 function WAIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current shrink-0">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current shrink-0" aria-hidden="true">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L.054 23.447a.5.5 0 00.611.61l5.7-1.461A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.034-1.389l-.36-.214-3.733.957.993-3.618-.235-.373A9.818 9.818 0 1112 21.818z"/>
     </svg>
   )
@@ -79,6 +79,11 @@ function LeadCard({ lead, onRead, adminKey }: { lead: Lead; onRead: (id: number)
         method: "PATCH",
         headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
         body: JSON.stringify({ id: lead.id }),
+        // This also runs from the WhatsApp and Call links' onClick, i.e. as the
+        // tab is being replaced by WhatsApp or the dialer. Without keepalive the
+        // browser is free to cancel the request on unload and the lead silently
+        // stays unread.
+        keepalive: true,
       })
       // A failed request (wrong key expired mid-session, a server error) still
       // resolves rather than throwing — checking status here is what stops the
@@ -160,7 +165,12 @@ export default function AdminPage() {
     setError("")
     try {
       const res = await fetch(`/api/leads`, { headers: { "x-admin-key": k } })
-      if (res.status === 401) { setError("Wrong password."); setKey(""); sessionStorage.removeItem(ADMIN_KEY_SESSION); return }
+      if (res.status === 401) {
+        setError("Wrong password.")
+        setKey("")
+        try { sessionStorage.removeItem(ADMIN_KEY_SESSION) } catch {}
+        return
+      }
       // 429 (locked out after failed attempts) and 500 (ADMIN_KEY or the
       // database not configured on the deployment) both used to surface as a
       // flat "Failed to load leads.", which sends you looking for a bug in the
@@ -185,7 +195,12 @@ export default function AdminPage() {
   function login() {
     const k = inputKey.trim()
     if (!k) return
-    sessionStorage.setItem(ADMIN_KEY_SESSION, k)
+    // Throws in some private-browsing modes and when site data is blocked. The
+    // dashboard works fine without the key being remembered, so don't let that
+    // stop the login.
+    try {
+      sessionStorage.setItem(ADMIN_KEY_SESSION, k)
+    } catch {}
     setKey(k)
   }
 
@@ -230,14 +245,26 @@ export default function AdminPage() {
       l.is_read ? "Yes" : "No",
       new Date(l.created_at).toLocaleDateString("en-IN"),
     ])
-    const csv = [header.map(csvEscape), ...rows.map(r => r.map(csvEscape))].map(r => r.join(",")).join("\n")
-    const blob = new Blob([csv], { type: "text/csv" })
+    // CRLF line endings and a UTF-8 byte-order mark, because the thing that opens
+    // this file is Excel. Without the BOM Excel reads the bytes as the system
+    // legacy codepage, which mangles every ₹ in the estimate column and every
+    // Devanagari character in a customer's name into garbage.
+    const csv =
+      "\uFEFF" +
+      [header.map(csvEscape), ...rows.map(r => r.map(csvEscape))].map(r => r.join(",")).join("\r\n")
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
     a.download = `jk-leads-${new Date().toISOString().slice(0, 10)}.csv`
+    // The anchor has to be in the document for `click()` to start a download in
+    // Firefox, and the object URL has to outlive the click — revoking it on the
+    // very next line raced the download and could produce an empty file.
+    a.style.display = "none"
+    document.body.appendChild(a)
     a.click()
-    URL.revokeObjectURL(url)
+    a.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 10_000)
   }
 
   async function exportExcel() {
@@ -334,7 +361,7 @@ export default function AdminPage() {
               {newCount > 0 && <button onClick={markAllRead} className="rounded-xl border border-gold-200 bg-gold-50 px-3 py-1.5 text-[11px] font-semibold text-gold-700 hover:bg-gold-100 active:scale-95 transition-all">✓ All Read</button>}
               <button onClick={exportExcel} className="rounded-xl border border-gold-300 bg-gold-50 px-3 py-1.5 text-[11px] font-semibold text-gold-700 hover:bg-gold-100 active:scale-95 transition-all">↓ Excel</button>
               <button onClick={exportCSV} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">↓ CSV</button>
-              <button onClick={() => { setKey(""); sessionStorage.removeItem(ADMIN_KEY_SESSION) }} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">Logout</button>
+              <button onClick={() => { setKey(""); try { sessionStorage.removeItem(ADMIN_KEY_SESSION) } catch {} }} className="rounded-xl border border-gray-200 px-3 py-1.5 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 active:scale-95 transition-all">Logout</button>
             </div>
           </div>
           <div className="px-4 pb-3 space-y-2">

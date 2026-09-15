@@ -59,6 +59,13 @@ const QUICK_ACTION_MAP: Record<string, string> = {
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
+/** Swaps a gallery photo path for one of its generated variants (see
+ *  scripts/optimize-jk-interior-images.ts), e.g. "-800w.avif". Non-webp sources
+ *  (there are none today) are returned untouched rather than pointed at a file
+ *  that does not exist. */
+const thumbVariant = (src: string, suffix: string) =>
+  src.endsWith(".webp") ? src.replace(/\.webp$/, suffix) : src
+
 let _id = 0
 const uid   = () => ++_id
 const mk    = (role: Role, text: string, kind?: MsgKind, cardData?: LeadCard): Message =>
@@ -398,7 +405,6 @@ const PINNED_QUICK_ACTIONS = ["📂 View Designs", "✨ Book a Free Site Visit"]
 function getContextualQuickReplies(
   hasLead: boolean,
   hasEstimate: boolean,
-  lastBotText: string,
   lastTopic: string | null,
 ): string[] {
   let contextual: string[]
@@ -417,16 +423,16 @@ function getContextualQuickReplies(
 }
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
-const IChatBubble = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-[22px] w-[22px]"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>)
-const IClose = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-[18px] w-[18px]"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>)
-const ISend = () => (<svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>)
-const IWA = () => (<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L.054 23.447a.5.5 0 00.611.61l5.7-1.461A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>)
-const ICal = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>)
-const IPhone = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2.74h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.34a16 16 0 0 0 6.06 6.06l1.66-1.66a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>)
+const IChatBubble = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-[22px] w-[22px]" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>)
+const IClose = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-[18px] w-[18px]" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>)
+const ISend = () => (<svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>)
+const IWA = () => (<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L.054 23.447a.5.5 0 00.611.61l5.7-1.461A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>)
+const ICal = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>)
+const IPhone = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2.74h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.34a16 16 0 0 0 6.06 6.06l1.66-1.66a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>)
 
 // ── Mic Icon ──────────────────────────────────────────────────────────────────
 const IMic = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
     <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
     <line x1="12" y1="19" x2="12" y2="23"/>
@@ -436,7 +442,7 @@ const IMic = () => (
 
 // ── MicStop Icon ──────────────────────────────────────────────────────────────
 const IMicStop = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+  <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden="true">
     <rect x="6" y="6" width="12" height="12" rx="2"/>
   </svg>
 )
@@ -521,7 +527,6 @@ const welcomeMessage = (language: ReplyLanguage) => mk("bot", copyFor(language).
  * isn't swallowed by the download.
  */
 export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
-  const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(startOpen)
   const [messages, setMsgs] = useState<Message[]>(() => [welcomeMessage("english")])
   const [input, setInput] = useState("")
@@ -529,7 +534,6 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
   const [lastTopic, setLastTopic] = useState<string | null>(null)
   const [roomSize, setRoomSize] = useState<string | null>(null)
   const [typing, setTyping] = useState(false)
-  const [aiMode, setAiMode] = useState(true)
   const [offHours, setOffHours] = useState(false)
   const [memory, setMemory] = useState<ConversationMemory>(createMemory)
   const memoryRef = useRef<ConversationMemory>(memory)
@@ -565,7 +569,10 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
     if (SpeechRecognition) {
       setVoiceSupported(true)
       const recognition = new SpeechRecognition()
-      recognition.lang = "hi-IN"      // Hindi primary
+      // Hindi is the right default for this audience, but a visitor who has been
+      // typing English gets their words mangled by a hi-IN recogniser. `send()`
+      // keeps languageRef current; read it at start() time, below.
+      recognition.lang = "hi-IN"
       recognition.interimResults = true
       recognition.continuous = false
       recognition.maxAlternatives = 1
@@ -593,25 +600,47 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
 
   // ── Start / Stop Voice ────────────────────────────────────────────────────
   const toggleVoice = useCallback(() => {
-    if (!recognitionRef.current) return
+    const recognition = recognitionRef.current
+    if (!recognition) return
     if (isListening) {
-      recognitionRef.current.stop()
+      try { recognition.stop() } catch {}
       setIsListening(false)
-    } else {
-      setInput("")
-      recognitionRef.current.start()
+      return
+    }
+    setInput("")
+    try { recognition.lang = languageRef.current === "english" ? "en-IN" : "hi-IN" } catch {}
+    // `start()` throws InvalidStateError if recognition is already running, which
+    // a quick double-tap on the mic reliably produced — an uncaught exception that
+    // also left `isListening` wrong, so the button then showed "stop" for a
+    // session that had never begun.
+    try {
+      recognition.start()
       setIsListening(true)
+    } catch {
+      setIsListening(false)
     }
   }, [isListening])
 
-  // Mount immediately. This chunk is only downloaded once the visitor has asked
-  // for the assistant (or the browser prefetched it while idle), so deferring
-  // again here only added latency to a click that already happened. The state
-  // still exists to keep localStorage and Web Speech access out of prerender.
-  useEffect(() => { setMounted(true) }, [])
-
   useEffect(() => { setOffHours(isOffHours()) }, [])
-  useEffect(() => { document.body[open ? "setAttribute" : "removeAttribute"]("data-chat-open", "1") }, [open])
+
+  // Read by `body[data-chat-open]` in index.css to lock the page behind the
+  // panel. The cleanup matters: without it, unmounting while open left the
+  // attribute — and therefore `overflow: hidden` — stuck on <body> for good.
+  useEffect(() => {
+    if (!open) return
+    document.body.setAttribute("data-chat-open", "1")
+    return () => document.body.removeAttribute("data-chat-open")
+  }, [open])
+
+  // Escape closes the panel, the way every other dialog on the site behaves.
+  useEffect(() => {
+    if (!open) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [open])
 
   useEffect(() => {
     const savedMem = loadMemory()
@@ -863,7 +892,7 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
       let reply: string | null = null
       let wasStreamed = false
 
-      if (aiMode) {
+      {
         const aiResult = await getAIReply(
           text,
           historyBefore,
@@ -994,17 +1023,21 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
       setTyping(false)
       sendLock.current = false
     }
-  }, [input, lead, typing, lastTopic, roomSize, aiMode, collectStep, pendingEstimate, isListening])
+  }, [input, lead, typing, lastTopic, roomSize, collectStep, pendingEstimate, isListening])
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send() } }
 
   const lastBotMsg = messages.filter(m => m.role === "bot").slice(-1)[0]?.text || ""
   const hasEstimate = lastBotMsg.includes("₹") || !!pendingEstimate
-  const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastBotMsg, lastTopic)
+  const qrSet = getContextualQuickReplies(!!lead?.phone, hasEstimate, lastTopic)
   const statusText = offHours ? t.statusOffHours : t.statusOnline
 
-  if (!mounted) return null
-
+  // No `if (!mounted) return null` gate here any more. It returned null on the
+  // first render after this chunk landed and only rendered on the next frame, so
+  // the AI launcher — which App had been showing all along — blinked out of
+  // existence for a frame at the exact moment the visitor was reaching for it.
+  // Nothing in this render body touches window, document or localStorage; the
+  // things that do are all in effects, which never run during prerender anyway.
   return (
     <>
       <style>{`
@@ -1033,6 +1066,9 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.985 }}
             transition={{ type: "spring", damping: 26, stiffness: 240 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="JK Interior AI Assistant"
             className="fixed z-50 flex flex-col overflow-hidden shadow-[0_24px_80px_rgba(15,23,42,0.25)] bottom-0 left-0 right-0 h-[94dvh] max-h-[720px] rounded-t-[28px] md:bottom-6 md:left-auto md:right-6 md:h-[640px] md:w-[420px] md:rounded-[28px] bg-white/85 backdrop-blur-2xl border border-white/50"
           >
             {/* Header */}
@@ -1040,7 +1076,7 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
               <div className="flex items-center gap-2 md:gap-3 min-w-0">
                 <div className="relative flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/20 ring-2 ring-white/30 shrink-0">
                   <AssistantMark className="h-4 w-4 md:h-[18px] md:w-[18px] text-white" />
-                  <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-gold-300 border-2 border-gold-600" />
+                  <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-gold-300 border-2 border-gold-600" aria-hidden="true" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs md:text-sm font-bold leading-tight truncate">JK Interior AI Assistant</p>
@@ -1070,18 +1106,22 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
                     try { localStorage.removeItem("jk_chat_v5") } catch {}
                   }}
                   title="Clear the conversation"
+                  aria-label="Clear the conversation and start again"
                   className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 text-white/70 hover:text-white text-[11px] font-bold transition-colors"
-                >↺</button>
-                <button onClick={() => setOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 transition-colors"><IClose /></button>
+                ><span aria-hidden="true">↺</span></button>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close the AI assistant"
+                  className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+                ><IClose /></button>
               </div>
             </div>
 
-            {aiMode && (
-              <div className="shrink-0 flex items-center gap-2 px-3 md:px-4 py-1.5 bg-gold-50 border-b border-gold-100">
-                <span className="h-1.5 w-1.5 rounded-full bg-gold-500 animate-pulse shrink-0" />
-                <p className="text-[9px] md:text-[10px] text-gold-700 font-medium">AI powered · instant estimates</p>
-              </div>
-            )}
+            <div className="shrink-0 flex items-center gap-2 px-3 md:px-4 py-1.5 bg-gold-50 border-b border-gold-100">
+              <span className="h-1.5 w-1.5 rounded-full bg-gold-500 animate-pulse shrink-0" aria-hidden="true" />
+              <p className="text-[9px] md:text-[10px] text-gold-700 font-medium">AI powered · instant estimates</p>
+            </div>
 
             {/* Voice listening indicator bar */}
             <AnimatePresence>
@@ -1113,6 +1153,9 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
             {/* Messages */}
             <div
               ref={scrollRef}
+              role="log"
+              aria-live="polite"
+              aria-label="Conversation"
               className="flex-1 min-h-0 overflow-y-auto px-3 md:px-4 py-3.5 md:py-5 space-y-3 scrollbar-luxury"
               style={{ background: "linear-gradient(180deg, #f7faf9 0%, #ffffff 45%, #f6fbfa 100%)" }}
             >
@@ -1147,8 +1190,30 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
                           {galleryImages
                             .filter(img => img.category === m.galleryType)
                             .slice(0, 6)
-                            .map((img, i) => (
-                              <img key={i} src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" fetchPriority="low" className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0" />
+                            .map((img) => (
+                              /* These render at 128–160px. They used to point at
+                                 `img.src` — the full-resolution original, up to
+                                 1800px wide — so asking the assistant for photos
+                                 pulled six desktop-sized images over a phone
+                                 connection for a strip of thumbnails. Every photo
+                                 in gallery-data.ts has a generated `-800w` AVIF
+                                 and WebP sibling; use them, cheapest format
+                                 first. */
+                              <picture key={img.src}>
+                                <source srcSet={thumbVariant(img.src, "-800w.avif")} type="image/avif" />
+                                <source srcSet={thumbVariant(img.src, "-800w.webp")} type="image/webp" />
+                                <img
+                                  src={thumbVariant(img.src, "-800w.webp")}
+                                  alt={seoAlt(img)}
+                                  title={seoAlt(img)}
+                                  width={img.width}
+                                  height={img.height}
+                                  loading="lazy"
+                                  decoding="async"
+                                  fetchPriority="low"
+                                  className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl object-cover border border-gray-200 shrink-0"
+                                />
+                              </picture>
                             ))}
                         </div>
                       )}
@@ -1199,7 +1264,11 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
             <div className="shrink-0 flex items-center gap-2 border-t border-slate-200/80 bg-white/90 backdrop-blur px-3 py-2.5 pb-[max(10px,env(safe-area-inset-bottom))]">
               {/* Voice Mic Button — always visible */}
               <motion.button
+                type="button"
                 onClick={voiceSupported ? toggleVoice : undefined}
+                aria-label={isListening ? "Stop dictating" : voiceSupported ? "Dictate your message" : "Voice input is not supported in this browser"}
+                aria-pressed={isListening}
+                disabled={!voiceSupported}
                 whileTap={{ scale: 0.9 }}
                 className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all ${
                   isListening
@@ -1211,7 +1280,7 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
                 title={isListening ? "Recording — tap to stop" : voiceSupported ? "Dictate your message" : "Voice input is not supported here"}
               >
                 {isListening && (
-                  <span className="absolute inset-0 rounded-full bg-red-400 opacity-40 animate-ping" />
+                  <span className="absolute inset-0 rounded-full bg-red-400 opacity-40 animate-ping" aria-hidden="true" />
                 )}
                 {isListening ? <IMicStop /> : <IMic />}
               </motion.button>
@@ -1222,12 +1291,15 @@ export default function JKChat({ startOpen = false }: { startOpen?: boolean }) {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={onKey}
                 placeholder={isListening ? t.listening : t.placeholder}
+                aria-label="Message the JK Interior AI Assistant"
                 className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-800 outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-100 transition-colors"
                 autoComplete="off"
               />
               <button
+                type="button"
                 onClick={() => send()}
                 disabled={!input.trim() || typing}
+                aria-label="Send message"
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#144a41] to-[#1f6f61] text-white shadow-lg hover:shadow-xl active:scale-90 transition-all disabled:opacity-40"
               >
                 <ISend />

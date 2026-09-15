@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { CATEGORY_SEO, seoAlt, type GalleryImage } from "@/lib/gallery-data"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
+import { useFocusTrap } from "@/lib/use-focus-trap"
 
 /**
  * Full-screen, direction-aware photo viewer — shared by the main Gallery
@@ -24,6 +25,8 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   const btn = useRef<HTMLButtonElement>(null)
   const [dir, setDir] = useState<1 | -1>(1)
   const prevIdx = useRef(idx)
+  // Tab used to walk straight out of this full-screen viewer into the page behind it.
+  const trapRef = useFocusTrap<HTMLDivElement>()
 
   useEffect(() => {
     if (idx !== prevIdx.current) {
@@ -53,12 +56,16 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
   const seo = img.category ? CATEGORY_SEO[img.category] : undefined
 
   return createPortal(
-    <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      className="fixed inset-0 z-[9999] bg-black flex flex-col" role="dialog" aria-modal
+    <motion.div ref={trapRef} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+      className="fixed inset-0 z-[9999] bg-black flex flex-col" role="dialog" aria-modal="true"
       aria-label={`${img.category ?? "JK Interior"} photo viewer`}
       onTouchStart={e => { tx.current = e.touches[0].clientX }}
       onTouchEnd={e => {
-        if (!tx.current) return
+        // `if (!tx.current)` here treated a touch that started at clientX === 0 —
+        // the very left edge of the screen, which is exactly where a
+        // swipe-to-go-back gesture starts on a phone — as "no touch recorded",
+        // so that swipe did nothing.
+        if (tx.current === null) return
         const d = e.changedTouches[0].clientX - tx.current
         if (Math.abs(d) > 50) { if (d < 0) { setDir(1); onNext() } else { setDir(-1); onPrev() } }
         tx.current = null
@@ -67,14 +74,14 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
       <div className="flex items-center justify-between px-5 py-3.5 bg-black/80">
         {img.category && <span className="text-xs font-bold uppercase tracking-widest text-gold-400 bg-gold-400/10 px-3 py-1 rounded-full">{img.category}</span>}
         <span className="text-white/40 text-xs ml-auto mr-4">{idx+1} / {images.length}</span>
-        <button ref={btn} onClick={onClose} aria-label="Close photo viewer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all"><X size={18}/></button>
+        <button ref={btn} onClick={onClose} aria-label="Close photo viewer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all"><X size={18} aria-hidden="true"/></button>
       </div>
 
       {/* Image */}
       <div className="flex-1 relative flex items-center justify-center overflow-hidden">
         <button onClick={() => { setDir(-1); onPrev() }} aria-label="Previous photo"
           className="absolute left-3 md:left-6 z-10 p-3 rounded-full bg-white/8 hover:bg-white/20 text-white border border-white/10 transition-all hidden md:flex">
-          <ChevronLeft size={28}/>
+          <ChevronLeft size={28} aria-hidden="true"/>
         </button>
 
         <AnimatePresence mode="wait" custom={dir}>
@@ -115,7 +122,7 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 
         <button onClick={() => { setDir(1); onNext() }} aria-label="Next photo"
           className="absolute right-3 md:right-6 z-10 p-3 rounded-full bg-white/8 hover:bg-white/20 text-white border border-white/10 transition-all hidden md:flex">
-          <ChevronRight size={28}/>
+          <ChevronRight size={28} aria-hidden="true"/>
         </button>
       </div>
 
@@ -124,8 +131,8 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
         <p className="text-white/60 text-sm text-center">{img.alt}</p>
         {seo && <p className="text-gold-400/70 text-[11px] text-center tracking-wide">{seo.keywordSuffix}</p>}
         <div className="flex gap-2 md:hidden mt-1.5">
-          <button onClick={() => { setDir(-1); onPrev() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10"><ChevronLeft size={14}/> Prev</button>
-          <button onClick={() => { setDir(1); onNext() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10">Next <ChevronRight size={14}/></button>
+          <button onClick={() => { setDir(-1); onPrev() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10"><ChevronLeft size={14} aria-hidden="true"/> Prev</button>
+          <button onClick={() => { setDir(1); onNext() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10">Next <ChevronRight size={14} aria-hidden="true"/></button>
         </div>
         <div className="flex gap-2 mt-1.5">
           <WhatsAppLink

@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, ArrowRight, Facebook, Instagram } from "lucide-rea
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import { WhatsAppLink } from "@/components/ui/cta-links"
+import { scrollToHash } from "@/lib/hash-scroll"
 import {
   PHONE_PRIMARY,
   PHONE_PRIMARY_DISPLAY,
@@ -100,7 +101,7 @@ export default function Footer() {
     aria-label="JK Interior on Facebook"
     className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 hover:border-gold-400 hover:bg-gold-50 transition-all"
   >
-    <Facebook className="h-4 w-4" />
+    <Facebook className="h-4 w-4" aria-hidden="true" />
   </a>
 
   <a
@@ -110,7 +111,7 @@ export default function Footer() {
     aria-label="JK Interior on Instagram"
     className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 hover:border-gold-400 hover:bg-gold-50 transition-all"
   >
-    <Instagram className="h-4 w-4" />
+    <Instagram className="h-4 w-4" aria-hidden="true" />
   </a>
 </div>
 </motion.div>
@@ -126,7 +127,7 @@ export default function Footer() {
             className="lg:col-span-2"
           >
             <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gold-700">
-              <span className="h-0.5 w-5 bg-gold-500 rounded-full" />
+              <span className="h-0.5 w-5 bg-gold-500 rounded-full" aria-hidden="true" />
               Quick Links
             </h3>
             <nav className="flex flex-col gap-3">
@@ -136,7 +137,7 @@ export default function Footer() {
                   href={link.href}
                   className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-gold-700"
                 >
-                  <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" />
+                  <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" aria-hidden="true" />
                   {link.label}
                 </Link>
               ))}
@@ -154,7 +155,7 @@ export default function Footer() {
             className="lg:col-span-3"
           >
             <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gold-700">
-              <span className="h-0.5 w-5 bg-gold-500 rounded-full" />
+              <span className="h-0.5 w-5 bg-gold-500 rounded-full" aria-hidden="true" />
               Our Services
             </h3>
             <div className="flex flex-col gap-3">
@@ -164,7 +165,7 @@ export default function Footer() {
                   href={s.href}
                   className="group flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition-all hover:text-gold-700"
                 >
-                  <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" />
+                  <ArrowRight className="h-3 w-3 text-gold-500/0 group-hover:text-gold-500 transition-all -translate-x-1 group-hover:translate-x-0" aria-hidden="true" />
                   {s.label}
                 </Link>
               ))}
@@ -182,7 +183,7 @@ export default function Footer() {
             className="lg:col-span-3"
           >
             <h3 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gold-700">
-              <span className="h-0.5 w-5 bg-gold-500 rounded-full" />
+              <span className="h-0.5 w-5 bg-gold-500 rounded-full" aria-hidden="true" />
               Get in Touch
             </h3>
             <div className="flex flex-col gap-4">
@@ -217,7 +218,7 @@ export default function Footer() {
                 className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
-                  <Mail className="h-4 w-4" />
+                  <Mail className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <span className="break-all">jkinteriorofficial@gmail.com</span>
               </a>
@@ -260,6 +261,13 @@ export default function Footer() {
 >
   <Link
     href="/#areas"
+    // On any other page wouter navigates to "/" and HomePage's own
+    // `useHashScroll` takes over. On the home page itself the path doesn't
+    // change, so wouter's pushState re-renders nothing and fires no
+    // `hashchange` — this link simply did nothing. Scroll explicitly.
+    onClick={() => {
+      if (window.location.pathname.replace(/\/$/, "") === "") scrollToHash("#areas")
+    }}
     className="group flex items-center justify-between rounded-2xl border border-gold-200/80 bg-white/60 px-5 py-4 backdrop-blur-xs transition-all duration-300 hover:border-gold-300 hover:bg-white/80 hover:shadow-md"
     aria-label="View JK Interior service areas"
   >
@@ -271,6 +279,7 @@ export default function Footer() {
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -297,6 +306,7 @@ export default function Footer() {
       viewBox="0 0 24 24"
       stroke="currentColor"
       strokeWidth={2}
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -336,16 +346,16 @@ export default function Footer() {
     </p>
     <p className="mt-0.5 flex items-center gap-1.5 text-[10px] font-semibold text-gray-500">
       <span>Interior &amp; digital experience crafted by Jitendra Kumar</span>
-      <svg className="h-3 w-3 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <svg className="h-3 w-3 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
       </svg>
     </p>
   </div>
   <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-500">
     <Link href="/services" className="hover:text-gold-600 transition-colors">All Services</Link>
-    <span>•</span>
+    <span aria-hidden="true">•</span>
     <Link href="/faq" className="hover:text-gold-600 transition-colors">FAQ</Link>
-    <span>•</span>
+    <span aria-hidden="true">•</span>
     <span>Serving Narpatganj, Forbesganj &amp; Araria District</span>
   </div>
 </div>

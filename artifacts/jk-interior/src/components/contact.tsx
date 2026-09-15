@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Phone, Mail, MapPin, MessageCircle, Loader2, Clock, Star } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import SectionHeader from "@/components/ui/section-header"
 import { WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
+import MapEmbed from "@/components/ui/map-embed"
 import {
   WA_NUMBER,
   PHONE_PRIMARY,
@@ -49,8 +50,14 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<"idle" | "sent" | "blocked">("idle")
   const [waFallbackUrl, setWaFallbackUrl] = useState("")
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
+  // Was a `mounted` flag, set from an effect, that suppressed the reveal
+  // animation on the first render. Because effects run *after* paint, every card
+  // here painted fully opaque, then jumped to `opacity: 0` on the next frame and
+  // faded back in — a visible flicker on the busiest section of the page. The
+  // flag was there to avoid a hydration mismatch, but main.tsx mounts with
+  // createRoot, not hydrateRoot, so there is no hydration to mismatch. Every
+  // other section uses useReducedMotion for this; now so does this one.
+  const shouldReduce = useReducedMotion()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -90,7 +97,7 @@ export default function Contact() {
     }
   }
 
-  const animProps = !mounted
+  const animProps = shouldReduce
     ? {}
     : {
         initial: { opacity: 0, y: 24 },
@@ -200,7 +207,7 @@ export default function Contact() {
                 className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201,162,39,0.35)]">
-                  <Phone className="h-5 w-5" />
+                  <Phone className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Call Us</h3>
                 <div className="flex flex-col gap-2.5 text-sm font-bold">
@@ -224,11 +231,11 @@ export default function Contact() {
               </motion.div>
 
               <motion.div
-                {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
+                {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.08 } })}
                 className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30"
               >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201,162,39,0.35)]">
-                  <Mail className="h-5 w-5" />
+                  <Mail className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <h3 className="mb-3 text-sm font-black uppercase tracking-wider text-gold-300">Email Us</h3>
                 <a
@@ -242,12 +249,12 @@ export default function Contact() {
 
             {/* Location */}
             <motion.div
-              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
+              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.12 } })}
               className="hidden rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30 sm:block"
             >
               <div className="flex gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold-400/10 text-gold-300 border border-gold-400/20">
-                  <MapPin className="h-6 w-6" />
+                  <MapPin className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="mb-1 text-base font-bold text-white">Our Location</h3>
@@ -261,12 +268,12 @@ export default function Contact() {
 
             {/* Hours */}
             <motion.div
-              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
+              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.15 } })}
               className="hidden rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-sm transition-all duration-300 hover:border-gold-400/30 sm:block"
             >
               <div className="flex gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-400/10 text-amber-300 border border-amber-400/20">
-                  <Clock className="h-6 w-6" />
+                  <Clock className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white mb-2">Working Hours</h3>
@@ -286,7 +293,7 @@ export default function Contact() {
 
             {/* WhatsApp CTA */}
             <motion.div
-              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.18 } })}
+              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.18 } })}
             >
               <WhatsAppLink
                 size="lg"
@@ -299,31 +306,22 @@ export default function Contact() {
 
             {/* Map */}
             <motion.div
-              {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.2 } })}
+              {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.2 } })}
               className="overflow-hidden rounded-2xl border border-white/10 h-44 shadow-sm"
             >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3577.064681149018!2d87.2034309!3d26.2920031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39efa3c3a605cc61%3A0xac1175566c0d0926!2sJk%20interior!5e0!3m2!1sen!2sin!4v1784167435421!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="JK Interior location on Google Maps — Damaria Rewahi, Forbesganj, Bihar"
-              />
+              <MapEmbed />
             </motion.div>
           </div>
 
           {/* RIGHT: Form — a bright invitation card set against the dark panel */}
           <motion.div
-            {...(!mounted ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.1 } })}
+            {...(shouldReduce ? {} : { ...animProps, transition: { ...animProps.transition, delay: 0.1 } })}
             className="rounded-3xl bg-white p-7 shadow-[0_30px_80px_rgba(0,0,0,0.35)] ring-1 ring-amber-300/40 md:p-9"
           >
             {/* Form Header */}
             <div className="mb-6 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-600 text-white shadow-[0_4px_16px_rgba(201,162,39,0.35)]">
-                <Star className="h-5 w-5" />
+                <Star className="h-5 w-5" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="text-xl font-black text-gray-900">Send Us a Message</h3>
@@ -413,9 +411,9 @@ export default function Contact() {
                 className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold-700 py-4 text-sm font-black text-white shadow-[0_4px_24px_rgba(201,162,39,0.35)] hover:bg-gold-600 hover:shadow-[0_4px_32px_rgba(201,162,39,0.5)] transition-all disabled:opacity-70 active:scale-[0.98] luxury-animated-shine"
               >
                 {isSubmitting ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                 ) : (
-                  <MessageCircle className="h-4 w-4" />
+                  <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 )}
                 Send via WhatsApp
               </button>

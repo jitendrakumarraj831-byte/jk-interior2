@@ -13,11 +13,23 @@ import {
 import { WhatsAppLink } from "@/components/ui/cta-links"
 import { Lightbox } from "@/components/ui/lightbox"
 import { useGalleryModal } from "@/lib/gallery-modal-context"
+import { useImageLoaded } from "@/lib/use-image-loaded"
+import { useFocusTrap } from "@/lib/use-focus-trap"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 const RESULT_SIZES = "(min-width: 640px) 220px, 44vw"
 /** Keeps the skeleton on screen just long enough to read as a real search rather than a flicker, whether or not a live Pinterest/Unsplash fetch is actually happening. */
 const MIN_LOADING_MS = 350
+/**
+ * How long typing has to pause before a search actually runs.
+ *
+ * The search effect used to fire on every keystroke, and each run hits
+ * `/api/pinterest-feed` (which fans out to Pinterest on a cache miss) and
+ * possibly Unsplash after it. Typing "gypsum ceiling" was fifteen searches and
+ * up to thirty requests for one intent, with the results grid thrashing through
+ * every intermediate prefix on the way.
+ */
+const QUERY_DEBOUNCE_MS = 300
 /** Below this many combined Pinterest + portfolio results, top up with the general Unsplash search rather than leaving a category looking sparse. */
 const MIN_RESULTS_BEFORE_FALLBACK = 6
 
@@ -69,12 +81,23 @@ export default function DesignIdeasSearch({ triggerClassName }: { triggerClassNa
 
 function SearchModal({ onClose }: { onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
   const [activeTag, setActiveTag] = useState<string | null>(null)
+  // `query` is what the input shows; `searchTerm` is what the effect below runs
+  // on, and it only catches up once typing pauses.
   const [query, setQuery] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const [results, setResults] = useState<DesignResult[]>(() => searchPortfolio(null, ""))
   const [loading, setLoading] = useState(false)
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
+  // Disabled while the lightbox is open — that dialog stacks above this one and
+  // runs its own trap, so two traps fighting over Tab would pin focus.
+  const trapRef = useFocusTrap<HTMLDivElement>(lightboxIdx === null)
+
+  useEffect(() => {
+    if (query === searchTerm) return
+    const timer = setTimeout(() => setSearchTerm(query), QUERY_DEBOUNCE_MS)
+    return () => clearTimeout(timer)
+  }, [query, searchTerm])
 
   useEffect(() => {
     closeBtnRef.current?.focus()
@@ -103,11 +126,11 @@ function SearchModal({ onClose }: { onClose: () => void }) {
   // plenty of real Pinterest/portfolio photos to show.
   useEffect(() => {
     let cancelled = false
-    const tagDef = inferDesignTag(activeTag, query)
-    const searchTerm = query.trim() || tagDef?.label || "interior design"
+    const tagDef = inferDesignTag(activeTag, searchTerm)
+    const unsplashTerm = searchTerm.trim() || tagDef?.label || "interior design"
 
     setLoading(true)
-    const portfolioResults = searchPortfolio(activeTag, query)
+    const portfolioResults = searchPortfolio(activeTag, searchTerm)
     const pinterestPromise = tagDef ? fetchPinterestBoardResults(tagDef.id) : Promise.resolve<DesignResult[]>([])
 
     Promise.all([pinterestPromise, delay(MIN_LOADING_MS)]).then(([pinterestResults]) => {
@@ -121,7 +144,7 @@ function SearchModal({ onClose }: { onClose: () => void }) {
         return
       }
 
-      fetchUnsplashResults(searchTerm).then((unsplashResults) => {
+      fetchUnsplashResults(unsplashTerm).then((unsplashResults) => {
         if (cancelled) return
         setResults([...combined, ...unsplashResults])
         setLoading(false)
@@ -131,7 +154,7 @@ function SearchModal({ onClose }: { onClose: () => void }) {
     return () => {
       cancelled = true
     }
-  }, [activeTag, query])
+  }, [activeTag, searchTerm])
 
   const openLightbox = useCallback((idx: number) => setLightboxIdx(idx), [])
 
@@ -153,6 +176,7 @@ function SearchModal({ onClose }: { onClose: () => void }) {
       }}
     >
       <motion.div
+        ref={trapRef}
         role="dialog"
         aria-modal="true"
         aria-label="Search design ideas"
@@ -184,7 +208,6 @@ function SearchModal({ onClose }: { onClose: () => void }) {
           <div className="relative">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" aria-hidden="true" />
             <input
-              ref={inputRef}
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -275,7 +298,7 @@ function SearchModal({ onClose }: { onClose: () => void }) {
 }
 
 function ResultTile({ result, onOpen }: { result: DesignResult; onOpen: () => void }) {
-  const [loaded, setLoaded] = useState(false)
+  const { loaded, imgRef, onLoad, onError } = useImageLoaded()
 
   return (
     <div className="group relative aspect-square w-full overflow-hidden rounded-xl bg-charcoal-100">
@@ -287,13 +310,15 @@ function ResultTile({ result, onOpen }: { result: DesignResult; onOpen: () => vo
       >
         {!loaded && <div className="absolute inset-0 animate-pulse bg-charcoal-200" aria-hidden="true" />}
         <img
+          ref={imgRef}
           src={result.src}
           alt={result.alt}
           title={result.alt}
           sizes={RESULT_SIZES}
           loading="lazy"
           decoding="async"
-          onLoad={() => setLoaded(true)}
+          onLoad={onLoad}
+          onError={onError}
           className={`h-full w-full object-cover transition-all duration-300 group-hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       </button>

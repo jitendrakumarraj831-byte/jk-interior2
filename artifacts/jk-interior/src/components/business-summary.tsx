@@ -1,6 +1,7 @@
 import { Phone, MapPin, Clock, ShieldCheck } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import {
+  OFFICIAL_PHONES,
   PHONE_PRIMARY,
   PHONE_PRIMARY_DISPLAY,
   PHONE_SECONDARY,
@@ -82,10 +83,12 @@ export default function BusinessSummary() {
         {/* Phone numbers first, as tappable targets — this is the single most
             common reason a visitor arrives on the page. */}
         <motion.div {...staggerContainer} className="mt-6 grid gap-3 sm:grid-cols-2">
-          {[
-            { tel: PHONE_PRIMARY, display: PHONE_PRIMARY_DISPLAY, caption: "Primary line" },
-            { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, caption: "WhatsApp line" },
-          ].map(({ tel, display, caption }) => (
+          {/* Captions come from OFFICIAL_PHONES so they cannot drift from which
+              number actually takes WhatsApp traffic. The alternate line was
+              labelled "WhatsApp line" here, but WA_NUMBER is derived from
+              BUSINESS.phone1 — so every WhatsApp button on the site opens the
+              *primary* number while this panel named the other one. */}
+          {OFFICIAL_PHONES.map(({ tel, display, label }) => (
             <motion.a
               key={tel}
               {...staggerItem}
@@ -98,7 +101,7 @@ export default function BusinessSummary() {
                 <Phone className="h-5 w-5" aria-hidden="true" />
               </span>
               <span>
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-gray-500">{caption}</span>
+                <span className="block text-[10px] font-bold uppercase tracking-widest text-gray-500">{label}</span>
                 <span className="block text-lg font-black tracking-tight text-gray-900">{display}</span>
               </span>
             </motion.a>

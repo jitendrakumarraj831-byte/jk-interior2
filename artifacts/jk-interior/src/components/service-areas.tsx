@@ -4,6 +4,7 @@ import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { CallLink } from "@/components/ui/cta-links"
+import { useActiveOnScreen } from "@/lib/use-active-on-screen"
 
 const areas = [
   { name: "Narpatganj", slug: "narpatganj", desc: "Operating Base", highlight: true },
@@ -33,6 +34,13 @@ const hubPositions = [
 
 export default function ServiceAreas() {
   const shouldReduce = useReducedMotion()
+  // The two dashed orbit rings below are purely decorative and rotate forever.
+  // They used to be Framer Motion `animate={{ rotate: 360 }} repeat: Infinity`
+  // animations, which kept a JS animation loop alive for the whole session even
+  // with the section far off screen. They are now plain CSS keyframes (the
+  // compositor's job, not the main thread's) and are only mounted while the
+  // section is actually in view and the tab is in the foreground.
+  const { ref: mapRef, active: orbiting } = useActiveOnScreen<HTMLDivElement>()
 
   const animProps = shouldReduce
     ? {}
@@ -65,7 +73,7 @@ export default function ServiceAreas() {
       }
 
   return (
-    <section id="areas" className="relative overflow-hidden py-20 md:py-28 scroll-mt-36">
+    <section id="areas" className="cv-auto relative overflow-hidden py-20 md:py-28 scroll-mt-36">
 
       {/* Background — a cool slate "map room" tone, distinct from the warm paper sections around it */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -84,18 +92,18 @@ export default function ServiceAreas() {
         />
 
         {/* Desktop hub map */}
-        <div className="relative mx-auto mb-16 hidden aspect-[16/10] w-full max-w-4xl md:block">
-          {!shouldReduce && (
+        <div ref={mapRef} className="relative mx-auto mb-16 hidden aspect-[16/10] w-full max-w-4xl md:block">
+          {!shouldReduce && orbiting && (
             <>
-              <motion.div
-                className="absolute inset-12 rounded-full border border-dashed border-gold-300/40"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+              <div
+                className="orbit-ring absolute inset-12 rounded-full border border-dashed border-gold-300/40"
+                style={{ animationDuration: "120s" }}
+                aria-hidden="true"
               />
-              <motion.div
-                className="absolute inset-24 rounded-full border border-dashed border-gold-400/30"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+              <div
+                className="orbit-ring-reverse absolute inset-24 rounded-full border border-dashed border-gold-400/30"
+                style={{ animationDuration: "80s" }}
+                aria-hidden="true"
               />
             </>
           )}

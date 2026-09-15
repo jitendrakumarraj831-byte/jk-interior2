@@ -48,6 +48,7 @@ export default function FAQSection() {
           {faq.q}
         </span>
         <ChevronDown
+          aria-hidden="true"
           className={`mt-0.5 h-4 w-4 shrink-0 transition-transform duration-300 ${
             openIndex === i ? "rotate-180 text-gold-600" : "text-gray-400"
           }`}
@@ -74,7 +75,7 @@ export default function FAQSection() {
   )
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
+    <section id="faq" className="cv-auto relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
       {/* Background — plain white "reference page", the one section without any tinted backdrop */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_0%,rgba(201,162,39,0.04),transparent)]" />
@@ -98,7 +99,11 @@ export default function FAQSection() {
               key={colIdx}
               className={colIdx === 1 ? "sm:border-l sm:border-gray-200 sm:pl-12" : ""}
             >
-              {col.map((faq) => renderEntry(faq, faqs.indexOf(faq)))}
+              {/* The global index is arithmetic, not `faqs.indexOf(faq)` — that
+                  was an O(n²) identity scan of the whole list on every render,
+                  and it would have collapsed two questions onto one index had any
+                  entry ever been duplicated. */}
+              {col.map((faq, j) => renderEntry(faq, colIdx === 0 ? j : mid + j))}
             </div>
           ))}
         </motion.div>

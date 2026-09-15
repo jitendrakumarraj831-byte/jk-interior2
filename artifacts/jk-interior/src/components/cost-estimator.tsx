@@ -19,10 +19,26 @@ type ServiceSlug = (typeof ESTIMATOR_SERVICES)[number]["slug"]
 
 const inr = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 })
 
+const MIN_SQFT = 10
+const MAX_SQFT = 5000
+
+const clampSqft = (n: number) => Math.min(MAX_SQFT, Math.max(MIN_SQFT, n))
+
 export default function CostEstimator() {
   const [slug, setSlug] = useState<ServiceSlug>("gypsum-ceiling")
-  const [sqft, setSqft] = useState(150)
   const [tier, setTier] = useState<"standard" | "premium">("standard")
+  /**
+   * The area is kept as the raw string the visitor typed, and only clamped when
+   * they leave the field.
+   *
+   * It used to be a number clamped inside `onChange`, which made the field
+   * unusable: typing "250" clamped "2" up to the 10 minimum on the first
+   * keystroke, so the box read 10, then 100, then 1000 — you could not type any
+   * number whose first digit was below the minimum, and you could not clear the
+   * field to start again.
+   */
+  const [sqftText, setSqftText] = useState("150")
+  const sqft = clampSqft(Number(sqftText) || MIN_SQFT)
 
   const service = useMemo(() => SERVICES_SUMMARY.find((s) => s.slug === slug), [slug])
   const range = useMemo(() => (service ? parsePriceRange(service.price) : null), [service])
@@ -36,7 +52,7 @@ export default function CostEstimator() {
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMessage)}`
 
   return (
-    <section id="cost-estimator" className="relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
+    <section id="cost-estimator" className="cv-auto relative overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
       <div className="relative z-10 mx-auto max-w-3xl px-5 sm:px-6 lg:px-12">
         <SectionHeader
           icon={Calculator}
@@ -72,7 +88,7 @@ export default function CostEstimator() {
           <div className="mb-1 flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setSqft((v) => Math.max(10, v - 10))}
+              onClick={() => setSqftText(String(clampSqft(sqft - 10)))}
               aria-label="Decrease area by 10 square feet"
               className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-gold-900/10 bg-white text-lg font-black text-gold-700 transition-colors hover:bg-gold-50"
             >
@@ -81,29 +97,34 @@ export default function CostEstimator() {
             <input
               id="estimator-sqft"
               type="number"
-              min={10}
-              max={5000}
+              inputMode="numeric"
+              min={MIN_SQFT}
+              max={MAX_SQFT}
               step={10}
-              value={sqft}
-              onChange={(e) => setSqft(Math.min(5000, Math.max(10, Number(e.target.value) || 0)))}
+              value={sqftText}
+              onChange={(e) => setSqftText(e.target.value)}
+              onBlur={() => setSqftText(String(sqft))}
               className="glass-input w-full rounded-xl px-4 py-3 text-center text-lg font-black"
             />
             <button
               type="button"
-              onClick={() => setSqft((v) => Math.min(5000, v + 10))}
+              onClick={() => setSqftText(String(clampSqft(sqft + 10)))}
               aria-label="Increase area by 10 square feet"
               className="flex h-11 w-11 flex-none items-center justify-center rounded-xl border border-gold-900/10 bg-white text-lg font-black text-gold-700 transition-colors hover:bg-gold-50"
             >
               +
             </button>
           </div>
+          {/* Same range as the number field. It used to stop at 2000 while the box
+              accepted 5000, so typing 3000 pinned the thumb at the far end and
+              then nudging it silently snapped the area back down to 2000. */}
           <input
             type="range"
-            min={10}
-            max={2000}
+            min={MIN_SQFT}
+            max={MAX_SQFT}
             step={10}
-            value={Math.min(sqft, 2000)}
-            onChange={(e) => setSqft(Number(e.target.value))}
+            value={sqft}
+            onChange={(e) => setSqftText(e.target.value)}
             aria-label="Area slider (square feet)"
             className="mb-6 mt-2 w-full accent-gold-600"
           />

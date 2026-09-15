@@ -29,6 +29,8 @@ const srcVariant = (webpSrc: string, suffix: string) => webpSrc.replace(/\.webp$
 
 /** The hero sits in a 2-col grid above 1024px and full-bleed below it. */
 const HERO_SIZES = "(min-width: 1024px) 50vw, calc(100vw - 40px)"
+/** The project-photo grid is 3 columns inside a max-w-4xl container on desktop; the phone rail shows a 70%-width card. */
+const PHOTO_SIZES = "(min-width: 640px) 300px, 70vw"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -548,7 +550,15 @@ export default function ServiceDetailPage() {
             <motion.div {...staggerContainer} className="hidden gap-3 sm:grid sm:grid-cols-3">
               {photos.map((img) => (
                 <motion.div key={img.src} {...staggerItem} whileHover={hoverScale} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
-                  <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                  {/* 800w AVIF/WebP variants, not the full-resolution original —
+                      these tiles are ~300px wide. See ServiceCityPage, which has
+                      always done this; this page was still serving the 1600px
+                      source into a thumbnail. */}
+                  <picture>
+                    <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={PHOTO_SIZES} type="image/avif" />
+                    <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={PHOTO_SIZES} type="image/webp" />
+                    <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} width={img.width} height={img.height} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+                  </picture>
                 </motion.div>
               ))}
             </motion.div>
@@ -565,7 +575,11 @@ export default function ServiceDetailPage() {
             >
               {photos.map((img) => (
                 <div key={img.src} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
-                  <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  <picture>
+                    <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={PHOTO_SIZES} type="image/avif" />
+                    <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={PHOTO_SIZES} type="image/webp" />
+                    <img src={img.src} alt={seoAlt(img)} title={seoAlt(img)} width={img.width} height={img.height} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  </picture>
                 </div>
               ))}
             </SwipeRail>

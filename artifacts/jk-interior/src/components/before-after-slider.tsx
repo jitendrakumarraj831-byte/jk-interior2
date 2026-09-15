@@ -10,6 +10,36 @@ import { ChevronsLeftRight } from "lucide-react"
  * needed. The handle is also a real `role="slider"` so it's keyboard- and
  * screen-reader-operable, not just a visual toy.
  */
+/** The frame is a 4/3 box inside a max-w-4xl column, so it never needs more than ~900px. */
+const COMPARISON_SIZES = "(min-width: 896px) 860px, calc(100vw - 40px)"
+
+const srcVariant = (src: string, suffix: string) =>
+  src.endsWith(".webp") ? src.replace(/\.webp$/, suffix) : src
+
+/**
+ * One half of the comparison. Both photos used to be plain `<img src>` pointing
+ * at the full-resolution original with no AVIF source at all — the only place on
+ * the site that skipped the generated variants — so this section alone fetched
+ * two desktop-sized originals on a phone, both of them above the fold-and-a-half.
+ */
+function ComparisonImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <picture>
+      <source srcSet={srcVariant(src, "-800w.avif")} sizes={COMPARISON_SIZES} type="image/avif" />
+      <source srcSet={srcVariant(src, "-800w.webp")} sizes={COMPARISON_SIZES} type="image/webp" />
+      <img
+        src={src}
+        alt={alt}
+        title={alt}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    </picture>
+  )
+}
+
 export default function BeforeAfterSlider({
   beforeSrc,
   afterSrc,
@@ -30,16 +60,24 @@ export default function BeforeAfterSlider({
   const [percent, setPercent] = useState(50)
   const containerRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
+  // Measured once when the drag starts rather than on every pointermove.
+  // `getBoundingClientRect()` forces a synchronous layout, and a drag fires at
+  // the display's refresh rate — on a phone that was 60-120 forced reflows per
+  // second of dragging, against a box that cannot move while you hold it.
+  const rect = useRef<{ left: number; width: number } | null>(null)
 
   const updateFromClientX = useCallback((clientX: number) => {
-    const el = containerRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const pct = ((clientX - rect.left) / rect.width) * 100
+    const bounds = rect.current
+    if (!bounds || bounds.width === 0) return
+    const pct = ((clientX - bounds.left) / bounds.width) * 100
     setPercent(Math.min(100, Math.max(0, pct)))
   }, [])
 
   const onPointerDown = (e: React.PointerEvent) => {
+    const el = containerRef.current
+    if (!el) return
+    const bounds = el.getBoundingClientRect()
+    rect.current = { left: bounds.left, width: bounds.width }
     dragging.current = true
     e.currentTarget.setPointerCapture(e.pointerId)
     updateFromClientX(e.clientX)
@@ -50,6 +88,7 @@ export default function BeforeAfterSlider({
   }
   const onPointerUp = (e: React.PointerEvent) => {
     dragging.current = false
+    rect.current = null
     e.currentTarget.releasePointerCapture(e.pointerId)
   }
 
@@ -70,27 +109,11 @@ export default function BeforeAfterSlider({
       onPointerCancel={onPointerUp}
     >
       {/* After — full frame, bottom layer */}
-      <img
-        src={afterSrc}
-        alt={afterAlt}
-        title={afterAlt}
-        loading="lazy"
-        decoding="async"
-        draggable={false}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      <ComparisonImage src={afterSrc} alt={afterAlt} />
 
       {/* Before — clipped to the handle position, top layer */}
       <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - percent}% 0 0)` }}>
-        <img
-          src={beforeSrc}
-          alt={beforeAlt}
-          title={beforeAlt}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <ComparisonImage src={beforeSrc} alt={beforeAlt} />
       </div>
 
       {/* Labels */}
