@@ -373,7 +373,7 @@ facts you have about JK Interior.
 
 --- BUSINESS ---
 ${factsBlock()}
-- Contact: ${PHONE_PRIMARY_DISPLAY} (primary line) · ${PHONE_SECONDARY_DISPLAY} (WhatsApp line)
+- Contact: ${PHONE_PRIMARY_DISPLAY} (primary line, also the WhatsApp number) · ${PHONE_SECONDARY_DISPLAY} (alternate line)
 - Email: ${BUSINESS.email}
 - Website: ${SITE_URL}
 

@@ -6,6 +6,10 @@ import { CallLink } from "@/components/ui/cta-links"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
+// `glow` is the coloured halo behind each step's icon tile, so it has to match
+// that tile's own gradient. Three of the four were left over from an older
+// blue/violet palette (rgba(37,99,235), rgba(139,92,246)) — colours that appear
+// nowhere else on the site — which read as a blue bloom under a charcoal tile.
 const steps = [
   {
     icon: Phone,
@@ -14,7 +18,7 @@ const steps = [
     subtitle: "Tell us about the space",
     desc: "Tell us the rooms and finish you want. We book a free site visit at a time that suits you.",
     color: "from-charcoal-500 to-charcoal-700",
-    glow: "rgba(37,99,235,0.25)",
+    glow: "rgba(31,42,55,0.3)",
   },
   {
     icon: ClipboardList,
@@ -41,7 +45,7 @@ const steps = [
     subtitle: "One year, in writing",
     desc: "Site cleared, project handed over with a written one-year warranty on materials and workmanship.",
     color: "from-charcoal-500 to-charcoal-700",
-    glow: "rgba(139,92,246,0.25)",
+    glow: "rgba(31,42,55,0.3)",
   },
 ]
 
@@ -115,7 +119,7 @@ export default function ProcessTimeline() {
       }
 
   return (
-    <section id="process" className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
+    <section id="process" className="cv-auto relative overflow-hidden py-20 sm:py-24 lg:py-28">
       {/* Background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-b from-[#071126] via-[#0a1830] to-[#0d1f3c]" />

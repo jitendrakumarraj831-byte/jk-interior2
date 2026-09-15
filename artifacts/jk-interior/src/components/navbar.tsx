@@ -26,7 +26,18 @@ export default function Navbar() {
   const [pathname] = useLocation()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24)
+    // `window.scrollY` is a layout read, and this fires for every scroll event —
+    // dozens per second under momentum scrolling on a phone. The ref guard means
+    // the state setter (and React's bail-out machinery behind it) is only reached
+    // on the two frames where the header actually changes appearance.
+    let isScrolled = false
+    const handleScroll = () => {
+      const next = window.scrollY > 24
+      if (next === isScrolled) return
+      isScrolled = next
+      setScrolled(next)
+    }
+    handleScroll()
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -34,6 +45,23 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false)
   }, [pathname])
+
+  // Escape closes the menu, and the page behind it stops scrolling while it is
+  // open — the drawer is a full-width overlay on a phone, so scrolling the page
+  // underneath it left the menu floating over unrelated content.
+  useEffect(() => {
+    if (!mobileOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false)
+    }
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    window.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener("keydown", onKeyDown)
+    }
+  }, [mobileOpen])
 
   return (
     <>
@@ -93,6 +121,7 @@ export default function Navbar() {
                   width={220}
                   height={71}
                   decoding="async"
+                  fetchPriority="high"
                   className="relative h-10 w-auto lg:h-11 xl:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </picture>
@@ -146,17 +175,18 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileOpen((o) => !o)}
               className="md:hidden p-2.5 rounded-xl border border-gold-500/25 bg-gold-500/8 text-gold-700 hover:border-gold-500/40 hover:bg-gold-500/15 transition-all"
-              aria-label="Toggle navigation menu"
+              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={mobileOpen}
+              aria-controls="mobile-nav-menu"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {mobileOpen ? (
                   <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                    <X className="h-5 w-5" />
+                    <X className="h-5 w-5" aria-hidden="true" />
                   </motion.div>
                 ) : (
                   <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-5 w-5" aria-hidden="true" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -171,6 +201,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                id="mobile-nav-menu"
                 className="md:hidden overflow-hidden border-t border-gold-500/15 mt-3 pt-4"
               >
                 <div className="flex flex-col gap-1 pb-3">
@@ -197,7 +228,7 @@ export default function Navbar() {
                             <span className="block text-base font-bold">{link.label}</span>
                             <span className="block text-xs text-gold-600/70">{link.caption}</span>
                           </div>
-                          {isActive && <div className="h-2 w-2 rounded-full bg-gold-600" />}
+                          {isActive && <div className="h-2 w-2 rounded-full bg-gold-600" aria-hidden="true" />}
                         </Link>
                       </motion.div>
                     )
@@ -236,7 +267,7 @@ export default function Navbar() {
                   </div>
 
                   <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2">
-                    <MapPin className="h-3 w-3 text-gold-600" />
+                    <MapPin className="h-3 w-3 text-gold-600" aria-hidden="true" />
                     Narpatganj • Forbesganj • Araria, Bihar
                   </div>
                 </div>

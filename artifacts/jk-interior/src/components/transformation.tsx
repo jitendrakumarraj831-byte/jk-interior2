@@ -46,7 +46,7 @@ export default function Transformation() {
   const active = PAIRS.find((p) => p.id === activeId) ?? PAIRS[0]
 
   return (
-    <section id="transformation" className="relative overflow-hidden bg-[#fbfaf5] py-20 sm:py-24 lg:py-28">
+    <section id="transformation" className="cv-auto relative overflow-hidden bg-[#fbfaf5] py-20 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(201,162,39,0.06),transparent)]" />
       </div>

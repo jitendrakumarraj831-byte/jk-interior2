@@ -3,6 +3,8 @@ import { Sparkles, Play, Pause, ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { galleryImages, CATEGORY_SEO, seoAlt, buildGalleryJsonLd, type GalleryImage } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
+import { useActiveOnScreen } from "@/lib/use-active-on-screen"
+import { useHashScroll } from "@/lib/hash-scroll"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
@@ -37,10 +39,12 @@ function groupByCategory(images: GalleryImage[]) {
 }
 
 /* ─── Modern Ultra-Clean Category Card (Auto-Fit Aspect Ratio) ─── */
-const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
+const CategoryCard = memo(function CategoryCard({ category, images, onOpen, anchored = false }: {
   category: string; images: GalleryImage[]
   onOpen(images: GalleryImage[], idx: number): void
   index: number
+  /** Only the copy in the layout that owns the `#gallery-<slug>` anchor id. */
+  anchored?: boolean
 }) {
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState<1 | -1>(1)
@@ -48,29 +52,49 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const total = images.length
   const showDots = total > 1 && total <= 10
+  // Each category is rendered twice — once in the phone swipe rail, once in the
+  // desktop masonry wall — and CSS `display: none` does not unmount the copy the
+  // current breakpoint hides. Without this gate both copies of all seven cards
+  // ran an autoplay timer and a Framer Motion progress animation forever, on
+  // every device, mostly for cards nobody could see.
+  const { ref: cardRef, active } = useActiveOnScreen<HTMLDivElement>()
+  const autoplaying = playing && active && total > 1
 
   const go = useCallback((n: 1 | -1) => {
     setDir(n)
     setCur(p => (p + n + total) % total)
   }, [total])
 
-    useEffect(() => {
-    if (!playing || total <= 1) return
-    // Each card advances on its own randomised interval, so the whole wall never
-    // flips at the same instant (which reads as a flicker).
-    const randomTime = Math.floor(Math.random() * 2000) + 3500
-    timer.current = setTimeout(() => go(1), randomTime)
+  // Each card holds its slide for its own duration, so the whole wall never
+  // flips at the same instant (which reads as a flicker). Held in a ref, not
+  // recomputed inline, so the progress bar below can be given the *same*
+  // duration — it used to be hardcoded to 4s against a random 3.5–5.5s timer,
+  // so the bar visibly finished early and then sat full, waiting.
+  const holdMs = useRef<number>(Math.floor(Math.random() * 2000) + 3500)
+
+  useEffect(() => {
+    if (!autoplaying) return
+    timer.current = setTimeout(() => go(1), holdMs.current)
     return () => { if (timer.current) clearTimeout(timer.current) }
-  }, [cur, playing, go, total])
+  }, [cur, autoplaying, go])
 
 
-  const id = `gallery-${slugify(category)}`
+  const slug = slugify(category)
+  const id = `gallery-${slug}`
   const seo = CATEGORY_SEO[category]
   const activeAlt = seoAlt(images[cur])
 
   return (
     <motion.div
-      id={id}
+      ref={cardRef}
+      // The anchor id goes on one copy only. Both layouts are in the DOM at all
+      // times, so putting it on both produced two elements sharing an id, and
+      // `getElementById` resolved to whichever came first in source order — the
+      // desktop wall. On a phone that element is `display: none`, so every
+      // `/gallery#gallery-<slug>` deep link (the "View All" links on the service
+      // pages) scrolled precisely nowhere.
+      id={anchored ? id : undefined}
+      data-gallery-anchor={slug}
       itemScope
       itemType="https://schema.org/Service"
       initial={{ opacity: 0, y: 20 }}
@@ -150,15 +174,15 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen }: {
               {playing ? <Pause size={12} /> : <Play size={12} />}
             </button>
 
-            {/* Top Progress Line */}
-            {playing && (
+            {/* Top Progress Line — same duration as the slide it tracks. */}
+            {autoplaying && (
               <div className="absolute top-0 left-0 right-0 z-20 h-1 overflow-hidden bg-white/20">
                 <motion.div
                   key={`${cur}-prog`}
                   className="h-full bg-gold-400"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 4, ease: "linear" }}
+                  transition={{ duration: holdMs.current / 1000, ease: "linear" }}
                 />
               </div>
             )}
@@ -239,23 +263,10 @@ export default function Gallery() {
   const next = useCallback(() => setLbIdx(p => p !== null ? (p+1) % lbImgs.length : null), [lbImgs.length])
   const prev = useCallback(() => setLbIdx(p => p !== null ? (p-1+lbImgs.length) % lbImgs.length : null), [lbImgs.length])
 
-  useEffect(() => {
-    const hash = window.location.hash
-    if (!hash) return
-    let attempts = 0
-    let t: ReturnType<typeof setTimeout>
-    const tryScroll = () => {
-      const el = document.getElementById(hash.slice(1))
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" })
-      } else if (attempts < 10) {
-        attempts++
-        t = setTimeout(tryScroll, 150)
-      }
-    }
-    t = setTimeout(tryScroll, 100)
-    return () => clearTimeout(t)
-  }, [])
+  // `/gallery#gallery-<category>` deep links, e.g. the "View All" link on every
+  // service page. Resolving the target is shared with the home page's anchors —
+  // see lib/hash-scroll.ts for why it can't be a plain getElementById.
+  useHashScroll()
 
   // No `mounted` gate here any more. This component rendered a full-viewport
   // skeleton on its very first pass and only swapped in the real gallery from
@@ -310,7 +321,7 @@ export default function Gallery() {
         {/* ── Portfolio wall — masonry on desktop ── */}
         <div className="hidden gap-5 sm:columns-2 sm:gap-6 md:block lg:columns-3">
           {categories.map(({ category, images }, index) => (
-            <CategoryCard key={category} category={category} images={images} onOpen={open} index={index} />
+            <CategoryCard key={category} category={category} images={images} onOpen={open} index={index} anchored />
           ))}
         </div>
       </div>
