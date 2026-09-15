@@ -113,6 +113,11 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="relative group shrink-0" aria-label="JK Interior – Home">
               <div className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-amber-400/15 via-gold-500/10 to-amber-400/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* The logo stays at default fetch priority on purpose: it is a
+                  couple of kB and above the fold, so the browser gets to it
+                  promptly regardless, whereas marking it high made it compete
+                  for bandwidth with the hero room photo — the LCP element on the
+                  home route, already preloaded at high priority in hero.tsx. */}
               <picture>
                 <source srcSet="/jk-interior-navbar-logo.avif" type="image/avif" />
                 <img
@@ -121,7 +126,6 @@ export default function Navbar() {
                   width={220}
                   height={71}
                   decoding="async"
-                  fetchPriority="high"
                   className="relative h-10 w-auto lg:h-11 xl:h-14 object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </picture>
