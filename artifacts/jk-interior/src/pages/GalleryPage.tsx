@@ -5,8 +5,16 @@ import SeoHead from "@/components/seo-head"
 import PageHero from "@/components/ui/page-hero"
 import PageCta from "@/components/ui/page-cta"
 import { Sparkles } from "lucide-react"
+import { useHashScroll } from "@/lib/hash-scroll"
 
 export default function GalleryPage() {
+  // `/gallery#gallery-<category>` deep links — the "View All" link on every
+  // service page. Owned by the route, not by <Gallery />: Gallery is also
+  // rendered by HomePage, which runs this itself, so having the component call it
+  // too gave the home route two retry chains and two hashchange listeners
+  // racing over the same anchor.
+  useHashScroll()
+
   return (
     <main>
       <SeoHead

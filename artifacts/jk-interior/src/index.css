@@ -335,13 +335,19 @@
 @layer base {
   body { color: #1c1917; }
 
-  /* The assistant panel is a full-height fixed overlay on phones. jk-chat.tsx
-     stamps this attribute on <body> when it opens; until now nothing read it, so
-     the page behind kept scrolling whenever a swipe carried past the end of the
-     message list. */
-  body[data-chat-open] {
-    overflow: hidden;
-    overscroll-behavior: none;
+  /* The assistant panel is a full-height fixed overlay on phones, so the page
+     behind it must not scroll — jk-chat.tsx stamps this attribute on <body> when
+     it opens, and until recently nothing read it.
+
+     Scoped below `md` on purpose. At `md` and up the panel is a 420x640 card
+     parked in the corner with no scrim, and the rest of the page is still the
+     thing you are reading; freezing it there would strand the visitor and shift
+     the layout as the scrollbar collapses. */
+  @media (max-width: 767.98px) {
+    body[data-chat-open] {
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
   }
 
   h1.sr-only, h2.sr-only, h3.sr-only, h4.sr-only, h5.sr-only, h6.sr-only {

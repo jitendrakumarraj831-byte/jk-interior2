@@ -67,6 +67,11 @@ self.addEventListener('activate', (event) => {
   )
 })
 
+// URLs already revalidated by this worker instance. The media refresh below is a
+// once-per-worker job, not a once-per-page-view one: without this, every cached
+// photo on a page cost a redundant CacheStorage write on every single navigation.
+const revalidated = new Set()
+
 /** Store a response copy without ever letting a cache error surface to the page. */
 function putInCache(request, response) {
   if (!response || response.status !== 200 || response.type !== 'basic') return
@@ -123,13 +128,22 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) {
-          // Refresh out of band so a replaced photo lands for the next visit,
-          // without making this one wait on the network.
-          event.waitUntil(
-            fetch(request)
-              .then((response) => putInCache(request, response))
-              .catch(() => {}),
-          )
+          // Refresh out of band so a photo replaced under the same filename lands
+          // for the next visit, without making this one wait on the network.
+          //
+          // `cache: 'reload'` is what makes that actually happen. A default fetch
+          // consults the HTTP cache first, and this site's own headers declare
+          // /images fresh for 30 days and /fonts immutable for a year — so the
+          // "refresh" was answered from that cache and could never see a new
+          // file. 'reload' goes past it to the server.
+          if (!revalidated.has(request.url)) {
+            revalidated.add(request.url)
+            event.waitUntil(
+              fetch(request, { cache: 'reload' })
+                .then((response) => putInCache(request, response))
+                .catch(() => {}),
+            )
+          }
           return cached
         }
         return fetch(request).then((response) => {

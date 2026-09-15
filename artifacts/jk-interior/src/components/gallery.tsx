@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { galleryImages, CATEGORY_SEO, seoAlt, buildGalleryJsonLd, type GalleryImage } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { useActiveOnScreen } from "@/lib/use-active-on-screen"
-import { useHashScroll } from "@/lib/hash-scroll"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
@@ -263,10 +262,6 @@ export default function Gallery() {
   const next = useCallback(() => setLbIdx(p => p !== null ? (p+1) % lbImgs.length : null), [lbImgs.length])
   const prev = useCallback(() => setLbIdx(p => p !== null ? (p-1+lbImgs.length) % lbImgs.length : null), [lbImgs.length])
 
-  // `/gallery#gallery-<category>` deep links, e.g. the "View All" link on every
-  // service page. Resolving the target is shared with the home page's anchors —
-  // see lib/hash-scroll.ts for why it can't be a plain getElementById.
-  useHashScroll()
 
   // No `mounted` gate here any more. This component rendered a full-viewport
   // skeleton on its very first pass and only swapped in the real gallery from
