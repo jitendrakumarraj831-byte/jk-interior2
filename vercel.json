@@ -4,6 +4,7 @@
   "installCommand": "pnpm install",
   "buildCommand": "pnpm --filter @workspace/jk-interior run build",
   "outputDirectory": "artifacts/jk-interior/dist/public",
+  "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
     {
@@ -25,12 +26,6 @@
       "source": "/cities/chhatapur",
       "destination": "/cities/supaul",
       "statusCode": 301
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/:path((?!api/|_vercel/).+)",
-      "destination": "/:path/index.html"
     }
   ],
   "headers": [

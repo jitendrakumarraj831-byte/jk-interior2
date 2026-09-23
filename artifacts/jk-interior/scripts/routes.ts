@@ -33,6 +33,6 @@ export function getAllRoutes(): RouteEntry[] {
  * /404.html, which Vercel serves with a 404 status for any unmatched URL).
  */
 export const NON_INDEXED_PRERENDER_ROUTES: { path: string; outFile: string }[] = [
-  { path: "/admin", outFile: "admin/index.html" },
+  { path: "/admin", outFile: "admin.html" },
   { path: "/__not-found__", outFile: "404.html" },
 ]

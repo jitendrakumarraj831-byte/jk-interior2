@@ -12,10 +12,10 @@
 // This script boots the production build, visits every route in a headless
 // browser, and writes the fully-rendered HTML (title, meta description,
 // canonical, JSON-LD — everything react-helmet-async injects) to
-// dist/public/<route>/index.html. Vercel's static file server resolves
-// `/about` to `/about/index.html` automatically and — per Vercel's routing
-// order — serves that static file instead of falling through to the SPA
-// rewrite in vercel.json, so this requires no deploy config changes.
+// dist/public/<route>.html (dist/public/index.html for "/"). vercel.json sets
+// `cleanUrls: true`, so Vercel serves /about from about.html and 308s
+// /about.html to /about; any URL with no matching file gets 404.html with a
+// real 404 status.
 //
 // The client-side app is untouched: main.tsx still calls createRoot(...).
 // React mounts over the static markup exactly as it does today (a fast,
@@ -284,12 +284,13 @@ async function crawlPass(
 }
 
 async function crawlRoutes(baseUrl: string, staticDefaults: Record<string, string | null>) {
-  // Every indexable route, written to <route>/index.html (or index.html for "/"),
-  // plus the non-indexed ones with their own output files (admin, 404.html).
+  // Every indexable route, written to <route>.html (index.html for "/") — Vercel's
+  // `cleanUrls` serves /about from about.html — plus the non-indexed ones with
+  // their own output files (admin.html, 404.html).
   let pending: PrerenderTarget[] = [
     ...getAllRoutes().map((r) => ({
       path: r.path,
-      outFile: r.path === "/" ? "index.html" : `${r.path.replace(/^\//, "")}/index.html`,
+      outFile: r.path === "/" ? "index.html" : `${r.path.replace(/^\//, "")}.html`,
     })),
     ...NON_INDEXED_PRERENDER_ROUTES,
   ]
