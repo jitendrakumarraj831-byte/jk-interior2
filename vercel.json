@@ -92,7 +92,7 @@
       ]
     },
     {
-      "source": "/(favicon.ico|favicon.svg|favicon.png|favicon-32x32.png|apple-touch-icon.png|icon-192.png|icon-512.png|logo.png|og-image.png|opengraph.jpg|jk-interior-navbar-logo.avif|jk-interior-navbar-logo.webp|site.webmanifest)",
+      "source": "/(favicon.ico|favicon.svg|favicon.png|favicon-32x32.png|apple-touch-icon.png|icon-192.png|icon-512.png|logo.png|opengraph.jpg|jk-interior-navbar-logo.avif|jk-interior-navbar-logo.webp|site.webmanifest)",
       "headers": [
         {
           "key": "Cache-Control",

@@ -31,7 +31,7 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
     category: "Ceiling",
     tagline: "Designer ceilings with cove and LED lighting for halls and bedrooms",
     detail:
-      "A seamless, plaster-smooth ceiling that hides wiring and carries recessed cove or LED lighting — our most requested finish for living rooms and bedrooms.",
+      "A seamless, plaster-smooth ceiling that hides wiring and carries recessed cove or LED lighting — a common choice for living rooms and bedrooms.",
     badge: "Cove & LED Ready",
     heroImage: "/images/gypsum5.webp",
     heroImageAlt: "Gypsum false ceiling with a cove-lit border in a Forbesganj living room by JK Interior",
@@ -172,7 +172,7 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
     tagline: "Evergreen grass for balconies and terraces, zero upkeep",
     detail:
       "UV-stable turf that stays green through the monsoon, drains rainwater straight through, and never needs watering or mowing.",
-    badge: "Zero Maintenance",
+    badge: "Low Maintenance",
     heroImage: "/images/artificial-grass.webp",
     heroImageAlt: "Artificial grass laid on a balcony floor by JK Interior in Bihar",
     price: "₹40–₹150 / sq.ft",

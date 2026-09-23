@@ -18,6 +18,7 @@ import {
 import { copyFor } from "@/lib/assistant-copy"
 import { resolveReplyLanguage, type ReplyLanguage } from "@/lib/reply-language"
 import { SERVICES_SUMMARY } from "@/lib/services-summary"
+import { BUSINESS } from "@/lib/seo"
 import { AssistantMark } from "@/components/ui/assistant-mark"
 import { AssistantLauncher } from "@/components/ui/assistant-launcher"
 import {
@@ -75,17 +76,20 @@ const mkId  = (id: number, role: Role, text: string, kind?: MsgKind, cardData?: 
 const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms))
 
 /**
- * Outside the hours business-facts.ts publishes: Mon–Sat 8:00 AM – 8:00 PM,
- * Sunday 9:00 AM – 6:00 PM. Sunday used to be treated as a weekday, so the
- * header claimed "Online now" at 7 PM on a Sunday, when nobody is.
+ * Outside the published opening hours (BUSINESS.hours in lib/seo.ts), checked
+ * in IST. The business is currently open 24 hours, 7 days, so this is normally
+ * false — but it reads the same data the site shows, so the header can never
+ * claim "Online now" at a time the site itself says nobody is there.
  */
 function isOffHours(): boolean {
   const parts = new Intl.DateTimeFormat("en-GB", {
-    hour: "numeric", hour12: false, weekday: "short", timeZone: "Asia/Kolkata",
+    hour: "numeric", minute: "numeric", hour12: false, weekday: "long", timeZone: "Asia/Kolkata",
   }).formatToParts(new Date())
-  const istH = parseInt(parts.find(p => p.type === "hour")?.value ?? "12", 10)
-  const isSunday = parts.find(p => p.type === "weekday")?.value === "Sun"
-  return isSunday ? istH >= 18 || istH < 9 : istH >= 20 || istH < 8
+  const day = parts.find(p => p.type === "weekday")?.value ?? ""
+  const hh = (parts.find(p => p.type === "hour")?.value ?? "12").padStart(2, "0").replace("24", "00")
+  const mm = (parts.find(p => p.type === "minute")?.value ?? "00").padStart(2, "0")
+  const now = `${hh}:${mm}`
+  return !BUSINESS.hours.some(h => h.days.includes(day) && now >= h.opens && now <= h.closes)
 }
 
 function tryExtractPhone(raw: string): string | null {

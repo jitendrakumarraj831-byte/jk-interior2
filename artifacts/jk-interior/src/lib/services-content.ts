@@ -243,7 +243,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     maintenance: "Practically none — a damp cloth wipes it clean",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "Sealed, interlocking waterproof panels that never let steam, leakage or damp win again — the maintenance-free ceiling that stays bright and new for 20+ years without a single coat of paint.",
+      "Sealed, interlocking waterproof panels that never let steam, leakage or damp win again — the maintenance-free ceiling that stays bright for years without a single coat of paint.",
     whereUsed: [
       "Kitchens and bathrooms — our first and firmest recommendation",
       "Balconies and semi-open spots that catch the rain",
@@ -256,7 +256,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     benefits: [
       "100% waterproof — kill kitchen, bathroom and balcony dampness permanently",
-      "Never needs paint or plaster again — looks new for 20+ years",
+      "Never needs paint or plaster — the finish is in the panel itself",
       "Termite-proof, fire-retardant and wipes clean in seconds",
       "Fastest ceiling we fit — a whole room done in a single day",
       "The friendliest price per sq.ft, backed by a 1-year leak-proof warranty",
@@ -633,7 +633,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       photos: 20,
     },
     faqs: [
-      { q: "Does WPC really pass for real wood?", a: "From normal room distance the better wood-grain and fluted textures read as real timber — most customers are genuinely surprised it isn't. We hand you a physical sample at the site visit so you can judge for yourself." },
+      { q: "Does WPC really pass for real wood?", a: "From normal room distance the better wood-grain and fluted textures read as real timber. We hand you a physical sample at the site visit so you can judge for yourself." },
       { q: "What would a standard TV wall cost?", a: "A typical 10×10 ft (100 sq.ft) TV wall in mid-range fluted WPC comes to roughly ₹18,000–₹30,000, including battens, trims and basic LED wiring." },
       { q: "Can WPC go over a tiled or painted wall?", a: "Yes — the panels clip onto battens, so we fix the battens straight over sound tile or an existing painted surface. The wall only has to be structurally solid, not perfectly smooth." },
     ],
@@ -662,7 +662,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     labourCost: "Surface prep, adhesive or clip fixing and edge beading run about ₹15–25/sq.ft, already inside the rate above.",
     labourCostShort: "₹15–25/sq.ft",
     brandNote: "Branded PVC-based sheets from authorised Purnia/Forbesganj dealers. We open the full sample book on-site so you see the real sheen and veining across a whole sheet before you order.",
-    availability: "Fitted across the whole service area. Bathroom and pooja-room UV marble is the most common request in Forbesganj, Araria and Jogbani.",
+    availability: "Fitted across the whole service area, most often on bathroom and pooja-room walls.",
     installTime: "1–2 days per room",
     maintenance: "None to speak of — a damp cloth keeps it shining, no polishing",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -872,7 +872,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     labourCost: "Base/drainage prep, laying, seam joining and edge fixing run about ₹8–15/sq.ft on floors and ₹15–25/sq.ft on wall panels, included in the rate above.",
     labourCostShort: "₹8–15/sq.ft (floor) · ₹15–25/sq.ft (wall)",
     brandNote: "UV-stabilised synthetic turf from our regular Purnia suppliers. We check the UV treatment and pile density before ordering, because untreated turf bleaches within a single season under North Bihar's sun.",
-    availability: "Fitted across the whole service area. Balcony and terrace turf is most requested in Forbesganj, Araria and Raniganj; premium rolls need a couple of extra days in outlying blocks.",
+    availability: "Fitted across the whole service area, mostly on balconies and terraces; premium rolls need a couple of extra days in outlying blocks.",
     installTime: "Half a day to a full day for a typical balcony or wall",
     maintenance: "An occasional rinse and a light brush — never any mowing or watering",
     warranty: "1 year written warranty (materials + workmanship)",

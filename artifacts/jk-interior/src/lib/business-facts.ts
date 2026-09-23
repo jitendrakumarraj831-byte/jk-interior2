@@ -10,7 +10,7 @@
  * from the serverless function, where neither exists.
  */
 
-import { ADDRESS_LINE, BUSINESS, HOURS_SENTENCE, SERVICE_AREA_NAMES } from "./seo.js"
+import { ADDRESS_LINE, BUSINESS, FOUNDED_LABEL, HOURS_SENTENCE, SERVICE_AREA_NAMES } from "./seo.js"
 
 export interface BusinessFact {
   term: string
@@ -20,7 +20,7 @@ export interface BusinessFact {
 export const BUSINESS_FACTS: BusinessFact[] = [
   {
     term: "Business",
-    detail: `${BUSINESS.name} — false ceiling contractor and interior finishing company, operating since ${BUSINESS.founded}.`,
+    detail: `${BUSINESS.name} — false ceiling contractor and interior finishing company, open since ${FOUNDED_LABEL}.`,
   },
   {
     term: "Address",
@@ -37,7 +37,7 @@ export const BUSINESS_FACTS: BusinessFact[] = [
   },
   {
     term: "Hours",
-    detail: `${HOURS_SENTENCE}. WhatsApp messages are answered outside these hours.`,
+    detail: `${HOURS_SENTENCE}.`,
   },
   {
     term: "Site visit",
@@ -54,4 +54,4 @@ export const PRICE_DISCLAIMER =
   "Every rate on this page is a current Forbesganj and Araria market estimate rather than a fixed quotation. Your final figure is set at the free site visit and varies with your design, the material grade you choose and the total area. Combining work — ceiling, wall panelling and television unit together — brings the per-sq.ft rate down."
 
 export const SERVICE_AREA_NOTE =
-  `JK Interior works from its registered workshop in Forbesganj and travels to ${SERVICE_AREA_NAMES}. A call or WhatsApp message confirms whether your village or mohalla is on the route before you book.`
+  `JK Interior works from its registered workshop in Forbesganj and travels to customers across Araria district, Purnia and Supaul. A call or WhatsApp message confirms whether your village or mohalla is on the route before you book.`

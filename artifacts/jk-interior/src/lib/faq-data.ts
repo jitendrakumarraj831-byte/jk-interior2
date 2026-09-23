@@ -17,7 +17,7 @@ export interface FaqItem {
 export const FAQS: FaqItem[] = [
   {
     q: "What is JK Interior's phone number?",
-    a: `JK Interior can be reached on +91 8541849118 (primary line, also on WhatsApp) or +91 8651070831 (alternate line). Opening hours: ${HOURS_SENTENCE}. WhatsApp messages are picked up outside those hours too.`,
+    a: `JK Interior can be reached on +91 8541849118 (primary line, also on WhatsApp) or +91 8651070831 (alternate line). Opening hours: ${HOURS_SENTENCE}.`,
   },
   {
     q: "Where is JK Interior located?",

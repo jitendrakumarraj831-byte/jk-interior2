@@ -128,8 +128,7 @@ export default function WhyUs() {
               <span className="absolute -top-3 left-8 h-6 w-16 -rotate-3 bg-amber-200/70 shadow-sm" aria-hidden="true" />
               <Quote className="mb-4 h-8 w-8 text-gold-300" aria-hidden="true" />
               <p className="mb-4 font-serif text-lg font-bold leading-snug text-gray-900 sm:text-xl">
-                Since 2019, one rule has never changed: we measure the room ourselves before we
-                quote it.
+                One rule on every job: we measure the room ourselves before we quote it.
               </p>
               <p className="mb-4 text-sm leading-relaxed text-gray-600 sm:text-base">
                 Araria's monsoon ruins anything that isn't genuinely waterproof — so PVC and UV
@@ -144,7 +143,7 @@ export default function WhyUs() {
                   JK
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-gray-900">JK Interior, established 2019</p>
+                  <p className="text-sm font-bold text-gray-900">JK Interior</p>
                   <p className="text-xs text-gray-500">Forbesganj, Araria district, Bihar</p>
                 </div>
               </div>

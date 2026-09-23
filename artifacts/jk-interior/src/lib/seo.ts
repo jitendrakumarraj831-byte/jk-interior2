@@ -58,12 +58,14 @@ export const BUSINESS = {
   },
   // Matches the pin on the embedded Google Maps iframe and the Business Profile.
   geo: { lat: 26.2920031, lng: 87.2034309 },
+  // Open 24 hours, 7 days — as listed on the Google Business Profile. schema.org
+  // expresses all-day opening as 00:00–23:59.
   hours: [
-    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '08:00', closes: '20:00' },
-    { days: ['Sunday'], opens: '09:00', closes: '18:00' },
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' },
   ] as readonly OpeningHours[],
   priceRange: '₹₹',
-  founded: '2019',
+  // Opening date on the Google Business Profile (ISO date for schema.org foundingDate).
+  founded: '2024-01-01',
   logo: `${SITE_URL}/logo.png`,
   image: `${SITE_URL}/opengraph.jpg`,
   social: {
@@ -77,7 +79,16 @@ export const BUSINESS = {
 /** "Damaria Rewahi, Forbesganj, Bihar 854318" — the one display form of the address. */
 export const ADDRESS_LINE = `${BUSINESS.address.street}, ${BUSINESS.address.city}, ${BUSINESS.address.state} ${BUSINESS.address.postalCode}`
 
-/** "Mon–Sat 8:00 AM – 8:00 PM" style labels, derived from BUSINESS.hours. */
+/** "January 2024" — the display form of BUSINESS.founded. */
+export const FOUNDED_LABEL = new Date(`${BUSINESS.founded}T00:00:00Z`).toLocaleDateString('en-GB', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
+
+const isAllDay = (h: OpeningHours) => h.opens === '00:00' && h.closes === '23:59'
+
+/** "Mon–Sun: Open 24 hours" / "Mon–Sat 8:00 AM – 8:00 PM" style labels, derived from BUSINESS.hours. */
 function to12h(t: string): string {
   const [h, m] = t.split(':').map(Number)
   const suffix = h >= 12 ? 'PM' : 'AM'
@@ -88,10 +99,15 @@ function dayRange(days: readonly string[]): string {
   const short = (d: string) => d.slice(0, 3)
   return days.length > 1 ? `${short(days[0])}–${short(days[days.length - 1])}` : short(days[0])
 }
-export const HOURS_LINES: string[] = BUSINESS.hours.map((h) => `${dayRange(h.days)} ${to12h(h.opens)} – ${to12h(h.closes)}`)
-/** Long form for sentences, e.g. "Monday to Saturday, 8:00 AM – 8:00 PM. Sunday, 9:00 AM – 6:00 PM." */
+export const HOURS_LINES: string[] = BUSINESS.hours.map((h) =>
+  isAllDay(h) ? `${dayRange(h.days)}: Open 24 hours` : `${dayRange(h.days)} ${to12h(h.opens)} – ${to12h(h.closes)}`,
+)
+/** Long form for sentences, e.g. "Open 24 hours, Monday to Sunday". */
 export const HOURS_SENTENCE = BUSINESS.hours
-  .map((h) => `${h.days.length > 1 ? `${h.days[0]} to ${h.days[h.days.length - 1]}` : h.days[0]}, ${to12h(h.opens)} – ${to12h(h.closes)}`)
+  .map((h) => {
+    const days = h.days.length > 1 ? `${h.days[0]} to ${h.days[h.days.length - 1]}` : h.days[0]
+    return isAllDay(h) ? `Open 24 hours, ${days}` : `${days}, ${to12h(h.opens)} – ${to12h(h.closes)}`
+  })
   .join('. ')
 
 // ─── Service areas ──────────────────────────────────────────────────────────
@@ -368,7 +384,7 @@ export const CITIES: CityData[] = [
     state: 'Bihar',
     title: 'False Ceiling & Interior Work in Supaul, Bihar | JK Interior',
     metaDescription:
-      'PVC and gypsum false ceilings, WPC wall panels and UV marble sheets in Supaul district, including Tribeniganj and Chhatapur. Free site visit.',
+      'PVC and gypsum false ceilings, WPC wall panels, UV marble sheets and TV units in Supaul town and its blocks, from JK Interior, Forbesganj. Free site visit.',
     role: 'Supaul district · visits scheduled in advance',
     intro: [
       'Supaul is a neighbouring district to Araria. We travel from our Forbesganj workshop to Supaul town and its blocks — including Tribeniganj and Chhatapur — for site visits and installation.',

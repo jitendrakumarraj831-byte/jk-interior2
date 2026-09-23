@@ -24,7 +24,7 @@ const words = [
 ]
 
 const stats = [
-  { value: "Since 2019", label: "Working in Araria District", icon: TrendingUp },
+  { value: "24/7", label: "Open Every Day", icon: TrendingUp },
   { value: "1 Year", label: "Written Warranty", icon: ShieldCheck },
   { value: "0%", label: "Hidden Charges", icon: Droplets },
   { value: "Free", label: "Site Visit & Quotation", icon: Zap },
@@ -323,7 +323,7 @@ export default function Hero() {
                 <TrendingUp className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="flex flex-col leading-tight">
-                <span className="text-sm font-black text-stone-900">Since 2019</span>
+                <span className="text-sm font-black text-stone-900">Open 24/7</span>
                 <span className="text-[9px] font-bold uppercase tracking-wider text-stone-500">Forbesganj</span>
               </div>
             </div>
