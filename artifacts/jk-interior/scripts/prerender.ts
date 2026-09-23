@@ -31,6 +31,7 @@
 //
 // Run with: pnpm run prerender (wired in as a `postbuild` step)
 
+import { spawnSync } from "node:child_process"
 import { existsSync, readFileSync } from "node:fs"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
@@ -146,8 +147,20 @@ function osRelease(key: string): string {
  * The package reads these variables once, at import time, so this must run
  * before the dynamic import below. An explicitly set value is left alone.
  */
+let preparedSparticuz = false
 function prepareSparticuzForAmazonLinux() {
-  if (process.env.AWS_EXECUTION_ENV || process.env.AWS_LAMBDA_JS_RUNTIME) return
+  if (preparedSparticuz) return
+  preparedSparticuz = true
+  console.log(
+    `[prerender] build OS: ID=${osRelease("ID") || "?"} VERSION_ID=${osRelease("VERSION_ID") || "?"}; node ${process.version}; ` +
+      `AWS_EXECUTION_ENV=${process.env.AWS_EXECUTION_ENV ?? "unset"}; AWS_LAMBDA_JS_RUNTIME=${process.env.AWS_LAMBDA_JS_RUNTIME ?? "unset"}`,
+  )
+  // Leave it alone only when the package will already recognise a Lambda
+  // runtime. Build hosts that run on AWS can set AWS_EXECUTION_ENV to some
+  // other value (e.g. a container platform), which the package ignores.
+  const execEnv = process.env.AWS_EXECUTION_ENV ?? ""
+  const jsRuntime = process.env.AWS_LAMBDA_JS_RUNTIME ?? ""
+  if (execEnv.includes("AWS_Lambda_nodejs") || jsRuntime.includes("nodejs")) return
   if (osRelease("ID") !== "amzn") return
   const version = osRelease("VERSION_ID")
   // AL2023 → al2023.tar.br (the package keys this off a "22.x"/"20.x" runtime);
@@ -156,6 +169,25 @@ function prepareSparticuzForAmazonLinux() {
   console.log(
     `[prerender] Amazon Linux ${version} build container detected — ` +
       `unpacking @sparticuz/chromium's bundled libraries (AWS_LAMBDA_JS_RUNTIME=${process.env.AWS_LAMBDA_JS_RUNTIME})`,
+  )
+}
+
+/** On a failed launch, lists the shared libraries the extracted Chromium can't
+ *  resolve — the usual reason it won't start in a build container. */
+function logMissingLibraries() {
+  if (!existsSync("/tmp/chromium")) return
+  // ldd exits non-zero when a library is unusable, so read its output either way.
+  const ldd = spawnSync("ldd", ["/tmp/chromium"], { encoding: "utf-8", env: process.env })
+  const problems = `${ldd.stdout ?? ""}\n${ldd.stderr ?? ""}`
+    .split("\n")
+    .filter((l) => /not found|error|too short/i.test(l))
+  console.warn(`[prerender] LD_LIBRARY_PATH=${process.env.LD_LIBRARY_PATH ?? "unset"}`)
+  console.warn(
+    ldd.error
+      ? `[prerender] ldd unavailable: ${ldd.error.message}`
+      : problems.length
+        ? `[prerender] unresolved libraries:\n${problems.join("\n")}`
+        : "[prerender] ldd: every library resolves",
   )
 }
 
@@ -376,6 +408,7 @@ async function main() {
   } catch (err) {
     console.warn("[prerender] could not launch a headless browser in this environment.")
     console.warn(err instanceof Error ? err.message : String(err))
+    logMissingLibraries()
     banner("FAILED", "no headless browser available — the route HTML files were not generated.")
     process.exit(1)
   }
