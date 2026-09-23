@@ -1,0 +1,30 @@
+# Runs the production build — including the Chromium prerender step — on
+# Amazon Linux 2023, the OS of Vercel's build image, so a prerender failure
+# on Vercel can be reproduced and read here before it reaches a deployment.
+name: Prerender on Amazon Linux
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: amazonlinux:2023
+    steps:
+      - run: dnf install -y tar gzip xz findutils which git
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g pnpm@10.33.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @workspace/jk-interior run build
+      - name: Diagnose Chromium (on failure)
+        if: failure()
+        run: |
+          cat /etc/os-release
+          ls -la /tmp/chromium /tmp/al2023/lib 2>&1 || true
+          LD_LIBRARY_PATH=/tmp/al2023/lib ldd /tmp/chromium 2>&1 | grep "not found" || echo "no missing libraries"
+      - name: List prerendered HTML
+        run: find artifacts/jk-interior/dist/public -name "*.html" | sort
