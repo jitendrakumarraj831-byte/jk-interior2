@@ -22,9 +22,7 @@ import { Lightbox } from "@/components/ui/lightbox"
 import { useImageLoaded } from "@/lib/use-image-loaded"
 import { useFocusTrap } from "@/lib/use-focus-trap"
 
-/** Direct-line WhatsApp CTA inside the Featured Work gallery modal — a fixed
- *  number by design, kept separate from the site-wide `WA_NUMBER`. */
-const GALLERY_WHATSAPP_NUMBER = "918541849118"
+import { WA_NUMBER } from "@/lib/business-data"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -415,7 +413,6 @@ function FeaturedWorkGrid() {
             aria-label={`Open ${service.name} design gallery`}
             className="group relative block aspect-square w-full overflow-hidden rounded-2xl border border-gold-900/10 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:border-gold-400/60 hover:shadow-[0_16px_40px_-12px_rgba(201,162,39,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
           >
-            <meta content={`https://www.jkinterior.online/services/${service.slug}`} />
             <div className="absolute inset-0 bg-slate-900">
               <picture>
                 <source srcSet={srcVariant(service.heroImage, "-800w.avif")} sizes={GRID_IMAGE_SIZES} type="image/avif" />
@@ -522,7 +519,7 @@ function ServiceGalleryModal({ service, onClose }: { service: ServiceSummary; on
   const searchUrl = pinterestSearchUrl(query)
   const boardUrl = PINTEREST_BOARD_URL[service.slug]
   const externalUrl = boardUrl ?? searchUrl
-  const waHref = `https://wa.me/${GALLERY_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
     `Hello JK Interior, I was browsing the ${service.name} design gallery and would like an instant quote.`
   )}`
 

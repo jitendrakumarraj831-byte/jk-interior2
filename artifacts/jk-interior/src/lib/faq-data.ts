@@ -2,7 +2,7 @@
 // FAQ accordion (faq-section.tsx) and by the FAQPage JSON-LD in HomePage.tsx,
 // so the rich-result markup can never drift from what visitors actually read.
 
-import { ADDRESS_LINE, HOURS_SENTENCE, SERVICE_AREA_NAMES } from "./seo.js"
+import { ADDRESS_LINE, HOURS_SENTENCE, PHONE1_DISPLAY, PHONE2_DISPLAY, SERVICE_AREA_NAMES } from "./seo.js"
 
 export interface FaqItem {
   q: string
@@ -17,7 +17,7 @@ export interface FaqItem {
 export const FAQS: FaqItem[] = [
   {
     q: "What is JK Interior's phone number?",
-    a: `JK Interior can be reached on +91 8541849118 (primary line, also on WhatsApp) or +91 8651070831 (alternate line). Opening hours: ${HOURS_SENTENCE}.`,
+    a: `JK Interior can be reached on ${PHONE1_DISPLAY} (primary line, also on WhatsApp) or ${PHONE2_DISPLAY} (alternate line). Opening hours: ${HOURS_SENTENCE}.`,
   },
   {
     q: "Where is JK Interior located?",
@@ -41,7 +41,7 @@ export const FAQS: FaqItem[] = [
   },
   {
     q: "How much does a PVC ceiling cost?",
-    a: "A PVC false ceiling usually costs ₹75–₹150 per sq.ft, depending on the panel design (plain, wood-grain, marble-print or high-gloss) and the lighting. Call +91 8541849118 for a free site visit and written quotation.",
+    a: `A PVC false ceiling usually costs ₹75–₹150 per sq.ft, depending on the panel design (plain, wood-grain, marble-print or high-gloss) and the lighting. Call ${PHONE1_DISPLAY} for a free site visit and written quotation.`,
   },
   {
     q: "Gypsum or PVC ceiling — which is better?",

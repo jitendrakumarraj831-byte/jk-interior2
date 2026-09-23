@@ -76,6 +76,14 @@ export const BUSINESS = {
   },
 } as const
 
+/** "+91-8541849118" → "+91 85418 49118" — the one display form of each phone number. */
+function displayPhone(phone: string): string {
+  const local = phone.replace(/\D/g, '').slice(-10)
+  return `+91 ${local.slice(0, 5)} ${local.slice(5)}`
+}
+export const PHONE1_DISPLAY = displayPhone(BUSINESS.phone1)
+export const PHONE2_DISPLAY = displayPhone(BUSINESS.phone2)
+
 /** "Damaria Rewahi, Forbesganj, Bihar 854318" — the one display form of the address. */
 export const ADDRESS_LINE = `${BUSINESS.address.street}, ${BUSINESS.address.city}, ${BUSINESS.address.state} ${BUSINESS.address.postalCode}`
 
@@ -88,7 +96,7 @@ export const FOUNDED_LABEL = new Date(`${BUSINESS.founded}T00:00:00Z`).toLocaleD
 
 const isAllDay = (h: OpeningHours) => h.opens === '00:00' && h.closes === '23:59'
 
-/** "Mon–Sun: Open 24 hours" / "Mon–Sat 8:00 AM – 8:00 PM" style labels, derived from BUSINESS.hours. */
+/** "Mon–Sun: Open 24 hours" style labels (or "Day–Day h:mm AM – h:mm PM" for set hours), derived from BUSINESS.hours. */
 function to12h(t: string): string {
   const [h, m] = t.split(':').map(Number)
   const suffix = h >= 12 ? 'PM' : 'AM'
@@ -174,10 +182,10 @@ export const CITIES: CityData[] = [
     state: 'Bihar',
     title: 'False Ceiling & Interior Work in Forbesganj | JK Interior',
     metaDescription:
-      'JK Interior is based at Damaria Rewahi, Forbesganj. Gypsum and PVC false ceilings, partition walls, WPC panels and TV units, with a free site visit.',
+      `JK Interior is based at ${BUSINESS.address.street}, ${BUSINESS.address.city}. Gypsum and PVC false ceilings, partition walls, WPC panels and TV units, with a free site visit.`,
     role: 'Our workshop and Google Business Profile address',
     intro: [
-      "JK Interior's workshop and registered address are at Damaria Rewahi, Forbesganj (Bihar 854318) — the location shown on our Google Business Profile. Forbesganj is where we work most often, so it is the easiest town for us to schedule a site visit.",
+      `JK Interior's workshop and registered address are at ${ADDRESS_LINE} — the location shown on our Google Business Profile. Forbesganj is where we work most often, so it is the easiest town for us to schedule a site visit.`,
       'Here we install gypsum and PVC false ceilings, grid ceilings for shops and offices, gypsum and glass partition walls, WPC wall panelling, UV marble sheet walls, modular TV units and artificial grass for homes, shops and offices.',
     ],
     localNotes: [
@@ -190,7 +198,7 @@ export const CITIES: CityData[] = [
     faqs: [
       {
         q: 'Where is JK Interior located in Forbesganj?',
-        a: 'Our registered workshop is at Damaria Rewahi, Forbesganj, Bihar 854318. The exact pin is on our Google Business Profile — use the "View on Google Maps" link on this page for directions.',
+        a: `Our registered workshop is at ${ADDRESS_LINE}. The exact pin is on our Google Business Profile — use the "View on Google Maps" link on this page for directions.`,
       },
       {
         q: 'What does a PVC false ceiling cost in Forbesganj?',
@@ -260,7 +268,7 @@ export const CITIES: CityData[] = [
     faqs: [
       {
         q: 'Does JK Interior do false ceiling work in Jogbani?',
-        a: 'Yes — PVC, gypsum and grid ceilings, plus WPC wall panelling, for homes and shops in Jogbani. Call +91 8541849118 to book a free site visit.',
+        a: `Yes — PVC, gypsum and grid ceilings, plus WPC wall panelling, for homes and shops in Jogbani. Call ${PHONE1_DISPLAY} to book a free site visit.`,
       },
       {
         q: 'What does a false ceiling cost in Jogbani?',
@@ -299,7 +307,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'What is the rate for ceiling work in Raniganj?',
-        a: 'PVC ceilings usually cost ₹75–₹150 per sq.ft and gypsum ceilings ₹75–₹210 per sq.ft. Call +91 8541849118 for an exact estimate after measurement.',
+        a: `PVC ceilings usually cost ₹75–₹150 per sq.ft and gypsum ceilings ₹75–₹210 per sq.ft. Call ${PHONE1_DISPLAY} for an exact estimate after measurement.`,
       },
       {
         q: 'Can artificial grass be laid on a balcony in Raniganj?',
@@ -330,7 +338,7 @@ export const CITIES: CityData[] = [
     faqs: [
       {
         q: 'Does JK Interior work in Narpatganj?',
-        a: 'Yes. Narpatganj is part of our regular service area. Call +91 8541849118 or +91 8651070831 to book a free site visit.',
+        a: `Yes. Narpatganj is part of our regular service area. Call ${PHONE1_DISPLAY} or ${PHONE2_DISPLAY} to book a free site visit.`,
       },
       {
         q: 'What does a false ceiling cost in Narpatganj?',
@@ -338,7 +346,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'Where is JK Interior’s workshop?',
-        a: 'Our registered workshop is at Damaria Rewahi, Forbesganj, Bihar 854318 — the address on our Google Business Profile.',
+        a: `Our registered workshop is at ${ADDRESS_LINE} — the address on our Google Business Profile.`,
       },
     ],
   },
@@ -365,7 +373,7 @@ export const CITIES: CityData[] = [
     faqs: [
       {
         q: 'Does JK Interior work in Purnia?',
-        a: 'Yes. We are based in Forbesganj and travel to Purnia for site visits and installation. Visits are scheduled in advance — call +91 8541849118 or WhatsApp the same number.',
+        a: `Yes. We are based in Forbesganj and travel to Purnia for site visits and installation. Visits are scheduled in advance — call ${PHONE1_DISPLAY} or WhatsApp the same number.`,
       },
       {
         q: 'How long does PVC ceiling work take in Purnia?',
@@ -404,7 +412,7 @@ export const CITIES: CityData[] = [
       },
       {
         q: 'What does a PVC ceiling cost in Supaul?',
-        a: 'A PVC false ceiling usually costs ₹75–₹150 per sq.ft depending on panel design and lighting. Call +91 8541849118 to arrange a site visit and quotation.',
+        a: `A PVC false ceiling usually costs ₹75–₹150 per sq.ft depending on panel design and lighting. Call ${PHONE1_DISPLAY} to arrange a site visit and quotation.`,
       },
       {
         q: 'Gypsum or PVC — which ceiling should I choose?',
