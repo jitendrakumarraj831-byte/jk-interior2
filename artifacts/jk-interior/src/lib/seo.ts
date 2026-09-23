@@ -1,21 +1,53 @@
+/**
+ * The single source of truth for JK Interior's business identity (name,
+ * address, phone, hours, Google Business Profile link), its service areas and
+ * the city pages — plus the schema.org builders that turn them into JSON-LD.
+ *
+ * Every page, the footer, the contact block, the FAQ, the AI assistant's system
+ * prompt (via business-data.ts / business-facts.ts) and every structured-data
+ * block read from here. Change a detail once and it changes everywhere.
+ *
+ * NAP rule: the address, phone and hours below must match the live Google
+ * Business Profile exactly. Change the profile first (or confirm it), then this
+ * file — never the other way round.
+ *
+ * Kept free of React and of "@/" imports: api/chat.ts pulls this in through
+ * business-data.ts from a serverless function.
+ */
+
 export const SITE_URL = 'https://www.jkinterior.online'
 export const SITE_NAME = 'JK Interior'
-export const OG_IMAGE = `${SITE_URL}/og-image.png`
+
+/** The one canonical schema.org entity for the business — every other block references it by this @id. */
+export const BUSINESS_ID = `${SITE_URL}/#business`
+export const WEBSITE_ID = `${SITE_URL}/#website`
+
+/**
+ * The verified Google Business Profile listing. The place ID, the CID and the
+ * embedded map (components/ui/map-embed.tsx) all resolve to the same listing:
+ * place ID ChIJYcwFpsOj7zkRJgkNbFZ1Eaw encodes feature ID
+ * 0x39efa3c3a605cc61:0xac1175566c0d0926, and 0xac1175566c0d0926 is CID
+ * 12398820263168117030.
+ */
+export const GOOGLE_PLACE_ID = 'ChIJYcwFpsOj7zkRJgkNbFZ1Eaw'
+export const GOOGLE_MAPS_URL = 'https://www.google.com/maps?cid=12398820263168117030'
+
+export interface OpeningHours {
+  days: readonly string[]
+  opens: string
+  closes: string
+}
 
 export const BUSINESS = {
   name: 'JK Interior',
-  tagline: 'Best False Ceiling & Interior Designer in Forbesganj, Araria, Bihar',
-  // Narpatganj is the day-to-day operating base; the Forbesganj address below is
-  // the registered workshop used in every schema.org block and on Google Business.
-  operatingBase: 'Narpatganj',
-  // phone1 = primary business number (matches Google Business Profile). It is
-  // also the WhatsApp-enabled number: WA_NUMBER in business-data.ts is derived
-  // from this field, not from phone2, so the GBP appointment link and every
-  // "WhatsApp" button on the site resolve to the same primary line.
+  description:
+    'False ceiling contractor and interior finishing company in Forbesganj, Araria district, Bihar — gypsum, PVC and grid ceilings, partition walls, WPC wall panels, UV marble sheets, modular TV units and artificial grass.',
+  // phone1 = primary business number (the Google Business Profile number and the
+  // WhatsApp line). phone2 = the alternate line.
   phone1: '+91-8541849118',
-  // phone2 = secondary / alternate business number
   phone2: '+91-8651070831',
   email: 'jkinteriorofficial@gmail.com',
+  // Registered workshop address — the location on the Google Business Profile.
   address: {
     street: 'Damaria Rewahi',
     city: 'Forbesganj',
@@ -24,38 +56,359 @@ export const BUSINESS = {
     postalCode: '854318',
     country: 'IN',
   },
-  // Matches the pin on the embedded Google Maps iframe (contact.tsx) and the
-  // verified Google Business Profile listing (cid=12398820263168117030) — do
-  // not "round" these back to an approximate town-centre coordinate.
+  // Matches the pin on the embedded Google Maps iframe and the Business Profile.
   geo: { lat: 26.2920031, lng: 87.2034309 },
-  hours: 'Mon–Sat 8:00 AM – 8:00 PM',
-  hoursSun: 'Sun 9:00 AM – 6:00 PM',
+  hours: [
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '08:00', closes: '20:00' },
+    { days: ['Sunday'], opens: '09:00', closes: '18:00' },
+  ] as readonly OpeningHours[],
   priceRange: '₹₹',
   founded: '2019',
+  logo: `${SITE_URL}/logo.png`,
+  image: `${SITE_URL}/opengraph.jpg`,
+  social: {
+    instagram: 'https://www.instagram.com/jk_interior_ceiling_designer',
+    // A Facebook share link, not the page's canonical URL — linked visibly but
+    // kept out of schema.org sameAs until the canonical page URL is confirmed.
+    facebookShare: 'https://www.facebook.com/share/1GpAKHZZtb/',
+  },
 } as const
 
+/** "Damaria Rewahi, Forbesganj, Bihar 854318" — the one display form of the address. */
+export const ADDRESS_LINE = `${BUSINESS.address.street}, ${BUSINESS.address.city}, ${BUSINESS.address.state} ${BUSINESS.address.postalCode}`
+
+/** "Mon–Sat 8:00 AM – 8:00 PM" style labels, derived from BUSINESS.hours. */
+function to12h(t: string): string {
+  const [h, m] = t.split(':').map(Number)
+  const suffix = h >= 12 ? 'PM' : 'AM'
+  const hour = h % 12 === 0 ? 12 : h % 12
+  return `${hour}:${String(m).padStart(2, '0')} ${suffix}`
+}
+function dayRange(days: readonly string[]): string {
+  const short = (d: string) => d.slice(0, 3)
+  return days.length > 1 ? `${short(days[0])}–${short(days[days.length - 1])}` : short(days[0])
+}
+export const HOURS_LINES: string[] = BUSINESS.hours.map((h) => `${dayRange(h.days)} ${to12h(h.opens)} – ${to12h(h.closes)}`)
+/** Long form for sentences, e.g. "Monday to Saturday, 8:00 AM – 8:00 PM. Sunday, 9:00 AM – 6:00 PM." */
+export const HOURS_SENTENCE = BUSINESS.hours
+  .map((h) => `${h.days.length > 1 ? `${h.days[0]} to ${h.days[h.days.length - 1]}` : h.days[0]}, ${to12h(h.opens)} – ${to12h(h.closes)}`)
+  .join('. ')
+
+// ─── Service areas ──────────────────────────────────────────────────────────
+
+export interface ServiceArea {
+  name: string
+  district: string
+  /** Slug of the /cities/{slug} page. Every listed area has one. */
+  slug: string
+  /** True only for the town that holds the Google Business Profile address. */
+  businessLocation: boolean
+}
+
 /**
- * The @type array asserted for JK Interior across every schema.org block on
- * the site. `InteriorDesigner` is not (yet) a core schema.org vocabulary term,
- * but Google's structured-data parser accepts and ignores unrecognised extra
- * types in an @type array without penalising the recognised ones — so it adds
- * business-identity precision for rich-result and Business Profile matching
- * with no downside, alongside the two validated types.
+ * The genuine service areas — the only list of towns used anywhere on the site
+ * (schema.org areaServed, the homepage map, the footer, the FAQ, the assistant).
+ * Only Forbesganj is a business location; everything else is a service area.
  */
-export const BUSINESS_SCHEMA_TYPES = ['LocalBusiness', 'HomeAndConstructionBusiness', 'InteriorDesigner'] as const
+export const SERVICE_AREAS: readonly ServiceArea[] = [
+  { name: 'Forbesganj', district: 'Araria', slug: 'forbesganj', businessLocation: true },
+  { name: 'Araria', district: 'Araria', slug: 'araria', businessLocation: false },
+  { name: 'Jogbani', district: 'Araria', slug: 'jogbani', businessLocation: false },
+  { name: 'Raniganj', district: 'Araria', slug: 'raniganj', businessLocation: false },
+  { name: 'Narpatganj', district: 'Araria', slug: 'narpatganj', businessLocation: false },
+  { name: 'Purnia', district: 'Purnia', slug: 'purnia', businessLocation: false },
+  { name: 'Supaul', district: 'Supaul', slug: 'supaul', businessLocation: false },
+]
 
-/** The core, always-on-the-rate-card services — the schema.org `hasOfferCatalog` / `Service` catalog. */
-export const CORE_SERVICES = [
-  'Gypsum False Ceiling',
-  'PVC & WPC Wall Paneling',
-  'UV Marble Sheet Installation',
-  'Modular TV Unit & Fluted Panel Design',
-  'Grid T-Bar Ceiling Installation',
-  'Cove & Profile LED Lighting',
-  'Partition Walls & Artificial Grass',
-] as const
+/** "Forbesganj, Araria, Jogbani, Raniganj, Narpatganj, Purnia and Supaul" */
+export const SERVICE_AREA_NAMES = (() => {
+  const names = SERVICE_AREAS.map((a) => a.name)
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+})()
 
-/** schema.org PostalAddress for the registered Forbesganj workshop — one source, reused by every JSON-LD block. */
+// ─── City pages ─────────────────────────────────────────────────────────────
+
+export interface CityData {
+  slug: string
+  name: string
+  district: string
+  state: string
+  /** <title> — written per city, not templated. */
+  title: string
+  /** Meta description, ≤155 characters. */
+  metaDescription: string
+  /** Short label under the H1. */
+  role: string
+  /** Opening paragraphs — what JK Interior actually does in this town. */
+  intro: string[]
+  /** Practical, town-specific notes for a customer planning work here. */
+  localNotes: string[]
+  /** How site visits and measurement work for this town. */
+  visitInfo: string
+  /** Service slugs most relevant here, in display order (links to /services/{slug}). */
+  featuredServices: string[]
+  faqs: { q: string; a: string }[]
+}
+
+export const CITIES: CityData[] = [
+  {
+    slug: 'forbesganj',
+    name: 'Forbesganj',
+    district: 'Araria',
+    state: 'Bihar',
+    title: 'False Ceiling & Interior Work in Forbesganj | JK Interior',
+    metaDescription:
+      'JK Interior is based at Damaria Rewahi, Forbesganj. Gypsum and PVC false ceilings, partition walls, WPC panels and TV units, with a free site visit.',
+    role: 'Our workshop and Google Business Profile address',
+    intro: [
+      "JK Interior's workshop and registered address are at Damaria Rewahi, Forbesganj (Bihar 854318) — the location shown on our Google Business Profile. Forbesganj is where we work most often, so it is the easiest town for us to schedule a site visit.",
+      'Here we install gypsum and PVC false ceilings, grid ceilings for shops and offices, gypsum and glass partition walls, WPC wall panelling, UV marble sheet walls, modular TV units and artificial grass for homes, shops and offices.',
+    ],
+    localNotes: [
+      'Two of the projects described on our service pages are in Forbesganj: a cove-lit gypsum ceiling in a 180 sq.ft drawing room, and a 300 sq.ft rented office split into two private cabins with gypsum partitions and a frosted-glass reception.',
+      'For kitchens, bathrooms and balconies we fit PVC rather than gypsum — gypsum is for dry rooms only. We explain this at the site visit before any design is fixed.',
+    ],
+    visitInfo:
+      'Site visits in Forbesganj are free. We measure in person and give a written quotation based on those measurements; for a standard room the work itself usually takes one to three days.',
+    featuredServices: ['gypsum-ceiling', 'pvc-false-ceiling', 'partition-wall', 'modular-tv-unit', 'wpc-wall-panel', 'grid-ceiling'],
+    faqs: [
+      {
+        q: 'Where is JK Interior located in Forbesganj?',
+        a: 'Our registered workshop is at Damaria Rewahi, Forbesganj, Bihar 854318. The exact pin is on our Google Business Profile — use the "View on Google Maps" link on this page for directions.',
+      },
+      {
+        q: 'What does a PVC false ceiling cost in Forbesganj?',
+        a: 'A PVC false ceiling in Forbesganj is usually ₹75–₹150 per sq.ft, depending on the panel design and lighting. The exact figure comes from the free site visit and measurement.',
+      },
+      {
+        q: 'How many days does a gypsum ceiling take in Forbesganj?',
+        a: 'A standard room usually takes two to three days, because every joint is taped and finished smooth. For larger or multi-level designs we confirm the timeline in writing before work starts.',
+      },
+    ],
+  },
+  {
+    slug: 'araria',
+    name: 'Araria',
+    district: 'Araria',
+    state: 'Bihar',
+    title: 'False Ceiling Contractor in Araria, Bihar | JK Interior',
+    metaDescription:
+      'Gypsum, PVC and grid false ceilings, partition walls and WPC panels in Araria town, from JK Interior in Forbesganj. Free site visit and written quote.',
+    role: 'District headquarters · served from Forbesganj',
+    intro: [
+      'Araria is the district headquarters and part of our regular working area from the Forbesganj workshop. We take on homes, clinics, offices and shops in Araria town and across the district.',
+      'Work we do here includes gypsum and PVC false ceilings, grid ceilings for clinics and offices, gypsum and glass partition walls, WPC wall panels, UV marble sheets and modular TV units.',
+    ],
+    localNotes: [
+      'Two projects on our service pages are in Araria: a wood-texture PVC ceiling over a kitchen and balcony, finished in one working day, and a 400 sq.ft diagnostic-centre waiting area in acoustic mineral-fibre grid tiles.',
+      'For clinics and offices with AC ducts or wiring overhead, a grid ceiling keeps everything reachable — any tile lifts out without breaking the ceiling.',
+    ],
+    visitInfo:
+      'We travel to Araria regularly. The site visit and measurement are free, and the quotation is prepared from those measurements.',
+    featuredServices: ['grid-ceiling', 'pvc-false-ceiling', 'gypsum-ceiling', 'partition-wall', 'wpc-wall-panel', 'uv-marble-sheet'],
+    faqs: [
+      {
+        q: 'Does JK Interior work in Araria town?',
+        a: 'Yes. We work across Araria town and the wider district from our workshop in Forbesganj, and the site visit is free.',
+      },
+      {
+        q: 'What does a gypsum ceiling cost in Araria?',
+        a: 'A gypsum false ceiling in Araria is usually ₹75–₹210 per sq.ft. Cove lighting and multi-level designs sit at the upper end of that range.',
+      },
+      {
+        q: 'Which ceiling suits a clinic or office in Araria?',
+        a: 'A grid ceiling, if there is wiring, ducting or plumbing overhead — tiles lift out for maintenance. For a premium cabin or reception, gypsum gives a smoother finish.',
+      },
+    ],
+  },
+  {
+    slug: 'jogbani',
+    name: 'Jogbani',
+    district: 'Araria',
+    state: 'Bihar',
+    title: 'False Ceiling & Wall Panels in Jogbani | JK Interior',
+    metaDescription:
+      'PVC and gypsum false ceilings, grid ceilings for shops and WPC wall panels in Jogbani, Araria district. Free site visit from JK Interior, Forbesganj.',
+    role: 'Border town · Araria district',
+    intro: [
+      'Jogbani sits on the India–Nepal border in Araria district, close to our Forbesganj workshop. Much of the town is commercial, so alongside homes we fit out shops, showrooms and offices.',
+      'Common work here: PVC and grid ceilings for shops, gypsum ceilings for homes, and WPC or fluted wall panels for TV walls and shop feature walls.',
+    ],
+    localNotes: [
+      'One project on our WPC service page is in Jogbani: a 12 ft living-room TV wall in walnut-tone fluted WPC with a hidden LED strip, where the panels went up and the TV was mounted on the same day.',
+      'For shops that stay open during the work, PVC and grid ceilings are the quickest to install and need no curing time.',
+    ],
+    visitInfo:
+      'Jogbani is within our regular working area. Site visits and measurements are free, and we confirm the timeline in writing before starting.',
+    featuredServices: ['wpc-wall-panel', 'pvc-false-ceiling', 'grid-ceiling', 'gypsum-ceiling', 'modular-tv-unit'],
+    faqs: [
+      {
+        q: 'Does JK Interior do false ceiling work in Jogbani?',
+        a: 'Yes — PVC, gypsum and grid ceilings, plus WPC wall panelling, for homes and shops in Jogbani. Call +91 8541849118 to book a free site visit.',
+      },
+      {
+        q: 'What does a false ceiling cost in Jogbani?',
+        a: 'PVC ceilings usually cost ₹75–₹150 per sq.ft and gypsum ceilings ₹75–₹210 per sq.ft. The exact rate depends on design and area, measured at the free site visit.',
+      },
+      {
+        q: 'Which ceiling is suitable for a shop?',
+        a: 'Grid ceilings are the most practical for shops with wiring or AC overhead; PVC suits shops that need a wipe-clean, moisture-proof finish. Gypsum is best kept for showrooms that want a premium look.',
+      },
+    ],
+  },
+  {
+    slug: 'raniganj',
+    name: 'Raniganj',
+    district: 'Araria',
+    state: 'Bihar',
+    title: 'Interior & False Ceiling Work in Raniganj | JK Interior',
+    metaDescription:
+      'False ceilings, WPC wall panels and artificial grass in Raniganj, Araria district, by JK Interior of Forbesganj. Free site visit and written quotation.',
+    role: 'Araria district · regular service area',
+    intro: [
+      'Raniganj is a block town in Araria district and part of our regular service area from Forbesganj. We work on homes and shops here.',
+      'Services we provide in Raniganj include PVC and gypsum false ceilings, WPC wall panels, UV marble sheets, modular TV units and artificial grass for balconies and terraces.',
+    ],
+    localNotes: [
+      'The artificial-grass project on our service page is in Raniganj: a 60 sq.ft balcony given a drained-base lawn with a potted-plant corner.',
+      'Before laying artificial grass we always check that the balcony or terrace drains properly — a poorly draining base is what causes smell and mould in the monsoon.',
+    ],
+    visitInfo:
+      'Raniganj is visited regularly; the site visit and measurement are free, and the quotation is written from those measurements.',
+    featuredServices: ['artificial-grass', 'pvc-false-ceiling', 'gypsum-ceiling', 'wpc-wall-panel', 'uv-marble-sheet'],
+    faqs: [
+      {
+        q: 'Does JK Interior do ceiling work in Raniganj?',
+        a: 'Yes. We install PVC and gypsum false ceilings, WPC wall panels and artificial grass in Raniganj, with a free site visit.',
+      },
+      {
+        q: 'What is the rate for ceiling work in Raniganj?',
+        a: 'PVC ceilings usually cost ₹75–₹150 per sq.ft and gypsum ceilings ₹75–₹210 per sq.ft. Call +91 8541849118 for an exact estimate after measurement.',
+      },
+      {
+        q: 'Can artificial grass be laid on a balcony in Raniganj?',
+        a: 'Yes, as long as the base drains. A typical balcony takes half a day to a full day, and artificial grass usually costs ₹40–₹150 per sq.ft depending on pile height and density.',
+      },
+    ],
+  },
+  {
+    slug: 'narpatganj',
+    name: 'Narpatganj',
+    district: 'Araria',
+    state: 'Bihar',
+    title: 'False Ceiling & Interior Work in Narpatganj | JK Interior',
+    metaDescription:
+      'PVC and gypsum false ceilings, WPC wall panels, UV marble sheets and TV units in Narpatganj, Araria district. Free site visit from JK Interior.',
+    role: 'Araria district · regular service area',
+    intro: [
+      'Narpatganj is a block in Araria district that we cover regularly from our workshop in Forbesganj. We work on homes and shops in Narpatganj and the surrounding villages.',
+      'Services here include PVC and gypsum false ceilings, WPC wall panelling, UV marble sheet walls for pooja rooms and bathrooms, and modular TV units.',
+    ],
+    localNotes: [
+      'UV marble sheet is a practical choice for pooja rooms and bathroom walls: it is waterproof and has no grout lines to blacken, and a room is usually finished in one to two days.',
+      'If you are building new, tell us at the site visit where lights, fans and AC points will go — ceiling cut-outs and wiring are planned before the boards go up.',
+    ],
+    visitInfo:
+      'Site visits in Narpatganj and nearby villages are free. We measure in person and prepare the quotation from those measurements.',
+    featuredServices: ['pvc-false-ceiling', 'gypsum-ceiling', 'uv-marble-sheet', 'wpc-wall-panel', 'modular-tv-unit'],
+    faqs: [
+      {
+        q: 'Does JK Interior work in Narpatganj?',
+        a: 'Yes. Narpatganj is part of our regular service area. Call +91 8541849118 or +91 8651070831 to book a free site visit.',
+      },
+      {
+        q: 'What does a false ceiling cost in Narpatganj?',
+        a: 'PVC ceilings usually cost ₹75–₹150 per sq.ft and gypsum ceilings ₹75–₹210 per sq.ft, depending on the design. The free site visit gives you an exact figure.',
+      },
+      {
+        q: 'Where is JK Interior’s workshop?',
+        a: 'Our registered workshop is at Damaria Rewahi, Forbesganj, Bihar 854318 — the address on our Google Business Profile.',
+      },
+    ],
+  },
+  {
+    slug: 'purnia',
+    name: 'Purnia',
+    district: 'Purnia',
+    state: 'Bihar',
+    title: 'False Ceiling & Interior Work in Purnia, Bihar | JK Interior',
+    metaDescription:
+      'JK Interior of Forbesganj takes on gypsum and PVC false ceiling, UV marble and WPC panel work in Purnia. Site visits scheduled in advance, free of charge.',
+    role: 'Purnia district · visits scheduled in advance',
+    intro: [
+      'Purnia is outside our home district — JK Interior is based in Forbesganj, Araria district — but we do take on work in Purnia, and we travel there for site visits and installation.',
+      'In Purnia we take on gypsum and PVC false ceilings, WPC wall panelling, UV marble sheet walls, modular TV units and partition walls for homes and offices.',
+    ],
+    localNotes: [
+      'The UV marble project on our service page is in Purnia: a small pooja room clad floor-to-ceiling in white-and-gold veined UV marble with a recessed LED niche for the idol, finished in a single day.',
+      'Because Purnia is further from our workshop, we plan the visit and the installation days in advance and bring all materials for the job in one trip, so the work is not held up waiting for supplies.',
+    ],
+    visitInfo:
+      'Purnia site visits are scheduled in advance by phone or WhatsApp and are free. Measurements are taken in person and the quotation is written from them.',
+    featuredServices: ['uv-marble-sheet', 'gypsum-ceiling', 'pvc-false-ceiling', 'wpc-wall-panel', 'modular-tv-unit', 'partition-wall'],
+    faqs: [
+      {
+        q: 'Does JK Interior work in Purnia?',
+        a: 'Yes. We are based in Forbesganj and travel to Purnia for site visits and installation. Visits are scheduled in advance — call +91 8541849118 or WhatsApp the same number.',
+      },
+      {
+        q: 'How long does PVC ceiling work take in Purnia?',
+        a: 'A standard room usually takes one to two days on site. We fix the dates before we travel so the work runs without breaks.',
+      },
+      {
+        q: 'Which services does JK Interior offer in Purnia?',
+        a: 'Gypsum and PVC false ceilings, WPC wall panels, UV marble sheet walls, modular TV units and partition walls.',
+      },
+    ],
+  },
+  {
+    slug: 'supaul',
+    name: 'Supaul',
+    district: 'Supaul',
+    state: 'Bihar',
+    title: 'False Ceiling & Interior Work in Supaul, Bihar | JK Interior',
+    metaDescription:
+      'PVC and gypsum false ceilings, WPC wall panels and UV marble sheets in Supaul district, including Tribeniganj and Chhatapur. Free site visit.',
+    role: 'Supaul district · visits scheduled in advance',
+    intro: [
+      'Supaul is a neighbouring district to Araria. We travel from our Forbesganj workshop to Supaul town and its blocks — including Tribeniganj and Chhatapur — for site visits and installation.',
+      'In Supaul we take on PVC and gypsum false ceilings, WPC wall panels, UV marble sheet walls, modular TV units and partition walls for homes and offices.',
+    ],
+    localNotes: [
+      'For ceilings in kitchens, bathrooms and other damp rooms we fit PVC, which is fully waterproof; gypsum is recommended only for dry rooms such as halls and bedrooms.',
+      'We schedule Supaul visits in advance and group the installation days so the work runs without breaks.',
+    ],
+    visitInfo:
+      'Supaul site visits are free and arranged in advance by phone or WhatsApp. The quotation is prepared from the measurements taken on site.',
+    featuredServices: ['pvc-false-ceiling', 'gypsum-ceiling', 'wpc-wall-panel', 'uv-marble-sheet', 'modular-tv-unit', 'partition-wall'],
+    faqs: [
+      {
+        q: 'Does JK Interior travel to Supaul?',
+        a: 'Yes. We work in Supaul town and its blocks, including Tribeniganj and Chhatapur. Visits are arranged in advance and are free.',
+      },
+      {
+        q: 'What does a PVC ceiling cost in Supaul?',
+        a: 'A PVC false ceiling usually costs ₹75–₹150 per sq.ft depending on panel design and lighting. Call +91 8541849118 to arrange a site visit and quotation.',
+      },
+      {
+        q: 'Gypsum or PVC — which ceiling should I choose?',
+        a: 'PVC for kitchens, bathrooms, balconies and shops that need a waterproof, wipe-clean ceiling; gypsum for halls and bedrooms where you want a smooth, painted finish and cove lighting.',
+      },
+    ],
+  },
+]
+
+export function getCityBySlug(slug: string): CityData | undefined {
+  return CITIES.find((c) => c.slug === slug)
+}
+
+// ─── schema.org builders ────────────────────────────────────────────────────
+
+/** A reference to the one business entity — used by every page except the homepage. */
+export function businessRef() {
+  return { '@id': BUSINESS_ID }
+}
+
 export function businessAddress() {
   return {
     '@type': 'PostalAddress',
@@ -67,434 +420,111 @@ export function businessAddress() {
   }
 }
 
-/** schema.org GeoCoordinates for the registered workshop — see BUSINESS.geo for the source of truth. */
-export function businessGeo() {
-  return { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng }
+export function areaServedSchema() {
+  return SERVICE_AREAS.map((a) => ({ '@type': 'City', name: a.name }))
 }
 
-/** The two published ContactPoints, in the order used across every JSON-LD block. */
-export function businessContactPoints() {
-  return [
-    {
-      '@type': 'ContactPoint',
-      telephone: BUSINESS.phone1,
-      contactType: 'customer service',
-      areaServed: 'IN-BR',
-      availableLanguage: ['English', 'Hindi'],
-    },
-    {
-      '@type': 'ContactPoint',
-      telephone: BUSINESS.phone2,
-      contactType: 'sales',
-      areaServed: 'IN-BR',
-      availableLanguage: ['English', 'Hindi'],
-    },
-  ]
+export function openingHoursSchema() {
+  return BUSINESS.hours.map((h) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [...h.days],
+    opens: h.opens,
+    closes: h.closes,
+  }))
 }
 
 /**
- * The reusable JK Interior identity block — used as the `provider` of a
- * per-service `Service` schema, the `mainEntity` of the ContactPage schema, or
- * spread into the page-level LocalBusiness block on the home and city pages.
- * Every field here is pulled from BUSINESS, so a GBP detail (phone, address,
- * geo) only ever needs updating in one place.
+ * The complete, canonical LocalBusiness entity. Emitted once, on the homepage.
+ * HomeAndConstructionBusiness is a schema.org LocalBusiness subtype covering
+ * contractors that work on homes and buildings.
  */
-export function buildBusinessIdentity() {
+export function buildLocalBusinessSchema(services: { name: string; slug: string }[]) {
   return {
-    '@type': [...BUSINESS_SCHEMA_TYPES],
-    '@id': `${SITE_URL}/#business`,
+    '@context': 'https://schema.org',
+    '@type': 'HomeAndConstructionBusiness',
+    '@id': BUSINESS_ID,
     name: BUSINESS.name,
-    telephone: [BUSINESS.phone1, BUSINESS.phone2],
-    contactPoint: businessContactPoints(),
+    description: BUSINESS.description,
+    url: `${SITE_URL}/`,
+    logo: BUSINESS.logo,
+    image: BUSINESS.image,
+    telephone: BUSINESS.phone1,
+    email: BUSINESS.email,
+    foundingDate: BUSINESS.founded,
+    priceRange: BUSINESS.priceRange,
     address: businessAddress(),
-    geo: businessGeo(),
+    geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+    hasMap: GOOGLE_MAPS_URL,
+    openingHoursSpecification: openingHoursSchema(),
+    areaServed: areaServedSchema(),
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        telephone: BUSINESS.phone1,
+        contactType: 'customer service',
+        areaServed: 'IN-BR',
+        availableLanguage: ['English', 'Hindi'],
+      },
+      {
+        '@type': 'ContactPoint',
+        telephone: BUSINESS.phone2,
+        contactType: 'sales',
+        areaServed: 'IN-BR',
+        availableLanguage: ['English', 'Hindi'],
+      },
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'JK Interior services',
+      itemListElement: services.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: s.name, url: `${SITE_URL}/services/${s.slug}` },
+      })),
+    },
+    // Real reviews live on the Google Business Profile — no self-serving
+    // review/rating markup here.
+    sameAs: [GOOGLE_MAPS_URL, BUSINESS.social.instagram],
   }
 }
 
-export const SERVICES_LIST = [
-  'PVC False Ceiling',
-  'Gypsum Ceiling',
-  'WPC Wall Panel',
-  'UV Marble Sheet',
-  'Modular TV Unit',
-  'Complete Interior Design',
-  'Bedroom Interior',
-  'Kitchen Interior',
-  'Office Interior',
-  'ACP Exterior',
-  'Louvers Panel',
-  'Charcoal Panel',
-] as const
-
-export interface CityData {
-  slug: string
-  name: string
-  district: string
-  state: string
-  distance: string
-  description: string
-  uniqueContent: string
-  keywords: string[]
-  faqs: { q: string; a: string }[]
+export function buildWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': WEBSITE_ID,
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    inLanguage: 'en-IN',
+    publisher: businessRef(),
+  }
 }
 
-export const CITIES: CityData[] = [
-  {
-    slug: 'forbesganj',
-    name: 'Forbesganj',
-    district: 'Araria',
-    state: 'Bihar',
-    distance: 'Registered Workshop',
-    description:
-      'JK Interior\'s registered workshop is in Forbesganj. We are the most trusted interior design and false ceiling contractor for homes, shops and offices across Forbesganj and Araria district.',
-    uniqueContent:
-      "Forbesganj holds JK Interior's registered workshop and material store, and it remains the town we work in most. We serve every neighbourhood here with quick response times and competitive, transparent pricing. Whether you need a modern PVC false ceiling for a living room, a gypsum ceiling with cove lighting, WPC wall panelling behind a television unit, or a complete home interior — JK Interior delivers a premium result at an honest rate right here in Forbesganj.",
-    keywords: [
-      'interior designer Forbesganj',
-      'false ceiling contractor Forbesganj',
-      'PVC ceiling Forbesganj',
-      'gypsum ceiling Forbesganj',
-      'WPC wall panel Forbesganj',
-      'TV unit design Forbesganj',
-      'interior design Forbesganj Bihar',
-      'best interior designer Forbesganj',
-      'JK Interior Forbesganj',
-      'false ceiling near me Forbesganj',
-      'interior designer Dumariya',
-      'false ceiling Dumariya Forbesganj',
-      'JK Interior Dumariya',
-    ],
-    faqs: [
-      {
-        q: 'What does a PVC false ceiling cost in Forbesganj?',
-        a: 'A PVC false ceiling in Forbesganj starts from ₹75–₹150 per sq.ft, with the rate varying by design and lighting. Call +91 8541849118 or +91 8651070831 for an exact figure and a free quotation.',
-      },
-      {
-        q: 'Does JK Interior offer a free site visit in Forbesganj?',
-        a: 'Yes. We provide a free site visit throughout Forbesganj. Our team attends your home or shop in person, takes accurate measurements and prepares the estimate from those measurements.',
-      },
-      {
-        q: 'How many days does a gypsum ceiling take in Forbesganj?',
-        a: 'A standard room in Forbesganj is completed in one to three days. For larger projects we confirm a precise timeline before any work begins.',
-      },
-    ],
-  },
-  {
-    slug: 'araria',
-    name: 'Araria',
-    district: 'Araria',
-    state: 'Bihar',
-    distance: '22 km from Forbesganj',
-    description:
-      "JK Interior provides premium false ceiling, PVC wall paneling, and interior design services in Araria. We are Araria district's top-rated interior contractor.",
-    uniqueContent:
-      "Araria is the district headquarters and a growing hub for modern interior design. JK Interior serves all areas of Araria city — from residential apartments to commercial showrooms and offices. Our team travels regularly to Araria and maintains quick turnaround times. Whether it's a gypsum ceiling for your drawing room, PVC panels for your shop, or a full office interior — we handle it all with professional expertise in Araria.",
-    keywords: [
-      'interior designer Araria',
-      'false ceiling contractor Araria',
-      'PVC ceiling Araria Bihar',
-      'gypsum ceiling Araria',
-      'interior design Araria district',
-      'best interior designer Araria',
-      'JK Interior Araria',
-      'false ceiling near me Araria',
-      'WPC wall panel Araria',
-    ],
-    faqs: [
-      {
-        q: 'Who is the best interior designer in Araria?',
-        a: 'JK Interior is among the most trusted names in Araria district. With more than 500 completed projects and a written one-year warranty on every job, you can hand over interior design and false ceiling work with confidence.',
-      },
-      {
-        q: 'What does a gypsum ceiling cost in Araria?',
-        a: 'A gypsum false ceiling in Araria starts from ₹75–₹210 per sq.ft. Cove lighting and multi-level designs sit at the premium end of that band. Call +91 8541849118 to arrange a free site visit.',
-      },
-      {
-        q: 'Does JK Interior work in Araria town?',
-        a: 'Yes. We work across Araria town and the wider district. Our team travels there continuously, so projects are never held up by distance.',
-      },
-    ],
-  },
-  {
-    slug: 'purnia',
-    name: 'Purnia',
-    district: 'Purnia',
-    state: 'Bihar',
-    distance: '65 km from Forbesganj',
-    description:
-      'JK Interior serves Purnia with premium gypsum ceiling, PVC false ceiling, WPC wall panel and complete interior design solutions at competitive prices.',
-    uniqueContent:
-      "Purnia is one of North Bihar's largest cities, and JK Interior is proud to serve its residents and businesses. From modern apartment false ceilings to commercial showroom interiors, our skilled team brings Forbesganj-quality craftsmanship to Purnia. We specialise in gypsum ceiling, PVC ceiling, WPC louvers, UV marble sheet cladding, and complete interior design projects for homes, offices, and shops across Purnia.",
-    keywords: [
-      'interior designer Purnia',
-      'false ceiling contractor Purnia',
-      'PVC ceiling Purnia Bihar',
-      'gypsum ceiling Purnia',
-      'interior design Purnia',
-      'best interior designer Purnia Bihar',
-      'WPC panel Purnia',
-      'TV unit design Purnia',
-      'false ceiling near me Purnia',
-    ],
-    faqs: [
-      {
-        q: 'How do I contact an interior designer in Purnia?',
-        a: 'Call +91 8541849118 or send a message to +91 8651070831 on WhatsApp. We carry out free site visits across Purnia and prepare a complete written quotation.',
-      },
-      {
-        q: 'How long does PVC ceiling work take in Purnia?',
-        a: 'A standard room in Purnia is completed in one to two days. We travel to Purnia regularly, which is how we hold to the agreed completion dates.',
-      },
-      {
-        q: 'Which services does JK Interior offer in Purnia?',
-        a: 'In Purnia we handle PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, television unit design, bedroom interiors, office interiors and complete interior design.',
-      },
-    ],
-  },
-  {
-    slug: 'jogbani',
-    name: 'Jogbani',
-    district: 'Araria',
-    state: 'Bihar',
-    distance: '35 km from Forbesganj',
-    description:
-      'JK Interior provides modern interior design, false ceiling, PVC wall paneling and WPC louver installation services in Jogbani, Araria district.',
-    uniqueContent:
-      'Jogbani, located at the India–Nepal border, is a bustling commercial town with growing demand for modern interior design. JK Interior serves residential homes, shops, hotels, and offices in Jogbani with premium false ceiling and wall paneling services. Our expertise in PVC ceiling, gypsum ceiling, WPC louvers, and fluted panels makes us the ideal choice for any interior project in Jogbani.',
-    keywords: [
-      'interior designer Jogbani',
-      'false ceiling Jogbani',
-      'PVC ceiling Jogbani Araria',
-      'gypsum ceiling Jogbani',
-      'WPC louvers Jogbani',
-      'interior design Jogbani Bihar',
-      'best interior contractor Jogbani',
-      'false ceiling near me Jogbani',
-    ],
-    faqs: [
-      {
-        q: 'Who carries out false ceiling work in Jogbani?',
-        a: 'JK Interior is among the most trusted names for false ceiling work in Jogbani and across Araria district. Whether you need a PVC ceiling, a gypsum ceiling or WPC wall panelling, call +91 8541849118.',
-      },
-      {
-        q: 'What does interior design cost in Jogbani?',
-        a: 'Our rates in Jogbani remain accessible — PVC ceilings start from ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Book a free site visit for an exact figure.',
-      },
-      {
-        q: 'Does JK Interior provide home interior services in Jogbani?',
-        a: 'Yes. In Jogbani we deliver complete home interiors, bedroom interiors, kitchen interiors, false ceilings and wall panelling.',
-      },
-    ],
-  },
-  {
-    slug: 'supaul',
-    name: 'Supaul',
-    district: 'Supaul',
-    state: 'Bihar',
-    distance: '55 km from Forbesganj',
-    description:
-      'JK Interior offers false ceiling, PVC wall paneling, gypsum ceiling and interior design services in Supaul district, Bihar at affordable prices.',
-    uniqueContent:
-      'Supaul district has seen rapid growth in construction and home improvement projects. JK Interior extends its services to Supaul city and surrounding areas, bringing modern interior design to this region. Our services include PVC false ceiling, gypsum ceiling with LED cove lighting, WPC wall panels, UV marble sheet cladding, modular TV units, and complete bedroom and office interiors in Supaul.',
-    keywords: [
-      'interior designer Supaul',
-      'false ceiling Supaul Bihar',
-      'PVC ceiling Supaul',
-      'gypsum ceiling Supaul district',
-      'interior design Supaul',
-      'false ceiling contractor Supaul',
-      'WPC wall panel Supaul',
-      'best interior designer Supaul Bihar',
-    ],
-    faqs: [
-      {
-        q: 'Who is the best false ceiling contractor in Supaul?',
-        a: 'JK Interior is a trusted name for false ceiling and interior design work across Supaul district. We have completed more than 500 projects and work in PVC, gypsum and WPC alike.',
-      },
-      {
-        q: 'What does a PVC ceiling cost in Supaul?',
-        a: 'A PVC false ceiling in Supaul starts from ₹75–₹150 per sq.ft. Call +91 8541849118 to arrange a free site visit and quotation.',
-      },
-      {
-        q: 'Does JK Interior travel to Supaul?',
-        a: 'Yes. We work in Supaul town and in every block of the district, including Tribeniganj and Chhatapur, and we provide a free site visit throughout.',
-      },
-    ],
-  },
-  {
-    slug: 'narpatganj',
-    name: 'Narpatganj',
-    district: 'Araria',
-    state: 'Bihar',
-    distance: 'Our Operating Base',
-    description:
-      'Narpatganj is JK Interior\'s day-to-day operating base. We provide expert false ceiling, PVC ceiling, gypsum ceiling and complete interior design services here and throughout Araria district.',
-    uniqueContent:
-      'Narpatganj is where JK Interior operates from, which makes it the area we reach fastest of all. Our team handles false ceiling installation, PVC and gypsum ceiling work, WPC wall panelling, UV marble sheets and television unit design for the block\'s growing residential and commercial clients. Free site visits in Narpatganj and the surrounding villages are usually arranged within a day.',
-    keywords: [
-      'interior designer Narpatganj',
-      'false ceiling Narpatganj',
-      'PVC ceiling Narpatganj Araria',
-      'gypsum ceiling Narpatganj',
-      'interior design Narpatganj Bihar',
-      'false ceiling contractor Narpatganj',
-      'WPC wall panel Narpatganj',
-      'best interior designer Narpatganj',
-    ],
-    faqs: [
-      {
-        q: 'Who provides interior design services in Narpatganj?',
-        a: 'Narpatganj is JK Interior\'s operating base, so our team is close at hand. We deliver PVC ceilings, gypsum ceilings, WPC wall panels, UV marble sheets and complete interior design here. Call +91 8541849118 or +91 8651070831.',
-      },
-      {
-        q: 'What does a false ceiling cost in Narpatganj?',
-        a: 'In Narpatganj, PVC ceilings start from ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Book a free site visit for an accurate estimate.',
-      },
-      {
-        q: 'How far is JK Interior\'s workshop from Narpatganj?',
-        a: 'Our team operates out of Narpatganj itself, and our registered workshop address is in Forbesganj, roughly 28 km away. Response times in and around Narpatganj are the quickest we offer.',
-      },
-    ],
-  },
-  {
-    slug: 'raniganj',
-    name: 'Raniganj',
-    district: 'Araria',
-    state: 'Bihar',
-    distance: '18 km from Forbesganj',
-    description:
-      'JK Interior serves Raniganj, Araria with modern interior design, false ceiling, PVC wall paneling and gypsum ceiling services at the best price.',
-    uniqueContent:
-      "Raniganj, a growing town in Araria district, is well within JK Interior's primary service zone. Being just 18 km from our Forbesganj office, we provide the fastest response and most competitive pricing for Raniganj clients. Our services include PVC false ceiling, gypsum ceiling design, WPC louvers, fluted wall panels, UV marble sheet cladding, modular TV units, and complete home interior solutions in Raniganj.",
-    keywords: [
-      'interior designer Raniganj',
-      'false ceiling Raniganj Araria',
-      'PVC ceiling Raniganj',
-      'gypsum ceiling Raniganj Bihar',
-      'interior design Raniganj',
-      'false ceiling contractor Raniganj',
-      'WPC panel Raniganj Araria',
-      'best interior designer Raniganj Bihar',
-    ],
-    faqs: [
-      {
-        q: 'Does JK Interior carry out false ceiling work in Raniganj?',
-        a: 'Yes. In Raniganj we install PVC false ceilings, gypsum ceilings, WPC wall panels and complete interior design, with a free site visit included.',
-      },
-      {
-        q: 'What is the rate for ceiling work in Raniganj?',
-        a: 'In Raniganj, PVC ceilings start at ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Call +91 8541849118 for an accurate estimate.',
-      },
-      {
-        q: 'How quickly can JK Interior reach Raniganj?',
-        a: 'Raniganj is only 18 km from Forbesganj, so our team usually attends a site visit there within 24 hours.',
-      },
-    ],
-  },
-  {
-    slug: 'tribeniganj',
-    name: 'Tribeniganj',
-    district: 'Supaul',
-    state: 'Bihar',
-    distance: '48 km from Forbesganj',
-    description:
-      'JK Interior offers interior design, PVC ceiling, gypsum ceiling and wall paneling services in Tribeniganj, Supaul district at affordable prices.',
-    uniqueContent:
-      'Tribeniganj in Supaul district is an important commercial centre that JK Interior serves with dedicated interior design and ceiling solutions. Our skilled craftsmen handle PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, charcoal panels, and complete interior work for homes and commercial establishments in Tribeniganj.',
-    keywords: [
-      'interior designer Tribeniganj',
-      'false ceiling Tribeniganj Supaul',
-      'PVC ceiling Tribeniganj',
-      'gypsum ceiling Tribeniganj',
-      'interior design Tribeniganj Bihar',
-      'false ceiling contractor Tribeniganj',
-      'best interior designer Tribeniganj',
-    ],
-    faqs: [
-      {
-        q: 'Where can I find an interior designer in Tribeniganj?',
-        a: 'JK Interior is a trusted name for interior design in Tribeniganj. For PVC ceilings, gypsum ceilings, WPC wall panelling or a complete interior, call +91 8541849118.',
-      },
-      {
-        q: 'What does a false ceiling cost in Tribeniganj?',
-        a: 'In Tribeniganj, PVC false ceilings start at ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Book a free site visit for an accurate estimate.',
-      },
-      {
-        q: 'Does JK Interior serve Tribeniganj?',
-        a: 'Yes. We carry out interior design and false ceiling work regularly in Tribeniganj, Supaul district. Call today to book a free site visit.',
-      },
-    ],
-  },
-  {
-    slug: 'kursakanta',
-    name: 'Kursakanta',
-    district: 'Araria',
-    state: 'Bihar',
-    distance: '32 km from Forbesganj',
-    description:
-      'JK Interior provides PVC false ceiling, gypsum ceiling, WPC wall panel and interior design services in Kursakanta, Araria district.',
-    uniqueContent:
-      'Kursakanta is a well-connected block in Araria district where JK Interior actively provides interior design and ceiling services. We serve residential homes, shops, and office spaces in Kursakanta with PVC false ceiling, gypsum ceiling, WPC wall panels, fluted panels, and complete interior solutions. Our team ensures quality workmanship with ISI-certified materials and a 1-year written warranty.',
-    keywords: [
-      'interior designer Kursakanta',
-      'false ceiling Kursakanta Araria',
-      'PVC ceiling Kursakanta',
-      'gypsum ceiling Kursakanta Bihar',
-      'interior design Kursakanta',
-      'false ceiling contractor Kursakanta',
-      'WPC wall panel Kursakanta',
-    ],
-    faqs: [
-      {
-        q: 'Who is the false ceiling contractor for Kursakanta?',
-        a: 'JK Interior is a leading choice for false ceiling work in Kursakanta. For PVC ceilings, gypsum ceilings, WPC panels or interior design, call +91 8541849118.',
-      },
-      {
-        q: 'Does JK Interior handle interior design work in Kursakanta?',
-        a: 'Yes. In Kursakanta we deliver PVC false ceilings, gypsum ceilings, WPC wall panels, UV marble sheets and television unit design.',
-      },
-      {
-        q: 'What does a PVC ceiling cost in Kursakanta?',
-        a: 'A PVC false ceiling in Kursakanta starts from ₹75 per sq.ft. Call +91 8541849118 for free measurements and an estimate.',
-      },
-    ],
-  },
-  {
-    slug: 'chhatapur',
-    name: 'Chhatapur',
-    district: 'Supaul',
-    state: 'Bihar',
-    distance: '52 km from Forbesganj',
-    description:
-      'JK Interior provides false ceiling, PVC ceiling, gypsum ceiling and interior design services in Chhatapur, Supaul district at competitive prices.',
-    uniqueContent:
-      'Chhatapur in Supaul district is a growing town where JK Interior delivers modern interior design and false ceiling services. Our team handles PVC false ceiling, gypsum ceiling design, WPC wall panels, UV marble sheet, and complete bedroom and office interior projects in Chhatapur. We ensure high-quality craftsmanship, branded materials, and a 1-year warranty on all projects.',
-    keywords: [
-      'interior designer Chhatapur',
-      'false ceiling Chhatapur Supaul',
-      'PVC ceiling Chhatapur',
-      'gypsum ceiling Chhatapur Bihar',
-      'interior design Chhatapur',
-      'false ceiling contractor Chhatapur',
-      'WPC wall panel Chhatapur Supaul',
-    ],
-    faqs: [
-      {
-        q: 'Who is the interior designer for Chhatapur?',
-        a: 'JK Interior is a trusted name for interior work in Chhatapur and across Supaul district. For PVC ceilings, gypsum ceilings or wall panelling, call +91 8541849118.',
-      },
-      {
-        q: 'What does a false ceiling cost in Chhatapur?',
-        a: 'In Chhatapur, PVC ceilings start at ₹75 per sq.ft and gypsum ceilings also begin at ₹75 per sq.ft. Get in touch today to book a free site visit.',
-      },
-      {
-        q: 'Does JK Interior serve Chhatapur?',
-        a: 'Yes. We carry out false ceiling, wall panelling and interior design work in Chhatapur, Supaul district.',
-      },
-    ],
-  },
-]
+export interface Crumb {
+  name: string
+  path: string
+}
 
-export function getCityBySlug(slug: string): CityData | undefined {
-  return CITIES.find((c) => c.slug === slug)
+export function buildBreadcrumbSchema(crumbs: Crumb[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      item: `${SITE_URL}${c.path === '/' ? '/' : c.path}`,
+    })),
+  }
+}
+
+export function buildFaqSchema(faqs: { q: string; a: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  }
 }

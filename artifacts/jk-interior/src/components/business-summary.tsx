@@ -8,6 +8,7 @@ import {
   PHONE_SECONDARY_DISPLAY,
 } from "@/lib/business-data"
 import { BUSINESS_FACTS as facts } from "@/lib/business-facts"
+import { ADDRESS_LINE, HOURS_LINES, SERVICE_AREA_NAMES } from "@/lib/seo"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
@@ -68,8 +69,7 @@ export default function BusinessSummary() {
         </motion.h2>
         <motion.p {...anim(0.05)} className="mt-3 max-w-3xl text-base leading-relaxed text-gray-700">
           JK Interior is a false ceiling and interior design contractor based in Forbesganj, Araria
-          district, Bihar, serving Narpatganj, Forbesganj, Araria, Purnia, Supaul and the surrounding
-          towns. To book a free site visit or ask for a quotation, call{" "}
+          district, Bihar, serving {SERVICE_AREA_NAMES}. To book a free site visit or ask for a quotation, call{" "}
           <a href={`tel:${PHONE_PRIMARY}`} className="font-bold text-gold-800 underline underline-offset-2">
             {PHONE_PRIMARY_DISPLAY}
           </a>{" "}
@@ -125,11 +125,11 @@ export default function BusinessSummary() {
         <motion.div {...anim(0.1)} className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-gray-600">
           <span className="flex items-center gap-1.5">
             <MapPin className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
-            Forbesganj, Araria, Bihar 854318
+            {ADDRESS_LINE}
           </span>
           <span className="flex items-center gap-1.5">
             <Clock className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
-            Mon–Sat 8 AM–8 PM · Sun 9 AM–6 PM
+            {HOURS_LINES.join(" · ")}
           </span>
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />

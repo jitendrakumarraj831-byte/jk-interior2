@@ -2,57 +2,73 @@
 // FAQ accordion (faq-section.tsx) and by the FAQPage JSON-LD in HomePage.tsx,
 // so the rich-result markup can never drift from what visitors actually read.
 
+import { ADDRESS_LINE, HOURS_SENTENCE, SERVICE_AREA_NAMES } from "./seo.js"
+
 export interface FaqItem {
   q: string
   a: string
 }
 
+/**
+ * Short, factual answers to the questions customers actually ask — written so
+ * each answer stands on its own (the first sentence answers the question).
+ * Every rate and timeline here matches the service pages.
+ */
 export const FAQS: FaqItem[] = [
-  // The first three answer the highest-intent "who do I call" phrasings
-  // directly and lead with the number, so an answer engine summarising this
-  // page has the contact detail in the first sentence rather than buried.
   {
     q: "What is JK Interior's phone number?",
-    a: "JK Interior can be reached on +91 8541849118 (primary line, also on WhatsApp) or +91 8651070831 (alternate line). Both numbers are answered Monday to Saturday, 8:00 AM to 8:00 PM, and Sunday 9:00 AM to 6:00 PM. WhatsApp messages are picked up outside those hours too.",
+    a: `JK Interior can be reached on +91 8541849118 (primary line, also on WhatsApp) or +91 8651070831 (alternate line). Opening hours: ${HOURS_SENTENCE}. WhatsApp messages are picked up outside those hours too.`,
   },
   {
-    q: "Who is the best false ceiling contractor in Forbesganj and Araria?",
-    a: "JK Interior is a leading false ceiling and interior design contractor in Forbesganj and Araria district, Bihar, with 500+ completed projects since 2019 and a written one-year warranty on every job. Call +91 8541849118 or +91 8651070831 to book a free site visit. The registered workshop is at Damaria Rewahi, Forbesganj, Araria, Bihar 854318.",
+    q: "Where is JK Interior located?",
+    a: `Our registered workshop is at ${ADDRESS_LINE}, Araria district — the address on our Google Business Profile. From there we travel to customers across ${SERVICE_AREA_NAMES}.`,
   },
   {
-    q: "How do I contact an interior designer near me in Araria district?",
-    a: "Call or message JK Interior on WhatsApp at +91 8541849118, or call the alternate line +91 8651070831. We cover Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia, and the site visit and quotation are free everywhere we work.",
+    q: "What areas does JK Interior serve?",
+    a: `We work in ${SERVICE_AREA_NAMES}. Forbesganj is our business location; the other towns are service areas we travel to. The site visit and quotation are free everywhere we work.`,
   },
   {
     q: "Which services does JK Interior provide?",
-    a: "JK Interior provides PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet, modular TV unit, charcoal panel, louvre panel and ACP exterior work, along with complete interiors for homes, bedrooms, kitchens and offices. We serve Narpatganj, Forbesganj, Araria, Purnia and the surrounding areas of Bihar.",
+    a: "Gypsum false ceilings, PVC false ceilings, grid ceilings, gypsum and glass partition walls, WPC wall panels (including louvre and fluted designs), UV marble sheet walls, modular TV units and artificial grass.",
   },
   {
-    q: "What does a PVC false ceiling cost in Forbesganj?",
-    a: "A PVC false ceiling in Forbesganj and across Araria district typically ranges from ₹75 to ₹150 per sq.ft, depending on panel quality, design and lighting. Call +91 8541849118 or +91 8651070831 for a free site visit and a detailed written quotation.",
+    q: "What is a gypsum false ceiling?",
+    a: "A gypsum false ceiling is a ceiling of gypsum boards screwed to a galvanised metal frame hung below the roof slab. The joints are taped and finished so it looks like one smooth, painted surface, and it can be shaped into stepped borders with hidden cove lighting. It is meant for dry rooms such as halls and bedrooms.",
+  },
+  {
+    q: "What does a gypsum false ceiling cost in Forbesganj?",
+    a: "A gypsum false ceiling in Forbesganj and Araria district usually costs ₹75–₹210 per sq.ft. A plain single-level ceiling sits at the lower end; cove lighting and multi-level designs at the upper end. The exact figure is set after the free site visit.",
+  },
+  {
+    q: "How much does a PVC ceiling cost?",
+    a: "A PVC false ceiling usually costs ₹75–₹150 per sq.ft, depending on the panel design (plain, wood-grain, marble-print or high-gloss) and the lighting. Call +91 8541849118 for a free site visit and written quotation.",
+  },
+  {
+    q: "Gypsum or PVC ceiling — which is better?",
+    a: "Neither is better everywhere. PVC is fully waterproof and wipe-clean, so it suits kitchens, bathrooms, balconies and shops. Gypsum gives a smoother, painted finish with cove lighting, so it suits halls and bedrooms — but it must be kept away from water and steam.",
+  },
+  {
+    q: "Which ceiling is suitable for a shop?",
+    a: "For most shops a grid ceiling is the most practical: it is quick to install and any tile lifts out to reach wiring or AC ducts. PVC suits shops that need a moisture-proof, wipe-clean ceiling, and gypsum suits showrooms that want a premium finish.",
+  },
+  {
+    q: "How long does false ceiling installation take?",
+    a: "A standard room usually takes one to three days: PVC is often finished in a day, while gypsum takes two to three days because the joints are taped and finished. We confirm the full timeline in writing before work begins.",
   },
   {
     q: "Do you offer a free site visit?",
-    a: "Yes. JK Interior provides a free expert site visit and a detailed quotation with no obligation whatsoever. Free site visits are available throughout Narpatganj, Forbesganj, Araria and the neighbouring areas of Bihar.",
-  },
-  {
-    q: "How long does installation take?",
-    a: "Depending on room size and the service chosen, a standard room is completed in one to three days. We confirm the full timeline in writing before work begins, so you always know what to expect and when.",
+    a: "Yes. The site visit and quotation are free with no obligation. We measure in person and prepare the written quotation from those measurements.",
   },
   {
     q: "Which materials are waterproof?",
-    a: "PVC panels and UV marble sheets withstand water and humidity, which makes them the right specification for kitchens and bathrooms. WPC panels are moisture-resistant but not intended for constantly wet areas. Gypsum ceilings are for dry rooms only, such as halls and bedrooms. We fit ISI-certified branded materials throughout.",
+    a: "PVC panels and UV marble sheets withstand water and humidity, which makes them the right choice for kitchens and bathrooms. WPC panels are moisture-resistant but not meant for constantly wet areas. Gypsum ceilings are for dry rooms only.",
   },
   {
     q: "What warranty do you provide?",
-    a: "JK Interior issues a written one-year warranty on every project, covering both materials and workmanship. You receive the warranty document on the day the work is handed over.",
-  },
-  {
-    q: "Which areas do you serve?",
-    a: "We work across Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia — covering the Araria, Supaul and Purnia districts of Bihar.",
+    a: "JK Interior gives a written one-year warranty on every project, covering materials and workmanship. You receive the warranty document on the day the work is handed over.",
   },
   {
     q: "Which payment methods do you accept?",
-    a: "We accept cash, UPI (Google Pay, PhonePe and Paytm) and bank transfer. Pricing is transparent with no hidden charges, and the payment schedule is agreed with you before the project begins.",
+    a: "We accept cash, UPI (Google Pay, PhonePe and Paytm) and bank transfer. The payment schedule is agreed with you before the project begins.",
   },
 ]

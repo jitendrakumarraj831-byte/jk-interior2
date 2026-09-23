@@ -8,9 +8,9 @@ const easeLux = [0.22, 1, 0.36, 1] as const
 const reasons = [
   {
     icon: ShieldCheck,
-    title: "ISI-certified materials, never substituted",
+    title: "Branded materials, never substituted",
     reasoning:
-      "Every panel we fit carries ISI certification — no cheaper unbranded stock, ever. Ask to see the material tag on site.",
+      "The material agreed in your quotation is the material we fit — no cheaper unbranded stock swapped in. Ask to see the brand and tag on site.",
   },
   {
     icon: Droplets,
@@ -136,7 +136,7 @@ export default function WhyUs() {
                 marble go in wet rooms, gypsum stays in dry ones. No exceptions, even on request.
               </p>
               <p className="mb-5 rounded-lg border-l-2 border-gold-300 bg-gold-50/50 py-2 pl-3 pr-2 text-sm leading-relaxed text-gray-600">
-                Based in Narpatganj, working daily across Forbesganj and Araria district. One team,
+                Registered workshop in Forbesganj, working across Araria district. One team,
                 one standard — bedroom or commercial floor.
               </p>
               <div className="flex items-center gap-3 border-t border-dashed border-gray-200 pt-5">
@@ -145,7 +145,7 @@ export default function WhyUs() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-gray-900">JK Interior, established 2019</p>
-                  <p className="text-xs text-gray-500">Narpatganj &amp; Forbesganj, Araria district, Bihar</p>
+                  <p className="text-xs text-gray-500">Forbesganj, Araria district, Bihar</p>
                 </div>
               </div>
             </div>

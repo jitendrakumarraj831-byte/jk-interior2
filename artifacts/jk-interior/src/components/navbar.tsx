@@ -71,7 +71,7 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-0.5 sm:px-5">
           <p className="hidden items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-200/90 sm:flex">
             <MapPin className="h-3 w-3 text-gold-400" aria-hidden="true" />
-            Narpatganj · Forbesganj · Araria District, Bihar
+            Forbesganj · Araria District, Bihar
           </p>
           <div className="flex w-full items-center justify-center gap-2 sm:w-auto sm:justify-end sm:gap-4">
             <a
@@ -272,7 +272,7 @@ export default function Navbar() {
 
                   <div className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2">
                     <MapPin className="h-3 w-3 text-gold-600" aria-hidden="true" />
-                    Narpatganj • Forbesganj • Araria, Bihar
+                    Forbesganj • Araria District, Bihar
                   </div>
                 </div>
               </motion.div>

@@ -5,31 +5,34 @@ import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { CallLink } from "@/components/ui/cta-links"
 import { useActiveOnScreen } from "@/lib/use-active-on-screen"
+import { SERVICE_AREAS } from "@/lib/seo"
 
-const areas = [
-  { name: "Narpatganj", slug: "narpatganj", desc: "Operating Base", highlight: true },
-  { name: "Forbesganj", slug: "forbesganj", desc: "Registered Address", highlight: true },
-  { name: "Araria", slug: "araria", desc: "District Headquarters", highlight: true },
-  { name: "Jogbani", slug: "jogbani", desc: "Border Town" },
-  { name: "Raniganj", slug: "raniganj", desc: "Regularly Served" },
-  { name: "Kursakanta", slug: "kursakanta", desc: "Covered" },
-  { name: "Purnia", slug: "purnia", desc: "Major City" },
-  { name: "Chhatapur", slug: "chhatapur", desc: "Covered" },
-  { name: "Tribeniganj", slug: "tribeniganj", desc: "Covered" },
-  { name: "Supaul", slug: "supaul", desc: "Regularly Served" },
-]
+// The one service-area list (lib/seo.ts). Forbesganj is the business location
+// on the Google Business Profile; every other town is a service area.
+const DESC: Record<string, string> = {
+  forbesganj: "Workshop & GBP Address",
+  araria: "District Headquarters",
+  jogbani: "Border Town",
+  raniganj: "Araria District",
+  narpatganj: "Araria District",
+  purnia: "Visits Scheduled",
+  supaul: "Visits Scheduled",
+}
+const areas = SERVICE_AREAS.map((a) => ({
+  name: a.name,
+  slug: a.slug,
+  desc: DESC[a.slug] ?? `${a.district} District`,
+  highlight: a.businessLocation,
+}))
 
 const hubPositions = [
-  { top: "8%", left: "50%", rotate: -2 },
-  { top: "24%", left: "15%", rotate: 4 },
-  { top: "24%", left: "85%", rotate: -3 },
-  { top: "44%", left: "30%", rotate: 5 },
-  { top: "44%", left: "70%", rotate: -4 },
-  { top: "64%", left: "15%", rotate: 3 },
-  { top: "64%", left: "85%", rotate: -5 },
-  { top: "84%", left: "50%", rotate: 2 },
-  { top: "74%", left: "35%", rotate: -3 },
-  { top: "74%", left: "65%", rotate: 4 },
+  { top: "50%", left: "50%", rotate: 0 },
+  { top: "14%", left: "50%", rotate: -2 },
+  { top: "30%", left: "16%", rotate: 4 },
+  { top: "30%", left: "84%", rotate: -3 },
+  { top: "72%", left: "16%", rotate: 3 },
+  { top: "72%", left: "84%", rotate: -5 },
+  { top: "88%", left: "50%", rotate: 2 },
 ]
 
 export default function ServiceAreas() {
@@ -88,7 +91,7 @@ export default function ServiceAreas() {
           badge="Service Areas"
           headingSize="md"
           title={<>Where We <span className="hero-gradient-text">Work</span></>}
-          subtitle="Based in Narpatganj, covering Araria, Supaul and Purnia within 80 km — we attend every site in person."
+          subtitle="Our workshop is in Forbesganj. We cover Araria district and travel to Purnia and Supaul — every site visit is in person."
         />
 
         {/* Desktop hub map */}
@@ -185,9 +188,9 @@ export default function ServiceAreas() {
         <motion.div {...animProps} className="text-center">
           <div className="mx-auto inline-block w-full max-w-2xl rounded-2xl border border-gold-200 bg-white p-8 shadow-sm">
             <p className="mb-2 text-base font-bold text-gray-900 md:text-lg">
-              Available across every major town in Araria, Supaul and Purnia
+              Not sure if we cover your village or mohalla?
             </p>
-            <p className="mb-6 text-sm text-gray-500">Wherever your property is, our team will reach it.</p>
+            <p className="mb-6 text-sm text-gray-500">One call or WhatsApp message confirms it before you book.</p>
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <CallLink className="shadow-[0_4px_20px_rgba(201,162,39,0.3)]" ariaLabel="Call to check service availability in your area">
                 Check Availability

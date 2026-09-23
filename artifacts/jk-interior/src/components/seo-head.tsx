@@ -1,16 +1,20 @@
 import { Helmet } from "react-helmet-async"
+import { SITE_NAME, SITE_URL, WEBSITE_ID, businessRef } from "@/lib/seo"
 
-const SITE_URL = "https://www.jkinterior.online"
 const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph.jpg`
-const SITE_NAME = "JK Interior"
+
+type PageType = "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage"
 
 interface SeoHeadProps {
   title: string
   description: string
+  /** Root-relative path, e.g. "/services". Required for indexable pages; omitted on the 404. */
   canonical?: string
   ogImage?: string
   ogType?: "website" | "article"
   noindex?: boolean
+  /** schema.org type of the WebPage node emitted for every indexable page. */
+  pageType?: PageType
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
@@ -21,10 +25,35 @@ export default function SeoHead({
   ogImage = DEFAULT_OG_IMAGE,
   ogType = "website",
   noindex = false,
+  pageType = "WebPage",
   jsonLd,
 }: SeoHeadProps) {
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`
-  const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : SITE_URL
+  // A noindex page (the 404) gets no canonical at all: pointing it at the
+  // homepage would tell Google the error page is a copy of the home page.
+  const canonicalUrl = canonical ? `${SITE_URL}${canonical === "/" ? "/" : canonical}` : undefined
+
+  // Every indexable page describes itself as a WebPage that belongs to the one
+  // WebSite and is about the one business entity — both referenced by @id.
+  const webPage =
+    canonicalUrl && !noindex
+      ? {
+          "@context": "https://schema.org",
+          "@type": pageType,
+          "@id": `${canonicalUrl}#webpage`,
+          url: canonicalUrl,
+          name: fullTitle,
+          description,
+          inLanguage: "en-IN",
+          isPartOf: { "@id": WEBSITE_ID },
+          about: businessRef(),
+        }
+      : null
+
+  const schemas = [
+    ...(webPage ? [webPage] : []),
+    ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+  ]
 
   return (
     <Helmet>
@@ -35,12 +64,12 @@ export default function SeoHead({
       ) : (
         <meta name="robots" content="index, follow" />
       )}
-      <link rel="canonical" href={canonicalUrl} />
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={canonicalUrl} />
+      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -52,21 +81,11 @@ export default function SeoHead({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
 
-      <meta name="format-detection" content="telephone=+918541849118" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-      {jsonLd && Array.isArray(jsonLd) ? (
-        jsonLd.map((schema, idx) => (
-          <script key={idx} type="application/ld+json">
-            {JSON.stringify(schema)}
-          </script>
-        ))
-      ) : jsonLd ? (
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
+      {schemas.map((schema, idx) => (
+        <script key={idx} type="application/ld+json">
+          {JSON.stringify(schema)}
         </script>
-      ) : null}
+      ))}
     </Helmet>
   )
 }

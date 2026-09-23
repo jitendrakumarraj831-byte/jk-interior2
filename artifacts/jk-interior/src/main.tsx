@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import App from "./App";
+import App, { preloadCurrentRoute } from "./App";
 import "./index.css";
 
 /** Matches PRERENDERED_TAG_ATTR in scripts/prerender.ts. */
@@ -31,10 +31,14 @@ function dropPrerenderedSeoTags() {
     let remaining = 0;
     for (const stale of Array.from(document.querySelectorAll(`head [${PRERENDERED_TAG_ATTR}]`))) {
       const tag = stale.tagName.toLowerCase();
+      // JSON-LD: any live (unmarked) ld+json block means Helmet has written this
+      // route's structured data, so every prerendered copy can go. Matching on
+      // type keeps the app's own module <script> tags out of the comparison.
       const replaced = Array.from(document.head.querySelectorAll(tag)).some(
         (el) =>
           el !== stale &&
           !el.hasAttribute(PRERENDERED_TAG_ATTR) &&
+          el.getAttribute("type") === stale.getAttribute("type") &&
           el.getAttribute("name") === stale.getAttribute("name") &&
           el.getAttribute("property") === stale.getAttribute("property") &&
           el.getAttribute("rel") === stale.getAttribute("rel"),
@@ -67,14 +71,22 @@ function dropPrerenderedSeoTags() {
   }, 5000);
 }
 
-createRoot(document.getElementById("root")!).render(
-  <HelmetProvider>
-    <App />
-    <SpeedInsights />
-  </HelmetProvider>
-);
+function mount() {
+  createRoot(document.getElementById("root")!).render(
+    <HelmetProvider>
+      <App />
+      <SpeedInsights />
+    </HelmetProvider>
+  );
+  dropPrerenderedSeoTags();
+}
 
-dropPrerenderedSeoTags();
+// Load this route's page chunk before mounting, so React's first commit is the
+// real page rather than the blank Suspense fallback replacing the prerendered
+// HTML (see lazyPage in App.tsx). The chunk is already <link rel="modulepreload">ed
+// in the prerendered HTML, so this is normally a cache hit. If it fails, mount
+// anyway — React.lazy will retry and show the fallback, exactly as before.
+preloadCurrentRoute(window.location.pathname).then(mount, mount);
 
 // Register service worker asynchronously after page load to avoid blocking render
 if ("serviceWorker" in navigator && import.meta.env.PROD) {

@@ -1,4 +1,4 @@
-import { BUSINESS_SCHEMA_TYPES } from "./seo.js"
+import { SITE_URL } from "./seo.js"
 
 export interface ServiceHighlight {
   kind: "special" | "pricing" | "suited"
@@ -22,13 +22,6 @@ export interface ServiceSummary {
   /** Where this material should NOT be used — helps a customer choose correctly. */
   avoid: string
   highlights: ServiceHighlight[]
-  /**
-   * The exact Search Console query this service targets (see
-   * `lib/seo-keywords.ts`) — appended to the hero image's alt/title and used
-   * as the service's schema.org `keywords`, so every service card carries the
-   * localized, material-specific phrase it's meant to rank for.
-   */
-  seoKeyword: string
 }
 
 export const SERVICES_SUMMARY: ServiceSummary[] = [
@@ -51,7 +44,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹75–₹210/sq.ft, materials and labour included." },
       { kind: "suited", label: "Best For", text: "Halls, bedrooms, dining areas and office cabins." },
     ],
-    seoKeyword: "gypsum false ceiling design with price",
   },
   {
     slug: "pvc-false-ceiling",
@@ -72,7 +64,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹75–₹150/sq.ft, materials and labour included." },
       { kind: "suited", label: "Best For", text: "Kitchens, bathrooms, balconies and retail shops." },
     ],
-    seoKeyword: "pvc ceiling design for bedroom",
   },
   {
     slug: "grid-ceiling",
@@ -93,7 +84,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹45–₹115/sq.ft, materials and labour included." },
       { kind: "suited", label: "Best For", text: "Offices, showrooms, clinics and shops." },
     ],
-    seoKeyword: "grid false ceiling installation",
   },
   {
     slug: "partition-wall",
@@ -114,7 +104,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹100–₹750/sq.ft — gypsum lower, glass premium." },
       { kind: "suited", label: "Best For", text: "Office cabins and dividing one room into two." },
     ],
-    seoKeyword: "false ceiling contractor forbesganj",
   },
   {
     slug: "wpc-wall-panel",
@@ -135,7 +124,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹180–₹650/sq.ft, materials and labour included." },
       { kind: "suited", label: "Best For", text: "TV walls, headboard walls and office receptions." },
     ],
-    seoKeyword: "wpc louvers wall panelling",
   },
   {
     slug: "uv-marble-sheet",
@@ -156,7 +144,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹45–₹120/sq.ft — well below natural marble." },
       { kind: "suited", label: "Best For", text: "Pooja rooms, bathroom walls and feature walls." },
     ],
-    seoKeyword: "uv marble sheet wall cladding",
   },
   {
     slug: "modular-tv-unit",
@@ -177,7 +164,6 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "From ₹15,000, depending on size and finish." },
       { kind: "suited", label: "Best For", text: "Living-room and bedroom television walls." },
     ],
-    seoKeyword: "modern tv unit design for living room",
   },
   {
     slug: "artificial-grass",
@@ -198,13 +184,12 @@ export const SERVICES_SUMMARY: ServiceSummary[] = [
       { kind: "pricing", label: "Price", text: "₹40–₹150/sq.ft, materials and labour included." },
       { kind: "suited", label: "Best For", text: "Balconies, terraces and green feature walls." },
     ],
-    seoKeyword: "jk interior forbesganj",
   },
 ]
 
-/** The rendered `alt`/`title` for one service's hero photo — its own description plus the exact target keyword it's meant to rank for. */
-export function serviceSeoAlt(service: Pick<ServiceSummary, "heroImageAlt" | "seoKeyword">): string {
-  return `${service.heroImageAlt} — ${service.seoKeyword}`
+/** The rendered `alt`/`title` for one service's hero photo — a plain description of the photo. */
+export function serviceSeoAlt(service: Pick<ServiceSummary, "heroImageAlt">): string {
+  return service.heroImageAlt
 }
 
 /** Reads "₹75–₹210 / sq.ft" or "₹15,000–₹75,000+" into a numeric min/max — schema.org `Offer.price` wants a number, not a display string. Exported so other rate-driven UI (e.g. the cost estimator) reads the same numbers instead of duplicating them. */
@@ -217,55 +202,20 @@ export function parsePriceRange(price: string): { min: number; max: number } | n
 }
 
 /**
- * schema.org `Service` entries for every row in the Services section, priced
- * and imaged from the same data the page renders — so Search Console reads
- * exactly what a visitor sees, plus the local + material keyword each
- * service targets.
+ * The /services page's ItemList: one entry per service page, by URL. The full
+ * Service entity (price, provider, FAQs) lives on each service's own page, so
+ * this list only points at them rather than repeating it.
  */
 export function buildServicesJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "JK Interior Services — Forbesganj, Araria, Bihar",
-    description:
-      "False ceiling, wall panelling and interior design services by JK Interior, the false ceiling contractor Forbesganj and interior designer in Araria Bihar homeowners call first.",
+    name: "JK Interior services",
     itemListElement: SERVICES_SUMMARY.map((service, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      item: {
-        "@type": "Service",
-        "@id": `https://www.jkinterior.online/services/${service.slug}`,
-        name: service.name,
-        url: `https://www.jkinterior.online/services/${service.slug}`,
-        description: service.detail,
-        image: `https://www.jkinterior.online${service.heroImage}`,
-        keywords: service.seoKeyword,
-        areaServed: [
-          { "@type": "City", name: "Forbesganj" },
-          { "@type": "City", name: "Araria" },
-          { "@type": "City", name: "Narpatganj" },
-        ],
-        provider: {
-          "@type": [...BUSINESS_SCHEMA_TYPES],
-          "@id": "https://www.jkinterior.online/#business",
-          name: "JK Interior",
-        },
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-          ...(parsePriceRange(service.price)
-            ? {
-                priceSpecification: {
-                  "@type": "PriceSpecification",
-                  priceCurrency: "INR",
-                  minPrice: parsePriceRange(service.price)!.min,
-                  maxPrice: parsePriceRange(service.price)!.max,
-                },
-              }
-            : { price: service.price }),
-        },
-      },
+      name: service.name,
+      url: `${SITE_URL}/services/${service.slug}`,
     })),
   }
 }

@@ -35,7 +35,13 @@ import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 import { preview, type PreviewServer } from "vite"
 import puppeteer, { type Browser } from "puppeteer-core"
-import { getAllRoutes, type RouteEntry } from "./routes"
+import { getAllRoutes, NON_INDEXED_PRERENDER_ROUTES } from "./routes"
+
+/** A route to crawl and the file (relative to dist/public) its HTML is written to. */
+interface PrerenderTarget {
+  path: string
+  outFile: string
+}
 
 const ROOT_DIR = path.resolve(import.meta.dirname, "..")
 const DIST_DIR = path.resolve(ROOT_DIR, "dist/public")
@@ -70,9 +76,6 @@ const HELMET_MANAGED_SELECTORS = [
   'meta[name="twitter:title"]',
   'meta[name="twitter:description"]',
   'meta[name="twitter:image"]',
-  'meta[name="format-detection"]',
-  'meta[name="apple-mobile-web-app-capable"]',
-  'meta[name="apple-mobile-web-app-status-bar-style"]',
 ]
 /** Marks the SEO tags this script writes into the static HTML so the app can retire them once
  *  react-helmet-async has put its own in place. Must stay identical to the constant of the same
@@ -207,6 +210,13 @@ async function dedupeSeoTags(page: Awaited<ReturnType<Browser["newPage"]>>, defa
         }
         document.querySelectorAll(sel).forEach((el) => el.setAttribute(markerAttr, "1"))
       }
+      // JSON-LD blocks can legitimately be several per page, so they are not
+      // collapsed — only marked, so main.tsx can retire them once Helmet has
+      // inserted its own live copies (otherwise every schema block would be
+      // in the DOM twice after the app mounts).
+      document.head
+        .querySelectorAll('script[type="application/ld+json"]')
+        .forEach((el) => el.setAttribute(markerAttr, "1"))
     },
     defaults,
     HELMET_MANAGED_SELECTORS,
@@ -215,7 +225,7 @@ async function dedupeSeoTags(page: Awaited<ReturnType<Browser["newPage"]>>, defa
 }
 
 interface Rendered {
-  route: string
+  target: PrerenderTarget
   html: string
 }
 
@@ -225,12 +235,12 @@ interface Rendered {
 async function crawlPass(
   browser: Browser,
   baseUrl: string,
-  routes: RouteEntry[],
+  routes: PrerenderTarget[],
   concurrency: number,
   staticDefaults: Record<string, string | null>,
-): Promise<{ done: Rendered[]; pending: RouteEntry[] }> {
+): Promise<{ done: Rendered[]; pending: PrerenderTarget[] }> {
   const done: Rendered[] = []
-  const pending: RouteEntry[] = []
+  const pending: PrerenderTarget[] = []
 
   let cursor = 0
   async function worker() {
@@ -258,7 +268,7 @@ async function crawlPass(
         await new Promise((resolve) => setTimeout(resolve, 200))
         await dedupeSeoTags(page, staticDefaults)
         const html = await page.content()
-        done.push({ route: route.path, html })
+        done.push({ target: route, html })
         console.log(`[prerender] ✓ ${route.path}`)
       } catch (err) {
         pending.push(route)
@@ -274,7 +284,15 @@ async function crawlPass(
 }
 
 async function crawlRoutes(baseUrl: string, staticDefaults: Record<string, string | null>) {
-  let pending = getAllRoutes()
+  // Every indexable route, written to <route>/index.html (or index.html for "/"),
+  // plus the non-indexed ones with their own output files (admin, 404.html).
+  let pending: PrerenderTarget[] = [
+    ...getAllRoutes().map((r) => ({
+      path: r.path,
+      outFile: r.path === "/" ? "index.html" : `${r.path.replace(/^\//, "")}/index.html`,
+    })),
+    ...NON_INDEXED_PRERENDER_ROUTES,
+  ]
   const total = pending.length
   const succeeded: Rendered[] = []
   let concurrency = DEFAULT_CONCURRENCY
@@ -340,9 +358,8 @@ async function main() {
 
     const { succeeded, failed, total } = await crawlRoutes(baseUrl, staticDefaults)
 
-    for (const { route, html } of succeeded) {
-      const outPath =
-        route === "/" ? path.join(DIST_DIR, "index.html") : path.join(DIST_DIR, route.replace(/^\//, ""), "index.html")
+    for (const { target, html } of succeeded) {
+      const outPath = path.join(DIST_DIR, target.outFile)
       await mkdir(path.dirname(outPath), { recursive: true })
       // Stamp each page so "was this actually prerendered, and by which
       // build?" is answerable from View Source alone — see the SKIPPED

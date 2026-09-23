@@ -6,6 +6,7 @@ import SectionHeader from "@/components/ui/section-header"
 import { WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import MapEmbed from "@/components/ui/map-embed"
+import { ADDRESS_LINE, BUSINESS, GOOGLE_MAPS_URL, HOURS_LINES } from "@/lib/seo"
 import {
   WA_NUMBER,
   PHONE_PRIMARY,
@@ -178,7 +179,7 @@ export default function Contact() {
               </span>
               <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Where We Work</span>
               <span className="text-sm font-bold leading-snug text-white">
-                Narpatganj &amp; Forbesganj, Araria district, Bihar
+                Forbesganj, Araria district &amp; nearby towns
               </span>
             </div>
 
@@ -188,9 +189,9 @@ export default function Contact() {
               </span>
               <span className="text-[10px] font-black uppercase tracking-widest text-gold-300">Working Hours</span>
               <span className="text-sm font-bold leading-snug text-white">
-                Mon&nbsp;&ndash;&nbsp;Sat 8:00&nbsp;AM&nbsp;&ndash;&nbsp;8:00&nbsp;PM
-                <br />
-                Sunday 9:00&nbsp;AM&nbsp;&ndash;&nbsp;6:00&nbsp;PM
+                {HOURS_LINES.map((line, i) => (
+                  <span key={line} className="block">{line}</span>
+                ))}
               </span>
             </div>
           </SwipeRail>
@@ -258,10 +259,15 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="mb-1 text-base font-bold text-white">Our Location</h3>
-                  <p className="text-sm font-semibold text-slate-300">Damaria Rewahi, Forbesganj, Bihar 854318</p>
-                  <p className="mt-1 text-xs text-slate-400">
-                    Operating base: Narpatganj · Serving all of Araria district, Bihar
-                  </p>
+                  <p className="text-sm font-semibold text-slate-300">{ADDRESS_LINE}</p>
+                  <a
+                    href={GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block text-xs font-bold text-gold-300 underline-offset-2 hover:underline"
+                  >
+                    View on Google Maps
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -278,14 +284,12 @@ export default function Contact() {
                 <div>
                   <h3 className="text-base font-bold text-white mb-2">Working Hours</h3>
                   <div className="space-y-1 text-sm">
-                    <div className="flex justify-between gap-8">
-                      <span className="text-slate-400">Mon – Sat</span>
-                      <span className="text-white font-semibold">8:00 AM – 8:00 PM</span>
-                    </div>
-                    <div className="flex justify-between gap-8">
-                      <span className="text-slate-400">Sunday</span>
-                      <span className="text-white font-semibold">9:00 AM – 6:00 PM</span>
-                    </div>
+                    {BUSINESS.hours.map((h, i) => (
+                      <div key={h.opens + i} className="flex justify-between gap-8">
+                        <span className="text-slate-400">{HOURS_LINES[i].split(" ")[0]}</span>
+                        <span className="text-white font-semibold">{HOURS_LINES[i].slice(HOURS_LINES[i].indexOf(" ") + 1)}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

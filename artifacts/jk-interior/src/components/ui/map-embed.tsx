@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { MapPin, Play, ExternalLink } from "lucide-react"
 import { GOOGLE_REVIEWS_URL } from "@/lib/business-data"
+import { ADDRESS_LINE } from "@/lib/seo"
 
 /** The embed URL for the verified JK Interior pin — same place CID as GOOGLE_REVIEWS_URL. */
 const MAP_EMBED_SRC =
@@ -33,7 +34,7 @@ export default function MapEmbed({ className = "" }: { className?: string }) {
         allowFullScreen
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
-        title="JK Interior location on Google Maps — Damaria Rewahi, Forbesganj, Bihar"
+        title={`JK Interior location on Google Maps — ${ADDRESS_LINE}`}
         className={className}
       />
     )
@@ -56,7 +57,7 @@ export default function MapEmbed({ className = "" }: { className?: string }) {
           <MapPin className="h-4 w-4" aria-hidden="true" />
         </span>
         <p className="text-xs font-bold leading-snug text-white">
-          Damaria Rewahi, Forbesganj, Bihar 854318
+          {ADDRESS_LINE}
         </p>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
           <button
@@ -73,7 +74,7 @@ export default function MapEmbed({ className = "" }: { className?: string }) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white transition-colors hover:bg-white/20"
           >
-            Open in Google Maps
+            View on Google Maps
             <ExternalLink className="h-3 w-3" aria-hidden="true" />
           </a>
         </div>

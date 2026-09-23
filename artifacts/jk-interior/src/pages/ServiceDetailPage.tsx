@@ -3,7 +3,10 @@ import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { SITE_URL, buildBusinessIdentity } from "@/lib/seo"
+import {
+  ADDRESS_LINE, CITIES, GOOGLE_MAPS_URL, SITE_URL, areaServedSchema, buildBreadcrumbSchema, buildFaqSchema,
+  businessRef, getCityBySlug,
+} from "@/lib/seo"
 import {
   getServiceContentBySlug,
   PRICE_DISCLAIMER,
@@ -20,7 +23,7 @@ import {
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
-import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
+import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY, parseRateBand } from "@/lib/business-data"
 import NotFound from "@/pages/not-found"
 
 /** Swaps a "/images/foo.webp" path for one of its generated variants (see
@@ -96,43 +99,51 @@ export default function ServiceDetailPage() {
 
   const waText = `Hello JK Interior, I would like a free quotation for ${service.name}.`
 
+  // Towns where this service's real project was done, plus every other town we cover.
+  const projectCity = getCityBySlug(service.realProject.city)
+  const priceBand = parseRateBand(service.price)
+
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Service",
+      "@id": `${SITE_URL}/services/${service.slug}#service`,
       name: service.name,
       serviceType: service.name,
       description: service.whatItIs,
-      // Same @id as the static block in index.html, so the provider resolves
-      // to the one JK Interior entity rather than a partial duplicate.
-      provider: buildBusinessIdentity(),
-      areaServed: { "@type": "State", name: "Bihar" },
+      url: `${SITE_URL}/services/${service.slug}`,
+      image: `${SITE_URL}${service.heroImage}`,
+      // The one JK Interior entity, defined in full on the homepage.
+      provider: businessRef(),
+      areaServed: areaServedSchema(),
+      ...(priceBand
+        ? {
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "INR",
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                priceCurrency: "INR",
+                minPrice: priceBand.min,
+                maxPrice: priceBand.max,
+              },
+            },
+          }
+        : {}),
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-        { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
-        { "@type": "ListItem", position: 3, name: service.name, item: `${SITE_URL}/services/${service.slug}` },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqs.map(({ q, a }) => ({
-        "@type": "Question",
-        name: q,
-        acceptedAnswer: { "@type": "Answer", text: a },
-      })),
-    },
+    buildBreadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Services", path: "/services" },
+      { name: service.name, path: `/services/${service.slug}` },
+    ]),
+    buildFaqSchema(faqs),
   ]
 
   return (
     <main>
       <SeoHead
-        title={`${service.name} – Price, Warranty & Details | JK Interior`}
-        description={`${service.name} by JK Interior. Price: ${service.price}. ${service.installTime}. Free site visit, ${service.warranty}. Call +91 8541849118 or +91 8651070831.`}
+        title={service.seoTitle}
+        description={service.metaDescription}
         canonical={`/services/${service.slug}`}
         jsonLd={jsonLd}
       />
@@ -163,7 +174,8 @@ export default function ServiceDetailPage() {
               </motion.div>
 
               <motion.h1 {...anim(0.1)} className="mb-2 text-3xl font-black leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
-                {service.name}
+                {service.name}{" "}
+                <span className="mt-1 block text-lg font-bold text-gray-500 sm:text-xl">in Forbesganj, Araria &amp; nearby</span>
               </motion.h1>
               <motion.p {...anim(0.15)} className="mb-3 text-base font-bold text-gold-700 sm:text-lg">{service.category} · {service.price}</motion.p>
               <motion.p {...anim(0.2)} className="mb-6 max-w-2xl text-base font-medium leading-relaxed text-gray-600">
@@ -263,7 +275,7 @@ export default function ServiceDetailPage() {
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
           <motion.div {...inViewAnim(0)} className="mb-6 flex items-center gap-2">
             <IndianRupee className="h-5 w-5 text-gold-600" aria-hidden="true" />
-            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">What It Costs</h2>
+            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">How much does {service.name} cost?</h2>
           </motion.div>
 
           <motion.div {...staggerContainer} className="hidden gap-4 sm:grid sm:grid-cols-3">
@@ -504,11 +516,25 @@ export default function ServiceDetailPage() {
               <p className="text-[10px] font-black uppercase tracking-widest text-gold-700">Recent Project</p>
               <p className="mt-1 text-sm font-bold text-gray-900">{service.realProject.title}</p>
               <p className="mt-1 text-xs leading-relaxed text-gray-600">{service.realProject.desc}</p>
+              {projectCity && (
+                <Link href={`/cities/${projectCity.slug}`} className="mt-2 inline-block text-xs font-bold text-gold-700 hover:underline">
+                  More about our work in {projectCity.name}
+                </Link>
+              )}
             </motion.div>
             <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
               <p className="text-[10px] font-black uppercase tracking-widest text-gold-700">Availability</p>
               <p className="mt-1 text-xs leading-relaxed text-gray-600">{service.availability}</p>
               <p className="mt-2 text-xs leading-relaxed text-gray-500">{SERVICE_AREA_NOTE}</p>
+              <p className="mt-2 text-xs leading-relaxed text-gray-600">
+                <span className="font-semibold text-gray-700">Areas we cover: </span>
+                {CITIES.map((c, i) => (
+                  <span key={c.slug}>
+                    <Link href={`/cities/${c.slug}`} className="font-semibold text-gold-700 hover:underline">{c.name}</Link>
+                    {i < CITIES.length - 1 ? " · " : ""}
+                  </span>
+                ))}
+              </p>
             </motion.div>
           </motion.div>
 
@@ -551,9 +577,7 @@ export default function ServiceDetailPage() {
               {photos.map((img) => (
                 <motion.div key={img.src} {...staggerItem} whileHover={hoverScale} className="aspect-square overflow-hidden rounded-2xl bg-gray-100">
                   {/* 800w AVIF/WebP variants, not the full-resolution original —
-                      these tiles are ~300px wide. See ServiceCityPage, which has
-                      always done this; this page was still serving the 1600px
-                      source into a thumbnail. */}
+                      these tiles are ~300px wide. */}
                   <picture>
                     <source srcSet={srcVariant(img.src, "-800w.avif")} sizes={PHOTO_SIZES} type="image/avif" />
                     <source srcSet={srcVariant(img.src, "-800w.webp")} sizes={PHOTO_SIZES} type="image/webp" />
@@ -632,6 +656,12 @@ export default function ServiceDetailPage() {
             </a>
             <WhatsAppLink message={waText} className="shadow hover:shadow">Message on WhatsApp</WhatsAppLink>
           </div>
+          <p className="mt-6 text-xs text-slate-300">
+            Workshop: {ADDRESS_LINE} ·{" "}
+            <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-gold-200 underline-offset-2 hover:underline">
+              View on Google Maps
+            </a>
+          </p>
         </motion.div>
       </section>
 

@@ -1,7 +1,7 @@
 import { BUSINESS_FACTS, PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts.js"
 import { FAQS } from "./faq-data.js"
 import { SERVICES_SUMMARY, type ServiceSummary } from "./services-summary.js"
-import { BUSINESS, CITIES, SITE_URL } from "./seo.js"
+import { BUSINESS, GOOGLE_MAPS_URL, SERVICE_AREAS, SITE_URL } from "./seo.js"
 import { languageInstruction, type ReplyLanguage } from "./reply-language.js"
 
 /**
@@ -41,24 +41,9 @@ export const OFFICIAL_PHONES = [
   { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, label: "Alternate Line" },
 ] as const
 
-/**
- * Where JK Interior actually works from. Narpatganj is the owner's residence and
- * day-to-day operating base; Forbesganj holds the registered workshop address
- * used in every schema.org block; Araria is the parent district.
- */
-export const BUSINESS_LOCATIONS = {
-  operatingBase: "Narpatganj",
-  registeredCity: "Forbesganj",
-  district: "Araria",
-  state: "Bihar",
-  postalCode: "854318",
-  street: "Damaria Rewahi",
-} as const
-
-// Google Business Profile — deep-links straight to the JK Interior listing on
-// Google Maps (reviews included). Derived from the place CID in the embedded
-// map on the contact section, so it always resolves to the verified profile.
-export const GOOGLE_REVIEWS_URL = "https://www.google.com/maps?cid=12398820263168117030"
+// Google Business Profile — deep-links straight to the verified JK Interior
+// listing on Google Maps (reviews included). Defined once in seo.ts.
+export const GOOGLE_REVIEWS_URL = GOOGLE_MAPS_URL
 
 export interface LeadContext {
   name?: string
@@ -356,9 +341,9 @@ function faqBlock(): string {
   return FAQS.map((f) => `Q: ${f.q}\nA: ${f.a}`).join("\n\n")
 }
 
-/** Every town with a page on the site, so "do you work in X?" is answered from the site's own list. */
+/** The site's one service-area list, so "do you work in X?" is answered from the same data the pages show. */
 function serviceAreaBlock(): string {
-  return CITIES.map((c) => `${c.name} (${c.district} district)`).join(", ")
+  return SERVICE_AREAS.map((a) => `${a.name} (${a.district} district${a.businessLocation ? ", business location" : ""})`).join(", ")
 }
 
 /**

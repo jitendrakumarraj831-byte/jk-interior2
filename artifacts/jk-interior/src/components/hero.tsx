@@ -24,14 +24,14 @@ const words = [
 ]
 
 const stats = [
-  { value: "500+", label: "Projects Completed", icon: TrendingUp },
-  { value: "ISI", label: "Certified Materials", icon: ShieldCheck },
+  { value: "Since 2019", label: "Working in Araria District", icon: TrendingUp },
+  { value: "1 Year", label: "Written Warranty", icon: ShieldCheck },
   { value: "0%", label: "Hidden Charges", icon: Droplets },
   { value: "Free", label: "Site Visit & Quotation", icon: Zap },
 ]
 
 const trustBadges = [
-  { icon: Star, label: "4.9 / 5 Google Rating", color: "text-amber-700 border-amber-300/60 bg-amber-50" },
+  { icon: Star, label: "Reviews on Google", color: "text-amber-700 border-amber-300/60 bg-amber-50" },
   { icon: Droplets, label: "Waterproof PVC & UV Marble", color: "text-gold-700 border-gold-300/60 bg-gold-50" },
   { icon: Sparkles, label: "Low-Dust Panel Installation", color: "text-charcoal-700 border-charcoal-300/60 bg-charcoal-50" },
 ]
@@ -66,7 +66,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative min-h-[90vh] lg:min-h-[100dvh] w-full overflow-hidden bg-[#faf7f0] flex flex-col justify-center"
-      aria-label="JK Interior – false ceiling and interior contractor in Narpatganj, Forbesganj and Araria district, Bihar"
+      aria-label="JK Interior – false ceiling and interior contractor in Forbesganj and Araria district, Bihar"
     >
       {/* Preload hints for this section's own LCP image — scoped to the home
           route via react-helmet-async (Hero is not rendered anywhere else),
@@ -163,13 +163,13 @@ export default function Hero() {
             {/* Main Heading & Subtitle */}
             <motion.div {...anim(0.3)} className="mb-5">
               <h1 className="mb-3 font-serif text-3xl font-black leading-[1.12] tracking-tight text-stone-900 sm:text-5xl md:text-6xl">
-                Araria District&rsquo;s Trusted
+                Forbesganj &amp; Araria&rsquo;s
                 <br />
                 <span className="hero-gradient-text">False Ceiling &amp; Interior Contractor</span>
               </h1>
               <p className="max-w-xl text-sm font-normal leading-relaxed text-stone-600 sm:text-base md:text-lg">
                 Ceilings, wall panelling and modular interiors for homes, offices and showrooms
-                across Narpatganj, Forbesganj and Araria &mdash; certified materials, a{" "}
+                across Forbesganj, Araria district and nearby towns &mdash; branded materials, a{" "}
                 <span className="inline-block rounded-md border border-gold-600/30 bg-gold-50 px-2 py-0.5 font-semibold text-gold-800">
                   free site visit
                 </span>{" "}
@@ -248,7 +248,7 @@ export default function Hero() {
               <span className="text-stone-300" aria-hidden="true">•</span>
               <span className="flex items-center gap-1.5">
                 <MapPin className="h-3.5 w-3.5 text-gold-700" aria-hidden="true" />
-                Narpatganj, Forbesganj, Araria &amp; nearby
+                Forbesganj, Araria &amp; nearby
               </span>
             </motion.div>
           </div>
@@ -294,25 +294,26 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Floating rating chip — links to the Google Business Profile it
-                comes from, so the number is checkable rather than asserted. */}
+            {/* Floating reviews chip — links to the Google Business Profile, where
+                the reviews live. No rating number is hard-coded here: it would go
+                stale, and only Google's own figure is authoritative. */}
             <a
               href={GOOGLE_REVIEWS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="4.9 out of 5 on Google — open the JK Interior Google Business Profile"
+              aria-label="Read JK Interior reviews on Google — opens the Google Business Profile"
               className="absolute -left-3 top-6 flex items-center gap-2 rounded-2xl border border-amber-200 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-sm transition-colors hover:border-amber-300 hover:bg-white sm:-left-5"
             >
               <div className="flex flex-col">
                 <span className="flex items-center gap-1 text-sm font-black text-stone-900">
-                  4.9
+                  Reviews
                   <span className="flex gap-0.5" aria-hidden="true">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="h-3 w-3 text-amber-500 fill-amber-500" />
                     ))}
                   </span>
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-stone-500">Google Rating</span>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-stone-500">On Google</span>
               </div>
             </a>
 
@@ -322,8 +323,8 @@ export default function Hero() {
                 <TrendingUp className="h-4 w-4" aria-hidden="true" />
               </span>
               <div className="flex flex-col leading-tight">
-                <span className="text-sm font-black text-stone-900">500+</span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-stone-500">Projects</span>
+                <span className="text-sm font-black text-stone-900">Since 2019</span>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-stone-500">Forbesganj</span>
               </div>
             </div>
           </motion.div>

@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar"
 import WhyUs from "@/components/why-us"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
+import { ADDRESS_LINE, SERVICE_AREAS, SERVICE_AREA_NAMES, buildBreadcrumbSchema } from "@/lib/seo"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import {
@@ -33,8 +34,8 @@ const milestones = [
   },
   {
     year: "Today",
-    title: "500+ projects, three districts",
-    desc: "Based in Narpatganj, serving homes and offices across Araria, Supaul and Purnia.",
+    title: "Three districts",
+    desc: "Working from Forbesganj across Araria district, with scheduled visits to Supaul and Purnia.",
   },
 ]
 
@@ -43,13 +44,13 @@ const credentials = [
     icon: Building2,
     label: "Established",
     value: "2019",
-    detail: "Six years of continuous work across Araria district.",
+    detail: "Continuous work across Araria district since then.",
   },
   {
     icon: Users,
-    label: "Projects Delivered",
-    value: "500+",
-    detail: "Homes, offices, shops, clinics and showrooms.",
+    label: "Areas Served",
+    value: `${SERVICE_AREAS.length} towns`,
+    detail: `${SERVICE_AREA_NAMES}.`,
   },
   {
     icon: ShieldCheck,
@@ -59,12 +60,11 @@ const credentials = [
   },
   {
     icon: Award,
-    label: "Google Rating",
-    value: "4.9 / 5",
-    detail: "On our verified Google Business Profile — read the reviews yourself.",
-    // A rating stated on our own page is worth nothing unless the visitor can
-    // go and check it. This is also why there is no aggregateRating in the
-    // page's JSON-LD: Google sources that from the profile below, not from us.
+    label: "Google Reviews",
+    value: "Read them",
+    detail: "On our Google Business Profile — the reviews and rating are Google's, not ours.",
+    // No rating number is stated here and there is no aggregateRating in the
+    // JSON-LD: Google sources that from the Business Profile, not from us.
     href: GOOGLE_REVIEWS_URL,
   },
   {
@@ -75,9 +75,9 @@ const credentials = [
   },
   {
     icon: MapPin,
-    label: "Coverage",
-    value: "80 km",
-    detail: "Radius from Narpatganj, attended in person.",
+    label: "Workshop",
+    value: "Forbesganj",
+    detail: `${ADDRESS_LINE}. Every site visit is attended in person.`,
   },
 ]
 
@@ -129,42 +129,14 @@ export default function AboutPage() {
   return (
     <main>
       <SeoHead
-        title="About JK Interior – Best False Ceiling Contractor in Forbesganj, Araria Bihar"
-        description="Learn about JK Interior – Bihar's most trusted interior contractor since 2019. 500+ projects, ISI-certified materials, 1-year written warranty. Serving Forbesganj, Araria, Purnia, Supaul and all of Bihar."
+        title="About JK Interior – False Ceiling Contractor, Forbesganj"
+        description="JK Interior has fitted false ceilings, partitions and wall panels around Forbesganj since 2019 — free site visits, written quotes and a 1-year warranty."
         canonical="/about"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "@id": "https://www.jkinterior.online/#organization",
-          name: "JK Interior",
-          slogan: "Interior & False Ceiling Solutions",
-          url: "https://www.jkinterior.online",
-          logo: "https://www.jkinterior.online/jk-interior-navbar-logo.webp",
-          foundingDate: "2019",
-          description: "Bihar's most trusted interior contractor – PVC false ceiling, gypsum ceiling, WPC wall panel and complete interior design since 2019.",
-          telephone: ["+91-8541849118", "+91-8651070831"],
-          email: "jkinteriorofficial@gmail.com",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Damaria Rewahi",
-            addressLocality: "Forbesganj",
-            addressRegion: "Bihar",
-            postalCode: "854318",
-            addressCountry: "IN"
-          },
-          areaServed: [
-            { "@type": "City", name: "Narpatganj" },
-            { "@type": "City", name: "Forbesganj" },
-            { "@type": "AdministrativeArea", name: "Araria" }
-          ],
-          sameAs: [
-            "https://www.google.com/maps?cid=12398820263168117030",
-            "https://wa.me/918541849118",
-            "https://www.facebook.com/share/1GpAKHZZtb/",
-            "https://www.instagram.com/jk_interior_ceiling_designer"
-          ],
-          numberOfEmployees: { "@type": "QuantitativeValue", value: 10 }
-        }}
+        pageType="AboutPage"
+        jsonLd={buildBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
       />
       <Navbar />
 
@@ -180,7 +152,7 @@ export default function AboutPage() {
           <motion.div {...anim(0)} className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold-300 bg-gold-50/90 px-4 py-1.5 shadow-xs backdrop-blur-md">
             <MapPin className="h-3.5 w-3.5 text-gold-700" aria-hidden="true" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-gold-700 sm:text-xs">
-              Narpatganj · Forbesganj · Araria District, Bihar
+              Forbesganj · Araria District, Bihar
             </span>
           </motion.div>
 
@@ -190,14 +162,17 @@ export default function AboutPage() {
 
           <motion.p {...anim(0.2)} className="mb-4 max-w-3xl text-base leading-relaxed text-gray-700 sm:text-lg">
             An interior and false ceiling contractor working across Araria district, Bihar since 2019.
-            500+ projects, and the same rule every time: we measure the room ourselves, quote in
-            writing, and fit only materials we'd use at home.
+            The same rule on every job: we measure the room ourselves, quote in writing, and fit only
+            materials we'd use at home.
           </motion.p>
 
           <motion.p {...anim(0.3)} className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600">
-            Based in <span className="font-bold text-gray-900">Narpatganj</span>, with our registered
-            workshop at <span className="font-bold text-gray-900">Damaria Rewahi, Forbesganj</span>.
-            From there we cover roughly 80 km — all of Araria district, and on into Supaul and Purnia.
+            Our registered workshop is at <span className="font-bold text-gray-900">{ADDRESS_LINE}</span> —
+            the address on our{" "}
+            <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-gold-700 underline-offset-2 hover:underline">
+              Google Business Profile
+            </a>
+            . From there we cover Araria district and travel to Supaul and Purnia.
           </motion.p>
 
           <motion.div {...anim(0.4)} className="flex flex-wrap gap-3">
@@ -264,7 +239,7 @@ export default function AboutPage() {
             How We Got Here
           </motion.h2>
           <motion.p {...inViewAnim(0.05)} className="mb-8 text-sm text-gray-500">
-            Six years, one town at a time.
+            Since 2019, one town at a time.
           </motion.p>
 
           <motion.ol {...staggerContainer} className="hidden lg:block">

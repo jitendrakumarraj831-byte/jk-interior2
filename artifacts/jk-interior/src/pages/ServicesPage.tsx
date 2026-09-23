@@ -5,26 +5,24 @@ import SeoHead from "@/components/seo-head"
 import PageHero from "@/components/ui/page-hero"
 import PageCta from "@/components/ui/page-cta"
 import { Layers } from "lucide-react"
+import { buildBreadcrumbSchema } from "@/lib/seo"
+import { buildServicesJsonLd } from "@/lib/services-summary"
 
 export default function ServicesPage() {
   return (
     <main>
       <SeoHead
-        title="False Ceiling & Interior Design Services in Forbesganj, Araria Bihar"
-        description="JK Interior offers PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, modular TV unit, bedroom interior and office interior services in Forbesganj, Araria, Bihar. Starting ₹45/sq.ft. Free site visit."
+        title="Our Services: Ceilings, Partitions & Panels | JK Interior"
+        description="Eight services with published rates: gypsum, PVC and grid ceilings, partition walls, WPC panels, UV marble, TV units and artificial grass. Free site visit."
         canonical="/services"
-        jsonLd={{
-          // The full, per-service ItemList (price, image, keywords) is emitted by the
-          // <Services /> component itself (lib/services-summary.ts#buildServicesJsonLd) —
-          // it renders wherever that component is used, this page included. This page
-          // only adds the breadcrumb, which is page-specific.
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online/" },
-            { "@type": "ListItem", position: 2, name: "Services", item: "https://www.jkinterior.online/services" },
-          ],
-        }}
+        pageType="CollectionPage"
+        jsonLd={[
+          buildServicesJsonLd(),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+          ]),
+        ]}
       />
       <Navbar />
       <PageHero
@@ -35,7 +33,7 @@ export default function ServicesPage() {
             <span className="hero-gradient-text">Done Right the First Time</span>
           </>
         }
-        subtitle="Gypsum, PVC, WPC panelling, UV marble, TV units and more — eight services, transparent rates, one accountable team across Narpatganj, Forbesganj and Araria district."
+        subtitle="Gypsum, PVC, WPC panelling, UV marble, TV units and more — eight services, published rates and one accountable team, working from Forbesganj across Araria district and nearby."
         whatsappMessage="Hello JK Interior, I'd like to know more about your services and current rates."
       />
       <Services />
