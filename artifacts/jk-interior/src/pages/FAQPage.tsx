@@ -7,31 +7,28 @@ import SeoHead from "@/components/seo-head"
 import PageHero from "@/components/ui/page-hero"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { FAQS } from "@/lib/faq-data"
+import { CITIES, buildBreadcrumbSchema, buildFaqSchema } from "@/lib/seo"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
 // Extra service-specific FAQs shown below the shared FAQ accordion. Kept in one
 // place so the visible <details> list and the FAQPage JSON-LD stay in sync —
-// Google requires FAQ rich-result markup to match what the visitor actually reads.
+// structured data must match what the visitor actually reads.
 const MORE_FAQS = [
   {
-    q: "What does a gypsum ceiling cost in Bihar?",
-    a: "Across Araria district and Forbesganj, a gypsum ceiling typically works out between ₹75 and ₹210 per sq.ft. The rate moves with the design, the cove lighting and any POP detailing. Call +91 8541849118 or +91 8651070831 for a free, precise quotation.",
+    q: "What is the difference between a gypsum and a POP ceiling?",
+    a: "Gypsum ceilings use factory-made boards on a metal frame, so they go up faster, crack less and create far less dust on site. POP (plaster of Paris) is mixed and applied wet by hand, which allows very free-form shapes but takes longer to set and cure. We fit gypsum as our standard and use POP only for detailing where a design needs it.",
   },
   {
-    q: "How long does a PVC ceiling take to install?",
-    a: "A standard room is completed in one to two days. On larger multi-room projects we schedule the work room by room, so your daily routine is disturbed as little as possible.",
+    q: "Which wall panel is best behind a TV?",
+    a: "WPC wall panels are our usual recommendation for TV walls: they look like wood, resist termites and moisture, keep cables hidden behind the panels, and the TV can be mounted the same day. Fluted and louvre WPC designs can also carry a hidden LED backlight.",
   },
   {
-    q: "Do you work outside Forbesganj?",
-    a: "Yes. We cover the whole of Araria district — Narpatganj, Forbesganj, Raniganj, Kursakanta and Jogbani — and travel on to Purnia, Supaul, Tribeniganj and Chhatapur. Call +91 8541849118 to confirm availability for your location.",
+    q: "Can UV marble sheet be used in a bathroom or pooja room?",
+    a: "Yes. UV marble sheet is waterproof and has no grout lines, which makes it well suited to bathroom walls and pooja rooms. We keep it off the strip directly behind a gas stove, where direct heat can affect it.",
   },
   {
-    q: "Is the work covered by a warranty?",
-    a: "Every installation carries a written one-year warranty. Any defect that arises within that period is rectified at no cost. We fit ISI-certified branded materials specifically so the work lasts well beyond the warranty term.",
-  },
-  {
-    q: "Can you design a complete bedroom interior?",
-    a: "Certainly. False ceiling, wall panelling, television unit, wardrobe guidance and lighting — a single team delivers the complete bedroom interior, with one point of accountability throughout.",
+    q: "Can you handle a complete room — ceiling, walls and TV unit?",
+    a: "Yes. One team can do the false ceiling, wall panelling, TV unit and lighting for a room together, which also brings the per-sq.ft rate down compared with booking each job separately.",
   },
 ]
 
@@ -39,21 +36,18 @@ export default function FAQPage() {
   return (
     <main>
       <SeoHead
-        title="FAQs – False Ceiling & Interior Design Services in Forbesganj, Araria Bihar"
-        description="Frequently asked questions about PVC false ceiling, gypsum ceiling, WPC wall panel, UV marble sheet and interior design services by JK Interior in Forbesganj, Araria, Bihar. Cost, warranty, installation time and more."
+        title="False Ceiling FAQs – Cost, Time & Materials | JK Interior"
+        description="Answers on false ceiling cost, gypsum vs PVC, installation time, waterproof materials, warranty and the areas JK Interior serves around Forbesganj, Araria."
         canonical="/faq"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
+        jsonLd={[
           // Built from the exact questions rendered on this page (shared FAQ
-          // accordion + the service-specific list below), so the structured
-          // data always matches the visible content.
-          mainEntity: [...FAQS, ...MORE_FAQS].map((faq) => ({
-            "@type": "Question",
-            name: faq.q,
-            acceptedAnswer: { "@type": "Answer", text: faq.a },
-          })),
-        }}
+          // accordion + the service-specific list below).
+          buildFaqSchema([...FAQS, ...MORE_FAQS]),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "FAQ", path: "/faq" },
+          ]),
+        ]}
       />
       <Navbar />
       <PageHero
@@ -86,6 +80,18 @@ export default function FAQPage() {
               </details>
             ))}
           </div>
+
+          <h2 className="mb-3 mt-12 text-lg font-black text-gray-900">Areas we serve</h2>
+          <p className="text-sm leading-relaxed text-gray-600">
+            {CITIES.map((c, i) => (
+              <span key={c.slug}>
+                <Link href={`/cities/${c.slug}`} className="font-semibold text-gold-700 underline-offset-2 hover:underline">
+                  {c.name}
+                </Link>
+                {i < CITIES.length - 2 ? ", " : i === CITIES.length - 2 ? " and " : "."}
+              </span>
+            ))}
+          </p>
 
           <h3 className="mb-4 text-sm font-black uppercase tracking-wider text-gold-700 mt-12">
             Still have a question?

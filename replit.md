@@ -1,8 +1,8 @@
 # JK Interior
 
 The marketing site and AI sales assistant for JK Interior, a false-ceiling and
-interior-fit-out contractor serving Narpatganj, Forbesganj and Araria district,
-Bihar. Live at jkinterior.online.
+interior-fit-out contractor based in Forbesganj, serving Araria district and
+nearby towns in Bihar. Live at jkinterior.online.
 
 ## Run & Operate
 
@@ -78,7 +78,7 @@ quotation is worse than no total.
 The launcher button and the chat panel are deliberately separate:
 
 - `AssistantLauncher` is an ordinary eager component, so it lands in the
-  prerendered HTML of all 64 pages and is styled by `index.css` alone. It paints
+  prerendered HTML of every page and is styled by `index.css` alone. It paints
   with the document — verified visible with JavaScript disabled entirely.
 - `jk-chat.tsx` is a lazy chunk, fetched on `requestIdleCallback` or on hover of
   the button, then mounted closed so the first tap is a state flip.

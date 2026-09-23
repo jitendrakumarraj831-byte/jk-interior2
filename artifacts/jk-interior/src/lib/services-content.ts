@@ -6,7 +6,7 @@ import { Layers, PanelTop, Tv, Grid3x3, Gem, Trees, DoorClosed, type LucideIcon 
  * service in clear, professional English so a Narpatganj, Forbesganj or Araria customer
  * understands the exact material, price, design choices, and warranty before
  * they call. Every field is unique to the service — no shared boilerplate.
- * Rates and specs stay in sync with business-data.ts / service-city-data.ts /
+ * Rates and specs stay in sync with business-data.ts / services-summary.ts /
  * the homepage Services section.
  */
 
@@ -49,6 +49,10 @@ export interface ComparisonRow {
 
 export interface ServiceContent {
   slug: string
+  /** Page <title>, written per service. */
+  seoTitle: string
+  /** Meta description, ≤155 characters. */
+  metaDescription: string
   icon: LucideIcon
   name: string
   category: string
@@ -91,7 +95,8 @@ export interface ServiceContent {
   comparison: ComparisonRow[]
   /** One practical, on-site recommendation. */
   expertTip: string
-  realProject: { title: string; desc: string; photos: number }
+  /** A real completed project; `city` is the /cities/{slug} page for the town it was done in. */
+  realProject: { title: string; desc: string; city: string; photos: number }
   faqs: ServiceFaqItem[]
   relatedSlugs: string[]
 }
@@ -104,6 +109,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "gypsum-ceiling",
+    seoTitle: "Gypsum False Ceiling in Forbesganj & Araria | JK Interior",
+    metaDescription: "Gypsum false ceilings in Forbesganj and Araria: ₹75–₹210/sq.ft, cove lighting options, 2–3 days per room, 1-year written warranty. Free site visit.",
     icon: Layers,
     name: "Gypsum False Ceiling",
     category: "Ceiling",
@@ -120,7 +127,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "12.5mm boards in 4×8 ft and 4×6 ft sheets, scored and cut on-site; a thinner 8mm board is used only where the design curves.",
     labourCost: "Framing, board fixing and taping labour runs about ₹30–45/sq.ft and is already inside the rate above; cove and multi-level work sits at the top of that band.",
     labourCostShort: "₹30–45/sq.ft",
-    brandNote: "We fit ISI-marked branded gypsum board on galvanised GI framing, bought from authorised Purnia/Forbesganj dealers — never loose unbranded stock. You see the actual board and brand at the free site visit.",
+    brandNote: "We fit branded gypsum board on galvanised GI framing, bought from authorised Purnia/Forbesganj dealers — never loose unbranded stock. You see the actual board and brand at the free site visit.",
     availability: "Fitted right across our service area. The cove and multi-level designs are booked most in Forbesganj and Araria town, where drawing-room ceilings are the biggest ask.",
     installTime: "2–3 days for one room, 3–5 days for a full hall",
     maintenance: "An occasional wipe with a dry cloth is all it ever needs",
@@ -173,7 +180,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
       "Sealing a leaking or damp slab above — must be sorted before we start",
     ],
     materials: [
-      { name: "Gypsum board (12.5mm)", detail: "Branded, ISI-marked panels with a firm gypsum core and paper facing" },
+      { name: "Gypsum board (12.5mm)", detail: "Branded panels with a firm gypsum core and paper facing" },
       { name: "GI metal channel frame", detail: "Galvanised sections that resist rust and won't sag with the years" },
       { name: "Joint tape & jointing compound", detail: "Bridges and fills every seam so the surface finishes dead flat" },
       { name: "Aluminium cove profile + LED", detail: "Recessed channel carrying a warm-white (3000K) strip for indirect light" },
@@ -198,6 +205,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Cove-lit hall ceiling, Forbesganj",
       desc: "A 180 sq.ft drawing room where a stepped border wraps a warm-white LED cove around a flat centre — the project we most often walk clients through on-site to explain how a cove actually reads.",
+      city: "forbesganj",
       photos: 16,
     },
     faqs: [
@@ -211,6 +219,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "pvc-false-ceiling",
+    seoTitle: "PVC False Ceiling Price & Designs in Forbesganj | JK Interior",
+    metaDescription: "Waterproof PVC false ceilings for kitchens, bathrooms and shops in Forbesganj and Araria: ₹75–₹150/sq.ft, one room in a day. Free site visit.",
     icon: Layers,
     name: "PVC False Ceiling",
     category: "Ceiling",
@@ -227,13 +237,13 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "Panels come 200mm and 250mm wide and are cut to run up to ~12 ft without a joint. Gauge steps 5mm → 8mm by tier; the thicker the panel, the flatter it stays across a wide span.",
     labourCost: "Grid, panel fixing and beading labour is about ₹20–30/sq.ft, already in the rate — this is the fastest ceiling on our list to fit.",
     labourCostShort: "₹20–30/sq.ft",
-    brandNote: "ISI-compliant branded PVC from authorised Forbesganj/Purnia suppliers — never the flimsy unbranded imports that yellow and bow. We show you the panel sample and its batch marking before you commit.",
+    brandNote: "Branded PVC from authorised Forbesganj/Purnia suppliers — never the flimsy unbranded imports that yellow and bow. We show you the panel sample and its batch marking before you commit.",
     availability: "Stocked across the whole service area. It's our highest-volume ceiling, so the common whites and wood-grains are usually on hand with no waiting.",
     installTime: "One room in a day, a full home in 3–4 days",
     maintenance: "Practically none — a damp cloth wipes it clean",
     warranty: "1 year written warranty (materials + workmanship)",
     whatItIs:
-      "Sealed, interlocking waterproof panels that never let steam, leakage or damp win again — the maintenance-free ceiling that stays bright and new for 20+ years without a single coat of paint.",
+      "Sealed, interlocking waterproof panels that never let steam, leakage or damp win again — the maintenance-free ceiling that stays bright for years without a single coat of paint.",
     whereUsed: [
       "Kitchens and bathrooms — our first and firmest recommendation",
       "Balconies and semi-open spots that catch the rain",
@@ -246,7 +256,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     ],
     benefits: [
       "100% waterproof — kill kitchen, bathroom and balcony dampness permanently",
-      "Never needs paint or plaster again — looks new for 20+ years",
+      "Never needs paint or plaster — the finish is in the panel itself",
       "Termite-proof, fire-retardant and wipes clean in seconds",
       "Fastest ceiling we fit — a whole room done in a single day",
       "The friendliest price per sq.ft, backed by a 1-year leak-proof warranty",
@@ -300,6 +310,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Wood-texture PVC ceiling, Araria kitchen",
       desc: "A kitchen-plus-balcony ceiling finished in one working day, in wood-texture planks chosen so it reads warm from the dining table rather than plastic overhead.",
+      city: "araria",
       photos: 13,
     },
     faqs: [
@@ -313,6 +324,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "grid-ceiling",
+    seoTitle: "Grid Ceiling for Offices & Shops in Forbesganj | JK Interior",
+    metaDescription: "2×2 grid ceilings for offices, shops and clinics in Forbesganj and Araria: ₹45–₹115/sq.ft, tiles lift out for wiring and AC access. Free site visit.",
     icon: Grid3x3,
     name: "Grid Ceiling",
     category: "Ceiling",
@@ -329,7 +342,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "Standard 2×2 ft (600×600mm) lay-in tiles, 15–19mm thick by tier, resting on a 24mm-face T-section grid — the sizes stocked everywhere locally.",
     labourCost: "Wall-angle, grid, levelling and tile-drop labour is about ₹15–25/sq.ft, included above — on a big open floor nothing goes up quicker.",
     labourCostShort: "₹15–25/sq.ft",
-    brandNote: "ISI/BIS-compliant branded grid and tiles from our regular Purnia suppliers. The exact tile make — plain, acoustic or moisture-grade — is confirmed with you at the site visit.",
+    brandNote: "Branded grid and tiles from our regular Purnia suppliers. The exact tile make — plain, acoustic or moisture-grade — is confirmed with you at the site visit.",
     availability: "Common across offices and shops in Forbesganj, Araria and Purnia. Acoustic and edge-lit tiles may need 2–3 days' lead time in outlying blocks.",
     installTime: "1–2 days for a room, 3–4 days for a larger floor",
     maintenance: "Very low — dust now and then; a stained tile is swapped on its own",
@@ -403,6 +416,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Clinic waiting-area ceiling, Araria",
       desc: "A 400 sq.ft diagnostic-centre floor in acoustic mineral-fibre tiles, laid so any future AC or wiring work needs nothing more than lifting a tile — no breaking, no dust.",
+      city: "araria",
       photos: 7,
     },
     faqs: [
@@ -416,6 +430,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "partition-wall",
+    seoTitle: "Gypsum & Glass Partition Walls in Forbesganj | JK Interior",
+    metaDescription: "Gypsum and toughened-glass partition walls for cabins and rooms in Forbesganj and Araria: ₹100–₹750/sq.ft, ready in 2–4 days. Free site visit.",
     icon: DoorClosed,
     name: "Partition Wall",
     category: "Partition",
@@ -432,7 +448,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "Gypsum: 12.5mm board (single or double layer) on 50mm/75mm metal studs. Glass: 8–12mm toughened safety glass set in aluminium channel framing.",
     labourCost: "Labour is roughly ₹25–40/sq.ft for gypsum and ₹60–100/sq.ft for glass, included above — glass costs more because it demands careful handling and exact alignment.",
     labourCostShort: "₹25–40/sq.ft (gypsum) · ₹60–100/sq.ft (glass)",
-    brandNote: "Metal framing, gypsum board and toughened glass all come from ISI/BIS-compliant authorised Purnia/Forbesganj dealers. The glass is always genuine toughened safety glass — plain sheet is never used on a partition.",
+    brandNote: "Metal framing, gypsum board and toughened glass all come from authorised Purnia/Forbesganj dealers. The glass is always genuine toughened safety glass — plain sheet is never used on a partition.",
     availability: "Gypsum partitions go up right across the service area. Glass partitions are booked most in Forbesganj and Araria offices; other towns add 2–4 days since the glass is cut in Purnia.",
     installTime: "2–4 days by length and whether it's gypsum or glass",
     maintenance: "Gypsum face: an occasional dust. Glass face: a wipe with glass cleaner.",
@@ -508,6 +524,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Two-cabin office split, Forbesganj",
       desc: "A 300 sq.ft rented office turned into two private cabins with rockwool-filled gypsum partitions and a frosted-glass reception, so the front counter stayed open and lit.",
+      city: "forbesganj",
       photos: 20,
     },
     faqs: [
@@ -521,6 +538,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "wpc-wall-panel",
+    seoTitle: "WPC Louvers & Fluted Wall Panels in Forbesganj | JK Interior",
+    metaDescription: "WPC louvre and fluted wall panels for TV and feature walls in Forbesganj and Araria: ₹180–₹650/sq.ft, termite- and moisture-resistant. Free site visit.",
     icon: PanelTop,
     name: "WPC Wall Panel",
     category: "Wall",
@@ -537,7 +556,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "Panels run 250mm–600mm wide in 8 ft and 10 ft lengths, cut to your wall on-site. Profile depth steps from 8mm on plain up to 18–25mm on fluted and louvre designs.",
     labourCost: "Batten fixing, clipping, trims and any LED wiring together run about ₹25–45/sq.ft, included above — fluted and louvre profiles take longer than plain panels.",
     labourCostShort: "₹25–45/sq.ft",
-    brandNote: "ISI-compliant branded composite WPC from authorised dealers — not the thin, loose unbranded WPC sold in the local bazaar, which bows within a season. We put the actual brand and texture sample in your hand at the site visit.",
+    brandNote: "Branded composite WPC from authorised dealers — not the thin, loose unbranded WPC sold in the local bazaar, which bows within a season. We put the actual brand and texture sample in your hand at the site visit.",
     availability: "Fitted across the whole service area. The TV-wall panel is our most-asked WPC job in Forbesganj and Araria homes.",
     installTime: "One day for a TV wall, 2–3 days for a full room",
     maintenance: "A dry-cloth wipe — never any polish or varnish",
@@ -610,10 +629,11 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Fluted TV wall with LED backlight, Jogbani",
       desc: "A 12 ft living-room TV wall in walnut-tone fluted WPC with a hidden LED strip washing down from the top edge — the panels went up and the TV mounted on the same day.",
+      city: "jogbani",
       photos: 20,
     },
     faqs: [
-      { q: "Does WPC really pass for real wood?", a: "From normal room distance the better wood-grain and fluted textures read as real timber — most customers are genuinely surprised it isn't. We hand you a physical sample at the site visit so you can judge for yourself." },
+      { q: "Does WPC really pass for real wood?", a: "From normal room distance the better wood-grain and fluted textures read as real timber. We hand you a physical sample at the site visit so you can judge for yourself." },
       { q: "What would a standard TV wall cost?", a: "A typical 10×10 ft (100 sq.ft) TV wall in mid-range fluted WPC comes to roughly ₹18,000–₹30,000, including battens, trims and basic LED wiring." },
       { q: "Can WPC go over a tiled or painted wall?", a: "Yes — the panels clip onto battens, so we fix the battens straight over sound tile or an existing painted surface. The wall only has to be structurally solid, not perfectly smooth." },
     ],
@@ -623,6 +643,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "uv-marble-sheet",
+    seoTitle: "UV Marble Sheet Wall Cladding in Forbesganj | JK Interior",
+    metaDescription: "UV marble sheet walls for pooja rooms, bathrooms and feature walls in Forbesganj and Araria: ₹45–₹120/sq.ft, waterproof, no grout lines to clean.",
     icon: Gem,
     name: "UV Marble Sheet",
     category: "Wall",
@@ -639,8 +661,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "Standard 8×4 ft (2440×1220mm) sheets in 3–6mm thicknesses by tier — a thicker sheet takes knocks and scratches better on a busy kitchen or bathroom wall.",
     labourCost: "Surface prep, adhesive or clip fixing and edge beading run about ₹15–25/sq.ft, already inside the rate above.",
     labourCostShort: "₹15–25/sq.ft",
-    brandNote: "ISI-compliant branded PVC-based sheets from authorised Purnia/Forbesganj dealers. We open the full sample book on-site so you see the real sheen and veining across a whole sheet before you order.",
-    availability: "Fitted across the whole service area. Bathroom and pooja-room UV marble is the most common request in Forbesganj, Araria and Jogbani.",
+    brandNote: "Branded PVC-based sheets from authorised Purnia/Forbesganj dealers. We open the full sample book on-site so you see the real sheen and veining across a whole sheet before you order.",
+    availability: "Fitted across the whole service area, most often on bathroom and pooja-room walls.",
     installTime: "1–2 days per room",
     maintenance: "None to speak of — a damp cloth keeps it shining, no polishing",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -712,6 +734,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Pooja-room marble-finish wall, Purnia",
       desc: "A small pooja room clad floor-to-ceiling in white-and-gold veined UV marble with a recessed LED niche for the idol — finished in a single day with none of the dust real stone-cutting throws up.",
+      city: "purnia",
       photos: 20,
     },
     faqs: [
@@ -725,6 +748,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "modular-tv-unit",
+    seoTitle: "Modular TV Unit Design in Forbesganj & Araria | JK Interior",
+    metaDescription: "Modular TV units built to your wall in Forbesganj and Araria: from ₹15,000, with cable management and LED options, 3–5 days. Free site visit.",
     icon: Tv,
     name: "Modular TV Unit",
     category: "Furniture",
@@ -741,7 +766,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     sizesThickness: "Built to your wall's exact width, usually 6–14 ft. Carcass in 18mm plywood or MDF, 6mm back panel, ~1mm laminate face — shutter and shelf thicknesses vary with the design.",
     labourCost: "Fabrication and installation labour is bundled into the unit price — usually 25–35% of the total, and a little more where there's heavy LED work or several floating shelves.",
     labourCostShort: "25–35% of unit price",
-    brandNote: "BWP/BWR-grade plywood or MDF from ISI-compliant branded stock, dressed in branded laminate or veneer with soft-close hardware. All the brand options are laid out for you at the design stage before anything is cut.",
+    brandNote: "BWP/BWR-grade plywood or MDF from branded stock, dressed in branded laminate or veneer with soft-close hardware. All the brand options are laid out for you at the design stage before anything is cut.",
     availability: "Fabricated and installed across the whole service area. Large premium units of 10 ft and up need about 5–7 days to build, a little longer for outlying blocks.",
     installTime: "3–5 days by size and design",
     maintenance: "Wipe with a dry cloth; keep hot vessels off the surface",
@@ -814,6 +839,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "10 ft floating LED TV unit, Forbesganj",
       desc: "A wall-hung 10 ft unit with a floating centre shelf, a hidden LED wash, and closed side cabinets sized precisely to swallow a set-top box and router out of sight.",
+      city: "forbesganj",
       photos: 8,
     },
     faqs: [
@@ -827,6 +853,8 @@ export const SERVICES_CONTENT: ServiceContent[] = [
   // ─────────────────────────────────────────────────────────────────────────
   {
     slug: "artificial-grass",
+    seoTitle: "Artificial Grass for Balconies in Forbesganj | JK Interior",
+    metaDescription: "UV-stabilised artificial grass for balconies, terraces and green walls in Forbesganj and Araria: ₹40–₹150/sq.ft, laid on a drained base.",
     icon: Trees,
     name: "Artificial Grass",
     category: "Outdoor",
@@ -844,7 +872,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     labourCost: "Base/drainage prep, laying, seam joining and edge fixing run about ₹8–15/sq.ft on floors and ₹15–25/sq.ft on wall panels, included in the rate above.",
     labourCostShort: "₹8–15/sq.ft (floor) · ₹15–25/sq.ft (wall)",
     brandNote: "UV-stabilised synthetic turf from our regular Purnia suppliers. We check the UV treatment and pile density before ordering, because untreated turf bleaches within a single season under North Bihar's sun.",
-    availability: "Fitted across the whole service area. Balcony and terrace turf is most requested in Forbesganj, Araria and Raniganj; premium rolls need a couple of extra days in outlying blocks.",
+    availability: "Fitted across the whole service area, mostly on balconies and terraces; premium rolls need a couple of extra days in outlying blocks.",
     installTime: "Half a day to a full day for a typical balcony or wall",
     maintenance: "An occasional rinse and a light brush — never any mowing or watering",
     warranty: "1 year written warranty (materials + workmanship)",
@@ -916,6 +944,7 @@ export const SERVICES_CONTENT: ServiceContent[] = [
     realProject: {
       title: "Balcony lawn corner, Raniganj",
       desc: "A 60 sq.ft balcony given a drained-base artificial lawn with a small potted-plant corner — a garden feel for a family without a ground-floor plot to keep one.",
+      city: "raniganj",
       photos: 7,
     },
     faqs: [

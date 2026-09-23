@@ -12,10 +12,10 @@
 // This script boots the production build, visits every route in a headless
 // browser, and writes the fully-rendered HTML (title, meta description,
 // canonical, JSON-LD — everything react-helmet-async injects) to
-// dist/public/<route>/index.html. Vercel's static file server resolves
-// `/about` to `/about/index.html` automatically and — per Vercel's routing
-// order — serves that static file instead of falling through to the SPA
-// rewrite in vercel.json, so this requires no deploy config changes.
+// dist/public/<route>.html (dist/public/index.html for "/"). vercel.json sets
+// `cleanUrls: true`, so Vercel serves /about from about.html and 308s
+// /about.html to /about; any URL with no matching file gets 404.html with a
+// real 404 status.
 //
 // The client-side app is untouched: main.tsx still calls createRoot(...).
 // React mounts over the static markup exactly as it does today (a fast,
@@ -23,19 +23,27 @@
 // normally — this is a static-snapshot technique, not full SSR/hydration,
 // so there is no hydration-mismatch risk to the interactive app.
 //
-// Fail-soft by design: if a headless browser can't be launched in this
-// build environment for any reason, the script logs a warning and exits 0
-// rather than failing the build — worst case, the site simply ships as the
-// plain client-rendered SPA it is today.
+// Fail-hard by design: every indexed page and the 404 page exist ONLY as the
+// files this script writes (vercel.json has no SPA fallback), so a build
+// that could not prerender every route would deploy a site whose pages all
+// 404. If a headless browser can't be launched, or any route fails after
+// retries, the script exits non-zero and the deployment fails instead.
 //
 // Run with: pnpm run prerender (wired in as a `postbuild` step)
 
-import { existsSync } from "node:fs"
+import { spawnSync } from "node:child_process"
+import { existsSync, readFileSync } from "node:fs"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 import { preview, type PreviewServer } from "vite"
 import puppeteer, { type Browser } from "puppeteer-core"
-import { getAllRoutes, type RouteEntry } from "./routes"
+import { getAllRoutes, NON_INDEXED_PRERENDER_ROUTES } from "./routes"
+
+/** A route to crawl and the file (relative to dist/public) its HTML is written to. */
+interface PrerenderTarget {
+  path: string
+  outFile: string
+}
 
 const ROOT_DIR = path.resolve(import.meta.dirname, "..")
 const DIST_DIR = path.resolve(ROOT_DIR, "dist/public")
@@ -70,9 +78,6 @@ const HELMET_MANAGED_SELECTORS = [
   'meta[name="twitter:title"]',
   'meta[name="twitter:description"]',
   'meta[name="twitter:image"]',
-  'meta[name="format-detection"]',
-  'meta[name="apple-mobile-web-app-capable"]',
-  'meta[name="apple-mobile-web-app-status-bar-style"]',
 ]
 /** Marks the SEO tags this script writes into the static HTML so the app can retire them once
  *  react-helmet-async has put its own in place. Must stay identical to the constant of the same
@@ -92,10 +97,9 @@ function stampPrerendered(html: string): string {
 }
 
 /** A summary line that survives skimming a long Vercel build log.
- *  This script is deliberately fail-soft, which means a green build alone does
- *  NOT prove prerendering happened — grep the log for this banner to tell the
- *  difference between "64/64 static" and "silently skipped". */
-function banner(status: "PRERENDERED" | "PARTIAL" | "SKIPPED", detail: string) {
+ *  Grep the build log for "[prerender] RESULT" to see how many routes were
+ *  written, or why the build was failed. */
+function banner(status: "PRERENDERED" | "FAILED", detail: string) {
   const line = "=".repeat(64)
   console.log(`\n${line}\n[prerender] RESULT: ${status} — ${detail}\n${line}\n`)
 }
@@ -111,7 +115,7 @@ const STABILITY_ARGS = [
   "--disable-software-rasterizer",
 ]
 
-/** Logged once per run: the first thing worth knowing when diagnosing a SKIPPED
+/** Logged once per run: the first thing worth knowing when diagnosing a FAILED
  *  build is which Chromium was even attempted. crawlRoutes() relaunches per
  *  retry attempt, so this is deduplicated to keep the build log readable. */
 let loggedBrowserChoice = ""
@@ -119,6 +123,72 @@ function logBrowserChoice(choice: string) {
   if (choice === loggedBrowserChoice) return
   loggedBrowserChoice = choice
   console.log(`[prerender] using ${choice}`)
+}
+
+/** Reads a key from /etc/os-release, or "" when unavailable (non-Linux, missing file). */
+function osRelease(key: string): string {
+  try {
+    const match = readFileSync("/etc/os-release", "utf-8").match(new RegExp(`^${key}="?([^"\\n]*)"?$`, "m"))
+    return match?.[1] ?? ""
+  } catch {
+    return ""
+  }
+}
+
+/**
+ * @sparticuz/chromium only unpacks the shared libraries its Chromium needs
+ * (libnss3, libnspr4, … in al2023.tar.br / al2.tar.br) and points
+ * LD_LIBRARY_PATH at them when it detects AWS Lambda via AWS_EXECUTION_ENV or
+ * AWS_LAMBDA_JS_RUNTIME. Vercel's build container is the same Amazon Linux
+ * image but sets neither, so the libraries were never extracted and Chromium
+ * died on launch ("libnss3.so: cannot open shared object file") — which is
+ * why the prerender step was skipped on Vercel while working locally.
+ *
+ * The package reads these variables once, at import time, so this must run
+ * before the dynamic import below. An explicitly set value is left alone.
+ */
+let preparedSparticuz = false
+function prepareSparticuzForAmazonLinux() {
+  if (preparedSparticuz) return
+  preparedSparticuz = true
+  console.log(
+    `[prerender] build OS: ID=${osRelease("ID") || "?"} VERSION_ID=${osRelease("VERSION_ID") || "?"}; node ${process.version}; ` +
+      `AWS_EXECUTION_ENV=${process.env.AWS_EXECUTION_ENV ?? "unset"}; AWS_LAMBDA_JS_RUNTIME=${process.env.AWS_LAMBDA_JS_RUNTIME ?? "unset"}`,
+  )
+  // Leave it alone only when the package will already recognise a Lambda
+  // runtime. Build hosts that run on AWS can set AWS_EXECUTION_ENV to some
+  // other value (e.g. a container platform), which the package ignores.
+  const execEnv = process.env.AWS_EXECUTION_ENV ?? ""
+  const jsRuntime = process.env.AWS_LAMBDA_JS_RUNTIME ?? ""
+  if (execEnv.includes("AWS_Lambda_nodejs") || jsRuntime.includes("nodejs")) return
+  if (osRelease("ID") !== "amzn") return
+  const version = osRelease("VERSION_ID")
+  // AL2023 → al2023.tar.br (the package keys this off a "22.x"/"20.x" runtime);
+  // Amazon Linux 2 → al2.tar.br (any other nodejs runtime).
+  process.env.AWS_LAMBDA_JS_RUNTIME = version === "2" ? "nodejs18.x" : "nodejs22.x"
+  console.log(
+    `[prerender] Amazon Linux ${version} build container detected — ` +
+      `unpacking @sparticuz/chromium's bundled libraries (AWS_LAMBDA_JS_RUNTIME=${process.env.AWS_LAMBDA_JS_RUNTIME})`,
+  )
+}
+
+/** On a failed launch, lists the shared libraries the extracted Chromium can't
+ *  resolve — the usual reason it won't start in a build container. */
+function logMissingLibraries() {
+  if (!existsSync("/tmp/chromium")) return
+  // ldd exits non-zero when a library is unusable, so read its output either way.
+  const ldd = spawnSync("ldd", ["/tmp/chromium"], { encoding: "utf-8", env: process.env })
+  const problems = `${ldd.stdout ?? ""}\n${ldd.stderr ?? ""}`
+    .split("\n")
+    .filter((l) => /not found|error|too short/i.test(l))
+  console.warn(`[prerender] LD_LIBRARY_PATH=${process.env.LD_LIBRARY_PATH ?? "unset"}`)
+  console.warn(
+    ldd.error
+      ? `[prerender] ldd unavailable: ${ldd.error.message}`
+      : problems.length
+        ? `[prerender] unresolved libraries:\n${problems.join("\n")}`
+        : "[prerender] ldd: every library resolves",
+  )
 }
 
 async function launchBrowser(): Promise<Browser> {
@@ -139,6 +209,7 @@ async function launchBrowser(): Promise<Browser> {
     }
   }
 
+  prepareSparticuzForAmazonLinux()
   const chromium = (await import("@sparticuz/chromium")).default
   const executablePath = await chromium.executablePath()
   logBrowserChoice(`bundled @sparticuz/chromium at ${executablePath}`)
@@ -207,6 +278,13 @@ async function dedupeSeoTags(page: Awaited<ReturnType<Browser["newPage"]>>, defa
         }
         document.querySelectorAll(sel).forEach((el) => el.setAttribute(markerAttr, "1"))
       }
+      // JSON-LD blocks can legitimately be several per page, so they are not
+      // collapsed — only marked, so main.tsx can retire them once Helmet has
+      // inserted its own live copies (otherwise every schema block would be
+      // in the DOM twice after the app mounts).
+      document.head
+        .querySelectorAll('script[type="application/ld+json"]')
+        .forEach((el) => el.setAttribute(markerAttr, "1"))
     },
     defaults,
     HELMET_MANAGED_SELECTORS,
@@ -215,7 +293,7 @@ async function dedupeSeoTags(page: Awaited<ReturnType<Browser["newPage"]>>, defa
 }
 
 interface Rendered {
-  route: string
+  target: PrerenderTarget
   html: string
 }
 
@@ -225,12 +303,12 @@ interface Rendered {
 async function crawlPass(
   browser: Browser,
   baseUrl: string,
-  routes: RouteEntry[],
+  routes: PrerenderTarget[],
   concurrency: number,
   staticDefaults: Record<string, string | null>,
-): Promise<{ done: Rendered[]; pending: RouteEntry[] }> {
+): Promise<{ done: Rendered[]; pending: PrerenderTarget[] }> {
   const done: Rendered[] = []
-  const pending: RouteEntry[] = []
+  const pending: PrerenderTarget[] = []
 
   let cursor = 0
   async function worker() {
@@ -258,7 +336,7 @@ async function crawlPass(
         await new Promise((resolve) => setTimeout(resolve, 200))
         await dedupeSeoTags(page, staticDefaults)
         const html = await page.content()
-        done.push({ route: route.path, html })
+        done.push({ target: route, html })
         console.log(`[prerender] ✓ ${route.path}`)
       } catch (err) {
         pending.push(route)
@@ -273,8 +351,19 @@ async function crawlPass(
   return { done, pending }
 }
 
+// Every indexable route, written to <route>.html (index.html for "/") — Vercel's
+// `cleanUrls` serves /about from about.html — plus the non-indexed ones with
+// their own output files (admin.html, 404.html).
+const TARGETS: PrerenderTarget[] = [
+  ...getAllRoutes().map((r) => ({
+    path: r.path,
+    outFile: r.path === "/" ? "index.html" : `${r.path.replace(/^\//, "")}.html`,
+  })),
+  ...NON_INDEXED_PRERENDER_ROUTES,
+]
+
 async function crawlRoutes(baseUrl: string, staticDefaults: Record<string, string | null>) {
-  let pending = getAllRoutes()
+  let pending = [...TARGETS]
   const total = pending.length
   const succeeded: Rendered[] = []
   let concurrency = DEFAULT_CONCURRENCY
@@ -319,12 +408,9 @@ async function main() {
   } catch (err) {
     console.warn("[prerender] could not launch a headless browser in this environment.")
     console.warn(err instanceof Error ? err.message : String(err))
-    banner(
-      "SKIPPED",
-      "no headless browser available. The site still deploys as a client-rendered SPA, " +
-        "but crawlers that do not run JS will see an empty shell — the indexing fix is NOT active.",
-    )
-    process.exit(0)
+    logMissingLibraries()
+    banner("FAILED", "no headless browser available — the route HTML files were not generated.")
+    process.exit(1)
   }
 
   let previewServer: PreviewServer | undefined
@@ -340,13 +426,11 @@ async function main() {
 
     const { succeeded, failed, total } = await crawlRoutes(baseUrl, staticDefaults)
 
-    for (const { route, html } of succeeded) {
-      const outPath =
-        route === "/" ? path.join(DIST_DIR, "index.html") : path.join(DIST_DIR, route.replace(/^\//, ""), "index.html")
+    for (const { target, html } of succeeded) {
+      const outPath = path.join(DIST_DIR, target.outFile)
       await mkdir(path.dirname(outPath), { recursive: true })
       // Stamp each page so "was this actually prerendered, and by which
-      // build?" is answerable from View Source alone — see the SKIPPED
-      // banner below for why a green build is not by itself proof. The
+      // build?" is answerable from View Source alone. The
       // stamp goes *after* the doctype, never before it: content preceding
       // the doctype is a quirks-mode trigger in legacy parsers. If there is
       // somehow no doctype to anchor to, the page ships unstamped rather
@@ -360,10 +444,17 @@ async function main() {
         `[prerender] ${failed.length} route(s) failed and were left as client-rendered only: ${failed.join(", ")}`,
       )
     }
-    banner(
-      succeeded.length === total ? "PRERENDERED" : "PARTIAL",
-      `${succeeded.length}/${total} routes are static HTML.`,
-    )
+    // Belt and braces: confirm on disk that every target file really exists.
+    const missing = TARGETS.filter((t) => !existsSync(path.join(DIST_DIR, t.outFile))).map((t) => t.outFile)
+    if (failed.length || missing.length) {
+      banner(
+        "FAILED",
+        `${succeeded.length}/${total} routes prerendered` + (missing.length ? `; missing files: ${missing.join(", ")}` : ""),
+      )
+      process.exitCode = 1
+      return
+    }
+    banner("PRERENDERED", `${succeeded.length}/${total} routes are static HTML.`)
   } finally {
     await previewServer?.close().catch(() => {})
   }
@@ -371,10 +462,6 @@ async function main() {
 
 main().catch((err) => {
   console.error(err)
-  banner(
-    "SKIPPED",
-    "unexpected error, leaving dist as a client-rendered SPA. The site still deploys, " +
-      "but crawlers that do not run JS will see an empty shell — the indexing fix is NOT active.",
-  )
-  process.exit(0)
+  banner("FAILED", "unexpected error — the route HTML files were not generated.")
+  process.exit(1)
 })

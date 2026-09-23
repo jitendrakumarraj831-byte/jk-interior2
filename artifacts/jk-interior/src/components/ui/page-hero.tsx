@@ -26,7 +26,7 @@ interface PageHeroProps {
  */
 export default function PageHero({
   icon: Icon = MapPin,
-  eyebrow = "Narpatganj · Forbesganj · Araria District, Bihar",
+  eyebrow = "Forbesganj · Araria District, Bihar",
   title,
   subtitle,
   whatsappMessage,

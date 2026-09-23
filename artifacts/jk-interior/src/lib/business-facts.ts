@@ -10,6 +10,8 @@
  * from the serverless function, where neither exists.
  */
 
+import { ADDRESS_LINE, BUSINESS, FOUNDED_LABEL, HOURS_SENTENCE, SERVICE_AREA_NAMES } from "./seo.js"
+
 export interface BusinessFact {
   term: string
   detail: string
@@ -18,30 +20,28 @@ export interface BusinessFact {
 export const BUSINESS_FACTS: BusinessFact[] = [
   {
     term: "Business",
-    detail:
-      "JK Interior — false ceiling contractor and interior designer, operating since 2019 with 500+ completed projects.",
+    detail: `${BUSINESS.name} — false ceiling contractor and interior finishing company, open since ${FOUNDED_LABEL}.`,
   },
   {
     term: "Address",
-    detail: "Damaria Rewahi, Forbesganj, Araria district, Bihar 854318. Day-to-day operating base: Narpatganj.",
+    detail: `${ADDRESS_LINE} (Araria district) — the workshop address on our Google Business Profile.`,
   },
   {
     term: "Areas served",
-    detail:
-      "Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Kursakanta, Tribeniganj, Chhatapur, Supaul and Purnia — roughly an 80 km radius.",
+    detail: `${SERVICE_AREA_NAMES}. Forbesganj is our business location; the other towns are service areas we travel to.`,
   },
   {
     term: "Services",
     detail:
-      "PVC false ceiling (₹75–₹150/sq.ft), gypsum false ceiling (₹75–₹210/sq.ft), grid ceiling (₹45–₹115/sq.ft), partition wall (₹100–₹750/sq.ft), WPC wall panels (₹180–₹650/sq.ft), UV marble sheets (₹45–₹120/sq.ft), modular TV units (from ₹15,000), artificial grass (₹40–₹150/sq.ft) and complete home or office interiors.",
+      "PVC false ceiling (₹75–₹150/sq.ft), gypsum false ceiling (₹75–₹210/sq.ft), grid ceiling (₹45–₹115/sq.ft), partition wall (₹100–₹750/sq.ft), WPC wall panels (₹180–₹650/sq.ft), UV marble sheets (₹45–₹120/sq.ft), modular TV units (from ₹15,000) and artificial grass (₹40–₹150/sq.ft).",
   },
   {
     term: "Hours",
-    detail: "Monday to Saturday, 8:00 AM – 8:00 PM. Sunday, 9:00 AM – 6:00 PM. WhatsApp is answered outside these hours.",
+    detail: `${HOURS_SENTENCE}.`,
   },
   {
     term: "Site visit",
-    detail: "Free everywhere we work, with no obligation — measurements taken in person and a written quotation the same day.",
+    detail: "Free wherever we work, with no obligation — measurements are taken in person and the written quotation is prepared from them.",
   },
   {
     term: "Warranty",
@@ -54,4 +54,4 @@ export const PRICE_DISCLAIMER =
   "Every rate on this page is a current Forbesganj and Araria market estimate rather than a fixed quotation. Your final figure is set at the free site visit and varies with your design, the material grade you choose and the total area. Combining work — ceiling, wall panelling and television unit together — brings the per-sq.ft rate down."
 
 export const SERVICE_AREA_NOTE =
-  "JK Interior operates from Narpatganj, with its registered workshop in Forbesganj, and travels roughly 80 km around it — Narpatganj, Forbesganj, Araria, Jogbani, Raniganj, Purnia, Supaul, Tribeniganj, Kursakanta and Chhatapur. A single call or WhatsApp message confirms whether your village or mohalla is on the route before you book."
+  `JK Interior works from its registered workshop in Forbesganj and travels to customers across Araria district, Purnia and Supaul. A call or WhatsApp message confirms whether your village or mohalla is on the route before you book.`

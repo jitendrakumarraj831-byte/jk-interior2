@@ -1,15 +1,18 @@
 # JK Interior — robots.txt
 # Fully open for search engines and AI answer-engine crawlers.
-# Only the internal /admin tool is excluded (it is also marked noindex).
+# Only the internal /admin tool and the /api/ endpoints are excluded.
+# CSS, JS, images and fonts stay crawlable so pages render fully.
 
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /api/
 
 # ── Google ──────────────────────────────────────────────────────────────
 User-agent: Googlebot
 Allow: /
 Disallow: /admin
+Disallow: /api/
 
 User-agent: Googlebot-Image
 Allow: /
@@ -23,6 +26,7 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 Disallow: /admin
+Disallow: /api/
 
 # ── Major AI answer-engine & assistant crawlers ─────────────────────────
 User-agent: GPTBot

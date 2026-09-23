@@ -15,13 +15,9 @@ export default function NotFound() {
   return (
     <>
       {/*
-        A bare <Helmet> here used to override only the <title> and robots meta,
-        leaving whatever route's canonical/description/OG tags the prerendered
-        HTML shipped with (almost always the homepage's, since a 404 is what
-        Vercel's SPA rewrite serves for literally any unmatched path — see
-        vercel.json) stuck in <head>, mismatched to a page that says "404" in
-        its title. SeoHead is the same component every real page uses, so a
-        404 gets a canonical/description/OG set that actually describes it.
+        Prerendered to /404.html (scripts/prerender.ts), which Vercel serves with
+        a real 404 status for any unmatched URL. SeoHead gives it noindex and no
+        canonical, so an error page is never mistaken for a copy of another page.
       */}
       <SeoHead
         title="404 – Page Not Found"

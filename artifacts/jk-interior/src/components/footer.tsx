@@ -10,6 +10,7 @@ import {
   PHONE_SECONDARY,
   PHONE_SECONDARY_DISPLAY,
 } from "@/lib/business-data"
+import { ADDRESS_LINE, BUSINESS, CITIES, GOOGLE_MAPS_URL } from "@/lib/seo"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -23,8 +24,7 @@ const navLinks = [
 // Each row deep-links to the service's own guide page rather than dumping every
 // visitor on /services — the anchor text and the destination then actually
 // match, which is what makes a footer link worth anything for a visitor or a
-// crawler. "Complete Interior" has no single page of its own, so it keeps the
-// index.
+// crawler. All eight services have a page of their own.
 const serviceLinks = [
   { label: "PVC False Ceiling", href: "/services/pvc-false-ceiling" },
   { label: "Gypsum Ceiling", href: "/services/gypsum-ceiling" },
@@ -33,7 +33,7 @@ const serviceLinks = [
   { label: "Modular TV Unit", href: "/services/modular-tv-unit" },
   { label: "Grid Ceiling", href: "/services/grid-ceiling" },
   { label: "Partition Wall", href: "/services/partition-wall" },
-  { label: "Complete Interior", href: "/services" },
+  { label: "Artificial Grass", href: "/services/artificial-grass" },
 ]
 
 export default function Footer() {
@@ -80,14 +80,13 @@ export default function Footer() {
                 Interior & False Ceiling Solutions
               </p>
               <p className="max-w-xs text-sm leading-relaxed text-gray-600">
-                Premium interior design and false ceiling solutions across Bihar. Considered
-                workmanship at every budget — from a single PVC ceiling to a complete home interior.
+                False ceilings, wall panelling, partitions and TV units for homes, shops and offices —
+                from a single PVC ceiling to a complete room.
               </p>
               <div className="rounded-xl border border-gold-200 bg-white/60 p-4">
                 <p className="text-xs leading-relaxed text-gold-700/80">
-                  Operating from <span className="font-bold">Narpatganj</span>, with our registered
-                  workshop in <span className="font-bold">Forbesganj</span> — serving the whole of{" "}
-                  <span className="font-bold">Araria district, Bihar</span>.
+                  Registered workshop in <span className="font-bold">Forbesganj</span>, serving{" "}
+                  <span className="font-bold">Araria district</span> and nearby towns in Bihar.
                 </p>
               </div>
             </div>
@@ -105,7 +104,7 @@ export default function Footer() {
   </a>
 
   <a
-    href="https://www.instagram.com/jk_interior_ceiling_designer?igsh=endrOTBuY3hpdzJ6"
+    href="https://www.instagram.com/jk_interior_ceiling_designer"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="JK Interior on Instagram"
@@ -214,23 +213,28 @@ export default function Footer() {
                 </div>
               </a>
               <a
-                href="mailto:jkinteriorofficial@gmail.com"
+                href={`mailto:${BUSINESS.email}`}
                 className="group flex items-center gap-3 text-sm font-semibold text-gray-600 hover:text-gold-700 transition-colors"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600 group-hover:bg-gold-50 transition-colors">
                   <Mail className="h-4 w-4" aria-hidden="true" />
                 </div>
-                <span className="break-all">jkinteriorofficial@gmail.com</span>
+                <span className="break-all">{BUSINESS.email}</span>
               </a>
               <div className="flex items-start gap-3 text-sm font-semibold text-gray-600">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600">
                   <MapPin className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <span className="pt-0.5 leading-snug">
-                  Damaria Rewahi,<br />Forbesganj, Bihar 854318
-                  <span className="mt-1 block text-xs font-medium text-gray-500">
-                    Operating base: Narpatganj, Araria district
-                  </span>
+                  {ADDRESS_LINE}
+                  <a
+                    href={GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 block text-xs font-bold text-gold-700 underline-offset-2 hover:underline"
+                  >
+                    View on Google Maps
+                  </a>
                 </span>
               </div>
 
@@ -321,20 +325,15 @@ export default function Footer() {
         {/* SEO text */}
         <div className="mt-6 mb-12 rounded-xl border border-gold-200 bg-white/50 p-4">
           <p className="text-xs leading-relaxed text-gray-500">
-            JK Interior — false ceiling and interior contractor working out of Narpatganj, with its
-            registered workshop in Forbesganj, Araria district. PVC false ceiling, gypsum ceiling
-            design, grid ceiling, partition walls, WPC wall panelling, UV marble sheet, modular TV
-            unit design and complete home or office interiors, installed across{' '}
-            <Link href="/cities/forbesganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Forbesganj</Link>,{' '}
-            <Link href="/cities/araria" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Araria</Link>,{' '}
-            <Link href="/cities/jogbani" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Jogbani</Link>,{' '}
-            <Link href="/cities/raniganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Raniganj</Link>,{' '}
-            <Link href="/cities/narpatganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Narpatganj</Link>,{' '}
-            <Link href="/cities/kursakanta" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Kursakanta</Link>,{' '}
-            <Link href="/cities/tribeniganj" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Tribeniganj</Link>,{' '}
-            <Link href="/cities/chhatapur" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Chhatapur</Link>,{' '}
-            <Link href="/cities/supaul" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Supaul</Link> and{' '}
-            <Link href="/cities/purnia" className="underline underline-offset-2 hover:text-gold-700 transition-colors">Purnia</Link>.
+            JK Interior — false ceiling and interior contractor with its registered workshop in
+            Forbesganj, Araria district. Gypsum, PVC and grid false ceilings, partition walls, WPC
+            wall panelling, UV marble sheet, modular TV units and artificial grass, installed across{' '}
+            {CITIES.map((c, i) => (
+              <span key={c.slug}>
+                <Link href={`/cities/${c.slug}`} className="underline underline-offset-2 hover:text-gold-700 transition-colors">{c.name}</Link>
+                {i < CITIES.length - 2 ? ", " : i === CITIES.length - 2 ? " and " : "."}
+              </span>
+            ))}
           </p>
         </div>
 
@@ -342,7 +341,7 @@ export default function Footer() {
 <div className="flex flex-col items-center justify-between gap-5 border-t border-gold-200 pt-8 md:flex-row">
   <div>
     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-700" suppressHydrationWarning>
-      © {currentYear} JK Interior — Narpatganj &amp; Forbesganj, Bihar
+      © {currentYear} JK Interior — Forbesganj, Bihar
     </p>
     <p className="mt-0.5 flex items-center gap-1.5 text-[10px] font-semibold text-gray-500">
       <span>Interior &amp; digital experience crafted by Jitendra Kumar</span>
@@ -356,7 +355,7 @@ export default function Footer() {
     <span aria-hidden="true">•</span>
     <Link href="/faq" className="hover:text-gold-600 transition-colors">FAQ</Link>
     <span aria-hidden="true">•</span>
-    <span>Serving Narpatganj, Forbesganj &amp; Araria District</span>
+    <span>Serving Forbesganj &amp; Araria District</span>
   </div>
 </div>
       </div>

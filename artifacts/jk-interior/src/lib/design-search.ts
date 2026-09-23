@@ -142,11 +142,6 @@ export async function fetchPinterestBoardResults(tagId: string, count = 12): Pro
   }
 }
 
-/** True when a live Unsplash access key is configured for this build. */
-export function hasUnsplashKey(): boolean {
-  return Boolean(import.meta.env.VITE_UNSPLASH_ACCESS_KEY)
-}
-
 interface UnsplashApiPhoto {
   id: string
   alt_description: string | null

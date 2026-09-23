@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react"
 import { X, ChevronLeft, ChevronRight, MessageCircle, Phone } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
-import { CATEGORY_SEO, seoAlt, type GalleryImage } from "@/lib/gallery-data"
+import { seoAlt, type GalleryImage } from "@/lib/gallery-data"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import { useFocusTrap } from "@/lib/use-focus-trap"
 
@@ -53,7 +53,6 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
 
   const img = images[idx]; if (!img) return null
   const alt = seoAlt(img)
-  const seo = img.category ? CATEGORY_SEO[img.category] : undefined
 
   return createPortal(
     <motion.div ref={trapRef} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
@@ -85,7 +84,7 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
         </button>
 
         <AnimatePresence mode="wait" custom={dir}>
-          <motion.picture key={idx} itemScope itemType="https://schema.org/ImageObject">
+          <motion.picture key={idx}>
             {/* AVIF/WebP <source> variants only exist for our own portfolio
                 photos (see scripts/optimize-jk-interior-images.ts) — an
                 external photo (a Pinterest pin, an Unsplash result) is
@@ -98,11 +97,9 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
                 <source srcSet={img.src} type="image/webp" />
               </>
             )}
-            <meta itemProp="contentUrl" content={img.src} />
-            <meta itemProp="description" content={seo?.caption ?? alt} />
             {/* Fallback img tag */}
             <motion.img
-              src={img.src} alt={alt} title={alt} itemProp="url"
+              src={img.src} alt={alt} title={alt}
               width={img.width} height={img.height}
               custom={dir}
               variants={{
@@ -129,7 +126,6 @@ export function Lightbox({ images, idx, onClose, onNext, onPrev }: {
       {/* Bottom */}
       <div className="bg-black/90 px-5 pt-3 pb-5 flex flex-col items-center gap-1.5">
         <p className="text-white/60 text-sm text-center">{img.alt}</p>
-        {seo && <p className="text-gold-400/70 text-[11px] text-center tracking-wide">{seo.keywordSuffix}</p>}
         <div className="flex gap-2 md:hidden mt-1.5">
           <button onClick={() => { setDir(-1); onPrev() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10"><ChevronLeft size={14} aria-hidden="true"/> Prev</button>
           <button onClick={() => { setDir(1); onNext() }} className="flex items-center gap-1 px-4 py-2 bg-white/8 rounded-full text-white/60 text-sm border border-white/10">Next <ChevronRight size={14} aria-hidden="true"/></button>

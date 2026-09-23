@@ -11,7 +11,8 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import { FAQS } from "@/lib/faq-data"
-import { BUSINESS, BUSINESS_SCHEMA_TYPES, CORE_SERVICES, SITE_URL, businessAddress, businessContactPoints, businessGeo } from "@/lib/seo"
+import { SITE_URL, buildFaqSchema, buildLocalBusinessSchema, buildWebSiteSchema } from "@/lib/seo"
+import { SERVICES_SUMMARY } from "@/lib/services-summary"
 import {
   GallerySkeleton,
   WhyUsSkeleton,
@@ -31,115 +32,17 @@ export default function HomePage() {
   return (
     <main className="min-h-screen overflow-x-hidden">
       <SeoHead
-        title="JK Interior | Best False Ceiling & Interior Designer in Forbesganj, Araria"
-        description="Bihar's trusted interior contractor for Gypsum false ceiling, PVC & WPC louvers, UV marble sheets, and modular TV units. Call +91 8541849118 for free site visits."
+        title="JK Interior | False Ceiling & Interior Contractor, Forbesganj"
+        description="Gypsum, PVC and grid false ceilings, partition walls, WPC wall panels, UV marble sheets and TV units in Forbesganj, Araria and nearby. Free site visit."
         canonical="/"
         jsonLd={[
-          {
-            "@context": "https://schema.org",
-            "@type": [...BUSINESS_SCHEMA_TYPES],
-            "@id": `${SITE_URL}/#business`,
-            name: BUSINESS.name,
-            slogan: BUSINESS.tagline,
-            description: "Bihar's trusted interior contractor for Gypsum false ceiling, PVC & WPC louvers, UV marble sheets, and modular TV units. Serving Forbesganj, Araria and Bihar since 2019.",
-            url: SITE_URL,
-            logo: `${SITE_URL}/jk-interior-navbar-logo.webp`,
-            image: `${SITE_URL}/opengraph.jpg`,
-            telephone: [BUSINESS.phone1, BUSINESS.phone2],
-            email: BUSINESS.email,
-            foundingDate: BUSINESS.founded,
-            priceRange: BUSINESS.priceRange,
-            contactPoint: businessContactPoints(),
-            address: businessAddress(),
-            geo: businessGeo(),
-            openingHoursSpecification: [
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-                opens: "08:00",
-                closes: "20:00"
-              },
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: ["Sunday"],
-                opens: "09:00",
-                closes: "18:00"
-              }
-            ],
-            areaServed: [
-              { "@type": "City", name: "Forbesganj" },
-              { "@type": "City", name: "Araria" },
-              { "@type": "City", name: "Purnia" },
-              { "@type": "City", name: "Narpatganj" },
-              { "@type": "City", name: "Jogbani" },
-              { "@type": "City", name: "Supaul" },
-              { "@type": "City", name: "Raniganj" },
-              { "@type": "City", name: "Madhubani" },
-              { "@type": "City", name: "Pratapganj" },
-              { "@type": "City", name: "Triveniganj" },
-              { "@type": "City", name: "Simrahi Bazar" },
-              { "@type": "City", name: "Sarsi" },
-              { "@type": "City", name: "Jadia" }
-            ],
-            hasOfferCatalog: {
-              "@type": "OfferCatalog",
-              name: "JK Interior Services",
-              itemListElement: CORE_SERVICES.map((name) => ({
-                "@type": "Offer",
-                itemOffered: { "@type": "Service", name },
-              })),
-            },
-            // No aggregateRating here on purpose. The ratings it used to assert
-            // were not collected by this site, and Google's structured-data
-            // policy treats self-serving review markup on your own business as
-            // a manual-action risk. Real reviews live on the Google Business
-            // Profile linked from sameAs below, where Google sources them
-            // itself.
-            sameAs: [
-              "https://www.google.com/maps?cid=12398820263168117030",
-              "https://wa.me/918541849118",
-              "https://www.facebook.com/share/1GpAKHZZtb/",
-              "https://www.instagram.com/jk_interior_ceiling_designer"
-            ]
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "@id": "https://www.jkinterior.online/#website",
-            name: "JK Interior",
-            url: "https://www.jkinterior.online",
-            inLanguage: ["en-IN", "hi-IN"],
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://www.jkinterior.online/?s={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "@id": "https://www.jkinterior.online/#faq",
-            mainEntity: FAQS.map((faq) => ({
-              "@type": "Question",
-              name: faq.q,
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: faq.a
-              }
-            }))
-          }
+          // The one complete LocalBusiness entity on the site. Every other
+          // page refers to it by @id rather than repeating it.
+          buildLocalBusinessSchema(SERVICES_SUMMARY.map(({ name, slug }) => ({ name, slug }))),
+          buildWebSiteSchema(),
+          { ...buildFaqSchema(FAQS), "@id": `${SITE_URL}/#faq` },
         ]}
       />
-      {/*
-        The Hero renders the page's single visible <h1>. This block keeps the
-        keyword-rich English summary crawlable without introducing a second H1
-        (two H1s on one page is an SEO anti-pattern).
-      */}
-      <p className="sr-only">
-        Best Interior Designer and False Ceiling Contractor in Forbesganj,
-        Araria Bihar – PVC Ceiling, Gypsum Ceiling, WPC Wall Panel,
-        UV Marble Sheet and TV Unit Design by JK Interior
-      </p>
       <Navbar />
       <Hero />
       <BusinessSummary />

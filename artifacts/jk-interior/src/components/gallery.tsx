@@ -1,13 +1,12 @@
  import { useState, useCallback, useMemo, useEffect, useRef, memo } from "react"
 import { Sparkles, Play, Pause, ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { galleryImages, CATEGORY_SEO, seoAlt, buildGalleryJsonLd, type GalleryImage } from "@/lib/gallery-data"
+import { galleryImages, CATEGORY_SEO, seoAlt, type GalleryImage } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import { useActiveOnScreen } from "@/lib/use-active-on-screen"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SectionHeader from "@/components/ui/section-header"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
-import KeywordChips from "@/components/ui/keyword-chips"
 import DesignIdeasSearch from "@/components/design-search-modal"
 import { Lightbox } from "@/components/ui/lightbox"
 
@@ -94,30 +93,25 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen, anch
       // pages) scrolled precisely nowhere.
       id={anchored ? id : undefined}
       data-gallery-anchor={slug}
-      itemScope
-      itemType="https://schema.org/Service"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4 }}
       className="group relative mb-6 break-inside-avoid scroll-mt-36 overflow-hidden rounded-2xl border border-gold-900/10 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gold-500/30 hover:shadow-xl"
     >
-      <meta itemProp="areaServed" content="Forbesganj, Araria, Bihar" />
             {/* Slider area on a fixed aspect ratio — no layout shift as photos change */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900">
         <AnimatePresence mode="wait" custom={dir}>
-          <motion.picture key={cur} itemProp="image" itemScope itemType="https://schema.org/ImageObject">
+          <motion.picture key={cur}>
             {/* Card-sized AVIF (best compression, right resolution for a thumbnail) */}
             <source srcSet={cardAvif(images[cur].src)} sizes={CARD_SIZES} type="image/avif" />
             {/* Card-sized WebP (fallback) */}
             <source srcSet={cardWebp(images[cur].src)} sizes={CARD_SIZES} type="image/webp" />
-            <meta itemProp="contentUrl" content={images[cur].src} />
             {/* Fallback img tag */}
             <motion.img
               src={cardWebp(images[cur].src)}
               alt={activeAlt}
               title={activeAlt}
-              itemProp="url"
               width={images[cur].width}
               height={images[cur].height}
               custom={dir}
@@ -190,7 +184,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen, anch
 
         {/* Category Title on Image */}
         <div className="absolute bottom-3 left-3 right-3 z-20">
-          <h3 itemProp="name" className="text-lg font-extrabold text-white tracking-tight drop-shadow-md sm:text-xl">
+          <h3 className="text-lg font-extrabold text-white tracking-tight drop-shadow-md sm:text-xl">
             {category}
           </h3>
         </div>
@@ -219,7 +213,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen, anch
       {/* Caption — keyword-optimized description for search engines and visitors alike */}
       {seo && (
         <div className="bg-white p-4">
-          <p itemProp="description" className="text-xs font-medium leading-relaxed text-gray-600">{seo.caption}</p>
+          <p className="text-xs font-medium leading-relaxed text-gray-600">{seo.caption}</p>
         </div>
       )}
 
@@ -227,7 +221,7 @@ const CategoryCard = memo(function CategoryCard({ category, images, onOpen, anch
       <div className="flex gap-2 p-3 pt-0 bg-white">
         <CallLink
           size="sm"
-          ariaLabel={`Call for ${category} quote — ${seo?.keywordSuffix ?? category}`}
+          ariaLabel={`Call for a ${category} quote`}
           className="flex-1 py-2 text-xs font-semibold rounded-xl"
         >
           Get Quote
@@ -252,7 +246,6 @@ export default function Gallery() {
   const [lbIdx, setLbIdx] = useState<number | null>(null)
 
   const categories = useMemo(() => groupByCategory(ALL), [])
-  const galleryJsonLd = useMemo(() => buildGalleryJsonLd(), [])
 
   const open = useCallback((images: GalleryImage[], idx: number) => {
     setLbImgs(images); setLbIdx(idx)
@@ -271,11 +264,7 @@ export default function Gallery() {
   // on top of the Suspense fallback the homepage already shows while this
   // chunk loads. Nothing below touches window/document during render.
   return (
-    <section id="gallery" className="relative overflow-hidden bg-[#efece3]" itemScope itemType="https://schema.org/ImageGallery">
-      {/* Structured data — lets Google Search Console crawl every photo's caption, keywords
-          and the local-service context directly, wherever this section is rendered. */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(galleryJsonLd) }} />
-      <meta itemProp="name" content="JK Interior Gallery - Bihar" />
+    <section id="gallery" className="relative overflow-hidden bg-[#efece3]">
 
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 dot-pattern opacity-[0.18]" />
@@ -292,14 +281,10 @@ export default function Gallery() {
           headingSize="md"
           className="mb-10"
           title={<>Our Work, <span className="hero-gradient-text">Your Confidence</span></>}
-          // ALL.length counts photographs, not projects. Reading it as
-          // "76+ completed interior projects" both understated the work and
-          // contradicted the 500+ figure stated everywhere else on the site —
-          // and it moved every time a photo was added. Say what the number is.
-          subtitle={`${ALL.length} photographs of finished ceilings, wall panelling and units from homes and businesses across Narpatganj, Forbesganj and Araria district, Bihar.`}
+          // ALL.length counts photographs, not projects — say what the number is.
+          subtitle={`${ALL.length} photographs of finished ceilings, wall panelling and units from homes and businesses across Forbesganj, Araria district and nearby.`}
         />
 
-        <KeywordChips className="mb-8" />
 
         <div className="mb-8 flex justify-center">
           <DesignIdeasSearch />

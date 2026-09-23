@@ -6,6 +6,8 @@ import PageHero from "@/components/ui/page-hero"
 import PageCta from "@/components/ui/page-cta"
 import { Sparkles } from "lucide-react"
 import { useHashScroll } from "@/lib/hash-scroll"
+import { buildBreadcrumbSchema } from "@/lib/seo"
+import { buildGalleryJsonLd } from "@/lib/gallery-data"
 
 export default function GalleryPage() {
   // `/gallery#gallery-<category>` deep links — the "View All" link on every
@@ -18,22 +20,16 @@ export default function GalleryPage() {
   return (
     <main>
       <SeoHead
-        title="Interior Design Gallery – PVC Ceiling, WPC Panel, TV Unit Projects in Bihar"
-        description="Browse JK Interior's gallery of 500+ completed interior design projects in Bihar. PVC false ceiling, gypsum ceiling, WPC wall paneling, UV marble sheet, and modular TV unit work in Forbesganj and across Bihar."
+        title="Project Gallery: Ceilings, Panels & TV Units | JK Interior"
+        description="Photos of gypsum, PVC and grid ceilings, partitions, WPC panels, UV marble walls, TV units and artificial grass installed by JK Interior near Forbesganj."
         canonical="/gallery"
+        pageType="CollectionPage"
         jsonLd={[
-          // The full ImageGallery — every photo as a schema.org ImageObject with its
-          // caption and target keywords — is emitted by the <Gallery /> component
-          // itself (lib/gallery-data.ts#buildGalleryJsonLd), wherever it's rendered.
-          // This page only adds the breadcrumb, which is page-specific.
-          {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.jkinterior.online/" },
-              { "@type": "ListItem", position: 2, name: "Gallery", item: "https://www.jkinterior.online/gallery" }
-            ]
-          }
+          buildGalleryJsonLd(),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Gallery", path: "/gallery" },
+          ]),
         ]}
       />
       <Navbar />
@@ -41,11 +37,11 @@ export default function GalleryPage() {
         icon={Sparkles}
         title={
           <>
-            500+ Finished Rooms,{" "}
-            <span className="hero-gradient-text">One Standard of Work</span>
+            Our Work,{" "}
+            <span className="hero-gradient-text">Photographed On Site</span>
           </>
         }
-        subtitle="Real ceilings, panels and TV units from real homes across Narpatganj, Forbesganj and Araria — browse by service to see exactly what your room could look like."
+        subtitle="Ceilings, wall panels and TV units from homes and businesses around Forbesganj and Araria district — browse by service to see what your room could look like."
         whatsappMessage="Hello JK Interior, I've been browsing your gallery and would like a quote for a similar design."
       />
       <Gallery />

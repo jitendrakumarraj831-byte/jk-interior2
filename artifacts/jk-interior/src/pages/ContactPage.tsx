@@ -5,40 +5,20 @@ import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
 import PageHero from "@/components/ui/page-hero"
 import { MessageCircle } from "lucide-react"
-import { BUSINESS, buildBusinessIdentity } from "@/lib/seo"
+import { BUSINESS, PHONE1_DISPLAY, buildBreadcrumbSchema } from "@/lib/seo"
 
 export default function ContactPage() {
   return (
     <main>
       <SeoHead
-        title="Contact JK Interior – Free Quote for Interior Design in Forbesganj Bihar"
-        description="Contact JK Interior for a free site visit and quote. Call or WhatsApp +91 8541849118 for PVC ceiling, gypsum ceiling, WPC wall panel and interior design in Forbesganj, Araria, Bihar."
+        title="Contact JK Interior – Free Site Visit in Forbesganj"
+        description={`Call or WhatsApp ${PHONE1_DISPLAY} for a free site visit. Workshop at ${BUSINESS.address.street}, ${BUSINESS.address.city}; we cover Araria district, Purnia and Supaul.`}
         canonical="/contact"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "@id": "https://www.jkinterior.online/contact",
-          name: "Contact JK Interior",
-          url: "https://www.jkinterior.online/contact",
-          mainEntity: {
-            ...buildBusinessIdentity(),
-            email: BUSINESS.email,
-            openingHoursSpecification: [
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-                opens: "08:00",
-                closes: "20:00"
-              },
-              {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: ["Sunday"],
-                opens: "09:00",
-                closes: "18:00"
-              }
-            ]
-          }
-        }}
+        pageType="ContactPage"
+        jsonLd={buildBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
       />
       <Navbar />
       <PageHero

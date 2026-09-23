@@ -6,17 +6,62 @@ import { AssistantLauncher } from "@/components/ui/assistant-launcher"
 import MobileQuickActions from "@/components/mobile-quick-actions"
 import { GalleryModalProvider } from "@/lib/gallery-modal-context"
 
-const HomePage = lazy(() => import("@/pages/HomePage"))
-const AboutPage = lazy(() => import("@/pages/AboutPage"))
-const ServicesPage = lazy(() => import("@/pages/ServicesPage"))
-const ServiceDetailPage = lazy(() => import("@/pages/ServiceDetailPage"))
-const ServiceCityPage = lazy(() => import("@/pages/ServiceCityPage"))
-const GalleryPage = lazy(() => import("@/pages/GalleryPage"))
-const ContactPage = lazy(() => import("@/pages/ContactPage"))
-const FAQPage = lazy(() => import("@/pages/FAQPage"))
-const CityPage = lazy(() => import("@/pages/CityPage"))
-const AdminPage = lazy(() => import("@/pages/AdminPage"))
-const NotFound = lazy(() => import("@/pages/not-found"))
+/**
+ * A lazily loaded route page that can also be loaded *before* React mounts.
+ *
+ * Every route is prerendered to static HTML, and main.tsx mounts with
+ * createRoot, which replaces that HTML on the first commit. With a plain
+ * React.lazy page, the first commit is the Suspense fallback — a blank white
+ * screen — until the route's chunk arrives (measured at ~0.4–0.8 s on a
+ * throttled phone). main.tsx calls `preloadCurrentRoute()` first, so by the time
+ * React renders, the page module is already here and is rendered directly:
+ * the prerendered content is swapped for the identical live page, no blank frame.
+ * Client-side navigations to other routes still go through React.lazy as before.
+ */
+type PageComponent = React.ComponentType<object>
+function lazyPage(loader: () => Promise<{ default: PageComponent }>) {
+  let Loaded: PageComponent | null = null
+  const load = () =>
+    loader().then((m) => {
+      Loaded = m.default
+      return m
+    })
+  const Lazy = lazy(load)
+  function Page(props: object) {
+    return Loaded ? <Loaded {...props} /> : <Lazy {...props} />
+  }
+  Page.preload = load
+  return Page
+}
+
+const HomePage = lazyPage(() => import("@/pages/HomePage"))
+const AboutPage = lazyPage(() => import("@/pages/AboutPage"))
+const ServicesPage = lazyPage(() => import("@/pages/ServicesPage"))
+const ServiceDetailPage = lazyPage(() => import("@/pages/ServiceDetailPage"))
+const GalleryPage = lazyPage(() => import("@/pages/GalleryPage"))
+const ContactPage = lazyPage(() => import("@/pages/ContactPage"))
+const FAQPage = lazyPage(() => import("@/pages/FAQPage"))
+const CityPage = lazyPage(() => import("@/pages/CityPage"))
+const AdminPage = lazyPage(() => import("@/pages/AdminPage"))
+const NotFound = lazyPage(() => import("@/pages/not-found"))
+
+/** Loads the page module for `pathname` — mirrors the <Switch> below. */
+export function preloadCurrentRoute(pathname: string): Promise<unknown> {
+  const p = pathname.replace(/\/+$/, "") || "/"
+  const page =
+    p === "/" ? HomePage
+    : p === "/about" ? AboutPage
+    : p === "/services" ? ServicesPage
+    : /^\/services\/[^/]+$/.test(p) ? ServiceDetailPage
+    : p === "/gallery" ? GalleryPage
+    : p === "/contact" ? ContactPage
+    : p === "/faq" ? FAQPage
+    : /^\/cities\/[^/]+$/.test(p) ? CityPage
+    : p === "/admin" ? AdminPage
+    : NotFound
+  return page.preload()
+}
+
 const JKChat = lazy(() => import("@/components/jk-chat"))
 
 function PageFallback() {
@@ -31,7 +76,6 @@ function Router() {
         <Route path="/about" component={AboutPage} />
         <Route path="/services" component={ServicesPage} />
         <Route path="/services/:slug" component={ServiceDetailPage} />
-        <Route path="/services/:service/:city" component={ServiceCityPage} />
         <Route path="/gallery" component={GalleryPage} />
         <Route path="/contact" component={ContactPage} />
         <Route path="/faq" component={FAQPage} />

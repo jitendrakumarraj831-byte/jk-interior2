@@ -1,7 +1,7 @@
 import { BUSINESS_FACTS, PRICE_DISCLAIMER, SERVICE_AREA_NOTE } from "./business-facts.js"
 import { FAQS } from "./faq-data.js"
 import { SERVICES_SUMMARY, type ServiceSummary } from "./services-summary.js"
-import { BUSINESS, CITIES, SITE_URL } from "./seo.js"
+import { BUSINESS, GOOGLE_MAPS_URL, PHONE1_DISPLAY, PHONE2_DISPLAY, SERVICE_AREAS, SITE_URL } from "./seo.js"
 import { languageInstruction, type ReplyLanguage } from "./reply-language.js"
 
 /**
@@ -21,19 +21,14 @@ import { languageInstruction, type ReplyLanguage } from "./reply-language.js"
  * while its label displays another.
  */
 const digitsOf = (phone: string) => phone.replace(/\D/g, "")
-/** "+91-8541849118" → "+91 85418 49118" */
-const displayForm = (phone: string) => {
-  const local = digitsOf(phone).slice(-10)
-  return `+91 ${local.slice(0, 5)} ${local.slice(5)}`
-}
 
 export const CALL_NUMBER = `+${digitsOf(BUSINESS.phone1)}`
 export const WA_NUMBER = digitsOf(BUSINESS.phone1)
 
 export const PHONE_PRIMARY = CALL_NUMBER
-export const PHONE_PRIMARY_DISPLAY = displayForm(BUSINESS.phone1)
+export const PHONE_PRIMARY_DISPLAY = PHONE1_DISPLAY
 export const PHONE_SECONDARY = `+${digitsOf(BUSINESS.phone2)}`
-export const PHONE_SECONDARY_DISPLAY = displayForm(BUSINESS.phone2)
+export const PHONE_SECONDARY_DISPLAY = PHONE2_DISPLAY
 
 /** Both official numbers, in the order they should be presented to a visitor. */
 export const OFFICIAL_PHONES = [
@@ -41,24 +36,9 @@ export const OFFICIAL_PHONES = [
   { tel: PHONE_SECONDARY, display: PHONE_SECONDARY_DISPLAY, label: "Alternate Line" },
 ] as const
 
-/**
- * Where JK Interior actually works from. Narpatganj is the owner's residence and
- * day-to-day operating base; Forbesganj holds the registered workshop address
- * used in every schema.org block; Araria is the parent district.
- */
-export const BUSINESS_LOCATIONS = {
-  operatingBase: "Narpatganj",
-  registeredCity: "Forbesganj",
-  district: "Araria",
-  state: "Bihar",
-  postalCode: "854318",
-  street: "Damaria Rewahi",
-} as const
-
-// Google Business Profile — deep-links straight to the JK Interior listing on
-// Google Maps (reviews included). Derived from the place CID in the embedded
-// map on the contact section, so it always resolves to the verified profile.
-export const GOOGLE_REVIEWS_URL = "https://www.google.com/maps?cid=12398820263168117030"
+// Google Business Profile — deep-links straight to the verified JK Interior
+// listing on Google Maps (reviews included). Defined once in seo.ts.
+export const GOOGLE_REVIEWS_URL = GOOGLE_MAPS_URL
 
 export interface LeadContext {
   name?: string
@@ -356,9 +336,9 @@ function faqBlock(): string {
   return FAQS.map((f) => `Q: ${f.q}\nA: ${f.a}`).join("\n\n")
 }
 
-/** Every town with a page on the site, so "do you work in X?" is answered from the site's own list. */
+/** The site's one service-area list, so "do you work in X?" is answered from the same data the pages show. */
 function serviceAreaBlock(): string {
-  return CITIES.map((c) => `${c.name} (${c.district} district)`).join(", ")
+  return SERVICE_AREAS.map((a) => `${a.name} (${a.district} district${a.businessLocation ? ", business location" : ""})`).join(", ")
 }
 
 /**
@@ -474,7 +454,7 @@ Match the visitor turn by turn: if they switch language mid-conversation, switch
 with them. Never answer a Hindi or Hinglish message in English.
 
 --- HOW TO REPLY ---
-- Write the way an experienced contractor from Narpatganj messages a customer on
+- Write the way a contractor from Forbesganj messages a customer on
   WhatsApp: warm, direct, no corporate filler, no sales adjectives. Sound like a
   person actually reading what was just typed and replying to it — not a form
   stepping through its next field.
