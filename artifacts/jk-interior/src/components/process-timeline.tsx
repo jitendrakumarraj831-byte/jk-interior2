@@ -15,8 +15,7 @@ const steps = [
     icon: Phone,
     step: "01",
     title: "Call or WhatsApp",
-    subtitle: "Tell us about the space",
-    desc: "Tell us the rooms and finish you want. We book a free site visit at a time that suits you.",
+    desc: "Tell us the rooms and finish you want — we book a free site visit.",
     color: "from-charcoal-500 to-charcoal-700",
     glow: "rgba(31,42,55,0.3)",
   },
@@ -24,8 +23,7 @@ const steps = [
     icon: ClipboardList,
     step: "02",
     title: "Free Site Visit",
-    subtitle: "Measured, then quoted",
-    desc: "We measure every room and hand you a written, itemised quotation — entirely free.",
+    desc: "We measure every room and give you a written, itemised quotation.",
     color: "from-amber-500 to-amber-700",
     glow: "rgba(245,158,11,0.25)",
   },
@@ -33,8 +31,7 @@ const steps = [
     icon: Hammer,
     step: "03",
     title: "Panel-System Installation",
-    subtitle: "Room by room, to schedule",
-    desc: "Our crew works to the exact schedule quoted. Clip-and-panel systems over wet plaster — far less dust in a lived-in home.",
+    desc: "Work runs to the quoted schedule, room by room, with far less dust.",
     color: "from-gold-500 to-gold-700",
     glow: "rgba(201, 162, 39,0.25)",
   },
@@ -42,8 +39,7 @@ const steps = [
     icon: CheckCircle2,
     step: "04",
     title: "Handover & Warranty",
-    subtitle: "One year, in writing",
-    desc: "Site cleared, project handed over with a written one-year warranty on materials and workmanship.",
+    desc: "Site cleared, with a written one-year warranty on materials and workmanship.",
     color: "from-charcoal-500 to-charcoal-700",
     glow: "rgba(31,42,55,0.3)",
   },
@@ -77,8 +73,7 @@ function StepCard({ step, showConnector }: { step: Step; showConnector?: boolean
           <span className="text-[10px] font-black tracking-widest text-gold-300">STEP {step.step}</span>
         </div>
 
-        <h3 className="mb-1 text-lg font-bold text-white">{step.title}</h3>
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gold-300/70">{step.subtitle}</p>
+        <h3 className="mb-3 text-lg font-bold text-white">{step.title}</h3>
         <p className="text-sm leading-relaxed text-slate-300">{step.desc}</p>
       </div>
     </div>
@@ -135,7 +130,7 @@ export default function ProcessTimeline() {
           headingSize="md"
           dark
           title={<>How We <span className="hero-gradient-text">Work</span></>}
-          subtitle="From your first message to a signed warranty — four steps, nothing skipped."
+          subtitle="Four clear steps from your first message to a signed warranty."
         />
       </div>
 

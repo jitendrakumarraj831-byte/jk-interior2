@@ -9,38 +9,32 @@ const reasons = [
   {
     icon: ShieldCheck,
     title: "Branded materials, never substituted",
-    reasoning:
-      "The material agreed in your quotation is the material we fit — no cheaper unbranded stock swapped in. Ask to see the brand and tag on site.",
+    reasoning: "The brand you approve is the brand we fit.",
   },
   {
     icon: Droplets,
-    title: "Specified for a four-month monsoon",
-    reasoning:
-      "PVC panels and UV marble sheets are waterproof by design — built for Araria's monsoon, not adapted from a drier climate.",
+    title: "Built for Araria's monsoon",
+    reasoning: "PVC and UV marble are waterproof by design.",
   },
   {
     icon: Clock,
-    title: "A day-by-day schedule, not a vague estimate",
-    reasoning:
-      "You get a written timeline before we start — which day the ceiling goes up, which day we hand over. No open-ended delays.",
+    title: "A written day-by-day schedule",
+    reasoning: "You know the start and handover dates before work begins.",
   },
   {
     icon: Sparkles,
-    title: "Panel systems in place of wet plaster",
-    reasoning:
-      "Wherever possible, we clip panels in instead of wet plastering — far less dust in a home you're still living in.",
+    title: "Panel systems, not wet plaster",
+    reasoning: "Far less dust in a home you are still living in.",
   },
   {
     icon: Award,
-    title: "A signed warranty, not a verbal assurance",
-    reasoning:
-      "A written one-year warranty on materials and workmanship, handed to you the day we finish.",
+    title: "A signed one-year warranty",
+    reasoning: "On materials and workmanship, handed over at completion.",
   },
   {
     icon: HeartHandshake,
-    title: "The site visit costs nothing, either way",
-    reasoning:
-      "We measure, quote and advise for free — no fee, no obligation, even if you take the quote elsewhere.",
+    title: "Free site visit and quotation",
+    reasoning: "No fee, no obligation, even if you take the quote elsewhere.",
   },
 ]
 
@@ -117,7 +111,7 @@ export default function WhyUs() {
           badge="How We Work"
           headingId="why-us-heading"
           title={<>Six Decisions Behind <span className="hero-gradient-text">Every Job</span></>}
-          subtitle="A considered reason behind every choice we make on site."
+          subtitle="The standards behind every job."
           className="mb-12 sm:mb-14 lg:mb-16"
         />
 
@@ -131,12 +125,12 @@ export default function WhyUs() {
                 One rule on every job: we measure the room ourselves before we quote it.
               </p>
               <p className="mb-4 text-sm leading-relaxed text-gray-600 sm:text-base">
-                Araria's monsoon ruins anything that isn't genuinely waterproof — so PVC and UV
+                Araria&rsquo;s monsoon ruins anything that isn&rsquo;t genuinely waterproof — PVC and UV
                 marble go in wet rooms, gypsum stays in dry ones. No exceptions, even on request.
               </p>
               <p className="mb-5 rounded-lg border-l-2 border-gold-300 bg-gold-50/50 py-2 pl-3 pr-2 text-sm leading-relaxed text-gray-600">
-                Registered workshop in Forbesganj, working across Araria district. One team,
-                one standard — bedroom or commercial floor.
+                Registered workshop in Forbesganj, working across Araria district. One standard —
+                bedroom or commercial floor.
               </p>
               <div className="flex items-center gap-3 border-t border-dashed border-gray-200 pt-5">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-700 text-sm font-black text-white">

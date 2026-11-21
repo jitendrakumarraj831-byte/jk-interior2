@@ -19,7 +19,7 @@ import { galleryImages, seoAlt } from "@/lib/gallery-data"
 import { slugify } from "@/lib/utils"
 import {
   Clock, ShieldCheck, Phone, HelpCircle, CheckCircle2, ArrowRight, IndianRupee, ImageIcon,
-  AlertTriangle, Layers, Lightbulb, Palette,
+  AlertTriangle, Layers, Lightbulb, Palette, ChevronDown,
 } from "lucide-react"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
@@ -357,30 +357,30 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* ── Where it belongs, and where it does not ── */}
+      {/* ── Where it fits, and what the quote covers ── */}
       <section className="py-12 sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
           <motion.div {...staggerContainer} className="grid gap-5 md:grid-cols-2">
             <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gold-200 bg-gold-50/40 p-6 shadow-sm backdrop-blur-md sm:p-7">
               <h2 className="mb-4 flex items-center gap-2 text-lg font-black text-gray-900 sm:text-xl">
                 <CheckCircle2 className="h-5 w-5 text-gold-600" aria-hidden="true" />
-                Where It Belongs
+                Where It Fits
               </h2>
-              <ul className="space-y-2.5">
+
+              <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-gold-700">Best placed in</p>
+              <ul className="mb-5 space-y-2.5">
                 {service.whereUsed.map((item) => (
                   <li key={item} className="flex gap-2.5 text-sm leading-snug text-gray-700">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-gold-500" aria-hidden="true" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-gold-600" aria-hidden="true" />
                     {item}
                   </li>
                 ))}
               </ul>
-            </motion.div>
 
-            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-amber-200 bg-amber-50/50 p-6 shadow-sm backdrop-blur-md sm:p-7">
-              <h2 className="mb-4 flex items-center gap-2 text-lg font-black text-gray-900 sm:text-xl">
-                <AlertTriangle className="h-5 w-5 text-amber-500" aria-hidden="true" />
-                Where We Will Not Fit It
-              </h2>
+              <p className="mb-2 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-amber-700">
+                <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
+                Where we will not fit it
+              </p>
               <ul className="space-y-2.5">
                 {service.whereNotUsed.map((item) => (
                   <li key={item} className="flex gap-2.5 text-sm leading-snug text-gray-700">
@@ -390,12 +390,12 @@ export default function ServiceDetailPage() {
                 ))}
               </ul>
             </motion.div>
-          </motion.div>
 
-          <motion.div {...staggerContainer} className="mt-5 grid gap-5 md:grid-cols-2">
             <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
-              <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">Included In Our Quotation</h2>
-              <ul className="space-y-2.5">
+              <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">What&rsquo;s Included</h2>
+
+              <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-gold-700">Included in your quotation</p>
+              <ul className="mb-5 space-y-2.5">
                 {service.whatsIncluded.map((item) => (
                   <li key={item} className="flex gap-2.5 text-sm leading-snug text-gray-700">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none text-gold-600" aria-hidden="true" />
@@ -403,9 +403,8 @@ export default function ServiceDetailPage() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
-            <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-[28px] border border-gray-200 bg-white p-6 shadow-sm sm:p-7">
-              <h2 className="mb-4 text-lg font-black text-gray-900 sm:text-xl">Quoted Separately</h2>
+
+              <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-gray-500">Quoted separately</p>
               <ul className="space-y-2.5">
                 {service.whatsNotIncluded.map((item) => (
                   <li key={item} className="flex gap-2.5 text-sm leading-snug text-gray-600">
@@ -419,97 +418,107 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* ── Materials & installation sequence ── */}
-      <section className="bg-charcoal-900 py-12 text-white sm:py-14">
+      {/* ── Materials & method — collapsed by default so the page stays scannable ── */}
+      <section className="bg-charcoal-900 py-10 text-white sm:py-12">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <motion.div {...inViewAnim(0)} className="mb-6 flex items-center gap-2">
-            <Layers className="h-5 w-5 text-gold-400" aria-hidden="true" />
-            <h2 className="text-2xl font-black sm:text-3xl">Materials &amp; Method</h2>
-          </motion.div>
+          <details className="group rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+              <h2 className="flex items-center gap-2 text-xl font-black sm:text-2xl">
+                <Layers className="h-5 w-5 text-gold-400" aria-hidden="true" />
+                Materials &amp; Method
+              </h2>
+              <ChevronDown className="h-5 w-5 flex-none text-gold-300 transition-transform duration-300 group-open:rotate-180" aria-hidden="true" />
+            </summary>
 
-          <motion.div {...staggerContainer} className="mb-8 grid gap-3 sm:grid-cols-2">
-            {service.materials.map((m) => (
-              <motion.div key={m.name} {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-white/10 bg-white/[0.05] p-4">
-                <p className="text-sm font-bold text-gold-300">{m.name}</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-300">{m.detail}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {service.materials.map((m) => (
+                <div key={m.name} className="rounded-2xl border border-white/10 bg-white/[0.05] p-4">
+                  <p className="text-sm font-bold text-gold-300">{m.name}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-300">{m.detail}</p>
+                </div>
+              ))}
+            </div>
+          </details>
 
-          <h3 className="mb-4 text-sm font-black uppercase tracking-widest text-gold-300">
-            How the work runs, step by step
-          </h3>
-        </div>
+          <details className="group mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+              <h2 className="text-xl font-black sm:text-2xl">How the work runs, step by step</h2>
+              <ChevronDown className="h-5 w-5 flex-none text-gold-300 transition-transform duration-300 group-open:rotate-180" aria-hidden="true" />
+            </summary>
 
-        <div className="lg:hidden">
-          <SwipeRail
-            ariaLabel={`${service.name} installation steps`}
-            itemClassName="w-[76%] sm:w-[46%]"
-            edgePaddingClassName="px-5"
-            fadeColor="#141c26"
-            dark
-            arrows={false}
-          >
-            {service.installSteps.map((step, i) => (
-              <InstallStepCard key={step.title} step={step} index={i} />
-            ))}
-          </SwipeRail>
-          <SwipeHint dark className="mt-3" />
-        </div>
+            <ol className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {service.installSteps.map((step, i) => (
+                <li key={step.title}>
+                  <InstallStepCard step={step} index={i} />
+                </li>
+              ))}
+            </ol>
 
-        <div className="mx-auto hidden max-w-5xl px-5 sm:px-6 lg:block lg:px-12">
-          <motion.ol {...staggerContainer} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {service.installSteps.map((step, i) => (
-              <motion.li key={step.title} {...staggerItem} whileHover={hoverScale}>
-                <InstallStepCard step={step} index={i} />
-              </motion.li>
-            ))}
-          </motion.ol>
-        </div>
-
-        <div className="mx-auto mt-8 max-w-5xl px-5 sm:px-6 lg:px-12">
-          <motion.p {...inViewAnim(0)} className="flex gap-3 rounded-2xl border border-gold-400/25 bg-gold-400/10 p-4 text-sm leading-relaxed text-gold-100">
-            <Lightbulb className="mt-0.5 h-5 w-5 flex-none text-gold-300" aria-hidden="true" />
-            <span>
-              <span className="block text-[10px] font-black uppercase tracking-widest text-gold-300">
-                From our site supervisor
+            <p className="mt-5 flex gap-3 rounded-2xl border border-gold-400/25 bg-gold-400/10 p-4 text-sm leading-relaxed text-gold-100">
+              <Lightbulb className="mt-0.5 h-5 w-5 flex-none text-gold-300" aria-hidden="true" />
+              <span>
+                <span className="block text-[10px] font-black uppercase tracking-widest text-gold-300">
+                  From our site supervisor
+                </span>
+                {service.expertTip}
               </span>
-              {service.expertTip}
-            </span>
-          </motion.p>
+            </p>
+          </details>
         </div>
       </section>
 
-      {/* ── Head-to-head comparison ── */}
+      {/* ── Head-to-head comparison — collapsed; the local project and availability stay visible ── */}
       <section className="py-12 sm:py-14">
         <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-12">
-          <motion.h2 {...inViewAnim(0)} className="mb-2 text-2xl font-black text-gray-900 sm:text-3xl">
-            {service.name} vs {service.comparisonWith}
-          </motion.h2>
-          <motion.p {...inViewAnim(0.05)} className="mb-6 text-sm text-gray-500">
-            The comparison customers ask us to make most often, answered honestly.
-          </motion.p>
+          <details className="group rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+              <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">
+                {service.name} vs {service.comparisonWith}
+              </h2>
+              <ChevronDown className="h-5 w-5 flex-none text-gold-600 transition-transform duration-300 group-open:rotate-180" aria-hidden="true" />
+            </summary>
 
-          <motion.div {...inViewAnim(0.1)} className="overflow-x-auto rounded-2xl border border-gray-200">
-            <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
-              <thead>
-                <tr className="bg-gold-50">
-                  <th scope="col" className="p-3 text-[11px] font-black uppercase tracking-widest text-gold-800">Point</th>
-                  <th scope="col" className="p-3 text-[11px] font-black uppercase tracking-widest text-gold-800">{service.name}</th>
-                  <th scope="col" className="p-3 text-[11px] font-black uppercase tracking-widest text-gray-500">{service.comparisonWith}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {service.comparison.map((row) => (
-                  <tr key={row.point} className="border-t border-gray-200 align-top">
-                    <th scope="row" className="p-3 text-sm font-bold text-gray-900">{row.point}</th>
-                    <td className="p-3 text-sm text-gray-700">{row.self}</td>
-                    <td className="p-3 text-sm text-gray-500">{row.other}</td>
+            <p className="mt-3 text-sm text-gray-500">
+              The comparison customers ask us to make most often, answered honestly.
+            </p>
+
+            <div className="mt-4 overflow-x-auto rounded-2xl border border-gray-200">
+              <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
+                <thead>
+                  <tr className="bg-gold-50">
+                    <th scope="col" className="p-3 text-[11px] font-black uppercase tracking-widest text-gold-800">Point</th>
+                    <th scope="col" className="p-3 text-[11px] font-black uppercase tracking-widest text-gold-800">{service.name}</th>
+                    <th scope="col" className="p-3 text-[11px] font-black uppercase tracking-widest text-gray-500">{service.comparisonWith}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </motion.div>
+                </thead>
+                <tbody>
+                  {service.comparison.map((row) => (
+                    <tr key={row.point} className="border-t border-gray-200 align-top">
+                      <th scope="row" className="p-3 text-sm font-bold text-gray-900">{row.point}</th>
+                      <td className="p-3 text-sm text-gray-700">{row.self}</td>
+                      <td className="p-3 text-sm text-gray-500">{row.other}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {service.limitations.length > 0 && (
+              <div className="mt-4 rounded-2xl border border-gray-200 bg-gray-50 p-5">
+                <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-gray-700">
+                  Honest limitations
+                </h3>
+                <ul className="grid gap-2 sm:grid-cols-2">
+                  {service.limitations.map((item) => (
+                    <li key={item} className="flex gap-2.5 text-sm leading-snug text-gray-600">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-gray-400" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </details>
 
           <motion.div {...staggerContainer} className="mt-5 grid gap-3 sm:grid-cols-2">
             <motion.div {...staggerItem} whileHover={hoverScale} className="rounded-2xl border border-gray-200 bg-white p-4">
@@ -537,22 +546,6 @@ export default function ServiceDetailPage() {
               </p>
             </motion.div>
           </motion.div>
-
-          {service.limitations.length > 0 && (
-            <motion.div {...inViewAnim(0)} className="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-5">
-              <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-gray-700">
-                Honest limitations
-              </h3>
-              <ul className="grid gap-2 sm:grid-cols-2">
-                {service.limitations.map((item) => (
-                  <li key={item} className="flex gap-2.5 text-sm leading-snug text-gray-600">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-gray-400" aria-hidden="true" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
         </div>
       </section>
 

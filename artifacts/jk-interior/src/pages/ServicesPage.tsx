@@ -33,7 +33,7 @@ export default function ServicesPage() {
             <span className="hero-gradient-text">Done Right the First Time</span>
           </>
         }
-        subtitle="Gypsum, PVC, WPC panelling, UV marble, TV units and more — eight services, published rates and one accountable team, working from Forbesganj across Araria district and nearby."
+        subtitle="Gypsum, PVC, WPC panelling, UV marble, TV units and more — eight services with published rates, working from Forbesganj across Araria district and nearby."
         whatsappMessage="Hello JK Interior, I'd like to know more about your services and current rates."
       />
       <Services />
