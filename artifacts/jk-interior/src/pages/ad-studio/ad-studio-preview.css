@@ -1,0 +1,818 @@
+/* Private Ad Studio — preview player, stage, lower third and outro. */
+
+.jk-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 50% 0%,
+      rgba(201, 162, 39, 0.12),
+      transparent 65%
+    ),
+    rgba(2, 7, 14, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: jkAdOverlayIn 220ms ease both;
+}
+
+.jk-preview-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(1060px, 100%);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0a1524;
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: jkAdPlayerIn 340ms cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.jk-preview-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.075);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent);
+}
+
+.jk-preview-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.jk-preview-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 10px;
+  color: #0b1524;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #f0d476, #a97f12);
+}
+
+.jk-preview-copy {
+  min-width: 0;
+}
+
+.jk-preview-copy strong {
+  display: block;
+  overflow: hidden;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-preview-copy span {
+  display: block;
+  overflow: hidden;
+  margin-top: 1px;
+  color: var(--jk-muted);
+  font-size: 8.5px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-preview-mood {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  background: rgba(201, 162, 39, 0.06);
+  color: rgba(244, 223, 154, 0.86);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.jk-preview-mood-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--jk-gold-2);
+  box-shadow: 0 0 8px rgba(231, 198, 90, 0.55);
+}
+
+.jk-preview-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 6px 9px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 10px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.jk-preview-timer span {
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 600;
+}
+
+.jk-preview-live {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--jk-green);
+  box-shadow: 0 0 0 0 rgba(122, 214, 165, 0.5);
+  animation: jkAdPulse 2.4s ease-out infinite;
+}
+
+.jk-preview-live.is-paused {
+  background: var(--jk-gold-2);
+  animation: none;
+}
+
+.jk-preview-audio {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.jk-preview-audio .jk-icon-btn {
+  width: 29px;
+  height: 29px;
+  border-radius: 8px;
+}
+
+.jk-preview-range {
+  width: 74px;
+  height: 3px;
+  accent-color: var(--jk-gold-2);
+  cursor: pointer;
+}
+
+.jk-preview-close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--jk-muted);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.jk-preview-close:hover {
+  border-color: rgba(239, 124, 124, 0.4);
+  background: rgba(239, 124, 124, 0.1);
+  color: #ffb4b4;
+}
+
+/* ── Stage frame ────────────────────────────────────────────────────────── */
+
+.jk-ad-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  overflow: hidden;
+  background: #050b14;
+  isolation: isolate;
+}
+
+.jk-ad-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(29, 52, 80, 0.6), transparent 70%),
+    #050b14;
+}
+
+.jk-ad-photo-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center;
+  animation-duration: 820ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.jk-ad-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  animation-duration: var(--jk-slice, 4s);
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  will-change: transform, filter;
+}
+
+.jk-ad-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation-fill-mode: both;
+  animation-timing-function: ease;
+}
+
+.jk-ad-frame-mark,
+.jk-mini-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.jk-mini-frame {
+  z-index: 3;
+}
+
+.jk-ad-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3, 8, 15, 0.42) 0%,
+      transparent 22%,
+      transparent 72%,
+      rgba(3, 8, 15, 0.36) 100%
+    ),
+    radial-gradient(
+      ellipse at center,
+      transparent 52%,
+      rgba(2, 6, 12, 0.3) 100%
+    );
+}
+
+.jk-ad-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.32);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Lower third ────────────────────────────────────────────────────────── */
+
+.jk-ad-lower {
+  position: relative;
+  z-index: 4;
+  flex: none;
+  min-height: 112px;
+  padding: 11px clamp(14px, 2.4vw, 24px) 12px;
+  border-top: 1px solid rgba(201, 162, 39, 0.22);
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(201, 162, 39, 0.12),
+      transparent 45%
+    ),
+    linear-gradient(180deg, rgba(8, 18, 32, 0.98), #07111f);
+}
+
+.jk-ad-lower-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 820px;
+  animation-duration: 620ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.jk-ad-lt-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.jk-ad-lt-brand {
+  color: var(--jk-gold-2);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.jk-ad-lt-brand::after {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 1px;
+  margin-left: 7px;
+  vertical-align: middle;
+  background: linear-gradient(90deg, var(--jk-gold), transparent);
+}
+
+.jk-ad-lt-service {
+  overflow: hidden;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 39, 0.28);
+  background: rgba(201, 162, 39, 0.08);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.jk-ad-lt-title {
+  margin: 0;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--font-serif) !important;
+  font-size: clamp(1rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-ad-lt-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 11px;
+  min-width: 0;
+}
+
+.jk-ad-lt-details span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 8.5px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-ad-lt-details svg {
+  flex: none;
+  color: var(--jk-gold-2);
+}
+
+.jk-ad-lt-details .jk-ad-lt-highlight {
+  color: rgba(244, 223, 154, 0.92);
+  font-weight: 700;
+}
+
+.jk-ad-lt-note {
+  margin: 1px 0 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 8.5px;
+  font-style: italic;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-ad-lt-note::before {
+  content: "“";
+  color: var(--jk-gold-2);
+}
+
+.jk-ad-lt-note::after {
+  content: "”";
+  color: var(--jk-gold-2);
+}
+
+.jk-ad-lt-foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 0;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 7.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jk-ad-lt-foot::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--jk-gold);
+}
+
+.jk-ad-lower-inner > * {
+  animation: jkAdDetailIn 520ms cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.jk-ad-lower-inner > :nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.jk-ad-lower-inner > :nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.jk-ad-lower-inner > :nth-child(4) {
+  animation-delay: 170ms;
+}
+
+.jk-ad-lower-inner > :nth-child(5) {
+  animation-delay: 220ms;
+}
+
+/* ── Progress and controls ──────────────────────────────────────────────── */
+
+.jk-ad-progress {
+  position: relative;
+  height: 3px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.jk-ad-progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #a97f12, var(--jk-gold-2), #f4df9a);
+  box-shadow: 0 0 12px rgba(231, 198, 90, 0.5);
+  transition: width 100ms linear;
+}
+
+.jk-preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(4, 10, 18, 0.55);
+}
+
+.jk-preview-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 11px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--jk-cream);
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.jk-preview-btn:hover {
+  border-color: rgba(201, 162, 39, 0.42);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.jk-preview-btn:active {
+  transform: scale(0.97);
+}
+
+.jk-preview-btn-primary {
+  color: #111a26;
+  background: linear-gradient(135deg, #e7c65a, #b98d1c);
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(201, 162, 39, 0.2);
+}
+
+.jk-preview-btn-primary:hover {
+  background: linear-gradient(135deg, #f0d476, #c99c27);
+  border-color: transparent;
+}
+
+.jk-preview-hint {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 8px;
+  line-height: 1.4;
+  text-align: right;
+}
+
+/* ── Outro ──────────────────────────────────────────────────────────────── */
+
+.jk-ad-outro {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: clamp(16px, 3.2vw, 30px);
+  background:
+    radial-gradient(
+      ellipse 65% 55% at 50% 0%,
+      rgba(201, 162, 39, 0.2),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 90% 100%,
+      rgba(38, 88, 142, 0.28),
+      transparent 70%
+    ),
+    linear-gradient(155deg, #081423 0%, #0c1b2e 50%, #07111f 100%);
+  animation: jkAdOutroIn 520ms cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.jk-ad-outro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 72%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    black,
+    transparent 72%
+  );
+}
+
+.jk-ad-outro-inner {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  text-align: center;
+  animation: jkAdOutroRise 640ms cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.jk-ad-outro-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 8px;
+  color: var(--jk-gold-2);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.jk-ad-outro-eyebrow::before,
+.jk-ad-outro-eyebrow::after {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--jk-gold));
+}
+
+.jk-ad-outro-eyebrow::after {
+  transform: rotate(180deg);
+}
+
+.jk-ad-outro h2 {
+  margin: 0;
+  font-family: var(--font-serif) !important;
+  font-size: clamp(1.55rem, 4.2vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.jk-ad-outro h2 em {
+  color: var(--jk-gold-2);
+  font-style: normal;
+}
+
+.jk-ad-outro-sub {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.jk-ad-areas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin: 12px auto 0;
+  max-width: 620px;
+}
+
+.jk-ad-area {
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 7.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.jk-ad-contacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 13px auto 0;
+  max-width: 680px;
+}
+
+.jk-ad-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 8px;
+  border-radius: 9px;
+  border: 1px solid rgba(201, 162, 39, 0.24);
+  background: rgba(201, 162, 39, 0.07);
+  color: var(--jk-cream);
+  font-size: 8.5px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.jk-ad-contact:hover {
+  border-color: rgba(231, 198, 90, 0.55);
+  background: rgba(201, 162, 39, 0.14);
+  transform: translateY(-1px);
+}
+
+.jk-ad-contact svg {
+  flex: none;
+  color: var(--jk-gold-2);
+}
+
+.jk-ad-contact span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-ad-outro-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 13px;
+}
+
+.jk-ad-outro-actions .jk-preview-btn {
+  font-size: 9px;
+}
+
+@media (max-width: 760px) {
+  .jk-preview-overlay {
+    padding: 0;
+  }
+
+  .jk-preview-panel {
+    width: 100%;
+    max-height: 100dvh;
+    min-height: 100dvh;
+    border-radius: 0;
+    border: 0;
+  }
+
+  .jk-ad-frame {
+    aspect-ratio: 4 / 5;
+  }
+
+  .jk-ad-lower {
+    min-height: 126px;
+    padding: 10px 14px 11px;
+  }
+
+  .jk-ad-lt-title {
+    font-size: clamp(1.05rem, 5.2vw, 1.55rem);
+  }
+
+  .jk-ad-lt-details span {
+    font-size: 8px;
+  }
+
+  .jk-preview-top {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .jk-preview-timer {
+    order: 4;
+    margin-left: 0;
+  }
+
+  .jk-preview-audio {
+    margin-left: auto;
+  }
+
+  .jk-preview-copy span {
+    max-width: 170px;
+  }
+
+  .jk-preview-hint {
+    display: none;
+  }
+
+  .jk-ad-outro {
+    padding: 18px 14px;
+  }
+
+  .jk-ad-contacts {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+
+  .jk-ad-contact {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .jk-preview-range {
+    width: 54px;
+  }
+
+  .jk-ad-areas {
+    gap: 3px;
+  }
+
+  .jk-ad-area {
+    padding: 2px 5px;
+    font-size: 7px;
+  }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+  .jk-ad-frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .jk-ad-lower {
+    min-height: 88px;
+    padding: 7px 14px 8px;
+  }
+
+  .jk-ad-lt-title {
+    font-size: 1rem;
+  }
+
+  .jk-ad-outro {
+    align-items: flex-start;
+  }
+}

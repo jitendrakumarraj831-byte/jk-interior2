@@ -34,5 +34,6 @@ export function getAllRoutes(): RouteEntry[] {
  */
 export const NON_INDEXED_PRERENDER_ROUTES: { path: string; outFile: string }[] = [
   { path: "/admin", outFile: "admin.html" },
+  { path: "/ad-studio", outFile: "ad-studio.html" },
   { path: "/__not-found__", outFile: "404.html" },
 ]

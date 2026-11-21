@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react"
-import { Switch, Route, Router as WouterRouter } from "wouter"
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter"
 import { MotionConfig } from "framer-motion"
 import ScrollProgress from "@/components/scroll-progress"
 import { AssistantLauncher } from "@/components/ui/assistant-launcher"
@@ -43,6 +43,7 @@ const ContactPage = lazyPage(() => import("@/pages/ContactPage"))
 const FAQPage = lazyPage(() => import("@/pages/FAQPage"))
 const CityPage = lazyPage(() => import("@/pages/CityPage"))
 const AdminPage = lazyPage(() => import("@/pages/AdminPage"))
+const AdStudioPage = lazyPage(() => import("@/pages/AdStudioPage"))
 const NotFound = lazyPage(() => import("@/pages/not-found"))
 
 /** Loads the page module for `pathname` — mirrors the <Switch> below. */
@@ -58,6 +59,7 @@ export function preloadCurrentRoute(pathname: string): Promise<unknown> {
     : p === "/faq" ? FAQPage
     : /^\/cities\/[^/]+$/.test(p) ? CityPage
     : p === "/admin" ? AdminPage
+    : p === "/ad-studio" ? AdStudioPage
     : NotFound
   return page.preload()
 }
@@ -81,6 +83,7 @@ function Router() {
         <Route path="/faq" component={FAQPage} />
         <Route path="/cities/:city" component={CityPage} />
         <Route path="/admin" component={AdminPage} />
+        <Route path="/ad-studio" component={AdStudioPage} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
@@ -205,14 +208,31 @@ function App() {
     <MotionConfig reducedMotion="user">
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
         <GalleryModalProvider>
-          <ScrollProgress />
           <Router />
-          <Assistant />
-          <MobileQuickActions />
-          <GalleryModal />
+          <SiteChrome />
         </GalleryModalProvider>
       </WouterRouter>
     </MotionConfig>
+  )
+}
+
+/**
+ * Chrome that belongs to the public website only. The private Ad Studio is a
+ * standalone workspace — the floating assistant, mobile quick-action bar,
+ * scroll progress and design-search modal must not overlay it or even be
+ * mounted there. Keeping the check here means no public page has to know the
+ * studio exists.
+ */
+function SiteChrome() {
+  const [location] = useLocation()
+  if (location === "/ad-studio") return null
+  return (
+    <>
+      <ScrollProgress />
+      <Assistant />
+      <MobileQuickActions />
+      <GalleryModal />
+    </>
   )
 }
 
