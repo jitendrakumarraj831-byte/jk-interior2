@@ -125,7 +125,7 @@ export default function Contact() {
           headingSize="md"
           dark
           title={<>Get In <span className="hero-gradient-text">Touch</span></>}
-          subtitle="Call, WhatsApp, or send the form — we reply personally within two hours."
+          subtitle="Call, WhatsApp, or send the form — whichever is easiest."
         />
 
         {/* MOBILE: the four contact essentials as a swipeable rail */}
@@ -335,8 +335,7 @@ export default function Contact() {
 
             {status === "sent" && (
               <div role="status" className="mb-4 rounded-xl bg-gold-50 border border-gold-200 px-4 py-3 text-sm font-semibold text-gold-700 text-center">
-                Enquiry received — WhatsApp has opened in a new tab, tap Send there too. Either way we
-                reply within two hours.
+                Enquiry received — WhatsApp has opened in a new tab, tap Send there too.
               </div>
             )}
             {status === "blocked" && (
@@ -383,17 +382,17 @@ export default function Contact() {
                 <select
                   id="contact-service"
                   name="service"
-                  defaultValue="False Ceiling (PVC/Gypsum)"
+                  defaultValue="Gypsum False Ceiling"
                   className="w-full rounded-xl glass-input px-4 py-3.5 text-sm transition-all outline-none appearance-none cursor-pointer text-gray-800"
                 >
-                  <option>False Ceiling (PVC/Gypsum)</option>
-                  <option>PVC Wall Paneling</option>
-                  <option>WPC Fluted Panels</option>
+                  <option>Gypsum False Ceiling</option>
+                  <option>PVC False Ceiling</option>
+                  <option>Grid Ceiling</option>
+                  <option>Partition Wall</option>
+                  <option>WPC Wall Panel</option>
                   <option>UV Marble Sheet</option>
                   <option>Modular TV Unit</option>
-                  <option>Modular Kitchen</option>
-                  <option>Complete Home Interior</option>
-                  <option>Office Interior</option>
+                  <option>Artificial Grass</option>
                 </select>
               </div>
 
@@ -423,7 +422,7 @@ export default function Contact() {
               </button>
 
               <p className="text-center text-[10px] font-medium text-gray-500">
-                Your enquiry reaches our team and opens in WhatsApp too. We respond within two hours.
+                Your enquiry reaches JK Interior directly and opens in WhatsApp too.
               </p>
             </form>
           </motion.div>

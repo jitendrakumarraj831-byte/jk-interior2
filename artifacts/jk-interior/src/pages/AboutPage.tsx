@@ -1,11 +1,10 @@
 import { Link } from "wouter"
-import { Award, MapPin, Phone, ShieldCheck, Users, Building2, CalendarClock, ArrowRight } from "lucide-react"
+import { Award, MapPin, Phone, ShieldCheck, Users, Building2, ArrowRight } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import Navbar from "@/components/navbar"
-import WhyUs from "@/components/why-us"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { ADDRESS_LINE, FOUNDED_LABEL, HOURS_SENTENCE, SERVICE_AREAS, SERVICE_AREA_NAMES, buildBreadcrumbSchema } from "@/lib/seo"
+import { ADDRESS_LINE, FOUNDED_LABEL, SERVICE_AREAS, SERVICE_AREA_NAMES, buildBreadcrumbSchema } from "@/lib/seo"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import {
@@ -43,18 +42,6 @@ const credentials = [
     // No rating number is stated here and there is no aggregateRating in the
     // JSON-LD: Google sources that from the Business Profile, not from us.
     href: GOOGLE_REVIEWS_URL,
-  },
-  {
-    icon: CalendarClock,
-    label: "Opening Hours",
-    value: "24/7",
-    detail: `${HOURS_SENTENCE}.`,
-  },
-  {
-    icon: MapPin,
-    label: "Workshop",
-    value: "Forbesganj",
-    detail: `${ADDRESS_LINE}. Every site visit is attended in person.`,
   },
 ]
 
@@ -137,19 +124,15 @@ export default function AboutPage() {
             About <span className="hero-gradient-text">JK Interior</span>
           </motion.h1>
 
-          <motion.p {...anim(0.2)} className="mb-4 max-w-3xl text-base leading-relaxed text-gray-700 sm:text-lg">
-            An interior and false ceiling contractor working across Araria district, Bihar. The same
-            rule on every job: we measure the room ourselves, quote in writing, and fit only
-            materials we'd use at home.
-          </motion.p>
-
-          <motion.p {...anim(0.3)} className="mb-8 max-w-3xl text-base leading-relaxed text-gray-600">
-            Our registered workshop is at <span className="font-bold text-gray-900">{ADDRESS_LINE}</span> —
-            the address on our{" "}
+          <motion.p {...anim(0.2)} className="mb-8 max-w-3xl text-base leading-relaxed text-gray-700 sm:text-lg">
+            JK Interior is a false ceiling and interior contractor working across Araria district and
+            nearby towns. Our registered workshop is at{" "}
+            <span className="font-bold text-gray-900">{ADDRESS_LINE}</span> — the address on our{" "}
             <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" className="font-bold text-gold-700 underline-offset-2 hover:underline">
               Google Business Profile
             </a>
-            . From there we cover Araria district and travel to Supaul and Purnia.
+            . We measure every room ourselves, quote in writing, and fit only materials we&rsquo;d use at
+            home.
           </motion.p>
 
           <motion.div {...anim(0.4)} className="flex flex-wrap gap-3">
@@ -175,13 +158,13 @@ export default function AboutPage() {
       <section className="relative overflow-hidden bg-[#fbfaf5] py-14 sm:py-16" aria-labelledby="about-credentials">
         <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-12">
           <motion.h2 {...inViewAnim(0)} id="about-credentials" className="mb-2 text-2xl font-black text-gray-900 sm:text-3xl">
-            The Record So Far
+            Key Credentials
           </motion.h2>
           <motion.p {...inViewAnim(0.05)} className="mb-8 text-sm text-gray-500">
-            Six facts about how we work, and what you can hold us to.
+            Four facts about how we work, and what you can hold us to.
           </motion.p>
 
-          <motion.div {...staggerContainer} className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div {...staggerContainer} className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {credentials.map((item) => (
               <motion.div key={item.label} {...staggerItem} whileHover={shouldReduce ? undefined : { scale: 1.02 }}>
                 <CredentialCard item={item} />
@@ -204,8 +187,6 @@ export default function AboutPage() {
           <SwipeHint className="mt-3" />
         </div>
       </section>
-
-      <WhyUs />
 
       {/* ── Closing CTA ── */}
       <section className="bg-gradient-to-b from-charcoal-800 to-charcoal-950 py-14 text-white sm:py-16">
@@ -240,7 +221,7 @@ export default function AboutPage() {
             </Link>
           </div>
           <p className="mt-5 text-xs text-gold-100/70">
-            Both numbers reach the same team — {PHONE_PRIMARY_DISPLAY} and {PHONE_SECONDARY_DISPLAY}.
+            Both numbers reach JK Interior directly — {PHONE_PRIMARY_DISPLAY} and {PHONE_SECONDARY_DISPLAY}.
           </p>
         </motion.div>
       </section>

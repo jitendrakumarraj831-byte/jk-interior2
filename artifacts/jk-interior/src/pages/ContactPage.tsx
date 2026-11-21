@@ -1,5 +1,4 @@
 import Navbar from "@/components/navbar"
-import BusinessSummary from "@/components/business-summary"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
@@ -29,11 +28,10 @@ export default function ContactPage() {
             <span className="hero-gradient-text">Your Space</span>
           </>
         }
-        subtitle="Call either line, message us on WhatsApp, or fill the form below — a real person from our team replies within two hours, not a bot."
+        subtitle="Call either line, message us on WhatsApp, or fill the form below — we reply within two hours."
         whatsappMessage="Hello JK Interior, I would like to discuss an interior project."
         whatsappLabel="Chat on WhatsApp"
       />
-      <BusinessSummary />
       <Contact />
       <Footer />
     </main>

@@ -59,8 +59,8 @@ const EN: AssistantCopy = {
     city
       ? `${city} — excellent. 📍 Which day and time would suit you for the site visit?`
       : "Number saved. 📱 Which day and time would suit you for the site visit?",
-  bookingConfirmed: "Booking confirmed. Our team will be in touch with you shortly.",
-  teamWillContact: "✅ Our team will be in touch with you shortly.",
+  bookingConfirmed: "Booking confirmed. We will be in touch with you shortly.",
+  teamWillContact: "✅ We will be in touch with you shortly.",
   cardTitle: "Booking confirmed",
   estimateIntro: (name) => (name ? `${name}, here is your estimate.\n\n` : ""),
   estimateClosing: '\n\n📅 Say "Book Visit" or share your name and I will set up the free site visit.',
@@ -90,8 +90,8 @@ const HINGLISH: AssistantCopy = {
     city
       ? `${city} — bahut badhiya. 📍 Site visit ke liye kaun sa din aur time theek rahega?`
       : "Number save ho gaya. 📱 Site visit ke liye kaun sa din aur time theek rahega?",
-  bookingConfirmed: "Booking confirm ho gayi. Hamari team jaldi aapse sampark karegi.",
-  teamWillContact: "✅ Hamari team jaldi aapse sampark karegi.",
+  bookingConfirmed: "Booking confirm ho gayi. Hum jaldi aapse sampark karenge.",
+  teamWillContact: "✅ Hum jaldi aapse sampark karenge.",
   cardTitle: "Booking confirm",
   estimateIntro: (name) => (name ? `${name} ji, ye raha aapka estimate.\n\n` : ""),
   estimateClosing: '\n\n📅 "Book Visit" likhiye ya apna naam bhejiye, main free site visit laga deta hoon.',
@@ -121,8 +121,8 @@ const HINDI: AssistantCopy = {
     city
       ? `${city} — बहुत बढ़िया। 📍 साइट विज़िट के लिए कौन सा दिन और समय ठीक रहेगा?`
       : "नंबर सेव हो गया। 📱 साइट विज़िट के लिए कौन सा दिन और समय ठीक रहेगा?",
-  bookingConfirmed: "बुकिंग कन्फ़र्म हो गई। हमारी टीम जल्दी ही आपसे संपर्क करेगी।",
-  teamWillContact: "✅ हमारी टीम जल्दी ही आपसे संपर्क करेगी।",
+  bookingConfirmed: "बुकिंग कन्फ़र्म हो गई। हम जल्दी ही आपसे संपर्क करेंगे।",
+  teamWillContact: "✅ हम जल्दी ही आपसे संपर्क करेंगे।",
   cardTitle: "बुकिंग कन्फ़र्म",
   estimateIntro: (name) => (name ? `${name} जी, यह रहा आपका अनुमान।\n\n` : ""),
   estimateClosing: '\n\n📅 "Book Visit" लिखिए या अपना नाम भेजिए, मैं फ्री साइट विज़िट लगा देता हूँ।',

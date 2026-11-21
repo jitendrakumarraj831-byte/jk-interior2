@@ -33,7 +33,7 @@ export const FAQS: FaqItem[] = [
   },
   {
     q: "What is a gypsum false ceiling?",
-    a: "A gypsum false ceiling is a ceiling of gypsum boards screwed to a galvanised metal frame hung below the roof slab. The joints are taped and finished so it looks like one smooth, painted surface, and it can be shaped into stepped borders with hidden cove lighting. It is meant for dry rooms such as halls and bedrooms.",
+    a: "A gypsum false ceiling is gypsum board screwed to a galvanised metal frame below the roof slab, with the joints taped and finished into one smooth, paintable surface. It suits dry rooms such as halls and bedrooms and can carry stepped borders with hidden cove lighting.",
   },
   {
     q: "What does a gypsum false ceiling cost in Forbesganj?",
@@ -45,7 +45,7 @@ export const FAQS: FaqItem[] = [
   },
   {
     q: "Gypsum or PVC ceiling — which is better?",
-    a: "Neither is better everywhere. PVC is fully waterproof and wipe-clean, so it suits kitchens, bathrooms, balconies and shops. Gypsum gives a smoother, painted finish with cove lighting, so it suits halls and bedrooms — but it must be kept away from water and steam.",
+    a: "Neither is better everywhere. PVC is fully waterproof and wipe-clean, so it suits kitchens, bathrooms, balconies and shops. Gypsum gives a smoother painted finish with cove lighting, so it suits halls and bedrooms — but it must be kept away from water and steam.",
   },
   {
     q: "Which ceiling is suitable for a shop?",
@@ -69,6 +69,13 @@ export const FAQS: FaqItem[] = [
   },
   {
     q: "Which payment methods do you accept?",
-    a: "We accept cash, UPI (Google Pay, PhonePe and Paytm) and bank transfer. The payment schedule is agreed with you before the project begins.",
+    a: "We accept cash, UPI (Google Pay, PhonePe and Paytm) and bank transfer. The payment schedule is agreed before the project begins.",
   },
 ]
+
+/**
+ * The six questions shown on the home page. HomePage builds its FAQPage
+ * JSON-LD from this exact array, so the schema can never list a question the
+ * visitor cannot see. The full list stays on /faq.
+ */
+export const HOME_FAQS: FaqItem[] = FAQS.slice(0, 6)

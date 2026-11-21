@@ -1,15 +1,23 @@
 
 import { useState } from "react"
-import { ChevronDown, HelpCircle } from "lucide-react"
+import { ArrowRight, ChevronDown, HelpCircle } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { Link } from "wouter"
 import SectionHeader from "@/components/ui/section-header"
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
-import { FAQS as faqs } from "@/lib/faq-data"
+import { FAQS, type FaqItem } from "@/lib/faq-data"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from "@/lib/business-data"
 
 const easeLux = [0.22, 1, 0.36, 1] as const
 
-export default function FAQSection() {
+interface FAQSectionProps {
+  /** Defaults to the full shared list. Home passes the six-item `HOME_FAQS`. */
+  items?: FaqItem[]
+  /** On Home, link visitors to the complete list on /faq. */
+  showAllLink?: boolean
+}
+
+export default function FAQSection({ items = FAQS, showAllLink = false }: FAQSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   const shouldReduce = useReducedMotion()
 
@@ -24,10 +32,10 @@ export default function FAQSection() {
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i)
 
-  const mid = Math.ceil(faqs.length / 2)
-  const columns = [faqs.slice(0, mid), faqs.slice(mid)]
+  const mid = Math.ceil(items.length / 2)
+  const columns = [items.slice(0, mid), items.slice(mid)]
 
-  const renderEntry = (faq: (typeof faqs)[number], i: number) => (
+  const renderEntry = (faq: FaqItem, i: number) => (
     <div key={i} className="border-b border-gray-200 py-4 first:pt-0 last:border-b-0">
       {/* py-1 here (with the row's py-5 trimmed to py-4 to keep the rhythm
           identical) lifts a single-line question from a 23px-tall tap target
@@ -89,7 +97,7 @@ export default function FAQSection() {
           headingSize="md"
           className="mb-12"
           title={<>Frequently Asked <span className="hero-gradient-text">Questions</span></>}
-          subtitle="The questions we hear most, answered plainly."
+          subtitle="Booking, rates, coverage and warranty — answered plainly."
         />
 
         {/* Two-column glossary/index layout */}
@@ -107,6 +115,18 @@ export default function FAQSection() {
             </div>
           ))}
         </motion.div>
+
+        {showAllLink && (
+          <motion.div {...animProps} className="mt-8 text-center">
+            <Link
+              href="/faq"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-gold-800 underline decoration-gold-400 decoration-2 underline-offset-4 transition-colors hover:text-gold-600"
+            >
+              View all FAQs
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </motion.div>
+        )}
 
         {/* Bottom CTA */}
         <motion.div {...animProps} className="mt-12 text-center">

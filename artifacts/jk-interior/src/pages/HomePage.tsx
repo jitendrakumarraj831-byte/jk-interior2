@@ -10,7 +10,7 @@ import ServiceAreas from "@/components/service-areas"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import SeoHead from "@/components/seo-head"
-import { FAQS } from "@/lib/faq-data"
+import { HOME_FAQS } from "@/lib/faq-data"
 import { SITE_URL, buildFaqSchema, buildLocalBusinessSchema, buildWebSiteSchema } from "@/lib/seo"
 import { SERVICES_SUMMARY } from "@/lib/services-summary"
 import {
@@ -40,13 +40,13 @@ export default function HomePage() {
           // page refers to it by @id rather than repeating it.
           buildLocalBusinessSchema(SERVICES_SUMMARY.map(({ name, slug }) => ({ name, slug }))),
           buildWebSiteSchema(),
-          { ...buildFaqSchema(FAQS), "@id": `${SITE_URL}/#faq` },
+          { ...buildFaqSchema(HOME_FAQS), "@id": `${SITE_URL}/#faq` },
         ]}
       />
       <Navbar />
       <Hero />
       <BusinessSummary />
-      <Services />
+      <Services compactMobile />
       <ProcessTimeline />
       <Transformation />
       <CostEstimator />
@@ -58,7 +58,7 @@ export default function HomePage() {
       </Suspense>
       <ServiceAreas />
       <Suspense fallback={<FAQSkeleton />}>
-        <FAQSection />
+        <FAQSection items={HOME_FAQS} showAllLink />
       </Suspense>
       <Contact />
       <Footer />

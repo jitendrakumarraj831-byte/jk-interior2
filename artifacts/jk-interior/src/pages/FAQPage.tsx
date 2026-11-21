@@ -16,19 +16,19 @@ import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY } from 
 const MORE_FAQS = [
   {
     q: "What is the difference between a gypsum and a POP ceiling?",
-    a: "Gypsum ceilings use factory-made boards on a metal frame, so they go up faster, crack less and create far less dust on site. POP (plaster of Paris) is mixed and applied wet by hand, which allows very free-form shapes but takes longer to set and cure. We fit gypsum as our standard and use POP only for detailing where a design needs it.",
+    a: "Gypsum uses factory-made boards on a metal frame, so it goes up faster, cracks less and creates far less dust. POP is mixed and applied wet by hand, which suits free-form shapes but takes longer to set and cure. We fit gypsum as standard and use POP only for detailing.",
   },
   {
     q: "Which wall panel is best behind a TV?",
-    a: "WPC wall panels are our usual recommendation for TV walls: they look like wood, resist termites and moisture, keep cables hidden behind the panels, and the TV can be mounted the same day. Fluted and louvre WPC designs can also carry a hidden LED backlight.",
+    a: "WPC wall panels are our usual recommendation: they look like wood, resist termites and moisture, keep cables hidden, and the TV can be mounted the same day. Fluted and louvre profiles can also carry a hidden LED backlight.",
   },
   {
     q: "Can UV marble sheet be used in a bathroom or pooja room?",
-    a: "Yes. UV marble sheet is waterproof and has no grout lines, which makes it well suited to bathroom walls and pooja rooms. We keep it off the strip directly behind a gas stove, where direct heat can affect it.",
+    a: "Yes. UV marble sheet is waterproof and has no grout lines, which suits bathroom walls and pooja rooms. We keep it off the strip directly behind a gas stove, where direct heat can affect it.",
   },
   {
     q: "Can you handle a complete room — ceiling, walls and TV unit?",
-    a: "Yes. One team can do the false ceiling, wall panelling, TV unit and lighting for a room together, which also brings the per-sq.ft rate down compared with booking each job separately.",
+    a: "Yes. JK Interior can do the false ceiling, wall panelling, TV unit and lighting for one room together, usually at a better per-sq.ft rate than booking each job separately.",
   },
 ]
 
@@ -70,7 +70,7 @@ export default function FAQPage() {
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-12">
           <h2 className="mb-10 text-2xl font-black text-gray-900 sm:text-3xl">
-            More questions about our services
+            Service-specific questions
           </h2>
           <div className="space-y-6">
             {MORE_FAQS.map(({ q, a }) => (

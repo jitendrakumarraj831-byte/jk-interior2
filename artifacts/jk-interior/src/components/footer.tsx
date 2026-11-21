@@ -1,5 +1,5 @@
 
-import { Phone, Mail, MapPin, ArrowRight, Facebook, Instagram } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, ArrowRight, Facebook, Instagram } from "lucide-react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Link } from "wouter"
 import { WhatsAppLink } from "@/components/ui/cta-links"
@@ -10,7 +10,7 @@ import {
   PHONE_SECONDARY,
   PHONE_SECONDARY_DISPLAY,
 } from "@/lib/business-data"
-import { ADDRESS_LINE, BUSINESS, CITIES, GOOGLE_MAPS_URL } from "@/lib/seo"
+import { ADDRESS_LINE, BUSINESS, CITIES, GOOGLE_MAPS_URL, HOURS_SENTENCE } from "@/lib/seo"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -80,8 +80,8 @@ export default function Footer() {
                 Interior & False Ceiling Solutions
               </p>
               <p className="max-w-xs text-sm leading-relaxed text-gray-600">
-                False ceilings, wall panelling, partitions and TV units for homes, shops and offices —
-                from a single PVC ceiling to a complete room.
+                False ceilings, wall panelling, partitions and TV units for homes, shops and offices
+                across Forbesganj and Araria district.
               </p>
               <div className="rounded-xl border border-gold-200 bg-white/60 p-4">
                 <p className="text-xs leading-relaxed text-gold-700/80">
@@ -238,6 +238,13 @@ export default function Footer() {
                 </span>
               </div>
 
+              <div className="flex items-start gap-3 text-sm font-semibold text-gray-600">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-200 bg-white/70 text-gold-600">
+                  <Clock className="h-4 w-4" aria-hidden="true" />
+                </div>
+                <span className="pt-0.5 leading-snug">{HOURS_SENTENCE}</span>
+              </div>
+
               {/* WhatsApp CTA */}
               <WhatsAppLink
                 message="Hello JK Interior, I would like some assistance with an interior project."
@@ -325,9 +332,9 @@ export default function Footer() {
         {/* SEO text */}
         <div className="mt-6 mb-12 rounded-xl border border-gold-200 bg-white/50 p-4">
           <p className="text-xs leading-relaxed text-gray-500">
-            JK Interior — false ceiling and interior contractor with its registered workshop in
-            Forbesganj, Araria district. Gypsum, PVC and grid false ceilings, partition walls, WPC
-            wall panelling, UV marble sheet, modular TV units and artificial grass, installed across{' '}
+            JK Interior is a false ceiling and interior contractor in Forbesganj, Araria district,
+            fitting gypsum, PVC and grid ceilings, partitions, WPC panels, UV marble, TV units and
+            artificial grass across{' '}
             {CITIES.map((c, i) => (
               <span key={c.slug}>
                 <Link href={`/cities/${c.slug}`} className="underline underline-offset-2 hover:text-gold-700 transition-colors">{c.name}</Link>
