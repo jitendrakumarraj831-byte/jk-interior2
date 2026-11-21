@@ -24,6 +24,7 @@ import {
 import { CallLink, WhatsAppLink } from "@/components/ui/cta-links"
 import SwipeRail, { SwipeHint } from "@/components/ui/swipe-rail"
 import { PHONE_PRIMARY_DISPLAY, PHONE_SECONDARY, PHONE_SECONDARY_DISPLAY, parseRateBand } from "@/lib/business-data"
+import GypsumCeilingPage from "@/pages/GypsumCeilingPage"
 import NotFound from "@/pages/not-found"
 
 /** Swaps a "/images/foo.webp" path for one of its generated variants (see
@@ -138,6 +139,13 @@ export default function ServiceDetailPage() {
     ]),
     buildFaqSchema(faqs),
   ]
+
+  // The gypsum page has its own conversion-focused booking layout. The shared
+  // route still owns the service lookup and SEO/JSON-LD above, so the schema,
+  // title, description and canonical stay identical to every other service.
+  if (service.slug === "gypsum-ceiling") {
+    return <GypsumCeilingPage service={service} jsonLd={jsonLd} />
+  }
 
   return (
     <main>
