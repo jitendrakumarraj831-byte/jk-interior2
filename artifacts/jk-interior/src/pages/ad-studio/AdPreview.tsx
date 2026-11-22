@@ -239,6 +239,7 @@ export function AdPreview({
           data-preset={preset.id}
           data-frame={preset.frame}
           data-lower={preset.lowerThird}
+          data-aspect={project.aspect}
           data-slide={photoIndex % 2 === 0 ? "a" : "b"}
           style={{ "--jk-slice": `${slice}s` } as CSSProperties}
         >

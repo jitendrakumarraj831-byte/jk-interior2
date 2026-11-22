@@ -51,6 +51,7 @@ export type StudioIconName =
   | "light"
   | "leaf"
   | "partition"
+  | "download"
 
 const ICONS: Record<StudioIconName, ReactNode> = {
   eye: (
@@ -168,6 +169,13 @@ const ICONS: Record<StudioIconName, ReactNode> = {
       <path d="M12 16V4" />
       <path d="m7 9 5-5 5 5" />
       <path d="M4 16v3h16v-3" />
+    </>
+  ),
+  download: (
+    <>
+      <path d="M12 4v12" />
+      <path d="m7 11 5 5 5-5" />
+      <path d="M4 20h16" />
     </>
   ),
   wand: (

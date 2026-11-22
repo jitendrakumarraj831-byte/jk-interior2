@@ -96,6 +96,7 @@ export class AdAudio {
   private voices: Voice[] = []
   private barTimer: ReturnType<typeof setTimeout> | null = null
   private suspendTimer: ReturnType<typeof setTimeout> | null = null
+  private recordDestination: MediaStreamAudioDestinationNode | null = null
   private mood = 0
   private bar = 0
   private volume = DEFAULT_VOLUME
@@ -110,6 +111,43 @@ export class AdAudio {
 
   get currentVolume(): number {
     return this.volume
+  }
+
+  getContext(): AudioContext | null {
+    this.ensure()
+    return this.ctx
+  }
+
+  getMaster(): GainNode | null {
+    this.ensure()
+    return this.master
+  }
+
+  createRecordDestination(): MediaStreamAudioDestinationNode | null {
+    this.ensure()
+    if (!this.ctx) return null
+    this.clearRecordDestination()
+    const dest = this.ctx.createMediaStreamDestination()
+    this.recordDestination = dest
+    if (this.master) {
+      try {
+        this.master.connect(dest)
+      } catch {
+        // ignore
+      }
+    }
+    return dest
+  }
+
+  clearRecordDestination(): void {
+    if (this.recordDestination && this.master) {
+      try {
+        this.master.disconnect(this.recordDestination)
+      } catch {
+        // ignore
+      }
+    }
+    this.recordDestination = null
   }
 
   /**
@@ -145,6 +183,13 @@ export class AdAudio {
       filter.connect(compressor)
       compressor.connect(master)
       master.connect(ctx.destination)
+      if (this.recordDestination) {
+        try {
+          master.connect(this.recordDestination)
+        } catch {
+          // ignore duplicate connect
+        }
+      }
 
       this.ctx = ctx
       this.master = master
