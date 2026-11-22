@@ -690,3 +690,127 @@
     flex-direction: column;
   }
 }
+
+/* ── Per-clip timeline controls ─────────────────────────────────────────── */
+.jk-timeline {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.jk-slot {
+  min-width: 34px;
+}
+
+.jk-slot-transition {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  max-width: calc(100% - 28px);
+  overflow: hidden;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(4, 10, 18, 0.78);
+  color: rgba(244, 223, 154, 0.9);
+  font-size: 6.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.jk-slot img[data-filter="warm"],
+.jk-slot-preview img[data-filter="warm"] {
+  filter: sepia(0.18) saturate(1.08) contrast(1.02) brightness(1.03);
+}
+
+.jk-slot img[data-filter="vivid"],
+.jk-slot-preview img[data-filter="vivid"] {
+  filter: saturate(1.32) contrast(1.08) brightness(1.02);
+}
+
+.jk-slot img[data-filter="cinema"],
+.jk-slot-preview img[data-filter="cinema"] {
+  filter: contrast(1.12) saturate(0.9) brightness(0.92) sepia(0.08);
+}
+
+.jk-runtime-value {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 162, 39, 0.22);
+  background: rgba(201, 162, 39, 0.08);
+  color: var(--jk-gold-2);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.jk-clip-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+  align-items: end;
+}
+
+.jk-clip-row .jk-stepper {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.jk-clip-row .jk-stepper output {
+  min-width: 38px;
+}
+
+.jk-clip-row select.jk-input {
+  width: 100%;
+}
+
+.jk-export-status.is-error {
+  color: #ffb4b4;
+}
+
+.jk-export-progress {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 18px;
+  margin-top: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 39, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.jk-export-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #a97f12, var(--jk-gold-2), #f4df9a);
+  transition: width 180ms linear;
+}
+
+.jk-export-progress span {
+  position: absolute;
+  right: 7px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 8px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.jk-export-progress.is-error {
+  border-color: rgba(239, 124, 124, 0.35);
+}
+
+.jk-export-progress.is-error .jk-export-progress-fill {
+  background: linear-gradient(90deg, #8d2f2f, #ef7c7c);
+}
+
+@media (max-width: 720px) {
+  .jk-clip-row {
+    grid-template-columns: 1fr;
+  }
+}

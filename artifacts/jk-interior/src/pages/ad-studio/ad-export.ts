@@ -1,11 +1,18 @@
 import type { AdAudio } from "./ad-audio"
 import {
+  FILTER_CSS,
   STUDIO_AREAS,
   STUDIO_CALL_DISPLAY,
   STUDIO_REGION,
   STUDIO_WEBSITE,
   STUDIO_WHATSAPP_DISPLAY,
+  clipCaption,
+  clipTimeline,
+  totalClipSeconds,
+  totalVideoSeconds,
   type AdPreset,
+  type ClipTiming,
+  type FilterLook,
   type ServiceDefinition,
   type ServiceProject,
 } from "./studio-data"
@@ -23,7 +30,11 @@ function report(cb: ProgressCb | undefined, p: ExportProgress) {
 }
 
 function wait(ms: number) {
-  return new Promise((r) => setTimeout(r, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function canceledError(): DOMException {
+  return new DOMException("Export canceled", "AbortError")
 }
 
 function pickMimeType(): string | null {
@@ -34,12 +45,12 @@ function pickMimeType(): string | null {
     "video/mp4;codecs=avc1.42E01E,mp4a.40.2",
     "video/mp4",
   ]
-  for (const c of candidates) {
+  for (const candidate of candidates) {
     if (
       typeof MediaRecorder !== "undefined" &&
-      MediaRecorder.isTypeSupported(c)
+      MediaRecorder.isTypeSupported(candidate)
     )
-      return c
+      return candidate
   }
   return null
 }
@@ -53,7 +64,8 @@ async function loadImage(url: string): Promise<HTMLImageElement> {
     const img = new Image()
     img.crossOrigin = "anonymous"
     img.onload = () => resolve(img)
-    img.onerror = () => reject(new Error("Failed to load image"))
+    img.onerror = () =>
+      reject(new Error("A photo could not be loaded for export."))
     img.src = url
   })
 }
@@ -186,8 +198,8 @@ function drawOutro(
     project.script.hook || `Premium ${service.name}`,
     W - pad * 2,
   )
-  titleLines.forEach((l, i) =>
-    ctx.fillText(l, pad, Math.round(H * 0.28) + i * Math.round(W * 0.075)),
+  titleLines.forEach((line, i) =>
+    ctx.fillText(line, pad, Math.round(H * 0.28) + i * Math.round(W * 0.075)),
   )
 
   ctx.fillStyle = "rgba(255,255,255,0.82)"
@@ -195,8 +207,8 @@ function drawOutro(
   const cta = project.script.cta || `WhatsApp ${STUDIO_WHATSAPP_DISPLAY}`
   wrapText(ctx, cta, W - pad * 2)
     .slice(0, 2)
-    .forEach((l, i) => {
-      ctx.fillText(l, pad, Math.round(H * 0.48) + i * Math.round(W * 0.045))
+    .forEach((line, i) => {
+      ctx.fillText(line, pad, Math.round(H * 0.48) + i * Math.round(W * 0.045))
     })
 
   ctx.fillStyle = "#E7C65A"
@@ -217,8 +229,8 @@ function drawOutro(
   const areas = STUDIO_AREAS.join(" • ")
   wrapText(ctx, areas, W - pad * 2)
     .slice(0, aspect === "9:16" ? 3 : 2)
-    .forEach((l, i) => {
-      ctx.fillText(l, pad, Math.round(H * 0.84) + i * Math.round(W * 0.03))
+    .forEach((line, i) => {
+      ctx.fillText(line, pad, Math.round(H * 0.84) + i * Math.round(W * 0.03))
     })
 }
 
@@ -227,7 +239,6 @@ function motionTransform(
   progress: number,
   slideIndex: number,
 ) {
-  // progress 0..1 within slide
   const alt = slideIndex % 2 === 1
   if (motion === "pan") {
     const fromX = alt ? 0.06 : -0.06
@@ -238,7 +249,6 @@ function motionTransform(
     const dir = alt ? -1 : 1
     return { scale: 1.06, x: dir * (0.04 - 0.04 * progress), y: 0 }
   }
-  // ken-burns
   const zoomIn = !alt
   const scale = zoomIn ? 1 + 0.1 * progress : 1.1 - 0.1 * progress
   return {
@@ -248,52 +258,218 @@ function motionTransform(
   }
 }
 
+function drawPhoto(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  W: number,
+  H: number,
+  project: ServiceProject,
+  localProgress: number,
+  index: number,
+  filter: FilterLook,
+  options?: {
+    alpha?: number
+    scaleMultiplier?: number
+    offsetX?: number
+  },
+) {
+  const t = motionTransform(project.motion, localProgress, index)
+  ctx.save()
+  ctx.globalAlpha = options?.alpha ?? 1
+  ctx.filter = FILTER_CSS[filter]
+  coverDraw(
+    ctx,
+    img,
+    options?.offsetX ?? 0,
+    0,
+    W,
+    H,
+    t.scale * (options?.scaleMultiplier ?? 1),
+    t.x,
+    t.y,
+  )
+  ctx.restore()
+}
+
+function drawClipFrame(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  images: HTMLImageElement[],
+  timeline: ClipTiming[],
+  clip: ClipTiming,
+  local: number,
+  project: ServiceProject,
+) {
+  const localProgress = Math.min(1, Math.max(0, local / clip.duration))
+  const transitionDuration = Math.min(0.6, Math.max(0.3, clip.duration * 0.18))
+  const inTransition =
+    clip.index > 0 &&
+    clip.photo.transition !== "cut" &&
+    local < transitionDuration
+  const currentImage = images[clip.index]
+
+  if (inTransition) {
+    const previous = timeline[clip.index - 1]
+    const previousImage = images[previous.index]
+    const progress = Math.min(1, Math.max(0, local / transitionDuration))
+
+    drawPhoto(
+      ctx,
+      previousImage,
+      W,
+      H,
+      project,
+      1,
+      previous.index,
+      previous.photo.filter,
+    )
+
+    if (clip.photo.transition === "crossfade") {
+      drawPhoto(
+        ctx,
+        currentImage,
+        W,
+        H,
+        project,
+        localProgress,
+        clip.index,
+        clip.photo.filter,
+        {
+          alpha: progress,
+        },
+      )
+    } else if (clip.photo.transition === "slide") {
+      drawPhoto(
+        ctx,
+        currentImage,
+        W,
+        H,
+        project,
+        localProgress,
+        clip.index,
+        clip.photo.filter,
+        {
+          offsetX: W * (1 - progress),
+        },
+      )
+    } else {
+      drawPhoto(
+        ctx,
+        currentImage,
+        W,
+        H,
+        project,
+        localProgress,
+        clip.index,
+        clip.photo.filter,
+        {
+          alpha: progress,
+          scaleMultiplier: 1.18 - 0.18 * progress,
+        },
+      )
+    }
+  } else {
+    drawPhoto(
+      ctx,
+      currentImage,
+      W,
+      H,
+      project,
+      localProgress,
+      clip.index,
+      clip.photo.filter,
+    )
+  }
+
+  if (project.motion === "fade-slide") {
+    const fade =
+      localProgress < 0.12
+        ? 1 - localProgress / 0.12
+        : localProgress > 0.88
+          ? (localProgress - 0.88) / 0.12
+          : 0
+    if (fade > 0) {
+      ctx.fillStyle = `rgba(7,17,31,${fade * 0.35})`
+      ctx.fillRect(0, 0, W, H)
+    }
+  }
+}
+
 export async function exportAdVideo(options: {
   service: ServiceDefinition
   project: ServiceProject
   preset: AdPreset
   audio: AdAudio
   onProgress?: ProgressCb
+  signal?: AbortSignal
 }): Promise<void> {
-  const { service, project, preset, audio, onProgress } = options
-  const mime = pickMimeType()
-  if (!mime)
+  const { service, project, preset, audio, onProgress, signal } = options
+
+  if (typeof MediaRecorder === "undefined") {
     throw new Error(
-      "Video export is not supported in this browser (MediaRecorder unavailable).",
+      "Video export is not supported in this browser (MediaRecorder unavailable). Try the latest Chrome, Edge or Safari.",
     )
+  }
   if (typeof HTMLCanvasElement.prototype.captureStream !== "function") {
     throw new Error(
-      "Video export is not supported in this browser (canvas capture unavailable).",
+      "Video export is not supported in this browser (canvas captureStream unavailable). Try the latest Chrome, Edge or Safari.",
     )
+  }
+  const mime = pickMimeType()
+  if (!mime) {
+    throw new Error(
+      "This browser has no supported video codec (VP9/VP8/MP4). Try the latest Chrome on Android or desktop Chrome/Edge.",
+    )
+  }
+  if (signal?.aborted) throw canceledError()
+
+  const timeline = clipTimeline(project)
+  if (timeline.length === 0) {
+    throw new Error("Add at least one photo before exporting.")
   }
 
   const aspect = project.aspect
   const W = aspect === "9:16" ? 1080 : 1920
   const H = aspect === "9:16" ? 1920 : 1080
   const fps = 30
+  const clipTotal = totalClipSeconds(project)
+  const totalDuration = totalVideoSeconds(project)
   const canvas = document.createElement("canvas")
   canvas.width = W
   canvas.height = H
   const ctx = canvas.getContext("2d")
-  if (!ctx) throw new Error("Could not create canvas.")
+  if (!ctx) throw new Error("Could not create the export canvas.")
 
   report(onProgress, {
     phase: "preparing",
-    percent: 5,
-    message: "Loading photos…",
+    percent: 2,
+    message: "Preparing export…",
   })
-  const images = await Promise.all(project.photos.map((p) => loadImage(p.url)))
+  const images = await Promise.all(
+    timeline.map((clip) => loadImage(clip.photo.url)),
+  )
+  if (signal?.aborted) throw canceledError()
 
-  const totalDuration = project.durationSec
-  const slideDuration = totalDuration / Math.max(1, images.length)
-  const outroDuration = Math.min(2.5, Math.max(1.8, totalDuration * 0.18))
-  const mainDuration = Math.max(1, totalDuration - outroDuration)
+  report(onProgress, {
+    phase: "preparing",
+    percent: 8,
+    message: "Preparing audio…",
+  })
 
   const videoStream = canvas.captureStream(fps)
   const tracks: MediaStreamTrack[] = [...videoStream.getVideoTracks()]
-
-  // Audio handling
+  const previousMuted = audio.isMuted
+  const previousVolume = audio.currentVolume
   let cleanupAudio: (() => void) | null = null
+  let recorder: MediaRecorder | null = null
+  let stream: MediaStream | null = null
+  let aborted = false
+  const onAbort = () => {
+    aborted = true
+  }
+  signal?.addEventListener("abort", onAbort)
+
   try {
     if (project.musicMode === "builtin") {
       const mood =
@@ -306,7 +482,8 @@ export async function exportAdVideo(options: {
             { id: "forest-calm", mood: 4 },
             { id: "rosewood", mood: 5 },
           ] as const
-        ).find((t) => t.id === project.musicTrackId)?.mood ?? preset.mood
+        ).find((track) => track.id === project.musicTrackId)?.mood ??
+        preset.mood
       const dest = audio.createRecordDestination()
       audio.setMuted(false)
       audio.setVolume(0.85)
@@ -315,175 +492,211 @@ export async function exportAdVideo(options: {
       if (dest) tracks.push(...dest.stream.getAudioTracks())
       cleanupAudio = () => {
         audio.stop()
+        audio.stopUploaded()
         audio.clearRecordDestination()
+        audio.setMuted(previousMuted)
+        audio.setVolume(previousVolume)
       }
     } else if (project.musicMode === "upload" && project.uploadedAudioUrl) {
-      const aCtx =
-        audio.getContext() ||
-        new (window.AudioContext || (window as any).webkitAudioContext)()
-      const dest = aCtx.createMediaStreamDestination()
-      const el = new Audio(project.uploadedAudioUrl)
-      el.crossOrigin = "anonymous"
-      el.loop = true
-      const src = aCtx.createMediaElementSource(el)
-      src.connect(dest)
-      src.connect(aCtx.destination)
-      await el.play().catch(() => {})
-      tracks.push(...dest.stream.getAudioTracks())
-      cleanupAudio = () => {
-        el.pause()
-        el.src = ""
-        try {
-          src.disconnect()
-        } catch {}
+      const dest = audio.createRecordDestination()
+      audio.setMuted(false)
+      audio.setVolume(0.85)
+      const buffer = await audio.loadUploaded(project.uploadedAudioUrl)
+      if (signal?.aborted || aborted) throw canceledError()
+      if (buffer) {
+        audio.startUploaded(buffer, 0, true)
+        if (dest) tracks.push(...dest.stream.getAudioTracks())
+        cleanupAudio = () => {
+          audio.stop()
+          audio.stopUploaded()
+          audio.clearRecordDestination()
+          audio.setMuted(previousMuted)
+          audio.setVolume(previousVolume)
+        }
+      } else {
+        audio.clearRecordDestination()
+        report(onProgress, {
+          phase: "preparing",
+          percent: 10,
+          message:
+            "Audio could not be decoded — exporting a silent video instead.",
+        })
       }
     }
-  } catch {
-    // continue without audio
-  }
 
-  const stream = new MediaStream(tracks)
-  let recorder: MediaRecorder
-  try {
-    recorder = new MediaRecorder(stream, {
-      mimeType: mime,
-      videoBitsPerSecond: 6_000_000,
-    })
-  } catch {
-    recorder = new MediaRecorder(stream)
-  }
-
-  const chunks: Blob[] = []
-  recorder.ondataavailable = (e) => {
-    if (e.data && e.data.size > 0) chunks.push(e.data)
-  }
-
-  const done = new Promise<void>((resolve, reject) => {
-    recorder.onerror = () => reject(new Error("Recording failed."))
-    recorder.onstop = () => resolve()
-  })
-
-  report(onProgress, {
-    phase: "rendering",
-    percent: 10,
-    message: "Rendering video…",
-  })
-  recorder.start(250)
-
-  const start = performance.now()
-  let lastCue = -1
-  let outroFired = false
-
-  await new Promise<void>((resolve) => {
-    const frame = () => {
-      const now = performance.now()
-      const elapsed = Math.min(totalDuration, (now - start) / 1000)
-      report(onProgress, {
-        phase: "rendering",
-        percent: Math.min(90, 10 + (elapsed / totalDuration) * 80),
-        message: `Rendering ${Math.round(elapsed)}s / ${totalDuration}s…`,
+    stream = new MediaStream(tracks)
+    try {
+      recorder = new MediaRecorder(stream, {
+        mimeType: mime,
+        videoBitsPerSecond: 6_000_000,
       })
-
-      ctx.clearRect(0, 0, W, H)
-      ctx.fillStyle = "#07111f"
-      ctx.fillRect(0, 0, W, H)
-
-      if (elapsed < mainDuration) {
-        const idx = Math.min(
-          images.length - 1,
-          Math.floor(elapsed / slideDuration),
+    } catch {
+      try {
+        recorder = new MediaRecorder(stream)
+      } catch {
+        throw new Error(
+          "This browser could not start MediaRecorder for the selected codec. Try the latest Chrome or Edge.",
         )
-        if (idx !== lastCue && project.musicMode === "builtin") {
-          lastCue = idx
-          try {
-            audio.cue(idx)
-          } catch {}
-        }
-        const local = (elapsed - idx * slideDuration) / slideDuration
-        const t = motionTransform(
-          project.motion,
-          Math.max(0, Math.min(1, local)),
-          idx,
-        )
-        const img = images[idx]
-        coverDraw(ctx, img, 0, 0, W, H, t.scale, t.x, t.y)
-
-        if (project.motion === "fade-slide") {
-          const fade =
-            local < 0.12
-              ? 1 - local / 0.12
-              : local > 0.88
-                ? (local - 0.88) / 0.12
-                : 0
-          if (fade > 0) {
-            ctx.fillStyle = `rgba(7,17,31,${fade * 0.35})`
-            ctx.fillRect(0, 0, W, H)
-          }
-        }
-
-        const caption =
-          project.script.captions[idx] || project.photos[idx]?.note || ""
-        drawCaptionBlock(
-          ctx,
-          W,
-          H,
-          aspect,
-          service,
-          project,
-          caption,
-          idx,
-          images.length,
-        )
-      } else {
-        if (!outroFired && project.musicMode === "builtin") {
-          outroFired = true
-          try {
-            audio.outro()
-          } catch {}
-        }
-        drawOutro(ctx, W, H, aspect, service, project)
       }
+    }
 
-      if (elapsed >= totalDuration - 0.001) {
-        resolve()
-        return
+    const chunks: Blob[] = []
+    recorder.ondataavailable = (event) => {
+      if (event.data && event.data.size > 0) chunks.push(event.data)
+    }
+    const done = new Promise<void>((resolve, reject) => {
+      recorder!.onerror = () =>
+        reject(new Error("Recording failed in this browser."))
+      recorder!.onstop = () => resolve()
+    })
+
+    report(onProgress, {
+      phase: "rendering",
+      percent: 12,
+      message: "Rendering video…",
+    })
+    recorder.start(250)
+
+    const startedAt = performance.now()
+    let lastCue = -1
+    let outroFired = false
+
+    await new Promise<void>((resolve) => {
+      const frame = () => {
+        if (signal?.aborted || aborted) {
+          resolve()
+          return
+        }
+        const elapsed = Math.min(
+          totalDuration,
+          (performance.now() - startedAt) / 1000,
+        )
+        report(onProgress, {
+          phase: "rendering",
+          percent: Math.min(
+            90,
+            12 + (elapsed / Math.max(0.001, totalDuration)) * 78,
+          ),
+          message: `Rendering ${Math.round(elapsed)}s / ${Math.round(totalDuration)}s…`,
+        })
+
+        ctx.clearRect(0, 0, W, H)
+        ctx.fillStyle = "#07111f"
+        ctx.fillRect(0, 0, W, H)
+
+        if (elapsed < clipTotal) {
+          const active =
+            timeline.find(
+              (clip) => elapsed >= clip.start && elapsed < clip.end,
+            ) ?? timeline[timeline.length - 1]
+          if (active.index !== lastCue) {
+            lastCue = active.index
+            if (project.musicMode === "builtin") {
+              try {
+                audio.cue(active.index)
+              } catch {
+                // audio is optional
+              }
+            }
+          }
+          drawClipFrame(
+            ctx,
+            W,
+            H,
+            images,
+            timeline,
+            active,
+            elapsed - active.start,
+            project,
+          )
+          drawCaptionBlock(
+            ctx,
+            W,
+            H,
+            aspect,
+            service,
+            project,
+            clipCaption(project, active.index),
+            active.index,
+            timeline.length,
+          )
+        } else {
+          if (!outroFired) {
+            outroFired = true
+            if (project.musicMode === "builtin") {
+              try {
+                audio.outro()
+              } catch {
+                // audio is optional
+              }
+            }
+          }
+          drawOutro(ctx, W, H, aspect, service, project)
+        }
+
+        if (elapsed >= totalDuration - 0.001) {
+          resolve()
+          return
+        }
+        requestAnimationFrame(frame)
       }
       requestAnimationFrame(frame)
-    }
-    requestAnimationFrame(frame)
-  })
+    })
 
-  report(onProgress, {
-    phase: "encoding",
-    percent: 93,
-    message: "Finalizing video file…",
-  })
-  // allow last frames to flush
-  await wait(400)
-  recorder.stop()
-  await done
-  cleanupAudio?.()
-  try {
+    if (signal?.aborted || aborted) throw canceledError()
+
+    report(onProgress, {
+      phase: "encoding",
+      percent: 94,
+      message: "Finalizing video file…",
+    })
+    await wait(400)
+    if (signal?.aborted || aborted) throw canceledError()
+    if (recorder.state !== "inactive") recorder.stop()
+    await done
+
+    cleanupAudio?.()
+    cleanupAudio = null
     audio.clearRecordDestination()
-  } catch {}
 
-  const blob = new Blob(chunks, { type: recorder.mimeType || mime })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  const safeName = service.name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-  a.href = url
-  a.download = `jk-interior-${safeName}-${aspect.replace(":", "x")}.${extForMime(recorder.mimeType || mime)}`
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  setTimeout(() => URL.revokeObjectURL(url), 5000)
+    if (chunks.length === 0) {
+      throw new Error(
+        "The browser recorded no video data. Try a shorter clip or the latest Chrome.",
+      )
+    }
 
-  report(onProgress, {
-    phase: "done",
-    percent: 100,
-    message: "Video downloaded.",
-  })
+    const blob = new Blob(chunks, { type: recorder.mimeType || mime })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement("a")
+    const safeName = service.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+    anchor.href = url
+    anchor.download = `jk-interior-${safeName}-${aspect.replace(":", "x")}.${extForMime(recorder.mimeType || mime)}`
+    document.body.appendChild(anchor)
+    anchor.click()
+    anchor.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+
+    report(onProgress, {
+      phase: "done",
+      percent: 100,
+      message: "Video downloaded.",
+    })
+  } catch (error) {
+    if (recorder && recorder.state !== "inactive") {
+      try {
+        recorder.stop()
+      } catch {
+        // already stopped
+      }
+    }
+    cleanupAudio?.()
+    audio.clearRecordDestination()
+    throw error
+  } finally {
+    signal?.removeEventListener("abort", onAbort)
+    stream?.getTracks().forEach((track) => track.stop())
+  }
 }
