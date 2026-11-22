@@ -97,6 +97,11 @@ export class AdAudio {
   private barTimer: ReturnType<typeof setTimeout> | null = null
   private suspendTimer: ReturnType<typeof setTimeout> | null = null
   private recordDestination: MediaStreamAudioDestinationNode | null = null
+  private uploadGain: GainNode | null = null
+  private uploadSource: AudioBufferSourceNode | null = null
+  private uploadBuffer: AudioBuffer | null = null
+  private uploadUrl = ""
+  private uploadPlaying = false
   private mood = 0
   private bar = 0
   private volume = DEFAULT_VOLUME
@@ -148,6 +153,91 @@ export class AdAudio {
       }
     }
     this.recordDestination = null
+  }
+
+  /**
+   * Decodes a local blob URL through AudioContext/AudioBuffer. The result is
+   * cached per URL so scrubbing and re-playing does not re-decode the file.
+   */
+  async loadUploaded(url: string): Promise<AudioBuffer | null> {
+    this.ensure()
+    const ctx = this.ctx
+    if (!ctx || !url) return null
+    if (this.uploadUrl === url && this.uploadBuffer) return this.uploadBuffer
+    try {
+      const response = await fetch(url)
+      if (!response.ok) throw new Error("Audio file could not be read")
+      const data = await response.arrayBuffer()
+      const buffer = await ctx.decodeAudioData(data)
+      this.uploadUrl = url
+      this.uploadBuffer = buffer
+      return buffer
+    } catch {
+      return null
+    }
+  }
+
+  /** Plays a decoded buffer through the master gain and record destination. */
+  startUploaded(buffer: AudioBuffer, offsetSec = 0, loop = true): void {
+    this.ensure()
+    const ctx = this.ctx
+    const master = this.master
+    if (!ctx || !master) return
+    if (this.running) this.stop()
+    this.stopUploaded()
+    if (!this.uploadGain) {
+      const gain = ctx.createGain()
+      gain.gain.value = 1
+      gain.connect(master)
+      this.uploadGain = gain
+    }
+    const source = ctx.createBufferSource()
+    source.buffer = buffer
+    source.loop = loop
+    source.connect(this.uploadGain)
+    const safeOffset =
+      buffer.duration > 0
+        ? Math.min(
+            Math.max(0, buffer.duration - 0.001),
+            Math.max(0, offsetSec % buffer.duration),
+          )
+        : 0
+    source.start(0, safeOffset)
+    this.uploadSource = source
+    this.uploadPlaying = true
+    this.applyMasterGain()
+  }
+
+  stopUploaded(): void {
+    this.uploadPlaying = false
+    if (this.uploadSource) {
+      try {
+        this.uploadSource.stop()
+      } catch {
+        // already stopped
+      }
+      try {
+        this.uploadSource.disconnect()
+      } catch {
+        // already disconnected
+      }
+      this.uploadSource = null
+    }
+    if (!this.running) this.applyMasterGain()
+  }
+
+  private applyMasterGain(): void {
+    const ctx = this.ctx
+    const master = this.master
+    if (!ctx || !master) return
+    const active = this.running || this.uploadPlaying
+    const now = ctx.currentTime
+    master.gain.cancelScheduledValues(now)
+    master.gain.setTargetAtTime(
+      active && !this.muted ? this.volume : 0,
+      now,
+      0.12,
+    )
   }
 
   /**
@@ -267,6 +357,7 @@ export class AdAudio {
     const master = this.master
     if (!ctx || !master) return
 
+    if (this.uploadPlaying) this.stopUploaded()
     const changedMood = this.mood !== mood
     this.mood = Math.abs(Math.floor(mood)) % MOODS.length
 
@@ -288,9 +379,7 @@ export class AdAudio {
 
     if (changedMood) this.bar = 0
     this.applyChord()
-    const now = ctx.currentTime
-    master.gain.cancelScheduledValues(now)
-    master.gain.setTargetAtTime(this.muted ? 0 : this.volume, now, 0.35)
+    this.applyMasterGain()
     this.scheduleBars()
   }
 
@@ -302,15 +391,10 @@ export class AdAudio {
       clearTimeout(this.barTimer)
       this.barTimer = null
     }
-    const ctx = this.ctx
-    if (ctx && this.master) {
-      const now = ctx.currentTime
-      this.master.gain.cancelScheduledValues(now)
-      this.master.gain.setTargetAtTime(0, now, 0.12)
-    }
+    this.applyMasterGain()
     if (this.suspendTimer !== null) clearTimeout(this.suspendTimer)
     this.suspendTimer = setTimeout(() => {
-      if (this.paused && this.ctx?.state === "running")
+      if (this.paused && !this.uploadPlaying && this.ctx?.state === "running")
         void this.ctx.suspend().catch(() => {})
     }, 260)
   }
@@ -322,35 +406,22 @@ export class AdAudio {
       clearTimeout(this.barTimer)
       this.barTimer = null
     }
-    const ctx = this.ctx
-    if (ctx && this.master) {
-      const now = ctx.currentTime
-      this.master.gain.cancelScheduledValues(now)
-      this.master.gain.setTargetAtTime(0, now, 0.1)
-    }
+    this.applyMasterGain()
     if (this.suspendTimer !== null) clearTimeout(this.suspendTimer)
     this.suspendTimer = setTimeout(() => {
-      if (!this.running && this.ctx?.state === "running")
+      if (!this.running && !this.uploadPlaying && this.ctx?.state === "running")
         void this.ctx.suspend().catch(() => {})
     }, 260)
   }
 
   setMuted(muted: boolean): void {
     this.muted = muted
-    const ctx = this.ctx
-    if (!ctx || !this.master) return
-    const now = ctx.currentTime
-    this.master.gain.cancelScheduledValues(now)
-    this.master.gain.setTargetAtTime(muted ? 0 : this.volume, now, 0.12)
+    this.applyMasterGain()
   }
 
   setVolume(volume: number): void {
     this.volume = clamp01(volume)
-    const ctx = this.ctx
-    if (!ctx || !this.master || this.muted) return
-    const now = ctx.currentTime
-    this.master.gain.cancelScheduledValues(now)
-    this.master.gain.setTargetAtTime(this.running ? this.volume : 0, now, 0.12)
+    this.applyMasterGain()
   }
 
   /** Soft bell on a photo change. */
@@ -423,6 +494,17 @@ export class AdAudio {
     if (this.suspendTimer !== null) clearTimeout(this.suspendTimer)
     this.barTimer = null
     this.suspendTimer = null
+    this.stopUploaded()
+    if (this.uploadGain) {
+      try {
+        this.uploadGain.disconnect()
+      } catch {
+        // already disconnected
+      }
+      this.uploadGain = null
+    }
+    this.uploadBuffer = null
+    this.uploadUrl = ""
     for (const voice of this.voices) {
       try {
         voice.osc.stop()

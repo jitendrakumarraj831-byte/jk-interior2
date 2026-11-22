@@ -828,3 +828,203 @@
     align-items: flex-start;
   }
 }
+
+/* ── Per-clip transitions, filters and scrubber ─────────────────────────── */
+.jk-ad-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.jk-ad-layer .jk-ad-photo-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.jk-ad-layer[class*="is-out-"] .jk-ad-photo-wrap {
+  animation-name: none;
+}
+
+.jk-ad-layer.is-in-crossfade {
+  animation: jkClipFadeIn var(--jk-transition, 0.55s) ease both;
+}
+
+.jk-ad-layer.is-out-crossfade {
+  animation: jkClipFadeOut var(--jk-transition, 0.55s) ease both;
+}
+
+.jk-ad-layer.is-in-slide {
+  animation: jkClipSlideIn var(--jk-transition, 0.55s)
+    cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.jk-ad-layer.is-out-slide {
+  animation: jkClipSlideOut var(--jk-transition, 0.55s)
+    cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.jk-ad-layer.is-in-zoom {
+  animation: jkClipZoomIn var(--jk-transition, 0.55s) ease both;
+}
+
+.jk-ad-layer.is-out-zoom {
+  animation: jkClipZoomOut var(--jk-transition, 0.55s) ease both;
+}
+
+.jk-ad-frame[data-playing="false"] .jk-ad-photo,
+.jk-ad-frame[data-playing="false"] .jk-ad-fx {
+  animation-play-state: paused;
+}
+
+.jk-ad-photo[data-filter="warm"] {
+  filter: sepia(0.18) saturate(1.08) contrast(1.02) brightness(1.03);
+}
+
+.jk-ad-photo[data-filter="vivid"] {
+  filter: saturate(1.32) contrast(1.08) brightness(1.02);
+}
+
+.jk-ad-photo[data-filter="cinema"] {
+  filter: contrast(1.12) saturate(0.9) brightness(0.92) sepia(0.08);
+}
+
+.jk-ad-lt-caption {
+  margin: 3px 0 0;
+  overflow: hidden;
+  color: #fff;
+  font-size: clamp(0.74rem, 1.55vw, 1.02rem);
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jk-ad-frame[data-aspect="9:16"] .jk-ad-lt-caption {
+  font-size: clamp(0.88rem, 2.4vw, 1.18rem);
+  white-space: normal;
+}
+
+.jk-ad-scrub {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(4, 10, 18, 0.55);
+}
+
+.jk-ad-scrub .jk-ad-progress {
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.jk-ad-scrub-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.jk-ad-scrub:focus-within .jk-ad-scrub-thumb,
+.jk-ad-scrub:hover .jk-ad-scrub-thumb {
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.jk-ad-scrub-thumb {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--jk-gold-2);
+  box-shadow: 0 0 0 3px rgba(231, 198, 90, 0.18);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 140ms ease;
+}
+
+.jk-preview-clipinfo {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .jk-preview-clipinfo {
+    order: 6;
+    width: 100%;
+    text-align: center;
+  }
+
+  .jk-ad-lt-caption {
+    white-space: normal;
+  }
+}
+
+@keyframes jkClipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes jkClipFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes jkClipSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes jkClipSlideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes jkClipZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes jkClipZoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+}

@@ -8,9 +8,10 @@ import { StudioIcon } from "./ad-studio/StudioIcon"
 import {
   AD_PRESETS,
   AUTO_SCRIPT_MIN_PHOTOS,
-  MAX_DURATION_SEC,
+  CLIP_MAX_DURATION_SEC,
+  CLIP_MIN_DURATION_SEC,
+  DEFAULT_CLIP_DURATION_SEC,
   MAX_PHOTOS_LIMIT,
-  MIN_DURATION_SEC,
   PRESET_BY_ID,
   STUDIO_CALL_DISPLAY,
   STUDIO_REGION,
@@ -18,15 +19,16 @@ import {
   STUDIO_WEBSITE,
   STUDIO_WHATSAPP_DISPLAY,
   clamp,
-  createEmptyScript,
   createInitialProjects,
   generateAdScript,
   projectIsReady,
   resetProjectDraft,
   type AdDetails,
   type AspectRatio,
+  type FilterLook,
   type MotionEffect,
   type ServiceProject,
+  type TransitionStyle,
 } from "./ad-studio/studio-data"
 import "./ad-studio/ad-studio-base.css"
 import "./ad-studio/ad-studio-editor.css"
@@ -86,12 +88,16 @@ export default function AdStudioPage() {
   )
   const [previewServiceId, setPreviewServiceId] = useState<string | null>(null)
   const [exportState, setExportState] = useState<
-    Record<string, { exporting: boolean; status: string }>
+    Record<
+      string,
+      { exporting: boolean; status: string; percent: number; failed: boolean }
+    >
   >({})
 
   const projectsRef = useRef(projects)
   projectsRef.current = projects
   const audioRef = useRef<AdAudio | null>(null)
+  const exportAbortRef = useRef<Record<string, AbortController>>({})
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Ask the server whether the HttpOnly session is still valid. The page never
@@ -185,6 +191,10 @@ export default function AdStudioPage() {
     audioRef.current?.stop()
     audioRef.current?.destroy()
     audioRef.current = null
+    for (const controller of Object.values(exportAbortRef.current)) {
+      controller.abort()
+    }
+    exportAbortRef.current = {}
     revokeProjects(projectsRef.current)
     setProjects(createInitialProjects())
     setPreviewServiceId(null)
@@ -217,13 +227,18 @@ export default function AdStudioPage() {
     service: (typeof STUDIO_SERVICES)[number],
   ): ServiceProject {
     const count = current.photos.length
-    if (count < AUTO_SCRIPT_MIN_PHOTOS) return current
-    if (current.script.auto || !current.script.hook) {
+    if (count === 0) {
+      return { ...current, script: { ...current.script, captions: [] } }
+    }
+    if (
+      count >= AUTO_SCRIPT_MIN_PHOTOS &&
+      (current.script.auto || !current.script.hook)
+    ) {
       return { ...current, script: generateAdScript(service, count) }
     }
     const captions = Array.from(
       { length: count },
-      (_, i) => current.script.captions[i] ?? `Scene ${i + 1}`,
+      (_, i) => current.script.captions[i] ?? "",
     )
     return { ...current, script: { ...current.script, captions } }
   }
@@ -239,11 +254,17 @@ export default function AdStudioPage() {
 
     const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
     if (!service) return
-    const photos = accepted.map((file) => ({
+    const firstIndex = project.photos.length
+    const photos = accepted.map((file, index) => ({
       id: makePhotoId(),
       name: file.name,
       url: URL.createObjectURL(file),
       note: "",
+      durationSec: DEFAULT_CLIP_DURATION_SEC,
+      transition: (firstIndex + index === 0
+        ? "cut"
+        : "crossfade") as TransitionStyle,
+      filter: "clean" as FilterLook,
     }))
     updateProject(serviceId, (current) =>
       syncScript(
@@ -335,9 +356,7 @@ export default function AdStudioPage() {
 
   function configure(
     serviceId: string,
-    patch: Partial<
-      Pick<ServiceProject, "minPhotos" | "maxPhotos" | "durationSec">
-    >,
+    patch: Partial<Pick<ServiceProject, "minPhotos" | "maxPhotos">>,
   ) {
     updateProject(serviceId, (current) => {
       const maxPhotos = clamp(
@@ -350,13 +369,56 @@ export default function AdStudioPage() {
         1,
         Math.min(5, maxPhotos),
       )
-      const durationSec = clamp(
-        patch.durationSec ?? current.durationSec,
-        MIN_DURATION_SEC,
-        MAX_DURATION_SEC,
-      )
-      return { ...current, minPhotos, maxPhotos, durationSec }
+      return { ...current, minPhotos, maxPhotos }
     })
+  }
+
+  function setClipDuration(
+    serviceId: string,
+    photoId: string,
+    durationSec: number,
+  ) {
+    updateProject(serviceId, (current) => ({
+      ...current,
+      photos: current.photos.map((photo) =>
+        photo.id === photoId
+          ? {
+              ...photo,
+              durationSec: clamp(
+                durationSec,
+                CLIP_MIN_DURATION_SEC,
+                CLIP_MAX_DURATION_SEC,
+              ),
+            }
+          : photo,
+      ),
+    }))
+  }
+
+  function setClipTransition(
+    serviceId: string,
+    photoId: string,
+    transition: TransitionStyle,
+  ) {
+    updateProject(serviceId, (current) => ({
+      ...current,
+      photos: current.photos.map((photo) =>
+        photo.id === photoId ? { ...photo, transition } : photo,
+      ),
+    }))
+  }
+
+  function setClipFilter(
+    serviceId: string,
+    photoId: string,
+    filter: FilterLook,
+  ) {
+    updateProject(serviceId, (current) => ({
+      ...current,
+      photos: current.photos.map((photo) =>
+        photo.id === photoId ? { ...photo, filter } : photo,
+      ),
+    }))
   }
 
   function toggleEditor(serviceId: string) {
@@ -465,12 +527,20 @@ export default function AdStudioPage() {
     const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
     if (!project || !service || !projectIsReady(project)) return
     if (exportState[serviceId]?.exporting) return
+    if (exportAbortRef.current[serviceId]) return
     if (!audioRef.current) audioRef.current = new AdAudio()
     audioRef.current.ensure()
     const preset = PRESET_BY_ID[project.presetId] ?? AD_PRESETS[0]
+    const controller = new AbortController()
+    exportAbortRef.current[serviceId] = controller
     setExportState((s) => ({
       ...s,
-      [serviceId]: { exporting: true, status: "Preparing export…" },
+      [serviceId]: {
+        exporting: true,
+        status: "Preparing export…",
+        percent: 0,
+        failed: false,
+      },
     }))
     try {
       await exportAdVideo({
@@ -478,27 +548,59 @@ export default function AdStudioPage() {
         project,
         preset,
         audio: audioRef.current,
+        signal: controller.signal,
         onProgress: (p) =>
           setExportState((s) => ({
             ...s,
             [serviceId]: {
               exporting: p.phase !== "done" && p.phase !== "error",
               status: p.message,
+              percent: p.percent,
+              failed: p.phase === "error",
             },
           })),
       })
-    } catch (err) {
       setExportState((s) => ({
         ...s,
         [serviceId]: {
           exporting: false,
-          status:
-            err instanceof Error
-              ? err.message
-              : "Export failed in this browser.",
+          status: "Video downloaded. Check your downloads.",
+          percent: 100,
+          failed: false,
         },
       }))
+    } catch (err) {
+      const canceled = err instanceof DOMException && err.name === "AbortError"
+      setExportState((s) => ({
+        ...s,
+        [serviceId]: {
+          exporting: false,
+          status: canceled
+            ? "Export canceled. Tap Retry export to try again."
+            : err instanceof Error
+              ? err.message
+              : "Export failed in this browser.",
+          percent: 0,
+          failed: true,
+        },
+      }))
+    } finally {
+      delete exportAbortRef.current[serviceId]
     }
+  }
+
+  function cancelExport(serviceId: string) {
+    const controller = exportAbortRef.current[serviceId]
+    if (!controller) return
+    controller.abort()
+    setExportState((s) => {
+      const current = s[serviceId]
+      if (!current) return s
+      return {
+        ...s,
+        [serviceId]: { ...current, status: "Canceling export…" },
+      }
+    })
   }
 
   const readyCount = STUDIO_SERVICES.filter((service) =>
@@ -665,10 +767,10 @@ export default function AdStudioPage() {
               <em>Twenty-four ways to move.</em>
             </h1>
             <p className="jk-hero-sub">
-              Pick a service, drop in photos, write a short lower third and
-              preview a 15-second ad.{" "}
+              Pick a service, drop in photos, trim every clip on the timeline
+              and export a real 9:16 or 16:9 video.{" "}
               <strong>Photos stay in this browser</strong> — no upload, no
-              server copy, no external audio.
+              server copy, and audio is decoded locally.
             </p>
           </div>
 
@@ -727,6 +829,15 @@ export default function AdStudioPage() {
                 onToggleEditor={() => toggleEditor(service.id)}
                 onPreview={() => openPreview(service.id)}
                 onResetDraft={() => resetDraft(service.id)}
+                onClipDuration={(photoId, durationSec) =>
+                  setClipDuration(service.id, photoId, durationSec)
+                }
+                onClipTransition={(photoId, transition) =>
+                  setClipTransition(service.id, photoId, transition)
+                }
+                onClipFilter={(photoId, filter) =>
+                  setClipFilter(service.id, photoId, filter)
+                }
                 onScriptField={(field, value) =>
                   setScriptField(service.id, field, value)
                 }
@@ -740,8 +851,11 @@ export default function AdStudioPage() {
                 onMusicTrack={(trackId) => setMusicTrack(service.id, trackId)}
                 onUploadedAudio={(file) => setUploadedAudio(service.id, file)}
                 onExport={() => exportProject(service.id)}
+                onCancelExport={() => cancelExport(service.id)}
                 exporting={exportState[service.id]?.exporting ?? false}
                 exportStatus={exportState[service.id]?.status ?? ""}
+                exportPercent={exportState[service.id]?.percent ?? 0}
+                exportFailed={exportState[service.id]?.failed ?? false}
               />
             )
           })}

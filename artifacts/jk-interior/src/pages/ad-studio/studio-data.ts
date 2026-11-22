@@ -380,11 +380,63 @@ export const PRESET_BY_ID: Record<string, AdPreset> = Object.fromEntries(
 
 export const DEFAULT_MIN_PHOTOS = 2
 export const DEFAULT_MAX_PHOTOS = 5
-export const DEFAULT_DURATION_SEC = 15
-export const MIN_DURATION_SEC = 8
-/** Hard ceiling for every ad, enforced in the UI and the page state. */
-export const MAX_DURATION_SEC = 15
 export const MAX_PHOTOS_LIMIT = 10
+
+/** Per-clip timing. Every clip can be trimmed independently. */
+export const CLIP_MIN_DURATION_SEC = 2
+export const CLIP_MAX_DURATION_SEC = 8
+export const DEFAULT_CLIP_DURATION_SEC = 3
+/** The closing CTA card always gets a short, readable beat of its own. */
+export const OUTRO_DURATION_SEC = 2.5
+
+export type TransitionStyle = "cut" | "crossfade" | "slide" | "zoom"
+export type FilterLook = "clean" | "warm" | "vivid" | "cinema"
+
+export const TRANSITION_OPTIONS: {
+  id: TransitionStyle
+  label: string
+  description: string
+}[] = [
+  { id: "cut", label: "Cut", description: "Instant cut to the next clip." },
+  {
+    id: "crossfade",
+    label: "Crossfade",
+    description: "Smooth dissolve between clips.",
+  },
+  {
+    id: "slide",
+    label: "Slide",
+    description: "Next clip pushes in from the side.",
+  },
+  {
+    id: "zoom",
+    label: "Zoom",
+    description: "Next clip eases in from a soft zoom.",
+  },
+]
+
+export const FILTER_OPTIONS: {
+  id: FilterLook
+  label: string
+  description: string
+}[] = [
+  { id: "clean", label: "Clean", description: "True-to-life colour." },
+  { id: "warm", label: "Warm", description: "Golden, inviting highlights." },
+  { id: "vivid", label: "Vivid", description: "Punchy colour and contrast." },
+  {
+    id: "cinema",
+    label: "Cinema",
+    description: "Moody contrast with a filmic tint.",
+  },
+]
+
+/** CSS filter values shared by the live preview and the canvas export. */
+export const FILTER_CSS: Record<FilterLook, string> = {
+  clean: "none",
+  warm: "sepia(0.18) saturate(1.08) contrast(1.02) brightness(1.03)",
+  vivid: "saturate(1.32) contrast(1.08) brightness(1.02)",
+  cinema: "contrast(1.12) saturate(0.9) brightness(0.92) sepia(0.08)",
+}
 
 export interface StudioPhoto {
   id: string
@@ -393,6 +445,12 @@ export interface StudioPhoto {
   /** Local blob URL. Never uploaded. */
   url: string
   note: string
+  /** Independent trim for this clip, in seconds. */
+  durationSec: number
+  /** Transition used when this clip enters. Ignored on the first clip. */
+  transition: TransitionStyle
+  /** Colour treatment applied to this clip. */
+  filter: FilterLook
 }
 
 export interface AdDetails {
@@ -455,7 +513,6 @@ export interface ServiceProject {
   presetId: string
   minPhotos: number
   maxPhotos: number
-  durationSec: number
   editorOpen: boolean
   aspect: AspectRatio
   motion: MotionEffect
@@ -477,7 +534,6 @@ export function createEmptyProject(index: number): ServiceProject {
     presetId: AD_PRESETS[index % AD_PRESETS.length].id,
     minPhotos: DEFAULT_MIN_PHOTOS,
     maxPhotos: DEFAULT_MAX_PHOTOS,
-    durationSec: DEFAULT_DURATION_SEC,
     editorOpen: false,
     aspect: "16:9",
     motion: "ken-burns",
@@ -590,10 +646,59 @@ export function projectIsReady(project: ServiceProject): boolean {
   return count >= project.minPhotos && count <= project.maxPhotos
 }
 
-export function sliceSeconds(project: ServiceProject): number {
-  return project.photos.length > 0
-    ? project.durationSec / project.photos.length
-    : 0
+export interface ClipTiming {
+  photo: StudioPhoto
+  index: number
+  start: number
+  end: number
+  duration: number
+}
+
+/** Ordered clip timings derived from every clip's own duration. */
+export function clipTimeline(project: ServiceProject): ClipTiming[] {
+  let cursor = 0
+  return project.photos.map((photo, index) => {
+    const duration = clamp(
+      photo.durationSec || DEFAULT_CLIP_DURATION_SEC,
+      CLIP_MIN_DURATION_SEC,
+      CLIP_MAX_DURATION_SEC,
+    )
+    const start = cursor
+    cursor += duration
+    return { photo, index, start, end: cursor, duration }
+  })
+}
+
+export function totalClipSeconds(project: ServiceProject): number {
+  return clipTimeline(project).reduce((total, clip) => total + clip.duration, 0)
+}
+
+/** Clips plus the closing CTA card, which is what the user actually exports. */
+export function totalVideoSeconds(project: ServiceProject): number {
+  const clips = totalClipSeconds(project)
+  return clips > 0 ? clips + OUTRO_DURATION_SEC : 0
+}
+
+export function clipIndexAtTime(project: ServiceProject, time: number): number {
+  const timeline = clipTimeline(project)
+  if (timeline.length === 0) return 0
+  const safe = clamp(
+    time,
+    0,
+    Math.max(0, timeline[timeline.length - 1].end - 0.0001),
+  )
+  const found = timeline.findIndex(
+    (clip) => safe >= clip.start && safe < clip.end,
+  )
+  return found >= 0 ? found : timeline.length - 1
+}
+
+export function clipCaption(project: ServiceProject, index: number): string {
+  return (
+    project.script.captions[index]?.trim() ||
+    project.photos[index]?.note.trim() ||
+    ""
+  )
 }
 
 export function clamp(value: number, min: number, max: number): number {

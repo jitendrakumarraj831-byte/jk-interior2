@@ -5,16 +5,25 @@ import { StudioIcon } from "./StudioIcon"
 import {
   AD_PRESETS,
   AUTO_SCRIPT_MIN_PHOTOS,
-  MAX_DURATION_SEC,
+  CLIP_MAX_DURATION_SEC,
+  CLIP_MIN_DURATION_SEC,
+  FILTER_OPTIONS,
   MAX_PHOTOS_LIMIT,
-  MIN_DURATION_SEC,
   MUSIC_TRACKS,
+  OUTRO_DURATION_SEC,
+  TRANSITION_OPTIONS,
+  clipTimeline,
+  formatSeconds,
+  totalClipSeconds,
+  totalVideoSeconds,
   type AdDetails,
   type AdPreset,
   type AspectRatio,
+  type FilterLook,
   type MotionEffect,
   type ServiceDefinition,
   type ServiceProject,
+  type TransitionStyle,
 } from "./studio-data"
 
 type FlashTone = "good" | "warn" | "over"
@@ -32,13 +41,14 @@ interface ServiceCardProps {
   onPreset: (presetId: string) => void
   onShufflePreset: () => void
   onConfig: (
-    patch: Partial<
-      Pick<ServiceProject, "minPhotos" | "maxPhotos" | "durationSec">
-    >,
+    patch: Partial<Pick<ServiceProject, "minPhotos" | "maxPhotos">>,
   ) => void
   onToggleEditor: () => void
   onPreview: () => void
   onResetDraft: () => void
+  onClipDuration: (photoId: string, durationSec: number) => void
+  onClipTransition: (photoId: string, transition: TransitionStyle) => void
+  onClipFilter: (photoId: string, filter: FilterLook) => void
   onScriptField: (field: "hook" | "cta", value: string) => void
   onScriptCaption: (index: number, value: string) => void
   onRegenerateScript: () => void
@@ -48,8 +58,11 @@ interface ServiceCardProps {
   onMusicTrack: (trackId: string) => void
   onUploadedAudio: (file: File | null) => void
   onExport: () => Promise<void>
+  onCancelExport: () => void
   exporting: boolean
   exportStatus: string
+  exportPercent: number
+  exportFailed: boolean
 }
 
 export function ServiceCard({
@@ -68,6 +81,9 @@ export function ServiceCard({
   onToggleEditor,
   onPreview,
   onResetDraft,
+  onClipDuration,
+  onClipTransition,
+  onClipFilter,
   onScriptField,
   onScriptCaption,
   onRegenerateScript,
@@ -77,8 +93,11 @@ export function ServiceCard({
   onMusicTrack,
   onUploadedAudio,
   onExport,
+  onCancelExport,
   exporting,
   exportStatus,
+  exportPercent,
+  exportFailed,
 }: ServiceCardProps) {
   const id = useId()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -103,7 +122,9 @@ export function ServiceCard({
   const under = count < project.minPhotos
   const ready = !over && !under
   const extended = count > 5
-  const perPhoto = count > 0 ? project.durationSec / count : 0
+  const timeline = clipTimeline(project)
+  const clipsTotal = totalClipSeconds(project)
+  const total = totalVideoSeconds(project)
   const status = over
     ? "Over limit"
     : count === 0
@@ -219,7 +240,7 @@ export function ServiceCard({
 
   const ticks = Array.from(
     { length: 5 },
-    (_, tick) => `${((project.durationSec * tick) / 4).toFixed(1)}s`,
+    (_, tick) => `${((total * tick) / 4).toFixed(1)}s`,
   )
   const miniPhotoStyle = photos[0]
     ? {
@@ -433,50 +454,18 @@ export function ServiceCard({
           </div>
 
           <div className="jk-config-item">
-            <span className="jk-config-label">Duration</span>
-            <div className="jk-stepper">
-              <button
-                type="button"
-                onClick={() =>
-                  onConfig({
-                    durationSec: Math.max(
-                      MIN_DURATION_SEC,
-                      project.durationSec - 1,
-                    ),
-                  })
-                }
-                disabled={project.durationSec <= MIN_DURATION_SEC}
-                aria-label="Decrease video duration"
-              >
-                <StudioIcon name="minus" size={10} />
-              </button>
-              <output>{project.durationSec}s</output>
-              <button
-                type="button"
-                onClick={() =>
-                  onConfig({
-                    durationSec: Math.min(
-                      MAX_DURATION_SEC,
-                      project.durationSec + 1,
-                    ),
-                  })
-                }
-                disabled={project.durationSec >= MAX_DURATION_SEC}
-                aria-label="Increase video duration"
-              >
-                <StudioIcon name="plus" size={10} />
-              </button>
-            </div>
+            <span className="jk-config-label">Runtime</span>
+            <output className="jk-runtime-value">{formatSeconds(total)}</output>
           </div>
 
           <div className="jk-config-foot">
             <span>
               {count > 0
-                ? `${perPhoto.toFixed(1)}s per photo`
-                : "Add photos to split the time"}
+                ? `${count} clip${count === 1 ? "" : "s"} · ${clipsTotal.toFixed(1)}s + ${OUTRO_DURATION_SEC}s end card`
+                : "Add photos to build the timeline"}
             </span>
             <span>
-              <strong>{project.durationSec}s</strong> total
+              <strong>{formatSeconds(total)}</strong> total
             </span>
           </div>
         </div>
@@ -498,7 +487,8 @@ export function ServiceCard({
         {extended && !over ? (
           <p className="jk-inline-note is-warn">
             <StudioIcon name="warning" size={11} />
-            Above the standard 5 photos — every timing slice gets shorter.
+            Above the standard 5 photos — trim each clip in the timeline to keep
+            the total runtime tight.
           </p>
         ) : null}
         {flash ? (
@@ -555,7 +545,7 @@ export function ServiceCard({
             Advance Video Editor
           </span>
           <span className="jk-editor-toggle-meta">
-            {preset.name} · {count} photos · {project.durationSec}s
+            {preset.name} · {count} photos · {formatSeconds(total)}
           </span>
           <StudioIcon
             name="chevron-down"
@@ -569,14 +559,16 @@ export function ServiceCard({
             <section className="jk-editor-section">
               <div className="jk-section-head">
                 <StudioIcon name="film" size={12} />
-                <h3>{project.durationSec}-second timeline</h3>
+                <h3>Clip timeline</h3>
                 <span>
-                  {count} slot{count === 1 ? "" : "s"}
+                  {formatSeconds(total)} total · {count} clip
+                  {count === 1 ? "" : "s"}
                 </span>
               </div>
               <p className="jk-section-help">
-                Click a slice to edit its note, reorder it, or remove it. Time
-                is divided evenly across the photos.
+                Click a clip to trim its duration, write its caption, choose a
+                transition and apply a colour look. The closing CTA adds{" "}
+                {OUTRO_DURATION_SEC}s.
               </p>
 
               <div className="jk-timeline">
@@ -585,22 +577,32 @@ export function ServiceCard({
                     Add photos above to build the timeline.
                   </div>
                 ) : (
-                  photos.map((photo, photoIndex) => {
-                    const start = photoIndex * perPhoto
-                    const end = start + perPhoto
+                  timeline.map((item) => {
+                    const transitionLabel =
+                      TRANSITION_OPTIONS.find(
+                        (option) => option.id === item.photo.transition,
+                      )?.label ?? "Cut"
                     return (
                       <button
                         type="button"
-                        key={photo.id}
-                        className={`jk-slot ${photoIndex === selectedIndex ? "is-selected" : ""}`}
-                        onClick={() => setSelectedPhotoId(photo.id)}
-                        aria-label={`Photo ${photoIndex + 1}, ${start.toFixed(1)} to ${end.toFixed(1)} seconds`}
-                        title={photo.name}
+                        key={item.photo.id}
+                        className={`jk-slot ${item.index === selectedIndex ? "is-selected" : ""}`}
+                        style={{ flexGrow: item.duration }}
+                        onClick={() => setSelectedPhotoId(item.photo.id)}
+                        aria-label={`Clip ${item.index + 1}, ${item.start.toFixed(1)} to ${item.end.toFixed(1)} seconds`}
+                        title={`${item.photo.name} · ${item.duration.toFixed(1)}s · ${transitionLabel}`}
                       >
-                        <img src={photo.url} alt="" />
-                        <span className="jk-slot-index">{photoIndex + 1}</span>
+                        <img
+                          src={item.photo.url}
+                          alt=""
+                          data-filter={item.photo.filter}
+                        />
+                        <span className="jk-slot-index">{item.index + 1}</span>
+                        <span className="jk-slot-transition">
+                          {transitionLabel}
+                        </span>
                         <span className="jk-slot-time">
-                          {start.toFixed(1)}–{end.toFixed(1)}s
+                          {item.duration.toFixed(1)}s
                         </span>
                       </button>
                     )
@@ -618,12 +620,122 @@ export function ServiceCard({
               {selectedPhoto ? (
                 <div className="jk-slot-editor">
                   <div className="jk-slot-preview">
-                    <img src={selectedPhoto.url} alt="" />
+                    <img
+                      src={selectedPhoto.url}
+                      alt=""
+                      data-filter={selectedPhoto.filter}
+                    />
                   </div>
                   <div className="jk-slot-fields">
+                    <div className="jk-clip-row">
+                      <div className="jk-field">
+                        <label htmlFor={`${id}-clip-duration`}>
+                          Clip duration
+                        </label>
+                        <div className="jk-stepper">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              onClipDuration(
+                                selectedPhoto.id,
+                                Math.max(
+                                  CLIP_MIN_DURATION_SEC,
+                                  selectedPhoto.durationSec - 0.5,
+                                ),
+                              )
+                            }
+                            disabled={
+                              selectedPhoto.durationSec <= CLIP_MIN_DURATION_SEC
+                            }
+                            aria-label="Shorten clip"
+                          >
+                            <StudioIcon name="minus" size={10} />
+                          </button>
+                          <output id={`${id}-clip-duration`}>
+                            {selectedPhoto.durationSec.toFixed(1)}s
+                          </output>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              onClipDuration(
+                                selectedPhoto.id,
+                                Math.min(
+                                  CLIP_MAX_DURATION_SEC,
+                                  selectedPhoto.durationSec + 0.5,
+                                ),
+                              )
+                            }
+                            disabled={
+                              selectedPhoto.durationSec >= CLIP_MAX_DURATION_SEC
+                            }
+                            aria-label="Lengthen clip"
+                          >
+                            <StudioIcon name="plus" size={10} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="jk-field">
+                        <label htmlFor={`${id}-clip-transition`}>
+                          Transition in
+                        </label>
+                        <select
+                          id={`${id}-clip-transition`}
+                          className="jk-input"
+                          value={selectedPhoto.transition}
+                          onChange={(event) =>
+                            onClipTransition(
+                              selectedPhoto.id,
+                              event.target.value as TransitionStyle,
+                            )
+                          }
+                          disabled={selectedIndex === 0}
+                        >
+                          {TRANSITION_OPTIONS.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="jk-field">
+                        <label htmlFor={`${id}-clip-filter`}>Colour look</label>
+                        <select
+                          id={`${id}-clip-filter`}
+                          className="jk-input"
+                          value={selectedPhoto.filter}
+                          onChange={(event) =>
+                            onClipFilter(
+                              selectedPhoto.id,
+                              event.target.value as FilterLook,
+                            )
+                          }
+                        >
+                          {FILTER_OPTIONS.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="jk-field">
+                      <label htmlFor={`${id}-caption`}>
+                        Clip caption / script
+                      </label>
+                      <input
+                        id={`${id}-caption`}
+                        className="jk-input"
+                        value={project.script.captions[selectedIndex] ?? ""}
+                        maxLength={120}
+                        onChange={(event) =>
+                          onScriptCaption(selectedIndex, event.target.value)
+                        }
+                        placeholder="Text shown on this clip"
+                      />
+                    </div>
                     <div className="jk-field">
                       <label htmlFor={`${id}-note`}>
-                        Photo note (optional)
+                        Lower-third note (optional)
                       </label>
                       <input
                         id={`${id}-note`}
@@ -921,8 +1033,10 @@ export function ServiceCard({
                     <strong>Auto script</strong>
                     <p>
                       {count >= AUTO_SCRIPT_MIN_PHOTOS
-                        ? "Hook, per-photo captions, and CTA for Shorts."
-                        : `Add ${AUTO_SCRIPT_MIN_PHOTOS - count} more photo(s) to auto-generate a script.`}
+                        ? "Hook, per-clip captions, and CTA for Shorts."
+                        : count > 0
+                          ? `Auto-fills at ${AUTO_SCRIPT_MIN_PHOTOS}+ photos. You can edit every line now.`
+                          : "Add photos to generate a hook, captions and CTA."}
                     </p>
                   </div>
                   <button
@@ -934,7 +1048,7 @@ export function ServiceCard({
                     <StudioIcon name="sparkles" size={12} /> Regenerate
                   </button>
                 </div>
-                {project.script.hook || count >= AUTO_SCRIPT_MIN_PHOTOS ? (
+                {count > 0 ? (
                   <div className="jk-fields">
                     <label className="jk-field jk-field-wide">
                       <span className="jk-config-label">Hook</span>
@@ -948,13 +1062,13 @@ export function ServiceCard({
                     {project.photos.map((photo, i) => (
                       <label className="jk-field jk-field-wide" key={photo.id}>
                         <span className="jk-config-label">
-                          Photo {i + 1} caption
+                          Clip {i + 1} caption
                         </span>
                         <input
                           className="jk-input"
                           value={project.script.captions[i] ?? ""}
                           onChange={(e) => onScriptCaption(i, e.target.value)}
-                          placeholder={`Caption for photo ${i + 1}`}
+                          placeholder={`Caption for clip ${i + 1}`}
                         />
                       </label>
                     ))}
@@ -984,15 +1098,50 @@ export function ServiceCard({
                     name={exporting ? "rotate" : "download"}
                     size={13}
                   />
-                  {exporting ? "Exporting…" : "Download Video"}
+                  {exporting
+                    ? `Exporting ${Math.round(exportPercent)}%…`
+                    : exportFailed
+                      ? "Retry export"
+                      : "Download Video"}
                 </button>
-                <p className="jk-section-help">
+                {exporting ? (
+                  <button
+                    type="button"
+                    className="jk-btn jk-btn-danger"
+                    onClick={onCancelExport}
+                  >
+                    <StudioIcon name="x" size={12} />
+                    Cancel
+                  </button>
+                ) : null}
+                <p
+                  className={`jk-section-help jk-export-status ${exportFailed ? "is-error" : ""}`}
+                  aria-live="polite"
+                >
                   {exportStatus ||
                     (ready
-                      ? `Exports ${project.aspect} ${project.durationSec}s video with captions and ${project.musicMode === "mute" ? "no audio" : project.musicMode === "upload" ? "uploaded audio" : "built-in music"}.`
+                      ? `Exports ${project.aspect} ${formatSeconds(total)} video with captions and ${project.musicMode === "mute" ? "no audio" : project.musicMode === "upload" ? "uploaded audio" : "built-in music"}.`
                       : "Add required photos before exporting.")}
                 </p>
               </div>
+              {exporting || exportPercent > 0 ? (
+                <div
+                  className={`jk-export-progress ${exportFailed ? "is-error" : ""}`}
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(exportPercent)}
+                  aria-label="Video export progress"
+                >
+                  <div
+                    className="jk-export-progress-fill"
+                    style={{
+                      width: `${Math.max(0, Math.min(100, exportPercent))}%`,
+                    }}
+                  />
+                  <span>{Math.round(exportPercent)}%</span>
+                </div>
+              ) : null}
             </section>
 
             {confirmReset ? (
@@ -1048,7 +1197,7 @@ export function ServiceCard({
               </button>
               <span>
                 {ready
-                  ? `${count} photos · ${project.durationSec}s · ${perPhoto.toFixed(1)}s each`
+                  ? `${count} photos · ${formatSeconds(total)} · clips 2–8s each`
                   : `Add at least ${project.minPhotos} photos to preview`}
               </span>
             </div>
