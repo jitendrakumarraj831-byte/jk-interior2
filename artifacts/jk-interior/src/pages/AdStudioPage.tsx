@@ -372,6 +372,12 @@ export default function AdStudioPage() {
               </div>
             </div>
 
+            <div className="jk-lock-icon-wrap" aria-hidden="true">
+              <span className="jk-lock-icon">
+                <StudioIcon name="lock" size={28} />
+              </span>
+            </div>
+
             <p className="jk-lock-eyebrow">Private creative workspace</p>
             <h1 className="jk-lock-title">
               Ad <em>Studio</em>
@@ -395,31 +401,42 @@ export default function AdStudioPage() {
                   </p>
                 ) : null}
 
-                <div className="jk-pin-wrap">
-                  <input
-                    className="jk-pin-input"
-                    type={showPin ? "text" : "password"}
-                    value={pin}
-                    onChange={(event) => setPin(event.target.value)}
-                    placeholder="Private key / PIN"
-                    autoComplete="current-password"
-                    autoFocus
-                    aria-label="Private key or PIN"
-                  />
-                  <button
-                    type="button"
-                    className="jk-pin-toggle"
-                    onClick={() => setShowPin((visible) => !visible)}
-                    aria-label={
-                      showPin ? "Hide private key" : "Show private key"
-                    }
-                  >
-                    {showPin ? (
-                      <StudioIcon name="eye-off" size={15} />
-                    ) : (
-                      <StudioIcon name="eye" size={15} />
-                    )}
-                  </button>
+                <div className="jk-pin-field">
+                  <label className="jk-pin-label" htmlFor="jk-ad-studio-key">
+                    <StudioIcon name="key" size={13} />
+                    Private Key / PIN
+                  </label>
+                  <div className="jk-pin-wrap">
+                    <input
+                      id="jk-ad-studio-key"
+                      className="jk-pin-input"
+                      type={showPin ? "text" : "password"}
+                      value={pin}
+                      onChange={(event) => setPin(event.target.value)}
+                      placeholder="Enter your private key"
+                      autoComplete="current-password"
+                      autoFocus
+                      aria-describedby="jk-ad-studio-key-note"
+                    />
+                    <button
+                      type="button"
+                      className="jk-pin-toggle"
+                      onClick={() => setShowPin((visible) => !visible)}
+                      aria-label={
+                        showPin ? "Hide private key" : "Show private key"
+                      }
+                    >
+                      {showPin ? (
+                        <StudioIcon name="eye-off" size={16} />
+                      ) : (
+                        <StudioIcon name="eye" size={16} />
+                      )}
+                      <span>{showPin ? "Hide" : "Show"}</span>
+                    </button>
+                  </div>
+                  <p id="jk-ad-studio-key-note" className="jk-pin-hint">
+                    Use the deployment private key to unlock this studio.
+                  </p>
                 </div>
 
                 <button
@@ -434,8 +451,8 @@ export default function AdStudioPage() {
                     </>
                   ) : (
                     <>
-                      <StudioIcon name="lock" size={14} />
-                      Unlock studio
+                      <StudioIcon name="lock" size={15} />
+                      Unlock Studio
                     </>
                   )}
                 </button>
