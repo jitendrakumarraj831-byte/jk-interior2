@@ -53,3 +53,6 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Private local ad previews (never commit, deploy or expose)
+local-ads/

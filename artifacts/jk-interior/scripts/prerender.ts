@@ -353,7 +353,7 @@ async function crawlPass(
 
 // Every indexable route, written to <route>.html (index.html for "/") — Vercel's
 // `cleanUrls` serves /about from about.html — plus the non-indexed ones with
-// their own output files (admin.html, 404.html).
+// their own output files (admin.html, ad-studio.html, 404.html).
 const TARGETS: PrerenderTarget[] = [
   ...getAllRoutes().map((r) => ({
     path: r.path,
