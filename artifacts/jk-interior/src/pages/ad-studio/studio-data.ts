@@ -402,6 +402,53 @@ export interface AdDetails {
   highlight: string
 }
 
+export type AspectRatio = "16:9" | "9:16"
+export type MotionEffect = "ken-burns" | "pan" | "fade-slide"
+
+export interface MusicTrack {
+  id: string
+  name: string
+  description: string
+  mood: number
+}
+
+export const MUSIC_TRACKS: MusicTrack[] = [
+  {
+    id: "warm-gold",
+    name: "Warm Gold",
+    description: "Warm ambient pad",
+    mood: 0,
+  },
+  { id: "deep-navy", name: "Deep Navy", description: "Deep calm pad", mood: 1 },
+  {
+    id: "soft-ivory",
+    name: "Soft Ivory",
+    description: "Light elegant pad",
+    mood: 2,
+  },
+  {
+    id: "amber-glow",
+    name: "Amber Glow",
+    description: "Bright warm pad",
+    mood: 3,
+  },
+  {
+    id: "forest-calm",
+    name: "Forest Calm",
+    description: "Grounded calm pad",
+    mood: 4,
+  },
+  { id: "rosewood", name: "Rosewood", description: "Rich warm pad", mood: 5 },
+]
+
+export interface AdScript {
+  hook: string
+  captions: string[]
+  cta: string
+  /** True when generated and not manually edited as a whole. */
+  auto: boolean
+}
+
 export interface ServiceProject {
   photos: StudioPhoto[]
   details: AdDetails
@@ -410,6 +457,17 @@ export interface ServiceProject {
   maxPhotos: number
   durationSec: number
   editorOpen: boolean
+  aspect: AspectRatio
+  motion: MotionEffect
+  musicMode: "builtin" | "upload" | "mute"
+  musicTrackId: string
+  uploadedAudioName: string
+  uploadedAudioUrl: string
+  script: AdScript
+}
+
+export function createEmptyScript(): AdScript {
+  return { hook: "", captions: [], cta: "", auto: false }
 }
 
 export function createEmptyProject(index: number): ServiceProject {
@@ -421,6 +479,13 @@ export function createEmptyProject(index: number): ServiceProject {
     maxPhotos: DEFAULT_MAX_PHOTOS,
     durationSec: DEFAULT_DURATION_SEC,
     editorOpen: false,
+    aspect: "16:9",
+    motion: "ken-burns",
+    musicMode: "builtin",
+    musicTrackId: MUSIC_TRACKS[index % MUSIC_TRACKS.length].id,
+    uploadedAudioName: "",
+    uploadedAudioUrl: "",
+    script: createEmptyScript(),
   }
 }
 
@@ -439,6 +504,85 @@ export function createInitialProjects(): Record<string, ServiceProject> {
       createEmptyProject(index),
     ]),
   )
+}
+
+export const AUTO_SCRIPT_MIN_PHOTOS = 5
+
+const SCRIPT_HOOKS: Record<string, string[]> = {
+  "pvc-ceiling": [
+    "Give your ceiling a clean, modern finish.",
+    "A fresh PVC ceiling can change the whole room.",
+  ],
+  "pvc-wall-paneling": [
+    "Turn plain walls into a clean, finished look.",
+    "Smart wall paneling, made for everyday living.",
+  ],
+  "wpc-fluted-panels": [
+    "Add warm texture with fluted panel design.",
+    "A feature wall that feels crafted and premium.",
+  ],
+  "wpc-louvers": [
+    "Slim louvers, strong visual impact.",
+    "Add depth and style with WPC louvers.",
+  ],
+  "gypsum-false-ceiling": [
+    "Smooth lines, soft lighting, elegant ceiling.",
+    "A gypsum ceiling that lifts the whole space.",
+  ],
+  "grid-t-ceiling": [
+    "Clean, practical ceilings for workspaces.",
+    "A neat grid ceiling with a professional finish.",
+  ],
+  "uv-marble-sheet": [
+    "Get a marble look with a sleek finish.",
+    "Premium marble-look walls, beautifully installed.",
+  ],
+  "tv-unit-design": [
+    "Make your TV wall the highlight of the room.",
+    "A custom TV unit with style and storage.",
+  ],
+  "led-profile-lighting": [
+    "Add the glow that completes your interior.",
+    "Slim LED profiles for a modern finish.",
+  ],
+  "artificial-grass": [
+    "Bring fresh green vibes to your space.",
+    "Low-maintenance green for balcony or terrace.",
+  ],
+  "partition-wall": [
+    "Divide space smartly without losing style.",
+    "A clean partition that fits your layout.",
+  ],
+}
+
+const SCRIPT_CAPTION_TEMPLATES = [
+  "Quality finish by JK Interior",
+  "Designed for your space",
+  "Clean detailing, neat execution",
+  "Modern look, lasting impression",
+  "From idea to finished result",
+  "Crafted for homes and businesses",
+  "A finish that stands out",
+  "Style meets practical comfort",
+  "Every detail handled with care",
+  "Made to elevate your interior",
+]
+
+export function generateAdScript(
+  service: ServiceDefinition,
+  photoCount: number,
+): AdScript {
+  const hooks = SCRIPT_HOOKS[service.id] ?? [
+    `Upgrade your space with ${service.name}.`,
+  ]
+  const hook = hooks[0]
+  const captions = Array.from({ length: Math.max(0, photoCount) }, (_, i) => {
+    if (i === 0) return `${service.name} by JK Interior`
+    if (i === photoCount - 1) return `Serving ${STUDIO_REGION}`
+    return SCRIPT_CAPTION_TEMPLATES[i % SCRIPT_CAPTION_TEMPLATES.length]
+  })
+  const cta = `WhatsApp ${STUDIO_WHATSAPP_DISPLAY} | Call ${STUDIO_CALL_DISPLAY} | ${STUDIO_WEBSITE.replace(/^https?:\/\//, "")}`
+  return { hook, captions, cta, auto: true }
 }
 
 export function projectIsReady(project: ServiceProject): boolean {

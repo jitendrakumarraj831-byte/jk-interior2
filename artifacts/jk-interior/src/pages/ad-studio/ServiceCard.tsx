@@ -4,11 +4,15 @@ import { ServiceGlyph } from "./ServiceGlyph"
 import { StudioIcon } from "./StudioIcon"
 import {
   AD_PRESETS,
+  AUTO_SCRIPT_MIN_PHOTOS,
   MAX_DURATION_SEC,
   MAX_PHOTOS_LIMIT,
   MIN_DURATION_SEC,
+  MUSIC_TRACKS,
   type AdDetails,
   type AdPreset,
+  type AspectRatio,
+  type MotionEffect,
   type ServiceDefinition,
   type ServiceProject,
 } from "./studio-data"
@@ -35,6 +39,17 @@ interface ServiceCardProps {
   onToggleEditor: () => void
   onPreview: () => void
   onResetDraft: () => void
+  onScriptField: (field: "hook" | "cta", value: string) => void
+  onScriptCaption: (index: number, value: string) => void
+  onRegenerateScript: () => void
+  onAspect: (aspect: AspectRatio) => void
+  onMotion: (motion: MotionEffect) => void
+  onMusicMode: (mode: "builtin" | "upload" | "mute") => void
+  onMusicTrack: (trackId: string) => void
+  onUploadedAudio: (file: File | null) => void
+  onExport: () => Promise<void>
+  exporting: boolean
+  exportStatus: string
 }
 
 export function ServiceCard({
@@ -53,9 +68,21 @@ export function ServiceCard({
   onToggleEditor,
   onPreview,
   onResetDraft,
+  onScriptField,
+  onScriptCaption,
+  onRegenerateScript,
+  onAspect,
+  onMotion,
+  onMusicMode,
+  onMusicTrack,
+  onUploadedAudio,
+  onExport,
+  exporting,
+  exportStatus,
 }: ServiceCardProps) {
   const id = useId()
   const inputRef = useRef<HTMLInputElement>(null)
+  const audioInputRef = useRef<HTMLInputElement>(null)
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [dragActive, setDragActive] = useState(false)
   const [flash, setFlash] = useState<{ tone: FlashTone; text: string } | null>(
@@ -777,6 +804,194 @@ export function ServiceCard({
                     </button>
                   )
                 })}
+              </div>
+            </section>
+
+            <section className="jk-editor-section">
+              <div className="jk-section-head">
+                <StudioIcon name="film" size={12} />
+                <h3>Shorts Script & Export</h3>
+                <span>{project.aspect}</span>
+              </div>
+
+              <div className="jk-export-grid">
+                <label className="jk-field">
+                  <span className="jk-config-label">Aspect ratio</span>
+                  <select
+                    className="jk-input"
+                    value={project.aspect}
+                    onChange={(e) => onAspect(e.target.value as AspectRatio)}
+                  >
+                    <option value="9:16">9:16 Shorts (1080x1920)</option>
+                    <option value="16:9">16:9 Landscape (1920x1080)</option>
+                  </select>
+                </label>
+                <label className="jk-field">
+                  <span className="jk-config-label">Motion effect</span>
+                  <select
+                    className="jk-input"
+                    value={project.motion}
+                    onChange={(e) => onMotion(e.target.value as MotionEffect)}
+                  >
+                    <option value="ken-burns">Ken Burns Zoom</option>
+                    <option value="pan">Smooth Pan</option>
+                    <option value="fade-slide">Crossfade / Slide</option>
+                  </select>
+                </label>
+              </div>
+
+              <div className="jk-export-grid">
+                <label className="jk-field">
+                  <span className="jk-config-label">Music</span>
+                  <select
+                    className="jk-input"
+                    value={project.musicMode}
+                    onChange={(e) =>
+                      onMusicMode(
+                        e.target.value as "builtin" | "upload" | "mute",
+                      )
+                    }
+                  >
+                    <option value="builtin">Built-in Web Audio</option>
+                    <option value="upload">Upload audio file</option>
+                    <option value="mute">Mute</option>
+                  </select>
+                </label>
+                {project.musicMode === "builtin" ? (
+                  <label className="jk-field">
+                    <span className="jk-config-label">Mood track</span>
+                    <select
+                      className="jk-input"
+                      value={project.musicTrackId}
+                      onChange={(e) => onMusicTrack(e.target.value)}
+                    >
+                      {MUSIC_TRACKS.map((t) => (
+                        <option key={t.id} value={t.id}>
+                          {t.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ) : project.musicMode === "upload" ? (
+                  <div className="jk-field">
+                    <span className="jk-config-label">Audio file</span>
+                    <div className="jk-audio-upload">
+                      <button
+                        type="button"
+                        className="jk-btn"
+                        onClick={() => audioInputRef.current?.click()}
+                      >
+                        <StudioIcon name="upload" size={12} />{" "}
+                        {project.uploadedAudioName
+                          ? "Change audio"
+                          : "Upload audio"}
+                      </button>
+                      {project.uploadedAudioName ? (
+                        <span
+                          className="jk-audio-name"
+                          title={project.uploadedAudioName}
+                        >
+                          {project.uploadedAudioName}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      ref={audioInputRef}
+                      type="file"
+                      accept="audio/*"
+                      className="jk-file-input"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0] ?? null
+                        onUploadedAudio(f)
+                        e.target.value = ""
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="jk-field">
+                    <span className="jk-config-label">Audio</span>
+                    <p className="jk-section-help">Export will be silent.</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="jk-script-block">
+                <div className="jk-script-head">
+                  <div>
+                    <strong>Auto script</strong>
+                    <p>
+                      {count >= AUTO_SCRIPT_MIN_PHOTOS
+                        ? "Hook, per-photo captions, and CTA for Shorts."
+                        : `Add ${AUTO_SCRIPT_MIN_PHOTOS - count} more photo(s) to auto-generate a script.`}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="jk-btn"
+                    onClick={onRegenerateScript}
+                    disabled={count < 1}
+                  >
+                    <StudioIcon name="sparkles" size={12} /> Regenerate
+                  </button>
+                </div>
+                {project.script.hook || count >= AUTO_SCRIPT_MIN_PHOTOS ? (
+                  <div className="jk-fields">
+                    <label className="jk-field jk-field-wide">
+                      <span className="jk-config-label">Hook</span>
+                      <input
+                        className="jk-input"
+                        value={project.script.hook}
+                        onChange={(e) => onScriptField("hook", e.target.value)}
+                        placeholder="Short opening hook"
+                      />
+                    </label>
+                    {project.photos.map((photo, i) => (
+                      <label className="jk-field jk-field-wide" key={photo.id}>
+                        <span className="jk-config-label">
+                          Photo {i + 1} caption
+                        </span>
+                        <input
+                          className="jk-input"
+                          value={project.script.captions[i] ?? ""}
+                          onChange={(e) => onScriptCaption(i, e.target.value)}
+                          placeholder={`Caption for photo ${i + 1}`}
+                        />
+                      </label>
+                    ))}
+                    <label className="jk-field jk-field-wide">
+                      <span className="jk-config-label">Closing CTA</span>
+                      <input
+                        className="jk-input"
+                        value={project.script.cta}
+                        onChange={(e) => onScriptField("cta", e.target.value)}
+                        placeholder="Closing call to action"
+                      />
+                    </label>
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="jk-export-actions">
+                <button
+                  type="button"
+                  className="jk-btn jk-btn-gold"
+                  onClick={() => {
+                    void onExport()
+                  }}
+                  disabled={!ready || exporting}
+                >
+                  <StudioIcon
+                    name={exporting ? "rotate" : "download"}
+                    size={13}
+                  />
+                  {exporting ? "Exporting…" : "Download Video"}
+                </button>
+                <p className="jk-section-help">
+                  {exportStatus ||
+                    (ready
+                      ? `Exports ${project.aspect} ${project.durationSec}s video with captions and ${project.musicMode === "mute" ? "no audio" : project.musicMode === "upload" ? "uploaded audio" : "built-in music"}.`
+                      : "Add required photos before exporting.")}
+                </p>
               </div>
             </section>
 

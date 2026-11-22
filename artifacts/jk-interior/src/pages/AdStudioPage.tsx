@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import type { FormEvent } from "react"
 import { AdAudio } from "./ad-studio/ad-audio"
+import { exportAdVideo } from "./ad-studio/ad-export"
 import { AdPreview } from "./ad-studio/AdPreview"
 import { ServiceCard } from "./ad-studio/ServiceCard"
 import { StudioIcon } from "./ad-studio/StudioIcon"
 import {
   AD_PRESETS,
+  AUTO_SCRIPT_MIN_PHOTOS,
   MAX_DURATION_SEC,
   MAX_PHOTOS_LIMIT,
   MIN_DURATION_SEC,
@@ -16,10 +18,14 @@ import {
   STUDIO_WEBSITE,
   STUDIO_WHATSAPP_DISPLAY,
   clamp,
+  createEmptyScript,
   createInitialProjects,
+  generateAdScript,
   projectIsReady,
   resetProjectDraft,
   type AdDetails,
+  type AspectRatio,
+  type MotionEffect,
   type ServiceProject,
 } from "./ad-studio/studio-data"
 import "./ad-studio/ad-studio-base.css"
@@ -38,6 +44,7 @@ function makePhotoId(): string {
 function revokeProjects(projects: Record<string, ServiceProject>) {
   for (const project of Object.values(projects)) {
     for (const photo of project.photos) URL.revokeObjectURL(photo.url)
+    if (project.uploadedAudioUrl) URL.revokeObjectURL(project.uploadedAudioUrl)
   }
 }
 
@@ -78,6 +85,9 @@ export default function AdStudioPage() {
     createInitialProjects,
   )
   const [previewServiceId, setPreviewServiceId] = useState<string | null>(null)
+  const [exportState, setExportState] = useState<
+    Record<string, { exporting: boolean; status: string }>
+  >({})
 
   const projectsRef = useRef(projects)
   projectsRef.current = projects
@@ -202,6 +212,22 @@ export default function AdStudioPage() {
     })
   }
 
+  function syncScript(
+    current: ServiceProject,
+    service: (typeof STUDIO_SERVICES)[number],
+  ): ServiceProject {
+    const count = current.photos.length
+    if (count < AUTO_SCRIPT_MIN_PHOTOS) return current
+    if (current.script.auto || !current.script.hook) {
+      return { ...current, script: generateAdScript(service, count) }
+    }
+    const captions = Array.from(
+      { length: count },
+      (_, i) => current.script.captions[i] ?? `Scene ${i + 1}`,
+    )
+    return { ...current, script: { ...current.script, captions } }
+  }
+
   function addPhotos(serviceId: string, files: File[]) {
     const project = projectsRef.current[serviceId]
     if (!project) return
@@ -211,30 +237,43 @@ export default function AdStudioPage() {
       .slice(0, room)
     if (accepted.length === 0) return
 
+    const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
+    if (!service) return
     const photos = accepted.map((file) => ({
       id: makePhotoId(),
       name: file.name,
       url: URL.createObjectURL(file),
       note: "",
     }))
-    updateProject(serviceId, (current) => ({
-      ...current,
-      photos: [...current.photos, ...photos],
-    }))
+    updateProject(serviceId, (current) =>
+      syncScript(
+        { ...current, photos: [...current.photos, ...photos] },
+        service,
+      ),
+    )
   }
 
   function removePhoto(serviceId: string, photoId: string) {
+    const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
     const photo = projectsRef.current[serviceId]?.photos.find(
       (item) => item.id === photoId,
     )
-    updateProject(serviceId, (current) => ({
-      ...current,
-      photos: current.photos.filter((item) => item.id !== photoId),
-    }))
+    updateProject(serviceId, (current) => {
+      const index = current.photos.findIndex((item) => item.id === photoId)
+      const photos = current.photos.filter((item) => item.id !== photoId)
+      const captions = current.script.captions.filter((_, i) => i !== index)
+      const next = {
+        ...current,
+        photos,
+        script: { ...current.script, captions },
+      }
+      return service ? syncScript(next, service) : next
+    })
     if (photo) setTimeout(() => URL.revokeObjectURL(photo.url), 1_000)
   }
 
   function movePhoto(serviceId: string, from: number, to: number) {
+    const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
     updateProject(serviceId, (current) => {
       if (
         from === to ||
@@ -248,7 +287,17 @@ export default function AdStudioPage() {
       const photos = [...current.photos]
       const [moved] = photos.splice(from, 1)
       photos.splice(to, 0, moved)
-      return { ...current, photos }
+      const captions = [...current.script.captions]
+      if (captions.length === current.photos.length) {
+        const [movedCap] = captions.splice(from, 1)
+        captions.splice(to, 0, movedCap ?? "")
+      }
+      const next = {
+        ...current,
+        photos,
+        script: { ...current.script, captions },
+      }
+      return service ? syncScript(next, service) : next
     })
   }
 
@@ -317,6 +366,78 @@ export default function AdStudioPage() {
     }))
   }
 
+  function setScriptField(
+    serviceId: string,
+    field: "hook" | "cta",
+    value: string,
+  ) {
+    updateProject(serviceId, (current) => ({
+      ...current,
+      script: { ...current.script, [field]: value, auto: false },
+    }))
+  }
+
+  function setScriptCaption(serviceId: string, index: number, value: string) {
+    updateProject(serviceId, (current) => {
+      const captions = [...current.script.captions]
+      captions[index] = value
+      return {
+        ...current,
+        script: { ...current.script, captions, auto: false },
+      }
+    })
+  }
+
+  function regenerateScript(serviceId: string) {
+    const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
+    if (!service) return
+    updateProject(serviceId, (current) => ({
+      ...current,
+      script: generateAdScript(service, current.photos.length),
+    }))
+  }
+
+  function setAspect(serviceId: string, aspect: AspectRatio) {
+    updateProject(serviceId, (current) => ({ ...current, aspect }))
+  }
+
+  function setMotion(serviceId: string, motion: MotionEffect) {
+    updateProject(serviceId, (current) => ({ ...current, motion }))
+  }
+
+  function setMusicMode(
+    serviceId: string,
+    musicMode: "builtin" | "upload" | "mute",
+  ) {
+    updateProject(serviceId, (current) => ({ ...current, musicMode }))
+  }
+
+  function setMusicTrack(serviceId: string, musicTrackId: string) {
+    updateProject(serviceId, (current) => ({ ...current, musicTrackId }))
+  }
+
+  function setUploadedAudio(serviceId: string, file: File | null) {
+    const project = projectsRef.current[serviceId]
+    if (project?.uploadedAudioUrl) URL.revokeObjectURL(project.uploadedAudioUrl)
+    if (!file) {
+      updateProject(serviceId, (current) => ({
+        ...current,
+        uploadedAudioName: "",
+        uploadedAudioUrl: "",
+        musicMode:
+          current.musicMode === "upload" ? "builtin" : current.musicMode,
+      }))
+      return
+    }
+    const url = URL.createObjectURL(file)
+    updateProject(serviceId, (current) => ({
+      ...current,
+      uploadedAudioName: file.name,
+      uploadedAudioUrl: url,
+      musicMode: "upload",
+    }))
+  }
+
   function resetDraft(serviceId: string) {
     const project = projectsRef.current[serviceId]
     if (!project) return
@@ -324,6 +445,7 @@ export default function AdStudioPage() {
       (service) => service.id === serviceId,
     )
     for (const photo of project.photos) URL.revokeObjectURL(photo.url)
+    if (project.uploadedAudioUrl) URL.revokeObjectURL(project.uploadedAudioUrl)
     updateProject(serviceId, (current) =>
       resetProjectDraft(current, Math.max(0, index)),
     )
@@ -336,6 +458,47 @@ export default function AdStudioPage() {
     if (!audioRef.current) audioRef.current = new AdAudio()
     audioRef.current.ensure()
     setPreviewServiceId(serviceId)
+  }
+
+  async function exportProject(serviceId: string) {
+    const project = projectsRef.current[serviceId]
+    const service = STUDIO_SERVICES.find((s) => s.id === serviceId)
+    if (!project || !service || !projectIsReady(project)) return
+    if (exportState[serviceId]?.exporting) return
+    if (!audioRef.current) audioRef.current = new AdAudio()
+    audioRef.current.ensure()
+    const preset = PRESET_BY_ID[project.presetId] ?? AD_PRESETS[0]
+    setExportState((s) => ({
+      ...s,
+      [serviceId]: { exporting: true, status: "Preparing export…" },
+    }))
+    try {
+      await exportAdVideo({
+        service,
+        project,
+        preset,
+        audio: audioRef.current,
+        onProgress: (p) =>
+          setExportState((s) => ({
+            ...s,
+            [serviceId]: {
+              exporting: p.phase !== "done" && p.phase !== "error",
+              status: p.message,
+            },
+          })),
+      })
+    } catch (err) {
+      setExportState((s) => ({
+        ...s,
+        [serviceId]: {
+          exporting: false,
+          status:
+            err instanceof Error
+              ? err.message
+              : "Export failed in this browser.",
+        },
+      }))
+    }
   }
 
   const readyCount = STUDIO_SERVICES.filter((service) =>
@@ -564,6 +727,21 @@ export default function AdStudioPage() {
                 onToggleEditor={() => toggleEditor(service.id)}
                 onPreview={() => openPreview(service.id)}
                 onResetDraft={() => resetDraft(service.id)}
+                onScriptField={(field, value) =>
+                  setScriptField(service.id, field, value)
+                }
+                onScriptCaption={(i, value) =>
+                  setScriptCaption(service.id, i, value)
+                }
+                onRegenerateScript={() => regenerateScript(service.id)}
+                onAspect={(aspect) => setAspect(service.id, aspect)}
+                onMotion={(motion) => setMotion(service.id, motion)}
+                onMusicMode={(mode) => setMusicMode(service.id, mode)}
+                onMusicTrack={(trackId) => setMusicTrack(service.id, trackId)}
+                onUploadedAudio={(file) => setUploadedAudio(service.id, file)}
+                onExport={() => exportProject(service.id)}
+                exporting={exportState[service.id]?.exporting ?? false}
+                exportStatus={exportState[service.id]?.status ?? ""}
               />
             )
           })}
